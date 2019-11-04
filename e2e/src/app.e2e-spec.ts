@@ -31,7 +31,7 @@ describe('workspace-project App', () => {
     console.log(createCaseResponse.summary);
   });
 
-  fit('Should create Quick Case and add tasks',async () => {
+  it('Should create Quick Case and add tasks',async () => {
     await page.launchApp();
     await page.doLogin("qtao@petramco.com", "Password_1234");
     await page.createQuickCase('harry potter', 'protractor quick case');

@@ -17,7 +17,7 @@ exports.config = {
     browserName: 'chrome'
   },
   directConnect: true,
-  baseUrl: 'http://clm-pun-sqbg30.bmc.com:8008',
+  baseUrl: 'http://clm-pun-srgud0.bmc.com:8008',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
