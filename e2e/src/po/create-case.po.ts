@@ -24,6 +24,10 @@ class CreateCasePage {
     async saveCase(): Promise<void> {
         await $(this.selectors.saveCaseButton).click();
     }
+
+    async clickGoToCase(): Promise<void> {
+        await $(this.selectors.gotoCaseButton__preview).click();
+    }
 }
 
 export default new CreateCasePage();
