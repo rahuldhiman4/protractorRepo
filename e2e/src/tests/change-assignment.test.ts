@@ -2,6 +2,7 @@ import { element, browser, $, ProtractorExpectedConditions, protractor } from "p
 import loginPage from "../po/login.po";
 import navigationPage from "../po/navigation.po";
 import createCasePage from '../po/create-case.po';
+import caseEditPage from '../po/case-edit-po';
 
 fdescribe('Case Assignment', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -16,11 +17,19 @@ fdescribe('Case Assignment', () => {
     });
 
     it('should change the Assignment when editing the case', async () => {
+        let name = 'Qianru Tao';
+        let supportGroup = 'Compensation and Benefits';
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester();
         await createCasePage.typeSummary();
         await createCasePage.saveCase();
-        await browser.wait(EC.visibilityOf($(createCasePage.selectors.gotoCaseButton__preview)));
         await createCasePage.clickGoToCase();
+        await caseEditPage.clickEditCaseButton();
+        await caseEditPage.clickChangeAssignmentButton();
+        await caseEditPage.selectSupportGroup(supportGroup);
+        await caseEditPage.selectAssignee(name);
+        await caseEditPage.clickAssignButton();
+        await caseEditPage.clickSaveCase();
+        await caseEditPage.verifyCaseAssignee(name);
     },)
 })

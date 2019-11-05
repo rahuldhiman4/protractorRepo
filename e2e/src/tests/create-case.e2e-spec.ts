@@ -4,7 +4,7 @@ import navigationPage from "../po/navigation.po";
 import createCasePage from '../po/create-case.po';
 import createQuickCasePage from '../po/create-case-quick.po';
 
-fdescribe('create case', () => {
+describe('create case', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
         await browser.manage().window().maximize();
@@ -16,7 +16,7 @@ fdescribe('create case', () => {
         await loginPage.login();
     });
     
-    it('should create case without template', async () => {
+    fit('should create case without template', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester();
         await createCasePage.typeSummary();
