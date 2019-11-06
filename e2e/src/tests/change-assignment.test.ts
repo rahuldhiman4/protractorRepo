@@ -4,7 +4,7 @@ import navigationPage from "../po/navigation.po";
 import createCasePage from '../po/create-case.po';
 import caseEditPage from '../po/case-edit-po';
 
-fdescribe('Case Assignment', () => {
+describe('Case Assignment', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
         await browser.manage().window().maximize();
