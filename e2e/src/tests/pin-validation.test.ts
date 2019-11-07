@@ -4,7 +4,7 @@ import navigationPage from "../po/navigation.po";
 import { createCaseTemplate } from "../API/create.casetemplate.api";
 import createQuickCasePage from '../po/create-case-quick.po';
 
-fdescribe('Pin Validation testing', () => {
+describe('Pin Validation testing', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     const templateName = 'PinValidationOptional_abc';
     beforeAll(async () => {
