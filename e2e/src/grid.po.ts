@@ -20,7 +20,7 @@ export class GridOperation {
     async searchAndSelectFirstCheckBox(gridId: string, value: string) {
         await browser.wait(until.elementLocated(By.css(this.getGridLocator('summaryField', gridId))), 10000).sendKeys(value);
         await browser.wait(until.elementLocated(By.css(this.getGridLocator('searchButton', gridId))), 10000).click();
-        //browser.sleep(2000);
+        browser.sleep(2000);
         await this.utility.clickOnElement(by.xpath(`(//div[@aria-label='Select row'])['${value}']`));
     }
 }
