@@ -25,6 +25,14 @@ class CreateQuickCasePage {
         await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton__preview)));
     }
 
+    async createQuickCase(): Promise<void> {
+        await this.selectRequester();
+        await this.enterSummary();
+        await this.saveCase();
+    }
+    
+    async gotoCase(): Promise<void> {
+        await $(this.selectors.gotoCaseButton__preview).click();
+    }
 }
-
 export default new CreateQuickCasePage();
