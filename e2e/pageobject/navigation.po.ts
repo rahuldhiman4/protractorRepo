@@ -12,17 +12,37 @@ class NavigationPage {
         signOutMenuItem: '.d-n-nav__profile a'
     }
 
+    verticalSelectors = {
+        hamburgerIcon: '.d-n-hamburger.rx-shell__button-container',
+        createCaseMenuItem: '//*[@title="Create"]/parent::*//*[@title="Case"]',
+        createQuickCaseMenu: '[title="Quick Case"]',
+    }
+
     async gotCreateCase(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createMenu))), 60000);
-        await element(by.xpath(this.selectors.createMenu)).click();
-        await element(by.xpath(this.selectors.createCaseMenuItem)).click();
+        await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
+        let hamburgerStatus = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
+        if(hamburgerStatus=='true'){
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createMenu))), 60000);
+            await element(by.xpath(this.selectors.createMenu)).click();
+            await element(by.xpath(this.selectors.createCaseMenuItem)).click();            
+        } else {
+            await $(this.verticalSelectors.hamburgerIcon).$('button').click();
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createCaseMenuItem))), 60000);
+            await element(by.xpath(this.verticalSelectors.createCaseMenuItem)).click();
+        }
         await browser.wait(this.EC.titleContains('Case Create - Business Workflows'), 30000);
     }
 
     async gotoQuickCase(): Promise<void> {
-        await element(by.xpath(this.selectors.createQuickCaseMenu)).click();
+        await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
+        let hamburgerStatus = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
+        if(hamburgerStatus=='true'){
+            await element(by.xpath(this.selectors.createQuickCaseMenu)).click();
+        } else {
+            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.createQuickCaseMenu)), 60000);
+            await $(this.verticalSelectors.createQuickCaseMenu).click();
+        }
         await browser.wait(this.EC.titleContains('Case Create - Quick Case - Business Workflows'), 30000);
-
     }
 
     async gotoSettingsPage(): Promise<void> {
