@@ -1,5 +1,5 @@
 import { ProtractorExpectedConditions, protractor, browser, element, by, $, $$, WebElement, ElementFinder } from "protractor"
-import { GridOperation } from '../grid.po';
+import { GridOperation } from '../../utils/util.grid';
 
 class CaseEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -32,6 +32,7 @@ class CaseEditPage {
         taskStatusChangeReason: '[rx-view-component-id="baf69b56-c37b-4a0b-9e68-f18558738ebb"]',
         saveUpdateTaskStatus: '[rx-view-component-id="6759ba60-df0d-4d5e-8eb9-5101490fd4d4"] button',
         viewCaseLink: '[rx-view-component-id="036a7325-43e3-47e6-bb50-7f8d9fe8d118"] button',
+        slaProgressBar: '[rx-view-component-id="55cb7986-e724-40f3-9f92-5744c6c9514d"] .d-progress__bar',
     }
 
     async clickEditCaseButton(): Promise<void> {
@@ -151,6 +152,11 @@ class CaseEditPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewCaseLink)));
         await $(this.selectors.viewCaseLink).click();
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
+    }
+
+    async getSlaBarColor(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBar)));
+        return await $(this.selectors.slaProgressBar).getCssValue('background-color');
     }
 }
 

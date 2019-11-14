@@ -13,7 +13,7 @@ class NavigationPage {
     }
 
     async gotCreateCase(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf(element(by.xpath(this.selectors.createMenu))), 60000);
+        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createMenu))), 60000);
         await element(by.xpath(this.selectors.createMenu)).click();
         await element(by.xpath(this.selectors.createCaseMenuItem)).click();
         await browser.wait(this.EC.titleContains('Case Create - Business Workflows'), 30000);

@@ -1,7 +1,7 @@
 import { element, browser, $, ProtractorExpectedConditions, protractor } from "protractor";
-import loginPage from "../po/login.po";
-import navigationPage from "../po/navigation.po";
-import documentLibraryPage from '../po/document-library.po';
+import loginPage from "../../pageobject/login.po";
+import navigationPage from "../../pageobject/navigation.po";
+import documentLibraryPage from '../../pageobject/settings/document-library.po';
 
 describe('document library', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

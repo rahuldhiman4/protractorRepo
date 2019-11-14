@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'bwf-e2e-test'`, () => {
+  it(`should have as title 'bwfa'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('bwf-e2e-test');
+    expect(app.title).toEqual('bwfa');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('bwf-e2e-test app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('bwfa app is running!');
   });
 });

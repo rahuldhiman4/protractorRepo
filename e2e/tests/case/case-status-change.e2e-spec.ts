@@ -1,11 +1,10 @@
 import { element, browser, $, ProtractorExpectedConditions, protractor } from "protractor";
-import loginPage from "../po/login.po";
-import navigationPage from "../po/navigation.po";
-import createQuickCasePage from '../po/create-case-quick.po';
-import createCasePage from '../po/create-case.po';
-import caseEditPage from '../po/case-edit-po';
+import loginPage from "../../pageobject/login.po";
+import navigationPage from "../../pageobject/navigation.po";
+import createCasePage from '../../pageobject/case/create-case.po';
+import caseEditPage from '../../pageobject/case/case-edit.po';
 
-fdescribe('Case Status Change', () => {
+describe('Case Status Change', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
         await browser.manage().window().maximize();

@@ -1,5 +1,5 @@
 import { browser, by, element, until, By } from 'protractor';
-import { Util } from './util.po';
+import { Util } from './util.common';
 
 export class GridOperation {
 

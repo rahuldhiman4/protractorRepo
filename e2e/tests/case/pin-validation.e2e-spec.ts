@@ -1,8 +1,8 @@
 import { element, browser, $, ProtractorExpectedConditions, protractor } from "protractor";
-import loginPage from "../po/login.po";
-import navigationPage from "../po/navigation.po";
-import { createCaseTemplate } from "../API/create.casetemplate.api";
-import createQuickCasePage from '../po/create-case-quick.po';
+import loginPage from "../../pageobject/login.po";
+import navigationPage from "../../pageobject/navigation.po";
+import { createCaseTemplate } from "../../api/create.casetemplate.api";
+import createQuickCasePage from '../../pageobject/case/create-case-quick.po';
 
 describe('Pin Validation testing', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

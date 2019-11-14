@@ -1,8 +1,8 @@
 import { element, browser, $, ProtractorExpectedConditions, protractor } from "protractor";
-import loginPage from "../po/login.po";
-import navigationPage from "../po/navigation.po";
-import createCasePage from '../po/create-case.po';
-import createQuickCasePage from '../po/create-case-quick.po';
+import loginPage from "../../pageobject/login.po";
+import navigationPage from "../../pageobject/navigation.po";
+import createCasePage from '../../pageobject/case/create-case.po';
+import createQuickCasePage from '../../pageobject/case/create-case-quick.po';
 
 fdescribe('Parallel task execution', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

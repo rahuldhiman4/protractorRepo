@@ -1,9 +1,10 @@
 import { element, browser, $, ProtractorExpectedConditions, protractor } from "protractor";
-import loginPage from "../po/login.po";
-import navigationPage from "../po/navigation.po";
-import createCasePage from '../po/create-case.po';
+import loginPage from "../../pageobject/login.po";
+import navigationPage from "../../pageobject/navigation.po";
+import createCasePage from '../../pageobject/case/create-case.po';
+import createQuickCasePage from '../../pageobject/case/create-case-quick.po';
 
-describe('create case with all inputs', () => {
+describe('create case', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
         await browser.manage().window().maximize();
@@ -11,10 +12,31 @@ describe('create case with all inputs', () => {
         browser.waitForAngularEnabled(false);
     });
 
+    afterAll(async () => {
+        await navigationPage.signOut();
+    });
+
     it('should login correctly', async () => {
         await loginPage.login();
     });
-    
+
+    it('should create case without template', async () => {
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester();
+        await createCasePage.typeSummary();
+        await createCasePage.saveCase();
+        await browser.wait(EC.visibilityOf($(createCasePage.selectors.gotoCaseButton__preview)));
+        await browser.actions().sendKeys(protractor.Key.ESCAPE);
+        await browser.wait(EC.invisibilityOf($(createCasePage.selectors.gotoCaseButton__preview)));
+    }, 120 * 1000)
+
+    xit('should create quick case', async () => {
+        await navigationPage.gotoQuickCase();
+        await createQuickCasePage.selectRequester();
+        await createQuickCasePage.enterSummary();
+        await createQuickCasePage.saveCase();
+    });
+
     it('should create case without template', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester();
