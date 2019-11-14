@@ -8,7 +8,7 @@
 7. Run following command from the downloaded repo
     a. npm install (to install required modules)
     b. npm install -g protractor
-    c. npm i protractor-http-client (to install api client)
+    c. npm install axios (to install api client)
     d. ng serve (to compile the project, select protractor as option when asked)
     e. ng e2e (to run protractor.conf.js)
 

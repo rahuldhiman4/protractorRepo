@@ -10,7 +10,7 @@ const { SpecReporter } = require('jasmine-spec-reporter');
 exports.config = {
   allScriptsTimeout: 50000,
   specs: [
-    './tests/**/case-change-assignment.e2e-spec.ts'
+    './tests/**/case-sla-progress.e2e-spec.ts'
   ],
   capabilities: {
     browserName: 'chrome'
