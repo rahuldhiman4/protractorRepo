@@ -13,7 +13,8 @@ describe('Case Assignment', () => {
     });
 
     it('should login correctly', async () => {
-        await loginPage.login();
+        var loginCredentials = require('../../data/userdata.json');
+        await loginPage.login(loginCredentials.qtao.userName,loginCredentials.qtao.userPassword);
     });
 
     it('should change the Assignment when editing the case', async () => {

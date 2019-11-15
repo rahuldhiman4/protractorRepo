@@ -1,0 +1,17 @@
+{
+	"qdu":{
+		"userName":"qdu@petramco.com",
+		"userPassword":"Password_1234"
+    },
+
+	"qkatawazi":{
+		"userName":"qkatawazi@petramco.com",
+		"userPassword":"Password_1234"
+	},
+	
+	"qtao":{
+		"userName":"qtao@petramco.com",
+		"userPassword":"Password_1234"
+    }
+    
+}

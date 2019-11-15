@@ -17,7 +17,8 @@ fdescribe('Parallel task execution', () => {
     });
 
     it('should login correctly', async () => {
-        await loginPage.login();
+        var loginCredentials = require('../../data/userdata.json');
+        await loginPage.login(loginCredentials.qkatawazi.userName,loginCredentials.qkatawazi.userPassword);
     });
 
     it('should create quick case', async () => {

@@ -13,7 +13,8 @@ describe('Case Status Change', () => {
     });
 
     it('should login correctly', async () => {
-        await loginPage.login();
+        var loginCredentials = require('../../data/userdata.json');
+        await loginPage.login(loginCredentials.qtao.userName,loginCredentials.qtao.userPassword);
     });
 
     it('should change case status to resolve', async () => {
