@@ -14,8 +14,7 @@ describe('Pin Validation testing', () => {
     });
 
     it('should login correctly', async () => {
-        var loginCredentials = require('../../data/userdata.json');
-        await loginPage.login(loginCredentials.qtao.userName,loginCredentials.qtao.userPassword);
+        await loginPage.login('qtao');
     });
 
     xit('Should create case template using api', async () => {

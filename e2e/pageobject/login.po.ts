@@ -8,10 +8,13 @@ class LoginPage {
         signInButton: 'button.login__submit'
     }
 
-    async login(userName:string, userPassword:string): Promise<void> {
+    async login(user:string): Promise<void> {
+        var loginJson = require('../data/userdata.json');
+        var username:string =loginJson[user].userName;
+        var password:string =loginJson[user].userPassword;
         await browser.wait(this.EC.visibilityOf($(this.selectors.loginForm)), 30000);
-        await $(this.selectors.userName).sendKeys(userName);
-        await $(this.selectors.password).sendKeys(userPassword);
+        await $(this.selectors.userName).sendKeys(username);
+        await $(this.selectors.password).sendKeys(password);
         await $(this.selectors.signInButton).click();
         await browser.wait(this.EC.titleContains('Cases - Business Workflows'));
     }

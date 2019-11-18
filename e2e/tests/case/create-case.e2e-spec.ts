@@ -17,8 +17,7 @@ describe('create case', () => {
     });
 
     it('should login correctly', async () => {
-        var loginCredentials = require('../../data/userdata.json');
-        await loginPage.login(loginCredentials.qtao.userName,loginCredentials.qtao.userPassword);
+        await loginPage.login('qtao');
     });
 
     it('should create case without template', async () => {

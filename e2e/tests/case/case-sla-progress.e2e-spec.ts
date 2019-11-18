@@ -19,8 +19,7 @@ fdescribe('SLA progress bar testing', () => {
     });
 
     it('should login correctly', async () => {
-        var loginCredentials = require('../../data/userdata.json');
-        await loginPage.login(loginCredentials.qkatawazi.userName,loginCredentials.qkatawazi.userPassword);
+        await loginPage.login('qkatawazi');
     });
 
     it('should goto Service Target settings', async () => {
