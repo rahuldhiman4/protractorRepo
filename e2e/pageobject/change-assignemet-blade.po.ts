@@ -32,8 +32,9 @@ class changeAssignmentBlade{
             let count = await companyDropDown.$$(this.selectors.selectOptions).count();
             return count >= 1;
         }))
-        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.selectOptions, companyValue))));
-        await element(by.cssContainingText(this.selectors.selectOptions, companyValue)).click();
+        var option=element(by.cssContainingText(this.selectors.selectOptions, companyValue));
+        await browser.wait(this.EC.elementToBeClickable(option));
+        await option.click();
     }
 
     async selectBusinessUnit(businessUnit:string): Promise<void> {
@@ -46,8 +47,10 @@ class changeAssignmentBlade{
             let count = await businessUnitDropDown.$$(this.selectors.selectOptions).count();
             return count >= 1;
         }))
-        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.selectOptions, businessUnit))));
-        await element(by.cssContainingText(this.selectors.selectOptions, businessUnit)).click();
+
+        var option=element(by.cssContainingText(this.selectors.selectOptions, businessUnit));
+        await browser.wait(this.EC.elementToBeClickable(option));
+        await option.click();
     }
 
     async selectDepartment(department:string): Promise<void> {
@@ -60,8 +63,9 @@ class changeAssignmentBlade{
             let count = await departmentDropdown.$$(this.selectors.selectOptions).count();
             return count >= 1;
         }));
-        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.selectOptions, department))));
-        await element(by.cssContainingText(this.selectors.selectOptions, department)).click();
+        var option=element(by.cssContainingText(this.selectors.selectOptions, department));
+        await browser.wait(this.EC.elementToBeClickable(option));
+        await option.click();
     }
 
     async selectSupportGroup(supportGroup:string): Promise<void> {
@@ -74,8 +78,9 @@ class changeAssignmentBlade{
             let count = await supportGroupDropDown.$$(this.selectors.selectOptions).count();
             return count >= 1;
         }))
-        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.selectOptions, supportGroup))));
-        await element(by.cssContainingText(this.selectors.selectOptions, supportGroup)).click();
+        var option=element(by.cssContainingText(this.selectors.selectOptions, supportGroup));
+        await browser.wait(this.EC.elementToBeClickable(option));
+        await option.click();
     }
 
     async selectAssignee(name:string): Promise<void> {

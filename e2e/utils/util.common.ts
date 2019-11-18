@@ -21,8 +21,9 @@
                     let count = await $$(this.selectors.dropDownOption).count();
                     return count >= 1;
                 }));
-                await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.dropDownOption, value))));
-                await element(by.cssContainingText(this.selectors.dropDownOption, value)).click();
+                 var option = element(by.cssContainingText(this.selectors.dropDownOption, value));
+                 await browser.wait(this.EC.elementToBeClickable(option));
+                 await option.click(); 
             }
             
             async waitUntilPopUpDisappear() {
@@ -38,6 +39,24 @@
                 await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningCancel)));
                 await $(this.selectors.warningCancel).click();
             }
+            async selectToggleButton(guid:string,value:boolean): Promise<void> {
+                const togglebutton = $(`[rx-view-component-id="${guid}"]`);
+                if(value){
+                    let element=togglebutton.$('.d-icon-check')
+                    let isclicked=await element.getAttribute('aria-pressed');
+                    if(isclicked=='false'){
+                        await element.click();
+                    }
+                }
+                else{
+                    let element=togglebutton.$('.d-icon-circle_slash_o')
+                    let isclicked=await element.getAttribute('aria-pressed');
+                    if(isclicked=='false'){
+                        await element.click();
+                    }
+                }
+             }
+        
         }
         
         export default new Util();
