@@ -23,10 +23,13 @@ class CreateTaskTemplatePage{
         ownerGroup: '61278673-8106-419c-83e4-a9e00f12f835',
         saveButton: '[rx-view-component-id="5001f6ea-4438-4485-bdd2-c952a12a1a34"] button',
         cancelButton: '[rx-view-component-id="3f760e5f-70e9-4fbf-8b05-cd7d460f8818"] button',
-        processBundleIdDrpDown: '5f30b3d4-caa2-4c28-8af6-cebf094bc2e8',
-        createNewProcessCheckboxYes: '[rx-view-component-id="0ef8534e-a8bf-40c3-bdc1-a91edde177c4"] button[aria-label="True"]',
-        createNewProcessCheckboxNo: '[rx-view-component-id="0ef8534e-a8bf-40c3-bdc1-a91edde177c4"] button[aria-label="False"]',
+        processBundleIdDrpDownForNewProcess: 'e8a2406c-6991-4ea1-bfdf-bde29abe2ef7',
+        processBundleIdDrpDownForExistingProcess: '[rx-view-component-id="71e09acc-0077-4e55-9c24-7f6bdc90ce5d"] .d-icon-right-angle_down',
+        toggleBox: '0ef8534e-a8bf-40c3-bdc1-a91edde177c4',
         newProcessName: '[rx-view-component-id="eefdf45b-47af-48cb-8c8b-a82c73f7d5a4"] input',
+        searchProcess:'.d-icon-search',
+        setInputdataInProcess:'[rx-view-component-id="71e09acc-0077-4e55-9c24-7f6bdc90ce5d"] input',
+        selectNameInProcess: '.rx-definition-picker__instance-name',
     }
 
     async setTemplateName(inputValue:string): Promise<void> {
@@ -109,5 +112,29 @@ class CreateTaskTemplatePage{
     async selectOwnerGroup(ownergroup:string): Promise<void> {
         await util.selectDropDown(this.selectors.ownerGroup,ownergroup);
     }
+
+    async setNewProcessName(bundle:string, inputValue:string): Promise<void> {
+        await util.selectToggleButton(this.selectors.toggleBox,true);
+        await util.selectDropDown(this.selectors.processBundleIdDrpDownForNewProcess,bundle);
+        await browser.wait(this.EC.visibilityOf($(this.selectors.newProcessName)));
+        await $(this.selectors.newProcessName).clear();
+        await $(this.selectors.newProcessName).sendKeys(inputValue); 
+
+    }
+
+    async setExistingProcessName(bundle:string): Promise<void> {
+        await util.selectToggleButton(this.selectors.toggleBox,false);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.processBundleIdDrpDownForExistingProcess)));
+        await $(this.selectors.processBundleIdDrpDownForExistingProcess).click();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchProcess)));
+        await $(this.selectors.searchProcess).click();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.setInputdataInProcess)));
+        await $(this.selectors.setInputdataInProcess).sendKeys(bundle);
+        browser.sleep(5000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectNameInProcess)));
+        await $(this.selectors.selectNameInProcess).click();
+       
+    }
+
 }
 export default new CreateTaskTemplatePage();
