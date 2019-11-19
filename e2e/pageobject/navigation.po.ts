@@ -54,10 +54,13 @@ class NavigationPage {
     async gotoSettingsMenuItem(pathStr: string, expectedTitle: string): Promise<string> {
         const menuItems: Array<string> = pathStr.split('--');
         for (let i = 0; i < menuItems.length; i++) {
+            var menuXpath:string = `//rx-administration-settings//*[text()="${menuItems[i]}"]`;
             if (i < menuItems.length - 1) {
-                await element(by.xpath(`//rx-administration-settings//*[text()="${menuItems[i]}"]/../*[@class="tree-branch-head"]`)).click();
+                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(`${menuXpath}/../*[@class="tree-branch-head"]`))));
+                await element(by.xpath(`${menuXpath}/../*[@class="tree-branch-head"]`)).click();
             } else {
-                await element(by.xpath(`//rx-administration-settings//*[text()="${menuItems[i]}"]`)).click();
+                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(menuXpath))));
+                await element(by.xpath(menuXpath)).click();
             }
         }
         await browser.wait(this.EC.titleContains(expectedTitle));
