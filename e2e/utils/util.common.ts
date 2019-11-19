@@ -5,28 +5,28 @@
             selectors= {
                 dropdownBox: '.ui-select-match',
                 valueSearch: ' input[type="search"]',
-                dropDownOption: '.ui-select__rx-choice',
+                dropDownOption: '.ui-select-choices-row-inner span',
                 popUpMsgLocator: '.rx-growl-item__message',
                 warningOk: '.d-modal__footer button[class*="d-button d-button_primary d-button_small"]',
                 warningCancel: '.d-modal__footer button[class*="d-button d-button_secondary d-button_small"]',       
             }
             
-            async selectDropDown(guid:string, value:string){        
-                const dropDown =await $(`[rx-view-component-id="${guid}"]`);
+            async selectDropDown(guid:string, value:string): Promise<void>{        
+                const dropDown = await $(`[rx-view-component-id="${guid}"]`);
+                const option = `[rx-view-component-id="${guid}"] ${this.selectors.dropDownOption}`;
                 await browser.wait(this.EC.elementToBeClickable(dropDown.$(this.selectors.dropdownBox)));
                 await dropDown.$(this.selectors.dropdownBox).click();
                 await browser.wait(this.EC.elementToBeClickable(dropDown.$(this.selectors.valueSearch)));
                 await dropDown.$(this.selectors.valueSearch).sendKeys(value);
                 await browser.wait(this.EC.or(async ()=>{
-                    let count = await $$(this.selectors.dropDownOption).count();
+                    let count = await $$(option).count();
                     return count >= 1;
                 }));
-                 var option = element(by.cssContainingText(this.selectors.dropDownOption, value));
-                 await browser.wait(this.EC.elementToBeClickable(option));
-                 await option.click(); 
-            }
+                await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(option, value))));
+                await element(by.cssContainingText(option, value)).click();
+             }
             
-            async waitUntilPopUpDisappear() {
+            async waitUntilPopUpDisappear(): Promise<void> {
                 await browser.wait(this.EC.invisibilityOf($(this.selectors.popUpMsgLocator)));
             }
 

@@ -1,5 +1,6 @@
 import {by, $, $$, ProtractorExpectedConditions, browser, protractor, element } from "protractor";
-class changeAssignmentBlade{
+
+class ChangeAssignmentBlade{
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         changeAssignmentButton: '[rx-view-component-id="6041cce1-05bd-458d-b097-eb310507cae3"] button',
@@ -31,7 +32,7 @@ class changeAssignmentBlade{
         await browser.wait(this.EC.or(async ()=>{
             let count = await companyDropDown.$$(this.selectors.selectOptions).count();
             return count >= 1;
-        }))
+        }));
         var option=element(by.cssContainingText(this.selectors.selectOptions, companyValue));
         await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
@@ -46,8 +47,7 @@ class changeAssignmentBlade{
         await browser.wait(this.EC.or(async ()=>{
             let count = await businessUnitDropDown.$$(this.selectors.selectOptions).count();
             return count >= 1;
-        }))
-
+        }));
         var option=element(by.cssContainingText(this.selectors.selectOptions, businessUnit));
         await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
@@ -95,4 +95,4 @@ class changeAssignmentBlade{
     }
 }
 
-export default new changeAssignmentBlade();
+export default new ChangeAssignmentBlade();
