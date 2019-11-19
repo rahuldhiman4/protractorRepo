@@ -9,6 +9,7 @@ class LoginPage {
     }
 
     async login(user:string): Promise<void> {
+        await browser.manage().window().setSize(1300, 700);
         var loginJson = require('../data/userdata.json');
         var username:string =loginJson[user].userName;
         var password:string =loginJson[user].userPassword;

@@ -21,10 +21,10 @@ class NavigationPage {
     async gotCreateCase(): Promise<void> {
         await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
         let hamburgerStatus = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
-        if(hamburgerStatus=='true'){
+        if (hamburgerStatus == 'true') {
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createMenu))), 60000);
             await element(by.xpath(this.selectors.createMenu)).click();
-            await element(by.xpath(this.selectors.createCaseMenuItem)).click();            
+            await element(by.xpath(this.selectors.createCaseMenuItem)).click();
         } else {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createCaseMenuItem))), 60000);
@@ -36,7 +36,7 @@ class NavigationPage {
     async gotoQuickCase(): Promise<void> {
         await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
         let hamburgerStatus = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
-        if(hamburgerStatus=='true'){
+        if (hamburgerStatus == 'true') {
             await element(by.xpath(this.selectors.createQuickCaseMenu)).click();
         } else {
             await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.createQuickCaseMenu)), 60000);
@@ -53,14 +53,12 @@ class NavigationPage {
 
     async gotoSettingsMenuItem(pathStr: string, expectedTitle: string): Promise<string> {
         const menuItems: Array<string> = pathStr.split('--');
+        await browser.wait(this.EC.visibilityOf($('treecontrol')));
         for (let i = 0; i < menuItems.length; i++) {
-            var menuXpath:string = `//rx-administration-settings//*[text()="${menuItems[i]}"]`;
             if (i < menuItems.length - 1) {
-                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(`${menuXpath}/../*[@class="tree-branch-head"]`))));
-                await element(by.xpath(`${menuXpath}/../*[@class="tree-branch-head"]`)).click();
+                await element(by.xpath(`//rx-administration-settings//*[text()="${menuItems[i]}"]/../*[@class="tree-branch-head"]`)).click();
             } else {
-                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(menuXpath))));
-                await element(by.xpath(menuXpath)).click();
+                await element(by.xpath(`//rx-administration-settings//*[text()="${menuItems[i]}"]`)).click();
             }
         }
         await browser.wait(this.EC.titleContains(expectedTitle));

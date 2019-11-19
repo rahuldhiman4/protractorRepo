@@ -3,8 +3,8 @@
         export class Util{
             EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
             selectors= {
-                dropdownBox: '.ui-select-match',
-                valueSearch: ' input[type="search"]',
+                dropdownBox: '.ui-select-toggle',
+                dropDownInput: 'input[type="search"]',
                 dropDownOption: '.ui-select-choices-row-inner span',
                 popUpMsgLocator: '.rx-growl-item__message',
                 warningOk: '.d-modal__footer button[class*="d-button d-button_primary d-button_small"]',
@@ -13,17 +13,20 @@
             
             async selectDropDown(guid:string, value:string): Promise<void>{        
                 const dropDown = await $(`[rx-view-component-id="${guid}"]`);
-                const option = `[rx-view-component-id="${guid}"] ${this.selectors.dropDownOption}`;
-                await browser.wait(this.EC.elementToBeClickable(dropDown.$(this.selectors.dropdownBox)));
-                await dropDown.$(this.selectors.dropdownBox).click();
-                await browser.wait(this.EC.elementToBeClickable(dropDown.$(this.selectors.valueSearch)));
-                await dropDown.$(this.selectors.valueSearch).sendKeys(value);
+                const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+                const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
+                await browser.wait(this.EC.elementToBeClickable(dropDownBoxElement));
+                await dropDownBoxElement.click();
+                await browser.wait(this.EC.visibilityOf(dropDownInputElement));
+                await dropDownInputElement.sendKeys(value);
                 await browser.wait(this.EC.or(async ()=>{
-                    let count = await $$(option).count();
+                    let count = await dropDown.$$(this.selectors.dropDownOption).count();
                     return count >= 1;
                 }));
-                await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(option, value))));
-                await element(by.cssContainingText(option, value)).click();
+                var optionCss:string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner span`;
+                var option = await element(by.cssContainingText(optionCss, value));
+                await browser.wait(this.EC.visibilityOf(option));
+                await option.click();
              }
             
             async waitUntilPopUpDisappear(): Promise<void> {
