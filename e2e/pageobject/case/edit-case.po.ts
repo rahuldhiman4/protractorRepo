@@ -1,15 +1,10 @@
-import { ProtractorExpectedConditions, protractor, browser, element, by, $, $$, WebElement, ElementFinder } from "protractor"
-import { GridOperation } from '../../utils/util.grid';
+import { ProtractorExpectedConditions, protractor, browser, element, by, $, $$ } from "protractor"
 import util from "../../utils/util.common";
+import manageTask from "../../pageobject/task/manage-task-blade.po";
 
 class CaseEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
-    taskTemplateGrid: GridOperation;
-    constructor() {
-      this.taskTemplateGrid = new GridOperation();
-    }
-    
     selectors = {
         editLink: '.edit-link',
         changeAssignment: '[rx-view-component-id="459e6f41-abd3-4726-8dc2-25bab758877f"] button',
@@ -54,7 +49,7 @@ class CaseEditPage {
         personLink: '.person-link',
         personEmailLink: '.ac-link-person-email',
         personPhoneLink: '.ac-link-person-phone',
-        contact: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] input',        
+        contact: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] input',
         contactNameLink: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] a',
         cancelBtn: '[rx-view-component-id="f535ec30-5892-4150-a4a2-ffa74c9135cb"] button',
         caseTitle: '[rx-view-component-id="8ebc1637-af05-4a08-b873-4f810c4981b9"] span',
@@ -92,25 +87,25 @@ class CaseEditPage {
         await $(this.selectors.changeAssignment).click();
     }
 
-    async selectSupportGroup(supportGroup:string): Promise<void> {
-        const lastDropDown = $$(this.selectors.assignmentDropDownList).last();
+    async selectSupportGroup(supportGroup: string): Promise<void> {
+        const lastDropDown = await $$(this.selectors.assignmentDropDownList).last();
         await browser.wait(this.EC.elementToBeClickable(lastDropDown.$('button')));
         await lastDropDown.$('button').click();
         await browser.wait(this.EC.visibilityOf(lastDropDown.$('input')));
         await lastDropDown.$('input').sendKeys(supportGroup);
-        await browser.wait(this.EC.or(async ()=>{
+        await browser.wait(this.EC.or(async () => {
             let count = await lastDropDown.$$(this.selectors.selectOptions).count();
             return count == 1;
         }))
-        expect(lastDropDown.$$(this.selectors.selectOptions).first().getText()).toBe(supportGroup);
+        await expect(await lastDropDown.$$(this.selectors.selectOptions).first().getText()).toBe(supportGroup);
         await lastDropDown.$$(this.selectors.selectOptions).first().click();
     }
 
-    async selectAssignee(name:string): Promise<void> {
+    async selectAssignee(name: string): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.searchAsignee)));
         await $(this.selectors.searchAsignee).sendKeys(name);
-        browser.actions().sendKeys(protractor.Key.ENTER).perform();
-        await browser.wait(this.EC.or(async ()=>{
+        await browser.actions().sendKeys(protractor.Key.ENTER).perform();
+        await browser.wait(this.EC.or(async () => {
             let count = await $$(this.selectors.assignee).count();
             return count >= 2;
         }))
@@ -127,26 +122,26 @@ class CaseEditPage {
         await $(this.selectors.saveCaseButton).click();
     }
 
-    async verifyCaseAssignee(name:string): Promise<void> {
+    async verifyCaseAssignee(name: string): Promise<void> {
         expect(await browser.wait(this.EC.visibilityOf($(`a[title="${name}"]`))));
     }
 
-    async changeCaseStatus(statusValue:string): Promise<void> {
+    async changeCaseStatus(statusValue: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
         const statusUpdate = $(this.selectors.statusDropDown);
         await browser.wait(this.EC.elementToBeClickable(statusUpdate.$('[aria-label="Status activate"]')));
         await (statusUpdate.$('[aria-label="Status activate"]')).click();
-        await element(by.cssContainingText(this.selectors.statusDropDown+' .ui-select__rx-choice', statusValue)).click();
+        await element(by.cssContainingText(this.selectors.statusDropDown + ' .ui-select__rx-choice', statusValue)).click();
     }
 
-    async setStatusReason(statusValue:string): Promise<void> {
+    async setStatusReason(statusValue: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
         await $(this.selectors.statusChange).click();
         const statusReason = $(this.selectors.statusChangeReason);
         await browser.wait(this.EC.elementToBeClickable(statusReason.$('[aria-label="Select box activate"]')));
         await (statusReason.$('[aria-label="Select box activate"]')).click();
-        await element(by.cssContainingText(this.selectors.statusChangeReason+' .ui-select__rx-choice', statusValue)).click();
+        await element(by.cssContainingText(this.selectors.statusChangeReason + ' .ui-select__rx-choice', statusValue)).click();
     }
 
     async clickSaveStatus(): Promise<void> {
@@ -161,33 +156,27 @@ class CaseEditPage {
     }
 
     async addTaskFromTaskTemplate(templateName: string) {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskFromTemplateButton)));
-        await $(this.selectors.addTaskFromTemplateButton).click();
-        await this.taskTemplateGrid.searchAndSelectFirstCheckBox(this.selectors.taskTemplateGridId, templateName);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateGridSaveButton)));
-        await $(this.selectors.templateGridSaveButton).click();
+        await manageTask.clickAddTaskFromTemplateButton();
+        await manageTask.setTaskSearchBoxValue(templateName);
+        await manageTask.clickFirstCheckBoxInTaskTemplateSearchGrid();
+        await manageTask.clickOnTaskGridSaveButton();
     }
 
-    async clickTaskOnManageTasks(taskName:string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskFromManageTasks)));
-        await element(by.cssContainingText(this.selectors.taskFromManageTasks, taskName)).click();
-    }
-
-    async changeTaskStatus(statusValue:string): Promise<void> {
+    async changeTaskStatus(statusValue: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskStatusChange)));
         await $(this.selectors.taskStatusChange).click();
-        const statusUpdate = $(this.selectors.taskStatusDropDown);
+        const statusUpdate = await $(this.selectors.taskStatusDropDown);
         await browser.wait(this.EC.elementToBeClickable(statusUpdate.$('[aria-label="Status activate"]')));
         await (statusUpdate.$('[aria-label="Status activate"]')).click();
-        await element(by.cssContainingText(this.selectors.taskStatusDropDown+' .ui-select__rx-choice', statusValue)).click();
+        await element(by.cssContainingText(this.selectors.taskStatusDropDown + ' .ui-select__rx-choice', statusValue)).click();
     }
 
-    async setTaskStatusReason(statusValue:string): Promise<void> {
-        const statusUpdate = $(this.selectors.taskStatusChangeReason);
+    async setTaskStatusReason(statusValue: string): Promise<void> {
+        const statusUpdate = await $(this.selectors.taskStatusChangeReason);
         await browser.wait(this.EC.elementToBeClickable(statusUpdate.$('.ui-select-toggle')));
         await (statusUpdate.$('.ui-select-toggle')).click();
-        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.taskStatusChangeReason+' .ui-select__rx-choice', statusValue))));
-        await element(by.cssContainingText(this.selectors.taskStatusChangeReason+' .ui-select__rx-choice', statusValue)).click();
+        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.taskStatusChangeReason + ' .ui-select__rx-choice', statusValue))));
+        await element(by.cssContainingText(this.selectors.taskStatusChangeReason + ' .ui-select__rx-choice', statusValue)).click();
     }
 
     async clickTaskSaveStatus(): Promise<void> {
@@ -207,58 +196,58 @@ class CaseEditPage {
         return await $(this.selectors.slaProgressBar).getCssValue('background-color');
     }
 
-    async updateCaseSummary(summary:string): Promise<void> {
-        var summarySelector = this.selectors.summary;
+    async updateCaseSummary(summary: string): Promise<void> {
+        var summarySelector = await this.selectors.summary;
         await browser.wait(this.EC.elementToBeClickable($(summarySelector)));
         await $((summarySelector)).clear;
         await $((summarySelector)).sendKeys(summary);
     }
 
-    async updateCasePriority(casePriority:string): Promise<void> {
-        await util.selectDropDown(this.selectors.priorityGuid,casePriority);
+    async updateCasePriority(casePriority: string): Promise<void> {
+        await util.selectDropDown(this.selectors.priorityGuid, casePriority);
     }
 
-    async updateCaseCategoryTier1(caseCategoryTier1:string): Promise<void> {
-        await util.selectDropDown(this.selectors.categoryTier1Guid,caseCategoryTier1);
+    async updateCaseCategoryTier1(caseCategoryTier1: string): Promise<void> {
+        await util.selectDropDown(this.selectors.categoryTier1Guid, caseCategoryTier1);
     }
 
-    async updateCaseCategoryTier2(caseCategoryTier2:string): Promise<void> {
-        await util.selectDropDown(this.selectors.categoryTier2Guid,caseCategoryTier2);
+    async updateCaseCategoryTier2(caseCategoryTier2: string): Promise<void> {
+        await util.selectDropDown(this.selectors.categoryTier2Guid, caseCategoryTier2);
     }
 
-    async updateCaseCategoryTier3(caseCategoryTier3:string): Promise<void> {
-        await util.selectDropDown(this.selectors.categoryTier3Guid,caseCategoryTier3);
+    async updateCaseCategoryTier3(caseCategoryTier3: string): Promise<void> {
+        await util.selectDropDown(this.selectors.categoryTier3Guid, caseCategoryTier3);
     }
 
-    async updateCaseCategoryTier4(caseCategoryTier4:string): Promise<void> {
-        await util.selectDropDown(this.selectors.categoryTier4Guid,caseCategoryTier4);
+    async updateCaseCategoryTier4(caseCategoryTier4: string): Promise<void> {
+        await util.selectDropDown(this.selectors.categoryTier4Guid, caseCategoryTier4);
     }
 
-    async updateLabel(label:string): Promise<void> {
-        await util.selectDropDown(this.selectors.labelGuid,label);
+    async updateLabel(label: string): Promise<void> {
+        await util.selectDropDown(this.selectors.labelGuid, label);
     }
 
-    async updateCaseSite(caseSite:string): Promise<void> {
-        await util.selectDropDown(this.selectors.siteGuid,caseSite);
+    async updateCaseSite(caseSite: string): Promise<void> {
+        await util.selectDropDown(this.selectors.siteGuid, caseSite);
     }
 
-    async updateSiteChangeReason(siteChangeReasonVal:string): Promise<void> {
-        var siteChangeReasonSelector = this.selectors.siteChangeReason;
+    async updateSiteChangeReason(siteChangeReasonVal: string): Promise<void> {
+        var siteChangeReasonSelector = await this.selectors.siteChangeReason;
         await browser.wait(this.EC.elementToBeClickable($(siteChangeReasonSelector)));
         await $((siteChangeReasonSelector)).clear;
         await $((siteChangeReasonSelector)).sendKeys(siteChangeReasonVal);
     }
 
-    async updateContact(contactFullName:string): Promise<void> {
-        var contactSelector = this.selectors.contact;
+    async updateContact(contactFullName: string): Promise<void> {
+        var contactSelector = await this.selectors.contact;
         await browser.wait(this.EC.elementToBeClickable($(contactSelector)));
         await $((contactSelector)).clear;
         await $((contactSelector)).sendKeys(contactFullName);
         await $(this.selectors.contactNameLink).click();
     }
 
-    async updateTargetDate(date:string, hours:string, minutes:string, meredian:string){
-        var targerDateDateSelector = this.selectors.targetDateDate;
+    async updateTargetDate(date: string, hours: string, minutes: string, meredian: string) {
+        var targerDateDateSelector = await this.selectors.targetDateDate;
         await browser.wait(this.EC.elementToBeClickable($(targerDateDateSelector)));
         await $((targerDateDateSelector)).clear;
         await $((targerDateDateSelector)).sendKeys(date);
@@ -270,16 +259,16 @@ class CaseEditPage {
         await $((this.selectors.targetDateMeredian)).sendKeys(meredian);
     }
 
-    async updateResolutionCode(resolutionCode:string): Promise<void> {
-        await util.selectDropDown(this.selectors.resolutionCodeGuid,resolutionCode);
+    async updateResolutionCode(resolutionCode: string): Promise<void> {
+        await util.selectDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
     }
 
-    async updateResolutionDescription(resolutionDescription:string): Promise<void> {
-        await util.selectDropDown(this.selectors.resolutionDescription,resolutionDescription);
+    async updateResolutionDescription(resolutionDescription: string): Promise<void> {
+        await util.selectDropDown(this.selectors.resolutionDescription, resolutionDescription);
     }
 
-    async updateDescription(descriptionVal:string): Promise<void> {
-        var caseDescriptionSelector = this.selectors.caseDescription;
+    async updateDescription(descriptionVal: string): Promise<void> {
+        var caseDescriptionSelector = await this.selectors.caseDescription;
         await browser.wait(this.EC.elementToBeClickable($(caseDescriptionSelector)));
         await $((caseDescriptionSelector)).clear;
         await $((caseDescriptionSelector)).sendKeys(descriptionVal);
@@ -309,7 +298,7 @@ class CaseEditPage {
         await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3Text)));
         return await $(this.selectors.categoryTier3Text).getText();
     }
-    
+
     async getCategoryTier4Text(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier4Text)));
         return await $(this.selectors.categoryTier4Text).getText();
@@ -354,52 +343,51 @@ class CaseEditPage {
         await browser.wait(this.EC.visibilityOf($(this.selectors.assignedCompanyText)));
         return await $(this.selectors.assignedCompanyText).getText();
     }
-    
-    async clickEmailLink(): Promise<void>{
+
+    async clickEmailLink(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
         await $(this.selectors.assignedCompanyText).click();
     }
 
-    async clickAttachmentsLink(): Promise<void>{
+    async clickAttachmentsLink(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentsLink)));
         await $(this.selectors.attachmentsLink).click();
     }
 
-    async clickAddToWatchlistLink(): Promise<void>{
+    async clickAddToWatchlistLink(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
         await $(this.selectors.addToWatchlist).click();
     }
 
-    async clickstopWatchingLink(): Promise<void>{
+    async clickstopWatchingLink(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.stopWatching)));
         await $(this.selectors.stopWatching).click();
     }
 
-    async navigateToRelatedCasesTab(): Promise<void>{
+    async navigateToRelatedCasesTab(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.relatedCasesTab)));
         await $(this.selectors.relatedCasesTab).click();
     }
-    
-    async navigateToRelatedPersonsTab(): Promise<void>{
+
+    async navigateToRelatedPersonsTab(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.relatedPersonTab)));
         await $(this.selectors.relatedPersonTab).click();
     }
 
-    async navigateToCaseAccessTab(): Promise<void>{
+    async navigateToCaseAccessTab(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseAccessTab)));
         await $(this.selectors.caseAccessTab).click();
     }
 
-    async navigateToResourcesTab(): Promise<void>{
+    async navigateToResourcesTab(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.resourcesTab)));
         await $(this.selectors.resourcesTab).click();
     }
 
-    async navigateToActivityTab(): Promise<void>{
+    async navigateToActivityTab(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityTab)));
         await $(this.selectors.activityTab).click();
     }
-
 }
 
 export default new CaseEditPage();
