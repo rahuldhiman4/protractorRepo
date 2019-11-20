@@ -5,7 +5,7 @@
             selectors= {
                 dropdownBox: '.ui-select-toggle',
                 dropDownInput: 'input[type="search"]',
-                dropDownOption: '.ui-select-choices-row-inner span',
+                dropDownOption: '.ui-select-choices-row-inner *',
                 popUpMsgLocator: '.rx-growl-item__message',
                 warningOk: '.d-modal__footer button[class*="d-button d-button_primary d-button_small"]',
                 warningCancel: '.d-modal__footer button[class*="d-button d-button_secondary d-button_small"]',       
@@ -23,7 +23,7 @@
                     let count = await dropDown.$$(this.selectors.dropDownOption).count();
                     return count >= 1;
                 }));
-                var optionCss:string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner span`;
+                var optionCss:string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
                 var option = await element(by.cssContainingText(optionCss, value));
                 await browser.wait(this.EC.visibilityOf(option));
                 await option.click();
