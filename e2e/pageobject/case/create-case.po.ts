@@ -17,7 +17,9 @@ class CreateCasePage {
         assignToMeButton: '[rx-view-component-id="000ed75a-487c-4fa2-b615-7d7b0bddc6dc"] button',
         saveCaseButton: '[rx-view-component-id="cdb4375b-706d-4efc-be66-a8f32b1434ed"] button',
         gotoCaseButton__preview: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
-        viewCaseButton: '[rx-view-component-id="fbfc234b-c34f-4aab-ac54-b3a9eddecebf"] button'
+        viewCaseButton: '[rx-view-component-id="fbfc234b-c34f-4aab-ac54-b3a9eddecebf"] button',
+        selectCaseTemplateButton:'[rx-view-component-id="db1cc7ef-0430-42ad-8f28-1e524347cfb3"] button',
+        clearTemplateButton: '[rx-view-component-id="d996182c-0930-40ed-987f-43e6da0a8d8a"] button',
     }
 
     async selectRequester(requester:string): Promise<void> {
@@ -73,6 +75,7 @@ class CreateCasePage {
     }
 
     async clickAssignToMeButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMeButton)));
         await $(this.selectors.assignToMeButton).click();
     }
 
@@ -83,6 +86,14 @@ class CreateCasePage {
     async clickGoToCaseButton(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton__preview)));
         await $(this.selectors.gotoCaseButton__preview).click();
+    }
+
+    async clickSelectCaseTemplateButton(): Promise<void> {
+        await $(this.selectors.selectCaseTemplateButton).click();
+    }
+
+    async clickClearTemplateButton(): Promise<void> {
+        await $(this.selectors.clearTemplateButton).click();
     }
 }
 
