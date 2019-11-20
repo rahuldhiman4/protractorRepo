@@ -1,7 +1,7 @@
 import { element, browser, $, ProtractorExpectedConditions, protractor } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
-import serviceTargetConfig from '../../pageobject/settings/service-target.po';
+import serviceTargetConfig from '../../pageobject/settings/service-target-blade.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import caseEditPage from '../../pageobject/case/edit-case.po';
 
@@ -35,12 +35,12 @@ fdescribe('SLA progress bar testing', () => {
 
     it('should create case to apply SVT', async () => {
         await navigationPage.gotCreateCase();
-        await createCasePage.selectRequester();
-        await createCasePage.typeSummary();
-        await createCasePage.selectCateg1('Accounts Payable');
-        await createCasePage.assignToMe();
-        await createCasePage.saveCase();
-        await createCasePage.clickGoToCase();
+        await createCasePage.selectRequester('Mary');
+        await createCasePage.setSummary('Case for SVT creation');
+        await createCasePage.selectCategoryTier1('Accounts Payable');
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
 //        browser.sleep(20000);
         expect(await caseEditPage.getSlaBarColor()).toBe('rgba(161, 206, 106, 1)'); //green
 /*        browser.sleep(30000);

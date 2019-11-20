@@ -1,4 +1,5 @@
 import { $, $$, ProtractorExpectedConditions, browser, protractor, element, by } from "protractor";
+import SlmExpressionBuilder from './slm-expressionbuilder.pop.po';
 
 class ServiceTargetConfig {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -38,43 +39,29 @@ class ServiceTargetConfig {
         await $(this.selectors.selectDataSourceDD).click();
         await element(by.cssContainingText(this.selectors.dropDownOption, 'Case Management')).click();
         await $$(this.selectors.buildExpressionLink).first().click();
-        await this.createExpression('Category Tier 1', 'Accounts Payable');
-        await $$(this.selectors.timer).last().sendKeys('1');
-        browser.sleep(2000);
-        await $$(this.selectors.segmentsArrow).get(1).click();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.segments)));
-        browser.sleep(2000);
-        await $$(this.selectors.segments).get(1).$$(this.selectors.buildExpressionLink).first().click();
-        await this.createExpression('Status', 'Assigned');
-        browser.sleep(2000);
-        await $$(this.selectors.segments).get(1).$$(this.selectors.buildExpressionLink).get(1).click();
-        await this.createExpression('Status', 'Resolved');
-        browser.sleep(2000);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveSVTButton)));
-        await $(this.selectors.saveSVTButton).click();
     }
-    
-    async createExpression(fieldName:string, value:string): Promise<void> {
+
+    async createExpression(fieldName: string, value: string): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.expressionSelectors.saveButton)));
         let qBuilder = await $(this.expressionSelectors.qualificationBuilder);
         await qBuilder.element(by.model(this.expressionSelectors.searchField)).sendKeys(fieldName);
         browser.actions().sendKeys(protractor.Key.ENTER).perform();
-        await browser.wait(this.EC.or(async ()=>{
+        await browser.wait(this.EC.or(async () => {
             let count = await $$(this.expressionSelectors.field).count();
             return count >= 1;
         }))
         await element(by.cssContainingText(this.expressionSelectors.field, fieldName)).click();
         await element(by.cssContainingText(this.expressionSelectors.operatorButton, '=')).click();
-        if(fieldName=='Status'){
+        if (fieldName == 'Status') {
             await element(by.model('selectedValue')).click();
             element(by.cssContainingText('option', value)).click();
-              browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
-              await browser.wait(this.EC.elementToBeClickable($$('.margin-top-10 button').first()));
-              await $$('.margin-top-10 button').first().click();      
+            browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
+            await browser.wait(this.EC.elementToBeClickable($$('.margin-top-10 button').first()));
+            await $$('.margin-top-10 button').first().click();
         } else {
             await element(by.model(this.expressionSelectors.valueDD)).click();
             await qBuilder.$(this.expressionSelectors.valueSearch).sendKeys(value);
-            await browser.wait(this.EC.or(async ()=>{
+            await browser.wait(this.EC.or(async () => {
                 let count = await $$(this.expressionSelectors.dropDownOption).count();
                 return count >= 2;
             }))
@@ -86,12 +73,38 @@ class ServiceTargetConfig {
         await browser.wait(this.EC.elementToBeClickable($(this.expressionSelectors.saveButton)));
         await $(this.expressionSelectors.saveButton).click();
     }
-    
+
+    async selectGoal(goalTime: string) {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.segmentsArrow)));
+        await $$(this.selectors.timer).last().sendKeys(goalTime);
+    }
+
+    async selectMileStone() {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.segmentsArrow)));
+        browser.sleep(3000);
+        await $$(this.selectors.segmentsArrow).get(1).click();
+    }
+
+    async selectExpressionForMeasurement(measurementExp: number, field: string, operator: string, fieldAttribute: string, fieldvalue: string) {
+        browser.sleep(2000);
+        await $$(this.selectors.segments).get(1).$$(this.selectors.buildExpressionLink).get(measurementExp).click();
+        browser.sleep(2000);
+        await SlmExpressionBuilder.selectExpressionQualification(field, operator, fieldAttribute, fieldvalue);
+        await SlmExpressionBuilder.clickOnAddExpressionButton(fieldAttribute);
+        await SlmExpressionBuilder.clickOnSaveExpressionButton();
+    }
+
     async getPopUpMessage() {
         await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
         let message = await $(this.selectors.popUpMsgLocator).getText();
         await browser.wait(this.EC.invisibilityOf($(this.selectors.popUpMsgLocator)));
         return message;
+    }
+
+    async clickOnSaveSVTButton() {
+        browser.sleep(2000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveSVTButton)));
+        await $(this.selectors.saveSVTButton).click();
     }
 }
 
