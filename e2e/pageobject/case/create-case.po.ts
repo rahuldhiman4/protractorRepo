@@ -20,35 +20,35 @@ class CreateCasePage {
         viewCaseButton: '[rx-view-component-id="fbfc234b-c34f-4aab-ac54-b3a9eddecebf"] button'
     }
 
-    async selectRequester(): Promise<void> {
+    async selectRequester(requester:string): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.requesterInput)));
-        await $(this.selectors.requesterInput).sendKeys('Allen');
+        await $(this.selectors.requesterInput).sendKeys(requester);
         await browser.wait(this.EC.visibilityOf($(this.selectors.requesters)));
         await $$(this.selectors.requesters).first().click();
     }
 
-    async selectContact(): Promise<void> {
+    async selectContact(contactName:string): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.contactInput)));
-        await $(this.selectors.contactInput).sendKeys('Harry');
+        await $(this.selectors.contactInput).sendKeys(contactName);
         await browser.wait(this.EC.visibilityOf($(this.selectors.contactRequesters)));
         await $$(this.selectors.contactRequesters).first().click();
     }
 
-    async typeSite(): Promise<void> {
+    async selectSite(siteName:string): Promise<void> {
         await $(this.selectors.site).click();
-        await $(this.selectors.site).sendKeys('Pune');
-        await element(by.cssContainingText(this.selectors.siteOption, 'Pune')).click();
+        await $(this.selectors.site).sendKeys(siteName);
+        await element(by.cssContainingText(this.selectors.siteOption,siteName)).click();
     }
 
-    async typeSummary(): Promise<void> {
-        await $(this.selectors.summary).sendKeys('This is test case create using e2e');
+    async setSummary(summary:string): Promise<void> {
+        await $(this.selectors.summary).sendKeys(summary);
     }
 
-    async typeDescription(): Promise<void> {
-        await $(this.selectors.description).sendKeys('This is description of test case created using e2e');
+    async setDescription(description: string): Promise<void> {
+        await $(this.selectors.description).sendKeys(description);
     }
 
-    async selectCateg1(categValue: string): Promise<void> {
+    async selectCategoryTier1(categValue:string): Promise<void> {
         let categ1 = $(this.selectors.category1);
         await (categ1.$('.ui-select-match')).click();
         await (categ1.$('input')).sendKeys(categValue);
@@ -56,7 +56,7 @@ class CreateCasePage {
         await (categ1.$(`[title="${categValue}"]`)).click();
     }
 
-    async selectCateg2(categValue: string): Promise<void> {
+    async selectCategoryTier2(categValue:string): Promise<void> {
         let categ2 = $(this.selectors.category2);
         await (categ2.$('.ui-select-match')).click();
         await (categ2.$('input')).sendKeys(categValue);
@@ -64,7 +64,7 @@ class CreateCasePage {
         await (categ2.$(`[title="${categValue}"]`)).click();
     }
 
-    async selectCateg3(categValue: string): Promise<void> {
+    async selectCategoryTier3(categValue:string): Promise<void> {
         let categ3 = $(this.selectors.category3);
         await (categ3.$('.ui-select-match')).click();
         await (categ3.$('input')).sendKeys(categValue);
@@ -72,15 +72,15 @@ class CreateCasePage {
         await (categ3.$(`[title="${categValue}"]`)).click();
     }
 
-    async assignToMe(): Promise<void> {
+    async clickAssignToMeButton(): Promise<void> {
         await $(this.selectors.assignToMeButton).click();
     }
 
-    async saveCase(): Promise<void> {
+    async clickSaveCaseButton(): Promise<void> {
         await $(this.selectors.saveCaseButton).click();
     }
 
-    async clickGoToCase(): Promise<void> {
+    async clickGoToCaseButton(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton__preview)));
         await $(this.selectors.gotoCaseButton__preview).click();
     }
