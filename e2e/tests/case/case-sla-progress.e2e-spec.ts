@@ -3,7 +3,7 @@ import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
 import serviceTargetConfig from '../../pageobject/settings/service-target.po';
 import createCasePage from '../../pageobject/case/create-case.po';
-import caseEditPage from '../../pageobject/case/case-edit.po';
+import caseEditPage from '../../pageobject/case/edit-case.po';
 
 fdescribe('SLA progress bar testing', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
