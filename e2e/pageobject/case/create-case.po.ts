@@ -16,7 +16,8 @@ class CreateCasePage {
         category3: '[rx-view-component-id="9bfb3795-0543-4a17-a374-28dc586d1e03"]',
         assignToMeButton: '[rx-view-component-id="000ed75a-487c-4fa2-b615-7d7b0bddc6dc"] button',
         saveCaseButton: '[rx-view-component-id="cdb4375b-706d-4efc-be66-a8f32b1434ed"] button',
-        gotoCaseButton__preview: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button'
+        gotoCaseButton__preview: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
+        viewCaseButton: '[rx-view-component-id="fbfc234b-c34f-4aab-ac54-b3a9eddecebf"] button'
     }
 
     async selectRequester(): Promise<void> {
@@ -36,7 +37,7 @@ class CreateCasePage {
     async typeSite(): Promise<void> {
         await $(this.selectors.site).click();
         await $(this.selectors.site).sendKeys('Pune');
-        await element(by.cssContainingText(this.selectors.siteOption,'Pune')).click();
+        await element(by.cssContainingText(this.selectors.siteOption, 'Pune')).click();
     }
 
     async typeSummary(): Promise<void> {
@@ -47,7 +48,7 @@ class CreateCasePage {
         await $(this.selectors.description).sendKeys('This is description of test case created using e2e');
     }
 
-    async selectCateg1(categValue:string): Promise<void> {
+    async selectCateg1(categValue: string): Promise<void> {
         let categ1 = $(this.selectors.category1);
         await (categ1.$('.ui-select-match')).click();
         await (categ1.$('input')).sendKeys(categValue);
@@ -55,7 +56,7 @@ class CreateCasePage {
         await (categ1.$(`[title="${categValue}"]`)).click();
     }
 
-    async selectCateg2(categValue:string): Promise<void> {
+    async selectCateg2(categValue: string): Promise<void> {
         let categ2 = $(this.selectors.category2);
         await (categ2.$('.ui-select-match')).click();
         await (categ2.$('input')).sendKeys(categValue);
@@ -63,7 +64,7 @@ class CreateCasePage {
         await (categ2.$(`[title="${categValue}"]`)).click();
     }
 
-    async selectCateg3(categValue:string): Promise<void> {
+    async selectCateg3(categValue: string): Promise<void> {
         let categ3 = $(this.selectors.category3);
         await (categ3.$('.ui-select-match')).click();
         await (categ3.$('input')).sendKeys(categValue);
