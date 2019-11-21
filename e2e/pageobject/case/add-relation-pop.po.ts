@@ -1,4 +1,4 @@
-import { ProtractorExpectedConditions, protractor, browser, element, by, $, $$ } from "protractor"
+import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
 import gridUtil from '../../utils/util.grid'
 import util from '../../utils/util.common'
 
@@ -12,26 +12,30 @@ class AddRelationshipPage {
         saveButton: '[rx-view-component-id="31187c71-2606-4a43-9000-59fe25972725"] button'
     }
 
-    async searchAndSelectPerson(personName:string): Promise<void>{
-        
-        gridUtil.searchAndSelectAllCheckBox(this.selectors.gridId, personName);
-        
+    async searchAndSelectPerson(personName: string): Promise<void> {
+        await gridUtil.searchAndSelectAllCheckBox(this.selectors.gridId, personName);
     }
 
-    async clickNextBtn(){
+    async clickNextButton() {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.nextButton)));
-        await $((this.selectors.nextButton)).click();
+        await $(this.selectors.nextButton).click();
     }
 
-    async selectRelationshipType(relationshipType:string){
-        await util.selectDropDown(this.selectors.relationshipTypeGridId,relationshipType);
+    async selectRelationshipType(relationshipType: string) {
+        await util.selectDropDown(this.selectors.relationshipTypeGridId, relationshipType);
     }
 
-    async clickSaveBtn(){
+    async clickSaveButton() {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
-        await $((this.selectors.saveButton)).click();
+        await $(this.selectors.saveButton).click();
     }
 
+    async addPerson(name: string, relation: string) {
+        await this.searchAndSelectPerson(name);
+        await this.clickNextButton();
+        await this.selectRelationshipType(relation);
+        await this.clickSaveButton();
+    }
 }
 
 export default new AddRelationshipPage();
