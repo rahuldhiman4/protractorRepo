@@ -46,7 +46,7 @@ class NavigationPage {
     }
 
     async gotoSettingsPage(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.settingsButton)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
         await $(this.selectors.settingsButton).click();
         await browser.wait(this.EC.visibilityOf($(this.selectors.settingsMenuItemContainer)));
     }

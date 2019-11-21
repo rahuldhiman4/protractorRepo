@@ -41,7 +41,7 @@ class ManageTaskBlade {
 
     async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateCheckbox)));
-        await browser.sleep(1000);
+        await browser.sleep(3000);
         await $$(this.selectors.recommendedTemplateCheckbox).first().click();
     }
 

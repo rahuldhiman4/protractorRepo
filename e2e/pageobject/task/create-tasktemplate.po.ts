@@ -55,12 +55,12 @@ class CreateTaskTemplatePage {
         await $(this.selectors.changeAssignmentButton).click();
     }
 
-    async clickOnSaveTask(): Promise<void> {
+    async clickOnSaveTaskTemplate(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
-    async clickOnCancelTask(): Promise<void> {
+    async clickOnCancelTaskTemplate(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
@@ -119,7 +119,6 @@ class CreateTaskTemplatePage {
         await browser.wait(this.EC.visibilityOf($(this.selectors.newProcessName)));
         await $(this.selectors.newProcessName).clear();
         await $(this.selectors.newProcessName).sendKeys(inputValue);
-
     }
 
     async setExistingProcessName(processName: string): Promise<void> {
@@ -137,4 +136,5 @@ class CreateTaskTemplatePage {
     }
 
 }
+
 export default new CreateTaskTemplatePage();
