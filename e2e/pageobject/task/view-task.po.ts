@@ -13,6 +13,7 @@ class ViewTask {
         labelValue: '[rx-view-component-id="4c2784af-c080-4630-8f16-d9e6b07e87a2"] p',
         descriptionValue: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] .show-less-wrapper',
         processnameValue: '[rx-view-component-id="7260c238-9e41-4d31-90de-2d46443117b4"] p',
+        taskIdText: '[rx-view-component-id="75371088-cfeb-4554-a939-2fe7b2aa098b"] .text-field',
     }
 
     async clickOnEditTask(): Promise<void> {
@@ -63,6 +64,11 @@ class ViewTask {
     async getProcessNameValue(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.processnameValue)));
         return await $(this.selectors.processnameValue).getText();
+    }
+
+    async getTaskID(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.taskIdText)));
+        return await $(this.selectors.taskIdText).getText();
     }
 }
 

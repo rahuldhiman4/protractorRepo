@@ -18,7 +18,7 @@ describe('Case And Employee Relationship', () => {
         await loginPage.login('qtao');
     });
 
-    it('DRDMV-16241:Add person with different relations', async () => {
+    it('DRDMV-16241,DRDMV-16242:Add person with different relations', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("Allen");
         await createCasePage.setSummary("DRDMV-16241");

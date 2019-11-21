@@ -24,7 +24,7 @@ describe('create Task template', () => {
         await navigationPage.signOut();
     });
 
-    it('DRDMV-7165, DRDMV-7147: Update Task Type field for any task	', async () => {
+    it('DRDMV-7165,DRDMV-7147: Update Task Type field for any task	', async () => {
         await loginPage.resetLogin('qkatawazi');
 
         let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
@@ -98,7 +98,7 @@ describe('create Task template', () => {
         await expect(returnvalue1).toBeTruthy();
     }, 180 * 1000);
 
-    it('DRDMV-7148: Automatic Task data validation once Task is created	', async () => {
+    it('DRDMV-7148,DRDMV-7140: Automatic Task data validation once Task is created	', async () => {
         await loginPage.resetLogin('qkatawazi');
         let autmationTaskTemplateWithRequiredData = 'Automatic task With Required Field' + Math.floor(Math.random() * 1000000);
         let autmationTaskSummaryWithRequiredData = 'Automatic task Summary With Required Field' + Math.floor(Math.random() * 1000000);
