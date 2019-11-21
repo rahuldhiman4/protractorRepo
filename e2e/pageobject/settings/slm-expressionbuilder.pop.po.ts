@@ -64,7 +64,6 @@ class SlmExpressionBuilder {
         var clickOnOptionFieldDropDown = await attributeRef.$(selectDropDown);
         var selectFieldOptionFromDropDown = `div[ng-show=${ref1}]` + " .ui-select-choices-row-inner";
         var addBtn = 'Add';
-        var addButtonVal = `div[ng-show=${ref1}] button`;
 
         switch (fieldAttribute) {
             case "NAMED_LIST":
@@ -81,13 +80,19 @@ class SlmExpressionBuilder {
 
                 break;
             case "STATUS":
-                await element(by.model('selectedValue')).click();
+                await browser.wait(this.EC.elementToBeClickable($('[aria-hidden="false"] select[ng-model="selectedValue"]')));
+                await $('[aria-hidden="false"] select[ng-model="selectedValue"]').click();
                 element(by.cssContainingText('option', fieldOptionValue)).click();
                 browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
                 break;
             case "SELECTION":
-                await element(by.model('selectedValue')).click();
+                await browser.wait(this.EC.elementToBeClickable($('[aria-hidden="false"] select[ng-model="selectedValue"]')));
+                await $('[aria-hidden="false"] select[ng-model="selectedValue"]').click();
                 element(by.cssContainingText('option', fieldOptionValue)).click();
+                browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
+
+                // await element(by.model('selectedValue')).click();
+                // element(by.cssContainingText('option', fieldOptionValue)).click();
 
                 break;
             case "DATE_TIME":

@@ -9,12 +9,17 @@ import SlmProgressBar from '../../pageobject/case/slm-progressbar.po';
 
 var caseBAUser = 'qkatawazi';
 
-describe('DRDMV-17016:Check if expression is build by using all available field with different relation', () => {
+describe('Service Taret Tests', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
         await browser.manage().window().maximize();
         await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
         browser.waitForAngularEnabled(false);
+        await loginPage.login(caseBAUser);
+    });
+
+    beforeEach(async () => {
+        await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
     });
 
     afterAll(async () => {
@@ -22,18 +27,11 @@ describe('DRDMV-17016:Check if expression is build by using all available field 
         await navigationPage.signOut();
     });
 
-    it('should login correctly', async () => {
-        await loginPage.login(caseBAUser);
-    });
-
-    it('should goto Service Target settings', async () => {
+    it('DRDMV-17016:Check if expression is build by using all available field with different relation', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
             .toEqual('Service Target - Administration - Business Workflows');
-    });
-
-    it('should create Service Target Config', async () => {
-        await serviceTargetConfig.createServiceTargetConfig();
+        await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
         await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'ASSOCIATION', 'Employee Relations');
         await SlmExpressionBuilder.clickOnAddExpressionButton('ASSOCIATION');
         var selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
@@ -47,9 +45,6 @@ describe('DRDMV-17016:Check if expression is build by using all available field 
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
         await serviceTargetConfig.clickOnSaveSVTButton();
         browser.sleep(3000);
-    });
-
-    it('should create case to apply SVT', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester('Mary');
         await createCasePage.setSummary('Case for SVT creation');
@@ -68,4 +63,43 @@ describe('DRDMV-17016:Check if expression is build by using all available field 
         expect(await SlmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     });
+
+    it('DRDMV-11913:[Global] Create a Case with global SVT', async () => {
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
+            .toEqual('Service Target - Administration - Business Workflows');
+        await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
+        await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
+        await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+        var selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+        var expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "High" + '"'
+        expect(selectedExp).toEqual(expectedSelectedExp);
+        await SlmExpressionBuilder.clickOnSaveExpressionButton();
+        await serviceTargetConfig.selectGoal("2");
+        await serviceTargetConfig.selectMileStone();
+        await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+        await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
+        await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+        await serviceTargetConfig.clickOnSaveSVTButton();
+        browser.sleep(3000);
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester('Mary');
+        await createCasePage.setPriority('High');
+        await createCasePage.setSummary('Case for SVT creation');
+        await createCasePage.selectCategoryTier1('Employee Relations');
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        expect(await SlmProgressBar.isSLAProgressBarInProessIconDisplayed()).toBe(true); //green
+        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+        await browser.sleep(100000);
+        await browser.refresh();
+        expect(await SlmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
+        // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
+        await browser.sleep(40000);
+        await browser.refresh();
+        expect(await SlmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
+        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+    }, 300 * 1000);
+
 })
