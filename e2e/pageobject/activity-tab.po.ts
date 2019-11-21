@@ -1,6 +1,5 @@
 import { $, ProtractorExpectedConditions, browser, protractor, element, by, $$ } from "protractor";
 
-
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -8,20 +7,24 @@ class ActivityTabPage {
         addNoteBoxEdit: '.activity-feed-note-text',
         personPopup: '.popup-person',
         addNotePostButton: '.activity-feed-note-buttons__right .d-button.d-button_primary',
-        addNoteCancelButton: '.activity-feed-note-buttons__right .d-button.d-button_secondary',
+        addNoteCancelButton: '.activity-feed-note-buttons__right .d-button_secondary',        
         addNoteAttachLink: '.ux-document-library .d-button',
         addNoteNotesTemplate: '.d-button.d-button_link.d-icon-note_pencil.social-attach-template.ac-template-button',
-        activityLog: '//*[@class="log-item__body"]//div[@class="title" or "to-list" or "subject"]',
+        activityLog: '.log-item__body div[class]',
         personLink: '.title a',
-        filterButton: 'd-icon-filter',
+        filterButton: '.d-icon-filter',
         filterCheckbox: '.d-checkbox__item',
         filterAuthor: '.person-input',
-        filterPopupApplyOrClearButton: '.d-button',
+        filterPopupApplyOrClearButton: '.filter-options .d-button',
+    }
+
+    async clickActivityNoteTextBox(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBox)));
+        await $(this.selectors.addNoteBox).click();
     }
 
     async addActivityNote(addNoteText: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBox)));
-        await $(this.selectors.addNoteBox).click();
+        await this.clickActivityNoteTextBox();
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBoxEdit)));
         await $(this.selectors.addNoteBoxEdit).sendKeys(addNoteText);
     }
@@ -33,14 +36,18 @@ class ActivityTabPage {
         await $(this.selectors.personPopup).click();
     }
 
+    async clearActivityNote(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBoxEdit)));
+        await $(this.selectors.addNoteBoxEdit).clear();
+        await browser.wait(this.EC.visibilityOf($(`${this.selectors.addNotePostButton}[disabled]`)));
+    }
+
     async getPersonCount(tagPerson: string): Promise<number> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBox)));
-        await $(this.selectors.addNoteBox).click();
+        await this.clickActivityNoteTextBox();
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBoxEdit)));
         await $(this.selectors.addNoteBoxEdit).sendKeys(tagPerson);
         await browser.wait(this.EC.visibilityOf($(this.selectors.personPopup)));
-        var num: number = await $$(this.selectors.personPopup).count();
-        return num;
+        return await $$(this.selectors.personPopup).count();
     }
 
     async clickOnPostButton(): Promise<void> {
@@ -100,5 +107,37 @@ class ActivityTabPage {
         await element(by.cssContainingText(this.selectors.personLink, caseActivityLogText)).click();
     }
 
+    async getIconOfActivity(caseActivityLogText: string): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .log-item__icon')));
+        return $('.activity_logs [role="listitem"] .log-item__icon').getAttribute('class');
+    }
+
+    async getAuthorOfActivity(caseActivityLogText: string): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .title a')));
+        return $('.activity_logs [role="listitem"] .title a').getText();
+    }
+
+    async getTitleTextOfActivity(caseActivityLogText: string): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .title')));
+        return $('.activity_logs [role="listitem"] .title').getText();
+    }
+
+    async getLinkedTextFromBodyOfActivity(caseActivityLogText: string): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .body')));
+        return $('.activity_logs [role="listitem"] .body a[title]').getText();
+    }
+
+    async getTimeOfActivity(caseActivityLogText: string): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .time-ago')));
+        return $('.activity_logs [role="listitem"] .time-ago').getAttribute('title');
+    }
+
+    async isLinkedTextPresentInBodyOfFirstActivity(value:string): Promise<boolean> {
+        var firstActivity = await $$('.activity_logs [role="listitem"]').first();
+        await browser.wait(this.EC.visibilityOf(firstActivity));
+        await browser.wait(this.EC.elementToBeClickable(firstActivity.$('.body a[title]')));
+        return await element(by.cssContainingText('.activity_logs [role="listitem"] .body a[title]', value)).isDisplayed();
+    }
 }
+
 export default new ActivityTabPage();
