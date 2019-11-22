@@ -102,4 +102,127 @@ describe('Service Taret Tests', () => {
         expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     }, 300 * 1000);
 
+    it('DRDMV-2027:Icons representing measurement status on SLA Progress Bar', async () => {
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
+            .toEqual('Service Target - Administration - Business Workflows');
+        await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
+        await SlmExpressionBuilder.selectExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
+        await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
+        var selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+        var expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
+        expect(selectedExp).toEqual(expectedSelectedExp);
+        await SlmExpressionBuilder.clickOnSaveExpressionButton();
+        await serviceTargetConfig.selectGoal("2");
+        await serviceTargetConfig.selectMileStone();
+        await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+        await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
+        await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+        await serviceTargetConfig.clickOnSaveSVTButton();
+        browser.sleep(3000);
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester('Qianru Tao');
+        await createCasePage.setPriority('High');
+        await createCasePage.setSummary('Case for SVT creation');
+        await createCasePage.selectCategoryTier1('Employee Relations');
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        expect(await SlmProgressBar.isSLAProgressBarInProessIconDisplayed()).toBe(true); //green
+        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+        await browser.sleep(100000);
+        await browser.refresh();
+        expect(await SlmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
+        // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
+        await browser.sleep(40000);
+        await browser.refresh();
+        expect(await SlmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
+        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+
+        //Create Another SVT for Dual SVT check
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
+        .toEqual('Service Target - Administration - Business Workflows');
+    await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
+    await SlmExpressionBuilder.selectExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
+    await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
+    var selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+    var expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
+    expect(selectedExp).toEqual(expectedSelectedExp);
+    await SlmExpressionBuilder.clickOnSaveExpressionButton();
+    await serviceTargetConfig.selectGoal("2");
+    await serviceTargetConfig.selectMileStone();
+    await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+    await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
+    await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+    await serviceTargetConfig.clickOnSaveSVTButton();
+    browser.sleep(3000);
+    await navigationPage.gotCreateCase();
+    await createCasePage.selectRequester('Qianru Tao');
+    await createCasePage.setPriority('High');
+    await createCasePage.setSummary('Case for SVT creation');
+    await createCasePage.selectCategoryTier1('Employee Relations');
+    await createCasePage.clickAssignToMeButton();
+    await createCasePage.clickSaveCaseButton();
+    await createCasePage.clickGoToCaseButton();
+    expect(await SlmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
+    expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+    }, 400 * 1000);
+
+    it('DRDMV-11914:[Global] Both svt gets attached if we have Global and company specific SVTs', async () => {
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
+            .toEqual('Service Target - Administration - Business Workflows');
+        //Create Global SVT    
+        await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
+        await SlmExpressionBuilder.selectExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
+        await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
+        var selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+        var expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
+        expect(selectedExp).toEqual(expectedSelectedExp);
+        await SlmExpressionBuilder.clickOnSaveExpressionButton();
+        await serviceTargetConfig.selectGoal("2");
+        await serviceTargetConfig.selectMileStone();
+        await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+        await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
+        await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+        await serviceTargetConfig.clickOnSaveSVTButton();
+
+        browser.sleep(5000);
+        //Create company specific SVT
+        await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
+        await SlmExpressionBuilder.selectExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
+        await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
+        var selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+        var expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
+        expect(selectedExp).toEqual(expectedSelectedExp);
+        await SlmExpressionBuilder.clickOnSaveExpressionButton();
+        await serviceTargetConfig.selectGoal("2");
+        await serviceTargetConfig.selectMileStone();
+        await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+        await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
+        await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+        await serviceTargetConfig.clickOnSaveSVTButton();
+
+        browser.sleep(3000);
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester('Qianru Tao');
+        await createCasePage.setPriority('High');
+        await createCasePage.setSummary('Case for SVT creation');
+        await createCasePage.selectCategoryTier1('Employee Relations');
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        expect(await SlmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
+        expect(await SlmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
+        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+        await browser.sleep(100000);
+        await browser.refresh();
+        expect(await SlmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
+        // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
+        await browser.sleep(50000);
+        await browser.refresh();
+        expect(await SlmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
+        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+    }, 300 * 1000);
 })

@@ -4,6 +4,7 @@ class SlmProgressBar {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
+        slaProgressBar: '[rx-view-component-id="55cb7986-e724-40f3-9f92-5744c6c9514d"]  .slm_sla_position',
         slaProgressBarInProceess: '[rx-view-component-id="55cb7986-e724-40f3-9f92-5744c6c9514d"] .d-icon-right-triangle_right_circle_o',
         slaProgressBarWarning: '[rx-view-component-id="55cb7986-e724-40f3-9f92-5744c6c9514d"] .d-icon-right-exclamation_circle',
         slaProgressBarMissedGoal: '[rx-view-component-id="55cb7986-e724-40f3-9f92-5744c6c9514d"] .d-icon-right-cross_circle_o',
@@ -11,6 +12,11 @@ class SlmProgressBar {
         slaProgressBarPaused: '[rx-view-component-id="55cb7986-e724-40f3-9f92-5744c6c9514d"] .d-icon-right-check_circle_o',
         slaDueTime: 'div.d-sla__item',
         svtToolTipText: 'div.tooltip-inner',
+    }
+
+    async isSLAProgressBarDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.slaProgressBar)));
+        return await $(this.selectors.slaProgressBar).isDisplayed();
     }
 
     async isSLAProgressBarInProessIconDisplayed(): Promise<boolean> {
