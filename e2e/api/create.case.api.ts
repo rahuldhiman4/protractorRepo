@@ -15,14 +15,14 @@ class CaseApi {
             }
         );
         console.log('Create Case API Status =============>', newCase.status);
-        const newCaseDetails = await axios.get(
+        const caseDetails = await axios.get(
             newCase.headers.location
         );
-        console.log('New Case Details API Status =============>', newCaseDetails.status);
-        
+        console.log('New Case Details API Status =============>', caseDetails.status);
+
         return {
-            id: newCaseDetails.data.id,
-            displayId: newCaseDetails.data.displayId
+            id: caseDetails.data.id,
+            displayId: caseDetails.data.displayId
         };
     }
 }

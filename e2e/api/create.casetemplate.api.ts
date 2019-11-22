@@ -1,24 +1,37 @@
-import { HttpClient } from "protractor-http-client"
-import { ResponsePromise, JsonPromise } from 'protractor-http-client/dist/promisewrappers';
-import { browser } from 'protractor';
+import axios, { AxiosResponse } from "axios";
 
-export async function createCaseTemplate(templateName:string): Promise<void> {
-    const http = new HttpClient(browser.baseUrl);
-    var templateData = require('./case.template.json');
-    templateData.fieldInstances[8].value = templateName;
-    templateData.fieldInstances[1000001437].value = templateName;
-    http.failOnHttpError = true;
-    const userLoginResponse: ResponsePromise = await http.post(
-        "/api/rx/authentication/loginrequest",
-        { "userName": "qkatawazi@petramco.com", "password": "Password_1234" },
-        { "X-Requested-By": "XMLHttpRequest", "Content-Type": "application/json" }
-    );
-    console.log(`API Login status: ${userLoginResponse.statusCode}`);
-
-    const createCaseTemplateResponse: ResponsePromise = http.post(
-        "/api/rx/application/record/recordinstance",
-        templateData,
-        { "X-Requested-By": "XMLHttpRequest", "Content-Type": "application/json" }
-    );
-    console.log(`Case template create status: ${createCaseTemplateResponse.statusCode}`);
+export interface ICaseTemplate {
+    id: string;
+    displayId: string;
 }
+
+class CaseTemplateApi {
+    async createCaseTemplate(templateName: string, status: string): Promise<ICaseTemplate> {
+        var templateDataFile = require('../data/api/case.template.api.json');
+        if (status.toLowerCase() == 'draft') {
+            var templateData = templateDataFile.draftTemplate;
+        } else if (status.toLowerCase() == 'active') {
+            var templateData = templateDataFile.activeTemplate;
+        }
+        templateData.fieldInstances[8].value = templateName;
+        templateData.fieldInstances[1000001437].value = templateName;
+
+        const newCaseTemplate = await axios.post(
+            "/api/rx/application/record/recordinstance",
+            templateData
+        );
+
+        console.log('Create Case Template API Status =============>', newCaseTemplate.status);
+        const caseTemplateDetails = await axios.get(
+            newCaseTemplate.headers.location
+        );
+        console.log('New Case Template Details API Status =============>', caseTemplateDetails.status);
+
+        return {
+            id: caseTemplateDetails.data.id,
+            displayId: caseTemplateDetails.data.displayId
+        };
+    }
+}
+
+export default new CaseTemplateApi();
