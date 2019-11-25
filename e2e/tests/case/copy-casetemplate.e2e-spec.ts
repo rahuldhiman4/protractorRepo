@@ -23,7 +23,7 @@ describe('CopyCaseTemplate', () => {
         await loginPage.login("qkatawazi");
     });
 
-    it('DRDMV-13551: Create a Copy of Case template where Company is copied properly ', async () => {
+    it('DRDMV-13551,DRDMV-13529: Create a Copy of Case template where Company is copied properly', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
         var caseTemplate = require('../../data/ui/casetemplate.ui.json');
@@ -33,6 +33,7 @@ describe('CopyCaseTemplate', () => {
         await editCaseTemplate.clickOnEditCaseTemplateMetadata();
         await editCaseTemplate.changeTemplateStatusDropdownValue(caseTemplate['caseTemplateWitAllFields'].templateStatus);
         await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
+        var CasetemplateNew = await editCaseTemplate.getCaseTemplateID();
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
         await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
@@ -61,6 +62,8 @@ describe('CopyCaseTemplate', () => {
         await expect(copyCaseTemplate.getValueOfStatusReason()).toBe(caseTemplate['caseTemplateWitAllFields'].statusReason);
         await expect(copyCaseTemplate.getValueOfCaseDescription()).toContain(caseTemplate['caseTemplateWitAllFields'].templateDescription);
         await expect(copyCaseTemplate.getValueOfCaseSummary()).toBe(caseTemplate['caseTemplateWitAllFields'].templateSummary);
+        var copiedCasetemplateFromNew = await editCaseTemplate.getCaseTemplateID();
+        await expect(copiedCasetemplateFromNew == CasetemplateNew).toBeFalsy();
         //defect https://jira.bmc.com/browse/DRDMV-18655
         //await expect(editCaseTemplate.getValueOfResolutionCode()).toBe(caseTemplate['caseTemplateWitAllFields'].resolutionCode);
         //await expect(editCaseTemplate.getValueOfResolutionDescription()).toBe(caseTemplate['caseTemplateWitAllFields'].resolutionDescription);

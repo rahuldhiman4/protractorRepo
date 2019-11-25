@@ -36,6 +36,7 @@ class EditCaseTemplate {
         clearButton: '[rx-view-component-id="26645a3a-2ce9-4d60-b167-7c4642cc00f2"] button',
         saveTemplateMetaData: '[rx-view-component-id="c9db0571-b703-4d5d-830c-d3a98f243c94"] button',
         cancelTemplateMetaData: '[rx-view-component-id="e4cd9ed1-026d-4c8c-8557-bce659a2c344"] button',
+        caseTemplateId: '.text-field',
         reopentimelineDays: '[rx-view-component-id="88249662-e4c4-4ca7-9e34-0ecbd4bc0252"] input',
         manageDynamicFieldsLink: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] .edit-link',
         copyTemplate: '[rx-view-component-id="0bb1dd3b-639f-4019-adbd-96faae6920ef"] button',
@@ -74,6 +75,11 @@ class EditCaseTemplate {
     async clickOnCancelTemplateMetaData(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelTemplateMetaData)));
         await $(this.selectors.cancelTemplateMetaData).click();
+    }   
+
+    async getCaseTemplateID(): Promise<string>{
+        await browser.wait(this.EC.visibilityOf($(this.selectors.caseTemplateId)));
+        return await $(this.selectors.caseTemplateId).getText();    
     }
 
     async clickOnSaveCaseTemplateMetadata(): Promise<void> {
