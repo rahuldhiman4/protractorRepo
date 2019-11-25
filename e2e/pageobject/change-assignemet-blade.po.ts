@@ -11,6 +11,40 @@ class ChangeAssignmentBlade{
         assignToMeCheckBox: '.rx-assignment_assignToMe span',
         searchAsignee: '.d-icon-search input',
         assignee: '.rx-assignment-person-fullName',
+        company: 'selectedOrganizationId',
+        businessUnit: 'selectedBusinessUnitId',
+        department: 'selectedDepartmentId',
+        supportGroup: 'selectedSupportGroupId',
+    }
+
+    async isAssignToMeCheckBox():Promise<boolean>{
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeCheckBox)));
+        return await $(this.selectors.assignToMeCheckBox).isDisplayed();
+    }
+
+    async isCompanyDrpDwnDisplayed():Promise<boolean>{
+        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.company))));
+        return await element(by.model(this.selectors.company)).isDisplayed();
+    }
+
+    async isbuisnessUnitDrpDwnDisplayed():Promise<boolean>{
+        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.businessUnit))));
+        return await element(by.model(this.selectors.businessUnit)).isDisplayed();
+    }
+
+    async isDepartmentDrpDwnDisplayed():Promise<boolean>{
+        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.department))));
+        return await element(by.model(this.selectors.department)).isDisplayed();
+    }
+
+    async isSupportGroupDrpDwnDisplayed():Promise<boolean>{
+        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.supportGroup))));
+        return await element(by.model(this.selectors.supportGroup)).isDisplayed();
+    }
+
+    async isAssigneeListPresent():Promise<boolean>{
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assignee)));
+        return await $(this.selectors.assignee).isDisplayed();
     }
 
     async clickOnAssignButton():Promise<void>{

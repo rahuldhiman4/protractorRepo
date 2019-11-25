@@ -21,19 +21,6 @@ class LoginPage {
         await $(this.selectors.signInButton).click();
         await browser.wait(this.EC.titleContains('Cases - Business Workflows'));
     }
-
-    async resetLogin(user: string): Promise<void> {
-        browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
-        await navigationPage.signOut();
-        var loginJson = require('../data/userdata.json');
-        var username: string = loginJson[user].userName;
-        var password: string = loginJson[user].userPassword;
-        await browser.wait(this.EC.visibilityOf($(this.selectors.loginForm)), 30000);
-        await $(this.selectors.userName).sendKeys(username);
-        await $(this.selectors.password).sendKeys(password);
-        await $(this.selectors.signInButton).click();
-        await browser.wait(this.EC.titleContains('Cases - Business Workflows'));
-    }
 }
 
 export default new LoginPage();

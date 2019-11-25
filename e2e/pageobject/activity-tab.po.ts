@@ -16,6 +16,7 @@ class ActivityTabPage {
         filterCheckbox: '.d-checkbox__item',
         filterAuthor: '.person-input',
         filterPopupApplyOrClearButton: '.filter-options .d-button',
+        activityText: '[rx-view-component-id="34167059-11d4-4e85-8a58-e501544e2461"] [title="Activity"]',
     }
 
     async clickActivityNoteTextBox(): Promise<void> {
@@ -105,6 +106,14 @@ class ActivityTabPage {
 
     async clickOnPersonInActivityLog(caseActivityLogText: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.personLink, caseActivityLogText)).click();
+    }
+
+    async isPersonLinkPresent(): Promise<boolean> {
+        return await element($(this.selectors.activityLog)).isDisplayed();
+    }
+
+    async isActivityTextPresent(): Promise<boolean> {
+        return await element($(this.selectors.activityText)).isDisplayed();
     }
 
     async getIconOfActivity(caseActivityLogText: string): Promise<string> {

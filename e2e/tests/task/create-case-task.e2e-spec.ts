@@ -10,6 +10,8 @@ import viewTask from "../../pageobject/task/view-task.po";
 import editTask from "../../pageobject/task/edit-task.po";
 import caseTaskTab from '../../pageobject/case/case-task-tab.po';
 import utilCommon from '../../utils/util.common';
+import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po"
+import activitytab from "../../pageobject/activity-tab.po"
 
 describe('create Task template', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -25,12 +27,10 @@ describe('create Task template', () => {
     });
 
     it('DRDMV-7165,DRDMV-7147: Update Task Type field for any task	', async () => {
-        await loginPage.resetLogin('qkatawazi');
-
         let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
         let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
         let automationTaskTemplate = 'Automation task' + Math.floor(Math.random() * 1000000);
-        let automationTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000) + 1;
+        let automationTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
 
         //Manual task Template
         await navigationPage.gotoSettingsPage();
@@ -60,7 +60,8 @@ describe('create Task template', () => {
         await utilCommon.waitUntilPopUpDisappear();
 
         //case create
-        await loginPage.resetLogin('qtao');
+        await navigationPage.signOut();
+        await loginPage.login('qtao');
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + manualTaskSummary);
@@ -99,7 +100,8 @@ describe('create Task template', () => {
     }, 180 * 1000);
 
     it('DRDMV-7148,DRDMV-7140: Automatic Task data validation once Task is created	', async () => {
-        await loginPage.resetLogin('qkatawazi');
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
         let autmationTaskTemplateWithRequiredData = 'Automatic task With Required Field' + Math.floor(Math.random() * 1000000);
         let autmationTaskSummaryWithRequiredData = 'Automatic task Summary With Required Field' + Math.floor(Math.random() * 1000000);
         let automationTaskTemplateWithallField = 'Automation task with All field' + Math.floor(Math.random() * 1000000);
@@ -138,7 +140,8 @@ describe('create Task template', () => {
         await utilCommon.waitUntilPopUpDisappear();
 
         //case create
-        await loginPage.resetLogin('qtao');
+        await navigationPage.signOut();
+        await loginPage.login('qtao');
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + automationTaskSummaryWithallField);
@@ -193,4 +196,84 @@ describe('create Task template', () => {
         var CategoryTier4Value: string = await viewTask.getCategoryTier4Value();
         await expect(CategoryTier4Value).toBe('');
     }, 360 * 1000);
+
+    it('DRDMV-3820: Adhoc Task Create view (UI verification)	', async () => {
+        await navigationPage.signOut();
+        await loginPage.login('qtao');
+        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + summary);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+
+        //Adhoc task validation
+        await caseEditPage.clickAddTaskButton();
+        await manageTask.clickAddAdhocTaskButton();
+        var returnRequired = await adhoctaskTemplate.getTaskSummaryRequiredText("required");
+        console.log("returnRequired1: " + returnRequired);
+        await expect(await adhoctaskTemplate.getPriorityRequiredText('required')).toBeTruthy();
+        await expect(await adhoctaskTemplate.getAssignedCompanyRequiredText('required')).toBeTruthy();
+        await expect(await adhoctaskTemplate.getAssignedGroupRequiredText('required')).toBeTruthy();
+
+        await expect(await adhoctaskTemplate.getSaveButtonAttribute('ng-disabled')).toBeTruthy();
+        await expect(adhoctaskTemplate.getStatusAttribute()).toBeTruthy();
+        await expect(adhoctaskTemplate.getAssignCompanyAttribute()).toBeTruthy();
+        await expect(adhoctaskTemplate.getBuisnessUnitAttribute()).toBeTruthy();
+        await expect(adhoctaskTemplate.getAssigneeAttribute()).toBeTruthy();
+        await expect(adhoctaskTemplate.getDepartmentAttribute()).toBeTruthy();
+        await expect(adhoctaskTemplate.getAssignedGroupAttribute()).toBeTruthy();
+        await expect(adhoctaskTemplate.getchangeAssignmentButtonText()).toBeTruthy();
+        await expect(adhoctaskTemplate.isAssignToMeButtonDisplayd()).toBeTruthy();
+        await expect(adhoctaskTemplate.ischangeAssignmentButtonDisplayed()).toBeTruthy();
+        await adhoctaskTemplate.clickOnCancelAdhoctask();
+        await utilCommon.clickOnWarningOk();
+        browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
+
+    });
+
+    it('DRDMV-3821: Adhoc Task details view (UI verification))	', async () => {
+        await navigationPage.signOut();
+        await loginPage.login('qtao');
+        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + summary);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+
+        //Adhoc task validation
+        await caseEditPage.clickAddTaskButton();
+        await manageTask.clickAddAdhocTaskButton();
+        await adhoctaskTemplate.setSummary(summary);
+        await adhoctaskTemplate.setDescription("Description");
+        await adhoctaskTemplate.selectPriority('High');
+        await adhoctaskTemplate.selectCategoryTier1('Applications');
+        await adhoctaskTemplate.selectCategoryTier2('Social');
+        await adhoctaskTemplate.selectCategoryTier3('Chatter');
+        //await adhoctaskTemplate.selectLabel('test');
+        await adhoctaskTemplate.clickOnSaveAdhoctask();
+
+        await manageTask.clickTaskLinkOnManageTask(summary);
+        await expect(viewTask.isTaskSummaryDisplayed()).toBeTruthy();
+        await expect(viewTask.isTaskIdTextDisplayed).toBeTruthy();
+        await expect(viewTask.isTaskIconDisplayed).toBeTruthy();
+        await expect(viewTask.isTaskPriorityDisplayed()).toBeTruthy();
+        await expect(viewTask.isTaskTimeDetailsDisplayed()).toBeTruthy();
+        await expect(viewTask.isCaseSummaryDisplayed()).toBeTruthy();
+        await expect(viewTask.isRequesterNameDisplayed()).toBeTruthy();
+        await expect(viewTask.isRequesterContactDisplayed()).toBeTruthy();
+        await expect(viewTask.isRequesterMailDisplayed()).toBeTruthy();
+        await expect(viewTask.isEditLinkDisplayed()).toBeTruthy();
+        await expect(viewTask.isCategoryTier1ValueDisplayed()).toBeTruthy();
+        await expect(viewTask.isCategoryTier2ValueDisplayed()).toBeTruthy();
+        await expect(viewTask.isCategoryTier3ValueDisplayed()).toBeTruthy();
+        await expect(viewTask.isAssigneeNameDisplayed()).toBeTruthy();
+        await expect(viewTask.isAssignCompanyDisplayed()).toBeTruthy();
+        await expect(viewTask.isAssignGroupTextDisplayed()).toBeTruthy();
+        await expect(activitytab.isActivityTextPresent()).toBeTruthy();
+        await expect(activitytab.isActivityTextPresent()).toBeTruthy();
+    });
 });
