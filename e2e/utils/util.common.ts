@@ -24,9 +24,15 @@ export class Util {
             return count >= 1;
         }));
         var optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
+        await browser.sleep(300);
         var option = await element(by.cssContainingText(optionCss, value));
         await browser.wait(this.EC.visibilityOf(option));
         await option.click();
+    }
+
+    async getPopUpMessage() {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
+        return await $(this.selectors.popUpMsgLocator).getText();
     }
 
     async selectDropDownWithName(name: string, value: string): Promise<void> {

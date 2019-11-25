@@ -1,17 +1,22 @@
 {
-	"qdu":{
-		"userName":"qdu@petramco.com",
-		"userPassword":"Password_1234"
-    },
-
-	"qkatawazi":{
-		"userName":"qkatawazi@petramco.com",
-		"userPassword":"Password_1234"
+	"qdu": {
+		"userName": "qdu@petramco.com",
+		"userPassword": "Password_1234"
 	},
-	
-	"qtao":{
-		"userName":"qtao@petramco.com",
-		"userPassword":"Password_1234"
-    }
-    
+	"Elizabeth": {
+		"userName": "Elizabeth@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"qkatawazi": {
+		"userName": "qkatawazi@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"Fritz": {
+		"userName": "Fritz@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"qtao": {
+		"userName": "qtao@petramco.com",
+		"userPassword": "Password_1234"
+	}
 }

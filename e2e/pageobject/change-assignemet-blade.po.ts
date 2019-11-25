@@ -1,6 +1,6 @@
-import {by, $, $$, ProtractorExpectedConditions, browser, protractor, element } from "protractor";
+import { by, $, $$, ProtractorExpectedConditions, browser, protractor, element } from "protractor";
 
-class ChangeAssignmentBlade{
+class ChangeAssignmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         changeAssignmentButton: '[rx-view-component-id="6041cce1-05bd-458d-b097-eb310507cae3"] button',
@@ -17,115 +17,119 @@ class ChangeAssignmentBlade{
         supportGroup: 'selectedSupportGroupId',
     }
 
-    async isAssignToMeCheckBox():Promise<boolean>{
+    async isAssignToMeCheckBoxPresent(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeCheckBox)));
         return await $(this.selectors.assignToMeCheckBox).isDisplayed();
     }
 
-    async isCompanyDrpDwnDisplayed():Promise<boolean>{
+    async isCompanyDrpDwnDisplayed(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.company))));
         return await element(by.model(this.selectors.company)).isDisplayed();
     }
 
-    async isbuisnessUnitDrpDwnDisplayed():Promise<boolean>{
+    async isBuisnessUnitDrpDwnDisplayed(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.businessUnit))));
         return await element(by.model(this.selectors.businessUnit)).isDisplayed();
     }
 
-    async isDepartmentDrpDwnDisplayed():Promise<boolean>{
+    async isDepartmentDrpDwnDisplayed(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.department))));
         return await element(by.model(this.selectors.department)).isDisplayed();
     }
 
-    async isSupportGroupDrpDwnDisplayed():Promise<boolean>{
+    async isSupportGroupDrpDwnDisplayed(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.supportGroup))));
         return await element(by.model(this.selectors.supportGroup)).isDisplayed();
     }
 
-    async isAssigneeListPresent():Promise<boolean>{
+    async isAssigneeListPresent(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.assignee)));
         return await $(this.selectors.assignee).isDisplayed();
     }
 
-    async clickOnAssignButton():Promise<void>{
+    async clickOnAssignButton(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.assignButton)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignButton)));
         await $(this.selectors.assignButton).click();
     }
 
-    async clickOnAssignToMeCheckBox():Promise<void>{
+    async clickOnAssignToMeCheckBox(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeCheckBox)));
         await $(this.selectors.assignToMeCheckBox).click();
     }
 
-    async selectCompany(companyValue:string): Promise<void> {
-        const companyDropDown = $$(this.selectors.assignmentDropDownList).get(0);
+    async selectCompany(companyValue: string): Promise<void> {
+        const companyDropDown = await $$(this.selectors.assignmentDropDownList).get(0);
         await browser.wait(this.EC.elementToBeClickable(companyDropDown.$('button')));
         await companyDropDown.$('button').click();
         await browser.wait(this.EC.visibilityOf(companyDropDown.$('input')));
         await companyDropDown.$('input').sendKeys(companyValue);
-        await browser.wait(this.EC.or(async ()=>{
+        await browser.wait(this.EC.or(async () => {
             let count = await companyDropDown.$$(this.selectors.selectOptions).count();
             return count >= 1;
         }));
-        var option=element(by.cssContainingText(this.selectors.selectOptions, companyValue));
+        var option = await element(by.cssContainingText(this.selectors.selectOptions, companyValue));
         await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
     }
 
-    async selectBusinessUnit(businessUnit:string): Promise<void> {
-        const businessUnitDropDown = $$(this.selectors.assignmentDropDownList).get(1);
+    async selectBusinessUnit(businessUnit: string): Promise<void> {
+        const businessUnitDropDown = await $$(this.selectors.assignmentDropDownList).get(1);
         await browser.wait(this.EC.elementToBeClickable(businessUnitDropDown.$('button')));
         await businessUnitDropDown.$('button').click();
         await browser.wait(this.EC.visibilityOf(businessUnitDropDown.$('input')));
         await businessUnitDropDown.$('input').sendKeys(businessUnit);
-        await browser.wait(this.EC.or(async ()=>{
+        await browser.wait(this.EC.or(async () => {
             let count = await businessUnitDropDown.$$(this.selectors.selectOptions).count();
             return count >= 1;
         }));
-        var option=element(by.cssContainingText(this.selectors.selectOptions, businessUnit));
+        var option = await element(by.cssContainingText(this.selectors.selectOptions, businessUnit));
         await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
     }
 
-    async selectDepartment(department:string): Promise<void> {
-        const departmentDropdown = $$(this.selectors.assignmentDropDownList).get(2);
+    async selectDepartment(department: string): Promise<void> {
+        const departmentDropdown = await $$(this.selectors.assignmentDropDownList).get(2);
         await browser.wait(this.EC.elementToBeClickable(departmentDropdown.$('button')));
         await departmentDropdown.$('button').click();
         await browser.wait(this.EC.visibilityOf(departmentDropdown.$('input')));
         await departmentDropdown.$('input').sendKeys(department);
-        await browser.wait(this.EC.or(async ()=>{
+        await browser.wait(this.EC.or(async () => {
             let count = await departmentDropdown.$$(this.selectors.selectOptions).count();
             return count >= 1;
         }));
-        var option=element(by.cssContainingText(this.selectors.selectOptions, department));
+        var option = await element(by.cssContainingText(this.selectors.selectOptions, department));
         await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
     }
 
-    async selectSupportGroup(supportGroup:string): Promise<void> {
-        const supportGroupDropDown = $$(this.selectors.assignmentDropDownList).get(3);
+    async selectSupportGroup(supportGroup: string): Promise<void> {
+        const supportGroupDropDown = await $$(this.selectors.assignmentDropDownList).get(3);
         await browser.wait(this.EC.elementToBeClickable(supportGroupDropDown.$('button')));
         await supportGroupDropDown.$('button').click();
         await browser.wait(this.EC.visibilityOf(supportGroupDropDown.$('input')));
         await supportGroupDropDown.$('input').sendKeys(supportGroup);
-        await browser.wait(this.EC.or(async ()=>{
+        await browser.wait(this.EC.or(async () => {
             let count = await supportGroupDropDown.$$(this.selectors.selectOptions).count();
             return count >= 1;
         }))
-        var option=element(by.cssContainingText(this.selectors.selectOptions, supportGroup));
+        var option = await element(by.cssContainingText(this.selectors.selectOptions, supportGroup));
         await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
     }
 
-    async selectAssignee(name:string): Promise<void> {
+    async selectAssignee(name: string): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.searchAsignee)));
         await $(this.selectors.searchAsignee).sendKeys(name);
-        browser.actions().sendKeys(protractor.Key.ENTER).perform();
-        await browser.wait(this.EC.or(async ()=>{
+        await browser.actions().sendKeys(protractor.Key.ENTER).perform();
+        await browser.wait(this.EC.or(async () => {
             let count = await $$(this.selectors.assignee).count();
             return count >= 2;
         }))
-        await element(by.cssContainingText(this.selectors.assignee, name)).click();
+        var option = await element(by.cssContainingText(this.selectors.assignee, name));
+        await browser.wait(this.EC.visibilityOf(option));
+        await browser.wait(this.EC.elementToBeClickable(option));
+        await option.click();
     }
 }
 

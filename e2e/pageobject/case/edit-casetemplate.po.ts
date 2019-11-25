@@ -1,4 +1,5 @@
-import { ProtractorExpectedConditions, protractor, browser, $, $$} from "protractor"
+import { ProtractorExpectedConditions, protractor, browser, $, $$ } from "protractor"
+import { ICaseTemplate } from 'e2e/data/ui/caseTemplate.interface';
 import commonUtils from "../../utils/util.common";
 
 class EditCaseTemplate {
@@ -24,180 +25,199 @@ class EditCaseTemplate {
         assignmentMethod: '9183824b-61c4-4a00-bcfa-7f4e7461e10c',
         taskFailureConfiguration: '61e9aaa2-654c-4f6e-817c-64f5f86cf9fa',
         allowCaseReopen: 'cd503085-d130-4a5c-84c8-732b1d1770a2',
-        templateStatusDropdown:'88cf66ca-8be6-46b2-93e0-52890187dffb',
+        templateStatusDropdown: '88cf66ca-8be6-46b2-93e0-52890187dffb',
         ownerCompany: '80c13021-4b91-4298-bbdc-8b0cfe006a91',
         resolutionCode: 'c3d9b91a-0198-4b61-b13a-59d46d3b0103',
         resolutionDescription: 'b5b2d17e-e6b1-44e9-bbd5-23d74b3f1a2a',
         businessUnitDropdown: 'e645fae1-100f-4e85-bf93-336ef552254f',
         departmentDropdown: 'ec169352-7979-4527-b8d0-4deec9caf822',
         ownerGroupDropdown: 'b1022495-e1e9-441e-834f-89a9ce9e7f93',
-        changeAssignmentButton: '[rx-view-component-id="d6915b45-3cc0-40de-b80c-1212d050b40f"] button' ,
-        clearButton: '[rx-view-component-id="26645a3a-2ce9-4d60-b167-7c4642cc00f2"] button' ,
-        saveTemplateMetaData: '[rx-view-component-id="c9db0571-b703-4d5d-830c-d3a98f243c94"] button' ,
-        cancelTemplateMetaData: '[rx-view-component-id="e4cd9ed1-026d-4c8c-8557-bce659a2c344"] button' ,
+        changeAssignmentButton: '[rx-view-component-id="d6915b45-3cc0-40de-b80c-1212d050b40f"] button',
+        clearButton: '[rx-view-component-id="26645a3a-2ce9-4d60-b167-7c4642cc00f2"] button',
+        saveTemplateMetaData: '[rx-view-component-id="c9db0571-b703-4d5d-830c-d3a98f243c94"] button',
+        cancelTemplateMetaData: '[rx-view-component-id="e4cd9ed1-026d-4c8c-8557-bce659a2c344"] button',
         reopentimelineDays: '[rx-view-component-id="88249662-e4c4-4ca7-9e34-0ecbd4bc0252"] input',
         manageDynamicFieldsLink: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] .edit-link',
         copyTemplate: '[rx-view-component-id="0bb1dd3b-639f-4019-adbd-96faae6920ef"] button',
-        accessTab:'[rx-view-component-id="f76e9987-cfa0-4742-b92f-087bd38c59df"] [ng-repeat="tab in tabs track by $index"]',
-        taskFlow: '[rx-view-component-id="f76e9987-cfa0-4742-b92f-087bd38c59df"] .d-icon-left-pencil'
+        accessTab: '[rx-view-component-id="f76e9987-cfa0-4742-b92f-087bd38c59df"] [ng-repeat="tab in tabs track by $index"]',
+        taskFlow: '[rx-view-component-id="f76e9987-cfa0-4742-b92f-087bd38c59df"] .d-icon-left-pencil',
+        tier1ValueOnCaseTemplate: '[rx-view-component-id="241f0e58-3106-4f8a-a1cc-43554414bb7c"] .d-textfield__rx-value',
+        tier2ValueOnCaseTemplate: '[rx-view-component-id="4f950be7-d968-41a4-8bb9-018674e53f88"] .d-textfield__rx-value',
+        tier3ValueOnCaseTemplate: '[rx-view-component-id="a7fbc4bc-23c6-4f92-818a-5554107d04c0"] .d-textfield__rx-value',
     }
 
-    async clickOnCopyCaseTemplate():Promise<void>{
+    async clickOnCopyCaseTemplate(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyTemplate)));
         await $(this.selectors.copyTemplate).click();
     }
 
-    async clickSaveCaseTemplate():Promise<void>{
-        let element=$(this.selectors.saveButton);
-        await browser.wait(this.EC.elementToBeClickable(element));
-        await element.click();
+    async clickSaveCaseTemplate(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+        await $(this.selectors.saveButton).click();
     }
 
-    async clickOnTaskFlowButton():Promise<void>{
-        let element=$(this.selectors.taskFlow);
-        await browser.wait(this.EC.elementToBeClickable(element));
-        await element.click();
+    async clickOnTaskFlowButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskFlow)));
+        await $(this.selectors.taskFlow).click();
     }
 
-    async clickOnCancelButton():Promise<void>{
-        let element=$(this.selectors.cancelButton);
-        await browser.wait(this.EC.elementToBeClickable(element));
-        await element.click();
+    async clickOnCancelButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        await $(this.selectors.cancelButton).click();
     }
 
-    async clickOnCancelTemplateMetaData():Promise<void>{
-        let element=$(this.selectors.cancelTemplateMetaData);
-        await browser.wait(this.EC.elementToBeClickable(element));
-        await element.click();
+    async clickOnMangeDyanmicLink(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.manageDynamicFieldsLink)));
+        await $(this.selectors.manageDynamicFieldsLink).click();
     }
 
-    async clickOnSaveCaseTemplateMetadata():Promise<void>{
-        let element=$(this.selectors.saveTemplateMetaData);
-        await browser.wait(this.EC.elementToBeClickable(element));
-        await element.click();
+    async clickOnCancelTemplateMetaData(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelTemplateMetaData)));
+        await $(this.selectors.cancelTemplateMetaData).click();
     }
 
-    async clickOnEditCaseTemplateMetadata():Promise<void>{
-        let element=$(this.selectors.editTemplateMetaData);
-        await browser.wait(this.EC.elementToBeClickable(element));
-        await element.click();
+    async clickOnSaveCaseTemplateMetadata(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveTemplateMetaData)));
+        await $(this.selectors.saveTemplateMetaData).click();
     }
 
-    async clickEditCaseTemplate():Promise<void>{
-        let element=$(this.selectors.editcaseTemplate);
-        await browser.wait(this.EC.elementToBeClickable(element));
-        await element.click();
-    }
-    
-    async clickOnTabOfCaseTemplate(value:number){
-            let element= $$(this.selectors.accessTab).get(value);
-            element.click();
+    async clickOnEditCaseTemplateMetadata(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editTemplateMetaData)));
+        await $(this.selectors.editTemplateMetaData).click();
     }
 
-    async clickOnClearButton(){
+    async clickEditCaseTemplate(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editcaseTemplate)));
+        await $(this.selectors.editcaseTemplate).click();
+    }
+
+    async clickOnTabOfCaseTemplate(value: number) {
+        let element = $$(this.selectors.accessTab).get(value);
+        element.click();
+    }
+
+    async clickOnClearButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.clearButton)));
         await $(this.selectors.clearButton).click();
     }
-    
-    async changeCategoryTier1(tier1Value:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.caseCategoryTier1,tier1Value);
+
+    async updateCategoriesValues(caseTemplate: ICaseTemplate): Promise<void> {
+        await this.changeCategoryTier1(caseTemplate.categoryTier1);
+        await this.changeCategoryTier2(caseTemplate.categoryTier2);
+        await this.changeCategoryTier3(caseTemplate.categoryTier3);
     }
 
-    async changeCategoryTier2(tier2Value:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.caseCategoryTier2,tier2Value);
+    async getValueOfTier1(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.tier1ValueOnCaseTemplate)));
+        return await $(this.selectors.tier1ValueOnCaseTemplate).getText();
     }
 
-    async changeCategoryTier3(tier3Value:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.caseCategoryTier3,tier3Value);
+    async getValueOfTier2(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.tier2ValueOnCaseTemplate)));
+        return await $(this.selectors.tier2ValueOnCaseTemplate).getText();
     }
 
-    async changeCategoryTier4(tier4Value:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.caseCategoryTier4,tier4Value);
+    async getValueOfTier3(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.tier3ValueOnCaseTemplate)));
+        return await $(this.selectors.tier3ValueOnCaseTemplate).getText();
     }
 
-    async changeLabelValue(labelValue:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.caseCategoryTier4,labelValue);
+    async changeCategoryTier1(tier1Value: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.caseCategoryTier1, tier1Value);
     }
 
-    async changeFlowsetValue(flowsetValue:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.flowset,flowsetValue);
+    async changeCategoryTier2(tier2Value: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.caseCategoryTier2, tier2Value);
     }
 
-    async changeIdentityValidationValue(identityValidationValue:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.flowset,identityValidationValue);
+    async changeCategoryTier3(tier3Value: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.caseCategoryTier3, tier3Value);
     }
 
-    async changeReopenTimelineDays(reopenDaysValues:string){
+    async changeCategoryTier4(tier4Value: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.caseCategoryTier4, tier4Value);
+    }
+
+    async changeLabelValue(labelValue: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.caseCategoryTier4, labelValue);
+    }
+
+    async changeFlowsetValue(flowsetValue: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.flowset, flowsetValue);
+    }
+
+    async changeIdentityValidationValue(identityValidationValue: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.flowset, identityValidationValue);
+    }
+
+    async changeReopenTimelineDays(reopenDaysValues: string) {
         await browser.wait(this.EC.visibilityOf($(this.selectors.reopentimelineDays)));
         await $(this.selectors.reopentimelineDays).sendKeys(reopenDaysValues);
     }
 
-    async changePriorityValue(priorityValue:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.casePriority,priorityValue);
+    async changePriorityValue(priorityValue: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.casePriority, priorityValue);
     }
 
-    async changeCaseStatusValue(caseStatusValue:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.caseStatus,caseStatusValue);
+    async changeCaseStatusValue(caseStatusValue: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.caseStatus, caseStatusValue);
     }
 
-    async changeAllowCaseReopenValue(allowCaseReopenValue:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.allowCaseReopen,allowCaseReopenValue);
+    async changeAllowCaseReopenValue(allowCaseReopenValue: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.allowCaseReopen, allowCaseReopenValue);
     }
 
-    async changeDepartmentDropdownValue(departmentDropdownValue:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.departmentDropdown,departmentDropdownValue);
+    async changeDepartmentDropdownValue(departmentDropdownValue: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.departmentDropdown, departmentDropdownValue);
     }
 
-    async changeOwnerCompanyValue(ownerCompanyValue:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.ownerCompany,ownerCompanyValue);
+    async changeOwnerCompanyValue(ownerCompanyValue: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.ownerCompany, ownerCompanyValue);
     }
 
-    async changeTaskFailureConfigurationValue(taskFailureConfigurationValue:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.ownerCompany,taskFailureConfigurationValue);
+    async changeTaskFailureConfigurationValue(taskFailureConfigurationValue: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.ownerCompany, taskFailureConfigurationValue);
     }
 
-    async changeBusinessUnitDropdownValue(businessUnitDropdownValue:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.businessUnitDropdown,businessUnitDropdownValue);
+    async changeBusinessUnitDropdownValue(businessUnitDropdownValue: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.businessUnitDropdown, businessUnitDropdownValue);
     }
 
-    async changeAssignmentMethodValue(assignmentMethodValue:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.assignmentMethod,assignmentMethodValue);
+    async changeAssignmentMethodValue(assignmentMethodValue: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.assignmentMethod, assignmentMethodValue);
     }
 
-    async changeOwnerGroupDropdownValue(ownerGroupValue:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.ownerGroupDropdown,ownerGroupValue);
+    async changeOwnerGroupDropdownValue(ownerGroupValue: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.ownerGroupDropdown, ownerGroupValue);
     }
 
-    async changeTemplateStatusDropdownValue(templateStatusValue:string):Promise<void>{
-        commonUtils.selectDropDown(this.selectors.templateStatusDropdown,templateStatusValue);
+    async changeTemplateStatusDropdownValue(templateStatusValue: string): Promise<void> {
+        await commonUtils.selectDropDown(this.selectors.templateStatusDropdown, templateStatusValue);
     }
 
-    async clickOnChangeAssignmentButton():Promise<void>{
-        let element=$(this.selectors.changeAssignmentButton);
-        await browser.wait(this.EC.elementToBeClickable(element));
-        await element.click();
+    async clickOnChangeAssignmentButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
+        await $(this.selectors.changeAssignmentButton).click();
     }
 
-    async isResolutionCodeRequired(values:boolean):Promise<void>{
-        commonUtils.selectToggleButton(this.selectors.resolutionCode,true)
+    async setResolutionCodeRequired(value: boolean): Promise<void> {
+        await commonUtils.selectToggleButton(this.selectors.resolutionCode, value)
     }
 
-    async isResolutionDescriptionRequired(values:boolean):Promise<void>{
-        commonUtils.selectToggleButton(this.selectors.resolutionDescription,true)
+    async setResolutionDescriptionRequired(value: boolean): Promise<void> {
+        await commonUtils.selectToggleButton(this.selectors.resolutionDescription, value)
     }
 
-    async changeCaseSummary(caseSummaryValue:string): Promise<void> {
-        let element=$(this.selectors.caseSummary);
-        await browser.wait(this.EC.visibilityOf(element));
-        await element.clear();
-        await element.sendKeys(caseSummaryValue);  
+    async changeCaseSummary(caseSummaryValue: string): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
+        await $(this.selectors.caseSummary).clear();
+        await $(this.selectors.caseSummary).sendKeys(caseSummaryValue);
     }
 
-    async changeCaseDescription(caseDescription:string): Promise<void> {
-        let element=$(this.selectors.caseDescription);
-        await browser.wait(this.EC.visibilityOf(element));
-        await element.clear();
-        await element.sendKeys(caseDescription);  
+    async changeCaseDescription(caseDescription: string): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.caseDescription)));
+        await $(this.selectors.caseDescription).clear();
+        await $(this.selectors.caseDescription).sendKeys(caseDescription);
     }
 }
 

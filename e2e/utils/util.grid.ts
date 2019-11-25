@@ -57,6 +57,16 @@ export class GridOperation {
         await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText('.ui-grid__link', id))));
         await element(by.cssContainingText('.ui-grid__link', id)).click();
     }
+
+    async searchAndClickOnHyperLink(gridId: string, value: string) {
+        await browser.wait(until.elementLocated(By.css(this.getGridLocator('summaryField', gridId))), 10000).sendKeys(value);
+        await browser.wait(until.elementLocated(By.css(this.getGridLocator('searchButton', gridId))), 10000).click();
+        let gridvalueLink= element(by.cssContainingText((this.getGridLocator('gridLink', gridId)), value));
+        console.log(gridvalueLink);
+        await browser.wait(this.EC.elementToBeClickable(gridvalueLink));
+        await browser.sleep(3000);
+        await gridvalueLink.click();
+    }
 }
 
 export default new GridOperation();
