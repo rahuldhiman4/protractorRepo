@@ -141,13 +141,15 @@ class CaseEditPage {
         const statusReason = $(this.selectors.statusChangeReason);
         await browser.wait(this.EC.elementToBeClickable(statusReason.$('input[type="search"]')));
         await (statusReason.$('input[type="search"]')).sendKeys(statusValue);
-        await element(by.cssContainingText(this.selectors.statusChangeReason + ' .ui-select__rx-choice', statusValue)).click();
+        var option = await element(by.cssContainingText((this.selectors.statusChangeReason + ' .ui-select__rx-choice'), statusValue));
+        await browser.wait(this.EC.visibilityOf(option));
+        await option.click();
     }
 
     async clickSaveStatus(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveUpdateStatus)));
         await $(this.selectors.saveUpdateStatus).click();
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
     }
 
     async clickAddTaskButton() {

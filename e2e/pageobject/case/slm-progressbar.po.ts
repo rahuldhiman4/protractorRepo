@@ -1,4 +1,4 @@
-import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
+import { ProtractorExpectedConditions, protractor, browser, $, $$ } from "protractor"
 
 class SlmProgressBar {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -9,7 +9,7 @@ class SlmProgressBar {
         slaProgressBarWarning: '[rx-view-component-id="55cb7986-e724-40f3-9f92-5744c6c9514d"] .d-icon-right-exclamation_circle',
         slaProgressBarMissedGoal: '[rx-view-component-id="55cb7986-e724-40f3-9f92-5744c6c9514d"] .d-icon-right-cross_circle_o',
         slaProgressBarDualSVT: '[rx-view-component-id="55cb7986-e724-40f3-9f92-5744c6c9514d"] .d-icon-right-circle_o',
-        slaProgressBarPaused: '[rx-view-component-id="55cb7986-e724-40f3-9f92-5744c6c9514d"] .d-icon-right-check_circle_o',
+        slaProgressBarPaused: '[rx-view-component-id="55cb7986-e724-40f3-9f92-5744c6c9514d"] .d-icon-right-pause_circle_o',
         slaDueTime: 'div.d-sla__item',
         svtToolTipText: 'div.tooltip-inner',
     }
@@ -19,7 +19,7 @@ class SlmProgressBar {
         return await $(this.selectors.slaProgressBar).isDisplayed();
     }
 
-    async isSLAProgressBarInProessIconDisplayed(): Promise<boolean> {
+    async isSLAProgressBarInProcessIconDisplayed(): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarInProceess)));
         return await $(this.selectors.slaProgressBarInProceess).isDisplayed();
     }
@@ -83,6 +83,25 @@ class SlmProgressBar {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.svtToolTipText)));
         return await $(this.selectors.svtToolTipText).getText();
     }
+
+    async isMultipleSVTAttached(): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarInProceess)));
+        var svtRecords: number = await $$(this.selectors.slaProgressBarInProceess).count();
+        var isMultiple: boolean = false;
+        if (svtRecords > 1) {
+            isMultiple = true;
+        } else {
+            isMultiple = false;
+        }
+        return isMultiple;
+    }
+
+    async getSVTToolTipText()
+    {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarInProceess)));
+        await browser.actions().mouseMove($$(this.selectors.slaProgressBarInProceess).first()).perform();
+    }
+
 }
 
 export default new SlmProgressBar();
