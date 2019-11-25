@@ -1,4 +1,4 @@
-import { browser, element, by, $, ProtractorExpectedConditions, protractor } from 'protractor';
+import { browser, until, ExpectedConditions, element, by, $, $$, ProtractorExpectedConditions, protractor } from 'protractor';
 
 export class Util {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -23,8 +23,26 @@ export class Util {
             let count = await dropDown.$$(this.selectors.dropDownOption).count();
             return count >= 1;
         }));
-        await browser.sleep(300);
         var optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
+        var option = await element(by.cssContainingText(optionCss, value));
+        await browser.wait(this.EC.visibilityOf(option));
+        await option.click();
+    }
+
+    async selectDropDownWithName(name: string, value: string): Promise<void> {
+        const dropDown = await $(`[title="${name}"]`);
+        const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+        const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
+        await browser.wait(this.EC.elementToBeClickable(dropDownBoxElement));
+        await dropDownBoxElement.click();
+        await browser.wait(this.EC.visibilityOf(dropDownInputElement));
+        await dropDownInputElement.sendKeys(value);
+        await browser.wait(this.EC.or(async () => {
+            let count = await dropDown.$$(this.selectors.dropDownOption).count();
+            return count >= 1;
+        }));
+        var optionCss: string = `[title="${name}"] .ui-select-choices-row-inner *`;
+        await browser.sleep(300);
         var option = await element(by.cssContainingText(optionCss, value));
         await browser.wait(this.EC.visibilityOf(option));
         await option.click();

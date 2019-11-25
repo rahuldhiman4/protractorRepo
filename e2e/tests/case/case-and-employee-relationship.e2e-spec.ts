@@ -18,7 +18,7 @@ describe('Case And Employee Relationship', () => {
         await loginPage.login('qtao');
     });
 
-    it('DRDMV-16241,DRDMV-16242:Add person with different relations', async () => {
+    it('DRDMV-16241,DRDMV-16242: Add person with different relations', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("Allen");
         await createCasePage.setSummary("DRDMV-16241");
@@ -48,10 +48,10 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Brain Adams', 'Witness')).toBeTruthy();
     }, 90 * 1000)
 
-    it('DRDMV-12896:Add multiple person with same relation', async () => {
+    it('DRDMV-16896: Multiple people can be added by same Relationship', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("Allen");
-        await createCasePage.setSummary("DRDMV-12896");
+        await createCasePage.setSummary("DRDMV-16896");
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
@@ -68,6 +68,28 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qianru Tao', 'Inspector')).toBeTruthy();
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Harry Potter', 'Inspector')).toBeTruthy();
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Lily Anthony', 'Inspector')).toBeTruthy();
+    });
+
+    it('DRDMV-16248: Related Persons tab is available on Person Profile check UI', async () => {
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester("Allen");
+        await createCasePage.setSummary("DRDMV-16248");
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await caseEditPage.navigateToRelatedPersonsTab();
+        await relatedTabPage.addRelatedPerson();
+        await addRelatedPopupPage.addPerson('Brad Pitt', 'Inspector');
+        await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
+        await relatedTabPage.clickRelatedPersonName('Brad Pitt');
+        await relatedTabPage.addRelatedPerson();
+        await addRelatedPopupPage.addPerson('Bobby Hill', 'Manager');
+        expect(await relatedTabPage.getRelatedPersonCompanyName('Bobby Hill')).toBe('Petramco');
+        expect(await relatedTabPage.getRelatedPersonEmail('Bobby Hill')).toBe('bhill@petramco.com');
+        expect(await relatedTabPage.getRelatedPersonPhoneNumber('Bobby Hill')).toBe('+556132296002');
+        expect(await relatedTabPage.getRelatedPersonRelationship('Bobby Hill')).toBe('Former Manager');
+        expect(await relatedTabPage.getRelatedPersonSite('Bobby Hill')).toBe('Houston\n2101 CityWest Blvd., Houston, Texas, 77042, United States');
+        expect(await relatedTabPage.isEmailLinkNotPresent('Bobby Hill')).toBeTruthy();
     });
 
 })

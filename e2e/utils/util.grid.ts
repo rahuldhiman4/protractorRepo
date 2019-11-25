@@ -12,6 +12,8 @@ export class GridOperation {
     selectors = {
         firstGridCheckbox: '.ui-grid-row .ui-grid-selection-row-header-buttons',
         selectAllCheckBox: 'grid.selection.selectAll',
+        summaryField1: 'input[role="search"]',
+        searchButton1: 'button[rx-id="submit-search-button"]'
     }
 
     getGridLocator(locatorName: string, gridId: string) {
@@ -36,7 +38,17 @@ export class GridOperation {
         await $(this.getGridLocator('summaryField', gridId)).sendKeys(value);
         await browser.wait(this.EC.elementToBeClickable($(this.getGridLocator('searchButton', gridId))));
         await $(this.getGridLocator('searchButton', gridId)).click();
-        browser.sleep(5000);
+        browser.sleep(3000);
+        await browser.wait(this.EC.elementToBeClickable(element(by.model(this.selectors.selectAllCheckBox))));
+        await element(by.model(this.selectors.selectAllCheckBox)).click();
+    }
+
+    async searchAndSelectAllCheckBoxWOGrid(value: string) {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));
+        await $(this.selectors.summaryField1).sendKeys(value);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton1)));
+        await $(this.selectors.searchButton1).click();
+        await browser.sleep(5000);
         await browser.wait(this.EC.elementToBeClickable(element(by.model(this.selectors.selectAllCheckBox))));
         await element(by.model(this.selectors.selectAllCheckBox)).click();
     }
