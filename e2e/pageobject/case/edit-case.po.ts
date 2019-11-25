@@ -137,10 +137,10 @@ class CaseEditPage {
 
     async setStatusReason(statusValue: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
-        await $(this.selectors.statusChange).click();
+        await $(this.selectors.statusChangeReason).click();
         const statusReason = $(this.selectors.statusChangeReason);
-        await browser.wait(this.EC.elementToBeClickable(statusReason.$('[aria-label="Select box activate"]')));
-        await (statusReason.$('[aria-label="Select box activate"]')).click();
+        await browser.wait(this.EC.elementToBeClickable(statusReason.$('input[type="search"]')));
+        await (statusReason.$('input[type="search"]')).sendKeys(statusValue);
         await element(by.cssContainingText(this.selectors.statusChangeReason + ' .ui-select__rx-choice', statusValue)).click();
     }
 
