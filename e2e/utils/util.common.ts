@@ -95,6 +95,13 @@ export class Util {
             }
         }
     }
+
+    async switchToNewWidnow(): Promise<void> {
+        await browser.sleep(5000);
+        await browser.getAllWindowHandles().then(async function(handles){
+            await browser.switchTo().window(handles[handles.length-1])
+        });
+    }
 }
 
 export default new Util();

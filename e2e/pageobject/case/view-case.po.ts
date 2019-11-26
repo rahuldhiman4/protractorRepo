@@ -12,6 +12,7 @@ class ViewCasePage {
         coreTaskArrow: '[rx-view-component-id="0733a05e-2eea-4fe5-90a8-909238dc6389"] i',
         addTaskButton: '[rx-view-component-id="db1c57fc-c332-40fa-b1c0-759e21d9ad5c"] button',
         editLink: '.edit-link',
+        caseIdText: '[rx-view-component-id="7b47ca08-e9d4-4656-8f96-3bc751c098b0"] .title',
     }
 
     async addTaskFromTaskTemplate(templateName: string) {
@@ -60,6 +61,11 @@ class ViewCasePage {
     async clickAddTaskButton() {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskButton)));
         await $(this.selectors.addTaskButton).click();
+    }
+
+    async getCaseID(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.caseIdText)));
+        return await $(this.selectors.caseIdText).getText();
     }
 }
 

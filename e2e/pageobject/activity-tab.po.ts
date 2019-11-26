@@ -1,4 +1,6 @@
 import { $, ProtractorExpectedConditions, browser, protractor, element, by, $$ } from "protractor";
+import utilCommon from '../utils/util.common';
+import { __await } from 'tslib';
 
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -7,7 +9,7 @@ class ActivityTabPage {
         addNoteBoxEdit: '.activity-feed-note-text',
         personPopup: '.popup-person',
         addNotePostButton: '.activity-feed-note-buttons__right .d-button.d-button_primary',
-        addNoteCancelButton: '.activity-feed-note-buttons__right .d-button_secondary',        
+        addNoteCancelButton: '.activity-feed-note-buttons__right .d-button_secondary',
         addNoteAttachLink: '.ux-document-library .d-button',
         addNoteNotesTemplate: '.d-button.d-button_link.d-icon-note_pencil.social-attach-template.ac-template-button',
         activityLog: '.log-item__body div[class]',
@@ -20,6 +22,7 @@ class ActivityTabPage {
     }
 
     async clickActivityNoteTextBox(): Promise<void> {
+        browser.sleep(3000);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBox)));
         await $(this.selectors.addNoteBox).click();
     }
@@ -54,6 +57,7 @@ class ActivityTabPage {
     async clickOnPostButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNotePostButton)));
         await $(this.selectors.addNotePostButton).click();
+        await browser.sleep(3000);
     }
 
     async clickOnCancelButton(): Promise<void> {
@@ -104,8 +108,12 @@ class ActivityTabPage {
         return await element(by.cssContainingText(this.selectors.activityLog, caseActivityLogText)).isDisplayed();
     }
 
-    async clickOnPersonInActivityLog(caseActivityLogText: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.personLink, caseActivityLogText)).click();
+    async clickOnHyperlinkFromActivity(bodyText: string, authorText: string): Promise<void> {
+        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.personLink)));
+        browser.sleep(3000);
+        var customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='log-item__body']//a[text()="${authorText}"]`;
+        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customXpath))));
+        await element(by.xpath(customXpath)).click();
     }
 
     async isPersonLinkPresent(): Promise<boolean> {
@@ -141,7 +149,7 @@ class ActivityTabPage {
         return $('.activity_logs [role="listitem"] .time-ago').getAttribute('title');
     }
 
-    async isLinkedTextPresentInBodyOfFirstActivity(value:string): Promise<boolean> {
+    async isLinkedTextPresentInBodyOfFirstActivity(value: string): Promise<boolean> {
         var firstActivity = await $$('.activity_logs [role="listitem"]').first();
         await browser.wait(this.EC.visibilityOf(firstActivity));
         await browser.wait(this.EC.elementToBeClickable(firstActivity.$('.body a[title]')));

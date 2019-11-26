@@ -5,6 +5,7 @@ class NavigationPage {
     selectors = {
         createMenu: '//rx-shell//*[text()="Create"]/..',
         createCaseMenuItem: '//rx-shell//*[text()="Create"]/../..//a[contains(text(),"Case")]',
+        createKnowledgeMenu: '//rx-shell//*[text()="Create"]/../..//a[contains(text(),"Knowledge ")]',
         createQuickCaseMenu: '//rx-shell//*[text()="Quick Case"]/..',
         settingsButton: 'rx-shell .d-n-action__settings',
         settingsMenuItemContainer: 'rx-administration-settings',
@@ -15,6 +16,7 @@ class NavigationPage {
     verticalSelectors = {
         hamburgerIcon: '.d-n-hamburger.rx-shell__button-container',
         createCaseMenuItem: '//*[@title="Create"]/parent::*//*[@title="Case"]',
+        createKnowlegeMenuItem: '//*[@title="Create"]/parent::*//*[@title="Knowledge"]',
         createQuickCaseMenu: '[title="Quick Case"]',
     }
 
@@ -70,6 +72,22 @@ class NavigationPage {
         await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.signOutMenuItem, 'Sign Out'))));
         await element(by.cssContainingText(this.selectors.signOutMenuItem, 'Sign Out')).click();
         await browser.wait(this.EC.titleContains('Login - Business Workflows'));
+    }
+    
+    async gotoKnowledge(): Promise<void> {
+        await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
+        let hamburgerStatus = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
+        if (hamburgerStatus == 'true') {
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createMenu))), 60000);
+            await element(by.xpath(this.selectors.createMenu)).click();
+            await element(by.xpath(this.selectors.createKnowledgeMenu)).click();
+        } else {
+            await $(this.verticalSelectors.hamburgerIcon).$('button').click();
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createKnowlegeMenuItem))), 60000);
+            await element(by.xpath(this.verticalSelectors.createKnowlegeMenuItem)).click();
+
+        }
+        await browser.wait(this.EC.titleContains('Knowledge Article Templates Preview - Business Workflows'), 30000);
     }
 }
 

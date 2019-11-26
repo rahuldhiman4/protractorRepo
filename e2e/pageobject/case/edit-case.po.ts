@@ -50,7 +50,6 @@ class CaseEditPage {
         contactNameLink: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] a',
         cancelBtn: '[rx-view-component-id="f535ec30-5892-4150-a4a2-ffa74c9135cb"] button',
         caseTitle: '[rx-view-component-id="8ebc1637-af05-4a08-b873-4f810c4981b9"] span',
-        caseIdText: '[rx-view-component-id="7b47ca08-e9d4-4656-8f96-3bc751c098b0"] .title',
         sourceText: '[rx-view-component-id="8abd013f-26cd-4aa5-a3bb-63b063d3a7ec"] .d-textfield__rx-value',
         categoryTier1Text: '[rx-view-component-id="b144d2ce-fd89-4977-9b3f-136a4b984efe"] .d-textfield__rx-value',
         categoryTier2Text: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] .d-textfield__rx-value',
@@ -265,17 +264,17 @@ class CaseEditPage {
         return await $(this.selectors.categoryTier4Text).getText();
     }
 
-    async getcaseTemplateText(): Promise<string> {
+    async getCaseTemplateText(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.caseTemplateText)));
         return await $(this.selectors.caseTemplateText).getText();
     }
 
-    async getflowsetText(): Promise<string> {
+    async getFlowsetText(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.flowsetText)));
         return await $(this.selectors.flowsetText).getText();
     }
 
-    async getcaseDescriptionText(): Promise<string> {
+    async getCaseDescriptionText(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.descriptionText)));
         return await $(this.selectors.descriptionText).getText();
     }
