@@ -1,5 +1,5 @@
 import { element, by, ProtractorExpectedConditions, protractor, browser, $, $$, Key } from "protractor"
-
+import caseViewPage from "../../pageobject/case/view-case.po"
 class ManageTaskBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -12,6 +12,7 @@ class ManageTaskBlade {
         canceltaskTemplatbutton: '[rx-view-component-id="ba0bd5fe-391a-4885-8f0c-56cfead43ebd"] button',
         recommendedTemplateCheckbox: '[rx-view-component-id="da1ffbb0-567a-4199-b94f-413bee7f149b"] .ui-grid-icon-ok',
         cancelManagetaskButton:'[rx-view-component-id="8e7b2768-299d-468a-bd46-4827677e8eff"] button',
+        closeButton: '[rx-view-component-id="8e7b2768-299d-468a-bd46-4827677e8eff"] button',
     }
 
     async clickAddTaskFromTemplateButton(): Promise<void> {
@@ -59,6 +60,13 @@ class ManageTaskBlade {
     async clickOnTaskGridCancelButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.canceltaskTemplatbutton)));
         await $(this.selectors.canceltaskTemplatbutton).click();
+    }
+
+    async clickOnCloseButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
+        await $(this.selectors.closeButton).click();
+        await browser.wait(this.EC.invisibilityOf($('.modal-dialog')));     
+        await browser.wait(this.EC.visibilityOf($(caseViewPage.selectors.editLink)));     
     }
 }
 

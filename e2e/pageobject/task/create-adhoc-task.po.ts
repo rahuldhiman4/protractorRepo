@@ -25,8 +25,8 @@ class CreateAdhocTaskTemplatePage {
         assignee: '[rx-view-component-id="58085538-2875-4bf0-a880-f977bdeb842a"] .ui-select-toggle',
         department: '[rx-view-component-id="0cfce715-9fa8-4f61-b670-5aff2b0540f3"] .ui-select-toggle',
         assignedGroup: '[rx-view-component-id="6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d"] .ui-select-toggle',
-        taskSummaryRequiredText: '[rx-view-component-id="76b6b259-a085-4d9f-91ac-8c5cbb2bc725"] .d-textfield__item',
-        piorityRequiredText: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .d-textfield__item',
+        taskSummaryRequiredText: '[rx-view-component-id="76b6b259-a085-4d9f-91ac-8c5cbb2bc725"] input',
+        piorityRequiredText: '[ng-model="selectedOption.model"]',
         assignedCompanyRequiredText: '[rx-view-component-id="359f0c65-e48c-458d-8f14-3c2fc85c5cf6"] .d-textfield__item',
         assignedGroupRequiredText: '[rx-view-component-id="6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d"] .d-textfield__item',
     }
