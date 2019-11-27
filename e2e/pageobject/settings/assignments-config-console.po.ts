@@ -29,7 +29,6 @@ class AssignmentsConfigPage {
             return false;
         }
     }
-
 }
 
 export default new AssignmentsConfigPage();

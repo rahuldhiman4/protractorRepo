@@ -52,7 +52,6 @@ class AutomatedStatusTransitionConfigCreatePage {
         await this.setChangeStatusAfter(data['automatedStatusTransitionWithMandatoryFields'].changeStatusAfter);
         await this.saveConfig();
     }
-
 }
 
 export default new AutomatedStatusTransitionConfigCreatePage();

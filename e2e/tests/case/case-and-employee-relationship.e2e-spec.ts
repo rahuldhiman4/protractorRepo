@@ -178,5 +178,4 @@ describe('Case And Employee Relationship', () => {
         await caseEditPage.navigateToRelatedCasesTab();
         expect(await relatedCasePage.isCasePresent(caseId3)).toBeTruthy();
     }, 120 * 1000);
-
 })
