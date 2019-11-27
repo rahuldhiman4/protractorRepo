@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import apiUtil from "../api/utils/api.common";
 
 export interface ITemplate {
     id: string;
@@ -65,7 +66,7 @@ class CreateRecordInstanceApi {
             displayId: taskTemplateDetails.data.displayId
         };
     }
-    
+
     async createAutoTaskTemplateNewProcessWithRequiredFields(templateName: string, processBundle: string, processName: string, status: string): Promise<ITemplate> {
         var templateDataFile = await require('../data/api/task.template.api.json');
         var templateData = await templateDataFile.AutoTaskTemplateNewProcessRequiredData;
@@ -97,38 +98,44 @@ class CreateRecordInstanceApi {
         };
     }
 
-    async createNewUser(firstName:string, userId:string): Promise<string> {
-        var userDataFile = await require('../data/api/new.user.api.json');
-        var userData = await userDataFile.NewUser;
-        userData.fieldInstances[1000000019].value = firstName;
-        userData.fieldInstances[1000000018].value = userId;
-        userData.fieldInstances[4].value = userId;
-        userData.fieldInstances[1000000048].value = `${userId}@petramco.com`;
+    async createNewUser(firstName: string, userId: string): Promise<string> {
+        var personGuid = await apiUtil.getPersonGuid(userId);
+        if (personGuid == null) {
+            var userDataFile = await require('../data/api/new.user.api.json');
+            var userData = await userDataFile.NewUser;
+            userData.fieldInstances[1000000019].value = firstName;
+            userData.fieldInstances[1000000018].value = userId;
+            userData.fieldInstances[4].value = userId;
+            userData.fieldInstances[1000000048].value = `${userId}@petramco.com`;
 
-        const newUser = await axios.post(
-            recordInstanceUri,
-            userData
-        );
-        console.log('New User Details API Status =============>', newUser.status);
+            const newUser = await axios.post(
+                recordInstanceUri,
+                userData
+            );
+            console.log('New User Details API Status =============>', newUser.status);
 
-        const userDetails = await axios.get(
-            newUser.headers.location
-        );
-        console.log('New User Details API Status =============>', userDetails.status);
-        var recordName:string = userDetails.data.recordDefinitionName;
-        var recordGUID:string = userDetails.data.id;
-        var recordDisplayId:string = userDetails.data.displayId;
-        
-        var updateUser = await userDataFile.EnableUser;
-        updateUser.displayId = recordDisplayId;
-        updateUser.id = recordGUID;
+            const userDetails = await axios.get(
+                newUser.headers.location
+            );
+            console.log('New User Details API Status =============>', userDetails.status);
+            var recordName: string = userDetails.data.recordDefinitionName;
+            var recordGUID: string = userDetails.data.id;
+            var recordDisplayId: string = userDetails.data.displayId;
 
-        const userUpdate = await axios.put(
-            recordInstanceUri + "/" + recordName + "/" + recordGUID,
-            updateUser
-        );
-        console.log('Enable User API Status =============>', userUpdate.status);
-        return recordGUID;
+            var updateUser = await userDataFile.EnableUser;
+            updateUser.displayId = recordDisplayId;
+            updateUser.id = recordGUID;
+
+            const userUpdate = await axios.put(
+                recordInstanceUri + "/" + recordName + "/" + recordGUID,
+                updateUser
+            );
+            console.log('Enable User API Status =============>', userUpdate.status);
+            return recordGUID;
+        } else {
+            console.log('New User API Status =============> User already exists =============> ', personGuid);
+            return personGuid;
+        }
     }
 }
 

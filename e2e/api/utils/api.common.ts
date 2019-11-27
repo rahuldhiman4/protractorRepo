@@ -37,10 +37,10 @@ class ApiUtils {
         );
         console.log('Person GUID API Status =============>', allRecords.status);
 
-        let entityObj: any = allRecords.data.data.filter(function (obj) {
+        let entityObj: any = allRecords.data.data.filter(function (obj: any) {
             return obj[4] === personName;
         });
-        return entityObj[0]['379'];
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async associateFoundationElements(associationName: string, entity1: string, entity2: string): Promise<void> {
