@@ -3,11 +3,10 @@ import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
 import createCasePage from '../../pageobject/case/create-case.po';
 import caseEditPage from '../../pageobject/case/edit-case.po';
+import caseViewPage from '../../pageobject/case/view-case.po';
 
 describe('Case Assignment', () => {
-    const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
-        await browser.manage().window().maximize();
         await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
         browser.waitForAngularEnabled(false);
     });
@@ -20,16 +19,16 @@ describe('Case Assignment', () => {
         let name = 'Qianru Tao';
         let supportGroup = 'Compensation and Benefits';
         await navigationPage.gotCreateCase();
-        await createCasePage.selectRequester();
-        await createCasePage.typeSummary();
-        await createCasePage.saveCase();
-        await createCasePage.clickGoToCase();
-        await caseEditPage.clickEditCaseButton();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary("my new case");
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await caseViewPage.clickEditCaseButton();
         await caseEditPage.clickChangeAssignmentButton();
         await caseEditPage.selectSupportGroup(supportGroup);
         await caseEditPage.selectAssignee(name);
         await caseEditPage.clickAssignButton();
         await caseEditPage.clickSaveCase();
         await caseEditPage.verifyCaseAssignee(name);
-    },)
-})
+    });
+});

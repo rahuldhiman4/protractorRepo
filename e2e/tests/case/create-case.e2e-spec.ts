@@ -1,4 +1,4 @@
-import { element, browser, $, ProtractorExpectedConditions, protractor } from "protractor";
+import { browser, $, protractor, ProtractorExpectedConditions } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
 import createCasePage from '../../pageobject/case/create-case.po';
@@ -7,7 +7,6 @@ import createQuickCasePage from '../../pageobject/case/create-case-quick.po';
 describe('create case', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
-        await browser.manage().window().maximize();
         await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
         browser.waitForAngularEnabled(false);
     });
@@ -22,9 +21,9 @@ describe('create case', () => {
 
     it('should create case without template', async () => {
         await navigationPage.gotCreateCase();
-        await createCasePage.selectRequester();
-        await createCasePage.typeSummary();
-        await createCasePage.saveCase();
+        await createCasePage.selectRequester('adam');
+        await createCasePage.setSummary('new case');
+        await createCasePage.clickSaveCaseButton();
         await browser.wait(EC.visibilityOf($(createCasePage.selectors.gotoCaseButton__preview)));
         await browser.actions().sendKeys(protractor.Key.ESCAPE);
         await browser.wait(EC.invisibilityOf($(createCasePage.selectors.gotoCaseButton__preview)));
@@ -39,16 +38,15 @@ describe('create case', () => {
 
     it('should create case without template', async () => {
         await navigationPage.gotCreateCase();
-        await createCasePage.selectRequester();
-        await createCasePage.selectContact();
-        await createCasePage.typeSummary();
-        await createCasePage.typeDescription();
-        await createCasePage.selectCateg1('Accounts Payable');
-        await createCasePage.selectCateg2('Invoices');
-        await createCasePage.selectCateg3('Payment');
-        await createCasePage.assignToMe();
-        await createCasePage.saveCase();
+        await createCasePage.selectRequester('adam');
+        await createCasePage.selectContact('adam');
+        await createCasePage.setSummary('set summary');
+        await createCasePage.setDescription('my desc');
+        await createCasePage.selectCategoryTier1('Accounts Payable');
+        await createCasePage.selectCategoryTier2('Invoices');
+        await createCasePage.selectCategoryTier3('Payment');
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
         await browser.wait(EC.visibilityOf($(createCasePage.selectors.gotoCaseButton__preview)));
     },)
 })
-

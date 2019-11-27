@@ -1,18 +1,15 @@
-import { browser, ProtractorExpectedConditions, protractor, utils } from "protractor";
+import { browser, ProtractorExpectedConditions, protractor } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
 import activityTabPage from '../../pageobject/activity-tab.po';
 import createCase from '../../pageobject/case/create-case.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
-import utilCommon from '../../utils/util.common';
+import utilCommon from '../../utils/ui/util.common';
 
 describe('case activity', () => {
-    const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
-
     beforeAll(async () => {
         await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
         await browser.waitForAngularEnabled(false);
@@ -67,7 +64,7 @@ describe('case activity', () => {
         // 2nd step verification From Case Activities, click on Different person names and inspect behavior
         await activityTabPage.addActivityNote(caseBodyText);
         await activityTabPage.clickOnPostButton();
-        var caseIdText: string = await editCasePo.getCaseID();
+        var caseIdText: string = await viewCasePo.getCaseID();
         // Redirect on person profile
         await activityTabPage.clickOnHyperlinkFromActivity(caseBodyText, 'Qadim Katawazi');
         await expect(browser.getTitle()).toBe('Person Profile - Business Workflows');

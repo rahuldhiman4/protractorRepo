@@ -1,4 +1,4 @@
-import { element, browser, $, ProtractorExpectedConditions, protractor } from "protractor";
+import { browser, $, ProtractorExpectedConditions, protractor } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
 import documentLibraryPage from '../../pageobject/settings/document-library.po';
@@ -16,8 +16,7 @@ describe('document library', () => {
     });
 
     it('should login correctly', async () => {
-        var loginCredentials = require('../../data/userdata.json');
-        await loginPage.login(loginCredentials.qkatawazi.userName,loginCredentials.qkatawazi.userPassword);
+        await loginPage.login('qkatawazi');
     });
 
     it('should goto document library settings', async () => {
@@ -40,4 +39,3 @@ describe('document library', () => {
         await browser.sleep(5000);
     }, 120 * 1000);
 })
-

@@ -2,8 +2,7 @@ import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor
 import { ICaseTemplate } from "../../data/ui/caseTemplate.interface";
 import changeAssignemetBlade from '../change-assignemet-blade.po';
 import caseTemplateGrid from "../../pageobject/case/console-casetemplate.po";
-import commonUtils from "../../utils/util.common";
-import copyCasetemplatePo from './copy-casetemplate.po';
+import commonUtils from "../../utils/ui/util.common";
 
 class CreateCaseTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -186,7 +185,7 @@ class CreateCaseTemplate {
         await changeAssignemetBlade.selectAssignee(caseTemplate.assignee);
         await changeAssignemetBlade.clickOnAssignButton();
         await browser.sleep(2000);
-       // expect(await copyCasetemplatePo.getValueOfAssignee()).toBe(caseTemplate.assignee);
+        // expect(await copyCasetemplatePo.getValueOfAssignee()).toBe(caseTemplate.assignee);
         await this.clickSaveCaseTemplate();
     }
 

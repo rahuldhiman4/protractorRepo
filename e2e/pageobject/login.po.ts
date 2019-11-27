@@ -1,5 +1,4 @@
 import { $, ProtractorExpectedConditions, browser, protractor } from "protractor";
-import navigationPage from "../pageobject/navigation.po";
 
 class LoginPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

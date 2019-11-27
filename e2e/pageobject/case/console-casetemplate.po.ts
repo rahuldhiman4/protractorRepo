@@ -1,5 +1,5 @@
 import { ProtractorExpectedConditions, protractor, browser, $, by, element } from 'protractor';
-import utilGrid from "../../utils/util.grid";
+import utilGrid from "../../utils/ui/util.grid";
 import casetemplateBlade from '../../pageobject/case/select-casetemplate-blade.po';
 
 class CaseTemplateConsole {

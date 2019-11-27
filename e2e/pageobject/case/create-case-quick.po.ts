@@ -25,9 +25,9 @@ class CreateQuickCasePage {
         await $(this.selectors.inputBox).sendKeys('This is test case using quick case e2e');
     }
 
-    async selectCaseTemplate(templateName:string): Promise<void> {
+    async selectCaseTemplate(templateName: string): Promise<void> {
         await $(this.selectors.inputBox).sendKeys(`!${templateName}`);
-        await browser.wait(this.EC.or(async ()=>{
+        await browser.wait(this.EC.or(async () => {
             let count = await $$(this.selectors.caseTemplate).count();
             return count >= 1;
         }))
@@ -61,7 +61,7 @@ class CreateQuickCasePage {
         await this.enterSummary();
         await this.saveCase();
     }
-    
+
     async gotoCase(): Promise<void> {
         await $(this.selectors.gotoCaseButton__preview).click();
     }

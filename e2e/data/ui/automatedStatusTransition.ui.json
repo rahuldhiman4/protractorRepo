@@ -1,9 +1,9 @@
 {
-	"automatedStatusTransitionWithMandatoryFields":{
-        "name":"Config Name",
+    "automatedStatusTransitionWithMandatoryFields": {
+        "name": "Config Name",
         "company": "Petramco",
         "fromStatus": "Assigned",
         "toStatus": "In Progress",
         "changeStatusAfter": "2"
-    }    
+    }
 }

@@ -1,4 +1,4 @@
-import { ProtractorExpectedConditions, protractor, browser, $, $$ } from "protractor"
+import { ProtractorExpectedConditions, protractor, browser, $$ } from "protractor"
 
 class PersonProfilePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

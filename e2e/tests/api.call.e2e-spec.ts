@@ -2,7 +2,7 @@ import { ProtractorExpectedConditions, protractor } from "protractor";
 import loginApi from "../api/login.api";
 import caseApi from "../api/create.case.api";
 import createRecordInstance from "../api/recordinstance.api";
-import apiUtil from "../api/utils/api.common";
+import apiUtil from "../utils/api/api.common";
 
 describe('Login and create case from API', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

@@ -1,6 +1,5 @@
 import { ProtractorExpectedConditions, protractor, browser, element, by, $, $$ } from "protractor"
-import util from "../../utils/util.common";
-import manageTask from "../../pageobject/task/manage-task-blade.po";
+import util from "../../utils/ui/util.common";
 
 class CaseEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

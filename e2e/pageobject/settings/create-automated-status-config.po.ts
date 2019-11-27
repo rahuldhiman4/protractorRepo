@@ -1,5 +1,5 @@
 import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
-import commonUtil from '../../utils/util.common'
+import commonUtil from '../../utils/ui/util.common'
 
 class AutomatedStatusTransitionConfigCreatePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

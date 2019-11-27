@@ -1,15 +1,14 @@
-import { browser, ProtractorExpectedConditions, protractor } from "protractor";
+import { browser } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
 import automatedStatusTransitionConsole from "../../pageobject/settings/automated-status-transition-console.po";
 import automatedStatusTransitionCreatePage from "../../pageobject/settings/create-automated-status-config.po"
-import utilGrid from "../../utils/util.grid";
+import utilGrid from "../../utils/ui/util.grid";
 import automatedStatusTransitionEditPage from "../../pageobject/settings/edit-automated-status-config.po"
 import assignmentConfgiConsole from "../../pageobject/settings/assignments-config-console.po";
 import assignmentConfigEditPage from "../../pageobject/settings/edit-assignments-config.po"
 
 describe('Case And Employee Relationship', () => {
-    const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
         await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
         browser.waitForAngularEnabled(false);
@@ -61,5 +60,4 @@ describe('Case And Employee Relationship', () => {
         expect(await assignmentConfigEditPage.isSaveBtnDisabled()).toBeTruthy();
         await browser.refresh();
     });
-
 })

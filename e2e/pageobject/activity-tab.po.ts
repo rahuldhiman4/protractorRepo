@@ -1,6 +1,4 @@
 import { $, ProtractorExpectedConditions, browser, protractor, element, by, $$ } from "protractor";
-import utilCommon from '../utils/util.common';
-import { __await } from 'tslib';
 
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

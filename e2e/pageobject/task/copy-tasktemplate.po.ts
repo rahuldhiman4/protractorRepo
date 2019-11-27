@@ -1,5 +1,5 @@
 import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
-import util from "../../utils/util.common";
+import util from "../../utils/ui/util.common";
 
 class Copytaskpage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

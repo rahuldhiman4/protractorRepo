@@ -1,6 +1,6 @@
 import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
-import gridUtil from '../../utils/util.grid'
-import util from '../../utils/util.common'
+import gridUtil from '../../utils/ui/util.grid'
+import util from '../../utils/ui/util.common'
 
 class AddRelationshipPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

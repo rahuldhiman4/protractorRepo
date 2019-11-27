@@ -1,5 +1,5 @@
 import { element, by, ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
-import util from "../../utils/util.common";
+import util from "../../utils/ui/util.common";
 
 class CreateTaskTemplatePage {
 

@@ -8,14 +8,12 @@ import relatedTabPage from '../../pageobject/case/related-person-tab.po';
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import relatedCasePage from '../../pageobject/case/related-case-tab.po';
 import personProfilePage from '../../pageobject/case/person-profile.po';
-import gridUtil from '../../utils/util.grid';
+import gridUtil from '../../utils/ui/util.grid';
 import addRelatedCasespopup from '../../pageobject/case/add-related-cases-pop.po';
-import utilCommon from '../../utils/util.common';
+import utilCommon from '../../utils/ui/util.common';
 
 describe('Case And Employee Relationship', () => {
-    const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
-        await browser.manage().window().maximize();
         await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
         browser.waitForAngularEnabled(false);
     });

@@ -1,7 +1,7 @@
 import { element, browser, $, ProtractorExpectedConditions, protractor } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
-import { createCaseTemplate } from "../../api/create.casetemplate.api";
+import recordinstance from "../../api/recordinstance.api";
 import createQuickCasePage from '../../pageobject/case/create-case-quick.po';
 
 describe('Pin Validation testing', () => {
@@ -18,7 +18,7 @@ describe('Pin Validation testing', () => {
     });
 
     xit('Should create case template using api', async () => {
-        var createCaseResponse = await createCaseTemplate(templateName);
+        var createCaseResponse = await recordinstance.createCaseTemplateWithRequiredFields(templateName, "active");
         console.log("template created!!");
     });
 
@@ -30,5 +30,5 @@ describe('Pin Validation testing', () => {
         expect(createQuickCasePage.getPopUpMessage()).toContain('WARNING (232053)');
         await createQuickCasePage.waitUntilPopUpDisappear();
         await createQuickCasePage.saveCase();
-    },)
+    })
 })

@@ -1,5 +1,4 @@
 import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
-import commonUtil from '../../utils/util.common'
 
 class AssignmentsConfigPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

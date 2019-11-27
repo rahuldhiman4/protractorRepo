@@ -1,4 +1,4 @@
-import { browser, ProtractorExpectedConditions, protractor } from "protractor";
+import { browser, protractor } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import taskTemplate from "../../pageobject/task/create-tasktemplate.po";
 import selectTaskTemplate from "../../pageobject/task/console-tasktemplate.po"
@@ -8,7 +8,7 @@ import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import editTask from "../../pageobject/task/edit-task.po";
 import caseTaskTab from '../../pageobject/case/case-task-tab.po';
-import utilCommon from '../../utils/util.common';
+import utilCommon from '../../utils/ui/util.common';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po"
 import activitytab from "../../pageobject/activity-tab.po"
 import copyTemplate from "../../pageobject/task/copy-tasktemplate.po";

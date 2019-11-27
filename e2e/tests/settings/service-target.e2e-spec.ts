@@ -1,18 +1,17 @@
-import { browser, ProtractorExpectedConditions, protractor } from "protractor";
+import { browser, protractor } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
 import SlmExpressionBuilder from '../../pageobject/settings/slm-expressionbuilder.pop.po';
 import serviceTargetConfig from '../../pageobject/settings/service-target-blade.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import caseEditPage from '../../pageobject/case/edit-case.po';
+import viewCasePage from '../../pageobject/case/view-case.po';
 import SlmProgressBar from '../../pageobject/case/slm-progressbar.po';
 
 var caseBAUser = 'qkatawazi';
 
 describe('Service Taret Tests', () => {
-    const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
-        await browser.manage().window().maximize();
         await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
         browser.waitForAngularEnabled(false);
         await loginPage.login(caseBAUser);
@@ -260,14 +259,14 @@ describe('Service Taret Tests', () => {
         expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
 
         //Change the case status to pending
-        await caseEditPage.changeCaseStatus('Pending');
-        await caseEditPage.setStatusReason('Customer Response');
-        await caseEditPage.clickSaveStatus();
+        await viewCasePage.changeCaseStatus('Pending');
+        await viewCasePage.setStatusReason('Customer Response');
+        await viewCasePage.clickSaveStatus();
         expect(await SlmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
 
         //Update the case status to In Progress
-        await caseEditPage.changeCaseStatus('In Progress');
-        await caseEditPage.clickSaveStatus();
+        await viewCasePage.changeCaseStatus('In Progress');
+        await viewCasePage.clickSaveStatus();
         expect(await SlmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         browser.sleep(95000);
 
@@ -275,27 +274,27 @@ describe('Service Taret Tests', () => {
         expect(await SlmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
 
         //Update the case status to Pending
-        await caseEditPage.changeCaseStatus('Pending');
-        await caseEditPage.setStatusReason('Customer Response');
-        await caseEditPage.clickSaveStatus();
+        await viewCasePage.changeCaseStatus('Pending');
+        await viewCasePage.setStatusReason('Customer Response');
+        await viewCasePage.clickSaveStatus();
         expect(await SlmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
 
         //Wait until SLA progress missed goal
         browser.sleep(40000);
-        await caseEditPage.changeCaseStatus('In Progress');
-        await caseEditPage.clickSaveStatus();
+        await viewCasePage.changeCaseStatus('In Progress');
+        await viewCasePage.clickSaveStatus();
         expect(await SlmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
 
         //Update the case status to Pending
-        await caseEditPage.changeCaseStatus('Pending');
-        await caseEditPage.setStatusReason('Customer Response');
-        await caseEditPage.clickSaveStatus();
+        await viewCasePage.changeCaseStatus('Pending');
+        await viewCasePage.setStatusReason('Customer Response');
+        await viewCasePage.clickSaveStatus();
         expect(await SlmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
 
         //Update the case status to Resolved
-        await caseEditPage.changeCaseStatus('Resolved');
-        await caseEditPage.setStatusReason('Auto Resolved');
-        await caseEditPage.clickSaveStatus();
+        await viewCasePage.changeCaseStatus('Resolved');
+        await viewCasePage.setStatusReason('Auto Resolved');
+        await viewCasePage.clickSaveStatus();
         expect(await SlmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true);
     }, 400 * 1000);
 

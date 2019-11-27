@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import apiUtil from "../api/utils/api.common";
+import apiUtil from "../utils/api/api.common";
 
 export interface ITemplate {
     id: string;

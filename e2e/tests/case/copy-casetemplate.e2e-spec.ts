@@ -7,10 +7,7 @@ import navigationPage from "../../pageobject/navigation.po";
 import consoleCasetemplatePo from '../../pageobject/case/console-casetemplate.po';
 
 describe('CopyCaseTemplate', () => {
-    const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
-
     beforeAll(async () => {
-        await browser.manage().window().maximize();
         await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
         browser.waitForAngularEnabled(false);
     });

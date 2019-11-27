@@ -1,11 +1,9 @@
-import { element, browser, $, ProtractorExpectedConditions, protractor } from "protractor";
+import { browser } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
-import createCasePage from '../../pageobject/case/create-case.po';
 import createQuickCasePage from '../../pageobject/case/create-case-quick.po';
 
 fdescribe('Parallel task execution', () => {
-    const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
         await browser.manage().window().maximize();
         await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
@@ -18,7 +16,7 @@ fdescribe('Parallel task execution', () => {
 
     it('should login correctly', async () => {
         var loginCredentials = require('../../data/userdata.json');
-        await loginPage.login(loginCredentials.qkatawazi.userName,loginCredentials.qkatawazi.userPassword);
+        await loginPage.login('qkatawazi');
     });
 
     it('should create quick case', async () => {
@@ -33,4 +31,3 @@ fdescribe('Parallel task execution', () => {
         await createQuickCasePage.gotoCase();
     })
 })
-

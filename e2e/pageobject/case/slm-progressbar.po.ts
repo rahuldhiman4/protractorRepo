@@ -96,8 +96,7 @@ class SlmProgressBar {
         return isMultiple;
     }
 
-    async getSVTToolTipText()
-    {
+    async getSVTToolTipText() {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarInProceess)));
         await browser.actions().mouseMove($$(this.selectors.slaProgressBarInProceess).first()).perform();
     }

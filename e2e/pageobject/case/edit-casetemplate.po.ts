@@ -1,6 +1,6 @@
 import { ProtractorExpectedConditions, protractor, browser, $, $$ } from "protractor"
 import { ICaseTemplate } from 'e2e/data/ui/caseTemplate.interface';
-import commonUtils from "../../utils/util.common";
+import commonUtils from "../../utils/ui/util.common";
 
 class EditCaseTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -75,11 +75,11 @@ class EditCaseTemplate {
     async clickOnCancelTemplateMetaData(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelTemplateMetaData)));
         await $(this.selectors.cancelTemplateMetaData).click();
-    }   
+    }
 
-    async getCaseTemplateID(): Promise<string>{
+    async getCaseTemplateID(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.caseTemplateId)));
-        return await $(this.selectors.caseTemplateId).getText();    
+        return await $(this.selectors.caseTemplateId).getText();
     }
 
     async clickOnSaveCaseTemplateMetadata(): Promise<void> {

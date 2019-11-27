@@ -6,9 +6,7 @@ import createCasePage from '../../pageobject/case/create-case.po';
 import caseEditPage from '../../pageobject/case/edit-case.po';
 
 fdescribe('SLA progress bar testing', () => {
-    const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
-        await browser.manage().window().maximize();
         await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
         browser.waitForAngularEnabled(false);
     });
@@ -29,7 +27,7 @@ fdescribe('SLA progress bar testing', () => {
     });
 
     it('should create Service Target Config', async () => {
-        await serviceTargetConfig.createServiceTargetConfig();
+        await serviceTargetConfig.createServiceTargetConfig("a", "b", "c");
         expect(serviceTargetConfig.getPopUpMessage()).toBe('Record has been registered successfully.');
     });
 
