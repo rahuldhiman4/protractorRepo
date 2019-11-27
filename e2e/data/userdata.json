@@ -1,4 +1,8 @@
 {
+	"tadmin": {
+		"userName": "tadmin@petramco.com",
+		"userPassword": "Password_1234"
+	},
 	"qdu": {
 		"userName": "qdu@petramco.com",
 		"userPassword": "Password_1234"
