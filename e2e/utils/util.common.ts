@@ -10,7 +10,7 @@ export class Util {
         warningOk: '.d-modal__footer button[class*="d-button d-button_primary d-button_small"]',
         warningCancel: '.d-modal__footer button[class*="d-button d-button_secondary d-button_small"]',
         errorMsg: '.rx-growl-item__message',
-        closetipErrorMsg: '.close rx-growl-close'
+        closeTipMsg: '.close.rx-growl-close'
     }
 
     async selectDropDown(guid: string, value: string): Promise<void> {
@@ -64,9 +64,9 @@ export class Util {
         await browser.wait(this.EC.invisibilityOf($(this.selectors.errorMsg)));
     }
 
-    async clickCloseErrorPopUp(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closetipErrorMsg)));
-        await $(this.selectors.closetipErrorMsg).click();
+    async closePopUpMessage(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeTipMsg)));
+        await $(this.selectors.closeTipMsg).click();
     }
 
     async clickOnWarningOk(): Promise<void> {

@@ -1,11 +1,12 @@
 import { ProtractorExpectedConditions, protractor, browser, by, element, until, By, $ } from 'protractor';
 import { Util } from './util.common';
+import { async } from 'q';
 
 export class GridOperation {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    utility:Util;
-    constructor(){
+    utility: Util;
+    constructor() {
         this.utility = new Util();
     }
 
@@ -13,7 +14,10 @@ export class GridOperation {
         firstGridCheckbox: '.ui-grid-row .ui-grid-selection-row-header-buttons',
         selectAllCheckBox: 'grid.selection.selectAll',
         summaryField1: 'input[role="search"]',
-        searchButton1: 'button[rx-id="submit-search-button"]'
+        searchButton1: 'button[rx-id="submit-search-button"]',
+        filterPreset: '.rx-filter-presets-dropdown__trigger',
+        clearFilterButton: 'button[rx-id="clear-button"]',
+        filterClose: '.d-tag-remove-button'
     }
 
     getGridLocator(locatorName: string, gridId: string) {
@@ -53,15 +57,40 @@ export class GridOperation {
         await element(by.model(this.selectors.selectAllCheckBox)).click();
     }
 
-    async gridHyperLink(id: string){
+    async gridHyperLink(id: string) {
         await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText('.ui-grid__link', id))));
         await element(by.cssContainingText('.ui-grid__link', id)).click();
+    }
+
+    async searchAndOpenHyperlink(id: string) {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));
+        await $(this.selectors.summaryField1).sendKeys(id);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton1)));
+        await $(this.selectors.searchButton1).click();
+        await browser.sleep(3000);
+        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText('.ui-grid__link', id))));
+        await element(by.cssContainingText('.ui-grid__link', id)).click();
+    }
+
+    async clearFilter(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPreset)));
+        try {
+            if (await $(this.selectors.filterClose).isDisplayed()) {
+                await $(this.selectors.filterPreset).click();
+                await browser.wait(this.EC.elementToBeClickable($(this.selectors.clearFilterButton)));
+                await $(this.selectors.clearFilterButton).click();
+                await browser.sleep(1000);
+            }
+        }
+        catch (Ex) {
+            await console.log("Filters are already clear");
+        }
     }
 
     async searchAndClickOnHyperLink(gridId: string, value: string) {
         await browser.wait(until.elementLocated(By.css(this.getGridLocator('summaryField', gridId))), 10000).sendKeys(value);
         await browser.wait(until.elementLocated(By.css(this.getGridLocator('searchButton', gridId))), 10000).click();
-        let gridvalueLink= element(by.cssContainingText((this.getGridLocator('gridLink', gridId)), value));
+        let gridvalueLink = element(by.cssContainingText((this.getGridLocator('gridLink', gridId)), value));
         console.log(gridvalueLink);
         await browser.wait(this.EC.elementToBeClickable(gridvalueLink));
         await browser.sleep(3000);
