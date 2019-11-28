@@ -17,6 +17,53 @@ class ActivityTabPage {
         filterAuthor: '.person-input',
         filterPopupApplyOrClearButton: '.filter-options .d-button',
         activityText: '[rx-view-component-id="34167059-11d4-4e85-8a58-e501544e2461"] [title="Activity"]',
+        FilterTask: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .d-tag-label',
+        FilterPopUp: '.activity-log-filter-trigger',
+        filterApplyButtonEnableDisabled: '.filter-options button[disabled="disabled"]',
+        filterLists: '.d-tag-label',
+        nMoreLink: '.show__more-toggle',
+        closeNmoreLink: '.activity-log-filter',
+        removeIconFilterList: '.tag-pill-item .d-tag-remove-button',
+        activityTab: '.ui-tab-wrapper',
+        isFilterPresent: '.tag-pill-item',
+    }
+
+    async removeFilterList(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.removeIconFilterList)));
+        await $(this.selectors.removeIconFilterList).click();
+    }
+
+    async isfilterPresent(): Promise<boolean> {
+        return await $(this.selectors.isFilterPresent).isPresent();
+    }
+
+    async isfilterListDisplayed(filterList: string): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterLists)));
+        return await element(by.cssContainingText(this.selectors.filterLists, filterList)).isPresent();
+    }
+
+    async getTextFromFilterList(filterList: string): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterLists)));
+        return await element(by.cssContainingText(this.selectors.filterLists, filterList)).getText();
+    }
+
+    async clickOnNmoreLink(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nMoreLink)));
+        await $(this.selectors.nMoreLink).click();
+    }
+
+    async closeNmoreLink(): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.nMoreLink)));
+        await $(this.selectors.activityTab).click();
+    }
+
+    async getTextOfNmoreLink(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nMoreLink)));
+        return await $(this.selectors.nMoreLink).getText();
+    }
+
+    async isFilterPopUpDisplayed(): Promise<string> {
+        return await $(this.selectors.FilterPopUp).getAttribute('aria-expanded');
     }
 
     async clickActivityNoteTextBox(): Promise<void> {
@@ -78,10 +125,27 @@ class ActivityTabPage {
         await $(this.selectors.filterButton).click();
     }
 
-    async selectFilterCheckBox(filterCheckBox: string): Promise<void> {
+    async checkFilterApplyButtonIsDisabledOrEnabled(): Promise<number> {
+        return await $$(this.selectors.filterApplyButtonEnableDisabled).count();
+    }
+
+    async getTextTaskFilterOption(filterCheckBox: string): Promise<string> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
-        await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBox)).click();
-        await element(this.selectors.filterCheckbox).isSelected();
+        return await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBox)).getText();
+    }
+
+    async isAuthorSearchBoxVisible(): Promise<boolean> {
+        return await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
+    }
+
+    async getTextOfFilterTaskOptions(filterCheckBoxText: string): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.filterCheckbox)));
+        return await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBoxText)).getText();
+    }
+
+    async selectFilterCheckBox(filterCheckBoxText: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
+        await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBoxText)).click();
     }
 
     async searchAuthorOnFilter(AuthorName: string): Promise<void> {
@@ -99,7 +163,12 @@ class ActivityTabPage {
 
     async clickOnFilterClearButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPopupApplyOrClearButton)));
-        await element(by.cssContainingText(this.selectors.filterPopupApplyOrClearButton, 'clear')).click();
+        await element(by.cssContainingText(this.selectors.filterPopupApplyOrClearButton, 'Clear')).click();
+    }
+
+    async getTextOfFilterTask(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.FilterTask)));
+        return await $(this.selectors.filterAuthor).getText();
     }
 
     async isTextPresentInActivityLog(caseActivityLogText: string): Promise<boolean> {

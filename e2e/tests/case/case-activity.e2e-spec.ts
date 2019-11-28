@@ -23,6 +23,352 @@ describe('case activity', () => {
     afterAll(async () => {
         await navigationPage.signOut();
     });
+    it('DRDMV-16759: Task Activity Filter UI validation', async () => {
+        // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
+        await navigationPage.gotCreateCase();
+        await createCase.selectRequester('Al Allbrook');
+        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.clickSaveCaseButton();
+        await utilCommon.closePopUpMessage();
+        await createCase.clickGoToCaseButton();
+
+        // On view case page.
+        var caseIdText: string = await viewCasePo.getCaseID();
+        await viewCasePo.clickAddTaskButton();
+        await viewCasePo.addTaskFromTaskTemplate('File Report');
+        await manageTaskBladePo.clickTaskLinkOnManageTask('File Report');
+        browser.sleep(5000);
+
+        // 2nd step: Inspect Task Activity UI - Click on FIlter
+        await activityTabPage.clickOnFilterButton();
+
+        //3rd step: Inspect Filter Panel UI
+        // i) step: - Clear, Apply button (Apply button is disabled until any filter is selected)
+        var count1: number = await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled();
+        await expect(count1).toBeGreaterThan(0);
+
+        // ii) step:- Verify Task Filter options ,-- General Notes, -- Status Change, -- Assignment Change, -- Category Change
+        var filterOption1: string = await activityTabPage.getTextTaskFilterOption('General Notes');
+        var filterOption2: string = await activityTabPage.getTextTaskFilterOption('Status Change');
+        var filterOption3: string = await activityTabPage.getTextTaskFilterOption('Assignment Change');
+        var filterOption4: string = await activityTabPage.getTextTaskFilterOption('Category Change');
+        await expect(filterOption1).toBe('General Notes');
+        await expect(filterOption2).toBe('Status Change');
+        await expect(filterOption3).toBe('Assignment Change');
+        await expect(filterOption4).toBe('Category Change');
+        // iii) step:- -- Search field for Author search
+        var authorSearchBoxVisbility: boolean = await activityTabPage.isAuthorSearchBoxVisible();
+        await expect(authorSearchBoxVisbility).toBeTruthy("authorSearchBoxVisbility is not visible");
+
+        // // 4th step: Click on a filter option, - Click on selected filter again
+        //         // i) Check box is selected and Apply button is enabled
+        await activityTabPage.selectFilterCheckBox('General Notes');
+        var count2: number = await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled();
+        await expect(count2).toBeLessThan(1);
+
+        // ii) - Check box is un selected and Apply button is disabled
+        await activityTabPage.selectFilterCheckBox('General Notes');
+        var count3: number = await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled();
+        await expect(count3).toBeGreaterThan(0);
+
+        // 5th step: Select some filters and click on Apply
+        // i)Selected Filters are applied and filter panel is closed.
+        var filterPopup: string = await activityTabPage.isFilterPopUpDisplayed();
+        await expect(filterPopup).toEqual('true');
+
+        await activityTabPage.selectFilterCheckBox('General Notes');
+        await activityTabPage.selectFilterCheckBox('Status Change');
+        await activityTabPage.selectFilterCheckBox('Assignment Change');
+        await activityTabPage.selectFilterCheckBox('Category Change');
+        await activityTabPage.searchAuthorOnFilter('Angelina Jolie');
+        await activityTabPage.clickOnFilterApplyButton();
+        browser.sleep(2000);
+        var filterPopup2: string = await activityTabPage.isFilterPopUpDisplayed();
+        await expect(filterPopup2).toBe('false');
+
+        // //   ii) Selected Filters are displayed in Activity with first filter and + other selected filters
+        var str1: string = await activityTabPage.getTextFromFilterList('General Notes');
+        await expect(str1).toBe('General Notes');
+        await activityTabPage.clickOnNmoreLink();
+        var str2: string = await activityTabPage.getTextFromFilterList('Status Change');
+        await expect(str2).toBe('Status Change');
+        var str3: string = await activityTabPage.getTextFromFilterList('Assignment Change');
+        await expect(str3).toBe('Assignment Change');
+        var str4: string = await activityTabPage.getTextFromFilterList('Category Change');
+        await expect(str4).toBe('Category Change');
+        var str5: string = await activityTabPage.getTextFromFilterList('ajolie');
+        await expect(str5).toBe('Author: ajolie');
+        // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
+        await activityTabPage.closeNmoreLink();
+        await activityTabPage.clickOnNmoreLink();
+        var str6: string = await activityTabPage.getTextFromFilterList('General Notes');
+        await expect(str6).toBe('General Notes');
+        var linkText: string = await activityTabPage.getTextOfNmoreLink();
+        await expect(linkText).toBe('+ 4 more');
+        await activityTabPage.removeFilterList();
+        var str6: string = await activityTabPage.getTextFromFilterList('Status Change');
+        await expect(str6).toBe('Status Change');
+        var linkText: string = await activityTabPage.getTextOfNmoreLink();
+        await expect(linkText).toBe('+ 3 more');
+        await activityTabPage.closeNmoreLink();
+        browser.sleep(3000);
+        // iv)- Click on + n more button (- Selected filter list is displayed )
+        await activityTabPage.clickOnNmoreLink();
+        var str2: string = await activityTabPage.getTextFromFilterList('Status Change');
+        await expect(str2).toBe('Status Change');
+        var str3: string = await activityTabPage.getTextFromFilterList('Assignment Change');
+        await expect(str3).toBe('Assignment Change');
+        var str4: string = await activityTabPage.getTextFromFilterList('Category Change');
+        await expect(str4).toBe('Category Change');
+        var str5: string = await activityTabPage.getTextFromFilterList('ajolie');
+        await expect(str5).toBe('Author: ajolie');
+        await activityTabPage.closeNmoreLink();
+        //  v) - That particular filter is removed.
+        var str6: string = await activityTabPage.getTextFromFilterList('Status Change');
+        await expect(str6).toBe('Status Change');
+        await activityTabPage.removeFilterList();
+        var str7: boolean = await activityTabPage.isfilterListDisplayed('Status Change');
+        console.log(str7);
+        await expect(str7).not.toBeTruthy('Status Change displayed');
+        browser.sleep(3000);
+        // 6) All filters are removed.
+        await activityTabPage.clickOnFilterButton();
+        await activityTabPage.clickOnFilterClearButton();
+        var str8: boolean = await activityTabPage.isfilterPresent();
+        await expect(str8).not.toBeTruthy('filter displayed');
+
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // For Automation
+        // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
+        await navigationPage.gotCreateCase();
+        await createCase.selectRequester('Al Allbrook');
+        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.clickSaveCaseButton();
+        await utilCommon.closePopUpMessage();
+        await createCase.clickGoToCaseButton();
+
+        // On view case page.
+        var caseIdText: string = await viewCasePo.getCaseID();
+
+        await viewCasePo.clickAddTaskButton();
+        await viewCasePo.addTaskFromTaskTemplate('A Failing Task');
+        await manageTaskBladePo.clickTaskLinkOnManageTask('The execution of this task will fail and can be used to demonstrate how to handle this case.');
+        browser.sleep(5000);
+
+        // 2nd step: Inspect Task Activity UI - Click on FIlter
+        await activityTabPage.clickOnFilterButton();
+
+        // 3rd step: Inspect Filter Panel UI
+        // i) step: - Clear, Apply button (Apply button is disabled until any filter is selected)
+        var count1: number = await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled();
+        await expect(count1).toBeGreaterThan(0);
+
+        // ii) step:- Verify Task Filter options ,-- General Notes, -- Status Change, -- Assignment Change, -- Category Change
+        var filterOption1: string = await activityTabPage.getTextTaskFilterOption('General Notes');
+        var filterOption2: string = await activityTabPage.getTextTaskFilterOption('Status Change');
+        var filterOption3: string = await activityTabPage.getTextTaskFilterOption('Assignment Change');
+        var filterOption4: string = await activityTabPage.getTextTaskFilterOption('Category Change');
+        await expect(filterOption1).toBe('General Notes');
+        await expect(filterOption2).toBe('Status Change');
+        await expect(filterOption3).toBe('Assignment Change');
+        await expect(filterOption4).toBe('Category Change');
+        // iii) step:- -- Search field for Author search
+        var authorSearchBoxVisbility: boolean = await activityTabPage.isAuthorSearchBoxVisible();
+        await expect(authorSearchBoxVisbility).toBeTruthy("authorSearchBoxVisbility is not visible");
+
+        // 4th step: Click on a filter option, - Click on selected filter again
+        // i) Check box is selected and Apply button is enabled
+        await activityTabPage.selectFilterCheckBox('General Notes');
+        var count2: number = await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled();
+        await expect(count2).toBeLessThan(1);
+
+        // ii) - Check box is un selected and Apply button is disabled
+        await activityTabPage.selectFilterCheckBox('General Notes');
+        var count3: number = await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled();
+        await expect(count3).toBeGreaterThan(0);
+
+        // 5th step: Select some filters and click on Apply
+        // i)Selected Filters are applied and filter panel is closed.
+        var filterPopup: string = await activityTabPage.isFilterPopUpDisplayed();
+        await expect(filterPopup).toEqual('true');
+
+        await activityTabPage.selectFilterCheckBox('General Notes');
+        await activityTabPage.selectFilterCheckBox('Status Change');
+        await activityTabPage.selectFilterCheckBox('Assignment Change');
+        await activityTabPage.selectFilterCheckBox('Category Change');
+        await activityTabPage.searchAuthorOnFilter('Angelina Jolie');
+        await activityTabPage.clickOnFilterApplyButton();
+        browser.sleep(2000);
+        var filterPopup2: string = await activityTabPage.isFilterPopUpDisplayed();
+        await expect(filterPopup2).toBe('false');
+
+        // //   ii) Selected Filters are displayed in Activity with first filter and + other selected filters
+        var str1: string = await activityTabPage.getTextFromFilterList('General Notes');
+        await expect(str1).toBe('General Notes');
+        await activityTabPage.clickOnNmoreLink();
+        var str2: string = await activityTabPage.getTextFromFilterList('Status Change');
+        await expect(str2).toBe('Status Change');
+        var str3: string = await activityTabPage.getTextFromFilterList('Assignment Change');
+        await expect(str3).toBe('Assignment Change');
+        var str4: string = await activityTabPage.getTextFromFilterList('Category Change');
+        await expect(str4).toBe('Category Change');
+        var str5: string = await activityTabPage.getTextFromFilterList('ajolie');
+        await expect(str5).toBe('Author: ajolie');
+        // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
+        await activityTabPage.closeNmoreLink();
+        await activityTabPage.clickOnNmoreLink();
+        var str6: string = await activityTabPage.getTextFromFilterList('General Notes');
+        await expect(str6).toBe('General Notes');
+        var linkText: string = await activityTabPage.getTextOfNmoreLink();
+        await expect(linkText).toBe('+ 4 more');
+        await activityTabPage.removeFilterList();
+        var str6: string = await activityTabPage.getTextFromFilterList('Status Change');
+        await expect(str6).toBe('Status Change');
+        var linkText: string = await activityTabPage.getTextOfNmoreLink();
+        await expect(linkText).toBe('+ 3 more');
+        await activityTabPage.closeNmoreLink();
+        browser.sleep(3000);
+        // iv)- Click on + n more button (- Selected filter list is displayed )
+        await activityTabPage.clickOnNmoreLink();
+        var str2: string = await activityTabPage.getTextFromFilterList('Status Change');
+        await expect(str2).toBe('Status Change');
+        var str3: string = await activityTabPage.getTextFromFilterList('Assignment Change');
+        await expect(str3).toBe('Assignment Change');
+        var str4: string = await activityTabPage.getTextFromFilterList('Category Change');
+        await expect(str4).toBe('Category Change');
+        var str5: string = await activityTabPage.getTextFromFilterList('ajolie');
+        await expect(str5).toBe('Author: ajolie');
+        await activityTabPage.closeNmoreLink();
+        //  v) - That particular filter is removed.
+        var str6: string = await activityTabPage.getTextFromFilterList('Status Change');
+        await expect(str6).toBe('Status Change');
+        await activityTabPage.removeFilterList();
+        var str7: boolean = await activityTabPage.isfilterListDisplayed('Status Change');
+        console.log(str7);
+        await expect(str7).not.toBeTruthy('Status Change displayed');
+        browser.sleep(3000);
+        // 6) All filters are removed.
+        await activityTabPage.clickOnFilterButton();
+        await activityTabPage.clickOnFilterClearButton();
+        var str8: boolean = await activityTabPage.isfilterPresent();
+        await expect(str8).not.toBeTruthy('filter displayed');
+
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // For External
+        // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
+        await navigationPage.gotCreateCase();
+        await createCase.selectRequester('Al Allbrook');
+        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.clickSaveCaseButton();
+        await utilCommon.closePopUpMessage();
+        await createCase.clickGoToCaseButton();
+
+        // On view case page.
+        var caseIdText: string = await viewCasePo.getCaseID();
+
+        await viewCasePo.clickAddTaskButton();
+        await viewCasePo.addTaskFromTaskTemplate('External Test Template');
+        await manageTaskBladePo.clickTaskLinkOnManageTask('External Task');
+        browser.sleep(5000);
+
+        // 2nd step: Inspect Task Activity UI - Click on FIlter
+        await activityTabPage.clickOnFilterButton();
+
+        //3rd step: Inspect Filter Panel UI
+        // i) step: - Clear, Apply button (Apply button is disabled until any filter is selected)
+        var count1: number = await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled();
+        await expect(count1).toBeGreaterThan(0);
+
+        // ii) step:- Verify Task Filter options ,-- General Notes, -- Status Change, -- Assignment Change, -- Category Change
+        var filterOption1: string = await activityTabPage.getTextTaskFilterOption('General Notes');
+        var filterOption2: string = await activityTabPage.getTextTaskFilterOption('Status Change');
+        var filterOption3: string = await activityTabPage.getTextTaskFilterOption('Assignment Change');
+        var filterOption4: string = await activityTabPage.getTextTaskFilterOption('Category Change');
+        await expect(filterOption1).toBe('General Notes');
+        await expect(filterOption2).toBe('Status Change');
+        await expect(filterOption3).toBe('Assignment Change');
+        await expect(filterOption4).toBe('Category Change');
+        // iii) step:- -- Search field for Author search
+        var authorSearchBoxVisbility: boolean = await activityTabPage.isAuthorSearchBoxVisible();
+        await expect(authorSearchBoxVisbility).toBeTruthy("authorSearchBoxVisbility is not visible");
+
+        // // 4th step: Click on a filter option, - Click on selected filter again
+        //         // i) Check box is selected and Apply button is enabled
+        await activityTabPage.selectFilterCheckBox('General Notes');
+        var count2: number = await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled();
+        await expect(count2).toBeLessThan(1);
+
+        // ii) - Check box is un selected and Apply button is disabled
+        await activityTabPage.selectFilterCheckBox('General Notes');
+        var count3: number = await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled();
+        await expect(count3).toBeGreaterThan(0);
+
+        // 5th step: Select some filters and click on Apply
+        // i)Selected Filters are applied and filter panel is closed.
+        var filterPopup: string = await activityTabPage.isFilterPopUpDisplayed();
+        await expect(filterPopup).toEqual('true');
+
+        await activityTabPage.selectFilterCheckBox('General Notes');
+        await activityTabPage.selectFilterCheckBox('Status Change');
+        await activityTabPage.selectFilterCheckBox('Assignment Change');
+        await activityTabPage.selectFilterCheckBox('Category Change');
+        await activityTabPage.searchAuthorOnFilter('Angelina Jolie');
+        await activityTabPage.clickOnFilterApplyButton();
+        browser.sleep(2000);
+        var filterPopup2: string = await activityTabPage.isFilterPopUpDisplayed();
+        await expect(filterPopup2).toBe('false');
+
+        // //   ii) Selected Filters are displayed in Activity with first filter and + other selected filters
+        var str1: string = await activityTabPage.getTextFromFilterList('General Notes');
+        await expect(str1).toBe('General Notes');
+        await activityTabPage.clickOnNmoreLink();
+        var str2: string = await activityTabPage.getTextFromFilterList('Status Change');
+        await expect(str2).toBe('Status Change');
+        var str3: string = await activityTabPage.getTextFromFilterList('Assignment Change');
+        await expect(str3).toBe('Assignment Change');
+        var str4: string = await activityTabPage.getTextFromFilterList('Category Change');
+        await expect(str4).toBe('Category Change');
+        var str5: string = await activityTabPage.getTextFromFilterList('ajolie');
+        await expect(str5).toBe('Author: ajolie');
+        // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
+        await activityTabPage.closeNmoreLink();
+        await activityTabPage.clickOnNmoreLink();
+        var str6: string = await activityTabPage.getTextFromFilterList('General Notes');
+        await expect(str6).toBe('General Notes');
+        var linkText: string = await activityTabPage.getTextOfNmoreLink();
+        await expect(linkText).toBe('+ 4 more');
+        await activityTabPage.removeFilterList();
+        var str6: string = await activityTabPage.getTextFromFilterList('Status Change');
+        await expect(str6).toBe('Status Change');
+        var linkText: string = await activityTabPage.getTextOfNmoreLink();
+        await expect(linkText).toBe('+ 3 more');
+        await activityTabPage.closeNmoreLink();
+        browser.sleep(3000);
+        // iv)- Click on + n more button (- Selected filter list is displayed )
+        await activityTabPage.clickOnNmoreLink();
+        var str2: string = await activityTabPage.getTextFromFilterList('Status Change');
+        await expect(str2).toBe('Status Change');
+        var str3: string = await activityTabPage.getTextFromFilterList('Assignment Change');
+        await expect(str3).toBe('Assignment Change');
+        var str4: string = await activityTabPage.getTextFromFilterList('Category Change');
+        await expect(str4).toBe('Category Change');
+        var str5: string = await activityTabPage.getTextFromFilterList('ajolie');
+        await expect(str5).toBe('Author: ajolie');
+        await activityTabPage.closeNmoreLink();
+        //  v) - That particular filter is removed.
+        var str6: string = await activityTabPage.getTextFromFilterList('Status Change');
+        await expect(str6).toBe('Status Change');
+        await activityTabPage.removeFilterList();
+        var str7: boolean = await activityTabPage.isfilterListDisplayed('Status Change');
+        console.log(str7);
+        await expect(str7).not.toBeTruthy('Status Change displayed');
+        browser.sleep(3000);
+        // 6) All filters are removed.
+        await activityTabPage.clickOnFilterButton();
+        await activityTabPage.clickOnFilterClearButton();
+        var str8: boolean = await activityTabPage.isfilterPresent();
+        await expect(str8).not.toBeTruthy('filter displayed');
+    }, 180 * 1000);
 
     it('DRDMV-18048: While adding a note on Case one or more agent can be tagged in Comment', async () => {
         await navigationPage.gotCreateCase();
@@ -112,4 +458,5 @@ describe('case activity', () => {
         await activityTabPage.clickOnPostButton();
         await activityTabPage.clickOnHyperlinkFromActivity(knowledgeBodyText, 'Qadim Katawazi');
     }, 120 * 1000);
+
 })
