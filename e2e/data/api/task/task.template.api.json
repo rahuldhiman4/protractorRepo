@@ -1,5 +1,5 @@
 {
-  "ManualTaskTemplateRequiredData": {
+  "ManualTaskTemplate": {
     "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
     "recordDefinitionName": "com.bmc.dsm.task-lib:Task Template",
     "fieldInstances": {
@@ -29,7 +29,7 @@
       }
     }
   },
-  "AutoTaskTemplateNewProcessRequiredData": {
+  "AutoTaskTemplateNewProcess": {
     "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
     "recordDefinitionName": "com.bmc.dsm.task-lib:Task Template",
     "fieldInstances": {

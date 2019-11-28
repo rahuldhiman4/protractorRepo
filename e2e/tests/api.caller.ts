@@ -1,53 +1,58 @@
 import { ProtractorExpectedConditions, protractor } from "protractor";
-import loginApi from "../api/login.api";
-import caseApi from "../api/create.case.api";
-import createRecordInstance from "../api/recordinstance.api";
-import apiUtil from "../utils/api/api.common";
+import apiHelper from "../api/api.helper";
 
 describe('Login and create case from API', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    xit('should create case', async () => {
-        await loginApi.apiLogin('qtao');
-        var newCase = await caseApi.createCase('qdu', "new test case");
-        console.log("new case is created===", newCase.id);
-        console.log("new case is created===", newCase.displayId);
-    });
 
-    xit('should create case template', async () => {
-        await loginApi.apiLogin('qkatawazi');
-        var newCaseTemplate = await createRecordInstance.createCaseTemplateWithRequiredFields("My New CaseTemplate9", 'draft');
-        console.log("draft case Template is created===", newCaseTemplate.id);
-        console.log("draft case Template is created===", newCaseTemplate.displayId);
-        var newCaseTemplate = await createRecordInstance.createCaseTemplateWithRequiredFields("My New CaseTemplate10", 'active');
+    xit('create case template', async () => {
+        var templateData = {
+            "templateName": "case template 2",
+            "templateStatus": "Active",
+        }
+
+        await apiHelper.apiLogin('qkatawazi');
+        var newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
         console.log("active case Template is created===", newCaseTemplate.id);
         console.log("active case Template is created===", newCaseTemplate.displayId);
     });
 
-    xit('should create new user', async () => {
-        await loginApi.apiLogin('tadmin');
-        var newUser = await createRecordInstance.createNewUser("myname","newlogin");
+    xit('create manual task template', async () => {
+        var templateData = {
+            "templateName": "task template 1",
+            "templateSummary": "task template summary 1",
+            "templateStatus": "Active",
+        }
+
+        await apiHelper.apiLogin('qkatawazi');
+        var manualTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
+        console.log("active case Template is created===", manualTaskTemplate.id);
+        console.log("active case Template is created===", manualTaskTemplate.displayId);
     });
 
-    xit('get guid', async () => {
-        await loginApi.apiLogin('tadmin');
-        var petramcoGuid = await apiUtil.getOrganizationGuid("Petramco");
-        console.log("Guid found::", petramcoGuid);
-    });
+    xit('create auto task template', async () => {
+        var templateData = {
+            "templateName": "task template 1",
+            "templateSummary": "task template summary 1",
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.arsys.rx.approval",
+            "processName": "Approval Process 1",
+        }
 
-    xit('associate entities', async () => {
-        await loginApi.apiLogin('tadmin');
-        var psilonGuid = await apiUtil.getOrganizationGuid("Psilon");
-        var userGuid = await apiUtil.getPersonGuid("newlogin");
-        console.log(userGuid, "::Guid found::", psilonGuid);
-        await apiUtil.associateFoundationElements("Agent Supports Primary Organization", userGuid, psilonGuid);
+        await apiHelper.apiLogin('qkatawazi');
+        var autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(templateData);
+        console.log("active case Template is created===", autoTaskTemplate.id);
+        console.log("active case Template is created===", autoTaskTemplate.displayId);
     });
 
     it('create user with psilon and petramco access', async () => {
-        await loginApi.apiLogin('tadmin');
-        var newUserGuid = await createRecordInstance.createNewUser("DualCompany","dualLogin");
-        var petramcoGuid = await apiUtil.getOrganizationGuid("Petramco");
-        await apiUtil.associateFoundationElements("Agent Supports Primary Organization", newUserGuid, petramcoGuid);
-        var psilonGuid = await apiUtil.getOrganizationGuid("Psilon");
-        await apiUtil.associateFoundationElements("Agent Supports Primary Organization", newUserGuid, psilonGuid);
+        await apiHelper.apiLogin('tadmin');
+        var userData = {
+            "firstName": "Petramco2",
+            "lastName": "Psilon2",
+            "userId": "psilopetra2",
+        }
+        await apiHelper.createNewUser(userData);
+        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
+        await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
     });
 })

@@ -1,11 +1,26 @@
 import axios, { AxiosResponse } from "axios";
 
-export interface ITemplate {
-    id: string;
-    displayId: string;
-}
+const recordInstanceUri = "/api/rx/application/record/recordinstance";
 
-class ApiUtils {
+class ApiCoreUtil {
+    async createRecordInstance(jsonBody: string): Promise<AxiosResponse> {
+        const newRecord = await axios.post(
+            recordInstanceUri,
+            jsonBody
+        );
+        console.log('Create RecordInstance API Status =============>', newRecord.status);
+        return newRecord;
+    }
+
+    async updateRecordInstance(recordName: string, recordGUID: string, jsonBody: string): Promise<AxiosResponse> {
+        const newRecord = await axios.put(
+            recordInstanceUri + "/" + recordName + "/" + recordGUID,
+            jsonBody
+        );
+        console.log('Create RecordInstance API Status =============>', newRecord.status);
+        return newRecord;
+    }
+
     async getOrganizationGuid(orgName: string): Promise<string> {
 
         const dataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery"
@@ -54,8 +69,8 @@ class ApiUtils {
                 "nodeBRecordInstanceIds": [entity2]
             }
         );
-        console.log('Associate Entities API Status =============>', associateEntities.data);
+        console.log('Associate Entities API Status =============>', associateEntities.status);
     }
 }
 
-export default new ApiUtils();
+export default new ApiCoreUtil();
