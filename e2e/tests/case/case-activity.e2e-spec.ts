@@ -92,7 +92,7 @@ describe('case activity', () => {
 
     }, 120 * 1000);
 
-    fit('DRDMV-16734: From Case Activity Filters > Person search behavior in Author field', async () => {
+    it('DRDMV-16734: From Case Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Login to BWF with Case agent and open case from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
