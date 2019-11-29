@@ -14,6 +14,11 @@ import activitytab from "../../pageobject/activity-tab.po"
 import copyTemplate from "../../pageobject/task/copy-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/task/view-tasktemplate.po";
 import viewCasePage from "../../pageobject/case/view-case.po"
+import editCasePage from '../../pageobject/case/edit-case.po';
+import personProfilePage from '../../pageobject/case/person-profile.po';
+import composemailPage from '../../pageobject/email/compose-mail.po';
+import changeAssignmentPage from '../../pageobject/change-assignemet-blade.po'
+import caseTemplatePage from '../../pageobject/case/select-casetemplate-blade.po';
 
 describe('create Task template', () => {
     beforeAll(async () => {
@@ -275,56 +280,5 @@ describe('create Task template', () => {
         await expect(activitytab.isActivityTextPresent()).toBeTruthy();
         await expect(activitytab.isActivityTextPresent()).toBeTruthy();
     });
-
-    it('DRDMV-14214: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {
-        let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
-        let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
-        let automationTaskTemplate = 'Automation task' + Math.floor(Math.random() * 1000000);
-        let automationTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
-        let processName = 'Process Name ' + Math.floor(Math.random() * 1000000);
-
-        //Automation Task template
-        await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
-        await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
-        await taskTemplate.setTemplateName(automationTaskTemplate);
-        await taskTemplate.setTaskSummary(automationTaskSummary);
-        await taskTemplate.setTaskDescription('Description in manual task');
-        await taskTemplate.selectCompanyByName('Petramco');
-        await taskTemplate.setNewProcessName('Business Workflows', processName);
-        await taskTemplate.selectTemplateStatus('Active');
-        await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
-
-        await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + processName);
-        await viewTaskTemplate.clickOnCopyTemplate();
-        await expect(copyTemplate.unSelectCopyExistingProcess()).toBeTruthy();
-        await expect(copyTemplate.getProcessName()).toBe(processName);
-        await copyTemplate.setTemplateName(manualTaskSummary);
-        await copyTemplate.selectTemplateStatus('Active');
-        await copyTemplate.setTaskSummary(manualTaskSummary)
-        await copyTemplate.clickSaveCopytemplate();
-        await utilCommon.clickOnWarningOk();
-
-        await navigationPage.signOut();
-        await loginPage.login('qtao');
-        await navigationPage.gotCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + manualTaskTemplate);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
-        await viewCasePage.clickAddTaskButton();
-
-        //Add Automation Task templates in Case
-        await viewCasePage.addTaskFromTaskTemplate(manualTaskSummary);
-        await browser.sleep(2000);
-        await manageTask.clickOnCloseButton();
-        await viewCasePage.changeCaseStatus("In Progress");
-        await viewCasePage.clickSaveStatus();
-        await viewCasePage.goToManageTask();
-        await manageTask.clickTaskLinkOnManageTask(manualTaskSummary);
-        await expect(viewTask.getTaskStatusValue()).toBe('Completed');
-    }, 150 * 1000);
 });
+

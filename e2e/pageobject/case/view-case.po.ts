@@ -1,11 +1,13 @@
 import { ProtractorExpectedConditions, protractor, browser, element, by, $ } from "protractor"
 import manageTask from "../../pageobject/task/manage-task-blade.po";
+import editCasePage from "../../pageobject/case/edit-case.po";
 
 class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
         saveUpdateStatus: '[rx-view-component-id="ee5dd503-a10e-4d22-9ac5-99c400892bb7"] button',
+        stopWatching: '[rx-view-component-id="a62c849f-5bb0-480f-9811-50def59d82d0"] button',
         statusChange: '[rx-view-component-id="48bbcbbf-564c-4d46-8dc2-1e7670c187ff"] .status-transition',
         statusChangeReason: '[rx-view-component-id="049c43a1-4cbd-482d-980d-5db4ed78f295"]',
         statusDropDown: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"]',
@@ -13,6 +15,22 @@ class ViewCasePage {
         addTaskButton: '[rx-view-component-id="db1c57fc-c332-40fa-b1c0-759e21d9ad5c"] button',
         editLink: '.edit-link',
         caseIdText: '[rx-view-component-id="7b47ca08-e9d4-4656-8f96-3bc751c098b0"] .title',
+        requesterName: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .person-main a',
+        requesterPhoneNo: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .ac-link-person-phone',
+        requesterEmail: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .ac-link-person-email',
+        contactPersonDrpDwn: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] strong span',
+        contactPersonName: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .person-main a',
+        contactPersonContact: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .ac-link-person-phone',
+        contactPersonEmail: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .ac-link-person-email',
+        flowsetText: '[rx-view-component-id="73fb70b0-2992-4dc5-b7ed-3d3d13cc4d6b"] .d-textfield__rx-value',
+        descriptionText: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] div[ng-transclude]',
+        assigneeText: '[rx-view-component-id="dfe65f6f-7aea-476c-8042-f3aa34e3fb04"] .person-link a',
+        assignedGroupText: '[rx-view-component-id="66c1bbab-901d-42ed-b5e6-a04cb54d559f"] .d-textfield__rx-value',
+        departmentText: '[rx-view-component-id="795da3b4-6442-4b07-b6e1-7ce7c9987352"] .d-textfield__rx-value',
+        businessUnitText: '[rx-view-component-id="f14326b0-0c70-4827-8a02-95e82527409a"] .d-textfield__rx-value',
+        assignedCompanyText: '[rx-view-component-id="8b4d78f0-fbda-420c-928f-3dee49fde4fc"] .d-textfield__rx-value',
+        attachmentsLink: '[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
+        addToWatchlist: '[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button',
     }
 
     async addTaskFromTaskTemplate(templateName: string) {
@@ -22,6 +40,12 @@ class ViewCasePage {
         await manageTask.clickOnTaskGridSaveButton();
     }
 
+    
+    async clickAddToWatchlistLink(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
+        await $(this.selectors.addToWatchlist).click();
+    }
+    
     async clickSaveStatus(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveUpdateStatus)));
         await $(this.selectors.saveUpdateStatus).click();
@@ -45,6 +69,7 @@ class ViewCasePage {
     async clickEditCaseButton(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.editLink)));
         await $(this.selectors.editLink).click();
+        await browser.wait(this.EC.visibilityOf($(editCasePage.selectors.cancelBtn)));
     }
 
     async setStatusReason(statusValue: string): Promise<void> {
@@ -67,6 +92,87 @@ class ViewCasePage {
         await browser.wait(this.EC.visibilityOf($(this.selectors.caseIdText)));
         return await $(this.selectors.caseIdText).getText();
     }
+
+    async getRequesterName(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterName)));
+        return await $(this.selectors.requesterName).getText();
+    }
+
+    async getRequesterPhoneNo(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterPhoneNo)));
+        return await $(this.selectors.requesterPhoneNo).getText();
+    }
+
+    async getRequesterEmail(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterEmail)));
+        return await $(this.selectors.requesterEmail).getText();
+    }
+
+    async getContactPersonName(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.contactPersonName)));
+        return await $(this.selectors.contactPersonName).getText();
+    }
+
+    async getContactPersonerPhoneNo(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.contactPersonContact)));
+        return await $(this.selectors.contactPersonContact).getText();
+    }
+
+    async getContactPersonalEmail(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.contactPersonEmail)));
+        return await $(this.selectors.contactPersonEmail).getText();
+    }
+
+    async clickStopWatchingLink(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.stopWatching)));
+        await $(this.selectors.stopWatching).click();
+    }
+
+    async clickOnContactPersonerDrpDwn(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.contactPersonDrpDwn)));
+        await $(this.selectors.contactPersonDrpDwn).click();
+    }
+
+    async clickAttachmentsLink(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentsLink)));
+        await $(this.selectors.attachmentsLink).click();
+    }
+
+    async getFlowsetText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.flowsetText)));
+        return await $(this.selectors.flowsetText).getText();
+    }
+
+    async getCaseDescriptionText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.descriptionText)));
+        return await $(this.selectors.descriptionText).getText();
+    }
+
+    async getAssigneeText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeText)));
+        return await $(this.selectors.assigneeText).getText();
+    }
+
+    async getAssignedGroupText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroupText)));
+        return await $(this.selectors.assignedGroupText).getText();
+    }
+
+    async getDepartmentText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.departmentText)));
+        return await $(this.selectors.departmentText).getText();
+    }
+
+    async getBusinessUnitText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.businessUnitText)));
+        return await $(this.selectors.businessUnitText).getText();
+    }
+
+    async getAssignedCompanyText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedCompanyText)));
+        return await $(this.selectors.assignedCompanyText).getText();
+    }
+    
 }
 
 export default new ViewCasePage();

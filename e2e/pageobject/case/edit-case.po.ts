@@ -6,6 +6,9 @@ class CaseEditPage {
 
     selectors = {
         editLink: '.edit-link',
+        changeCaseTemplate: '[rx-view-component-id="f6cc5a13-26cd-4412-ae4e-6c6cc5e21908"] button',
+        selectCaseTemplate: '[rx-view-component-id="702fa086-4ddb-4741-b2cf-f16e22a49826"] button',
+        assignToMe: '[rx-view-component-id="094f8581-1f5f-4e45-ad67-fd92d81c8e94"] button',
         changeAssignment: '[rx-view-component-id="459e6f41-abd3-4726-8dc2-25bab758877f"] button',
         assignmentDropDownList: '.rx-assignment_modal_filters .rx-assignment-select',
         selectOptions: '.options-box .options li',
@@ -28,12 +31,18 @@ class CaseEditPage {
         summary: '[rx-view-component-id="244ffab2-bf04-4769-a5ac-c2a1f430e393"] .d-textfield__input',
         caseDescription: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .rx-description-textarea-edit',
         priorityGuid: 'add23d12-52e7-4c43-aa78-2aa0c6125bb5',
+        priorityRequiredText: '[rx-view-component-id="add23d12-52e7-4c43-aa78-2aa0c6125bb5"] .ui-select-container',
+        clearContactButton: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] button',
         categoryTier1Guid: 'b144d2ce-fd89-4977-9b3f-136a4b984efe',
         categoryTier2Guid: '7beae951-8345-4f97-9cac-48933083928f',
         categoryTier3Guid: '68d56b74-b9ad-444e-8dfc-ddec1e16897f',
         categoryTier4Guid: 'aa75da42-eeb4-4a6f-946b-74d5316b7641',
+        categoryTier1Drpbox: '[rx-view-component-id="593784cc-6bce-4bfd-82e1-7ca55aa28517"] .ui-select-toggle',
+        categoryTier2Drpbox: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] .ui-select-toggle',
+        categoryTier3Drpbox: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] .ui-select-toggle',
         labelGuid: 'd9b7ead5-02e4-4af4-b87e-9103439922b7',
         siteGuid: '664af3b6-dde6-47a7-84f9-4a5ad721e993',
+        clearSiteField: '[rx-view-component-id="664af3b6-dde6-47a7-84f9-4a5ad721e993"] .ui-select-toggle .caret',
         resolutionCodeGuid: '32eeffe4-f5c1-4fc8-9c91-25946cc86d66',
         siteChangeReason: '[rx-view-component-id="54d1727e-1b2d-4f4f-8fb4-a3174746ee1d"] input',
         targetDateDate: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] .ng-valid-date',
@@ -42,9 +51,12 @@ class CaseEditPage {
         targetDateMeredian: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] button.d-timepicker__input',
         resolutionDescription: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] textarea',
         attachLink: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] button',
-        personLink: '.person-link',
+        requesterPersonImage: '.ac-link-profile',
+        requesterText: '[class="person-main"] .d-textfield__item',
+        siteText: '.site_label',
+        requesterPersonNameLink: '.person-link a',
         personEmailLink: '.ac-link-person-email',
-        personPhoneLink: '.ac-link-person-phone',
+        personPhoneLink: 'a.ac-link-person-phone',
         contact: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] input',
         contactNameLink: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] a',
         cancelBtn: '[rx-view-component-id="f535ec30-5892-4150-a4a2-ffa74c9135cb"] button',
@@ -55,25 +67,27 @@ class CaseEditPage {
         categoryTier3Text: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] .d-textfield__rx-value',
         categoryTier4Text: '[rx-view-component-id="aa75da42-eeb4-4a6f-946b-74d5316b7641"] .d-textfield__rx-value',
         caseTemplateText: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .d-textfield__rx-value',
-        flowsetText: '[rx-view-component-id="73fb70b0-2992-4dc5-b7ed-3d3d13cc4d6b"] .d-textfield__rx-value',
-        descriptionText: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] div[ng-transclude]',
-        assigneeText: '[rx-view-component-id="dfe65f6f-7aea-476c-8042-f3aa34e3fb04"] .person-link a',
-        assignedGroupText: '[rx-view-component-id="66c1bbab-901d-42ed-b5e6-a04cb54d559f"] .d-textfield__rx-value',
-        departmentText: '[rx-view-component-id="795da3b4-6442-4b07-b6e1-7ce7c9987352"] .d-textfield__rx-value',
-        businessUnitText: '[rx-view-component-id="f14326b0-0c70-4827-8a02-95e82527409a"] .d-textfield__rx-value',
-        assignedCompanyText: '[rx-view-component-id="8b4d78f0-fbda-420c-928f-3dee49fde4fc"] .d-textfield__rx-value',
-        emailLink: '[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
-        attachmentsLink: '[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
-        addToWatchlist: '[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button',
-        stopWatching: '[rx-view-component-id="a62c849f-5bb0-480f-9811-50def59d82d0"] button',
         relatedCasesTab: '[rx-view-component-id="b3763a3b-0113-42a9-8e68-74bde7464352"] a[title="Related Cases"]',
         relatedPersonTab: '[rx-view-component-id="b3763a3b-0113-42a9-8e68-74bde7464352"] a[title="Related Persons"]',
         caseAccessTab: '[rx-view-component-id="b3763a3b-0113-42a9-8e68-74bde7464352"] a[title="Case Access"]',
         resourcesTab: '[rx-view-component-id="4a577ada-86cd-43fe-88b1-4b627dce93e6"] a[title="Resources"]',
-        activityTab: '[rx-view-component-id="4a577ada-86cd-43fe-88b1-4b627dce93e6"] a[title="Activity"]'
+        activityTab: '[rx-view-component-id="4a577ada-86cd-43fe-88b1-4b627dce93e6"] a[title="Activity"]',
+        assigneeCompany: '[rx-view-component-id="196878af-30b3-4ae2-ae7f-4c65baa5d951"] .ui-select-container',
+        department: '[rx-view-component-id="3265d389-cd00-45ca-b65a-8335c67582b7"] .ui-select-container',
+        assigneee: '[rx-view-component-id="7f1c67bf-9c39-4c46-b9ff-8d21ebaff4cb"] .ui-select-container',
+        buisnessUnit: '[rx-view-component-id="54e4d84f-daca-4988-b064-d79084ab9421"] .ui-select-container',
+        assignedGroup: '[rx-view-component-id="116edc77-c040-42db-8a32-dc836e4cb254"] .ui-select-container',
+        activityFeed: '[author="feedItem.author"]',
+        activityChangeFile: '.d-icon-files_change_o',
+    }
+
+    async waitForEditCasePageToBeDisplayed(): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.cancelBtn)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelBtn)));
     }
 
     async clickChangeAssignmentButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignment)));
         await $(this.selectors.changeAssignment).click();
     }
 
@@ -268,60 +282,6 @@ class CaseEditPage {
         return await $(this.selectors.caseTemplateText).getText();
     }
 
-    async getFlowsetText(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.flowsetText)));
-        return await $(this.selectors.flowsetText).getText();
-    }
-
-    async getCaseDescriptionText(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.descriptionText)));
-        return await $(this.selectors.descriptionText).getText();
-    }
-
-    async getAssigneeText(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeText)));
-        return await $(this.selectors.assigneeText).getText();
-    }
-
-    async getAssignedGroupText(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroupText)));
-        return await $(this.selectors.assignedGroupText).getText();
-    }
-
-    async getDepartmentText(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.departmentText)));
-        return await $(this.selectors.departmentText).getText();
-    }
-
-    async getBusinessUnitText(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.businessUnitText)));
-        return await $(this.selectors.businessUnitText).getText();
-    }
-
-    async getAssignedCompanyText(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedCompanyText)));
-        return await $(this.selectors.assignedCompanyText).getText();
-    }
-
-    async clickEmailLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
-        await $(this.selectors.assignedCompanyText).click();
-    }
-
-    async clickAttachmentsLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentsLink)));
-        await $(this.selectors.attachmentsLink).click();
-    }
-
-    async clickAddToWatchlistLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
-        await $(this.selectors.addToWatchlist).click();
-    }
-
-    async clickstopWatchingLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.stopWatching)));
-        await $(this.selectors.stopWatching).click();
-    }
 
     async navigateToRelatedCasesTab(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.relatedCasesTab)));
@@ -346,6 +306,174 @@ class CaseEditPage {
     async navigateToActivityTab(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityTab)));
         await $(this.selectors.activityTab).click();
+    }
+
+    async getRequesterName(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterPersonNameLink)));
+        return await $(this.selectors.requesterPersonNameLink).getText();
+    }
+
+    async getRequesterPhoneNo(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.personPhoneLink)));
+        return await $(this.selectors.personPhoneLink).getText();
+    }
+
+    async getRequesterEmail(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.personEmailLink)));
+        return await $(this.selectors.personEmailLink).getText();
+    }
+
+    async isSummaryRequiredText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.summary)));
+        return await $(this.selectors.personEmailLink).getAttribute('required');
+    }
+
+    async isPriorityRequiredText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.priorityRequiredText)));
+        return await $(this.selectors.priorityRequiredText).getAttribute('required');
+    }
+
+    async  isClearContactButtonEnable(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.clearContactButton)));
+        return await $(this.selectors.clearContactButton).isEnabled();
+    }
+
+    async isClearSiteButtonClickable(): Promise<boolean> {
+        try {
+            await browser.wait(this.EC.elementToBeClickable($(this.selectors.clearSiteField)));
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    async isDescriptionClickable(): Promise<boolean> {
+        try {
+            await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseDescription)));
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    async isAttachmentLinkClickable(): Promise<boolean> {
+        try {
+            await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachLink)));
+            return true;
+        } catch (error) {
+            return false;
+        }
+
+    }
+
+    async isCategoryTier1Disabled(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier1Drpbox)));
+        return await $(this.selectors.categoryTier1Drpbox).getAttribute("aria-disabled") == 'true';
+    }
+
+    async isCategoryTier2Disabled(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier2Drpbox)));
+        return await $(this.selectors.categoryTier2Drpbox).getAttribute("aria-disabled") == 'true';
+    }
+
+    async isCategoryTier3Disabled(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3Drpbox)));
+        return await $(this.selectors.categoryTier3Drpbox).getAttribute("aria-disabled") == 'true';
+    }
+
+    async isChangeAssignmentButtonPresent(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.changeAssignment)));
+        return await $(this.selectors.changeAssignment).isDisplayed();
+    }
+
+    async isAssignToMePresent(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3Drpbox)));
+        return await $(this.selectors.categoryTier3Drpbox).isDisplayed();
+    }
+
+    async isActivityPresent(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.activityTab)));
+        return await $(this.selectors.categoryTier3Drpbox).isDisplayed();
+    }
+
+    async isResourcePresent(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.resourcesTab)));
+        return await $(this.selectors.resourcesTab).isDisplayed();
+    }
+
+    async getAssignedCompanyReadable(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeCompany)));
+        return await $(this.selectors.assigneeCompany).getAttribute('disabled');
+    }
+
+    async getDepartmentCompanyReadable(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.department)));
+        return await $(this.selectors.department).getAttribute('disabled');
+    }
+
+    async getAssigneeReadable(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneee)));
+        return await $(this.selectors.assigneee).getAttribute('disabled');
+    }
+
+    async getBuisnessUnitReadable(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.buisnessUnit)));
+        return await $(this.selectors.buisnessUnit).getAttribute('disabled');
+    }
+
+    async getAssignedGroupReadable(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroup)));
+        return await $(this.selectors.assignedGroup).getAttribute('disabled');
+    }
+
+    async isActivityFeedPresent(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.activityFeed)));
+        return await $(this.selectors.activityFeed).isDisplayed();
+    }
+
+    async isActivityChangeFilePresent(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.activityChangeFile)));
+        return await $(this.selectors.activityChangeFile).isDisplayed();
+    }
+
+    async isRequesterTextDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterText)));
+        return await $(this.selectors.requesterText).isDisplayed();
+    }
+
+    async isRequesterImageDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterPersonImage)));
+        return await $(this.selectors.requesterPersonImage).isDisplayed();
+    }
+
+    async isSiteTextPresent(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.siteText)));
+        return await $(this.selectors.siteText).isDisplayed();
+    }
+
+    async clickOnRequesterName(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesterPersonNameLink)));
+        return await $(this.selectors.requesterPersonNameLink).click();
+    }
+
+    async clickOnRequesterMail(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personEmailLink)));
+        return await $(this.selectors.personEmailLink).click();
+    }
+
+    async getSelectCaseTemplate(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.selectCaseTemplate)));
+        return await $(this.selectors.selectCaseTemplate).getText();
+    }
+
+    async clickOnSelectCaseTemplate(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectCaseTemplate)));
+        return await $(this.selectors.selectCaseTemplate).click();
+    }
+
+    async getChangeCaseTemplate(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.changeCaseTemplate)));
+        return await $(this.selectors.changeCaseTemplate).getText();
     }
 }
 

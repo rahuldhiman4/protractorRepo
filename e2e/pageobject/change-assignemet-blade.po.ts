@@ -58,6 +58,11 @@ class ChangeAssignmentBlade {
         await $(this.selectors.assignToMeCheckBox).click();
     }
 
+    async clickOnCancelButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        await $(this.selectors.cancelButton).click();
+    }
+
     async selectCompany(companyValue: string): Promise<void> {
         const companyDropDown = await $$(this.selectors.assignmentDropDownList).get(0);
         await browser.wait(this.EC.elementToBeClickable(companyDropDown.$('button')));

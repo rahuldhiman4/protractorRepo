@@ -452,7 +452,7 @@ describe('case activity', () => {
         await createKnowlegePo.clickOnviewArticleLinkButton();
 
         // View Knowledege Page
-        await utilCommon.switchToNewWidnow();
+        await utilCommon.switchToNewWidnow(1);
         await createKnowlegePo.clickOnActivityTab();
         await activityTabPage.addActivityNote(knowledgeBodyText);
         await activityTabPage.clickOnPostButton();

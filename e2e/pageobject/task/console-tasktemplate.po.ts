@@ -10,6 +10,7 @@ class TaskTemplateGridPage {
         copyTaskTemplate: '[rx-view-component-id="48afba80-4d39-4c1a-a420-1c01992cd937"] button',
         searchTemplate: '[rx-id="search-text-input"]',
         recommendedTemplateLink: '.ui-grid__link',
+        recommendedTemplateCheckBox: '.ui-grid-icon-ok'
     }
 
     async setTaskSearchBoxValue(input: string): Promise<void> {
@@ -22,6 +23,11 @@ class TaskTemplateGridPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateLink)));
         await browser.sleep(3000);
         await $(this.selectors.recommendedTemplateLink).click();
+    }
+    async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateCheckBox)));
+        await browser.sleep(3000);
+        await $(this.selectors.recommendedTemplateCheckBox).click();
     }
     async clickOnManualTaskTemplateButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.manualTaskTemplateButton)));

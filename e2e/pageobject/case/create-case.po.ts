@@ -5,6 +5,7 @@ class CreateCasePage {
     selectors = {
         requesterInput: '[rx-view-component-id="be946309-c359-40fe-a579-1a0e0d04bb01"] input.person-input',
         requesters: '[rx-view-component-id="be946309-c359-40fe-a579-1a0e0d04bb01"] .uib-typeahead-match',
+        contacts: '[rx-view-component-id="e1f5a770-e416-4ed1-bfea-eefeed86544b"] .uib-typeahead-match',
         summary: '[rx-view-component-id="d73c8aff-f9e0-4eef-8226-a65f19fab4db"] input',
         contactInput: '[rx-view-component-id="e1f5a770-e416-4ed1-bfea-eefeed86544b"] input',
         contactRequesters: '[rx-view-component-id="e1f5a770-e416-4ed1-bfea-eefeed86544b"] .uib-typeahead-match',
@@ -23,6 +24,7 @@ class CreateCasePage {
         viewCaseButton: '[rx-view-component-id="fbfc234b-c34f-4aab-ac54-b3a9eddecebf"] button',
         selectCaseTemplateButton: '[rx-view-component-id="db1cc7ef-0430-42ad-8f28-1e524347cfb3"] button',
         clearTemplateButton: '[rx-view-component-id="d996182c-0930-40ed-987f-43e6da0a8d8a"] button',
+        contact: '[rx-view-component-id="e1f5a770-e416-4ed1-bfea-eefeed86544b"] input',
     }
 
     async selectRequester(requester: string): Promise<void> {
@@ -106,6 +108,12 @@ class CreateCasePage {
         await $(this.selectors.clearTemplateButton).click();
     }
 
+    async setContactName(contact: string): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.contact)));
+        await $(this.selectors.contact).sendKeys(contact);
+        await browser.wait(this.EC.visibilityOf($(this.selectors.contacts)));
+        await $$(this.selectors.contacts).first().click();
+    }
 }
 
 export default new CreateCasePage();
