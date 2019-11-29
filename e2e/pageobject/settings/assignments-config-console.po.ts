@@ -10,24 +10,12 @@ class AssignmentsConfigPage {
 
     async isAddAssignmentsBtnDisabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.addAssignmentBtn)));
-        let readProperty: string = await $(this.selectors.addAssignmentBtn).getAttribute("disabled");
-        if (readProperty == "true") {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return await $(this.selectors.addAssignmentBtn).getAttribute("disabled")=="true";
     }
 
     async isDeleteAssignmentConfigBtnDisabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
-        let readProperty: string = await $(this.selectors.deleteButton).getAttribute("disabled");
-        if (readProperty == "true") {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return await $(this.selectors.deleteButton).getAttribute("disabled")=="true";
     }
 }
 

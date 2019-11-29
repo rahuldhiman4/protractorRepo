@@ -10,24 +10,13 @@ class AutomatedStatusTransitionConfigConsolePage {
 
     async isAddAutomatedStatusTransitionBtnDisabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.addAutomatedTransitionButton)));
-        let readProperty: string = await $(this.selectors.addAutomatedTransitionButton).getAttribute("disabled");
-        if (readProperty == "true") {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return await $(this.selectors.addAutomatedTransitionButton).getAttribute("disabled")=="true";
+        
     }
 
     async isDeleteAutomatedStatusTransitionBtnDisabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
-        let readProperty: string = await $(this.selectors.deleteButton).getAttribute("disabled");
-        if (readProperty == "true") {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return await $(this.selectors.deleteButton).getAttribute("disabled")=="true";
     }
 
     async clickAddAutomatedStatusTransitionBtn(): Promise<void> {

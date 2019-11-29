@@ -12,36 +12,19 @@ class AssignmetnConfigEditPage {
 
     async isEditAssignmentNameDisabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.assignee)));
-        let readProperty: string = await $(this.selectors.editName).getAttribute("readonly");
-        if (readProperty == "true") {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return await $(this.selectors.editName).getAttribute("readonly")=="true";
     }
 
     async isSaveBtnDisabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
-        let readProperty: string = await $(this.selectors.saveButton).getAttribute("disabled");
-        if (readProperty == "true") {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return await $(this.selectors.saveButton).getAttribute("disabled")=="true";
     }
 
     async isDefaultToggleBtnDisabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.assignee)));
         let readProperty1: string = await $$(this.selectors.defaultToggle).get(0).getAttribute("disabled");
         let readProperty2: string = await $$(this.selectors.defaultToggle).get(1).getAttribute("disabled");
-        if (readProperty1 == "true" && readProperty2 == "true") {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return (readProperty1 == "true" && readProperty2 == "true");
     }
 
 }
