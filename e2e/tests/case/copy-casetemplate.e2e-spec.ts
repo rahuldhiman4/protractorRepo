@@ -1,4 +1,4 @@
-import { browser, $, ProtractorExpectedConditions, protractor } from "protractor";
+import { browser} from "protractor";
 import loginPage from "../../pageobject/login.po";
 import createCaseTemplate from "../../pageobject/case/create-casetemplate.po";
 import editCaseTemplate from "../../pageobject/case/edit-casetemplate.po";
@@ -10,14 +10,11 @@ describe('CopyCaseTemplate', () => {
     beforeAll(async () => {
         await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
         browser.waitForAngularEnabled(false);
+        await loginPage.login("qkatawazi");
     });
 
     afterAll(async () => {
         await navigationPage.signOut();
-    });
-
-    it('should login correctly', async () => {
-        await loginPage.login("qkatawazi");
     });
 
     it('DRDMV-13551,DRDMV-13529: Create a Copy of Case template where Company is copied properly', async () => {

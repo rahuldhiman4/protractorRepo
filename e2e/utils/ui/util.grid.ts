@@ -24,12 +24,14 @@ export class GridOperation {
         const allLocators = {
             summaryField: `[rx-view-component-id="${gridId}"] input[role="search"]`,
             searchButton: `[rx-view-component-id="${gridId}"] button[rx-id="submit-search-button"]`,
+            gridLink: `[rx-view-component-id="${gridId}"] .ui-grid__link`,
             firstCheckBox: `[rx-view-component-id="${gridId}"] div[class="ui-grid-selection-row-header-buttons ui-grid-icon-ok"]`
         };
         return allLocators[locatorName];
     }
 
     async searchAndSelectFirstCheckBox(gridId: string, value: string) {
+        await browser.wait(until.elementLocated(By.css(this.getGridLocator('summaryField', gridId))), 10000).clear();
         await browser.wait(until.elementLocated(By.css(this.getGridLocator('summaryField', gridId))), 10000).sendKeys(value);
         await browser.wait(until.elementLocated(By.css(this.getGridLocator('searchButton', gridId))), 10000).click();
         await browser.wait(this.EC.elementToBeClickable($(this.getGridLocator('firstCheckBox', gridId))));
@@ -64,6 +66,7 @@ export class GridOperation {
 
     async searchAndOpenHyperlink(id: string) {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));
+        await $(this.selectors.summaryField1).clear();
         await $(this.selectors.summaryField1).sendKeys(id);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton1)));
         await $(this.selectors.searchButton1).click();

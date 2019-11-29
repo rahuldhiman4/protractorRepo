@@ -1,0 +1,155 @@
+import { browser, ProtractorExpectedConditions, protractor } from "protractor";
+import loginPage from "../../pageobject/login.po";
+import navigationPage from "../../pageobject/navigation.po";
+import consoleNotesTemplate from '../../pageobject/settings/console-notestemplate.po';
+import createNotesTemplate from '../../pageobject/settings/create-notestemplate.po';
+import addFieldPo from '../../pageobject/settings/add-fields-pop.po';
+import utilCommon from '../../utils/ui/util.common';
+import editNotetemplate from '../../pageobject/settings/edit-notestemplate.po';
+
+describe('Notes template', () => {
+    const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
+    beforeAll(async () => {
+        await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
+        browser.waitForAngularEnabled(false);
+        loginPage.login("qkatawazi");
+    });
+
+    afterAll(async () => {
+        await navigationPage.signOut();
+    });
+
+    it('DRDMV-16026 : [Design Time] Verify case Business analyst is able create ,edit and delete Knowledge Notes template', async () => {
+        navigationPage.signOut();
+        loginPage.login("Elizabeth");
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows')).toEqual('Activity Notes Template Console - Knowledge - Business Workflows');
+        await consoleNotesTemplate.clickOnCreateNotesTemplate();
+        var templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
+        await createNotesTemplate.setTemplateName(templateName);
+        await createNotesTemplate.setStatusValue('Active');
+        await createNotesTemplate.setCompanyValue('- Global -');
+        await createNotesTemplate.setLanguageValue('English (United States)');
+        await createNotesTemplate.clickOnInsertFieldLink();
+        await addFieldPo.setValueOfField('Case', 'Company');
+        await addFieldPo.clickOnOkButtonOfEditor();
+        await createNotesTemplate.setBody("this is new actiivty notes template");
+        await createNotesTemplate.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
+        await browser.sleep(2000);
+        await consoleNotesTemplate.searchAndClickOnNotesTemplate(templateName);
+        var updateBody: string = "UpdateNotesTemplate" + Math.floor(Math.random() * 100000);
+        await editNotetemplate.changeStatusValue('Inactive');
+        await editNotetemplate.updateBody(updateBody);
+        await editNotetemplate.clickOnSaveButton();
+        await browser.sleep(2000);
+        await consoleNotesTemplate.searchAndClickOnNotesTemplate(templateName);
+        await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
+        await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
+        await editNotetemplate.clickOnCancelButton();
+        await browser.sleep(2000);
+        await consoleNotesTemplate.selectCheckBox();
+        await consoleNotesTemplate.clickOnDeleteButton();
+        await utilCommon.clickOnWarningOk();
+        await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
+    });
+
+    it('DRDMV-16010 : [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows')).toEqual('Activity Notes Template Console - Case - Business Workflows');
+        await consoleNotesTemplate.clickOnCreateNotesTemplate();
+        var templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
+        await createNotesTemplate.setTemplateName(templateName);
+        await createNotesTemplate.setStatusValue('Active');
+        await createNotesTemplate.setCompanyValue('Petramco');
+        await createNotesTemplate.setLanguageValue('English (United States)');
+        await createNotesTemplate.clickOnInsertFieldLink();
+        await addFieldPo.setValueOfField('Case', 'Company');
+        await addFieldPo.clickOnOkButtonOfEditor();
+        await createNotesTemplate.setBody("this is new actiivty notes template");
+        await createNotesTemplate.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
+        await browser.sleep(2000);
+        await consoleNotesTemplate.searchAndClickOnNotesTemplate(templateName);
+        var updateBody: string = "UpdateNotesTemplate" + Math.floor(Math.random() * 100000);
+        await editNotetemplate.changeStatusValue('Inactive');
+        await editNotetemplate.updateBody(updateBody);
+        await editNotetemplate.clickOnSaveButton();
+        await browser.sleep(2000);
+        await consoleNotesTemplate.searchAndClickOnNotesTemplate(templateName);
+        await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
+        await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
+        await editNotetemplate.clickOnCancelButton();
+        await browser.sleep(2000);
+        await consoleNotesTemplate.selectCheckBox();
+        await consoleNotesTemplate.clickOnDeleteButton();
+        await utilCommon.clickOnWarningOk();
+        await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
+    });
+
+    it('DRDMV-16028 : [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows')).toEqual('Activity Notes Template Console - Person - Business Workflows');
+        await consoleNotesTemplate.clickOnCreateNotesTemplate();
+        var templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
+        await createNotesTemplate.setTemplateName(templateName);
+        await createNotesTemplate.setStatusValue('Active');
+        await createNotesTemplate.setCompanyValue('Petramco');
+        await createNotesTemplate.setLanguageValue('English (United States)');
+        await createNotesTemplate.clickOnInsertFieldLink();
+        await addFieldPo.setValueOfField('Case', 'Company');
+        await addFieldPo.clickOnOkButtonOfEditor();
+        await createNotesTemplate.setBody("this is new actiivty notes template");
+        await createNotesTemplate.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
+        await browser.sleep(2000);
+        await consoleNotesTemplate.searchAndClickOnNotesTemplate(templateName);
+        var updateBody: string = "UpdateNotesTemplate" + Math.floor(Math.random() * 100000);
+        await editNotetemplate.changeStatusValue('Inactive');
+        await editNotetemplate.updateBody(updateBody);
+        await editNotetemplate.clickOnSaveButton();
+        await browser.sleep(2000);
+        await consoleNotesTemplate.searchAndClickOnNotesTemplate(templateName);
+        await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
+        await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
+        await editNotetemplate.clickOnCancelButton();
+        await browser.sleep(2000);
+        await consoleNotesTemplate.selectCheckBox();
+        await consoleNotesTemplate.clickOnDeleteButton();
+        await utilCommon.clickOnWarningOk();
+        await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
+    });
+
+    it('DRDMV-16027 : [Design Time] Verify case Business analyst is able create ,edit and delete Task Notes template', async () => {
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows')).toEqual('Activity Notes Template Console - Task - Business Workflows');
+        await consoleNotesTemplate.clickOnCreateNotesTemplate();
+        var templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
+        await createNotesTemplate.setTemplateName(templateName);
+        await createNotesTemplate.setStatusValue('Active');
+        await createNotesTemplate.setCompanyValue('- Global -');
+        await createNotesTemplate.setLanguageValue('English (United States)');
+        await createNotesTemplate.clickOnInsertFieldLink();
+        await addFieldPo.setValueOfField('Case', 'Company');
+        await addFieldPo.clickOnOkButtonOfEditor();
+        await createNotesTemplate.setBody("this is new actiivty notes template");
+        await createNotesTemplate.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
+        await browser.sleep(2000);
+        await consoleNotesTemplate.searchAndClickOnNotesTemplate(templateName);
+        var updateBody: string = "UpdateNotesTemplate" + Math.floor(Math.random() * 100000);
+        await editNotetemplate.changeStatusValue('Inactive');
+        await editNotetemplate.updateBody(updateBody);
+        await editNotetemplate.clickOnSaveButton();
+        await browser.sleep(2000);
+        await consoleNotesTemplate.searchAndClickOnNotesTemplate(templateName);
+        await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
+        await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
+        await editNotetemplate.clickOnCancelButton();
+        await browser.sleep(2000);
+        await consoleNotesTemplate.selectCheckBox();
+        await consoleNotesTemplate.clickOnDeleteButton();
+        await utilCommon.clickOnWarningOk();
+        await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
+    });
+})
