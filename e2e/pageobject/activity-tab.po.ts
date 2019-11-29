@@ -26,6 +26,13 @@ class ActivityTabPage {
         removeIconFilterList: '.tag-pill-item .d-tag-remove-button',
         activityTab: '.ui-tab-wrapper',
         isFilterPresent: '.tag-pill-item',
+        authorCloseButton: '.d-textfield__action',
+        imgPersonProfilePopUp:'.dropdown-menu img[ng-src]',
+        namePersonProfilePopUp : '.popup-info .popup-person',
+        companyPersonProfilePopUp: '.popup-info .popup-organization',
+        emailPersonProfilePopUp: '.popup-info .popup-email',
+        phoneNumberPersonProfilePopUp: '.popup-info .popup-phone-number',
+        authorFieldEmpty: '.d-textfield__label .ng-not-empty',        
     }
 
     async removeFilterList(): Promise<void> {
@@ -148,12 +155,52 @@ class ActivityTabPage {
         await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBoxText)).click();
     }
 
-    async searchAuthorOnFilter(AuthorName: string): Promise<void> {
+    async addAuthorOnFilter(AuthorName: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).click();
         await $(this.selectors.filterAuthor).sendKeys(AuthorName);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)));
         await $(this.selectors.personPopup).click();
+    }
+
+    async removeAuthorFromFilter(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.authorCloseButton)));
+        await $(this.selectors.authorCloseButton).click();
+    }
+    
+    async isAuthorBoxEmpty(): Promise<boolean> {
+        browser.sleep(2000);
+        return await $(this.selectors.authorFieldEmpty).isPresent();
+    }
+
+    async searchAuthorOnFilter(AuthorName: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
+        await $(this.selectors.filterAuthor).click();
+        await $(this.selectors.filterAuthor).sendKeys(AuthorName);
+    }
+
+    async isImgPresentOnUserPopUp(): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.imgPersonProfilePopUp)));
+        return await $(this.selectors.imgPersonProfilePopUp).isPresent();
+    }
+    async isPersonNamePresentOnUserPopUp(personName:string): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.namePersonProfilePopUp)));
+        return await element(by.cssContainingText(this.selectors.namePersonProfilePopUp, personName)).isPresent();
+    }
+
+    async isEmailPresentOnUserPopUp(email:string): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailPersonProfilePopUp)));
+        return await element(by.cssContainingText(this.selectors.emailPersonProfilePopUp, email)).isPresent();
+    }
+
+    async isCompanyPresentOnUserPopUp(company:string): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.companyPersonProfilePopUp)));
+        return await element(by.cssContainingText(this.selectors.companyPersonProfilePopUp, company)).isPresent();
+    }
+
+    async isPhoneNumberPresentOnUserPopUp(phoneNumber:string): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phoneNumberPersonProfilePopUp)));
+        return await element(by.cssContainingText(this.selectors.phoneNumberPersonProfilePopUp, phoneNumber)).isPresent();
     }
 
     async clickOnFilterApplyButton(): Promise<void> {

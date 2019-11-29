@@ -23,6 +23,124 @@ describe('case activity', () => {
     afterAll(async () => {
         await navigationPage.signOut();
     });
+
+    it('DRDMV-16760: From Task Activity Filters > Person search behavior in Author field', async () => {
+        // 1st step: Logged in successfully and Task profile gets opened
+        await navigationPage.gotCreateCase();
+        await createCase.selectRequester('Al Allbrook');
+        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.clickSaveCaseButton();
+        await utilCommon.closePopUpMessage();
+        await createCase.clickGoToCaseButton();
+        await viewCasePo.clickAddTaskButton();
+        await viewCasePo.addTaskFromTaskTemplate('File Report');
+        await manageTaskBladePo.clickTaskLinkOnManageTask('File Report');
+        browser.sleep(3000);
+        // 2nd step: From Task Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Task
+        await activityTabPage.clickOnFilterButton();
+        await activityTabPage.addAuthorOnFilter('Elizabeth Peters');
+        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.addAuthorOnFilter('Fritz Schulz');
+        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.addAuthorOnFilter('Frieda Hoffmann');
+        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.addAuthorOnFilter('Franz Schwarz');
+        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.addAuthorOnFilter('Morwenna Rosales');
+        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.addAuthorOnFilter('Hannah Haas');
+        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.addAuthorOnFilter('Qiwei Liu');
+        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.addAuthorOnFilter('Samuel Badree');
+        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.addAuthorOnFilter('Sapphire Blue');
+        await activityTabPage.removeAuthorFromFilter();
+        // 3rd Step: In Author field search for User using *First Name*, *Last Name*, *Email*, *Login ID*, and *Person ID*
+        await activityTabPage.addAuthorOnFilter('Angelina');//FirstName
+        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.addAuthorOnFilter('Steyn');//LastName
+        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.addAuthorOnFilter('aborder@petramco.com');//Email        
+        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.addAuthorOnFilter('qtao');//Login ID
+        await activityTabPage.removeAuthorFromFilter();
+        // 4th Step: Search for User and inspect returned results.
+        await activityTabPage.searchAuthorOnFilter('Angelina Jolie');
+        var value1:boolean=await activityTabPage.isImgPresentOnUserPopUp();
+        await expect(value1).toBeTruthy('Img is Not Present On Author List PopUp');
+        var value2:boolean = await activityTabPage.isPersonNamePresentOnUserPopUp('Angelina Jolie');
+        await expect(value2).toBeTruthy('Name is Not Present On Author List PopUp');
+        var value2:boolean = await activityTabPage.isEmailPresentOnUserPopUp('ajolie@petramco.com');
+        await expect(value2).toBeTruthy('Email is Not Present On Author List PopUp');
+        var value2:boolean = await activityTabPage.isPhoneNumberPresentOnUserPopUp('+12124021501');
+        await expect(value2).toBeTruthy('Phone Number is Not Present On Author List PopUp');
+        var value2:boolean = await activityTabPage.isCompanyPresentOnUserPopUp('Petramco');
+        await expect(value2).toBeTruthy('Phone Number is Not Present On Author List PopUp');
+        await activityTabPage.removeAuthorFromFilter();
+        // 5th Step: User is selected and Author field gets disabled.       
+        await activityTabPage.addAuthorOnFilter('Angelina Jolie');
+        var value3:boolean = await activityTabPage.isAuthorBoxEmpty();
+        await expect(value3).toBeTruthy('Author field is editable');
+        // i)- Click on x button from author field (- Field gets cleared and enabled to search another user)
+        await activityTabPage.removeAuthorFromFilter();
+        var value4:boolean = await activityTabPage.isAuthorBoxEmpty();
+        await expect(value4).not.toBeTruthy('Author field is not editable');
+        // ii) - Select another user and click on Apply        
+        await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');  
+
+
+    }, 120 * 1000);
+
+    fit('DRDMV-16734: From Case Activity Filters > Person search behavior in Author field', async () => {
+        // 1st step: Login to BWF with Case agent and open case from pre condition
+        await navigationPage.gotCreateCase();
+        await createCase.selectRequester('Al Allbrook');
+        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.clickSaveCaseButton();
+        await utilCommon.closePopUpMessage();
+        await createCase.clickGoToCaseButton();
+        // 2nd Step: From Case Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Case
+        // i) Verify User is able to search for any user
+        await activityTabPage.clickOnFilterButton();
+        await activityTabPage.addAuthorOnFilter('Angelina Jolie');
+        await activityTabPage.removeAuthorFromFilter();
+        // 3rd In Author field search for User using *First Name*, *Last Name*, *Email*, *Login ID*, and *Person ID*
+        await activityTabPage.addAuthorOnFilter('Angelina');//FirstName
+        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.addAuthorOnFilter('Steyn');//LastName
+        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.addAuthorOnFilter('aborder@petramco.com');//Email        
+        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.addAuthorOnFilter('qtao');//Login ID
+        await activityTabPage.removeAuthorFromFilter();
+        // 4th Step: Verify in Return results, Following person details are displayed: Person Profile Image, Person Name, Company Email, Phone
+        await activityTabPage.searchAuthorOnFilter('Angelina Jolie');
+        var value1:boolean=await activityTabPage.isImgPresentOnUserPopUp();
+        await expect(value1).toBeTruthy('Img is Not Present On Author List PopUp');
+        var value2:boolean = await activityTabPage.isPersonNamePresentOnUserPopUp('Angelina Jolie');
+        await expect(value2).toBeTruthy('Name is Not Present On Author List PopUp');
+        var value2:boolean = await activityTabPage.isEmailPresentOnUserPopUp('ajolie@petramco.com');
+        await expect(value2).toBeTruthy('Email is Not Present On Author List PopUp');
+        var value2:boolean = await activityTabPage.isPhoneNumberPresentOnUserPopUp('+12124021501');
+        await expect(value2).toBeTruthy('Phone Number is Not Present On Author List PopUp');
+        var value2:boolean = await activityTabPage.isCompanyPresentOnUserPopUp('Petramco');
+        await expect(value2).toBeTruthy('Phone Number is Not Present On Author List PopUp');
+        await activityTabPage.removeAuthorFromFilter();
+        // 5th Step: User is selected and Author field gets disabled 
+        // i) User is selected and Author field gets disabled 
+        await activityTabPage.addAuthorOnFilter('Angelina Jolie');
+        var value3:boolean = await activityTabPage.isAuthorBoxEmpty();
+        await expect(value3).toBeTruthy('Author field is editable');
+        // ii)- Click on x button from author field (- Field gets cleared and enabled to search another user)
+        await activityTabPage.removeAuthorFromFilter();
+        browser.sleep(2000);
+        var value4:boolean = await activityTabPage.isAuthorBoxEmpty();
+        await expect(value4).not.toBeTruthy('Author field is not editable');
+        // iii) - Select another user and click on Apply
+        await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries')        
+    }, 120 * 1000);
+
     it('DRDMV-16759: Task Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
@@ -80,7 +198,7 @@ describe('case activity', () => {
         await activityTabPage.selectFilterCheckBox('Status Change');
         await activityTabPage.selectFilterCheckBox('Assignment Change');
         await activityTabPage.selectFilterCheckBox('Category Change');
-        await activityTabPage.searchAuthorOnFilter('Angelina Jolie');
+        await activityTabPage.addAuthorOnFilter('Angelina Jolie');
         await activityTabPage.clickOnFilterApplyButton();
         browser.sleep(2000);
         var filterPopup2: string = await activityTabPage.isFilterPopUpDisplayed();
@@ -196,7 +314,7 @@ describe('case activity', () => {
         await activityTabPage.selectFilterCheckBox('Status Change');
         await activityTabPage.selectFilterCheckBox('Assignment Change');
         await activityTabPage.selectFilterCheckBox('Category Change');
-        await activityTabPage.searchAuthorOnFilter('Angelina Jolie');
+        await activityTabPage.addAuthorOnFilter('Angelina Jolie');
         await activityTabPage.clickOnFilterApplyButton();
         browser.sleep(2000);
         var filterPopup2: string = await activityTabPage.isFilterPopUpDisplayed();
@@ -312,7 +430,7 @@ describe('case activity', () => {
         await activityTabPage.selectFilterCheckBox('Status Change');
         await activityTabPage.selectFilterCheckBox('Assignment Change');
         await activityTabPage.selectFilterCheckBox('Category Change');
-        await activityTabPage.searchAuthorOnFilter('Angelina Jolie');
+        await activityTabPage.addAuthorOnFilter('Angelina Jolie');
         await activityTabPage.clickOnFilterApplyButton();
         browser.sleep(2000);
         var filterPopup2: string = await activityTabPage.isFilterPopUpDisplayed();
