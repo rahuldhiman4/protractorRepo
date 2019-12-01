@@ -9,26 +9,82 @@ var HtmlReporter = require('protractor-beautiful-reporter');
  * @type { import("protractor").Config }
  */
 exports.config = {
-  allScriptsTimeout: 50000,
-  specs: [
-    './tests/**/*.e2e-spec.ts'
-  ],
+  allScriptsTimeout: 5000,
+  getPageTimeout: 20000,
+
   capabilities: {
-    browserName: 'chrome'
+    browserName: 'chrome',
+    'shardTestFiles': true,
+    'maxInstances': 1,
+    'idle-duration': 5,
   },
+
+  suites: {
+    full: [
+      './tests/case/case-activity.e2e-spec.ts',
+      './tests/case/case-and-employee-relationship.e2e-spec.ts',
+      './tests/case/copy-casetemplate.e2e-spec.ts',
+      './tests/case/edit-case.e2e-spec.ts',
+      './tests/settings/case-manager-readonly-config.e2e-spec.ts',
+      './tests/settings/notes-template.e2e-spec.ts',
+      './tests/settings/service-target.e2e-spec.ts',
+      './tests/task/copy-task-template.e2e-spec.ts',
+      './tests/task/create-case-task.e2e-spec.ts',
+    ]
+  },
+
   directConnect: true,
-  baseUrl: 'http://clm-pun-srgud0.bmc.com:8008',
+  baseUrl: 'http://clm-aus-squo6y.bmc.com:8008',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 60000,
+    defaultTimeoutInterval: 80000,
     print: function () { }
   },
-  onPrepare() {
+
+  async onPrepare() {
+    let globals = require('protractor/built');
+    let browser = globals.browser;
+    browser.ignoreSynchronization = true;
+    await browser.waitForAngularEnabled(false);
+
+    //Implicitly wait
+    await browser.manage().timeouts().implicitlyWait(5000);
+
+    var width = 1300;
+    var height = 700;
+    browser.driver.manage().window().setSize(width, height);
+    //browser.driver.manage().window().maximize();
+
+    // Disable NG&css animation
+    // var disableAnimation = function () {
+    //   angular.module('disableAnimation', []).run(function ($animate) {
+    //     // disable css animations
+    //     var style = document.createElement('style');
+    //     style.type = 'text/css';
+    //     style.innerHTML = '* {' +
+    //       '-webkit-transition: none !important;' +
+    //       '-moz-transition: none !important;' +
+    //       '-o-transition: none !important;' +
+    //       '-ms-transition: none !important;' +
+    //       'transition: none !important;' +
+    //       '}';
+    //     document.getElementsByTagName('head')[0].appendChild(style);
+    //     // disable angular ng animations
+    //     $animate.enabled(false);
+    //   });
+    // };
+    // browser.addMockModule('disableAnimation', disableAnimation);
+
     require('ts-node').register({
       project: require('path').join(__dirname, './tsconfig.json')
     });
-    jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
+
+    jasmine.getEnv().addReporter(new SpecReporter({
+      spec: {
+        displayStacktrace: true
+      }
+    }));
 
     jasmine.getEnv().addReporter(new HtmlReporter({
       baseDirectory: 'reports/screenshots'

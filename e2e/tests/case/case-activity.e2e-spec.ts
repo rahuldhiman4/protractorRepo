@@ -1,4 +1,4 @@
-import { browser, ProtractorExpectedConditions, protractor } from "protractor";
+import { browser } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
 import activityTabPage from '../../pageobject/activity-tab.po';
@@ -9,15 +9,10 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
 import utilCommon from '../../utils/ui/util.common';
 
-describe('case activity', () => {
+describe('Case Activity', () => {
     beforeAll(async () => {
-        await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
-        await browser.waitForAngularEnabled(false);
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qkatawazi');
-    });
-
-    beforeEach(async () => {
-        await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
     });
 
     afterAll(async () => {
@@ -87,9 +82,7 @@ describe('case activity', () => {
         var value4:boolean = await activityTabPage.isAuthorBoxEmpty();
         await expect(value4).not.toBeTruthy('Author field is not editable');
         // ii) - Select another user and click on Apply        
-        await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');  
-
-
+        await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
     }, 120 * 1000);
 
     it('DRDMV-16734: From Case Activity Filters > Person search behavior in Author field', async () => {
@@ -178,8 +171,8 @@ describe('case activity', () => {
         var authorSearchBoxVisbility: boolean = await activityTabPage.isAuthorSearchBoxVisible();
         await expect(authorSearchBoxVisbility).toBeTruthy("authorSearchBoxVisbility is not visible");
 
-        // // 4th step: Click on a filter option, - Click on selected filter again
-        //         // i) Check box is selected and Apply button is enabled
+        // 4th step: Click on a filter option, - Click on selected filter again
+        // i) Check box is selected and Apply button is enabled
         await activityTabPage.selectFilterCheckBox('General Notes');
         var count2: number = await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled();
         await expect(count2).toBeLessThan(1);
@@ -204,7 +197,7 @@ describe('case activity', () => {
         var filterPopup2: string = await activityTabPage.isFilterPopUpDisplayed();
         await expect(filterPopup2).toBe('false');
 
-        // //   ii) Selected Filters are displayed in Activity with first filter and + other selected filters
+        // ii) Selected Filters are displayed in Activity with first filter and + other selected filters
         var str1: string = await activityTabPage.getTextFromFilterList('General Notes');
         await expect(str1).toBe('General Notes');
         await activityTabPage.clickOnNmoreLink();
@@ -320,7 +313,7 @@ describe('case activity', () => {
         var filterPopup2: string = await activityTabPage.isFilterPopUpDisplayed();
         await expect(filterPopup2).toBe('false');
 
-        // //   ii) Selected Filters are displayed in Activity with first filter and + other selected filters
+        // ii) Selected Filters are displayed in Activity with first filter and + other selected filters
         var str1: string = await activityTabPage.getTextFromFilterList('General Notes');
         await expect(str1).toBe('General Notes');
         await activityTabPage.clickOnNmoreLink();
@@ -392,7 +385,7 @@ describe('case activity', () => {
         // 2nd step: Inspect Task Activity UI - Click on FIlter
         await activityTabPage.clickOnFilterButton();
 
-        //3rd step: Inspect Filter Panel UI
+        // 3rd step: Inspect Filter Panel UI
         // i) step: - Clear, Apply button (Apply button is disabled until any filter is selected)
         var count1: number = await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled();
         await expect(count1).toBeGreaterThan(0);
@@ -410,8 +403,8 @@ describe('case activity', () => {
         var authorSearchBoxVisbility: boolean = await activityTabPage.isAuthorSearchBoxVisible();
         await expect(authorSearchBoxVisbility).toBeTruthy("authorSearchBoxVisbility is not visible");
 
-        // // 4th step: Click on a filter option, - Click on selected filter again
-        //         // i) Check box is selected and Apply button is enabled
+        // 4th step: Click on a filter option, - Click on selected filter again
+        // i) Check box is selected and Apply button is enabled
         await activityTabPage.selectFilterCheckBox('General Notes');
         var count2: number = await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled();
         await expect(count2).toBeLessThan(1);
@@ -436,7 +429,7 @@ describe('case activity', () => {
         var filterPopup2: string = await activityTabPage.isFilterPopUpDisplayed();
         await expect(filterPopup2).toBe('false');
 
-        // //   ii) Selected Filters are displayed in Activity with first filter and + other selected filters
+        // ii) Selected Filters are displayed in Activity with first filter and + other selected filters
         var str1: string = await activityTabPage.getTextFromFilterList('General Notes');
         await expect(str1).toBe('General Notes');
         await activityTabPage.clickOnNmoreLink();
@@ -576,5 +569,4 @@ describe('case activity', () => {
         await activityTabPage.clickOnPostButton();
         await activityTabPage.clickOnHyperlinkFromActivity(knowledgeBodyText, 'Qadim Katawazi');
     }, 120 * 1000);
-
 })

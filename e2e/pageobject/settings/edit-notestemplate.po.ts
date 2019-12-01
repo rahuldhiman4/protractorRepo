@@ -1,5 +1,5 @@
 import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
-import utilCommon from '../../utils/util.common';
+import utilCommon from '../../utils/ui/util.common';
 
 class editNotesTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

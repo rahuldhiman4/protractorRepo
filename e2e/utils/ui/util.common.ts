@@ -26,7 +26,7 @@ export class Util {
             return count >= 1;
         }));
         var optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
-        await browser.sleep(300);
+        await browser.sleep(1000);
         var option = await element(by.cssContainingText(optionCss, value));
         await browser.wait(this.EC.visibilityOf(option));
         await option.click();
@@ -55,7 +55,7 @@ export class Util {
             return count >= 1;
         }));
         var optionCss: string = `[title="${name}"] .ui-select-choices-row-inner *`;
-        await browser.sleep(300);
+        await browser.sleep(1000);
         var option = await element(by.cssContainingText(optionCss, value));
         await browser.wait(this.EC.visibilityOf(option));
         await option.click();

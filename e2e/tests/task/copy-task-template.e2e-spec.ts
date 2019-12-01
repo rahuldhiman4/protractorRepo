@@ -1,4 +1,4 @@
-import { browser, protractor } from "protractor";
+import { browser } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import taskTemplate from "../../pageobject/task/create-tasktemplate.po";
 import selectTaskTemplate from "../../pageobject/task/console-tasktemplate.po"
@@ -11,16 +11,13 @@ import copyTemplate from "../../pageobject/task/copy-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/task/view-tasktemplate.po";
 import viewCasePage from "../../pageobject/case/view-case.po"
 
-
-describe('copy Task template', () => {
+describe('Copy Task Template', () => {
     beforeAll(async () => {
-        await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
-        browser.waitForAngularEnabled(false);
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qkatawazi');
     });
 
-    afterAll(async () => {
-        browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
+    afterEach(async () => {
         await navigationPage.signOut();
     });
 
@@ -74,9 +71,11 @@ describe('copy Task template', () => {
         await viewCasePage.goToManageTask();
         await manageTask.clickTaskLinkOnManageTask(manualTaskSummary);
         await expect(viewTask.getTaskStatusValue()).toBe('Completed');
-    }, 150 * 1000);
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
+    });
 
-    xit('DRDMV-14218: The copy of Automated Task template is created across company and check the way to Edit the existing linked Process.', async () => {
+    it('DRDMV-14218: The copy of Automated Task template is created across company and check the way to Edit the existing linked Process.', async () => {
         let automationTaskTemplate = 'Automation task' + Math.floor(Math.random() * 1000000);
         let automationTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
 
@@ -116,7 +115,6 @@ describe('copy Task template', () => {
         await selectTaskTemplate.setTaskSearchBoxValue(newAutomationTaskTemplate);
         await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
         await expect(viewTaskTemplate.getTemplateName()).toBe(newAutomationTaskTemplate);
-
     });
 
     it('DRDMV-13540, DRDMV-13556: Case Business Analyst can create a copy of Task Template type= Manual, New template created is in draft status', async () => {
@@ -263,7 +261,8 @@ describe('copy Task template', () => {
         await viewCasePage.goToManageTask();
         await manageTask.clickTaskLinkOnManageTask(UpdatedTaskSummary);
         await expect(viewTask.getTaskStatusValue()).toBe('Completed');
-
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
     });
 
     it('DRDMV-13737: [Negative] Try to copy Automated template with same process Name and different field data', async () => {
@@ -380,10 +379,9 @@ describe('copy Task template', () => {
         await expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
         await expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
         await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
-
     });
 
-    fit('DRDMV-13547: Create a Copy of Task template by Case Business Analyst that belongs to Support Group', async () => {
+    it('DRDMV-13547: Create a Copy of Task template by Case Business Analyst that belongs to Support Group', async () => {
         let TaskTemplate = 'External task' + Math.floor(Math.random() * 1000000);
         let TaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
         let UpdatedTaskTemplate = 'Updated task' + Math.floor(Math.random() * 1000000);
@@ -406,7 +404,7 @@ describe('copy Task template', () => {
         await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.signOut();
-        await loginPage.login('Elizabeth');
+        await loginPage.login('elizabeth');
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
             .toEqual('Task Templates - Business Workflows');
@@ -417,6 +415,8 @@ describe('copy Task template', () => {
         await copyTemplate.clickSaveCopytemplate();
         await expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
         await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Staffing");
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
     });
 });
 

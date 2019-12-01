@@ -1,4 +1,4 @@
-import { browser} from "protractor";
+import { browser } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import createCaseTemplate from "../../pageobject/case/create-casetemplate.po";
 import editCaseTemplate from "../../pageobject/case/edit-casetemplate.po";
@@ -6,10 +6,9 @@ import copyCaseTemplate from "../../pageobject/case/copy-casetemplate.po";
 import navigationPage from "../../pageobject/navigation.po";
 import consoleCasetemplatePo from '../../pageobject/case/console-casetemplate.po';
 
-describe('CopyCaseTemplate', () => {
+describe('Copy Case Template', () => {
     beforeAll(async () => {
-        await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
-        browser.waitForAngularEnabled(false);
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login("qkatawazi");
     });
 
@@ -65,7 +64,7 @@ describe('CopyCaseTemplate', () => {
 
     it('DRDMV-13543,DRDMV-13555: Create a Copy of Case template by Case Business Analyst that belongs to Support Group,Case Template console grid should show Newly created copied template', async () => {
         await navigationPage.signOut();
-        await loginPage.login("Fritz");
+        await loginPage.login("fritz");
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
         var caseTemplate = await require('../../data/ui/casetemplate.ui.json');
@@ -108,5 +107,7 @@ describe('CopyCaseTemplate', () => {
         expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
         await consoleCasetemplatePo.searchAndselectCaseTemplate(copyCaseTemplateName);
         await expect(consoleCasetemplatePo.getCaseTemplateNamePresentOnGrid(copyCaseTemplateName)).toBe(copyCaseTemplateName);
+        await navigationPage.signOut();
+        await loginPage.login("qkatawazi");
     }, 200 * 1000);
 });

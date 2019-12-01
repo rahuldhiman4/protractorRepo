@@ -1,4 +1,4 @@
-import { browser, protractor } from "protractor";
+import { browser } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import taskTemplate from "../../pageobject/task/create-tasktemplate.po";
 import selectTaskTemplate from "../../pageobject/task/console-tasktemplate.po"
@@ -11,24 +11,15 @@ import caseTaskTab from '../../pageobject/case/case-task-tab.po';
 import utilCommon from '../../utils/ui/util.common';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po"
 import activitytab from "../../pageobject/activity-tab.po"
-import copyTemplate from "../../pageobject/task/copy-tasktemplate.po";
-import viewTaskTemplate from "../../pageobject/task/view-tasktemplate.po";
 import viewCasePage from "../../pageobject/case/view-case.po"
-import editCasePage from '../../pageobject/case/edit-case.po';
-import personProfilePage from '../../pageobject/case/person-profile.po';
-import composemailPage from '../../pageobject/email/compose-mail.po';
-import changeAssignmentPage from '../../pageobject/change-assignemet-blade.po'
-import caseTemplatePage from '../../pageobject/case/select-casetemplate-blade.po';
 
-describe('create Task template', () => {
+describe('Create Case Task', () => {
     beforeAll(async () => {
-        await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
-        browser.waitForAngularEnabled(false);
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qkatawazi');
     });
 
     afterAll(async () => {
-        browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
         await navigationPage.signOut();
     });
 
@@ -103,11 +94,11 @@ describe('create Task template', () => {
         await expect(attribute1).toBeTruthy();
         var returnvalue1 = await editTask.waitProcessNamePresentInTask();
         await expect(returnvalue1).toBeTruthy();
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
     }, 180 * 1000);
 
     it('DRDMV-7148,DRDMV-7140: Automatic Task data validation once Task is created	', async () => {
-        await navigationPage.signOut();
-        await loginPage.login('qkatawazi');
         let autmationTaskTemplateWithRequiredData = 'Automatic task With Required Field' + Math.floor(Math.random() * 1000000);
         let autmationTaskSummaryWithRequiredData = 'Automatic task Summary With Required Field' + Math.floor(Math.random() * 1000000);
         let automationTaskTemplateWithallField = 'Automation task with All field' + Math.floor(Math.random() * 1000000);
@@ -201,9 +192,11 @@ describe('create Task template', () => {
         await expect(CategoryTier3Value).toBe('');
         var CategoryTier4Value: string = await viewTask.getCategoryTier4Value();
         await expect(CategoryTier4Value).toBe('');
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
     }, 360 * 1000);
 
-    it('DRDMV-3820: Adhoc Task Create view (UI verification)	', async () => {
+    it('DRDMV-3820: Adhoc Task Create view (UI verification)', async () => {
         await navigationPage.signOut();
         await loginPage.login('qtao');
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
@@ -234,10 +227,11 @@ describe('create Task template', () => {
         await expect(adhoctaskTemplate.ischangeAssignmentButtonDisplayed()).toBeTruthy();
         await adhoctaskTemplate.clickOnCancelAdhoctask();
         await utilCommon.clickOnWarningOk();
-        await browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
     });
 
-    it('DRDMV-3821: Adhoc Task details view (UI verification))	', async () => {
+    it('DRDMV-3821: Adhoc Task details view (UI verification))', async () => {
         await navigationPage.signOut();
         await loginPage.login('qtao');
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
@@ -279,6 +273,8 @@ describe('create Task template', () => {
         await expect(viewTask.isAssignGroupTextDisplayed()).toBeTruthy();
         await expect(activitytab.isActivityTextPresent()).toBeTruthy();
         await expect(activitytab.isActivityTextPresent()).toBeTruthy();
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
     });
 });
 

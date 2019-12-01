@@ -1,4 +1,4 @@
-import { browser, ProtractorExpectedConditions, protractor } from "protractor";
+import { browser } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
 import consoleNotesTemplate from '../../pageobject/settings/console-notestemplate.po';
@@ -8,10 +8,8 @@ import utilCommon from '../../utils/ui/util.common';
 import editNotetemplate from '../../pageobject/settings/edit-notestemplate.po';
 
 describe('Notes template', () => {
-    const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
-        await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
-        browser.waitForAngularEnabled(false);
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         loginPage.login("qkatawazi");
     });
 
@@ -21,7 +19,7 @@ describe('Notes template', () => {
 
     it('DRDMV-16026 : [Design Time] Verify case Business analyst is able create ,edit and delete Knowledge Notes template', async () => {
         navigationPage.signOut();
-        loginPage.login("Elizabeth");
+        loginPage.login("elizabeth");
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows')).toEqual('Activity Notes Template Console - Knowledge - Business Workflows');
         await consoleNotesTemplate.clickOnCreateNotesTemplate();
@@ -52,6 +50,8 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
+        navigationPage.signOut();
+        loginPage.login("qkatawazi");
     });
 
     it('DRDMV-16010 : [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {

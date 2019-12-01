@@ -14,13 +14,9 @@ import processLibraryEditPage from "../../pageobject/settings/edit-process-libra
 import menuItemsConfigConsole from "../../pageobject/settings/menu-items-config-console.po";
 import menuItemEditPage from "../../pageobject/settings/edit-menu-items-config.po";
 
-describe('Case And Employee Relationship', () => {
+describe('Case Manager Read-only Config', () => {
     beforeAll(async () => {
-        await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
-        browser.waitForAngularEnabled(false);
-    });
-
-    beforeAll(async () => {
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qdu');
     });
 
@@ -49,7 +45,8 @@ describe('Case And Employee Relationship', () => {
         await utilGrid.searchAndOpenHyperlink(configName);
         expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionNameDisabled()).toBeTruthy();
         expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionSaveBtnDisabled()).toBeTruthy();
-        await browser.refresh();
+        await navigationPage.signOut();
+        await loginPage.login('qdu');
     });
 
     it('DRDMV-18033: Check Case manager is not able to perform Create Update Delete operation on Case Assignment Mapping', async () => {
@@ -64,7 +61,6 @@ describe('Case And Employee Relationship', () => {
         expect(await assignmentConfigEditPage.isEditAssignmentNameDisabled()).toBeTruthy();
         expect(await assignmentConfigEditPage.isDefaultToggleBtnDisabled()).toBeTruthy();
         expect(await assignmentConfigEditPage.isSaveBtnDisabled()).toBeTruthy();
-        await browser.refresh();
     });
 
     it('DRDMV-18037: Check Case manager is not able to perform Create Update Delete operation on Read Access mapping', async () => {
@@ -79,7 +75,6 @@ describe('Case And Employee Relationship', () => {
         expect(await caseReadAccessConfigEditPage.isAccessMappingNameDisabled()).toBeTruthy();
         expect(await caseReadAccessConfigEditPage.isDefaultToggleBtnDisabled()).toBeTruthy();
         expect(await caseReadAccessConfigEditPage.isSaveBtnDisabled()).toBeTruthy();
-        await browser.refresh();
     });
 
     //Defect: Description and Status fields are enabled
@@ -91,7 +86,6 @@ describe('Case And Employee Relationship', () => {
         expect(await processLibraryEditPage.isDescriptionDisabled()).toBeTruthy("Description field is enabled");
         expect(await processLibraryEditPage.isStatusDisabled()).toBeTruthy("Status field is enabled");
         expect(await processLibraryEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
-        await browser.refresh();
     });
 
     it('DRDMV-18069: Check Case manager is not able to perform Create Update operation on Menu Items', async () => {
@@ -102,7 +96,5 @@ describe('Case And Employee Relationship', () => {
         expect(await menuItemEditPage.isMenuItemsStatusDisabled()).toBeTruthy("Status field is enabled");
         expect(await menuItemEditPage.isDefaultToggleBtnDisabled()).toBeTruthy("Default Toggle is enabled");
         expect(await menuItemEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
-        await browser.refresh();
     });
-
 })

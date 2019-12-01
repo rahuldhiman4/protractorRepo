@@ -1,4 +1,4 @@
-import { browser, ProtractorExpectedConditions, protractor } from "protractor";
+import { browser } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import createCasePage from '../../pageobject/case/create-case.po';
 import navigationPage from "../../pageobject/navigation.po";
@@ -14,12 +14,12 @@ import utilCommon from '../../utils/ui/util.common';
 
 describe('Case And Employee Relationship', () => {
     beforeAll(async () => {
-        await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
-        browser.waitForAngularEnabled(false);
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await loginPage.login('qtao');
     });
 
-    it('should login correctly', async () => {
-        await loginPage.login('qtao');
+    afterAll(async () => {
+        await navigationPage.signOut();
     });
 
     it('DRDMV-16241,DRDMV-16242: Add person with different relations', async () => {

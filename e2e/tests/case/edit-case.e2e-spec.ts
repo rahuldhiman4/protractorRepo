@@ -1,4 +1,4 @@
-import { browser, protractor } from "protractor";
+import { browser } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
 import createCasePage from '../../pageobject/case/create-case.po';
@@ -10,18 +10,15 @@ import composemailPage from '../../pageobject/email/compose-mail.po';
 import changeAssignmentPage from '../../pageobject/change-assignemet-blade.po'
 import caseTemplatePage from '../../pageobject/case/select-casetemplate-blade.po';
 
-describe('edit case', () => {
+describe('Edit Case', () => {
     beforeAll(async () => {
-        await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
-        browser.waitForAngularEnabled(false);
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qkatawazi');
     });
 
     afterAll(async () => {
-        browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
         await navigationPage.signOut();
     });
-
 
     it('DRDMV-3765: [Case] [Edit Case] Edit Case view (UI verification)', async () => {
         let Summary = 'Summary' + Math.floor(Math.random() * 1000000);
@@ -105,5 +102,7 @@ describe('edit case', () => {
         await expect(editCasePage.getChangeCaseTemplate()).toBe('Change Case Template');
         await editCasePage.clickSaveCase();
         await expect(editCasePage.isActivityFeedPresent()).toBeTruthy();
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
     }, 150 * 1000);
 });
