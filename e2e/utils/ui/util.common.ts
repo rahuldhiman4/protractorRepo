@@ -26,7 +26,7 @@ export class Util {
             return count >= 1;
         }));
         var optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
-        await browser.sleep(300);
+        await browser.sleep(1000);
         var option = await element(by.cssContainingText(optionCss, value));
         await browser.wait(this.EC.visibilityOf(option));
         await option.click();
@@ -35,6 +35,11 @@ export class Util {
     async getPopUpMessage() {
         await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
         return await $(this.selectors.popUpMsgLocator).getText();
+    }
+
+    async getPopUpMessages(messageNo:number) {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
+        return await $$(this.selectors.popUpMsgLocator).get(messageNo).getText();
     }
 
     async selectDropDownWithName(name: string, value: string): Promise<void> {
@@ -50,7 +55,7 @@ export class Util {
             return count >= 1;
         }));
         var optionCss: string = `[title="${name}"] .ui-select-choices-row-inner *`;
-        await browser.sleep(300);
+        await browser.sleep(1000);
         var option = await element(by.cssContainingText(optionCss, value));
         await browser.wait(this.EC.visibilityOf(option));
         await option.click();
@@ -96,11 +101,16 @@ export class Util {
         }
     }
 
-    async switchToNewWidnow(): Promise<void> {
+    async switchToNewWidnow(windowNum:number): Promise<void> {
         await browser.sleep(5000);
         await browser.getAllWindowHandles().then(async function(handles){
-            await browser.switchTo().window(handles[handles.length-1])
+            await browser.switchTo().window(handles[windowNum]);
         });
+    }
+
+    async switchToDefaultWidnow(): Promise<void> {
+        await browser.sleep(5000);
+        await browser.switchTo().defaultContent();
     }
 }
 

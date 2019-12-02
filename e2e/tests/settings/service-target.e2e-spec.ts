@@ -1,4 +1,4 @@
-import { browser, protractor } from "protractor";
+import { browser } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
 import SlmExpressionBuilder from '../../pageobject/settings/slm-expressionbuilder.pop.po';
@@ -12,17 +12,11 @@ var caseBAUser = 'qkatawazi';
 
 describe('Service Taret Tests', () => {
     beforeAll(async () => {
-        await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
-        browser.waitForAngularEnabled(false);
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login(caseBAUser);
     });
 
-    beforeEach(async () => {
-        await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
-    });
-
     afterAll(async () => {
-        browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
         await navigationPage.signOut();
     });
 

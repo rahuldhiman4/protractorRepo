@@ -134,7 +134,6 @@ class CreateTaskTemplatePage {
         await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
     }
-
 }
 
 export default new CreateTaskTemplatePage();

@@ -1,29 +1,23 @@
-import { browser, protractor } from "protractor";
-import loginPage from "../../pageobject/login.po";
-import taskTemplate from "../../pageobject/task/create-tasktemplate.po";
-import selectTaskTemplate from "../../pageobject/task/console-tasktemplate.po"
-import navigationPage from "../../pageobject/navigation.po";
+import { browser } from "protractor";
+import caseTaskTab from '../../pageobject/case/case-task-tab.po';
 import createCasePage from '../../pageobject/case/create-case.po';
+import viewCasePage from "../../pageobject/case/view-case.po";
+import loginPage from "../../pageobject/login.po";
+import navigationPage from "../../pageobject/navigation.po";
+import selectTaskTemplate from "../../pageobject/task/console-tasktemplate.po";
+import taskTemplate from "../../pageobject/task/create-tasktemplate.po";
+import editTask from "../../pageobject/task/edit-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
-import editTask from "../../pageobject/task/edit-task.po";
-import caseTaskTab from '../../pageobject/case/case-task-tab.po';
 import utilCommon from '../../utils/ui/util.common';
-import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po"
-import activitytab from "../../pageobject/activity-tab.po"
-import copyTemplate from "../../pageobject/task/copy-tasktemplate.po";
-import viewTaskTemplate from "../../pageobject/task/view-tasktemplate.po";
-import viewCasePage from "../../pageobject/case/view-case.po"
 
-describe('create Task template', () => {
+describe('Create Case Task', () => {
     beforeAll(async () => {
-        await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
-        browser.waitForAngularEnabled(false);
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qkatawazi');
     });
 
     afterAll(async () => {
-        browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
         await navigationPage.signOut();
     });
 
@@ -98,11 +92,11 @@ describe('create Task template', () => {
         await expect(attribute1).toBeTruthy();
         var returnvalue1 = await editTask.waitProcessNamePresentInTask();
         await expect(returnvalue1).toBeTruthy();
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
     }, 180 * 1000);
 
     it('DRDMV-7148,DRDMV-7140: Automatic Task data validation once Task is created	', async () => {
-        await navigationPage.signOut();
-        await loginPage.login('qkatawazi');
         let autmationTaskTemplateWithRequiredData = 'Automatic task With Required Field' + Math.floor(Math.random() * 1000000);
         let autmationTaskSummaryWithRequiredData = 'Automatic task Summary With Required Field' + Math.floor(Math.random() * 1000000);
         let automationTaskTemplateWithallField = 'Automation task with All field' + Math.floor(Math.random() * 1000000);
@@ -196,135 +190,10 @@ describe('create Task template', () => {
         await expect(CategoryTier3Value).toBe('');
         var CategoryTier4Value: string = await viewTask.getCategoryTier4Value();
         await expect(CategoryTier4Value).toBe('');
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
     }, 360 * 1000);
 
-    it('DRDMV-3820: Adhoc Task Create view (UI verification)	', async () => {
-        await navigationPage.signOut();
-        await loginPage.login('qtao');
-        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-        await navigationPage.gotCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
-
-        //Adhoc task validation
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.clickAddAdhocTaskButton();
-        await expect(await adhoctaskTemplate.getTaskSummaryRequiredText('required')).toBeTruthy();
-        await expect(await adhoctaskTemplate.getPriorityRequiredText('required')).toBeTruthy();
-        // await expect(await adhoctaskTemplate.getAssignedCompanyRequiredText('required')).toBeTruthy();
-        // await expect(await adhoctaskTemplate.getAssignedGroupRequiredText('required')).toBeTruthy();
-
-        await expect(await adhoctaskTemplate.getSaveButtonAttribute('ng-disabled')).toBeTruthy();
-        await expect(adhoctaskTemplate.getStatusAttribute()).toBeTruthy();
-        await expect(adhoctaskTemplate.getAssignCompanyAttribute()).toBeTruthy();
-        await expect(adhoctaskTemplate.getBuisnessUnitAttribute()).toBeTruthy();
-        await expect(adhoctaskTemplate.getAssigneeAttribute()).toBeTruthy();
-        await expect(adhoctaskTemplate.getDepartmentAttribute()).toBeTruthy();
-        await expect(adhoctaskTemplate.getAssignedGroupAttribute()).toBeTruthy();
-        await expect(adhoctaskTemplate.getchangeAssignmentButtonText()).toBeTruthy();
-        await expect(adhoctaskTemplate.isAssignToMeButtonDisplayd()).toBeTruthy();
-        await expect(adhoctaskTemplate.ischangeAssignmentButtonDisplayed()).toBeTruthy();
-        await adhoctaskTemplate.clickOnCancelAdhoctask();
-        await utilCommon.clickOnWarningOk();
-        await browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
-    });
-
-    it('DRDMV-3821: Adhoc Task details view (UI verification))	', async () => {
-        await navigationPage.signOut();
-        await loginPage.login('qtao');
-        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-        await navigationPage.gotCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
-
-        //Adhoc task validation
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.clickAddAdhocTaskButton();
-        await adhoctaskTemplate.setSummary(summary);
-        await adhoctaskTemplate.setDescription("Description");
-        await adhoctaskTemplate.selectPriority('High');
-        await adhoctaskTemplate.selectCategoryTier1('Applications');
-        await adhoctaskTemplate.selectCategoryTier2('Social');
-        await adhoctaskTemplate.selectCategoryTier3('Chatter');
-        //await adhoctaskTemplate.selectLabel('test');
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
-
-        await manageTask.clickTaskLinkOnManageTask(summary);
-        await expect(viewTask.isTaskSummaryDisplayed()).toBeTruthy();
-        await expect(viewTask.isTaskIdTextDisplayed).toBeTruthy();
-        await expect(viewTask.isTaskIconDisplayed).toBeTruthy();
-        await expect(viewTask.isTaskPriorityDisplayed()).toBeTruthy();
-        await expect(viewTask.isTaskTimeDetailsDisplayed()).toBeTruthy();
-        await expect(viewTask.isCaseSummaryDisplayed()).toBeTruthy();
-        await expect(viewTask.isRequesterNameDisplayed()).toBeTruthy();
-        await expect(viewTask.isRequesterContactDisplayed()).toBeTruthy();
-        await expect(viewTask.isRequesterMailDisplayed()).toBeTruthy();
-        await expect(viewTask.isEditLinkDisplayed()).toBeTruthy();
-        await expect(viewTask.isCategoryTier1ValueDisplayed()).toBeTruthy();
-        await expect(viewTask.isCategoryTier2ValueDisplayed()).toBeTruthy();
-        await expect(viewTask.isCategoryTier3ValueDisplayed()).toBeTruthy();
-        await expect(viewTask.isAssigneeNameDisplayed()).toBeTruthy();
-        await expect(viewTask.isAssignCompanyDisplayed()).toBeTruthy();
-        await expect(viewTask.isAssignGroupTextDisplayed()).toBeTruthy();
-        await expect(activitytab.isActivityTextPresent()).toBeTruthy();
-        await expect(activitytab.isActivityTextPresent()).toBeTruthy();
-    });
-
-    it('DRDMV-14214: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {
-        let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
-        let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
-        let automationTaskTemplate = 'Automation task' + Math.floor(Math.random() * 1000000);
-        let automationTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
-        let processName = 'Process Name ' + Math.floor(Math.random() * 1000000);
-
-        //Automation Task template
-        await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
-        await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
-        await taskTemplate.setTemplateName(automationTaskTemplate);
-        await taskTemplate.setTaskSummary(automationTaskSummary);
-        await taskTemplate.setTaskDescription('Description in manual task');
-        await taskTemplate.selectCompanyByName('Petramco');
-        await taskTemplate.setNewProcessName('Business Workflows', processName);
-        await taskTemplate.selectTemplateStatus('Active');
-        await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
-
-        await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + processName);
-        await viewTaskTemplate.clickOnCopyTemplate();
-        await expect(copyTemplate.unSelectCopyExistingProcess()).toBeTruthy();
-        await expect(copyTemplate.getProcessName()).toBe(processName);
-        await copyTemplate.setTemplateName(manualTaskSummary);
-        await copyTemplate.selectTemplateStatus('Active');
-        await copyTemplate.setTaskSummary(manualTaskSummary)
-        await copyTemplate.clickSaveCopytemplate();
-        await utilCommon.clickOnWarningOk();
-
-        await navigationPage.signOut();
-        await loginPage.login('qtao');
-        await navigationPage.gotCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + manualTaskTemplate);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
-        await viewCasePage.clickAddTaskButton();
-
-        //Add Automation Task templates in Case
-        await viewCasePage.addTaskFromTaskTemplate(manualTaskSummary);
-        await browser.sleep(2000);
-        await manageTask.clickOnCloseButton();
-        await viewCasePage.changeCaseStatus("In Progress");
-        await viewCasePage.clickSaveStatus();
-        await viewCasePage.goToManageTask();
-        await manageTask.clickTaskLinkOnManageTask(manualTaskSummary);
-        await expect(viewTask.getTaskStatusValue()).toBe('Completed');
-    }, 150 * 1000);
+    
 });
+

@@ -88,6 +88,7 @@ class NavigationPage {
     }
 
     async signOut(): Promise<void> {
+        await browser.refresh();
         await browser.wait(this.EC.visibilityOf($(this.selectors.profileMenu)));
         await browser.actions().mouseMove($(this.selectors.profileMenu)).perform();
         await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.signOutMenuItem, 'Sign Out'))));

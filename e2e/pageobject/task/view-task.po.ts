@@ -179,11 +179,19 @@ class ViewTask {
         return await $(this.selectors.processnameValue).getText();
     }
 
+    async isProcessNameValue(): Promise<boolean> {
+        try {
+            await browser.wait(this.EC.invisibilityOf($(this.selectors.processnameValue)));
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
     async getTaskID(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.taskIdText)));
         return await $(this.selectors.taskIdText).getText();
     }
-
 }
 
 export default new ViewTask();

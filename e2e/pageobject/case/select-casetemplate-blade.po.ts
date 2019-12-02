@@ -40,7 +40,7 @@ class SelectCaseTemplateBlade {
     }
 
     async clickOnFirstCheckBox(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTextbox)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchTextbox)));
         await $$(this.selectors.caseTemplateCheckBox).first().click();
     }
 

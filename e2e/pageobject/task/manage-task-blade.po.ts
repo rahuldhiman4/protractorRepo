@@ -7,7 +7,7 @@ class ManageTaskBlade {
         addTaskFromTemplateButton: '[rx-view-component-id="d02d64d8-5a76-4cdc-8263-1d45b2da4dd1"] button',
         addAdhocTaskButton: '[rx-view-component-id="0b9c53ae-7090-446f-af7e-317ef1391d39"] button',
         refreshButton: '[rx-id="refresh-button"]',
-        taskFromManageTasks: 'ux-task-manager .link',
+        taskFromManageTasks: 'ux-task-manager a.link',
         saveButton: '[rx-view-component-id="b7f9f666-5c22-463a-bc86-4cb66e26fa35"] button',
         searchTextbox: '[rx-id="search-text-input"]',
         canceltaskTemplatbutton: '[rx-view-component-id="ba0bd5fe-391a-4885-8f0c-56cfead43ebd"] button',
@@ -68,6 +68,11 @@ class ManageTaskBlade {
         await $(this.selectors.closeButton).click();
         await browser.wait(this.EC.invisibilityOf($('.modal-dialog')));
         await browser.wait(this.EC.visibilityOf($(caseViewPage.selectors.editLink)));
+    }
+
+    async isTaskLinkOnManageTask(taskSummary: string): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary))));
+        return await element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary)).isDisplayed();
     }
 }
 

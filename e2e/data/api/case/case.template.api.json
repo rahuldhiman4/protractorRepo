@@ -1,5 +1,5 @@
 {
-  "CaseTemplateRequiredData": {
+  "CaseTemplateData": {
     "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
     "recordDefinitionName": "com.bmc.dsm.case-lib:Case Template",
     "fieldInstances": {

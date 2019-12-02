@@ -11,24 +11,12 @@ class AutomatedStatusTransitionConfigEditPage {
 
     async isAutomatedStatusTransitionNameDisabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.editName)));
-        let readProperty: string = await $(this.selectors.editName).getAttribute("readonly");
-        if (readProperty == "true") {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return await $(this.selectors.editName).getAttribute("readonly")=="true";
     }
 
     async isAutomatedStatusTransitionSaveBtnDisabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
-        let readProperty: string = await $(this.selectors.saveButton).getAttribute("disabled");
-        if (readProperty == "true") {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return await $(this.selectors.saveButton).getAttribute("disabled")=="true";
     }
 
     async clickCancel(): Promise<void> {

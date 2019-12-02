@@ -1,7 +1,7 @@
 import { element, browser, $, ProtractorExpectedConditions, protractor } from "protractor";
 import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
-import recordinstance from "../../api/recordinstance.api";
+import apiHelper from "../../api/api.helper";
 import createQuickCasePage from '../../pageobject/case/create-case-quick.po';
 
 describe('Pin Validation testing', () => {
@@ -18,8 +18,13 @@ describe('Pin Validation testing', () => {
     });
 
     xit('Should create case template using api', async () => {
-        var createCaseResponse = await recordinstance.createCaseTemplateWithRequiredFields(templateName, "active");
-        console.log("template created!!");
+        var templateData = {
+            "templateName": `${templateName}`,
+            "templateStatus": "Active",
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        var newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
+        console.log("active case Template is created===", newCaseTemplate.id);
     });
 
     it('should create quick case using case template', async () => {

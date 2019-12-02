@@ -1,5 +1,6 @@
 import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
 import util from "../../utils/ui/util.common";
+import CreateTaskTemplatePage from "../../pageobject/task/create-tasktemplate.po"
 
 class CreateAdhocTaskTemplatePage {
 
@@ -154,6 +155,14 @@ class CreateAdhocTaskTemplatePage {
         return await $(this.selectors.changeAssignmentButton).getText();
     }
 
+    async isProcessFieldPresent(){
+        try {
+            await browser.wait(this.EC.presenceOf($(CreateTaskTemplatePage.selectors.toggleBox)));
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
 
 
 }
