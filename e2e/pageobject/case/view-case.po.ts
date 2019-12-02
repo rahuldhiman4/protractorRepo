@@ -33,6 +33,12 @@ class ViewCasePage {
         addToWatchlist: '[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button',
     }
 
+    async getTextOfStatus(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.editLink)));
+        await browser.wait(this.EC.visibilityOf($(this.selectors.statusChange)));
+        return await $(this.selectors.statusChange).getText();
+    }
+
     async addTaskFromTaskTemplate(templateName: string) {
         await manageTask.clickAddTaskFromTemplateButton();
         await manageTask.setTaskSearchBoxValue(templateName);
@@ -40,12 +46,11 @@ class ViewCasePage {
         await manageTask.clickOnTaskGridSaveButton();
     }
 
-    
     async clickAddToWatchlistLink(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
         await $(this.selectors.addToWatchlist).click();
     }
-    
+
     async clickSaveStatus(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveUpdateStatus)));
         await $(this.selectors.saveUpdateStatus).click();
@@ -172,7 +177,7 @@ class ViewCasePage {
         await browser.wait(this.EC.visibilityOf($(this.selectors.assignedCompanyText)));
         return await $(this.selectors.assignedCompanyText).getText();
     }
-    
+
 }
 
 export default new ViewCasePage();

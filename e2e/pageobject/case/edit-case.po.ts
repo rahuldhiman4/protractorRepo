@@ -80,7 +80,7 @@ class CaseEditPage {
         activityFeed: '[author="feedItem.author"]',
         activityChangeFile: '.d-icon-files_change_o',
     }
-
+ 
     async waitForEditCasePageToBeDisplayed(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.cancelBtn)));
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelBtn)));
@@ -167,6 +167,12 @@ class CaseEditPage {
     async getSlaBarColor(): Promise<string> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBar)));
         return await $(this.selectors.slaProgressBar).getCssValue('background-color');
+    }
+
+    async clearCaseSummary(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summary)));
+        await $((this.selectors.summary)).clear();
+
     }
 
     async updateCaseSummary(summary: string): Promise<void> {
@@ -325,7 +331,7 @@ class CaseEditPage {
 
     async isSummaryRequiredText(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.summary)));
-        return await $(this.selectors.personEmailLink).getAttribute('required');
+        return await $(this.selectors.summary).getAttribute('required');
     }
 
     async isPriorityRequiredText(): Promise<string> {
