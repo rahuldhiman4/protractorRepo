@@ -10,7 +10,8 @@ class ConsoleNotesTemplate {
         status: 'a6f36df8-bb54-405f-ab71-7ac3b4b3e71d',
         templateNameFromGrid: '.ui-grid__link',
         deleteButton: '.d-icon-left-cross',
-        selectCheckBox: '.ui-grid-icon-ok'
+        selectCheckBox: '.ui-grid-icon-ok',
+        body: '.cke_wysiwyg_div'
     };
 
     async clickOnCreateNotesTemplate(): Promise<void> {
@@ -42,6 +43,7 @@ class ConsoleNotesTemplate {
     }
 
     async selectCheckBox(): Promise<void> {
+        await browser.wait(this.EC.invisibilityOf($(this.selectors.body)));
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectCheckBox)));
         await $(this.selectors.selectCheckBox).click();
     }

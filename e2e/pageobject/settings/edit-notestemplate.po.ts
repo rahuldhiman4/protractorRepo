@@ -19,7 +19,8 @@ class editNotesTemplate {
         statusValue: '[rx-view-component-id="6333057d-5f6a-4d5d-b862-a07db2f9997e"] .ui-select-match-text',
         bodyUpdateValue: '.cke_wysiwyg_div p',
         saveButton: '[rx-view-component-id="7cfbf19a-7366-4d4f-b686-be6b6befaf82"] .d-button_primary',
-        cancelButton: '[rx-view-component-id="020cadc5-e0da-4ed3-99d3-6ad0bef712bc"] .d-button_secondary'
+        cancelButton: '[rx-view-component-id="020cadc5-e0da-4ed3-99d3-6ad0bef712bc"] .d-button_secondary',
+        localMessage:'[rx-view-component-id="bcea8e76-32b2-414b-b073-e8c254b5f46e"]'
     }
 
     async changeTemplateName(templateNameValue:string):Promise<void>{
@@ -70,7 +71,8 @@ class editNotesTemplate {
     }
 
     async getBodyValue():Promise<string>{
-        await await browser.wait(this.EC.visibilityOf($(this.selectors.bodyUpdateValue)));
+        await browser.wait(this.EC.invisibilityOf($(this.selectors.localMessage)));
+        await browser.wait(this.EC.visibilityOf($(this.selectors.bodyUpdateValue)));
         return await $(this.selectors.bodyUpdateValue).getText();     
     }
 }
