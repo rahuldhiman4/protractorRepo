@@ -31,6 +31,7 @@ class ViewCasePage {
         assignedCompanyText: '[rx-view-component-id="8b4d78f0-fbda-420c-928f-3dee49fde4fc"] .d-textfield__rx-value',
         attachmentsLink: '[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
         addToWatchlist: '[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button',
+        caseSummary: '[rx-view-component-id="8ebc1637-af05-4a08-b873-4f810c4981b9"] p',
     }
 
     async getTextOfStatus(): Promise<string> {
@@ -116,6 +117,11 @@ class ViewCasePage {
     async getContactPersonName(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.contactPersonName)));
         return await $(this.selectors.contactPersonName).getText();
+    }
+
+    async getCaseSummary(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
+        return await $(this.selectors.caseSummary).getText();
     }
 
     async getContactPersonerPhoneNo(): Promise<string> {

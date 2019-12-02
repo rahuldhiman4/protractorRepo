@@ -1,15 +1,15 @@
 import { browser } from "protractor";
-import loginPage from "../../pageobject/login.po";
-import taskTemplate from "../../pageobject/task/create-tasktemplate.po";
-import selectTaskTemplate from "../../pageobject/task/console-tasktemplate.po"
-import navigationPage from "../../pageobject/navigation.po";
 import createCasePage from '../../pageobject/case/create-case.po';
+import viewCasePage from "../../pageobject/case/view-case.po";
+import loginPage from "../../pageobject/login.po";
+import navigationPage from "../../pageobject/navigation.po";
+import selectTaskTemplate from "../../pageobject/task/console-tasktemplate.po";
+import copyTemplate from "../../pageobject/task/copy-tasktemplate.po";
+import taskTemplate from "../../pageobject/task/create-tasktemplate.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
-import utilCommon from '../../utils/ui/util.common';
-import copyTemplate from "../../pageobject/task/copy-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/task/view-tasktemplate.po";
-import viewCasePage from "../../pageobject/case/view-case.po"
+import utilCommon from '../../utils/ui/util.common';
 
 describe('Copy Task Template', () => {
     beforeAll(async () => {
@@ -421,4 +421,3 @@ describe('Copy Task Template', () => {
         await loginPage.login('qkatawazi');
     });
 });
-

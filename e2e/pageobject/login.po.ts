@@ -19,6 +19,14 @@ class LoginPage {
         await $(this.selectors.signInButton).click();
         await browser.wait(this.EC.titleContains('Cases - Business Workflows'));
     }
+
+    async loginWithCred(user: string, password: string): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.loginForm)), 30000);
+        await $(this.selectors.userName).sendKeys(user);
+        await $(this.selectors.password).sendKeys(password);
+        await $(this.selectors.signInButton).click();
+        await browser.wait(this.EC.titleContains('Business Workflows'));
+    }
 }
 
 export default new LoginPage();
