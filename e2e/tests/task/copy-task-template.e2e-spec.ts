@@ -17,7 +17,7 @@ describe('Copy Task Template', () => {
         await loginPage.login('qkatawazi');
     });
 
-    afterEach(async () => {
+    afterAll(async () => {
         await navigationPage.signOut();
     });
 
@@ -75,7 +75,7 @@ describe('Copy Task Template', () => {
         await loginPage.login('qkatawazi');
     });
 
-    it('DRDMV-14218: The copy of Automated Task template is created across company and check the way to Edit the existing linked Process.', async () => {
+    xit('DRDMV-14218: The copy of Automated Task template is created across company and check the way to Edit the existing linked Process.', async () => {
         let automationTaskTemplate = 'Automation task' + Math.floor(Math.random() * 1000000);
         let automationTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
 
@@ -97,7 +97,8 @@ describe('Copy Task Template', () => {
         await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.signOut();
-        await loginPage.login('qtao');
+        await loginPage.login('qkatawazi');
+        await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
             .toEqual('Task Templates - Business Workflows');
         await selectTaskTemplate.setTaskSearchBoxValue(automationTaskTemplate);
@@ -110,6 +111,7 @@ describe('Copy Task Template', () => {
 
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
+        await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
             .toEqual('Task Templates - Business Workflows');
         await selectTaskTemplate.setTaskSearchBoxValue(newAutomationTaskTemplate);
