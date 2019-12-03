@@ -23,9 +23,6 @@ describe('Copy Case Template', () => {
         var caseTemplateName: string = await caseTemplate['caseTemplateWitAllFields'].templateName + Math.floor(Math.random() * 100000);
         caseTemplate['caseTemplateWitAllFields'].templateName = caseTemplateName;
         await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplate['caseTemplateWitAllFields']);
-        await editCaseTemplate.clickOnEditCaseTemplateMetadata();
-        await editCaseTemplate.changeTemplateStatusDropdownValue(caseTemplate['caseTemplateWitAllFields'].templateStatus);
-        await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
         var CasetemplateNew = await editCaseTemplate.getCaseTemplateID();
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
@@ -72,9 +69,6 @@ describe('Copy Case Template', () => {
         var caseTemplateName: string = await caseTemplatePayload.templateName + Math.floor(Math.random() * 100000);
         caseTemplatePayload.templateName = caseTemplateName;
         await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplatePayload);
-        await editCaseTemplate.clickOnEditCaseTemplateMetadata();
-        await editCaseTemplate.changeTemplateStatusDropdownValue(caseTemplatePayload.templateStatus);
-        await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
         await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);

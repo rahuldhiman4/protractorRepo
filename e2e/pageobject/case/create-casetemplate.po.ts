@@ -206,6 +206,7 @@ class CreateCaseTemplate {
         await this.setIdentityValidationValue(caseTemplate.identityValidation);
         await this.setAssignmentMethodValue(caseTemplate.assignmentMethod);
         await this.setTaskFailureConfigurationValue(caseTemplate.taskFailureConfiguration);
+        await this.setTemplateStatusDropdownValue(caseTemplate.templateStatus);
         await this.setAllowCaseReopenValue(caseTemplate.allowCaseReopen);
         await this.isResolutionCodeRequired(true);
         await this.isResolutionDescriptionRequired(true);

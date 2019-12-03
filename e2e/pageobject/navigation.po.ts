@@ -51,7 +51,8 @@ class NavigationPage {
     }
 
     async gotoCaseConsole(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($('.d-n-nav')));
+        await browser.wait(this.EC.invisibilityOf($('.modal-open')));
+        await browser.wait(this.EC.visibilityOf($(this.selectors.settingsButton)));
         await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
         let hamburgerStatus = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
         if (hamburgerStatus == 'true') {
@@ -60,7 +61,9 @@ class NavigationPage {
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.caseConsoleMenuItem))));
             await element(by.xpath(this.selectors.caseConsoleMenuItem)).click();
         } else {
+            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.hamburgerIcon).$('button')), 60000);
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
+            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.caseConsoleMenuItem))), 60000);
             await element(by.xpath(this.verticalSelectors.caseConsoleMenuItem)).click();
         }
