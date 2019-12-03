@@ -17,6 +17,26 @@ describe('Case Status Change', () => {
         await navigationPage.signOut();
     });
 
+    it('DRDMV-1227: [Case Status] Case status change from Canceled', async () => {
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + summary);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.setContactName('qtao');
+        await createCasePage.clickSaveCaseButton();
+        await utilCommon.closePopUpMessage();
+        await createCasePage.clickGoToCaseButton();
+        console.log(await viewCasePo.getCaseID());
+        await caseViewPage.changeCaseStatus('Canceled');
+        await caseViewPage.setStatusReason('Approval Rejected');
+        await caseViewPage.clickSaveStatus();
+        await utilCommon.waitUntilPopUpDisappear();
+        await expect(await viewCasePo.getTextOfStatus()).toBe('Canceled');
+        await caseViewPage.clickOnStatus();
+        expect(await $(viewCasePo.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
+    });
+
     it('DRDMV-1615: [Case] Fields validation for case in Assigned status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();

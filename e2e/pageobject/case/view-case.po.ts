@@ -40,6 +40,11 @@ class ViewCasePage {
         return await $(this.selectors.statusChange).getText();
     }
 
+    async clickOnStatus(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
+        await $(this.selectors.statusChange).click();
+    }
+
     async addTaskFromTaskTemplate(templateName: string) {
         await manageTask.clickAddTaskFromTemplateButton();
         await manageTask.setTaskSearchBoxValue(templateName);
