@@ -38,8 +38,21 @@ describe('Login and create case from API', () => {
 
         await apiHelper.apiLogin('qkatawazi');
         var manualTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
-        console.log("active case Template is created===", manualTaskTemplate.id);
-        console.log("active case Template is created===", manualTaskTemplate.displayId);
+        console.log("active task Template is created===", manualTaskTemplate.id);
+        console.log("active task Template is created===", manualTaskTemplate.displayId);
+    });
+
+    fit('create external task template', async () => {
+        var templateData = {
+            "templateName": "external task template 2",
+            "templateSummary": "external task template summary 2",
+            "templateStatus": "Active",
+        }
+
+        await apiHelper.apiLogin('qkatawazi');
+        var externalTaskTemplate = await apiHelper.createExternalTaskTemplate(templateData);
+        console.log("external task Template is created===", externalTaskTemplate.id);
+        console.log("external task Template is created===", externalTaskTemplate.displayId);
     });
 
     it('create auto task template', async () => {
@@ -53,8 +66,8 @@ describe('Login and create case from API', () => {
 
         await apiHelper.apiLogin('qkatawazi');
         var autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(templateData);
-        console.log("active case Template is created===", autoTaskTemplate.id);
-        console.log("active case Template is created===", autoTaskTemplate.displayId);
+        console.log("active task Template is created===", autoTaskTemplate.id);
+        console.log("active task Template is created===", autoTaskTemplate.displayId);
     });
 
     it('create user with psilon and petramco access', async () => {
@@ -69,7 +82,7 @@ describe('Login and create case from API', () => {
         await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
     });
 
-    fit('Associate task template to case template', async () => {
+    it('Associate task template to case template', async () => {
 
         await apiHelper.apiLogin('qkatawazi');
 

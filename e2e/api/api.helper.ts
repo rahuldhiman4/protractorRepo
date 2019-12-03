@@ -83,11 +83,34 @@ class ApiHelper {
 
         var newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
 
-        console.log('Create Task Template API Status =============>', newTaskTemplate.status);
+        console.log('Create Manual Task Template API Status =============>', newTaskTemplate.status);
         const taskTemplateDetails = await axios.get(
             await newTaskTemplate.headers.location
         );
-        console.log('New Task Template Details API Status =============>', taskTemplateDetails.status);
+        console.log('New Manual Task Template Details API Status =============>', taskTemplateDetails.status);
+
+        return {
+            id: taskTemplateDetails.data.id,
+            displayId: taskTemplateDetails.data.displayId
+        };
+    }
+
+    async createExternalTaskTemplate(data: ITaskTemplate): Promise<IIDs> {
+
+        var templateDataFile = await require('../data/api/task/task.template.api.json');
+        var templateData = await templateDataFile.ExternalTaskTemplate;
+
+        templateData.fieldInstances[7].value = TaskTemplate[data.templateStatus];
+        templateData.fieldInstances[8].value = data.templateName;
+        templateData.fieldInstances[1000001437].value = data.templateSummary;
+
+        var newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
+
+        console.log('Create External Task Template API Status =============>', newTaskTemplate.status);
+        const taskTemplateDetails = await axios.get(
+            await newTaskTemplate.headers.location
+        );
+        console.log('New External Task Template Details API Status =============>', taskTemplateDetails.status);
 
         return {
             id: taskTemplateDetails.data.id,
@@ -109,11 +132,11 @@ class ApiHelper {
 
         var newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
 
-        console.log('Create Task Template API Status =============>', newTaskTemplate.status);
+        console.log('Create Automated Task Template API Status =============>', newTaskTemplate.status);
         const taskTemplateDetails = await axios.get(
             await newTaskTemplate.headers.location
         );
-        console.log('New Task Template Details API Status =============>', taskTemplateDetails.status);
+        console.log('New Automated Task Template Details API Status =============>', taskTemplateDetails.status);
 
         return {
             id: taskTemplateDetails.data.id,
