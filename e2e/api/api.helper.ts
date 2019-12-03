@@ -6,6 +6,7 @@ import { CaseTemplate } from "../api/constant.api";
 import { TaskTemplate } from "../api/constant.api";
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
 import { IPerson } from 'e2e/data/api/interface/person.interface.api';
+import apiCoreUtil from '../api/api.core.util';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -22,17 +23,17 @@ class ApiHelper {
         var username: string = await loginJson[user].userName;
         var password: string = await loginJson[user].userPassword;
         let response = await axios.post(
-            "/api/rx/authentication/loginrequest",
+            "api/rx/authentication/loginrequest",
             { "userName": username, "password": password },
         )
         console.log('Login API Status =============>', response.status);
         axios.defaults.headers.common['Cookie'] = `AR-JWT=${response.data}`;
     }
 
-    async createCase(body: string): Promise<IIDs> {
+    async createCase(data: any): Promise<IIDs> {
         const newCase = await axios.post(
-            "/api/com.bmc.dsm.case-lib/cases",
-            body
+            "api/com.bmc.dsm.case-lib/cases",
+            data
         );
         console.log('Create Case API Status =============>', newCase.status);
         const caseDetails = await axios.get(
@@ -51,8 +52,9 @@ class ApiHelper {
         var templateDataFile = await require('../data/api/case/case.template.api.json');
         var templateData = await templateDataFile.CaseTemplateData;
 
-        templateData.fieldInstances[8].value = data.templateName;
-        templateData.fieldInstances[1000001437].value = CaseTemplate[data.templateStatus];
+        templateData.fieldInstances[8].value = data.templateSummary;
+        templateData.fieldInstances[1000001437].value = data.templateName;
+        templateData.fieldInstances[7].value = CaseTemplate[data.templateStatus];
         //templateData.fieldInstances[301566300].value = this.getCompanyGuid(data.company);
 
         var newCaseTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
@@ -157,7 +159,40 @@ class ApiHelper {
     async associatePersonToCompany(userId: string, company: string): Promise<void> {
         let userGuid = await coreApi.getPersonGuid(userId);
         let companyGuid = await coreApi.getOrganizationGuid(company);
-        coreApi.associateFoundationElements("Agent Supports Primary Organization", userGuid, companyGuid);
+        await coreApi.associateFoundationElements("Agent Supports Primary Organization", userGuid, companyGuid);
+    }
+
+    async associateCaseTemplateWithOneTaskTemplate(caseTemplateId: string, taskTemplateId: string): Promise<void> {
+        var oneTaskFlowProcess = await require('../data/api/task/taskflow.one.process.api.json');
+        var taskTemplateGuid = await coreApi.getTaskTemplateGuid(taskTemplateId);
+        var randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        oneTaskFlowProcess.name = await oneTaskFlowProcess.name + "_" + randomString;
+
+        var taskTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid);
+        var taskSummary = taskTemplateJsonData.fieldInstances[8].value;
+
+        oneTaskFlowProcess.flowElements.forEach(function (obj, index) {
+            if (obj.inputMap) {
+                obj.inputMap.forEach(function (innerObj: any) {
+                    if (innerObj.expression == `"templateId"`) {
+                        innerObj.expression = `"${taskTemplateGuid}"`;
+                    }
+                    if (innerObj.expression == "\"My one task process\"") {
+                        innerObj.expression = `"${taskSummary}"`;
+                    }
+                });
+            }
+        });
+        var processGuid = await coreApi.createProcess(oneTaskFlowProcess);
+        console.log('New Process Created =============>', oneTaskFlowProcess.name, "=====GUID:", processGuid);
+        var caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
+        var caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
+        caseTemplateJsonData.fieldInstances[450000165].value = oneTaskFlowProcess.name;
+        apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
+    }
+
+    async associateCaseTemplateWithTwoTaskTemplate(): Promise<void> {
+
     }
 }
 

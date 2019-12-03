@@ -1,5 +1,6 @@
 export interface ICaseTemplate {
     templateName: string;
+    templateSummary: string;
     templateStatus: string;
     company?: string;
     ownerCompany?: string;
