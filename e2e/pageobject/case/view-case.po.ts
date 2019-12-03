@@ -1,12 +1,15 @@
 import { ProtractorExpectedConditions, protractor, browser, element, by, $ } from "protractor"
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import editCasePage from "../../pageobject/case/edit-case.po";
+import utilCommon from '../../utils/ui/util.common';
+
 
 class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
         saveUpdateStatus: '[rx-view-component-id="ee5dd503-a10e-4d22-9ac5-99c400892bb7"] button',
+        cancelUpdateStatus: '[rx-view-component-id="7cffd3f8-5b84-4e7f-a4b3-6c0a3dd27855"] button',
         stopWatching: '[rx-view-component-id="a62c849f-5bb0-480f-9811-50def59d82d0"] button',
         statusChange: '[rx-view-component-id="48bbcbbf-564c-4d46-8dc2-1e7670c187ff"] .status-transition',
         statusChangeReason: '[rx-view-component-id="049c43a1-4cbd-482d-980d-5db4ed78f295"]',
@@ -32,6 +35,17 @@ class ViewCasePage {
         attachmentsLink: '[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
         addToWatchlist: '[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button',
         caseSummary: '[rx-view-component-id="8ebc1637-af05-4a08-b873-4f810c4981b9"] p',
+        inprogressErrorMsg: '[rx-view-component-id="dd40ce76-9d16-4c6a-b1a1-16fe6aa6721f"] p',
+    }
+
+    async clickOnCancelButtonOfUpdateStatus(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelUpdateStatus)));
+        await $(this.selectors.cancelUpdateStatus).click();        
+    }
+
+    async getErrorMsgOfInprogressStatus(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.inprogressErrorMsg)));
+        return await $(this.selectors.inprogressErrorMsg).getText();
     }
 
     async getTextOfStatus(): Promise<string> {
