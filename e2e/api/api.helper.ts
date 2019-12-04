@@ -7,6 +7,7 @@ import { TaskTemplate } from "../api/constant.api";
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
 import { IPerson } from 'e2e/data/api/interface/person.interface.api';
 import apiCoreUtil from '../api/api.core.util';
+import {INotesTemplate} from '../data/api/interface/notes.template.interface.api'
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -217,6 +218,51 @@ class ApiHelper {
     async associateCaseTemplateWithTwoTaskTemplate(): Promise<void> {
 
     }
+
+    async createNotesTemplate(module: string, data: INotesTemplate): Promise<boolean> {
+        let notesTemplateFile = await require('../data/api/social/notes.template.api.json');
+        let templateData = await notesTemplateFile.NotesTemplateData;
+        let companyGuid = await coreApi.getOrganizationGuid(data.company);
+        templateData.processInputValues["Company"] = companyGuid;
+        templateData.processInputValues["Template Name"] = data.templateName;
+        templateData.processInputValues["Status"] = data.templateStatus;
+        templateData.processInputValues["MessageBody"] = data.body;
+
+        switch (module) {
+            case "Case": {
+                templateData.processInputValues["Module"] = "Cases";
+                templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.case-lib:Case";
+                templateData.processInputValues["Description"] = "CasesActivity Notes Template";
+                break;
+            }
+            case "Task": {
+                templateData.processInputValues["Module"] = "Tasks";
+                templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.task-lib:Task";
+                templateData.processInputValues["Description"] = "TasksActivity Notes Template";
+                break;
+            }
+            case "People": {
+                templateData.processInputValues["Module"] = "Person";
+                templateData.processInputValues["Source Definition Name"] = "com.bmc.arsys.rx.foundation:Person";
+                templateData.processInputValues["Description"] = "PersonActivity Notes Template";
+                break;
+            }
+            case "Knowledge": {
+                templateData.processInputValues["Module"] = "Knowledge";
+                templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.knowledge:Knowledge Article";
+                templateData.processInputValues["Description"] = "KnowledgeActivity Notes Template";
+                break;
+            }
+            default: {
+                console.log("Invalid module name");
+                break;
+            }
+        }
+        const newTemplate = await coreApi.createNotesTemplate(templateData);
+        console.log('Create Notes Template API Status =============>', newTemplate.status);
+        return newTemplate.status == 201;
+    }
+
 }
 
 export default new ApiHelper();

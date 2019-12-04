@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import * as uuid from 'uuid';
 
 const recordInstanceUri = "api/rx/application/record/recordinstance";
+const notesTemplateUri = "api/rx/application/command";
 
 class ApiCoreUtil {
     async createRecordInstance(jsonBody: string): Promise<AxiosResponse> {
@@ -98,6 +99,15 @@ class ApiCoreUtil {
         );
         console.log('New Process API Status =============>', newProcess.status);
         return newGuid;
+    }
+
+    async createNotesTemplate(jsonBody: string): Promise<AxiosResponse> {
+        const notesTemplate = await axios.post(
+            notesTemplateUri,
+            jsonBody
+        );
+        console.log('Create Notes Template API Status =============>', notesTemplate.status);
+        return notesTemplate;
     }
 }
 

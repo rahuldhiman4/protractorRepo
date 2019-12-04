@@ -42,7 +42,7 @@ describe('Login and create case from API', () => {
         console.log("active task Template is created===", manualTaskTemplate.displayId);
     });
 
-    fit('create external task template', async () => {
+    it('create external task template', async () => {
         var templateData = {
             "templateName": "external task template 2",
             "templateSummary": "external task template summary 2",
@@ -105,4 +105,14 @@ describe('Login and create case from API', () => {
         await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
         //await apiHelper.associateCaseTemplateWithOneTaskTemplate('CTPL-0000000214', 'TTPL-0000000506');
     });
+
+    fit('create notes template', async () => {
+        await apiHelper.apiLogin('tadmin');
+        let randomStr = [...Array(4)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
+        let notesTemplateData = require('../data/ui/social/notesTemplate.ui.json');
+        let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
+        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName; 
+        await apiHelper.createNotesTemplate("People", notesTemplateData['notesTemplateWithMandatoryField']);
+    });
+
 })
