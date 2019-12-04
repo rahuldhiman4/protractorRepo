@@ -17,6 +17,30 @@ describe('Case Status Change', () => {
         await navigationPage.signOut();
     });    
 
+    it('DRDMV-1197: [Case Status] Case status change from Closed', async () => {
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + summary);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.setContactName('qtao');
+        await createCasePage.clickSaveCaseButton();
+        await utilCommon.closePopUpMessage();
+        await createCasePage.clickGoToCaseButton();
+        console.log(await viewCasePo.getCaseID());
+        await caseViewPage.changeCaseStatus('Resolved');
+        await caseViewPage.setStatusReason('Customer Follow-Up Required');
+        await caseViewPage.clickSaveStatus();
+        await utilCommon.waitUntilPopUpDisappear();
+        await expect(await viewCasePo.getTextOfStatus()).toBe('Resolved');
+        await caseViewPage.changeCaseStatus('Closed');
+        await caseViewPage.clickSaveStatus();
+        await utilCommon.waitUntilPopUpDisappear();
+        await expect(await viewCasePo.getTextOfStatus()).toBe('Closed');        
+        await caseViewPage.clickOnStatus();
+        expect(await $(viewCasePo.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
+    });
+
     it('DRDMV-1233: [Case Status Reason] Status Reason change without status transition', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
@@ -117,7 +141,6 @@ describe('Case Status Change', () => {
         await caseViewPage.clickOnCancelButtonOfUpdateStatus();
         await utilCommon.clickOnWarningOk();
         expect (await viewCasePo.getTextOfStatus()).toBe('New');
-        await browser.wait(this.EC.visibilityOf($(this.selectors.editLink)));
 
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
@@ -136,7 +159,6 @@ describe('Case Status Change', () => {
         await viewCasePo.clickOnCancelButtonOfUpdateStatus();
         await utilCommon.clickOnWarningOk();
         expect (await viewCasePo.getTextOfStatus()).toBe('Assigned');
-        await browser.wait(this.EC.visibilityOf($(this.selectors.editLink)));
 
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");

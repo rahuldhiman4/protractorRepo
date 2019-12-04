@@ -140,7 +140,6 @@ class CaseEditPage {
         await browser.wait(this.EC.visibilityOf(option));
         await option.click();
     }
-
     async changeTaskStatus(statusValue: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskStatusChange)));
         await $(this.selectors.taskStatusChange).click();
