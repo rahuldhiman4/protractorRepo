@@ -215,8 +215,37 @@ class ApiHelper {
         apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
     }
 
-    async associateCaseTemplateWithTwoTaskTemplate(): Promise<void> {
+    async associateCaseTemplateWithTwoTaskTemplate(caseTemplateId: string, taskTemplateId1: string, taskTemplateId2: string, order: string): Promise<void> {
+        var twoTaskFlowProcess: any;
+        if (order.toLocaleLowerCase() === 'sequential')
+            twoTaskFlowProcess = await require('../data/api/task/taskflow.sequential.two.process.api.json');
 
+        if (order.toLocaleLowerCase() === 'parallel')
+            twoTaskFlowProcess = await require('../data/api/task/taskflow.parallel.two.process.api.json');
+
+        var taskTemplateGuid1 = await coreApi.getTaskTemplateGuid(taskTemplateId1);
+        var taskTemplateGuid2 = await coreApi.getTaskTemplateGuid(taskTemplateId2);
+        var randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        twoTaskFlowProcess.name = await twoTaskFlowProcess.name + "_" + randomString;
+
+        twoTaskFlowProcess.flowElements.forEach(function (obj, index) {
+            if (obj.inputMap) {
+                obj.inputMap.forEach(function (innerObj: any) {
+                    if (innerObj.expression == `"templateId1"`) {
+                        innerObj.expression = `"${taskTemplateGuid1}"`;
+                    }
+                    if (innerObj.expression == `"templateId2"`) {
+                        innerObj.expression = `"${taskTemplateGuid2}"`;
+                    }
+                });
+            }
+        });
+        var processGuid = await coreApi.createProcess(twoTaskFlowProcess);
+        console.log('New Process Created =============>', twoTaskFlowProcess.name, "=====GUID:", processGuid);
+        var caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
+        var caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
+        caseTemplateJsonData.fieldInstances[450000165].value = twoTaskFlowProcess.name;
+        apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
     }
 
     async createNotesTemplate(module: string, data: INotesTemplate): Promise<boolean> {

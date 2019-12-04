@@ -82,28 +82,40 @@ describe('Login and create case from API', () => {
         await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
     });
 
-    it('Associate task template to case template', async () => {
+    fit('Associate task template to case template', async () => {
 
         await apiHelper.apiLogin('qkatawazi');
 
         var caseTemplateData = {
-            "templateName": "case template name 6",
-            "templateSummary": "case template summary 6",
+            "templateName": "case template name 5",
+            "templateSummary": "case template summary 5",
             "templateStatus": "Active",
         }
         var newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
-        var taskTemplateData = {
-            "templateName": "task template name 6",
-            "templateSummary": "task template summary 6",
+        var manualTaskTemplateData = {
+            "templateName": "manual task template name 5",
+            "templateSummary": "manual task template summary 5",
             "templateStatus": "Active",
         }
-        var manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateData);
+        var manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
-        console.log(newCaseTemplate.id, "\ntaskID\n", manualTaskTemplate.id);
-        console.log(newCaseTemplate.displayId, "\ntaskID\n", manualTaskTemplate.displayId);
+        var autoTaskTemplateData = {
+            "templateName": "auto task template 5",
+            "templateSummary": "auto task template summary 5",
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": "Case Process 5",
+        }
+        var autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
+
+        console.log(newCaseTemplate.id, "\ntaskID\n", manualTaskTemplate.id, "\ntaskID\n", autoTaskTemplate.id);
+        console.log(newCaseTemplate.displayId, "\ntaskID\n", manualTaskTemplate.displayId, "\ntaskID\n", autoTaskTemplate.displayId);
 
         await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
+        await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "sequential");
+        await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "parallel");
         //await apiHelper.associateCaseTemplateWithOneTaskTemplate('CTPL-0000000214', 'TTPL-0000000506');
+        //await apiHelper.associateCaseTemplateWithTwoTaskTemplate('CTPL-0000000215', 'TTPL-0000000517', 'TTPL-0000000518', "sequential");
     });
 
     fit('create notes template', async () => {
