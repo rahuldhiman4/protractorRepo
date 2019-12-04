@@ -17,6 +17,67 @@ describe('Case Status Change', () => {
         await navigationPage.signOut();
     });    
 
+    it('DRDMV-1618: [Case] Fields validation for case in Resolved status', async () => {
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + summary);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.setContactName('qtao');
+        await createCasePage.clickSaveCaseButton();
+        await utilCommon.closePopUpMessage();
+        await createCasePage.clickGoToCaseButton();
+        console.log(await viewCasePo.getCaseID());
+        await expect(viewCasePo.getTextOfStatus()).toBe('Assigned');
+        await viewCasePo.changeCaseStatus('Resolved');
+        await viewCasePo.setStatusReason('Auto Resolved');
+        await viewCasePo.clickSaveStatus();              
+        await utilCommon.waitUntilPopUpDisappear();
+        await expect(viewCasePo.getTextOfStatus()).toBe('Resolved');  
+        await caseViewPage.clickEditCaseButton();
+        await expect(editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
+        await expect(editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
+        // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
+        expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
+        expect(await $(editCasePage.selectors.caseDescription).isPresent()).toBeTruthy('Description not present');
+        expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
+        expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
+        expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
+        expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Description not present');
+        await editCasePage.clearCaseSummary();
+        await editCasePage.clickSaveCase();
+        var str: string = await utilCommon.getPopUpMessage();
+        await expect(str).toBe('Resolve the field validation errors and then try again.');
+        await utilCommon.closePopUpMessage();
+        await editCasePage.updateCaseSummary('pendingAC');
+        await editCasePage.clickSaveCase();
+        await expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+    });
+
+    it('DRDMV-1197: [Case Status] Case status change from Closed', async () => {
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + summary);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.setContactName('qtao');
+        await createCasePage.clickSaveCaseButton();
+        await utilCommon.closePopUpMessage();
+        await createCasePage.clickGoToCaseButton();
+        console.log(await viewCasePo.getCaseID());
+        await caseViewPage.changeCaseStatus('Resolved');
+        await caseViewPage.setStatusReason('Customer Follow-Up Required');
+        await caseViewPage.clickSaveStatus();
+        await utilCommon.waitUntilPopUpDisappear();
+        await expect(await viewCasePo.getTextOfStatus()).toBe('Resolved');
+        await caseViewPage.changeCaseStatus('Closed');
+        await caseViewPage.clickSaveStatus();
+        await utilCommon.waitUntilPopUpDisappear();
+        await expect(await viewCasePo.getTextOfStatus()).toBe('Closed');        
+        await caseViewPage.clickOnStatus();
+        expect(await $(viewCasePo.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
+    });
+
     it('DRDMV-1233: [Case Status Reason] Status Reason change without status transition', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
@@ -117,7 +178,6 @@ describe('Case Status Change', () => {
         await caseViewPage.clickOnCancelButtonOfUpdateStatus();
         await utilCommon.clickOnWarningOk();
         expect (await viewCasePo.getTextOfStatus()).toBe('New');
-        await browser.wait(this.EC.visibilityOf($(this.selectors.editLink)));
 
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
@@ -136,7 +196,6 @@ describe('Case Status Change', () => {
         await viewCasePo.clickOnCancelButtonOfUpdateStatus();
         await utilCommon.clickOnWarningOk();
         expect (await viewCasePo.getTextOfStatus()).toBe('Assigned');
-        await browser.wait(this.EC.visibilityOf($(this.selectors.editLink)));
 
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");

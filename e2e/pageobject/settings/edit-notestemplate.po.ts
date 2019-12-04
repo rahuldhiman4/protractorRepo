@@ -24,7 +24,9 @@ class editNotesTemplate {
         cancelButton: '[rx-view-component-id="020cadc5-e0da-4ed3-99d3-6ad0bef712bc"] .d-button_secondary',
         settingsButton: 'rx-shell .d-n-action__settings',
         localMessage: '[rx-view-component-id="bcea8e76-32b2-414b-b073-e8c254b5f46e"]',
-        localMessageVerification: '[rx-view-component-id="965fcbd6-27d1-40ae-b024-84c41629e47e"] p'
+        localMessageVerification: '[rx-view-component-id="965fcbd6-27d1-40ae-b024-84c41629e47e"] p',
+        editStatus: '[rx-view-component-id="6333057d-5f6a-4d5d-b862-a07db2f9997e"] .ui-select-toggle',
+        editDescription: '[rx-view-component-id="9373799a-664e-4027-8bb1-9b2fcc9cd593"] .cke_enable_context_menu'
     }
 
     async changeTemplateName(templateNameValue: string): Promise<void> {
@@ -87,5 +89,16 @@ class editNotesTemplate {
         await browser.wait(this.EC.visibilityOf($(this.selectors.localMessageVerification)));
         return await $(this.selectors.localMessageVerification).getText();
     }
+
+    async isStatusFieldDisabled(): Promise<boolean>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        return await $(this.selectors.editStatus).getAttribute("disabled")=="true";
+    }
+
+    async isDescriptionFieldDisabled(): Promise<boolean>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        return await $(this.selectors.editDescription).getAttribute("disabled")=="true";
+    }
+    
 }
 export default new editNotesTemplate();

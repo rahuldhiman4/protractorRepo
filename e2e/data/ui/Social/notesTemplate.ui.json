@@ -1,0 +1,8 @@
+{
+    "notesTemplateWithMandatoryField": {
+        "templateName": "TemplateName",
+        "company": "Petramco",
+        "templateStatus": 1,
+        "body": "this is template description"
+    }
+}

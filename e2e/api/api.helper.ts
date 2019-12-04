@@ -7,6 +7,7 @@ import { TaskTemplate } from "../api/constant.api";
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
 import { IPerson } from 'e2e/data/api/interface/person.interface.api';
 import apiCoreUtil from '../api/api.core.util';
+import {INotesTemplate} from '../data/api/interface/notes.template.interface.api'
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -185,6 +186,12 @@ class ApiHelper {
         await coreApi.associateFoundationElements("Agent Supports Primary Organization", userGuid, companyGuid);
     }
 
+    async associatePersonToSupportGroup(userId: string, supportGroup: string): Promise<void> {
+        let userGuid = await coreApi.getPersonGuid(userId);
+        let supportGroupGuid = await coreApi.getSupportGroupGuid(supportGroup);
+        await coreApi.associateFoundationElements("Person to Support Secondary Organization", userGuid, supportGroupGuid);
+    }
+
     async associateCaseTemplateWithOneTaskTemplate(caseTemplateId: string, taskTemplateId: string): Promise<void> {
         var oneTaskFlowProcess = await require('../data/api/task/taskflow.one.process.api.json');
         var taskTemplateGuid = await coreApi.getTaskTemplateGuid(taskTemplateId);
@@ -214,9 +221,83 @@ class ApiHelper {
         apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
     }
 
-    async associateCaseTemplateWithTwoTaskTemplate(): Promise<void> {
+    async associateCaseTemplateWithTwoTaskTemplate(caseTemplateId: string, taskTemplateId1: string, taskTemplateId2: string, order: string): Promise<void> {
+        var twoTaskFlowProcess: any;
+        if (order.toLocaleLowerCase() === 'sequential')
+            twoTaskFlowProcess = await require('../data/api/task/taskflow.sequential.two.process.api.json');
 
+        if (order.toLocaleLowerCase() === 'parallel')
+            twoTaskFlowProcess = await require('../data/api/task/taskflow.parallel.two.process.api.json');
+
+        var taskTemplateGuid1 = await coreApi.getTaskTemplateGuid(taskTemplateId1);
+        var taskTemplateGuid2 = await coreApi.getTaskTemplateGuid(taskTemplateId2);
+        var randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        twoTaskFlowProcess.name = await twoTaskFlowProcess.name + "_" + randomString;
+
+        twoTaskFlowProcess.flowElements.forEach(function (obj, index) {
+            if (obj.inputMap) {
+                obj.inputMap.forEach(function (innerObj: any) {
+                    if (innerObj.expression == `"templateId1"`) {
+                        innerObj.expression = `"${taskTemplateGuid1}"`;
+                    }
+                    if (innerObj.expression == `"templateId2"`) {
+                        innerObj.expression = `"${taskTemplateGuid2}"`;
+                    }
+                });
+            }
+        });
+        var processGuid = await coreApi.createProcess(twoTaskFlowProcess);
+        console.log('New Process Created =============>', twoTaskFlowProcess.name, "=====GUID:", processGuid);
+        var caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
+        var caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
+        caseTemplateJsonData.fieldInstances[450000165].value = twoTaskFlowProcess.name;
+        apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
     }
+
+    async createNotesTemplate(module: string, data: INotesTemplate): Promise<boolean> {
+        let notesTemplateFile = await require('../data/api/social/notes.template.api.json');
+        let templateData = await notesTemplateFile.NotesTemplateData;
+        let companyGuid = await coreApi.getOrganizationGuid(data.company);
+        templateData.processInputValues["Company"] = companyGuid;
+        templateData.processInputValues["Template Name"] = data.templateName;
+        templateData.processInputValues["Status"] = data.templateStatus;
+        templateData.processInputValues["MessageBody"] = data.body;
+
+        switch (module) {
+            case "Case": {
+                templateData.processInputValues["Module"] = "Cases";
+                templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.case-lib:Case";
+                templateData.processInputValues["Description"] = "CasesActivity Notes Template";
+                break;
+            }
+            case "Task": {
+                templateData.processInputValues["Module"] = "Tasks";
+                templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.task-lib:Task";
+                templateData.processInputValues["Description"] = "TasksActivity Notes Template";
+                break;
+            }
+            case "People": {
+                templateData.processInputValues["Module"] = "Person";
+                templateData.processInputValues["Source Definition Name"] = "com.bmc.arsys.rx.foundation:Person";
+                templateData.processInputValues["Description"] = "PersonActivity Notes Template";
+                break;
+            }
+            case "Knowledge": {
+                templateData.processInputValues["Module"] = "Knowledge";
+                templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.knowledge:Knowledge Article";
+                templateData.processInputValues["Description"] = "KnowledgeActivity Notes Template";
+                break;
+            }
+            default: {
+                console.log("Invalid module name");
+                break;
+            }
+        }
+        const newTemplate = await coreApi.createNotesTemplate(templateData);
+        console.log('Create Notes Template API Status =============>', newTemplate.status);
+        return newTemplate.status == 201;
+    }
+
 }
 
 export default new ApiHelper();

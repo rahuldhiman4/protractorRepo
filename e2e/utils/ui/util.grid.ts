@@ -36,7 +36,17 @@ export class GridOperation {
         await browser.wait(until.elementLocated(By.css(this.getGridLocator('searchButton', gridId))), 10000).click();
         await browser.wait(this.EC.elementToBeClickable($(this.getGridLocator('firstCheckBox', gridId))));
         await browser.sleep(5000);
-        await $(this.getGridLocator('firstCheckBox', gridId)).click();
+        await $(this.getGridLocator('firstCheckBox', gridId)).click();        
+    }
+
+    async searchAndSelectFirstCheckBoxWOGrid(value: string) {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));
+        await $(this.selectors.summaryField1).sendKeys(value);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton1)));
+        await $(this.selectors.searchButton1).click();
+        await browser.sleep(5000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.firstGridCheckbox)));
+        await $(this.selectors.firstGridCheckbox).click();
     }
 
     async searchAndSelectAllCheckBox(gridId: string, value: string) {
