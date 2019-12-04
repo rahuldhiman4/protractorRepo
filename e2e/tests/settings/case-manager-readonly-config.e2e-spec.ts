@@ -23,6 +23,9 @@ import businessTimeSharedEntityConfigConsole from "../../pageobject/settings/bus
 import businessTimeEntityConfigEditPage from "../../pageobject/settings/edit-business-time-entity-config.po";
 import businessTimeSegmentConfigConsole from "../../pageobject/settings/business-time-segment-console.po";
 import businessTimeSegmentConfigEditPage from "../../pageobject/settings/edit-business-segment-config.po";
+import apiHelper from "../../api/api.helper";
+import notesTemplateConsole from "../../pageobject/settings/console-notestemplate.po";
+import editNotesTemplateConfig from "../../pageobject/settings/edit-notestemplate.po";
 
 describe('Case Manager Read-only Config', () => {
     beforeAll(async () => {
@@ -180,6 +183,72 @@ describe('Case Manager Read-only Config', () => {
         await businessTimeSegmentConfigEditPage.updateStatus("Draft");
         await businessTimeSegmentConfigEditPage.clickNextButton();
         expect(await businessTimeSegmentConfigEditPage.isFinishButtonDisabled()).toBeTruthy("Finish button is enabled");
+        await browser.refresh();
+    });
+
+    it('DRDMV-18034: Check Case manager is not able to perform Create Update Delete operation on Note template', async () => {
+        //API call to create the case notes template
+        await apiHelper.apiLogin('qkatawazi');
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
+        let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
+        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
+        await apiHelper.createNotesTemplate("Case", notesTemplateData['notesTemplateWithMandatoryField']);
+
+        await navigationPage.gotCreateCase();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+        expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
+        await utilGrid.searchAndSelectFirstCheckBoxWOGrid(notesTemplateName);
+        expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
+        await browser.refresh();
+        await utilGrid.searchAndOpenHyperlink(notesTemplateName);
+        expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
+        expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
+        await browser.refresh();
+    });
+
+    it('DRDMV-18056: Check Case manager is not able to perform Create Update Delete operation on Task->Note Template', async () => {
+        //API call to create the case notes template
+        await apiHelper.apiLogin('qkatawazi');
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
+        let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
+        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
+        await apiHelper.createNotesTemplate("Task", notesTemplateData['notesTemplateWithMandatoryField']);
+
+        await navigationPage.gotCreateCase();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+        expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
+        await utilGrid.searchAndSelectFirstCheckBoxWOGrid(notesTemplateName);
+        expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
+        await browser.refresh();
+        await utilGrid.searchAndOpenHyperlink(notesTemplateName);
+        expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
+        expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
+        await browser.refresh();
+    });
+
+    it('DRDMV-18042: Check Case manager is not able to perform Create Update Delete operation on People->Note Template', async () => {
+        //API call to create the case notes template
+        await apiHelper.apiLogin('qkatawazi');
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
+        let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
+        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
+        await apiHelper.createNotesTemplate("People", notesTemplateData['notesTemplateWithMandatoryField']);
+
+        await navigationPage.gotCreateCase();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+        expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
+        await utilGrid.searchAndSelectFirstCheckBoxWOGrid(notesTemplateName);
+        expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
+        await browser.refresh();
+        await utilGrid.searchAndOpenHyperlink(notesTemplateName);
+        expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
+        expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
         await browser.refresh();
     });
 

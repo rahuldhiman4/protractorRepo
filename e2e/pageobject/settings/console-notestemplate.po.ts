@@ -69,6 +69,16 @@ class ConsoleNotesTemplate {
         let d:boolean= await $(this.selectors.notesTemplate).isDisplayed();
         return(a==b==c==d==true);
     }
+
+    async isAddNotesTemplateBtnDisabled(): Promise<boolean>{
+        await browser.wait(this.EC.visibilityOf($(this.selectors.notesTemplate)));
+        return await $(this.selectors.notesTemplate).getAttribute("disabled")=="true";
+    }
+
+    async isDeleteNotesTemplateBtnDisabled(): Promise<boolean>{
+        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
+        return await $(this.selectors.deleteButton).getAttribute("disabled")=="true";
+    }
 }
 
 export default new ConsoleNotesTemplate();
