@@ -194,6 +194,6 @@ describe('Create Case Task', () => {
         await loginPage.login('qkatawazi');
     }, 360 * 1000);
 
-    
+
 });
 

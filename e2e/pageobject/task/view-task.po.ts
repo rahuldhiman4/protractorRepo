@@ -23,7 +23,7 @@ class ViewTask {
         taskStatus: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] .status-transition',
         requesterName: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] [class="person-name person-link"]',
         requesterContact: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .ac-link-person-phone',
-        requesterMail: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .ac-link-person-email-disabled',
+        requesterMail: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .ac-link-person-email',
         assigneeName: '[rx-view-component-id="1801d8c6-4997-4253-b716-809b39909598"] .person-main',
         assignGroupText: '[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] .d-textfield__label',
         assignCompany: '[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] .d-textfield__label',
@@ -64,9 +64,13 @@ class ViewTask {
         return await $(this.selectors.caseSummary).isDisplayed();
     }
 
-    async isCaseIdDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.caseIdText)));
-        return await $(this.selectors.caseIdText).isDisplayed();
+    async isCaseViewLinkDisplayed(): Promise<boolean> {
+        try {
+            await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewCaseLink)));
+            return true ;
+        } catch (error) {
+            return false;
+        }
     }
 
     async istaskStatusDisplayed(): Promise<boolean> {
@@ -138,6 +142,7 @@ class ViewTask {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewCaseLink)));
         await $(this.selectors.viewCaseLink).click();
     }
+
 
     async getCategoryTier1Value(): Promise<string> {
         await browser.wait(this.EC.presenceOf($(this.selectors.categoryTier1Value)));

@@ -17,6 +17,7 @@ class Copytaskpage {
         companyGiud: 'f62bd26b-c464-4dff-ab7b-e4446d1cbf99',
         clearProcessBundleId: '[title="Process Bundle ID"] [rx-id="clear-selection-button"] i',
         processBundle: '5f30b3d4-caa2-4c28-8af6-cebf094bc2e8',
+        ownerGuid: '908e526e-917a-4360-94e9-768362f6a573',
     }
 
     async unSelectCopyExistingProcess(): Promise<string> {
@@ -70,6 +71,10 @@ class Copytaskpage {
 
     async selectTaskCompany(companyName: string): Promise<void> {
         await util.selectDropDown(this.selectors.companyGiud, companyName);
+    }
+
+    async selectOwnerGroup(ownerGroup: string): Promise<void> {
+        await util.selectDropDown(this.selectors.ownerGuid, ownerGroup);
     }
 }
 

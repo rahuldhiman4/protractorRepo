@@ -186,6 +186,12 @@ class ApiHelper {
         await coreApi.associateFoundationElements("Agent Supports Primary Organization", userGuid, companyGuid);
     }
 
+    async associatePersonToSupportGroup(userId: string, supportGroup: string): Promise<void> {
+        let userGuid = await coreApi.getPersonGuid(userId);
+        let supportGroupGuid = await coreApi.getSupportGroupGuid(supportGroup);
+        await coreApi.associateFoundationElements("Person to Support Secondary Organization", userGuid, supportGroupGuid);
+    }
+
     async associateCaseTemplateWithOneTaskTemplate(caseTemplateId: string, taskTemplateId: string): Promise<void> {
         var oneTaskFlowProcess = await require('../data/api/task/taskflow.one.process.api.json');
         var taskTemplateGuid = await coreApi.getTaskTemplateGuid(taskTemplateId);

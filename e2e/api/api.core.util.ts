@@ -52,6 +52,14 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getSupportGroupGuid(supportGroupName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Support Group");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[1000000010] === supportGroupName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
     async getPersonGuid(personName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Person");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {

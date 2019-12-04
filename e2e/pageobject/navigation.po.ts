@@ -8,6 +8,7 @@ class NavigationPage {
         createKnowledgeMenu: '//rx-shell//*[text()="Create"]/../..//a[contains(text(),"Knowledge ")]',
         createQuickCaseMenu: '//rx-shell//*[text()="Quick Case"]/..',
         caseConsoleMenuItem: '(//li[contains(@class,"d-n-dropdown__item")]//a[text()="Case "])[1]',
+        taskConsoleMenuItem: '(//li[contains(@class,"d-n-dropdown__item")]//a[text()="Task "])[1]',
         settingsButton: 'rx-shell .d-n-action__settings',
         settingsMenuItemContainer: 'rx-administration-settings',
         profileMenu: '.d-n-nav__profile',
@@ -20,7 +21,8 @@ class NavigationPage {
         createCaseMenuItem: '//*[@title="Create"]/parent::*//*[@title="Case"]',
         createKnowlegeMenuItem: '//*[@title="Create"]/parent::*//*[@title="Knowledge"]',
         createQuickCaseMenu: '[title="Quick Case"]',
-        caseConsoleMenuItem: '(//a[@title="Case"])[1]'
+        caseConsoleMenuItem: '(//a[@title="Case"])[1]',
+        taskConsoleMenuItem: '(//a[@title="Task"])[1]',
     }
 
     async gotCreateCase(): Promise<void> {
@@ -32,8 +34,9 @@ class NavigationPage {
             await element(by.xpath(this.selectors.createCaseMenuItem)).click();
         } else {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
+            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createCaseMenuItem))), 60000);
-            await element(by.xpath(this.verticalSelectors.createCaseMenuItem)).click();
+            await element(by.xpath(this.verticalSelectors.createCaseMenuItem)).click();        
         }
         await browser.wait(this.EC.titleContains('Case Create - Business Workflows'), 30000);
     }
@@ -68,6 +71,24 @@ class NavigationPage {
             await element(by.xpath(this.verticalSelectors.caseConsoleMenuItem)).click();
         }
         await browser.wait(this.EC.titleContains('Cases - Business Workflows'), 30000);
+    }
+
+    async gotoTaskConsole(): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.settingsButton)));
+        await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
+        let hamburgerStatus = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
+        if (hamburgerStatus == 'true') {
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))), 60000);
+            await element(by.xpath(this.selectors.workspaceMenu)).click();
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.taskConsoleMenuItem))));
+            await element(by.xpath(this.selectors.taskConsoleMenuItem)).click();
+        } else {
+            await $(this.verticalSelectors.hamburgerIcon).$('button').click();
+            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.taskConsoleMenuItem))), 60000);
+            await element(by.xpath(this.verticalSelectors.taskConsoleMenuItem)).click();
+        }
+        await browser.wait(this.EC.titleContains('Tasks - Business Workflows'), 30000);
     }
 
     async gotoSettingsPage(): Promise<void> {
