@@ -3,9 +3,6 @@ import navigationPage from "../../pageobject/navigation.po";
 import quickCase from "../../pageobject/case/quick-case.po";
 import loginPage from "../../pageobject/login.po"
 
-import { async } from 'q';
-import { Alert } from 'selenium-webdriver';
-
 describe("Quick Case",()=>{
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     const requester="Requester";

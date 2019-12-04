@@ -1,5 +1,4 @@
 import { ProtractorExpectedConditions, ElementFinder, protractor, browser, element, by, $, $$, Key, Button, ElementArrayFinder } from "protractor"
-import { async } from 'q';
 
 class QuickCasePage{
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -41,11 +40,9 @@ class QuickCasePage{
         let elementCount = await $$(this.selectors.confirmedItemSelection).count();
         for(let i=0;i<elementCount;i++){
             let actualRelationType = await $$(this.selectors.confirmedItemSelection).get(i).$('button').getText();
-            if(actualRelationType==relationType)
-            {
+            if(actualRelationType==relationType){
                 employee = await $$(this.selectors.confirmedItemSelection).get(i).$('.smart-recorder-confirmedItem-selection+div').getText();
-                break;
-            }
+                break;}
         }
         return employee;
     }
