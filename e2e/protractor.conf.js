@@ -21,15 +21,7 @@ exports.config = {
 
   suites: {
     full: [
-      './tests/case/case-activity.e2e-spec.ts',
-      './tests/case/case-and-employee-relationship.e2e-spec.ts',
-      './tests/case/copy-casetemplate.e2e-spec.ts',
-      './tests/case/edit-case.e2e-spec.ts',
-      './tests/settings/case-manager-readonly-config.e2e-spec.ts',
-      './tests/settings/notes-template.e2e-spec.ts',
-      './tests/settings/service-target.e2e-spec.ts',
-      './tests/task/copy-task-template.e2e-spec.ts',
-      './tests/task/create-case-task.e2e-spec.ts',
+      './tests/**/*.e2e-spec.ts',
     ]
   },
 

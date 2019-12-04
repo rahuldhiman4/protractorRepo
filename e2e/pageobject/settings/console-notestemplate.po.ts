@@ -11,7 +11,12 @@ class ConsoleNotesTemplate {
         templateNameFromGrid: '.ui-grid__link',
         deleteButton: '.d-icon-left-cross',
         selectCheckBox: '.ui-grid-icon-ok',
-        body: '.cke_wysiwyg_div'
+        body: '.cke_wysiwyg_div',
+        fiter: '.d-icon-left-filter',
+        searchTextBox: 'input[rx-id="search-text-input"]',
+        searchButton:'[rx-id="submit-search-button"]',
+        refreshButton: '.d-icon-refresh',
+
     };
 
     async clickOnCreateNotesTemplate(): Promise<void> {
@@ -51,6 +56,18 @@ class ConsoleNotesTemplate {
     async isTemplatePresentOnGrid(templateNameValue): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf(element(by.cssContainingText((this.selectors.templateNameFromGrid), templateNameValue))));
         return element(by.cssContainingText(this.selectors.templateNameFromGrid, templateNameValue)).isDisplayed();
+    }
+
+    async isNotesTemplateUIConsolePresent():Promise<boolean>{
+        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTextBox)));
+        let a:boolean= await $(this.selectors.searchTextBox).isDisplayed();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.searchButton)));
+        let b:boolean= await $(this.selectors.searchButton).isDisplayed();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.refreshButton)));
+        let c:boolean= await $(this.selectors.refreshButton).isDisplayed();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.notesTemplate)));
+        let d:boolean= await $(this.selectors.notesTemplate).isDisplayed();
+        return(a==b==c==d==true);
     }
 }
 

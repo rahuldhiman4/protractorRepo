@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
+import * as uuid from 'uuid';
 
-const recordInstanceUri = "/api/rx/application/record/recordinstance";
+const recordInstanceUri = "api/rx/application/record/recordinstance";
 
 class ApiCoreUtil {
     async createRecordInstance(jsonBody: string): Promise<AxiosResponse> {
@@ -17,45 +18,61 @@ class ApiCoreUtil {
             recordInstanceUri + "/" + recordName + "/" + recordGUID,
             jsonBody
         );
-        console.log('Create RecordInstance API Status =============>', newRecord.status);
+        console.log('Update RecordInstance API Status =============>', newRecord.status);
         return newRecord;
     }
 
-    async getOrganizationGuid(orgName: string): Promise<string> {
+    async getRecordInstanceDetails(recordName: string, recordGUID: string): Promise<any> {
+        let uri = `api/rx/application/record/recordinstance/${recordName}/${recordGUID}`;
+        const recorInstanceDetails = await axios.get(
+            uri
+        );
+        return await recorInstanceDetails.data;
+    }
 
-        const dataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery"
+    async getGuid(recordName: string): Promise<AxiosResponse> {
+        let dataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery"
             + "&pageSize=-1&recorddefinition="
-            + "com.bmc.arsys.rx.foundation:Primary Organization"
+            + recordName
             + "&startIndex=0";
 
-        const allRecords = await axios.get(
+        let allRecords = await axios.get(
             dataPageUri
         );
-        console.log('Organization GUID API Status =============>', allRecords.status);
+        console.log('Get GUID API Status =============>', allRecords.status);
+        return allRecords;
+    }
 
-        let entityObj: any = allRecords.data.data.filter(function (obj) {
+    async getOrganizationGuid(orgName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Primary Organization");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[1000000010] === orgName;
-
         });
-        return entityObj[0]['379'];
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
     async getPersonGuid(personName: string): Promise<string> {
-
-        const dataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery"
-            + "&pageSize=-1&recorddefinition="
-            + "com.bmc.arsys.rx.foundation:Person"
-            + "&startIndex=0";
-
-        const allRecords = await axios.get(
-            dataPageUri
-        );
-        console.log('Person GUID API Status =============>', allRecords.status);
-
-        let entityObj: any = allRecords.data.data.filter(function (obj: any) {
+        let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Person");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[4] === personName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getCaseTemplateGuid(caseTemplateId: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.case-lib:Case Template");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[1] === caseTemplateId;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getTaskTemplateGuid(caseTemplateId: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.task-lib:Task Template");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[1] === caseTemplateId;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
     async associateFoundationElements(associationName: string, entity1: string, entity2: string): Promise<void> {
@@ -70,6 +87,17 @@ class ApiCoreUtil {
             }
         );
         console.log('Associate Entities API Status =============>', associateEntities.status);
+    }
+
+    async createProcess(body: any): Promise<string> {
+        var newGuid = uuid.v4();
+        body.guid = newGuid;
+        const newProcess = await axios.post(
+            "api/rx/application/process/processdefinition",
+            body
+        );
+        console.log('New Process API Status =============>', newProcess.status);
+        return newGuid;
     }
 }
 

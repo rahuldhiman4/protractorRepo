@@ -1,178 +1,166 @@
 {
-    "name": "com.bmc.dsm.case-lib:MyOneTaskProcess",
-    "guid": "rx-3b50828e-c651-4fa4-aa0b-e445bc2a0060",
-    "description": null,
-    "runAsUser": false,
-    "isEnabled": true,
-    "inputParams": [
-      {
-        "resourceType": "com.bmc.arsys.rx.services.process.domain.record.ObjectFieldDefinition",
-        "name": "DynamicData",
-        "tags": null,
-        "description": "",
-        "overlayGroupId": null,
-        "developerId": null,
-        "id": 450000151,
-        "permissions": null,
-        "fieldTypeName": "com.bmc.arsys.rx.services.process.domain.record.ObjectFieldType",
-        "isInherited": false,
-        "explicitPermissions": null,
-        "overlayDescriptor": null,
-        "fieldMapping": null,
-        "allowPermissionsOverlay": true,
-        "allowOtherPropertiesOverlay": true,
-        "auditOption": null,
-        "documentDefinitionName": "com.bmc.dsm.ticketing-lib:Sample JSON Document",
-        "anyUserAllowedToSubmit": false,
-        "fieldOption": "OPTIONAL"
-      },
-      {
-        "resourceType": "com.bmc.arsys.rx.services.process.domain.record.RecordInstanceFieldDefinition",
-        "name": "CaseRecord",
-        "tags": null,
-        "description": "",
-        "overlayGroupId": null,
-        "developerId": null,
-        "id": 450000152,
-        "permissions": null,
-        "fieldTypeName": "com.bmc.arsys.rx.services.process.domain.record.RecordInstanceFieldType",
-        "isInherited": false,
-        "explicitPermissions": null,
-        "overlayDescriptor": null,
-        "fieldMapping": null,
-        "allowPermissionsOverlay": true,
-        "allowOtherPropertiesOverlay": true,
-        "auditOption": null,
-        "recordDefinitionName": "com.bmc.dsm.case-lib:Case",
-        "useSampleData": false,
-        "anyUserAllowedToSubmit": false,
-        "fieldOption": "OPTIONAL"
-      },
-      {
-        "resourceType": "com.bmc.arsys.rx.standardlib.record.CharacterFieldDefinition",
-        "name": "CaseId",
-        "tags": null,
-        "description": "",
-        "overlayGroupId": null,
-        "developerId": null,
-        "id": 450000153,
-        "permissions": null,
-        "fieldTypeName": "com.bmc.arsys.rx.services.record.domain.DefaultFieldType",
-        "isInherited": false,
-        "explicitPermissions": null,
-        "overlayDescriptor": null,
-        "fieldMapping": null,
-        "allowPermissionsOverlay": true,
-        "allowOtherPropertiesOverlay": true,
-        "auditOption": null,
-        "maxLength": 0,
-        "defaultValue": null,
-        "searchDefinition": null,
-        "namedListDefinition": null,
-        "shouldPersistEncrypted": false,
-        "shouldPersistHashed": false,
-        "associationGuid": null,
-        "anyUserAllowedToSubmit": false,
-        "identityField": false,
-        "fieldOption": "REQUIRED"
-      }
-    ],
-    "outputParams": [
-  
-    ],
-    "flowElements": [
-      {
-        "resourceType": "com.bmc.arsys.rx.services.process.domain.SequenceFlowDefinition",
-        "name": "Sequence Flow",
-        "tags": null,
-        "description": "",
-        "overlayGroupId": null,
-        "developerId": null,
-        "guid": "rx-8ed42d89-fab1-44f9-880e-26dec6e6798f",
-        "sourceNode": "rx-479bdead-4573-4224-9da8-3682db35d558",
-        "targetNode": "rx-794ebe3c-15f9-4630-8c29-863ff6d03251",
-        "condition": ""
-      },
-      {
-        "resourceType": "com.bmc.arsys.rx.services.process.domain.EndEventDefinition",
-        "name": "End",
-        "tags": null,
-        "description": null,
-        "overlayGroupId": null,
-        "developerId": null,
-        "guid": "rx-c8f0fd5d-7c59-4ba3-a391-0e50e2097f12",
-        "event": null
-      },
-      {
-        "resourceType": "com.bmc.arsys.rx.services.process.domain.CallActivityDefinition",
-        "name": "com.bmc.dsm.task-lib:Create Task",
-        "tags": null,
-        "description": "",
-        "overlayGroupId": null,
-        "developerId": null,
-        "guid": "rx-794ebe3c-15f9-4630-8c29-863ff6d03251",
-        "multiInstanceLoopDefinition": null,
-        "calledProcessDefinitionName": "com.bmc.dsm.task-lib:Create Task",
-        "sampleProcessDefinitionName": "",
-        "inputMap": [
-          {
-            "assignTarget": "taskSummary",
-            "expression": "\"My one task process\""
-          },
-          {
-            "assignTarget": "activityId",
-            "expression": "\"rx-c93a929d-432a-4c8f-9639-cb44446217e9\""
-          },
-          {
-            "assignTarget": "caseId",
-            "expression": "${processContext.CaseId}"
-          },
-          {
-            "assignTarget": "taskTemplateId",
-            "expression": "templateID1"
-          }
-        ],
-        "outputMap": [
-  
-        ]
-      },
-      {
-        "resourceType": "com.bmc.arsys.rx.services.process.domain.SequenceFlowDefinition",
-        "name": "Sequence Flow",
-        "tags": null,
-        "description": "",
-        "overlayGroupId": null,
-        "developerId": null,
-        "guid": "rx-0230efaa-f997-4712-b13f-d0b889065774",
-        "sourceNode": "rx-794ebe3c-15f9-4630-8c29-863ff6d03251",
-        "targetNode": "rx-c8f0fd5d-7c59-4ba3-a391-0e50e2097f12",
-        "condition": ""
-      },
-      {
-        "resourceType": "com.bmc.arsys.rx.services.process.domain.StartEventDefinition",
-        "name": "Start",
-        "tags": null,
-        "description": null,
-        "overlayGroupId": null,
-        "developerId": null,
-        "guid": "rx-479bdead-4573-4224-9da8-3682db35d558"
-      }
-    ],
-    "artifacts": [
-  
-    ],
-    "layout": "{\"cells\":[{\"id\":\"479bdead-4573-4224-9da8-3682db35d558\",\"position\":{\"x\":50,\"y\":375},\"size\":{\"width\":30,\"height\":30},\"type\":\"rx.StartEvent\",\"z\":1,\"attrs\":{\".label\":{\"text\":\"\"}}},{\"id\":\"c8f0fd5d-7c59-4ba3-a391-0e50e2097f12\",\"position\":{\"x\":900,\"y\":375},\"size\":{\"width\":30,\"height\":30},\"type\":\"rx.EndEvent\",\"z\":2,\"attrs\":{\".label\":{\"text\":\"\"}}},{\"collapsedSize\":{\"width\":90,\"height\":60},\"content\":\"Create Task\",\"expanded\":false,\"id\":\"794ebe3c-15f9-4630-8c29-863ff6d03251\",\"position\":{\"x\":430,\"y\":305},\"size\":{\"width\":90,\"height\":60},\"type\":\"rx.CallActivity\",\"z\":6},{\"flowType\":\"normal\",\"id\":\"8ed42d89-fab1-44f9-880e-26dec6e6798f\",\"labels\":[{\"attrs\":{\"text\":{\"text\":\"\"}},\"position\":\"0.5\"}],\"source\":{\"id\":\"479bdead-4573-4224-9da8-3682db35d558\"},\"target\":{\"id\":\"794ebe3c-15f9-4630-8c29-863ff6d03251\"},\"type\":\"rx.SequenceFlow\",\"z\":7},{\"flowType\":\"normal\",\"id\":\"0230efaa-f997-4712-b13f-d0b889065774\",\"labels\":[{\"attrs\":{\"text\":{\"text\":\"\"}},\"position\":\"0.5\"}],\"source\":{\"id\":\"794ebe3c-15f9-4630-8c29-863ff6d03251\"},\"target\":{\"id\":\"c8f0fd5d-7c59-4ba3-a391-0e50e2097f12\"},\"type\":\"rx.SequenceFlow\",\"z\":8}]}",
-    "allowOverlay": false,
-    "scope": "BUNDLE",
-    "localVariables": [
-  
-    ],
-    "permissions": [
-  
-    ],
-    "tags": null,
-    "contextKeyParam": null,
-    "localizableStrings": {
-  
+  "name": "com.bmc.dsm.case-lib:MyOneTaskProcess",
+  "guid": "rx-3b50828e-c651-4fa4-aa0b-e445bc2a0060",
+  "description": null,
+  "runAsUser": false,
+  "isEnabled": true,
+  "inputParams": [
+    {
+      "resourceType": "com.bmc.arsys.rx.services.process.domain.record.ObjectFieldDefinition",
+      "name": "DynamicData",
+      "tags": null,
+      "description": "",
+      "overlayGroupId": null,
+      "developerId": null,
+      "id": 450000151,
+      "permissions": null,
+      "fieldTypeName": "com.bmc.arsys.rx.services.process.domain.record.ObjectFieldType",
+      "isInherited": false,
+      "explicitPermissions": null,
+      "overlayDescriptor": null,
+      "fieldMapping": null,
+      "allowPermissionsOverlay": true,
+      "allowOtherPropertiesOverlay": true,
+      "auditOption": null,
+      "documentDefinitionName": "com.bmc.dsm.ticketing-lib:Sample JSON Document",
+      "anyUserAllowedToSubmit": false,
+      "fieldOption": "OPTIONAL"
+    },
+    {
+      "resourceType": "com.bmc.arsys.rx.services.process.domain.record.RecordInstanceFieldDefinition",
+      "name": "CaseRecord",
+      "tags": null,
+      "description": "",
+      "overlayGroupId": null,
+      "developerId": null,
+      "id": 450000152,
+      "permissions": null,
+      "fieldTypeName": "com.bmc.arsys.rx.services.process.domain.record.RecordInstanceFieldType",
+      "isInherited": false,
+      "explicitPermissions": null,
+      "overlayDescriptor": null,
+      "fieldMapping": null,
+      "allowPermissionsOverlay": true,
+      "allowOtherPropertiesOverlay": true,
+      "auditOption": null,
+      "recordDefinitionName": "com.bmc.dsm.case-lib:Case",
+      "useSampleData": false,
+      "anyUserAllowedToSubmit": false,
+      "fieldOption": "OPTIONAL"
+    },
+    {
+      "resourceType": "com.bmc.arsys.rx.standardlib.record.CharacterFieldDefinition",
+      "name": "CaseId",
+      "tags": null,
+      "description": "",
+      "overlayGroupId": null,
+      "developerId": null,
+      "id": 450000153,
+      "permissions": null,
+      "fieldTypeName": "com.bmc.arsys.rx.services.record.domain.DefaultFieldType",
+      "isInherited": false,
+      "explicitPermissions": null,
+      "overlayDescriptor": null,
+      "fieldMapping": null,
+      "allowPermissionsOverlay": true,
+      "allowOtherPropertiesOverlay": true,
+      "auditOption": null,
+      "maxLength": 0,
+      "defaultValue": null,
+      "searchDefinition": null,
+      "namedListDefinition": null,
+      "shouldPersistEncrypted": false,
+      "shouldPersistHashed": false,
+      "associationGuid": null,
+      "anyUserAllowedToSubmit": false,
+      "identityField": false,
+      "fieldOption": "REQUIRED"
     }
-  }
+  ],
+  "outputParams": [],
+  "flowElements": [
+    {
+      "resourceType": "com.bmc.arsys.rx.services.process.domain.SequenceFlowDefinition",
+      "name": "Sequence Flow",
+      "tags": null,
+      "description": "",
+      "overlayGroupId": null,
+      "developerId": null,
+      "guid": "rx-8ed42d89-fab1-44f9-880e-26dec6e6798f",
+      "sourceNode": "rx-479bdead-4573-4224-9da8-3682db35d558",
+      "targetNode": "rx-794ebe3c-15f9-4630-8c29-863ff6d03251",
+      "condition": ""
+    },
+    {
+      "resourceType": "com.bmc.arsys.rx.services.process.domain.EndEventDefinition",
+      "name": "End",
+      "tags": null,
+      "description": null,
+      "overlayGroupId": null,
+      "developerId": null,
+      "guid": "rx-c8f0fd5d-7c59-4ba3-a391-0e50e2097f12",
+      "event": null
+    },
+    {
+      "resourceType": "com.bmc.arsys.rx.services.process.domain.CallActivityDefinition",
+      "name": "com.bmc.dsm.task-lib:Create Task",
+      "tags": null,
+      "description": "",
+      "overlayGroupId": null,
+      "developerId": null,
+      "guid": "rx-794ebe3c-15f9-4630-8c29-863ff6d03251",
+      "multiInstanceLoopDefinition": null,
+      "calledProcessDefinitionName": "com.bmc.dsm.task-lib:Create Task",
+      "sampleProcessDefinitionName": "",
+      "inputMap": [
+        {
+          "assignTarget": "taskSummary",
+          "expression": "\"My one task process\""
+        },
+        {
+          "assignTarget": "activityId",
+          "expression": "\"rx-c93a929d-432a-4c8f-9639-cb44446217e9\""
+        },
+        {
+          "assignTarget": "caseId",
+          "expression": "${processContext.CaseId}"
+        },
+        {
+          "assignTarget": "taskTemplateId",
+          "expression": "\"templateId\""
+        }
+      ],
+      "outputMap": []
+    },
+    {
+      "resourceType": "com.bmc.arsys.rx.services.process.domain.SequenceFlowDefinition",
+      "name": "Sequence Flow",
+      "tags": null,
+      "description": "",
+      "overlayGroupId": null,
+      "developerId": null,
+      "guid": "rx-0230efaa-f997-4712-b13f-d0b889065774",
+      "sourceNode": "rx-794ebe3c-15f9-4630-8c29-863ff6d03251",
+      "targetNode": "rx-c8f0fd5d-7c59-4ba3-a391-0e50e2097f12",
+      "condition": ""
+    },
+    {
+      "resourceType": "com.bmc.arsys.rx.services.process.domain.StartEventDefinition",
+      "name": "Start",
+      "tags": null,
+      "description": null,
+      "overlayGroupId": null,
+      "developerId": null,
+      "guid": "rx-479bdead-4573-4224-9da8-3682db35d558"
+    }
+  ],
+  "artifacts": [],
+  "layout": "{\"cells\":[{\"id\":\"479bdead-4573-4224-9da8-3682db35d558\",\"position\":{\"x\":50,\"y\":375},\"size\":{\"width\":30,\"height\":30},\"type\":\"rx.StartEvent\",\"z\":1,\"attrs\":{\".label\":{\"text\":\"\"}}},{\"id\":\"c8f0fd5d-7c59-4ba3-a391-0e50e2097f12\",\"position\":{\"x\":900,\"y\":375},\"size\":{\"width\":30,\"height\":30},\"type\":\"rx.EndEvent\",\"z\":2,\"attrs\":{\".label\":{\"text\":\"\"}}},{\"collapsedSize\":{\"width\":90,\"height\":60},\"content\":\"Create Task\",\"expanded\":false,\"id\":\"794ebe3c-15f9-4630-8c29-863ff6d03251\",\"position\":{\"x\":430,\"y\":305},\"size\":{\"width\":90,\"height\":60},\"type\":\"rx.CallActivity\",\"z\":6},{\"flowType\":\"normal\",\"id\":\"8ed42d89-fab1-44f9-880e-26dec6e6798f\",\"labels\":[{\"attrs\":{\"text\":{\"text\":\"\"}},\"position\":\"0.5\"}],\"source\":{\"id\":\"479bdead-4573-4224-9da8-3682db35d558\"},\"target\":{\"id\":\"794ebe3c-15f9-4630-8c29-863ff6d03251\"},\"type\":\"rx.SequenceFlow\",\"z\":7},{\"flowType\":\"normal\",\"id\":\"0230efaa-f997-4712-b13f-d0b889065774\",\"labels\":[{\"attrs\":{\"text\":{\"text\":\"\"}},\"position\":\"0.5\"}],\"source\":{\"id\":\"794ebe3c-15f9-4630-8c29-863ff6d03251\"},\"target\":{\"id\":\"c8f0fd5d-7c59-4ba3-a391-0e50e2097f12\"},\"type\":\"rx.SequenceFlow\",\"z\":8}]}",
+  "allowOverlay": false,
+  "scope": "BUNDLE",
+  "localVariables": [],
+  "permissions": [],
+  "tags": null,
+  "contextKeyParam": null,
+  "localizableStrings": {}
+}
