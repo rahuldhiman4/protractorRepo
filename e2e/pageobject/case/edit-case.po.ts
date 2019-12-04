@@ -141,15 +141,6 @@ class CaseEditPage {
         await option.click();
     }
 
-    async isStatusReasonOptionDisplayed(statusValue: string): Promise<boolean> {
-        const statusReason = $(this.selectors.statusChangeReason);
-        await browser.wait(this.EC.elementToBeClickable(statusReason.$('input[type="search"]')));
-        await (statusReason.$('input[type="search"]')).sendKeys(statusValue);
-        var option = await element(by.cssContainingText((this.selectors.statusChangeReason + ' .ui-select__rx-choice'), statusValue));
-        await browser.wait(this.EC.visibilityOf(option));
-        if(statusValue==option) { return true } else { return false }
-    }
-
     async changeTaskStatus(statusValue: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskStatusChange)));
         await $(this.selectors.taskStatusChange).click();

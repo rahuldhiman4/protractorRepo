@@ -17,6 +17,7 @@ class ViewCasePage {
         coreTaskArrow: '[rx-view-component-id="0733a05e-2eea-4fe5-90a8-909238dc6389"] i',
         addTaskButton: '[rx-view-component-id="db1c57fc-c332-40fa-b1c0-759e21d9ad5c"] button',
         editLink: '.edit-link',
+        searchInput:'input[type="search"]',
         caseIdText: '[rx-view-component-id="7b47ca08-e9d4-4656-8f96-3bc751c098b0"] .title',
         requesterName: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .person-main a',
         requesterPhoneNo: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .ac-link-person-phone',
@@ -101,11 +102,25 @@ class ViewCasePage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
         await $(this.selectors.statusChangeReason).click();
         const statusReason = $(this.selectors.statusChangeReason);
-        await browser.wait(this.EC.elementToBeClickable(statusReason.$('input[type="search"]')));
-        await (statusReason.$('input[type="search"]')).sendKeys(statusValue);
+        await browser.wait(this.EC.elementToBeClickable(statusReason.$(this.selectors.searchInput)));
+        await (statusReason.$(this.selectors.searchInput)).sendKeys(statusValue);
         var option = await element(by.cssContainingText((this.selectors.statusChangeReason + ' .ui-select__rx-choice'), statusValue));
         await browser.wait(this.EC.visibilityOf(option));
         await option.click();
+    }
+
+    async isStatusReasonOptionDisplayed(statusValue: string): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
+        await $(this.selectors.statusChangeReason).click();
+        const statusReason = $(this.selectors.statusChangeReason);
+        await browser.wait(this.EC.elementToBeClickable(statusReason.$(this.selectors.searchInput)));
+        await (statusReason.$(this.selectors.searchInput)).sendKeys(statusValue);
+        return await element(by.cssContainingText((this.selectors.statusChangeReason + ' .ui-select__rx-choice'), statusValue)).isDisplayed();
+    }
+
+    async clearStatusReason(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
+        await $(this.selectors.statusChangeReason + " "+this.selectors.searchInput).clear();
     }
 
     async clickAddTaskButton() {
