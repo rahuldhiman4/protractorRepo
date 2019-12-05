@@ -7,6 +7,10 @@
 		"userName": "qdu@petramco.com",
 		"userPassword": "Password_1234"
 	},
+	"franz": {
+		"userName": "Franz@petramco.com",
+		"userPassword": "Password_1234"
+	},
 	"elizabeth": {
 		"userName": "Elizabeth@petramco.com",
 		"userPassword": "Password_1234"

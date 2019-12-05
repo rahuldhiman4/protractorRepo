@@ -27,12 +27,12 @@ class ActivityTabPage {
         activityTab: '.ui-tab-wrapper',
         isFilterPresent: '.tag-pill-item',
         authorCloseButton: '.d-textfield__action',
-        imgPersonProfilePopUp:'.dropdown-menu img[ng-src]',
-        namePersonProfilePopUp : '.popup-info .popup-person',
+        imgPersonProfilePopUp: '.dropdown-menu img[ng-src]',
+        namePersonProfilePopUp: '.popup-info .popup-person',
         companyPersonProfilePopUp: '.popup-info .popup-organization',
         emailPersonProfilePopUp: '.popup-info .popup-email',
         phoneNumberPersonProfilePopUp: '.popup-info .popup-phone-number',
-        authorFieldEmpty: '.d-textfield__label .ng-not-empty',        
+        authorFieldEmpty: '.d-textfield__label .ng-not-empty',
     }
 
     async removeFilterList(): Promise<void> {
@@ -167,7 +167,7 @@ class ActivityTabPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.authorCloseButton)));
         await $(this.selectors.authorCloseButton).click();
     }
-    
+
     async isAuthorBoxEmpty(): Promise<boolean> {
         browser.sleep(2000);
         return await $(this.selectors.authorFieldEmpty).isPresent();
@@ -183,22 +183,22 @@ class ActivityTabPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.imgPersonProfilePopUp)));
         return await $(this.selectors.imgPersonProfilePopUp).isPresent();
     }
-    async isPersonNamePresentOnUserPopUp(personName:string): Promise<boolean> {
+    async isPersonNamePresentOnUserPopUp(personName: string): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.namePersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.namePersonProfilePopUp, personName)).isPresent();
     }
 
-    async isEmailPresentOnUserPopUp(email:string): Promise<boolean> {
+    async isEmailPresentOnUserPopUp(email: string): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailPersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.emailPersonProfilePopUp, email)).isPresent();
     }
 
-    async isCompanyPresentOnUserPopUp(company:string): Promise<boolean> {
+    async isCompanyPresentOnUserPopUp(company: string): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.companyPersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.companyPersonProfilePopUp, company)).isPresent();
     }
 
-    async isPhoneNumberPresentOnUserPopUp(phoneNumber:string): Promise<boolean> {
+    async isPhoneNumberPresentOnUserPopUp(phoneNumber: string): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.phoneNumberPersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.phoneNumberPersonProfilePopUp, phoneNumber)).isPresent();
     }
@@ -220,6 +220,17 @@ class ActivityTabPage {
 
     async isTextPresentInActivityLog(caseActivityLogText: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.activityLog, caseActivityLogText)).isDisplayed();
+    }
+
+    async isTextPresentInNote(bodyText: string): Promise<boolean> {
+        browser.sleep(3000);
+        try {
+            await element(by.cssContainingText('.activity-general-note', bodyText)).isDisplayed();
+            return true;
+        }
+        catch (e) {
+            return false;
+        }
     }
 
     async clickOnHyperlinkFromActivity(bodyText: string, authorText: string): Promise<void> {
