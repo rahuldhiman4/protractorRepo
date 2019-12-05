@@ -5,7 +5,16 @@ import consoleNotesTemplate from '../../pageobject/settings/console-notestemplat
 import createNotesTemplate from '../../pageobject/settings/create-notestemplate.po';
 import addFieldPo from '../../pageobject/settings/add-fields-pop.po';
 import utilCommon from '../../utils/ui/util.common';
+import apiHelper from '../../api/api.helper';
 import editNotetemplate from '../../pageobject/settings/edit-notestemplate.po';
+import utilGrid from '../../utils/ui/util.grid';
+import notesTemplateUsage from '../../pageobject/note-template-usage.po';
+import activityTabPo from '../../pageobject/activity-tab.po';
+import viewCasePage from "../../pageobject/case/view-case.po";
+import viewTask from "../../pageobject/task/view-task.po";
+import editTask from "../../pageobject/task/edit-task.po";
+import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
+import manageTask from "../../pageobject/task/manage-task-blade.po";
 
 describe('Notes template', () => {
     beforeAll(async () => {
@@ -243,4 +252,190 @@ describe('Notes template', () => {
         await editNotetemplate.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
     }, 200 * 1000);
+
+    it('DRDMV-16040 :[Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case ( one at a time can post)', async () => {
+        await navigationPage.gotoSettingsPage();
+        //task template 1
+        await apiHelper.apiLogin('tadmin');
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
+        let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
+        let notesTemplateBody: string = await notesTemplateData['notesTemplateWithMandatoryField'].body + randomStr;
+        notesTemplateData['notesTemplateWithMandatoryField'].body = notesTemplateBody;
+        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
+        await apiHelper.createNotesTemplate("Case", notesTemplateData['notesTemplateWithMandatoryField']);
+        //task template 2
+        let randomStr1 = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let notesTemplateName1: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr1;
+        let notesTemplateBody1: string = await notesTemplateData['notesTemplateWithMandatoryField'].body + randomStr1;
+        notesTemplateData['notesTemplateWithMandatoryField'].body = notesTemplateBody1;
+        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName1;
+        await apiHelper.createNotesTemplate("Case", notesTemplateData['notesTemplateWithMandatoryField']);
+        //task template 3
+        let randomStr2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let notesTemplateName2: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr2;
+        let notesTemplateBody2: string = await notesTemplateData['notesTemplateWithMandatoryField'].body + randomStr2;
+        notesTemplateData['notesTemplateWithMandatoryField'].body = notesTemplateBody2;
+        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName2;
+        await apiHelper.createNotesTemplate("Case", notesTemplateData['notesTemplateWithMandatoryField']);
+        //task template 4
+        let randomStr3 = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let notesTemplateName3: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr3;
+        let notesTemplateBody3: string = await notesTemplateData['notesTemplateWithMandatoryField'].body + randomStr3;
+        notesTemplateData['notesTemplateWithMandatoryField'].body = notesTemplateBody3;
+        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName3;
+        await apiHelper.createNotesTemplate("Case", notesTemplateData['notesTemplateWithMandatoryField']);
+        var caseData = {
+            "Requester": "qtao",
+            "Summary": "Testing case creation with minimal input data"
+        }
+        await apiHelper.apiLogin('qtao');
+        var newCaseTemplate = await apiHelper.createCase(caseData);
+        var displayId: string = newCaseTemplate.displayId;
+        await navigationPage.gotoCaseConsole();
+        await utilGrid.clearFilter();
+        await utilGrid.searchAndOpenHyperlink(displayId);
+        await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
+        await activityTabPo.clickOnPostButton();
+        expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
+        await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName1);
+        await activityTabPo.clickOnPostButton();
+        expect(await activityTabPo.isTextPresentInNote(notesTemplateBody1)).toBeTruthy();
+        await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName2);
+        await activityTabPo.clickOnPostButton();
+        expect(await activityTabPo.isTextPresentInNote(notesTemplateBody2)).toBeTruthy();
+        await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName3);
+        await activityTabPo.clickOnPostButton();
+        expect(await activityTabPo.isTextPresentInNote(notesTemplateBody3)).toBeTruthy();
+    }, 200 * 1000)
+
+    fit('DRDMV-16578: Case Agent/Case Manger Should be able to consume People Notes Template in People profile', async () => {
+        try {
+            await navigationPage.signOut();
+            await loginPage.login('franz');
+            await apiHelper.apiLogin('elizabeth');
+            let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
+            let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
+            let notesTemplateBody: string = await notesTemplateData['notesTemplateWithMandatoryField'].body + randomStr;
+            notesTemplateData['notesTemplateWithMandatoryField'].body = notesTemplateBody;
+            notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
+            await apiHelper.createNotesTemplate("People", notesTemplateData['notesTemplateWithMandatoryField']);
+            var caseData = {
+                "Requester": "qdu",
+                "Summary": "Testing case creation with minimal input data"
+            }
+            await apiHelper.apiLogin('franz');
+            var newCaseTemplate = await apiHelper.createCase(caseData);
+            var displayId: string = newCaseTemplate.displayId;
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(displayId);
+            await notesTemplateUsage.clickOnRequsterName();
+            await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
+            await activityTabPo.clickOnPostButton();
+            expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            var caseData = {
+                "Requester": "qtao",
+                "Summary": "Testing case creation with minimal input data"
+            }
+            await apiHelper.apiLogin('qdu');
+            var newCaseTemplate = await apiHelper.createCase(caseData);
+            console.log("case is created===", newCaseTemplate.displayId);
+            var displayIdnew: string = newCaseTemplate.displayId;
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(displayIdnew);
+            await notesTemplateUsage.clickOnRequsterName();
+            await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
+            await activityTabPo.clickOnPostButton();
+            expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
+        }
+        catch (e) {
+            console.log(e);
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+        }
+    }, 200 * 1000)
+
+    it('DRDMV-16045: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual', async () => {
+        try {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            let taskTemplateName = 'Manual  task' + [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let manualTaskSummary = 'Summary' + [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            var templateData = {
+                "templateName": `${taskTemplateName}`,
+                "templateSummary": `${manualTaskSummary}`,
+                "templateStatus": "Active",
+            }
+            await apiHelper.apiLogin('fritz');
+            var manualTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
+            console.log("active task Template is created===", manualTaskTemplate.displayId);
+            await apiHelper.apiLogin('qkatawazi');
+            let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
+            let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
+            let notesTemplateBody: string = await notesTemplateData['notesTemplateWithMandatoryField'].body + randomStr;
+            notesTemplateData['notesTemplateWithMandatoryField'].body = notesTemplateBody;
+            notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
+            await apiHelper.createNotesTemplate("Task", notesTemplateData['notesTemplateWithMandatoryField']);
+            var caseData = {
+                "Requester": "qtao",
+                "Company": "Petramco",
+                "Summary": "Create case for me postman1",
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "Qadim Katawazi"
+            }
+            await apiHelper.apiLogin('fritz');
+            var newCaseTemplate = await apiHelper.createCase(caseData);
+            var displayId: string = newCaseTemplate.displayId;
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(displayId);
+            await viewCasePage.clickAddTaskButton();
+            await viewCasePage.addTaskFromTaskTemplate(taskTemplateName);
+            await browser.sleep(2000);
+            await manageTask.clickTaskLinkOnManageTask(taskTemplateName);
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnAssignToMe();
+            await editTask.clickOnSaveButton();
+            await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
+            await activityTabPo.clickOnPostButton();
+            expect (await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
+        } catch (e) {
+            console.log(e);
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+        }
+    })
+
+    it('DRDMV-16047: [Run Time] Validate that case BA is able to select and utilize Active Knowledge notes templates in Knowledge Article ', async () => {
+        await apiHelper.apiLogin('qkatawazi');
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
+        let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
+        let notesTemplateBody: string = await notesTemplateData['notesTemplateWithMandatoryField'].body + randomStr;
+        notesTemplateData['notesTemplateWithMandatoryField'].body = notesTemplateBody;
+        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
+        await apiHelper.createNotesTemplate("Knowledge", notesTemplateData['notesTemplateWithMandatoryField']);
+        //create Knowledge
+        await navigationPage.gotoKnowledge();
+        await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
+        await createKnowlegePo.clickOnTemplate('Reference');
+        await createKnowlegePo.clickOnUseSelectedTemplateButton('Use selected Template');
+        await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16754');
+        await createKnowlegePo.selectKnowledgeSet('HR');
+        await createKnowlegePo.clickOnUseSaveKnowledgeButton();
+        await createKnowlegePo.clickOnviewArticleLinkButton();
+        // View Knowledege Page
+        await utilCommon.switchToNewWidnow(1);
+        await createKnowlegePo.clickOnActivityTab();
+        await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
+        await activityTabPo.clickOnPostButton();
+        expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
+    })
 })

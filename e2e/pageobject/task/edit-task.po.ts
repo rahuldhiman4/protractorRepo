@@ -6,8 +6,20 @@ class EditTask {
         taskTypeValue: '[rx-view-component-id="057f2521-313b-40c9-be56-829827512abf"] .ui-select-toggle',
         cancelButton: '[rx-view-component-id="705c3907-a82e-4de4-a8b0-32fe00483403"] button',
         processNameValue: '[rx-view-component-id="7260c238-9e41-4d31-90de-2d46443117b4"] input',
+        assignToMe: '.d-icon-left-user_plus',
+        saveButton: '[rx-view-component-id="a19228d0-81a9-4b19-9cb3-b5bd9550966f"] button'
     }
 
+    async clickOnAssignToMe(){
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMe)));
+        $(this.selectors.assignToMe).click();
+    }
+
+    async clickOnSaveButton(){
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+        $(this.selectors.saveButton).click();
+    }
+    
     async getTaskTypeValueAttribute(attribute: string): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.taskTypeValue)));
         return await $(this.selectors.taskTypeValue).getAttribute(attribute);

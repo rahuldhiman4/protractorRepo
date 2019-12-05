@@ -27,7 +27,7 @@ fdescribe('SLA progress bar testing', () => {
     });
 
     it('should create Service Target Config', async () => {
-        await serviceTargetConfig.createServiceTargetConfig("a", "b", "c");
+        await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
         expect(serviceTargetConfig.getPopUpMessage()).toBe('Record has been registered successfully.');
     });
 

@@ -8,6 +8,7 @@ class NavigationPage {
         createKnowledgeMenu: '//rx-shell//*[text()="Create"]/../..//a[contains(text(),"Knowledge ")]',
         createQuickCaseMenu: '//rx-shell//*[text()="Quick Case"]/..',
         caseConsoleMenuItem: '(//li[contains(@class,"d-n-dropdown__item")]//a[text()="Case "])[1]',
+        knowledgeConsoleMenuItem: '(//li[contains(@class,"d-n-dropdown__item")]//a[text()="Knowledge "])[1]',
         taskConsoleMenuItem: '(//li[contains(@class,"d-n-dropdown__item")]//a[text()="Task "])[1]',
         settingsButton: 'rx-shell .d-n-action__settings',
         settingsMenuItemContainer: 'rx-administration-settings',
@@ -22,7 +23,8 @@ class NavigationPage {
         createKnowlegeMenuItem: '//*[@title="Create"]/parent::*//*[@title="Knowledge"]',
         createQuickCaseMenu: '[title="Quick Case"]',
         caseConsoleMenuItem: '(//a[@title="Case"])[1]',
-        taskConsoleMenuItem: '(//a[@title="Task"])[1]',
+        knowledgeConsoleMenuItem: '(//a[@title="Knowledge"])[1]',
+        taskConsoleMenuItem: '(//a[@title="Task"])[1]'
     }
 
     async gotCreateCase(): Promise<void> {
@@ -72,6 +74,25 @@ class NavigationPage {
         }
         await browser.wait(this.EC.titleContains('Cases - Business Workflows'), 30000);
     }
+
+    async gotoKnowledgeConsole(): Promise<void> {
+        await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)));
+        let hamburgerStatus = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
+        if (hamburgerStatus == 'true') {
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
+            await element(by.xpath(this.selectors.workspaceMenu)).click();
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.knowledgeConsoleMenuItem))));
+            await element(by.xpath(this.selectors.knowledgeConsoleMenuItem)).click();
+        } else {
+            // await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.hamburgerIcon).$('button')));
+            await $(this.verticalSelectors.hamburgerIcon).$('button').click();
+            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.knowledgeConsoleMenuItem))));
+            await element(by.xpath(this.verticalSelectors.knowledgeConsoleMenuItem)).click();
+        }
+        await browser.wait(this.EC.titleContains('Knowledge Articles - Business Workflows'));
+    }
+
 
     async gotoTaskConsole(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.settingsButton)));

@@ -75,7 +75,7 @@ class createNotesTemplate {
         await this.setCompanyValue(companyValue);
         await this.setStatusValue('Active');
         await this.setLanguageValue('English (United States)');
-        await this.setBody("This is new notest template" + notesTemplateStr);
+        await this.setBody("This is new notes template "+notesTemplateStr);
         await this.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
