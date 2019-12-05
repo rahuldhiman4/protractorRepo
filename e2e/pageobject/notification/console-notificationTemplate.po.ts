@@ -1,4 +1,4 @@
-import { ProtractorExpectedConditions, ElementFinder, protractor, browser, element, by, $, $$, Key, Button, ElementArrayFinder } from "protractor"
+import { ProtractorExpectedConditions, protractor, browser, element, by, $, $$ } from "protractor"
 
 class NotificationTemplateGridPage{
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -44,7 +44,7 @@ class NotificationTemplateGridPage{
         await $(this.selectors.copyTemplate).click();
     }
 
-    async getCopyNotifTempWindowTitle(): Promise<String>{
+    async getTitleCopyNotificationTemplateWindow(): Promise<String>{
         await browser.wait(this.EC.visibilityOf($(this.selectors.copyTemplateWindow)));
         return $(this.selectors.copyTemplateWindow).getText();
     }
