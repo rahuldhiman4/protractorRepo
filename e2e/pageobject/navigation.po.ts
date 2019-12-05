@@ -143,6 +143,15 @@ class NavigationPage {
         return await browser.getTitle();
     }
 
+    async goToPersonProfile(): Promise<void> {
+        await browser.refresh();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.profileMenu)));
+        await browser.actions().mouseMove($(this.selectors.profileMenu)).perform();
+        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.signOutMenuItem, 'My Profile'))));
+        await element(by.cssContainingText(this.selectors.signOutMenuItem, 'My Profile')).click();
+        await browser.wait(this.EC.titleContains('Person Profile - Business Workflows'));
+    }
+
     async signOut(): Promise<void> {
         await browser.refresh();
         await browser.wait(this.EC.visibilityOf($(this.selectors.profileMenu)));

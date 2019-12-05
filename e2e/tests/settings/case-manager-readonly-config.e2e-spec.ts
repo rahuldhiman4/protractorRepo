@@ -26,11 +26,18 @@ import businessTimeSegmentConfigEditPage from "../../pageobject/settings/edit-bu
 import apiHelper from "../../api/api.helper";
 import notesTemplateConsole from "../../pageobject/settings/console-notestemplate.po";
 import editNotesTemplateConfig from "../../pageobject/settings/edit-notestemplate.po";
+import flowsetConsole from "../../pageobject/case/console-flowset-config.po";
+import flowsetEditPage from "../../pageobject/case/edit-flowset-config.po";
+import { async } from 'q';
 
 describe('Case Manager Read-only Config', () => {
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qdu');
+    });
+
+    afterEach(async () => {
+        await browser.refresh();
     });
 
     afterAll(async () => {
@@ -252,4 +259,32 @@ describe('Case Manager Read-only Config', () => {
         await browser.refresh();
     });
 
+    it('DRDMV-18042: Check Case manager is not able to perform Create Update Delete operation on People->Note Template', async () => {
+        //API call to create the flowset
+        await apiHelper.apiLogin('qkatawazi');
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let flowsetData = require('../../data/ui/case/flowset.ui.json');
+        let flowsetName: string = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
+        flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
+        await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+
+        await navigationPage.gotCreateCase();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+        expect(await flowsetConsole.isAddFlowsetButtonDisabled()).toBeTruthy("Add button is enabled");
+        await utilGrid.searchAndOpenHyperlink(flowsetName);
+        expect(await flowsetEditPage.isAddAssociationBtnDisabled()).toBeTruthy("Add Associate Category button is enabled");
+        expect(await flowsetEditPage.isFlowsetNameDisabled()).toBeTruthy("Flowset name  is enabled");
+        expect(await flowsetEditPage.isStatusFieldDisabled()).toBeTruthy("Add Associate Category button is enabled");
+        expect(await flowsetEditPage.isSaveBtnDisabled()).toBeTruthy("Add Associate Category button is enabled");
+        await flowsetEditPage.navigateToProcessTab();
+        expect(await flowsetEditPage.isAddNewMappingBtnDisabled()).toBeTruthy("Add Associate Mapping button is enabled");
+        await flowsetEditPage.navigateToCaseAccessTab();
+        expect(await flowsetEditPage.isSelectCompanyFldDisabled()).toBeTruthy("Select company field is enabled");
+        expect(await flowsetEditPage.isSelectAgentFldDisabled()).toBeTruthy("Select Agent field is enabled");
+        await flowsetEditPage.navigateToResolutionCodesTab();
+        expect(await flowsetEditPage.isAddResolutionCodeBtnDisabled()).toBeTruthy("Add Resolution Code button is enabled");
+        expect(await flowsetEditPage.isAssociateResolutionCodeBtnDisabled()).toBeTruthy("Associate Resolution Code button is enabled");
+        await browser.refresh();
+    });
 })

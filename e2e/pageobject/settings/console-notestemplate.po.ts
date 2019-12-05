@@ -1,6 +1,5 @@
-import { ProtractorExpectedConditions, protractor, browser, $, $$, element, by, promise } from "protractor"
+import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from "../../utils/ui/util.grid";
-import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
 class ConsoleNotesTemplate {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

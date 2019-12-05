@@ -151,7 +151,6 @@ describe('Case Activity', () => {
         await createCase.clickGoToCaseButton();
 
         // On view case page.
-        var caseIdText: string = await viewCasePo.getCaseID();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate('File Report');
         await manageTaskBladePo.clickTaskLinkOnManageTask('File Report');
@@ -265,8 +264,6 @@ describe('Case Activity', () => {
         await createCase.clickGoToCaseButton();
 
         // On view case page.
-        var caseIdText: string = await viewCasePo.getCaseID();
-
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate('A Failing Task');
         await manageTaskBladePo.clickTaskLinkOnManageTask('The execution of this task will fail and can be used to demonstrate how to handle this case.');
@@ -394,8 +391,6 @@ describe('Case Activity', () => {
         await createCase.clickGoToCaseButton();
 
         // On view case page.
-        var caseIdText: string = await viewCasePo.getCaseID();
-
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
         await manageTaskBladePo.clickTaskLinkOnManageTask(templateData.templateSummary);
