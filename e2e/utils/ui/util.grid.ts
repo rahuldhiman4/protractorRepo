@@ -17,7 +17,8 @@ export class GridOperation {
         searchButton1: 'button[rx-id="submit-search-button"]',
         filterPreset: '.rx-filter-presets-dropdown__trigger',
         clearFilterButton: 'button[rx-id="clear-button"]',
-        filterClose: '.d-tag-remove-button'
+        filterClose: '.d-tag-remove-button',
+        refreshButton:'button.d-icon-refresh'
     }
 
     getGridLocator(locatorName: string, gridId: string) {
@@ -109,6 +110,47 @@ export class GridOperation {
         await browser.sleep(3000);
         await gridvalueLink.click();
     }
+
+    async clickOnSelectedGridRecord(guid: string, columnHeader: string, filterOptionValue: string): Promise<void> {
+        let gridRecord: string;
+        columnHeader = "'" + columnHeader + "'";
+        guid = "'" + guid + "'";
+        var gridColumnHeaderPosition = `//*[@rx-view-component-id=${guid}]//span[@class="ui-grid-header-cell-label"][text()=${columnHeader}]/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
+        var gridRecords = '//div[@class="ui-grid-canvas"]/div';
+        let columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
+        columnPosition = columnPosition + 1;
+        await element($(this.selectors.refreshButton)).click();
+        var gridRows: number = await element.all(by.xpath(gridRecords)).count();
+        if (gridRows > 0) {
+            let gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[1]/div[${columnPosition}]/div`;
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(gridRecordCellValue))));
+            await element(by.xpath(gridRecordCellValue)).click();
+        } else {
+            console.log("No Records Found.");
+        }
+    }
+
+    async getSelectedGridRecordValue(guid: string, columnHeader: string, filterOptionValue: string): Promise<string> {
+        let gridRecord: string;
+        columnHeader = "'" + columnHeader + "'";
+        guid = "'" + guid + "'";
+        let gridColumnHeaderPosition = `//*[@rx-view-component-id=${guid}]//span[@class="ui-grid-header-cell-label"][text()=${columnHeader}]/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
+        let gridRecords = '//div[@class="ui-grid-canvas"]/div';
+        let columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
+        columnPosition = columnPosition + 1;
+        await element($(this.selectors.refreshButton)).click();
+        var gridRows: number = await element.all(by.xpath(gridRecords)).count();
+        if (gridRows > 0) {
+            let gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[1]/div[${columnPosition}]/div`;
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(gridRecordCellValue))));
+            gridRecord = await element(by.xpath(gridRecordCellValue)).getText();
+        } else {
+            console.log("No Records Found.");
+        }
+        return gridRecord;
+    }
+
+
 }
 
 export default new GridOperation();
