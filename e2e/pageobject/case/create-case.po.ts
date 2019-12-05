@@ -1,4 +1,5 @@
 import { element, by, ProtractorExpectedConditions, protractor, browser, $, $$ } from "protractor"
+import viewCasePo from '../../pageobject/case/view-case.po';
 
 class CreateCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -96,8 +97,9 @@ class CreateCasePage {
     }
 
     async clickGoToCaseButton(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton__preview)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.gotoCaseButton__preview)));
         await $(this.selectors.gotoCaseButton__preview).click();
+        await browser.wait(this.EC.elementToBeClickable($(viewCasePo.selectors.addTaskButton)));
     }
 
     async clickSelectCaseTemplateButton(): Promise<void> {

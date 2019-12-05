@@ -1,4 +1,4 @@
-import { browser } from "protractor";
+import { browser } from "protractor"
 import loginPage from "../../pageobject/login.po";
 import navigationPage from "../../pageobject/navigation.po";
 import activityTabPage from '../../pageobject/activity-tab.po';
@@ -8,8 +8,11 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
 import utilCommon from '../../utils/ui/util.common';
+import apiHelper from "../../api/api.helper";
+import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
 
 describe('Case Activity', () => {
+
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qkatawazi');
@@ -19,16 +22,20 @@ describe('Case Activity', () => {
         await navigationPage.signOut();
     });
 
+    afterEach(async () => {
+        await browser.refresh();
+    });
+
     it('DRDMV-16760: From Task Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Logged in successfully and Task profile gets opened
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16754');
         await createCase.clickSaveCaseButton();
-        await utilCommon.closePopUpMessage();
+        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
-        await viewCasePo.addTaskFromTaskTemplate('File Report');
+        await manageTaskBladePo.addTaskFromTaskTemplate('File Report');
         await manageTaskBladePo.clickTaskLinkOnManageTask('File Report');
         browser.sleep(3000);
         // 2nd step: From Task Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Task
@@ -62,26 +69,26 @@ describe('Case Activity', () => {
         await activityTabPage.removeAuthorFromFilter();
         // 4th Step: Search for User and inspect returned results.
         await activityTabPage.searchAuthorOnFilter('Angelina Jolie');
-        var value1:boolean=await activityTabPage.isImgPresentOnUserPopUp();
+        var value1: boolean = await activityTabPage.isImgPresentOnUserPopUp();
         await expect(value1).toBeTruthy('Img is Not Present On Author List PopUp');
-        var value2:boolean = await activityTabPage.isPersonNamePresentOnUserPopUp('Angelina Jolie');
+        var value2: boolean = await activityTabPage.isPersonNamePresentOnUserPopUp('Angelina Jolie');
         await expect(value2).toBeTruthy('Name is Not Present On Author List PopUp');
-        var value2:boolean = await activityTabPage.isEmailPresentOnUserPopUp('ajolie@petramco.com');
+        var value2: boolean = await activityTabPage.isEmailPresentOnUserPopUp('ajolie@petramco.com');
         await expect(value2).toBeTruthy('Email is Not Present On Author List PopUp');
-        var value2:boolean = await activityTabPage.isPhoneNumberPresentOnUserPopUp('+12124021501');
+        var value2: boolean = await activityTabPage.isPhoneNumberPresentOnUserPopUp('+12124021501');
         await expect(value2).toBeTruthy('Phone Number is Not Present On Author List PopUp');
-        var value2:boolean = await activityTabPage.isCompanyPresentOnUserPopUp('Petramco');
+        var value2: boolean = await activityTabPage.isCompanyPresentOnUserPopUp('Petramco');
         await expect(value2).toBeTruthy('Phone Number is Not Present On Author List PopUp');
         await activityTabPage.removeAuthorFromFilter();
         // 5th Step: User is selected and Author field gets disabled.       
         await activityTabPage.addAuthorOnFilter('Angelina Jolie');
-        var value3:boolean = await activityTabPage.isAuthorBoxEmpty();
+        var value3: boolean = await activityTabPage.isAuthorBoxEmpty();
         await expect(value3).toBeTruthy('Author field is editable');
         // i)- Click on x button from author field (- Field gets cleared and enabled to search another user)
         await activityTabPage.removeAuthorFromFilter();
-        var value4:boolean = await activityTabPage.isAuthorBoxEmpty();
+        var value4: boolean = await activityTabPage.isAuthorBoxEmpty();
         await expect(value4).not.toBeTruthy('Author field is not editable');
-        // ii) - Select another user and click on Apply        
+        // ii) - Select another user and click on Apply
         await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
     }, 120 * 1000);
 
@@ -91,7 +98,7 @@ describe('Case Activity', () => {
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16754');
         await createCase.clickSaveCaseButton();
-        await utilCommon.closePopUpMessage();
+        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
         // 2nd Step: From Case Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Case
         // i) Verify User is able to search for any user
@@ -109,46 +116,45 @@ describe('Case Activity', () => {
         await activityTabPage.removeAuthorFromFilter();
         // 4th Step: Verify in Return results, Following person details are displayed: Person Profile Image, Person Name, Company Email, Phone
         await activityTabPage.searchAuthorOnFilter('Angelina Jolie');
-        var value1:boolean=await activityTabPage.isImgPresentOnUserPopUp();
+        var value1: boolean = await activityTabPage.isImgPresentOnUserPopUp();
         await expect(value1).toBeTruthy('Img is Not Present On Author List PopUp');
-        var value2:boolean = await activityTabPage.isPersonNamePresentOnUserPopUp('Angelina Jolie');
+        var value2: boolean = await activityTabPage.isPersonNamePresentOnUserPopUp('Angelina Jolie');
         await expect(value2).toBeTruthy('Name is Not Present On Author List PopUp');
-        var value2:boolean = await activityTabPage.isEmailPresentOnUserPopUp('ajolie@petramco.com');
+        var value2: boolean = await activityTabPage.isEmailPresentOnUserPopUp('ajolie@petramco.com');
         await expect(value2).toBeTruthy('Email is Not Present On Author List PopUp');
-        var value2:boolean = await activityTabPage.isPhoneNumberPresentOnUserPopUp('+12124021501');
+        var value2: boolean = await activityTabPage.isPhoneNumberPresentOnUserPopUp('+12124021501');
         await expect(value2).toBeTruthy('Phone Number is Not Present On Author List PopUp');
-        var value2:boolean = await activityTabPage.isCompanyPresentOnUserPopUp('Petramco');
+        var value2: boolean = await activityTabPage.isCompanyPresentOnUserPopUp('Petramco');
         await expect(value2).toBeTruthy('Phone Number is Not Present On Author List PopUp');
         await activityTabPage.removeAuthorFromFilter();
         // 5th Step: User is selected and Author field gets disabled 
         // i) User is selected and Author field gets disabled 
         await activityTabPage.addAuthorOnFilter('Angelina Jolie');
-        var value3:boolean = await activityTabPage.isAuthorBoxEmpty();
+        var value3: boolean = await activityTabPage.isAuthorBoxEmpty();
         await expect(value3).toBeTruthy('Author field is editable');
         // ii)- Click on x button from author field (- Field gets cleared and enabled to search another user)
         await activityTabPage.removeAuthorFromFilter();
         browser.sleep(2000);
-        var value4:boolean = await activityTabPage.isAuthorBoxEmpty();
+        var value4: boolean = await activityTabPage.isAuthorBoxEmpty();
         await expect(value4).not.toBeTruthy('Author field is not editable');
         // iii) - Select another user and click on Apply
-        await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries')        
+        await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries')
     }, 120 * 1000);
 
-    it('DRDMV-16759: Task Activity Filter UI validation', async () => {
+    fit('DRDMV-16759: Task Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16754');
         await createCase.clickSaveCaseButton();
-        await utilCommon.closePopUpMessage();
+        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
 
         // On view case page.
         var caseIdText: string = await viewCasePo.getCaseID();
         await viewCasePo.clickAddTaskButton();
-        await viewCasePo.addTaskFromTaskTemplate('File Report');
+        await manageTaskBladePo.addTaskFromTaskTemplate('File Report');
         await manageTaskBladePo.clickTaskLinkOnManageTask('File Report');
-        browser.sleep(5000);
 
         // 2nd step: Inspect Task Activity UI - Click on FIlter
         await activityTabPage.clickOnFilterButton();
@@ -255,14 +261,14 @@ describe('Case Activity', () => {
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16754');
         await createCase.clickSaveCaseButton();
-        await utilCommon.closePopUpMessage();
+        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
 
         // On view case page.
         var caseIdText: string = await viewCasePo.getCaseID();
 
         await viewCasePo.clickAddTaskButton();
-        await viewCasePo.addTaskFromTaskTemplate('A Failing Task');
+        await manageTaskBladePo.addTaskFromTaskTemplate('A Failing Task');
         await manageTaskBladePo.clickTaskLinkOnManageTask('The execution of this task will fail and can be used to demonstrate how to handle this case.');
         browser.sleep(5000);
 
@@ -367,19 +373,32 @@ describe('Case Activity', () => {
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // For External
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData: ITaskTemplate = {
+            "templateName": "external task template name ",
+            "templateSummary": "external task template summary ",
+            "templateStatus": "Active",
+        };
+        templateData.templateName = templateData.templateName + randomStr;
+        templateData.templateSummary = templateData.templateSummary + randomStr;
+
+        await apiHelper.apiLogin('qkatawazi');
+        var externalTaskTemplate = await apiHelper.createExternalTaskTemplate(templateData);
+        console.log("external task Template is created===", externalTaskTemplate.id);
+
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16754');
         await createCase.clickSaveCaseButton();
-        await utilCommon.closePopUpMessage();
+        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
 
         // On view case page.
         var caseIdText: string = await viewCasePo.getCaseID();
 
         await viewCasePo.clickAddTaskButton();
-        await viewCasePo.addTaskFromTaskTemplate('External Test Template');
-        await manageTaskBladePo.clickTaskLinkOnManageTask('External Task');
+        await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
+        await manageTaskBladePo.clickTaskLinkOnManageTask(templateData.templateSummary);
         browser.sleep(5000);
 
         // 2nd step: Inspect Task Activity UI - Click on FIlter
@@ -479,7 +498,7 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnFilterClearButton();
         var str8: boolean = await activityTabPage.isfilterPresent();
         await expect(str8).not.toBeTruthy('filter displayed');
-    }, 180 * 1000);
+    });
 
     it('DRDMV-18048: While adding a note on Case one or more agent can be tagged in Comment', async () => {
         await navigationPage.gotCreateCase();
@@ -487,6 +506,7 @@ describe('Case Activity', () => {
         await createCase.selectContact('Angelina Jolie');
         await createCase.setSummary('test case for DRDMV-18048');
         await createCase.clickSaveCaseButton();
+        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
         var personPopupCount: number = await activityTabPage.getPersonCount('Hi hello @Allen');
         await expect(personPopupCount).toBeGreaterThan(3);
@@ -515,6 +535,7 @@ describe('Case Activity', () => {
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16754');
         await createCase.clickSaveCaseButton();
+        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
 
         // On view case page.
@@ -529,12 +550,11 @@ describe('Case Activity', () => {
 
         // 3nd step verification, From Case > Activity > Task related note > Click on Person name
         await viewCasePo.clickAddTaskButton();
-        await viewCasePo.addTaskFromTaskTemplate('File Report');
+        await manageTaskBladePo.addTaskFromTaskTemplate('File Report');
         await manageTaskBladePo.clickTaskLinkOnManageTask('File Report');
 
         // View task page
         await expect(browser.getTitle()).toBe('Task Edit - Business Workflows');
-        console.log('this is view task title', browser.getTitle());
         await activityTabPage.addActivityNote(taskBodyText);
         await activityTabPage.clickOnPostButton();
         var taskId: string = await viewTaskPo.getTaskID();

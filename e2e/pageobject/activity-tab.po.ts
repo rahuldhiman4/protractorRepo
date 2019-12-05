@@ -128,6 +128,7 @@ class ActivityTabPage {
     }
 
     async clickOnFilterButton(): Promise<void> {
+        await browser.sleep(5000);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
         await $(this.selectors.filterButton).click();
     }
@@ -177,6 +178,7 @@ class ActivityTabPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).click();
         await $(this.selectors.filterAuthor).sendKeys(AuthorName);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)));
     }
 
     async isImgPresentOnUserPopUp(): Promise<boolean> {

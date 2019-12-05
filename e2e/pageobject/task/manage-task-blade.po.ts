@@ -12,21 +12,22 @@ class ManageTaskBlade {
         searchTextbox: '[rx-id="search-text-input"]',
         canceltaskTemplatbutton: '[rx-view-component-id="ba0bd5fe-391a-4885-8f0c-56cfead43ebd"] button',
         recommendedTemplateCheckbox: '[rx-view-component-id="da1ffbb0-567a-4199-b94f-413bee7f149b"] .ui-grid-icon-ok',
-        cancelManagetaskButton: '[rx-view-component-id="8e7b2768-299d-468a-bd46-4827677e8eff"] button',
         closeButton: '[rx-view-component-id="8e7b2768-299d-468a-bd46-4827677e8eff"] button',
     }
 
     async clickAddTaskFromTemplateButton(): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.closeButton)));
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskFromTemplateButton)));
         await $(this.selectors.addTaskFromTemplateButton).click();
     }
 
-    async clickManageTaskButton(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.cancelManagetaskButton)));
-        await $(this.selectors.cancelManagetaskButton).click();
+    async clickManageTaskCloseButton(): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.closeButton)));
+        await $(this.selectors.closeButton).click();
     }
 
     async clickAddAdhocTaskButton(): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.closeButton)));
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addAdhocTaskButton)));
         await $(this.selectors.addAdhocTaskButton).click();
     }
@@ -73,6 +74,13 @@ class ManageTaskBlade {
     async isTaskLinkOnManageTask(taskSummary: string): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary))));
         return await element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary)).isDisplayed();
+    }
+
+    async addTaskFromTaskTemplate(templateName: string) {
+        await this.clickAddTaskFromTemplateButton();
+        await this.setTaskSearchBoxValue(templateName);
+        await this.clickFirstCheckBoxInTaskTemplateSearchGrid();
+        await this.clickOnTaskGridSaveButton();
     }
 }
 
