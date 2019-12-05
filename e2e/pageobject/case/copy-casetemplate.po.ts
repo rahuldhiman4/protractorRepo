@@ -1,4 +1,4 @@
-import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
+import { ProtractorExpectedConditions, protractor, browser, $, by, element, $$ } from "protractor"
 import commonUtils from "../../utils/ui/util.common";
 import { ICaseTemplate } from 'e2e/data/ui/caseTemplate.interface';
 
@@ -30,7 +30,8 @@ class CopyCaseTemplate {
         resolutionCodeValueOnCopy: '[rx-view-component-id="dead2a5c-4753-40c6-9709-4b8ea9c454fd"] .d-textfield__rx-value',
         resoltuionDescriptionValueOnCopy: '[rx-view-component-id="b5b2d17e-e6b1-44e9-bbd5-23d74b3f1a2a"] .d-textfield__rx-value',
         caseDescriptionValueOnCopy: '.rx-description-textarea-read',
-        ownerGroupDropdown: 'b3ebc604-b7dc-4090-90a5-9515d1ea7f3e'
+        ownerGroupDropdown: 'b3ebc604-b7dc-4090-90a5-9515d1ea7f3e',
+        copyInstruction: '[rx-view-component-id="162ce9d1-22d1-42a6-8360-f3d1c8dc3a20"] ul span'
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
@@ -38,6 +39,18 @@ class CopyCaseTemplate {
         await browser.wait(this.EC.visibilityOf(element));
         await element.clear();
         await element.sendKeys(templateNameValue);
+    }
+
+    async getCopyCaseTemplateInstruction(): Promise<string> {
+        var textInstruction;
+        await browser.wait(this.EC.visibilityOf($(this.selectors.copyInstruction)));
+        var alltext: number = await $$(this.selectors.copyInstruction).count();
+        for (var i = 0; i < alltext; i++) {
+            var textInst = await $$(this.selectors.copyInstruction).get(i);
+            var nm: string = await textInst.getText();
+            textInstruction = textInstruction + nm;
+        }
+        return textInstruction;
     }
 
     async setOwnerGroupDropdownValue(caseTemplate: ICaseTemplate): Promise<void> {
@@ -89,9 +102,25 @@ class CopyCaseTemplate {
         return await $(this.selectors.templateStatusValueOnCopy).getText();
     }
 
+    async isOwnerGroupEmpty(): Promise<boolean> {
+        let element = await $(this.selectors.ownerGroupValueOnCopy)
+        let value = await element.getAttribute('aria-label');
+        if (value == '') {
+            return true;
+        } else { return false; }
+    }
+
     async getValueOfOwnerGroup(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.ownerGroupValueOnCopy)));
         return await $(this.selectors.ownerGroupValueOnCopy).getText();
+    }
+
+    async isOwnerCompanyEmpty(): Promise<boolean> {
+        let element = await $(this.selectors.OwnerCompanyValueOnCopy)
+        let value = await element.getAttribute('aria-label');
+        if (value == '') {
+            return true;
+        } else { return false; }
     }
 
     async getValueOfOwnerCompany(): Promise<string> {
