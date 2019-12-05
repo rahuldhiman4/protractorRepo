@@ -141,7 +141,7 @@ describe('Case Activity', () => {
         await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries')
     }, 120 * 1000);
 
-    fit('DRDMV-16759: Task Activity Filter UI validation', async () => {
+    it('DRDMV-16759: Task Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
