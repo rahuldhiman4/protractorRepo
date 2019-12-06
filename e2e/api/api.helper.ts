@@ -193,6 +193,18 @@ class ApiHelper {
         await coreApi.associateFoundationElements("Person to Support Secondary Organization", userGuid, supportGroupGuid);
     }
 
+    async associateCategoryToOrganization(category: string, organization: string): Promise<void> {
+        let organizationGuid = await coreApi.getOrganizationGuid(organization);
+        let categoryGuid = await coreApi.getCategoryGuid(category);
+        await coreApi.associateFoundationElements("Organization Uses Categorization", organizationGuid, categoryGuid);
+    }
+
+    async associateCategoryToCategory(category1: string, category2: string): Promise<void> {
+        let category1Guid = await coreApi.getCategoryGuid(category1);
+        let category2Guid = await coreApi.getCategoryGuid(category2);
+        await coreApi.associateFoundationElements("Categorization to Categorization", category1Guid, category2Guid);
+    }
+
     async associateCaseTemplateWithOneTaskTemplate(caseTemplateId: string, taskTemplateId: string): Promise<void> {
         var oneTaskFlowProcess = await require('../data/api/task/taskflow.one.process.api.json');
         var taskTemplateGuid = await coreApi.getTaskTemplateGuid(taskTemplateId);
