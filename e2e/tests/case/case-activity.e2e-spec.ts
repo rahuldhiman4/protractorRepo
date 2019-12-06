@@ -111,7 +111,7 @@ describe('Case Activity', () => {
         // 2nd Step :Open Case from pre condition and inspect its activities
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
-        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.setSummary('test case for DRDMV-16773');
         await createCase.clickSaveCaseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
@@ -133,7 +133,7 @@ describe('Case Activity', () => {
         await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'),'Knowledge page title is missing';
         await createKnowlegePo.clickOnTemplate('Reference');
         await createKnowlegePo.clickOnUseSelectedTemplateButton('Use selected Template');
-        await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16754');
+        await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16773');
         await createKnowlegePo.selectKnowledgeSet('HR');
         await createKnowlegePo.clickOnUseSaveKnowledgeButton();
         await createKnowlegePo.clickOnviewArticleLinkButton();
@@ -149,7 +149,7 @@ describe('Case Activity', () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
-        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.setSummary('test case for DRDMV-16733');
         await createCase.clickSaveCaseButton();
         await utilCommon.closePopUpMessage();
         await createCase.clickGoToCaseButton();
@@ -234,7 +234,7 @@ describe('Case Activity', () => {
         // 1st step: Logged in successfully and Task profile gets opened
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
-        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.setSummary('test case for DRDMV-16760');
         await createCase.clickSaveCaseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
@@ -300,7 +300,7 @@ describe('Case Activity', () => {
         // 1st step: Login to BWF with Case agent and open case from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
-        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.setSummary('test case for DRDMV-16734');
         await createCase.clickSaveCaseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
@@ -349,7 +349,7 @@ describe('Case Activity', () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
-        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.setSummary('test case for DRDMV-16759');
         await createCase.clickSaveCaseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
@@ -462,7 +462,7 @@ describe('Case Activity', () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
-        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.setSummary('test case for DRDMV-16759');
         await createCase.clickSaveCaseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
@@ -589,7 +589,7 @@ describe('Case Activity', () => {
 
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
-        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.setSummary('test case for DRDMV-16759');
         await createCase.clickSaveCaseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
@@ -725,7 +725,7 @@ describe('Case Activity', () => {
         await expect(loginId).toBeTruthy("LoginID user is not present");
     });
 
-    it('DRDMV-16754: Drill Down to different screens from Activities', async () => {
+    fit('DRDMV-16754: Drill Down to different screens from Activities', async () => {
         // 1st step Login
         var caseBodyText = "This is unique caseActivity text " + Math.floor(Math.random() * 1000000);
         var taskBodyText = "This is unique TaskActivity text " + Math.floor(Math.random() * 1000000);

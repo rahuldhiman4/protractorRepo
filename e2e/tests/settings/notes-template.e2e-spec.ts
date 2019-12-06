@@ -309,7 +309,7 @@ describe('Notes template', () => {
         expect(await activityTabPo.isTextPresentInNote(notesTemplateBody3)).toBeTruthy();
     }, 200 * 1000)
 
-    fit('DRDMV-16578: Case Agent/Case Manger Should be able to consume People Notes Template in People profile', async () => {
+    it('DRDMV-16578: Case Agent/Case Manger Should be able to consume People Notes Template in People profile', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('franz');
