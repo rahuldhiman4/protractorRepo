@@ -1,4 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../utils/ui/util.common';
 
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -62,6 +63,7 @@ class ActivityTabPage {
     async closeNmoreLink(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.nMoreLink)));
         await $(this.selectors.activityTab).click();
+        utilCommon.waitUntilSpinnerToHide();
     }
 
     async getTextOfNmoreLink(): Promise<string> {
@@ -109,7 +111,8 @@ class ActivityTabPage {
     async clickOnPostButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNotePostButton)));
         await $(this.selectors.addNotePostButton).click();
-        await browser.sleep(3000);
+        await utilCommon.waitUntilSpinnerToHide();
+//        await browser.sleep(3000);
     }
 
     async clickOnCancelButton(): Promise<void> {
@@ -210,6 +213,7 @@ class ActivityTabPage {
     async clickOnFilterApplyButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPopupApplyOrClearButton)));
         await element(by.cssContainingText(this.selectors.filterPopupApplyOrClearButton, 'Apply')).click();
+        utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickOnFilterClearButton(): Promise<void> {

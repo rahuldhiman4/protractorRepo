@@ -21,6 +21,7 @@ describe('Pin Validation testing', () => {
         var templateData = {
             "templateName": `${templateName}`,
             "templateStatus": "Active",
+            "templateSummary": `Summary ${templateName}`,
         }
         await apiHelper.apiLogin('qkatawazi');
         var newCaseTemplate = await apiHelper.createCaseTemplate(templateData);

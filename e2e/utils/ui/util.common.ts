@@ -1,4 +1,5 @@
 import { browser, until, ExpectedConditions, element, by, $, $$, ProtractorExpectedConditions, protractor } from 'protractor';
+import { async } from 'q';
 
 export class Util {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -37,7 +38,7 @@ export class Util {
         return await $(this.selectors.popUpMsgLocator).getText();
     }
 
-    async getPopUpMessages(messageNo:number) {
+    async getPopUpMessages(messageNo: number) {
         await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
         return await $$(this.selectors.popUpMsgLocator).get(messageNo).getText();
     }
@@ -101,9 +102,9 @@ export class Util {
         }
     }
 
-    async switchToNewWidnow(windowNum:number): Promise<void> {
+    async switchToNewWidnow(windowNum: number): Promise<void> {
         await browser.sleep(5000);
-        await browser.getAllWindowHandles().then(async function(handles){
+        await browser.getAllWindowHandles().then(async function (handles) {
             await browser.switchTo().window(handles[windowNum]);
         });
     }
@@ -111,6 +112,15 @@ export class Util {
     async switchToDefaultWidnow(): Promise<void> {
         await browser.sleep(5000);
         await browser.switchTo().defaultContent();
+    }
+
+    async waitUntilSpinnerToHide(): Promise<void> {
+        await browser.wait(this.EC.presenceOf($('.d-preloader')));
+        await browser.wait(this.EC.or(async () => {
+            await $$('.d-preloader').each(async function (element) {
+                await element.getAttribute('innerHTML') == null
+            });
+        }), 30 * 1000);
     }
 }
 
