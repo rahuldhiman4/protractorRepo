@@ -21,7 +21,7 @@ describe('Copy Case Template', () => {
         await navigationPage.signOut();
     });
 
-    fit('DRDMV-13551,DRDMV-13529: Create a Copy of Case template where Company is copied properly', async () => {
+    it('DRDMV-13551,DRDMV-13529: Create a Copy of Case template where Company is copied properly', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
         var caseTemplate = require('../../data/ui/casetemplate.ui.json');
