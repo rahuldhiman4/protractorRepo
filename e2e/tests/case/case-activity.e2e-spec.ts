@@ -10,6 +10,7 @@ import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
 import utilCommon from '../../utils/ui/util.common';
 import apiHelper from "../../api/api.helper";
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
+import personProfilePo from '../../pageobject/case/person-profile.po';
 
 describe('Case Activity', () => {
 
@@ -26,6 +27,23 @@ describe('Case Activity', () => {
         await browser.refresh();
     });
 
+    it('DRDMV-18141: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
+        let caseBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');      
+        // 2nd Step :Open Case from pre condition and inspect its activities
+        await navigationPage.gotCreateCase();
+        await createCase.selectRequester('Al Allbrook');
+        await createCase.setSummary('test case for DRDMV-18141');
+        await createCase.clickSaveCaseButton();
+        await utilCommon.waitUntilPopUpDisappear();
+        await createCase.clickGoToCaseButton();
+        await activityTabPage.addActivityNote(caseBodyText);
+        await activityTabPage.addPersonInActivityNote('Elizabeth Jeffries');
+        await activityTabPage.clickOnPostButton();
+        expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText,'Elizabeth Jeffries')).toBeTruthy('PersonName is not displayed correctly');
+        await activityTabPage.clickOnHyperlinkFromActivity(caseBodyText,'Elizabeth Jeffries');        
+        expect(await personProfilePo.getPersonName()).toBe('Elizabeth Jeffries '),'Elizabeth Jeffries name is missing';
+    });
+    
     it('DRDMV-16768: From KA Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Logged in successfully and Task profile gets opened
         await navigationPage.gotoKnowledge();
