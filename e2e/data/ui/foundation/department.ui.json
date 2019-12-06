@@ -1,7 +1,6 @@
 {
     "DepartmentData":{
         "orgName": "UI-Department",
-        "relatedOrgId": null,
-        "departmentType":"Support"
+        "relatedOrgId": null
     }
 }
