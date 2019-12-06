@@ -68,6 +68,22 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getBusinessUnitGuid(orgName: string): Promise<string>{
+        let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Business Unit");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[1000000010] === orgName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getDepartmentGuid(depName: string): Promise<string>{
+        let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Department");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[1000000010] === depName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
     async getCaseTemplateGuid(caseTemplateId: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.case-lib:Case Template");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {

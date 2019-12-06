@@ -6,6 +6,9 @@ import { CaseTemplate } from "../api/constant.api";
 import { TaskTemplate } from "../api/constant.api";
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
 import { IPerson } from 'e2e/data/api/interface/person.interface.api';
+import { IBusinessUnit } from 'e2e/data/api/interface/business.unit.interface.api';
+import { IDepartment } from 'e2e/data/api/interface/department.interface.api';
+import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.api';
 import apiCoreUtil from '../api/api.core.util';
 import {INotesTemplate} from '../data/api/interface/notes.template.interface.api'
 
@@ -143,6 +146,83 @@ class ApiHelper {
             id: taskTemplateDetails.data.id,
             displayId: taskTemplateDetails.data.displayId
         };
+    }
+
+    async createBusinessUnit(data: IBusinessUnit):Promise<string>{
+        var businessUnitGuid = await coreApi.getBusinessUnitGuid(data.orgName);
+        if (businessUnitGuid == null) {
+            var businessUnitDataFile = await require('../data/api/foundation/business.unit.api.json');
+            var businessData = await businessUnitDataFile.NewBusinessUnit;
+            businessData.fieldInstances[1000000010].value = data.orgName;
+            if(data.relatedOrgId!=null){
+            businessData.fieldInstances[304411161].value = data.relatedOrgId;}
+
+            const newBusinessUnit = await coreApi.createRecordInstance(businessData);
+            console.log('Create New Business Unit API Status =============>', newBusinessUnit.status);
+
+            const businessUnitDetails = await axios.get(
+                newBusinessUnit.headers.location);
+            console.log('Get New Business Unit Details API Status =============>', businessUnitDetails.status);
+
+            var recordName: string = businessUnitDetails.data.recordDefinitionName;
+            var recordGUID: string = businessUnitDetails.data.id;
+            var recordDisplayId: string = businessUnitDetails.data.displayId;
+
+            return recordGUID;
+        } else {
+            console.log('New Business Unit API Status =============> Business Unit already exists =============> ', businessUnitGuid);
+            return businessUnitGuid;
+        }
+    }
+
+    async createDepartment(data: IDepartment):Promise<string>{
+        var departmentGuid = await coreApi.getDepartmentGuid(data.orgName);
+        if (departmentGuid == null) {
+            var departmentDataFile = await require('../data/api/foundation/department.api.json');
+            var departmentData = await departmentDataFile.NewDepartment;
+            departmentData.fieldInstances[1000000010].value = data.orgName;
+            if(data.relatedOrgId!=null){
+            departmentData.fieldInstances[304411161].value = data.relatedOrgId;}
+
+            const newDepartment = await coreApi.createRecordInstance(departmentData);
+            console.log('Create New Department API Status =============>', newDepartment.status);
+
+            const departmentDetails = await axios.get(
+                newDepartment.headers.location);
+            console.log('Get New Department Details API Status =============>', departmentDetails.status);
+
+            var recordGUID: string = departmentDetails.data.id;
+
+            return recordGUID;
+        } else {
+            console.log('New Department API Status =============> Department already exists =============> ', departmentGuid);
+            return departmentGuid;
+        }
+    }
+
+    async createSupportGroup(data: ISupportGroup):Promise<string>{
+        var supportGroupGuid = await coreApi.getSupportGroupGuid(data.orgName);
+        if (supportGroupGuid == null) {
+            var suppGrpDataFile = await require('../data/api/foundation/support.group.api.json');
+            var suppGrpData = await suppGrpDataFile.NewSupportGroup;
+            suppGrpData.fieldInstances[1000000010].value = data.orgName;
+            if(data.relatedOrgId!=null){
+            suppGrpData.fieldInstances[304411161].value = data.relatedOrgId;}
+
+            const newSuppGrp = await coreApi.createRecordInstance(suppGrpData);
+            console.log('Create New Support Group API Status =============>', newSuppGrp.status);
+
+            const suppGrpDetails = await axios.get(
+                newSuppGrp.headers.location);
+            console.log('Get New Support Group Details API Status =============>', suppGrpDetails.status);
+
+            var recordGUID: string = suppGrpDetails.data.id;
+
+            return recordGUID;
+        } else {
+            console.log('New Support Group API Status =============> Support group already exists =============> ', supportGroupGuid);
+            return supportGroupGuid;
+        }
     }
 
     async createNewUser(data: IPerson): Promise<string> {

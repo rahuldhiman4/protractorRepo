@@ -141,7 +141,7 @@ class NavigationPage {
         await browser.wait(this.EC.titleContains('Login - Business Workflows'));
     }
 
-    async gotoKnowledge(): Promise<void> {
+    async gotoCreateKnowledge(): Promise<void> {
         await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
         let hamburgerStatus = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
         if (hamburgerStatus == 'true') {
