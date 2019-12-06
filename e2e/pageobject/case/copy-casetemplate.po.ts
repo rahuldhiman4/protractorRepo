@@ -163,13 +163,15 @@ class CopyCaseTemplate {
         return await $(this.selectors.caseStatusValueOnCopy).getText();
     }
 
-    async getValueOfcasePriority(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.casePriorityValueOnCopy)));
-        return await $(this.selectors.casePriorityValueOnCopy).getText();
+    async isValueOfCasePriorityPresent(priorityValue: string): Promise<boolean> {
+        return await browser.wait(this.EC.or(async () => {
+            let value: boolean = await $(this.selectors.casePriorityValueOnCopy).getAttribute('aria-label') == priorityValue;
+            return value;
+        }), 3000);
     }
 
     async getValueOfCaseDescription(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.caseDescriptionValueOnCopy)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseDescriptionValueOnCopy)));
         return await $(this.selectors.caseDescriptionValueOnCopy).getText();
     }
 

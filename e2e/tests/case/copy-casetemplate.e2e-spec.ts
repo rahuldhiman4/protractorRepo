@@ -13,15 +13,15 @@ describe('Copy Case Template', () => {
         await loginPage.login("qkatawazi");
     });
 
-    afterEach(async()=>{
+    afterEach(async () => {
         await browser.refresh();
-    }) 
+    })
 
     afterAll(async () => {
         await navigationPage.signOut();
     });
 
-    it('DRDMV-13551,DRDMV-13529: Create a Copy of Case template where Company is copied properly', async () => {
+    fit('DRDMV-13551,DRDMV-13529: Create a Copy of Case template where Company is copied properly', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
         var caseTemplate = require('../../data/ui/casetemplate.ui.json');
@@ -35,8 +35,8 @@ describe('Copy Case Template', () => {
         await consoleCasetemplatePo.clickOnCopyCaseTemplate();
         var copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
         await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
-        //verify all values copied from template 1 to template 2
-        await expect(copyCaseTemplate.getValueOfcasePriority()).toContain(caseTemplate['caseTemplateWitAllFields'].casePriority);
+        //verify all values copied from template 1 to template 2   
+        await expect(copyCaseTemplate.isValueOfCasePriorityPresent(caseTemplate['caseTemplateWitAllFields'].casePriority)).toBeTruthy();
         await expect(copyCaseTemplate.getValueofCaseCategoryTier1()).toBe(caseTemplate['caseTemplateWitAllFields'].categoryTier1);
         await expect(copyCaseTemplate.getValueofCaseCategoryTier2()).toBe(caseTemplate['caseTemplateWitAllFields'].categoryTier2);
         await expect(copyCaseTemplate.getValueofCaseCategoryTier3()).toBe(caseTemplate['caseTemplateWitAllFields'].categoryTier3);
@@ -49,7 +49,6 @@ describe('Copy Case Template', () => {
         await expect(copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(caseTemplate['caseTemplateWitAllFields'].taskFailureConfiguration);
         await expect(copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
         await expect(copyCaseTemplate.getValueOfcaseStatus()).toBe(caseTemplate['caseTemplateWitAllFields'].caseStatus);
-        await expect(copyCaseTemplate.getValueOfcasePriority()).toBe(caseTemplate['caseTemplateWitAllFields'].casePriority);
         await expect(copyCaseTemplate.getValueOfSupportCompany()).toBe(caseTemplate['caseTemplateWitAllFields'].company);
         await expect(copyCaseTemplate.getValueOfAssignee()).toBe(caseTemplate['caseTemplateWitAllFields'].assignee);
         await expect(copyCaseTemplate.getValueOfSupportGroup()).toBe(caseTemplate['caseTemplateWitAllFields'].supportGroup);
@@ -82,7 +81,7 @@ describe('Copy Case Template', () => {
             var copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             //verify all values copied from template 1 to template 2
-            await expect(copyCaseTemplate.getValueOfcasePriority()).toContain(caseTemplatePayload.casePriority);
+            await expect(copyCaseTemplate.isValueOfCasePriorityPresent(caseTemplatePayload.casePriority)).toBeTruthy();
             await expect(copyCaseTemplate.getValueofCaseCategoryTier1()).toBe(caseTemplatePayload.categoryTier1);
             await expect(copyCaseTemplate.getValueofCaseCategoryTier2()).toBe(caseTemplatePayload.categoryTier2);
             await expect(copyCaseTemplate.getValueofCaseCategoryTier3()).toBe(caseTemplatePayload.categoryTier3);
@@ -95,7 +94,6 @@ describe('Copy Case Template', () => {
             await expect(copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(caseTemplatePayload.taskFailureConfiguration);
             await expect(copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
             await expect(copyCaseTemplate.getValueOfcaseStatus()).toBe(caseTemplatePayload.caseStatus);
-            await expect(copyCaseTemplate.getValueOfcasePriority()).toBe(caseTemplatePayload.casePriority);
             await expect(copyCaseTemplate.getValueOfSupportCompany()).toBe(caseTemplatePayload.company);
             await expect(copyCaseTemplate.getValueOfAssignee()).toBe(caseTemplatePayload.assignee);
             await expect(copyCaseTemplate.getValueOfSupportGroup()).toBe(caseTemplatePayload.supportGroup);
@@ -141,7 +139,7 @@ describe('Copy Case Template', () => {
             var copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             //verify all values copied from template 1 to template 2
-            await expect(copyCaseTemplate.getValueOfcasePriority()).toContain(caseTemplatePayload.casePriority);
+            await expect(copyCaseTemplate.isValueOfCasePriorityPresent(caseTemplatePayload.casePriority)).toBeTruthy();
             await expect(copyCaseTemplate.getValueofCaseCategoryTier1()).toBe(caseTemplatePayload.categoryTier1);
             await expect(copyCaseTemplate.getValueofCaseCategoryTier2()).toBe(caseTemplatePayload.categoryTier2);
             await expect(copyCaseTemplate.getValueofCaseCategoryTier3()).toBe(caseTemplatePayload.categoryTier3);
@@ -152,7 +150,6 @@ describe('Copy Case Template', () => {
             await expect(copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(caseTemplatePayload.taskFailureConfiguration);
             await expect(copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
             await expect(copyCaseTemplate.getValueOfcaseStatus()).toBe(caseTemplatePayload.caseStatus);
-            await expect(copyCaseTemplate.getValueOfcasePriority()).toBe(caseTemplatePayload.casePriority);
             await expect(copyCaseTemplate.getValueOfSupportCompany()).toBe(caseTemplatePayload.company);
             await expect(copyCaseTemplate.getValueOfAssignee()).toBe(caseTemplatePayload.assignee);
             await expect(copyCaseTemplate.getValueOfSupportGroup()).toBe(caseTemplatePayload.supportGroup);
