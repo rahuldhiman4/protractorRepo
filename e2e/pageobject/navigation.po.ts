@@ -27,89 +27,100 @@ class NavigationPage {
         taskConsoleMenuItem: '(//a[@title="Task"])[1]'
     }
 
-    async gotCreateCase(): Promise<void> {
+    async isHambergerIconPresent(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.settingsButton)));
         await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
-        let hamburgerStatus = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
-        if (hamburgerStatus == 'true') {
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createMenu))), 60000);
-            await element(by.xpath(this.selectors.createMenu)).click();
-            await element(by.xpath(this.selectors.createCaseMenuItem)).click();
-        } else {
+        await browser.wait(this.EC.or(async () => {
+            await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
+        }));
+        let hamburgerHideAttribute = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
+        return hamburgerHideAttribute == 'true' ? false : true;
+    }
+
+    async gotCreateCase(): Promise<void> {
+        if (await this.isHambergerIconPresent()) {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
             await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createCaseMenuItem))), 60000);
-            await element(by.xpath(this.verticalSelectors.createCaseMenuItem)).click();        
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createCaseMenuItem))));
+            await element(by.xpath(this.verticalSelectors.createCaseMenuItem)).click();
+        } else {
+            await browser.wait(this.EC.visibilityOf(element(by.xpath(this.selectors.createMenu))));
+            await element(by.xpath(this.selectors.createMenu)).click();
+            await element(by.xpath(this.selectors.createCaseMenuItem)).click();
         }
         await browser.wait(this.EC.titleContains('Case Create - Business Workflows'), 30000);
     }
 
     async gotoQuickCase(): Promise<void> {
-        await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
-        let hamburgerStatus = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
-        if (hamburgerStatus == 'true') {
-            await element(by.xpath(this.selectors.createQuickCaseMenu)).click();
-        } else {
-            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.createQuickCaseMenu)), 60000);
+        if (await this.isHambergerIconPresent()) {
+            await $(this.verticalSelectors.hamburgerIcon).$('button').click();
+            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.createQuickCaseMenu)));
             await $(this.verticalSelectors.createQuickCaseMenu).click();
+        } else {
+            await element(by.xpath(this.selectors.createQuickCaseMenu)).click();
         }
         await browser.wait(this.EC.titleContains('Case Create - Quick Case - Business Workflows'), 30000);
     }
 
     async gotoCaseConsole(): Promise<void> {
-        await browser.wait(this.EC.invisibilityOf($('.modal-open')));
-        await browser.wait(this.EC.visibilityOf($(this.selectors.settingsButton)));
-        await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
-        let hamburgerStatus = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
-        if (hamburgerStatus == 'true') {
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))), 60000);
+        if (await this.isHambergerIconPresent()) {
+            await $(this.verticalSelectors.hamburgerIcon).$('button').click();
+            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.caseConsoleMenuItem))));
+            await element(by.xpath(this.verticalSelectors.caseConsoleMenuItem)).click();
+        } else {
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
             await element(by.xpath(this.selectors.workspaceMenu)).click();
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.caseConsoleMenuItem))));
             await element(by.xpath(this.selectors.caseConsoleMenuItem)).click();
-        } else {
-            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.hamburgerIcon).$('button')), 60000);
-            await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.caseConsoleMenuItem))), 60000);
-            await element(by.xpath(this.verticalSelectors.caseConsoleMenuItem)).click();
         }
         await browser.wait(this.EC.titleContains('Cases - Business Workflows'), 30000);
     }
 
     async gotoKnowledgeConsole(): Promise<void> {
-        await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)));
-        let hamburgerStatus = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
-        if (hamburgerStatus == 'true') {
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
-            await element(by.xpath(this.selectors.workspaceMenu)).click();
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.knowledgeConsoleMenuItem))));
-            await element(by.xpath(this.selectors.knowledgeConsoleMenuItem)).click();
-        } else {
-            // await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.hamburgerIcon).$('button')));
+        if (await this.isHambergerIconPresent()) {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
             await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.knowledgeConsoleMenuItem))));
             await element(by.xpath(this.verticalSelectors.knowledgeConsoleMenuItem)).click();
+        } else {
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
+            await element(by.xpath(this.selectors.workspaceMenu)).click();
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.knowledgeConsoleMenuItem))));
+            await element(by.xpath(this.selectors.knowledgeConsoleMenuItem)).click();
         }
         await browser.wait(this.EC.titleContains('Knowledge Articles - Business Workflows'));
     }
 
-
     async gotoTaskConsole(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.settingsButton)));
-        await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
-        let hamburgerStatus = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
-        if (hamburgerStatus == 'true') {
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))), 60000);
+        if (await this.isHambergerIconPresent()) {
+            await $(this.verticalSelectors.hamburgerIcon).$('button').click();
+            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.taskConsoleMenuItem))));
+            await element(by.xpath(this.verticalSelectors.taskConsoleMenuItem)).click();
+        } else {
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
             await element(by.xpath(this.selectors.workspaceMenu)).click();
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.taskConsoleMenuItem))));
             await element(by.xpath(this.selectors.taskConsoleMenuItem)).click();
-        } else {
-            await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.taskConsoleMenuItem))), 60000);
-            await element(by.xpath(this.verticalSelectors.taskConsoleMenuItem)).click();
         }
         await browser.wait(this.EC.titleContains('Tasks - Business Workflows'), 30000);
+    }
+
+    async gotoCreateKnowledge(): Promise<void> {
+        if (await this.isHambergerIconPresent()) {
+            await $(this.verticalSelectors.hamburgerIcon).$('button').click();
+            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createKnowlegeMenuItem))));
+            await element(by.xpath(this.verticalSelectors.createKnowlegeMenuItem)).click();
+        } else {
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createMenu))));
+            await element(by.xpath(this.selectors.createMenu)).click();
+            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createKnowledgeMenu))));
+            await element(by.xpath(this.selectors.createKnowledgeMenu)).click();
+        }
+        await browser.wait(this.EC.titleContains('Knowledge Article Templates Preview - Business Workflows'), 30000);
     }
 
     async gotoSettingsPage(): Promise<void> {
@@ -132,6 +143,15 @@ class NavigationPage {
         return await browser.getTitle();
     }
 
+    async goToPersonProfile(): Promise<void> {
+        await browser.refresh();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.profileMenu)));
+        await browser.actions().mouseMove($(this.selectors.profileMenu)).perform();
+        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.signOutMenuItem, 'My Profile'))));
+        await element(by.cssContainingText(this.selectors.signOutMenuItem, 'My Profile')).click();
+        await browser.wait(this.EC.titleContains('Person Profile - Business Workflows'));
+    }
+
     async signOut(): Promise<void> {
         await browser.refresh();
         await browser.wait(this.EC.visibilityOf($(this.selectors.profileMenu)));
@@ -139,22 +159,6 @@ class NavigationPage {
         await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.signOutMenuItem, 'Sign Out'))));
         await element(by.cssContainingText(this.selectors.signOutMenuItem, 'Sign Out')).click();
         await browser.wait(this.EC.titleContains('Login - Business Workflows'));
-    }
-
-    async gotoCreateKnowledge(): Promise<void> {
-        await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
-        let hamburgerStatus = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
-        if (hamburgerStatus == 'true') {
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createMenu))), 60000);
-            await element(by.xpath(this.selectors.createMenu)).click();
-            await element(by.xpath(this.selectors.createKnowledgeMenu)).click();
-        } else {
-            await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createKnowlegeMenuItem))), 60000);
-            await element(by.xpath(this.verticalSelectors.createKnowlegeMenuItem)).click();
-
-        }
-        await browser.wait(this.EC.titleContains('Knowledge Article Templates Preview - Business Workflows'), 30000);
     }
 }
 

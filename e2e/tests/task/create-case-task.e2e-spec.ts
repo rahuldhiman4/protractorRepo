@@ -7,9 +7,12 @@ import navigationPage from "../../pageobject/navigation.po";
 import selectTaskTemplate from "../../pageobject/task/console-tasktemplate.po";
 import taskTemplate from "../../pageobject/task/create-tasktemplate.po";
 import editTask from "../../pageobject/task/edit-task.po";
+import editTaskTemplate from "../../pageobject/task/edit-tasktemplate.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
+import viewTaskTemplate from "../../pageobject/task/view-tasktemplate.po";
 import utilCommon from '../../utils/ui/util.common';
+import apiHelper from "../../api/api.helper";
 
 describe('Create Case Task', () => {
     beforeAll(async () => {
@@ -194,6 +197,130 @@ describe('Create Case Task', () => {
         await loginPage.login('qkatawazi');
     }, 360 * 1000);
 
+    it('DRDMV-7124: [Automatic Task] - Task Template UI in Edit mode: New fields validations ', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
+        var templateData = {
+            "templateName": `manualTaskTemplateActive ${randomStr}`,
+            "templateSummary": `manualTaskTemplateActive ${randomStr}`,
+            "templateStatus": "Active",
+        }
+        var templateData1 = {
+            "templateName": `manualTaskTemplateInActive ${randomStr}`,
+            "templateSummary": `manualTaskTemplateInActive ${randomStr}`,
+            "templateStatus": "Inactive",
+        }
+        var templateData2 = {
+            "templateName": `manualTaskTemplateDraft ${randomStr}`,
+            "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
+            "templateStatus": "Draft",
+        }
+
+        var templateData4 = {
+            "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": `Case Process 1 ${randomStr}`,
+        }
+
+        var templateData5 = {
+            "templateName": `AutomatedTaskTemplateInActive ${randomStr}`,
+            "templateSummary": `AutomatedTaskTemplateInActive ${randomStr}`,
+            "templateStatus": "Inactive",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": `Case Process 2 ${randomStr}`,
+        }
+
+        var templateData6 = {
+            "templateName": `AutomatedTaskTemplateDraft ${randomStr}`,
+            "templateSummary": `AutomatedTaskTemplateDraft ${randomStr}`,
+            "templateStatus": "Draft",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": `Case Process 3 ${randomStr}`,
+        }
+
+        await apiHelper.apiLogin('qkatawazi');
+        let temp1 = await apiHelper.createAutomatedTaskTemplate(templateData4);
+        let temp2 = await apiHelper.createAutomatedTaskTemplate(templateData5);
+        let temp3 = await apiHelper.createAutomatedTaskTemplate(templateData6);
+        let temp4 = await apiHelper.createManualTaskTemplate(templateData);
+        let temp5 = await apiHelper.createManualTaskTemplate(templateData1);
+        let temp6 = await apiHelper.createManualTaskTemplate(templateData2);
+
+        console.log(
+            temp1.displayId, "\n",
+            temp2.displayId, "\n",
+            temp3.displayId, "\n",
+            temp4.displayId, "\n",
+            temp5.displayId, "\n",
+            temp6.displayId
+        );
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
+            .toEqual('Task Templates - Business Workflows');
+        await selectTaskTemplate.setTaskSearchBoxValue(`manualTaskTemplateActive appt`);
+        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Manual');
+        await viewTaskTemplate.clickOnEditLink();
+        await expect(editTaskTemplate.getTaskTypeValue()).toBe('Manual');
+        await expect(editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+        await expect(editTaskTemplate.isProcessNamePresentInTask()).toBeFalsy();
+
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
+            .toEqual('Task Templates - Business Workflows');
+        await selectTaskTemplate.setTaskSearchBoxValue(`manualTaskTemplateInActive ${randomStr}`);
+        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Manual');
+        await viewTaskTemplate.clickOnEditLink();
+        await expect(editTaskTemplate.getTaskTypeValue()).toBe('Manual');
+        await expect(editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+        await expect(editTaskTemplate.isProcessNamePresentInTask()).toBeFalsy();
+
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
+            .toEqual('Task Templates - Business Workflows');
+        await selectTaskTemplate.setTaskSearchBoxValue(`manualTaskTemplateDraft ${randomStr}`);
+        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Manual');
+        await viewTaskTemplate.clickOnEditLink();
+        await expect(editTaskTemplate.getTaskTypeValue()).toBe('Manual');
+        await expect(editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+        await expect(editTaskTemplate.isProcessNamePresentInTask()).toBeFalsy();
+
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
+            .toEqual('Task Templates - Business Workflows');
+        await selectTaskTemplate.setTaskSearchBoxValue(`AutomatedTaskTemplateActive ${randomStr}`);
+        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Automated');
+        await viewTask.clickOnEditTask();
+        await expect(editTaskTemplate.getTaskTypeValue()).toBe('Automated');
+        await expect(editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+        await expect(editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
+
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
+            .toEqual('Task Templates - Business Workflows');
+        await selectTaskTemplate.setTaskSearchBoxValue(`AutomatedTaskTemplateInActive ${randomStr}`);
+        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Automated');
+        await viewTask.clickOnEditTask();
+        await expect(editTaskTemplate.getTaskTypeValue()).toBe('Automated');
+        await expect(editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+        await expect(editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
+
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
+            .toEqual('Task Templates - Business Workflows');
+        await selectTaskTemplate.setTaskSearchBoxValue(`AutomatedTaskTemplateDraft ${randomStr}`);
+        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Automated');
+        await viewTask.clickOnEditTask();
+        await expect(editTaskTemplate.getTaskTypeValue()).toBe('Automated');
+        await expect(editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+        await expect(editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
+    });
 });
 

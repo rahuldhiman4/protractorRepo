@@ -18,6 +18,7 @@ class Copytaskpage {
         clearProcessBundleId: '[title="Process Bundle ID"] [rx-id="clear-selection-button"] i',
         processBundle: '5f30b3d4-caa2-4c28-8af6-cebf094bc2e8',
         ownerGuid: '908e526e-917a-4360-94e9-768362f6a573',
+        ownerGroupValueOnCopy: '[rx-view-component-id="61278673-8106-419c-83e4-a9e00f12f835"] .ui-select-match-text',
     }
 
     async unSelectCopyExistingProcess(): Promise<string> {
@@ -32,6 +33,14 @@ class Copytaskpage {
         await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
         await $(this.selectors.templateName).clear();
         await $(this.selectors.templateName).sendKeys(input);
+    }
+
+    async isOwnerGroupEmpty(): Promise<boolean> {
+        let element = await $(this.selectors.ownerGroupValueOnCopy)
+        let value = await element.getAttribute('aria-label');
+        if (value == '') {
+            return true;
+        } else { return false; }
     }
 
     async setTaskSummary(input: string): Promise<void> {

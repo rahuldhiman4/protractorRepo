@@ -14,7 +14,7 @@ class ActivityTabPage {
         personLink: '.title a',
         filterButton: '.d-icon-filter',
         filterCheckbox: '.d-checkbox__item',
-        filterAuthor: '.person-input',
+        filterAuthor: '.person-input[placeholder="Enter name, email, or login ID"]',
         filterPopupApplyOrClearButton: '.filter-options .d-button',
         activityText: '[rx-view-component-id="34167059-11d4-4e85-8a58-e501544e2461"] [title="Activity"]',
         FilterTask: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .d-tag-label',
@@ -26,7 +26,7 @@ class ActivityTabPage {
         removeIconFilterList: '.tag-pill-item .d-tag-remove-button',
         activityTab: '.ui-tab-wrapper',
         isFilterPresent: '.tag-pill-item',
-        authorCloseButton: '.d-textfield__action',
+        authorCloseButton: '.d-textfield__action[aria-hidden="false"]',
         imgPersonProfilePopUp: '.dropdown-menu img[ng-src]',
         namePersonProfilePopUp: '.popup-info .popup-person',
         companyPersonProfilePopUp: '.popup-info .popup-organization',
@@ -128,6 +128,7 @@ class ActivityTabPage {
     }
 
     async clickOnFilterButton(): Promise<void> {
+        await browser.sleep(5000);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
         await $(this.selectors.filterButton).click();
     }
@@ -167,6 +168,8 @@ class ActivityTabPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.authorCloseButton)));
         await $(this.selectors.authorCloseButton).click();
     }
+ 
+
 
     async isAuthorBoxEmpty(): Promise<boolean> {
         browser.sleep(2000);
@@ -177,6 +180,7 @@ class ActivityTabPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).click();
         await $(this.selectors.filterAuthor).sendKeys(AuthorName);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)));
     }
 
     async isImgPresentOnUserPopUp(): Promise<boolean> {
@@ -239,6 +243,13 @@ class ActivityTabPage {
         var customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='log-item__body']//a[text()="${authorText}"]`;
         await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customXpath))));
         await element(by.xpath(customXpath)).click();
+    }
+
+    async isHyperlinkOfActivityDisplay(bodyText: string, authorText: string): Promise<boolean> {
+        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.personLink)));
+         var customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='log-item__body']//a[text()="${authorText}"]`;
+        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customXpath))));
+        return await element(by.xpath(customXpath)).isDisplayed();
     }
 
     async isPersonLinkPresent(): Promise<boolean> {

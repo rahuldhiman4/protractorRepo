@@ -10,7 +10,8 @@ import { IBusinessUnit } from 'e2e/data/api/interface/business.unit.interface.ap
 import { IDepartment } from 'e2e/data/api/interface/department.interface.api';
 import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.api';
 import apiCoreUtil from '../api/api.core.util';
-import {INotesTemplate} from '../data/api/interface/notes.template.interface.api'
+import {INotesTemplate} from '../data/api/interface/notes.template.interface.api';
+import {IFlowset} from '../data/api/interface/flowset.interface.api';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -376,6 +377,26 @@ class ApiHelper {
         const newTemplate = await coreApi.createNotesTemplate(templateData);
         console.log('Create Notes Template API Status =============>', newTemplate.status);
         return newTemplate.status == 201;
+    }
+
+    async createNewFlowset(data: IFlowset): Promise<IIDs> {
+        let flowsetFile = await require('../data/api/case/flowset.api.json');
+        let flowsetData = await flowsetFile.FlowsetData;
+        let companyGuid = await coreApi.getOrganizationGuid(data.company);
+        flowsetData.fieldInstances[1000000001].value = companyGuid;
+        flowsetData.fieldInstances[450000002].value = data.flowsetName;
+        flowsetData.fieldInstances[8].value = data.description;
+        flowsetData.fieldInstances[7].value = data.flowsetStatus;
+        const flowset = await coreApi.createRecordInstance(flowsetData);
+        const flowsetDetails = await axios.get(
+            flowset.headers.location
+        );
+        console.log('New Case Details API Status =============>', flowsetDetails.status);
+
+        return {
+            id: flowsetDetails.data.id,
+            displayId: flowsetDetails.data.displayId
+        };
     }
 
 }

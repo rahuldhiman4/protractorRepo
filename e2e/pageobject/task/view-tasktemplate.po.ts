@@ -17,6 +17,7 @@ class ViewTaskTemplate {
         editProcessLink: '[rx-view-component-id="bb9a3cc7-a8e9-4291-a447-f3a5c33afd1e"] button',
         ownerCompanyValue: '[rx-view-component-id="37dd629c-6d13-4e6d-b70e-90b91dd5b484"] p',
         ownerGroupValue: '[rx-view-component-id="f02e4c7b-93f9-4b35-af23-f522d56daa4b"] p',
+        editLink: '[rx-view-component-id="0ff4dfc7-09f3-4d12-bc32-5c9426f6cc6c"] .rx-record-editor-edit',
 
     }
 
@@ -54,6 +55,11 @@ class ViewTaskTemplate {
     async clickOnEditProcessLink(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.editProcessLink)));
         await $(this.selectors.editProcessLink).click();
+    }
+
+    async clickOnEditLink(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
+        await $(this.selectors.editLink).click();
     }
 
     async getSummaryValue(): Promise<string> {
