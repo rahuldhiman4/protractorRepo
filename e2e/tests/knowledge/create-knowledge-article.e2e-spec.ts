@@ -46,7 +46,7 @@ describe('Knowledge Article', () => {
     }
 
     it('DRDMV-19020 - On Create KA, Change Assignment blade should process properly on KA', async () => {
-        let     businessData = businessDataFile['BusinessUnitData']; 
+        let businessData = businessDataFile['BusinessUnitData']; 
         let departmentData = departmentDataFile['DepartmentData'];
         let suppGrpData = supportGrpDataFile['SuppGrpData'];
         let personData = personDataFile['PersonData'];
