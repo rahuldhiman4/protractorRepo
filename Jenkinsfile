@@ -92,7 +92,10 @@ node('master') {
     echo "lastCommitAuthorEmail: ${lastCommitAuthorEmail}"
     //
     stage('Build & Unit test') {
-      sh "npm run build"
+      sh """
+        npm i
+        npm run build
+      """
     }
     //
     stage('SonarQube analysis') {
