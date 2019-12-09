@@ -10,6 +10,7 @@ class CreateKnowledgePage {
         viewArticleLink: '[rx-view-component-id="57f95ac6-4144-400f-a591-657ea98316dd"] span',
         activityTab: '[rx-view-component-id="3982f4ea-16a0-41aa-982e-879143a19b00"] .rx-tab a',
         knowledgeSet: '7f2de840-20ec-47e8-805f-4db8edc1b5f4',
+        docEditorSection: '.doc-editor__section',
     }
 
     async clickOnTemplate(TemplateName: string): Promise<void> {
@@ -20,7 +21,7 @@ class CreateKnowledgePage {
     async clickOnUseSelectedTemplateButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Use selected Template'))));
         await element(by.buttonText('Use selected Template')).click();
-        await browser.wait(this.EC.titleContains('New Article - Business Workflows'), 50000);
+        await browser.wait(this.EC.visibilityOf($(this.selectors.docEditorSection)));
     }
 
     async selectKnowledgeSet(knowledgeSet: string): Promise<void> {

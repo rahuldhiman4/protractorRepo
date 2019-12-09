@@ -28,7 +28,7 @@ describe('Case Activity', () => {
     });
 
     it('DRDMV-18141: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
-        let caseBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');      
+        let caseBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         // 2nd Step :Open Case from pre condition and inspect its activities
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -39,23 +39,23 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(caseBodyText);
         await activityTabPage.addPersonInActivityNote('Elizabeth Jeffries');
         await activityTabPage.clickOnPostButton();
-        expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText,'Elizabeth Jeffries')).toBeTruthy('PersonName is not displayed correctly');
-        await activityTabPage.clickOnHyperlinkFromActivity(caseBodyText,'Elizabeth Jeffries');        
-        expect(await personProfilePo.getPersonName()).toBe('Elizabeth Jeffries '),'Elizabeth Jeffries name is missing';
+        expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText, 'Elizabeth Jeffries')).toBeTruthy('PersonName is not displayed correctly');
+        await activityTabPage.clickOnHyperlinkFromActivity(caseBodyText, 'Elizabeth Jeffries');
+        expect(await personProfilePo.getPersonName()).toBe('Elizabeth Jeffries '), 'Elizabeth Jeffries name is missing';
     });
-    
+
     it('DRDMV-16768: From KA Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Logged in successfully and Task profile gets opened
-        await navigationPage.gotoKnowledge();
-        await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'),'Knowledge Article title is missing';
+        await navigationPage.gotoCreateKnowledge();
+        await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge Article title is missing';
         await createKnowlegePo.clickOnTemplate('Reference');
-        await createKnowlegePo.clickOnUseSelectedTemplateButton('Use selected Template');
+        await createKnowlegePo.clickOnUseSelectedTemplateButton();
         await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16768');
         await createKnowlegePo.selectKnowledgeSet('HR');
         await createKnowlegePo.clickOnUseSaveKnowledgeButton();
         await createKnowlegePo.clickOnviewArticleLinkButton();
         await utilCommon.switchToNewWidnow(1);
-        await createKnowlegePo.clickOnActivityTab(); 
+        await createKnowlegePo.clickOnActivityTab();
         // 2nd step: From Task Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Task
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.addAuthorOnFilter('Elizabeth Peters');
@@ -107,7 +107,7 @@ describe('Case Activity', () => {
         // 1st step Login
         let caseBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let knowledgeBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');        
+        let knowledgeBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         // 2nd Step :Open Case from pre condition and inspect its activities
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -115,11 +115,11 @@ describe('Case Activity', () => {
         await createCase.clickSaveCaseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
-        console.log (await viewCasePo.getCaseID());        
+        console.log(await viewCasePo.getCaseID());
         await activityTabPage.addActivityNote(caseBodyText);
         await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
         await activityTabPage.clickOnPostButton();
-        expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText,'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
+        expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText, 'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
         // 2nd Step: Open Task from pre condition and inspect its activities
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate('File Report');
@@ -127,22 +127,22 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(taskBodyText);
         await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
         await activityTabPage.clickOnPostButton();
-        expect(await activityTabPage.isHyperlinkOfActivityDisplay(taskBodyText,'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
+        expect(await activityTabPage.isHyperlinkOfActivityDisplay(taskBodyText, 'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
         // 3rd Step: Open KA from pre condition and inspect its activities
-        await navigationPage.gotoKnowledge();
-        await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'),'Knowledge page title is missing';
+        await navigationPage.gotoCreateKnowledge();
+        await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge page title is missing';
         await createKnowlegePo.clickOnTemplate('Reference');
-        await createKnowlegePo.clickOnUseSelectedTemplateButton('Use selected Template');
+        await createKnowlegePo.clickOnUseSelectedTemplateButton();
         await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16773');
         await createKnowlegePo.selectKnowledgeSet('HR');
         await createKnowlegePo.clickOnUseSaveKnowledgeButton();
         await createKnowlegePo.clickOnviewArticleLinkButton();
         await utilCommon.switchToNewWidnow(1);
-        await createKnowlegePo.clickOnActivityTab();        
+        await createKnowlegePo.clickOnActivityTab();
         await activityTabPage.addActivityNote(knowledgeBodyText);
         await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
         await activityTabPage.clickOnPostButton();
-        expect(await activityTabPage.isHyperlinkOfActivityDisplay(knowledgeBodyText,'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
+        expect(await activityTabPage.isHyperlinkOfActivityDisplay(knowledgeBodyText, 'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
     }, 130 * 1000);
 
     it('DRDMV-16733: Case Activity Filter UI validation', async () => {
@@ -153,7 +153,7 @@ describe('Case Activity', () => {
         await createCase.clickSaveCaseButton();
         await utilCommon.closePopUpMessage();
         await createCase.clickGoToCaseButton();
-        var caseIdText: string = await viewCasePo.getCaseID();        
+        var caseIdText: string = await viewCasePo.getCaseID();
         // 2nd Step: Inspect Case Activity UI - Click on Filter       
         await activityTabPage.clickOnFilterButton();
         // 3rd Step: Inspect Filter Panel UI
@@ -161,62 +161,61 @@ describe('Case Activity', () => {
         var count3: number = await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled();
         await expect(count3).toBeGreaterThan(0);
         // ii) - Case Filter options-->  -- General Notes -- Status Change -- Emails -- Assignment Change -- Relationship Change -- Approvals -- Category Change -- Case Views -- Task Activities - External Filter options -- Public - Author -- Search field for Author search
-        await expect(await activityTabPage.getTextTaskFilterOption('General Notes')).toBe('General Notes'),'General Notes is missing';
-        await expect(await activityTabPage.getTextTaskFilterOption('Status Change')).toBe('Status Change'),'Status Change is missing';
-        await expect(await activityTabPage.getTextTaskFilterOption('Emails')).toBe('Emails'),'Emails is missing';
-        await expect(await activityTabPage.getTextTaskFilterOption('Assignment Change')).toBe('Assignment Change'),'Assignment Change is missing';
-        await expect(await activityTabPage.getTextTaskFilterOption('Relationship Change')).toBe('Relationship Change'),'Relationship Change is missing';
-        await expect(await activityTabPage.getTextTaskFilterOption('Approvals')).toBe('Approvals'),'Approvals is missing';
-        await expect(await activityTabPage.getTextTaskFilterOption('Category Change')).toBe('Category Change'),'Category Change is missing';
-        await expect(await activityTabPage.getTextTaskFilterOption('Case Views')).toBe('Case Views'),'Case Views is missing';
-        await expect(await activityTabPage.getTextTaskFilterOption('Task Activities')).toBe('Task Activities'),'Task Activities is missing';
-        await expect(await activityTabPage.getTextTaskFilterOption('Public')).toBe('Public'),'Public is missing';
+        await expect(await activityTabPage.getTextTaskFilterOption('General Notes')).toBe('General Notes'), 'General Notes is missing';
+        await expect(await activityTabPage.getTextTaskFilterOption('Status Change')).toBe('Status Change'), 'Status Change is missing';
+        await expect(await activityTabPage.getTextTaskFilterOption('Emails')).toBe('Emails'), 'Emails is missing';
+        await expect(await activityTabPage.getTextTaskFilterOption('Assignment Change')).toBe('Assignment Change'), 'Assignment Change is missing';
+        await expect(await activityTabPage.getTextTaskFilterOption('Relationship Change')).toBe('Relationship Change'), 'Relationship Change is missing';
+        await expect(await activityTabPage.getTextTaskFilterOption('Approvals')).toBe('Approvals'), 'Approvals is missing';
+        await expect(await activityTabPage.getTextTaskFilterOption('Category Change')).toBe('Category Change'), 'Category Change is missing';
+        await expect(await activityTabPage.getTextTaskFilterOption('Case Views')).toBe('Case Views'), 'Case Views is missing';
+        await expect(await activityTabPage.getTextTaskFilterOption('Task Activities')).toBe('Task Activities'), 'Task Activities is missing';
+        await expect(await activityTabPage.getTextTaskFilterOption('Public')).toBe('Public'), 'Public is missing';
         expect(await activityTabPage.isAuthorSearchBoxVisible()).toBeTruthy("authorSearchBoxVisbility is not visible");
         // 4th Step: Check box is selected/unselect and Apply button is enabled/disable.   
         await activityTabPage.selectFilterCheckBox('General Notes');
-        await expect(await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled()).toBeLessThan(1);        
+        await expect(await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled()).toBeLessThan(1);
         await activityTabPage.selectFilterCheckBox('General Notes');
         await expect(await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled()).toBeGreaterThan(0);
 
-          // 5th step: Select some filters and click on Apply
+        // 5th step: Select some filters and click on Apply
         // i)Selected Filters are applied and filter panel is closed.
         var filterPopup: string = await activityTabPage.isFilterPopUpDisplayed();
         await expect(filterPopup).toEqual('true');
-        
+
         await activityTabPage.selectFilterCheckBox('General Notes');
         await activityTabPage.selectFilterCheckBox('Status Change');
         await activityTabPage.selectFilterCheckBox('Assignment Change');
         await activityTabPage.selectFilterCheckBox('Category Change');
         await activityTabPage.addAuthorOnFilter('Angelina Jolie');
         await activityTabPage.clickOnFilterApplyButton();
-        var filterPopup2: string = await activityTabPage.isFilterPopUpDisplayed();
-        await expect(filterPopup2).toBe('false');
+        await expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
 
         // ii) Selected Filters are displayed in Activity with first filter and + other selected filters
-        await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'),'General Notes is missing';
+        await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'), 'General Notes is missing';
         await activityTabPage.clickOnNmoreLink();
-        await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'),'Status Change is missing';
-        await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change'),'Assignment Change is missing';
-        await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change'),'Category Change is missing';
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie'),'Author: ajolie is missing';
+        await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'), 'Status Change is missing';
+        await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change'), 'Assignment Change is missing';
+        await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change'), 'Category Change is missing';
+        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie'), 'Author: ajolie is missing';
         // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
         await activityTabPage.closeNmoreLink();
         await activityTabPage.clickOnNmoreLink();
-        await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'),'General Notes is missing';
+        await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'), 'General Notes is missing';
         await expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 4 more');
         await activityTabPage.removeFilterList();
-        await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'),'Status Change is missing';
+        await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'), 'Status Change is missing';
         await expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 3 more');
         await activityTabPage.closeNmoreLink();
         // iv)- Click on + n more button (- Selected filter list is displayed )
         await activityTabPage.clickOnNmoreLink();
-        await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'),'Status Change is missing';
-        await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change'),'Assignment Change is missing';
-        await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change'),'Category Change is missing';
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie'),'Author: ajolie is missing';
+        await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'), 'Status Change is missing';
+        await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change'), 'Assignment Change is missing';
+        await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change'), 'Category Change is missing';
+        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie'), 'Author: ajolie is missing';
         await activityTabPage.closeNmoreLink();
         //  v) - That particular filter is removed.
-        await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'),'Status Change is missing';
+        await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'), 'Status Change is missing';
         await activityTabPage.removeFilterList();
         var str7: boolean = await activityTabPage.isfilterListDisplayed('Status Change');
         await expect(await activityTabPage.isfilterListDisplayed('Status Change')).not.toBeTruthy('Status Change displayed');
@@ -341,7 +340,7 @@ describe('Case Activity', () => {
         await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries')
     }, 120 * 1000);
 
-    it('DRDMV-16759: Task Activity Filter UI validation', async () => {
+    fit('DRDMV-16759: Task Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -766,10 +765,10 @@ describe('Case Activity', () => {
 
         // 6th step verification
         // Open KA > Click on Person Name from Activity, On Crate Knowlege Page
-        await navigationPage.gotoKnowledge();
+        await navigationPage.gotoCreateKnowledge();
         await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
         await createKnowlegePo.clickOnTemplate('Reference');
-        await createKnowlegePo.clickOnUseSelectedTemplateButton('Use selected Template');
+        await createKnowlegePo.clickOnUseSelectedTemplateButton();
         await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16754');
         await createKnowlegePo.selectKnowledgeSet('HR');
         await createKnowlegePo.clickOnUseSaveKnowledgeButton();

@@ -22,7 +22,7 @@ class ActivityTabPage {
         FilterPopUp: '.activity-log-filter-trigger',
         filterApplyButtonEnableDisabled: '.filter-options button[disabled="disabled"]',
         filterLists: '.d-tag-label',
-        nMoreLink: '.show__more-toggle',
+        nMoreButton: '.show__more-toggle',
         closeNmoreLink: '.activity-log-filter',
         removeIconFilterList: '.tag-pill-item .d-tag-remove-button',
         activityTab: '.ui-tab-wrapper',
@@ -56,19 +56,20 @@ class ActivityTabPage {
     }
 
     async clickOnNmoreLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nMoreLink)));
-        await $(this.selectors.nMoreLink).click();
+        await browser.sleep(1000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nMoreButton)));
+        await $(this.selectors.nMoreButton).click();
     }
 
     async closeNmoreLink(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.nMoreLink)));
+        await browser.wait(this.EC.visibilityOf($(this.selectors.nMoreButton)));
         await $(this.selectors.activityTab).click();
         utilCommon.waitUntilSpinnerToHide();
     }
 
     async getTextOfNmoreLink(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nMoreLink)));
-        return await $(this.selectors.nMoreLink).getText();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nMoreButton)));
+        return await $(this.selectors.nMoreButton).getText();
     }
 
     async isFilterPopUpDisplayed(): Promise<string> {
