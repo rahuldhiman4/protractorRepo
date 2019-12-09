@@ -92,11 +92,14 @@ node('master') {
     echo "lastCommitAuthorEmail: ${lastCommitAuthorEmail}"
     //
     stage('Build & Unit test') {
-      sh "npm run build"
+      sh """
+        npm i
+        npm run build
+      """
     }
     //
     stage('SonarQube analysis') {
-      /*/
+      //
       def scannerHome = tool 'SonarQube Scanner';
       withSonarQubeEnv('SonarQube4DSMApps') {
         if (pullRequest){
@@ -105,7 +108,7 @@ node('master') {
           sh "${scannerHome}/bin/sonar-scanner"
         }
       }
-      /*/
+      //
     }
   } catch (e) {
     sendEmailNotification('BUILD FAILED', lastCommitAuthorEmail, e.toString())
