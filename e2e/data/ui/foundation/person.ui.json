@@ -1,0 +1,7 @@
+{
+    "PersonData":{
+        "firstName": "fnPerson",
+        "lastName": "lnPerson",
+        "userId": "idPerson"
+    }
+}

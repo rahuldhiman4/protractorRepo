@@ -5,7 +5,6 @@ class CreateKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         clickOnReferenceTemplate: '[rx-view-component-id="6e402c66-fcdc-464b-b6e7-7e963d9c3a17"] .sectionsName',
-        useSelectedTemplateButton: '[rx-view-component-id="6e402c66-fcdc-464b-b6e7-7e963d9c3a17"] .d-button',
         knowledgeTitleEditBox: '[rx-view-component-id="291bf2bb-1eac-404e-94ba-762a50da5ac9"] .ng-pristine',
         saveKnowlegeButton: '[rx-view-component-id="2fdb0ffb-560d-46b4-b7af-379d90bcb0a8"] span',
         viewArticleLink: '[rx-view-component-id="57f95ac6-4144-400f-a591-657ea98316dd"] span',
@@ -18,9 +17,9 @@ class CreateKnowledgePage {
         await element(by.cssContainingText(this.selectors.clickOnReferenceTemplate, TemplateName)).click();
     }
 
-    async clickOnUseSelectedTemplateButton(UseSelectedTemplateButton: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.useSelectedTemplateButton)));
-        await element(by.cssContainingText(this.selectors.useSelectedTemplateButton, UseSelectedTemplateButton)).click();
+    async clickOnUseSelectedTemplateButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Use selected Template'))));
+        await element(by.buttonText('Use selected Template')).click();
         await browser.wait(this.EC.titleContains('New Article - Business Workflows'), 50000);
     }
 
@@ -45,6 +44,11 @@ class CreateKnowledgePage {
     async clickOnActivityTab(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($$(this.selectors.activityTab).last()));
         await $$(this.selectors.activityTab).last().click();
+    }
+
+    async clickChangeAssignmentButton(): Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Change Assignment'))));
+        await element(by.buttonText('Change Assignment')).click();
     }
 }
 

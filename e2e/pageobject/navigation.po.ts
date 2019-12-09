@@ -108,7 +108,7 @@ class NavigationPage {
         await browser.wait(this.EC.titleContains('Tasks - Business Workflows'), 30000);
     }
 
-    async gotoKnowledge(): Promise<void> {
+    async gotoCreateKnowledge(): Promise<void> {
         if (await this.isHambergerIconPresent()) {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
             await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));

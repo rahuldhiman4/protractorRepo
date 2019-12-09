@@ -53,6 +53,11 @@ class ChangeAssignmentBlade {
         await $(this.selectors.assignButton).click();
     }
 
+    async isAssignButtonDisabled(): Promise<Boolean>{
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assignButton)));
+        return await $(this.selectors.assignButton).getAttribute("disabled")=="true";
+    }
+
     async clickOnAssignToMeCheckBox(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeCheckBox)));
         await $(this.selectors.assignToMeCheckBox).click();
