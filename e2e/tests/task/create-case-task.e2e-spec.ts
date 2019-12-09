@@ -322,5 +322,33 @@ describe('Create Case Task', () => {
         await expect(editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
         await expect(editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
     });
+
+    it('DRDMV-12039, DRDMV-12040: [ Task ] - Verify Associated menu for Task will show global configuration values as well	 ', async () => {
+        // await apiHelper.apiLogin('tadmin');       
+        // await apiHelper.associateCategoryToOrganization('Applications', '- Global -');
+
+        let TaskTemplate = 'Manual task' + Math.floor(Math.random() * 1000000);
+        let TaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
+      
+        //manual Task template
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
+            .toEqual('Task Templates - Business Workflows');
+        await selectTaskTemplate.clickOnManualTaskTemplateButton();
+        await taskTemplate.setTemplateName(TaskTemplate);
+        await taskTemplate.setTaskSummary(TaskSummary);
+        await taskTemplate.setTaskDescription('Description');
+        await taskTemplate.selectCompanyByName('Global');
+        await taskTemplate.selectTaskCategoryTier1('Applications');
+        await taskTemplate.selectTaskCategoryTier2('Social');
+        await taskTemplate.selectTaskCategoryTier3('Chatter');
+        await taskTemplate.selectTemplateStatus('Active');
+        await taskTemplate.clickOnSaveTaskTemplate();
+        await utilCommon.waitUntilPopUpDisappear();
+        await expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Applications');
+        await expect(viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
+        await expect(viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
+        await expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('- Global -');
+    },120*1000);
 });
 

@@ -1,4 +1,5 @@
-import { $, ProtractorExpectedConditions, browser, protractor, element, by, $$ } from "protractor";
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../utils/ui/util.common';
 
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -25,7 +26,7 @@ class ActivityTabPage {
         closeNmoreLink: '.activity-log-filter',
         removeIconFilterList: '.tag-pill-item .d-tag-remove-button',
         activityTab: '.ui-tab-wrapper',
-        isFilterPresent: '.tag-pill-item',
+        appliedActivityFilter: '.tag-pill-item',
         authorCloseButton: '.d-textfield__action[aria-hidden="false"]',
         imgPersonProfilePopUp: '.dropdown-menu img[ng-src]',
         namePersonProfilePopUp: '.popup-info .popup-person',
@@ -41,7 +42,7 @@ class ActivityTabPage {
     }
 
     async isfilterPresent(): Promise<boolean> {
-        return await $(this.selectors.isFilterPresent).isPresent();
+        return await $(this.selectors.appliedActivityFilter).isPresent();
     }
 
     async isfilterListDisplayed(filterList: string): Promise<boolean> {
@@ -62,6 +63,7 @@ class ActivityTabPage {
     async closeNmoreLink(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.nMoreLink)));
         await $(this.selectors.activityTab).click();
+        utilCommon.waitUntilSpinnerToHide();
     }
 
     async getTextOfNmoreLink(): Promise<string> {
@@ -109,7 +111,8 @@ class ActivityTabPage {
     async clickOnPostButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNotePostButton)));
         await $(this.selectors.addNotePostButton).click();
-        await browser.sleep(3000);
+        await utilCommon.waitUntilSpinnerToHide();
+//        await browser.sleep(3000);
     }
 
     async clickOnCancelButton(): Promise<void> {
@@ -168,7 +171,7 @@ class ActivityTabPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.authorCloseButton)));
         await $(this.selectors.authorCloseButton).click();
     }
- 
+
 
 
     async isAuthorBoxEmpty(): Promise<boolean> {
@@ -210,11 +213,15 @@ class ActivityTabPage {
     async clickOnFilterApplyButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPopupApplyOrClearButton)));
         await element(by.cssContainingText(this.selectors.filterPopupApplyOrClearButton, 'Apply')).click();
+        utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickOnFilterClearButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPopupApplyOrClearButton)));
         await element(by.cssContainingText(this.selectors.filterPopupApplyOrClearButton, 'Clear')).click();
+        await browser.wait(this.EC.or(async () => {
+            await $$(this.selectors.appliedActivityFilter).count() == 0;
+        }));
     }
 
     async getTextOfFilterTask(): Promise<string> {
@@ -247,7 +254,7 @@ class ActivityTabPage {
 
     async isHyperlinkOfActivityDisplay(bodyText: string, authorText: string): Promise<boolean> {
         //await browser.wait(this.EC.elementToBeClickable($(this.selectors.personLink)));
-         var customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='log-item__body']//a[text()="${authorText}"]`;
+        var customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='log-item__body']//a[text()="${authorText}"]`;
         await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customXpath))));
         return await element(by.xpath(customXpath)).isDisplayed();
     }

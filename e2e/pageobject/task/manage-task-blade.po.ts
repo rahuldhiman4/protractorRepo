@@ -1,5 +1,6 @@
-import { element, by, ProtractorExpectedConditions, protractor, browser, $, $$, Key } from "protractor"
-import caseViewPage from "../../pageobject/case/view-case.po"
+import { element, by, ProtractorExpectedConditions, protractor, browser, $, $$, Key } from "protractor";
+import caseViewPage from "../../pageobject/case/view-case.po";
+import utilCommon from "../../utils/ui/util.common";
 
 class ManageTaskBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -46,6 +47,7 @@ class ManageTaskBlade {
     async clickTaskLinkOnManageTask(taskName: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.taskFromManageTasks, taskName))));
         await element(by.cssContainingText(this.selectors.taskFromManageTasks, taskName)).click();
+        utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {

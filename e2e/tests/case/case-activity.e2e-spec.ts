@@ -9,7 +9,8 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
 import utilCommon from '../../utils/ui/util.common';
 import apiHelper from "../../api/api.helper";
-import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
+import { ITaskTemplate } from '../../data/api/interface/task.template.interface.api';
+import personProfilePo from '../../pageobject/case/person-profile.po';
 
 describe('Case Activity', () => {
 
@@ -26,6 +27,23 @@ describe('Case Activity', () => {
         await browser.refresh();
     });
 
+    it('DRDMV-18141: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
+        let caseBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');      
+        // 2nd Step :Open Case from pre condition and inspect its activities
+        await navigationPage.gotCreateCase();
+        await createCase.selectRequester('Al Allbrook');
+        await createCase.setSummary('test case for DRDMV-18141');
+        await createCase.clickSaveCaseButton();
+        await utilCommon.waitUntilPopUpDisappear();
+        await createCase.clickGoToCaseButton();
+        await activityTabPage.addActivityNote(caseBodyText);
+        await activityTabPage.addPersonInActivityNote('Elizabeth Jeffries');
+        await activityTabPage.clickOnPostButton();
+        expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText,'Elizabeth Jeffries')).toBeTruthy('PersonName is not displayed correctly');
+        await activityTabPage.clickOnHyperlinkFromActivity(caseBodyText,'Elizabeth Jeffries');        
+        expect(await personProfilePo.getPersonName()).toBe('Elizabeth Jeffries '),'Elizabeth Jeffries name is missing';
+    });
+    
     it('DRDMV-16768: From KA Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Logged in successfully and Task profile gets opened
         await navigationPage.gotoKnowledge();
@@ -93,7 +111,7 @@ describe('Case Activity', () => {
         // 2nd Step :Open Case from pre condition and inspect its activities
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
-        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.setSummary('test case for DRDMV-16773');
         await createCase.clickSaveCaseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
@@ -115,7 +133,7 @@ describe('Case Activity', () => {
         await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'),'Knowledge page title is missing';
         await createKnowlegePo.clickOnTemplate('Reference');
         await createKnowlegePo.clickOnUseSelectedTemplateButton('Use selected Template');
-        await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16754');
+        await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16773');
         await createKnowlegePo.selectKnowledgeSet('HR');
         await createKnowlegePo.clickOnUseSaveKnowledgeButton();
         await createKnowlegePo.clickOnviewArticleLinkButton();
@@ -131,7 +149,7 @@ describe('Case Activity', () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
-        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.setSummary('test case for DRDMV-16733');
         await createCase.clickSaveCaseButton();
         await utilCommon.closePopUpMessage();
         await createCase.clickGoToCaseButton();
@@ -171,7 +189,6 @@ describe('Case Activity', () => {
         await activityTabPage.selectFilterCheckBox('Category Change');
         await activityTabPage.addAuthorOnFilter('Angelina Jolie');
         await activityTabPage.clickOnFilterApplyButton();
-        browser.sleep(2000);
         var filterPopup2: string = await activityTabPage.isFilterPopUpDisplayed();
         await expect(filterPopup2).toBe('false');
 
@@ -191,7 +208,6 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'),'Status Change is missing';
         await expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 3 more');
         await activityTabPage.closeNmoreLink();
-        browser.sleep(3000);
         // iv)- Click on + n more button (- Selected filter list is displayed )
         await activityTabPage.clickOnNmoreLink();
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'),'Status Change is missing';
@@ -204,7 +220,6 @@ describe('Case Activity', () => {
         await activityTabPage.removeFilterList();
         var str7: boolean = await activityTabPage.isfilterListDisplayed('Status Change');
         await expect(await activityTabPage.isfilterListDisplayed('Status Change')).not.toBeTruthy('Status Change displayed');
-        browser.sleep(3000);
         // 6) All filters are removed.
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.clickOnFilterClearButton();
@@ -216,14 +231,13 @@ describe('Case Activity', () => {
         // 1st step: Logged in successfully and Task profile gets opened
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
-        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.setSummary('test case for DRDMV-16760');
         await createCase.clickSaveCaseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate('File Report');
         await manageTaskBladePo.clickTaskLinkOnManageTask('File Report');
-        browser.sleep(3000);
         // 2nd step: From Task Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Task
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.addAuthorOnFilter('Elizabeth Peters');
@@ -282,7 +296,7 @@ describe('Case Activity', () => {
         // 1st step: Login to BWF with Case agent and open case from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
-        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.setSummary('test case for DRDMV-16734');
         await createCase.clickSaveCaseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
@@ -331,7 +345,7 @@ describe('Case Activity', () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
-        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.setSummary('test case for DRDMV-16759');
         await createCase.clickSaveCaseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
@@ -384,7 +398,7 @@ describe('Case Activity', () => {
         await activityTabPage.selectFilterCheckBox('Category Change');
         await activityTabPage.addAuthorOnFilter('Angelina Jolie');
         await activityTabPage.clickOnFilterApplyButton();
-        browser.sleep(2000);
+
         var filterPopup2: string = await activityTabPage.isFilterPopUpDisplayed();
         await expect(filterPopup2).toBe('false');
 
@@ -413,7 +427,7 @@ describe('Case Activity', () => {
         var linkText: string = await activityTabPage.getTextOfNmoreLink();
         await expect(linkText).toBe('+ 3 more');
         await activityTabPage.closeNmoreLink();
-        browser.sleep(3000);
+
         // iv)- Click on + n more button (- Selected filter list is displayed )
         await activityTabPage.clickOnNmoreLink();
         var str2: string = await activityTabPage.getTextFromFilterList('Status Change');
@@ -432,7 +446,7 @@ describe('Case Activity', () => {
         var str7: boolean = await activityTabPage.isfilterListDisplayed('Status Change');
         console.log(str7);
         await expect(str7).not.toBeTruthy('Status Change displayed');
-        browser.sleep(3000);
+
         // 6) All filters are removed.
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.clickOnFilterClearButton();
@@ -444,7 +458,7 @@ describe('Case Activity', () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
-        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.setSummary('test case for DRDMV-16759');
         await createCase.clickSaveCaseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
@@ -453,7 +467,6 @@ describe('Case Activity', () => {
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate('A Failing Task');
         await manageTaskBladePo.clickTaskLinkOnManageTask('The execution of this task will fail and can be used to demonstrate how to handle this case.');
-        browser.sleep(5000);
 
         // 2nd step: Inspect Task Activity UI - Click on FIlter
         await activityTabPage.clickOnFilterButton();
@@ -498,7 +511,7 @@ describe('Case Activity', () => {
         await activityTabPage.selectFilterCheckBox('Category Change');
         await activityTabPage.addAuthorOnFilter('Angelina Jolie');
         await activityTabPage.clickOnFilterApplyButton();
-        browser.sleep(2000);
+
         var filterPopup2: string = await activityTabPage.isFilterPopUpDisplayed();
         await expect(filterPopup2).toBe('false');
 
@@ -527,7 +540,7 @@ describe('Case Activity', () => {
         var linkText: string = await activityTabPage.getTextOfNmoreLink();
         await expect(linkText).toBe('+ 3 more');
         await activityTabPage.closeNmoreLink();
-        browser.sleep(3000);
+
         // iv)- Click on + n more button (- Selected filter list is displayed )
         await activityTabPage.clickOnNmoreLink();
         var str2: string = await activityTabPage.getTextFromFilterList('Status Change');
@@ -546,7 +559,7 @@ describe('Case Activity', () => {
         var str7: boolean = await activityTabPage.isfilterListDisplayed('Status Change');
         console.log(str7);
         await expect(str7).not.toBeTruthy('Status Change displayed');
-        browser.sleep(3000);
+
         // 6) All filters are removed.
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.clickOnFilterClearButton();
@@ -571,7 +584,7 @@ describe('Case Activity', () => {
 
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
-        await createCase.setSummary('test case for DRDMV-16754');
+        await createCase.setSummary('test case for DRDMV-16759');
         await createCase.clickSaveCaseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
@@ -580,7 +593,6 @@ describe('Case Activity', () => {
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
         await manageTaskBladePo.clickTaskLinkOnManageTask(templateData.templateSummary);
-        browser.sleep(5000);
 
         // 2nd step: Inspect Task Activity UI - Click on FIlter
         await activityTabPage.clickOnFilterButton();
@@ -625,7 +637,7 @@ describe('Case Activity', () => {
         await activityTabPage.selectFilterCheckBox('Category Change');
         await activityTabPage.addAuthorOnFilter('Angelina Jolie');
         await activityTabPage.clickOnFilterApplyButton();
-        browser.sleep(2000);
+
         var filterPopup2: string = await activityTabPage.isFilterPopUpDisplayed();
         await expect(filterPopup2).toBe('false');
 
@@ -654,7 +666,7 @@ describe('Case Activity', () => {
         var linkText: string = await activityTabPage.getTextOfNmoreLink();
         await expect(linkText).toBe('+ 3 more');
         await activityTabPage.closeNmoreLink();
-        browser.sleep(3000);
+
         // iv)- Click on + n more button (- Selected filter list is displayed )
         await activityTabPage.clickOnNmoreLink();
         var str2: string = await activityTabPage.getTextFromFilterList('Status Change');
@@ -673,7 +685,7 @@ describe('Case Activity', () => {
         var str7: boolean = await activityTabPage.isfilterListDisplayed('Status Change');
         console.log(str7);
         await expect(str7).not.toBeTruthy('Status Change displayed');
-        browser.sleep(3000);
+
         // 6) All filters are removed.
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.clickOnFilterClearButton();
