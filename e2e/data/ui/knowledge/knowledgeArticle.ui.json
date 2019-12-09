@@ -2,5 +2,11 @@
     "DRDMV-19020":{
         "TemplateName":"Reference",
         "Company":"Petramco"
+    },
+    "DRDMV-19081":{
+        "TemplateName":"Reference",
+        "Company":"Petramco",
+        "KnowledgeTitle":"KnowledgeTitle_19081",
+        "KnowledgeSet":"HR"
     }
 }
