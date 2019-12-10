@@ -55,7 +55,7 @@ describe('Knowledge Article', () => {
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
         let knowledgeData = knowledgeDataFile['DRDMV-19020'];
         await navigationPage.signOut();
-        await loginPage.login(personData.userId);
+        await loginPage.loginWithCredentials(personData.userId + "@petramco.com", 'Password_1234');
         await navigationPage.gotoCreateKnowledge();
         await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
         await createKnowledgePage.clickOnUseSelectedTemplateButton();

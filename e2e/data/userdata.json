@@ -58,9 +58,5 @@
 	"peter": {
 		"userName": "Peter@petramco.com",
 		"userPassword": "Password_1234"
-	},
-	"idPerson": {
-		"userName": "idPerson@petramco.com",
-		"userPassword": "Password_1234"
 	}
 }
