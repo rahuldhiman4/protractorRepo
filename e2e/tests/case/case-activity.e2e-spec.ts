@@ -14,6 +14,8 @@ import personProfilePo from '../../pageobject/case/person-profile.po';
 
 describe('Case Activity', () => {
 
+    const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qkatawazi');
@@ -25,16 +27,17 @@ describe('Case Activity', () => {
 
     afterEach(async () => {
         await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
     });
 
+    //kgaikwad
     it('DRDMV-18141: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
-        let caseBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseBodyText = `CaseBody${randomStr}`;
         // 2nd Step :Open Case from pre condition and inspect its activities
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-18141');
         await createCase.clickSaveCaseButton();
-        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
         await activityTabPage.addActivityNote(caseBodyText);
         await activityTabPage.addPersonInActivityNote('Elizabeth Jeffries');
@@ -44,6 +47,7 @@ describe('Case Activity', () => {
         expect(await personProfilePo.getPersonName()).toBe('Elizabeth Jeffries '), 'Elizabeth Jeffries name is missing';
     });
 
+    //kgaikwad
     it('DRDMV-16768: From KA Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Logged in successfully and Task profile gets opened
         await navigationPage.gotoCreateKnowledge();
@@ -101,8 +105,11 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isAuthorBoxEmpty()).toBeFalsy('Author field is not editable');
         // ii) - Select another user and click on Apply
         await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
-    }, 100 * 1000);
+        await browser.close();
+        await utilCommon.switchToNewWidnow(0);
+    }, 90 * 1000);
 
+    //kgaikwad
     it('DRDMV-16773: [-ve] - Person details displayed in Activity who have long name', async () => {
         // 1st step Login
         let caseBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -113,9 +120,8 @@ describe('Case Activity', () => {
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16773');
         await createCase.clickSaveCaseButton();
-        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
-        console.log(await viewCasePo.getCaseID());
+
         await activityTabPage.addActivityNote(caseBodyText);
         await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
         await activityTabPage.clickOnPostButton();
@@ -143,8 +149,11 @@ describe('Case Activity', () => {
         await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
         await activityTabPage.clickOnPostButton();
         expect(await activityTabPage.isHyperlinkOfActivityDisplay(knowledgeBodyText, 'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
-    }, 130 * 1000);
+        await browser.close();
+        await utilCommon.switchToNewWidnow(0);
+    });
 
+    //kgaikwad
     it('DRDMV-16733: Case Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
@@ -224,15 +233,15 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnFilterClearButton();
         var str8: boolean = await activityTabPage.isfilterPresent();
         await expect(str8).not.toBeTruthy('filter displayed');
-    }, 100 * 1000);
+    });
 
+    //kgaikwad
     it('DRDMV-16760: From Task Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Logged in successfully and Task profile gets opened
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16760');
         await createCase.clickSaveCaseButton();
-        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate('File Report');
@@ -289,15 +298,15 @@ describe('Case Activity', () => {
         await expect(value4).not.toBeTruthy('Author field is not editable');
         // ii) - Select another user and click on Apply
         await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
-    }, 120 * 1000);
+    });
 
+    //kgaikwad
     it('DRDMV-16734: From Case Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Login to BWF with Case agent and open case from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16734');
         await createCase.clickSaveCaseButton();
-        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
         // 2nd Step: From Case Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Case
         // i) Verify User is able to search for any user
@@ -338,15 +347,15 @@ describe('Case Activity', () => {
         await expect(value4).not.toBeTruthy('Author field is not editable');
         // iii) - Select another user and click on Apply
         await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries')
-    }, 120 * 1000);
+    });
 
-    fit('DRDMV-16759: Task Activity Filter UI validation', async () => {
+    //kgaikwad
+    it('DRDMV-16759: Task Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16759');
         await createCase.clickSaveCaseButton();
-        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
 
         // On view case page.
@@ -454,18 +463,34 @@ describe('Case Activity', () => {
 
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // For Automation
+        // Create automated task template
+        let autoTemplateData = {
+            "templateName": "auto task template ",
+            "templateSummary": "auto task template summary ",
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": "Case Process ",
+        }
+
+        autoTemplateData.templateName = autoTemplateData.templateName + randomStr;
+        autoTemplateData.templateSummary = autoTemplateData.templateSummary + randomStr;
+        autoTemplateData.processName = autoTemplateData.processName + randomStr;
+
+        await apiHelper.apiLogin('qkatawazi');
+        var autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(autoTemplateData);
+        console.log("Automated task Template created===", autoTaskTemplate.id);
+
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16759');
         await createCase.clickSaveCaseButton();
-        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
 
         // On view case page.
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.addTaskFromTaskTemplate('A Failing Task');
-        await manageTaskBladePo.clickTaskLinkOnManageTask('The execution of this task will fail and can be used to demonstrate how to handle this case.');
+        await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateName);
+        await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
 
         // 2nd step: Inspect Task Activity UI - Click on FIlter
         await activityTabPage.clickOnFilterButton();
@@ -568,30 +593,28 @@ describe('Case Activity', () => {
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // For External
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
-        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateData: ITaskTemplate = {
+        let externalTemplateData: ITaskTemplate = {
             "templateName": "external task template name ",
             "templateSummary": "external task template summary ",
             "templateStatus": "Active",
         };
-        templateData.templateName = templateData.templateName + randomStr;
-        templateData.templateSummary = templateData.templateSummary + randomStr;
+        externalTemplateData.templateName = externalTemplateData.templateName + randomStr;
+        externalTemplateData.templateSummary = externalTemplateData.templateSummary + randomStr;
 
         await apiHelper.apiLogin('qkatawazi');
-        var externalTaskTemplate = await apiHelper.createExternalTaskTemplate(templateData);
-        console.log("external task Template is created===", externalTaskTemplate.id);
+        var externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTemplateData);
+        console.log("External Task Template is created===", externalTaskTemplate.id);
 
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16759');
         await createCase.clickSaveCaseButton();
-        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
 
         // On view case page.
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(templateData.templateSummary);
+        await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateName);
+        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTemplateData.templateSummary);
 
         // 2nd step: Inspect Task Activity UI - Click on FIlter
         await activityTabPage.clickOnFilterButton();
@@ -690,15 +713,15 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnFilterClearButton();
         var str8: boolean = await activityTabPage.isfilterPresent();
         await expect(str8).not.toBeTruthy('filter displayed');
-    });
+    }, 220 * 1000);
 
+    //kgaikwad
     it('DRDMV-18048: While adding a note on Case one or more agent can be tagged in Comment', async () => {
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.selectContact('Angelina Jolie');
         await createCase.setSummary('test case for DRDMV-18048');
         await createCase.clickSaveCaseButton();
-        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
         var personPopupCount: number = await activityTabPage.getPersonCount('Hi hello @Allen');
         await expect(personPopupCount).toBeGreaterThan(3);
@@ -718,6 +741,7 @@ describe('Case Activity', () => {
         await expect(loginId).toBeTruthy("LoginID user is not present");
     });
 
+    //kgaikwad
     it('DRDMV-16754: Drill Down to different screens from Activities', async () => {
         // 1st step Login
         var caseBodyText = "This is unique caseActivity text " + Math.floor(Math.random() * 1000000);
@@ -727,7 +751,6 @@ describe('Case Activity', () => {
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16754');
         await createCase.clickSaveCaseButton();
-        await utilCommon.waitUntilPopUpDisappear();
         await createCase.clickGoToCaseButton();
 
         // On view case page.
@@ -780,5 +803,7 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(knowledgeBodyText);
         await activityTabPage.clickOnPostButton();
         await activityTabPage.clickOnHyperlinkFromActivity(knowledgeBodyText, 'Qadim Katawazi');
-    }, 120 * 1000);
+        await browser.close();
+        await utilCommon.switchToNewWidnow(0);
+    });
 })
