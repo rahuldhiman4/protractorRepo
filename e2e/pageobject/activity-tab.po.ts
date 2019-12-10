@@ -1,5 +1,6 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../utils/ui/util.common';
+import createKnowlegePo from './knowledge/create-knowlege.po';
 
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -14,7 +15,7 @@ class ActivityTabPage {
         activityLog: '.log-item__body div[class]',
         personLink: '.title a',
         filterButton: '.d-icon-filter',
-        filterCheckbox: '.d-checkbox__item',
+        filterCheckbox: '.filter-content-box .d-checkbox__item',
         filterAuthor: '.person-input[placeholder="Enter name, email, or login ID"]',
         filterPopupApplyOrClearButton: '.filter-options .d-button',
         activityText: '[rx-view-component-id="34167059-11d4-4e85-8a58-e501544e2461"] [title="Activity"]',
@@ -62,8 +63,8 @@ class ActivityTabPage {
     }
 
     async closeNmoreLink(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.nMoreButton)));
-        await $(this.selectors.activityTab).click();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.activityTab)));
+        await element(by.cssContainingText(this.selectors.activityTab, 'Activity')).click();
         utilCommon.waitUntilSpinnerToHide();
     }
 
