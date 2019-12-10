@@ -429,7 +429,7 @@ describe('Notes template', () => {
         await createKnowlegePo.clickOnUseSelectedTemplateButton();
         await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16754');
         await createKnowlegePo.selectKnowledgeSet('HR');
-        await createKnowlegePo.clickOnUseSaveKnowledgeButton();
+        await createKnowlegePo.clickOnSaveKnowledgeButton();
         await createKnowlegePo.clickOnviewArticleLinkButton();
         // View Knowledege Page
         await utilCommon.switchToNewWidnow(1);
