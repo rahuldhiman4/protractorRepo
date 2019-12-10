@@ -31,7 +31,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    it('DRDMV-16767: KA Activity Filter UI validation', async () => {
+    fit('DRDMV-16767: KA Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotoCreateKnowledge();
         await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge Article title is missing';
@@ -49,22 +49,22 @@ describe('Case Activity', () => {
         // i) - Clear, Apply button (Apply button is disabled until any filter is selected)
         expect(await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled()).toBeGreaterThan(0);
         // ii) - Case Filter options-->  -- General Notes -- Status Change -- Emails -- Assignment Change -- Relationship Change -- Approvals -- Category Change -- Case Views -- Task Activities - External Filter options -- Public - Author -- Search field for Author search
-        expect(await activityTabPage.getTextTaskFilterOption('General Notes')).toBe('General Notes'),'General Notes is missing';
-        expect(await activityTabPage.getTextTaskFilterOption('Flag')).toBe('Flag'),'Flag is missing';
-        expect(await activityTabPage.getTextTaskFilterOption('Unflag')).toBe('Unflag'),'Unflag is missing';
-        expect(await activityTabPage.getTextTaskFilterOption('Feedback')).toBe('Feedback'),'Feedback is missing';
+        expect(await activityTabPage.getTextTaskFilterOption('General Notes')).toBe('General Notes'), 'General Notes is missing';
+        expect(await activityTabPage.getTextTaskFilterOption('Flag')).toBe('Flag'), 'Flag is missing';
+        expect(await activityTabPage.getTextTaskFilterOption('Unflag')).toBe('Unflag'), 'Unflag is missing';
+        expect(await activityTabPage.getTextTaskFilterOption('Feedback')).toBe('Feedback'), 'Feedback is missing';
         expect(await activityTabPage.isAuthorSearchBoxVisible()).toBeTruthy("authorSearchBoxVisbility is not visible");
         // 4th Step: Check box is selected/unselect and Apply button is enabled/disable.   
         await activityTabPage.selectFilterCheckBox('General Notes');
-        expect(await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled()).toBeLessThan(1);        
+        expect(await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled()).toBeLessThan(1);
         await activityTabPage.selectFilterCheckBox('General Notes');
         await expect(await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled()).toBeGreaterThan(0);
-          // 5th step: Select some filters and click on Apply
+        // 5th step: Select some filters and click on Apply
         // i)Selected Filters are applied and filter panel is closed.
         var filterPopup: string = await activityTabPage.isFilterPopUpDisplayed();
         expect(filterPopup).toEqual('true');
         await activityTabPage.selectFilterCheckBox('General Notes');
-        await activityTabPage.selectFilterCheckBox('Flag'); 
+        await activityTabPage.selectFilterCheckBox('Flag');
         await activityTabPage.selectFilterCheckBox('Unflag');
         await activityTabPage.selectFilterCheckBox('Feedback');
         await activityTabPage.addAuthorOnFilter('Angelina Jolie');
@@ -72,31 +72,31 @@ describe('Case Activity', () => {
         utilCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
         // ii) Selected Filters are displayed in Activity with first filter and + other selected filters
-        expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'),'General Notes is missing';
+        expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'), 'General Notes is missing';
         await activityTabPage.clickOnNmoreLink();
-        expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'),'Flag is missing';
-        expect(await activityTabPage.getTextFromFilterList('Unflag')).toBe('Unflag'),'Unflag is missing';
-        expect(await activityTabPage.getTextFromFilterList('Feedback')).toBe('Feedback'),'Feedback is missing';
-        expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie'),'Author: ajolie is missing';
+        expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
+        expect(await activityTabPage.getTextFromFilterList('Unflag')).toBe('Unflag'), 'Unflag is missing';
+        expect(await activityTabPage.getTextFromFilterList('Feedback')).toBe('Feedback'), 'Feedback is missing';
+        expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie'), 'Author: ajolie is missing';
         // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
         await activityTabPage.closeNmoreLink();
         await activityTabPage.clickOnNmoreLink();
-        expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'),'General Notes is missing';
+        expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'), 'General Notes is missing';
         expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 4 more');
         await activityTabPage.removeFilterList();
-        expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'),'Flag is missing';
+        expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
         expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 3 more');
         await activityTabPage.closeNmoreLink();
         utilCommon.waitUntilSpinnerToHide();
         // iv)- Click on + n more button (- Selected filter list is displayed )
         await activityTabPage.clickOnNmoreLink();
-        expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'),'Flag is missing';
-        expect(await activityTabPage.getTextFromFilterList('Unflag')).toBe('Unflag'),'Assignment Change is missing';
-        expect(await activityTabPage.getTextFromFilterList('Feedback')).toBe('Feedback'),'Feedback is missing';
-        expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie'),'Author: ajolie is missing';
+        expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
+        expect(await activityTabPage.getTextFromFilterList('Unflag')).toBe('Unflag'), 'Assignment Change is missing';
+        expect(await activityTabPage.getTextFromFilterList('Feedback')).toBe('Feedback'), 'Feedback is missing';
+        expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie'), 'Author: ajolie is missing';
         await activityTabPage.closeNmoreLink();
         //  v) - That particular filter is removed.
-        expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'),'Flag is missing';
+        expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
         await activityTabPage.removeFilterList();
         expect(await activityTabPage.isfilterListDisplayed('Flag')).toBeFalsy('Flag displayed');
         utilCommon.waitUntilSpinnerToHide();
@@ -104,6 +104,8 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.clickOnFilterClearButton();
         expect(await activityTabPage.isfilterPresent()).toBeFalsy('filter displayed');
+        await browser.close();
+        await utilCommon.switchToNewWidnow(0);
     });
 
     //kgaikwad
@@ -425,10 +427,7 @@ describe('Case Activity', () => {
         await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries')
     });
 
-<<<<<<< HEAD
     //kgaikwad
-=======
->>>>>>> 83b81293f39e60a1d6938fac22cfd13f404c54c5
     it('DRDMV-16759: Task Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
