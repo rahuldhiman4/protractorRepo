@@ -6,9 +6,7 @@ import documentLibraryPage from '../../pageobject/settings/document-library.po';
 describe('document library', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
-        await browser.manage().window().maximize();
-        await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
-        browser.waitForAngularEnabled(false);
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
     });
 
     afterAll(async () => {
