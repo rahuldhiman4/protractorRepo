@@ -27,6 +27,7 @@ describe('Knowledge Article', () => {
 
     afterEach(async()=>{
         await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
     });
 
     async function foundationData(company:string){
@@ -73,6 +74,7 @@ describe('Knowledge Article', () => {
             finally{
                 await utilCommon.switchToDefaultWindowClosingOtherTabs();
                 await browser.refresh();
+                await utilCommon.waitUntilSpinnerToHide();
                 await navigationPage.signOut();
                 await loginPage.login('peter');
             }
@@ -95,7 +97,7 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.clickOnviewArticleLinkButton();
         await utilCommon.switchToNewWidnow(1);
         await editKnowledgePage.setKnowledgeStatus(knowledgeData.DraftStatus);
-        await utilCommon.waitUntilSuccessMessageDisappear();
+        await utilCommon.waitUntilPopUpDisappear();
         await editKnowledgePage.setKnowledgeStatusWithoutSave(knowledgeData.ReviewStatus);
         expect (await editKnowledgePage.isReviewerCompanyFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
         expect (await editKnowledgePage.isReviewerBusinessUnitFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
@@ -113,7 +115,7 @@ describe('Knowledge Article', () => {
         await changeAssignmentBlade.clickOnAssignButton();
         await browser.sleep(1000);
         await editKnowledgePage.clickSaveStatusBtn();
-        await utilCommon.waitUntilSuccessMessageDisappear();
+        await utilCommon.waitUntilPopUpDisappear();
         await editKnowledgePage.isReviewPendingButtonDisplayed();
         }
         catch(Error){

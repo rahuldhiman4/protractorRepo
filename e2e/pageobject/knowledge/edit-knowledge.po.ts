@@ -24,7 +24,7 @@ class EditKnowledgePage {
         await $(this.selectors.statusChange).click();
         await utilCommon.selectDropDownWithName('Status',newStatus);
         await $(this.selectors.statusSaveBtn).click();
-        await utilCommon.waitUntilSuccessMessageDisappear();
+        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async setKnowledgeStatusAndVerifyAssignmentNotAppear(newStatus: string):Promise<void>{
@@ -33,7 +33,7 @@ class EditKnowledgePage {
         await utilCommon.selectDropDownWithName('Status',newStatus);
         expect (await $(this.selectors.assigneToMeReviewerAssign).isDisplayed()).toBeFalsy();
         await $(this.selectors.statusSaveBtn).click();
-        await utilCommon.waitUntilSuccessMessageDisappear();
+        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async setKnowledgeStatusWithoutSave(newStatus: string):Promise<void>{
@@ -63,7 +63,7 @@ class EditKnowledgePage {
         await browser.wait(this.EC.visibilityOf($(this.selectors.saveBtnEditMetadata)));
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveBtnEditMetadata)));
         await $(this.selectors.saveBtnEditMetadata).click();
-        await utilCommon.waitUntilSuccessMessageDisappear();
+        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async verifyKnowledgeMetadata(fldName:String, fldVal:String):Promise<void>{
