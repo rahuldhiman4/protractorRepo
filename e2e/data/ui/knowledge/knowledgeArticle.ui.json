@@ -8,7 +8,7 @@
     "DRDMV-19079":{
         "TemplateName":"Reference",
         "Company":"Petramco",
-        "KnowledgeTitle":"KnowledgeTitle_19081",
+        "KnowledgeTitle":"KnowledgeTitle_19079",
         "KnowledgeSet":"HR",
         "DraftStatus":"Draft",
         "ReviewStatus": "SME Review"
@@ -33,11 +33,5 @@
      "DRDMV-19508":{
         "TemplateName":"Reference",
         "Company":"Petramco"
-    },
-    "DRDMV-19081":{
-        "TemplateName":"Reference",
-        "Company":"Petramco",
-        "KnowledgeTitle":"KnowledgeTitle_19081",
-        "KnowledgeSet":"HR"
     }
 }

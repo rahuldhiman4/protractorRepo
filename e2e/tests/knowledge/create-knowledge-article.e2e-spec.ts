@@ -211,14 +211,4 @@ describe('Knowledge Article', () => {
         await changeAssignmentBlade.selectAssignee(personData.firstName);
         await changeAssignmentBlade.clickOnAssignButton();
     });
-
-    it('DRDMV-19081 - Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
-        let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
-        let knowledgeData = knowledgeDataFile['DRDMV-19081'];
-        await navigationPage.gotoCreateKnowledge();
-        await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
-        await createKnowledgePage.clickOnUseSelectedTemplateButton();
-        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-        await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
-    });
 })

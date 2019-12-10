@@ -1,6 +1,5 @@
 import { $, ProtractorExpectedConditions, browser, protractor, element, by, $$ } from "protractor";
 import utilCommon from '../../utils/ui/util.common';
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
 class EditKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
