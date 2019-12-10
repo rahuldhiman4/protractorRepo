@@ -252,6 +252,7 @@ class ActivityTabPage {
         var customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='log-item__body']//a[text()="${authorText}"]`;
         await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customXpath))));
         await element(by.xpath(customXpath)).click();
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isHyperlinkOfActivityDisplay(bodyText: string, authorText: string): Promise<boolean> {
