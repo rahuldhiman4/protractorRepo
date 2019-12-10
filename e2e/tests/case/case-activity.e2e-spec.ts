@@ -40,7 +40,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnUseSelectedTemplateButton();
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16767');
             await createKnowlegePo.selectKnowledgeSet('HR');
-            await createKnowlegePo.clickOnUseSaveKnowledgeButton();
+            await createKnowlegePo.clickOnSaveKnowledgeButton();
             await createKnowlegePo.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
             await createKnowlegePo.clickOnActivityTab();
@@ -140,7 +140,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnUseSelectedTemplateButton();
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16768');
             await createKnowlegePo.selectKnowledgeSet('HR');
-            await createKnowlegePo.clickOnUseSaveKnowledgeButton();
+            await createKnowlegePo.clickOnSaveKnowledgeButton();
             await createKnowlegePo.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
             await createKnowlegePo.clickOnActivityTab();
@@ -229,7 +229,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnUseSelectedTemplateButton();
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16773');
             await createKnowlegePo.selectKnowledgeSet('HR');
-            await createKnowlegePo.clickOnUseSaveKnowledgeButton();
+            await createKnowlegePo.clickOnSaveKnowledgeButton();
             await createKnowlegePo.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
             await createKnowlegePo.clickOnActivityTab();
@@ -884,7 +884,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnUseSelectedTemplateButton();
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16754');
             await createKnowlegePo.selectKnowledgeSet('HR');
-            await createKnowlegePo.clickOnUseSaveKnowledgeButton();
+            await createKnowlegePo.clickOnSaveKnowledgeButton();
             await createKnowlegePo.clickOnviewArticleLinkButton();
 
             // View Knowledege Page
