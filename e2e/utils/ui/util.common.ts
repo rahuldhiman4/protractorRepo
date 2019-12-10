@@ -70,6 +70,10 @@ export class Util {
         await browser.wait(this.EC.invisibilityOf($(this.selectors.errorMsg)));
     }
 
+    async waitUntilSuccessMessageDisappear(): Promise<void>{
+        await browser.wait(this.EC.invisibilityOf($(this.selectors.popUpMsgLocator)));
+    }
+
     async closePopUpMessage(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeTipMsg)));
         await $(this.selectors.closeTipMsg).click();
@@ -112,6 +116,17 @@ export class Util {
     async switchToDefaultWidnow(): Promise<void> {
         await browser.sleep(5000);
         await browser.switchTo().defaultContent();
+    }
+
+    async switchToDefaultWindowClosingOtherTabs(): Promise<void>{
+        await browser.sleep(5000);
+        await browser.getAllWindowHandles().then(async function (handles) {
+            for(let i=handles.length;i>1;i--){
+                await browser.switchTo().window(handles[i-1]);
+                browser.close();
+            }
+            await browser.switchTo().window(handles[0]);
+        });
     }
 
     async waitUntilSpinnerToHide(): Promise<void> {

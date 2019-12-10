@@ -423,13 +423,13 @@ describe('Notes template', () => {
         notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
         await apiHelper.createNotesTemplate("Knowledge", notesTemplateData['notesTemplateWithMandatoryField']);
         //create Knowledge
-        await navigationPage.gotoKnowledge();
+        await navigationPage.gotoCreateKnowledge();
         await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
         await createKnowlegePo.clickOnTemplate('Reference');
-        await createKnowlegePo.clickOnUseSelectedTemplateButton('Use selected Template');
+        await createKnowlegePo.clickOnUseSelectedTemplateButton();
         await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16754');
         await createKnowlegePo.selectKnowledgeSet('HR');
-        await createKnowlegePo.clickOnUseSaveKnowledgeButton();
+        await createKnowlegePo.clickOnSaveKnowledgeButton();
         await createKnowlegePo.clickOnviewArticleLinkButton();
         // View Knowledege Page
         await utilCommon.switchToNewWidnow(1);

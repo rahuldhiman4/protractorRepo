@@ -46,13 +46,13 @@ describe('Case Activity', () => {
     
     it('DRDMV-16768: From KA Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Logged in successfully and Task profile gets opened
-        await navigationPage.gotoKnowledge();
+        await navigationPage.gotoCreateKnowledge();
         await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'),'Knowledge Article title is missing';
         await createKnowlegePo.clickOnTemplate('Reference');
-        await createKnowlegePo.clickOnUseSelectedTemplateButton('Use selected Template');
+        await createKnowlegePo.clickOnUseSelectedTemplateButton();
         await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16768');
         await createKnowlegePo.selectKnowledgeSet('HR');
-        await createKnowlegePo.clickOnUseSaveKnowledgeButton();
+        await createKnowlegePo.clickOnSaveKnowledgeButton();
         await createKnowlegePo.clickOnviewArticleLinkButton();
         await utilCommon.switchToNewWidnow(1);
         await createKnowlegePo.clickOnActivityTab(); 
@@ -129,13 +129,13 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnPostButton();
         expect(await activityTabPage.isHyperlinkOfActivityDisplay(taskBodyText,'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
         // 3rd Step: Open KA from pre condition and inspect its activities
-        await navigationPage.gotoKnowledge();
+        await navigationPage.gotoCreateKnowledge();
         await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'),'Knowledge page title is missing';
         await createKnowlegePo.clickOnTemplate('Reference');
-        await createKnowlegePo.clickOnUseSelectedTemplateButton('Use selected Template');
+        await createKnowlegePo.clickOnUseSelectedTemplateButton();
         await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16773');
         await createKnowlegePo.selectKnowledgeSet('HR');
-        await createKnowlegePo.clickOnUseSaveKnowledgeButton();
+        await createKnowlegePo.clickOnSaveKnowledgeButton();
         await createKnowlegePo.clickOnviewArticleLinkButton();
         await utilCommon.switchToNewWidnow(1);
         await createKnowlegePo.clickOnActivityTab();        
@@ -766,13 +766,13 @@ describe('Case Activity', () => {
 
         // 6th step verification
         // Open KA > Click on Person Name from Activity, On Crate Knowlege Page
-        await navigationPage.gotoKnowledge();
+        await navigationPage.gotoCreateKnowledge();
         await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
         await createKnowlegePo.clickOnTemplate('Reference');
-        await createKnowlegePo.clickOnUseSelectedTemplateButton('Use selected Template');
+        await createKnowlegePo.clickOnUseSelectedTemplateButton();
         await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16754');
         await createKnowlegePo.selectKnowledgeSet('HR');
-        await createKnowlegePo.clickOnUseSaveKnowledgeButton();
+        await createKnowlegePo.clickOnSaveKnowledgeButton();
         await createKnowlegePo.clickOnviewArticleLinkButton();
 
         // View Knowledege Page
