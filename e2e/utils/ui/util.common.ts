@@ -109,11 +109,6 @@ export class Util {
         });
     }
 
-    async switchToDefaultWidnow(): Promise<void> {
-        await browser.sleep(5000);
-        await browser.switchTo().defaultContent();
-    }
-
     async waitUntilSpinnerToHide(): Promise<void> {
         await browser.wait(this.EC.presenceOf($('.d-preloader')));
         await browser.wait(this.EC.or(async () => {

@@ -1,4 +1,5 @@
 import { $, ProtractorExpectedConditions, browser, protractor } from "protractor";
+import utilCommon from '../utils/ui/util.common';
 
 class LoginPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -25,6 +26,7 @@ class LoginPage {
         let innovationStudio = this.EC.titleContains('Workspace - Innovation Studio');
         let noAccess = this.EC.titleContains('No Access');
         await browser.wait(this.EC.or(caseConsole, knowledgeConsole, tasksConsole, innovationStudio, noAccess), 5000);
+        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async loginWithCredentials(user: string, password: string): Promise<void> {
@@ -39,6 +41,7 @@ class LoginPage {
         let innovationStudio = this.EC.titleContains('Workspace - Innovation Studio');
         let noAccess = this.EC.titleContains('No Access');
         await browser.wait(this.EC.or(caseConsole, knowledgeConsole, tasksConsole, innovationStudio, noAccess), 5000);
+        await utilCommon.waitUntilPopUpDisappear();
     }
 }
 

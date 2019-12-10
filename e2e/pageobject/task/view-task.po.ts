@@ -1,4 +1,5 @@
 import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
+import utilCommon from 'e2e/utils/ui/util.common';
 
 class ViewTask {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -141,6 +142,7 @@ class ViewTask {
     async clickOnViewCase(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewCaseLink)));
         await $(this.selectors.viewCaseLink).click();
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
 
