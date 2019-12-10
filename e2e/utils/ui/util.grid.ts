@@ -1,6 +1,5 @@
 import { ProtractorExpectedConditions, protractor, browser, by, element, until, By, $ } from 'protractor';
 import { Util } from './util.common';
-import { async } from 'q';
 
 export class GridOperation {
 
@@ -18,7 +17,7 @@ export class GridOperation {
         filterPreset: '.rx-filter-presets-dropdown__trigger',
         clearFilterButton: 'button[rx-id="clear-button"]',
         filterClose: '.d-tag-remove-button',
-        refreshButton:'button.d-icon-refresh'
+        refreshButton: 'button.d-icon-refresh'
     }
 
     getGridLocator(locatorName: string, gridId: string) {
@@ -37,7 +36,7 @@ export class GridOperation {
         await browser.wait(until.elementLocated(By.css(this.getGridLocator('searchButton', gridId))), 10000).click();
         await browser.wait(this.EC.elementToBeClickable($(this.getGridLocator('firstCheckBox', gridId))));
         await browser.sleep(5000);
-        await $(this.getGridLocator('firstCheckBox', gridId)).click();        
+        await $(this.getGridLocator('firstCheckBox', gridId)).click();
     }
 
     async searchAndSelectFirstCheckBoxWOGrid(value: string) {

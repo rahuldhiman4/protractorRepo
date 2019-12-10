@@ -403,7 +403,7 @@ describe('Notes template', () => {
             await editTask.clickOnSaveButton();
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
             await activityTabPo.clickOnPostButton();
-            expect (await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
+            expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
         } catch (e) {
             console.log(e);
         }
