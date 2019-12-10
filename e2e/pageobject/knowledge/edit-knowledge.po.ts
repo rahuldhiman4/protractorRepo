@@ -78,20 +78,17 @@ class EditKnowledgePage {
         }
     }
 
-    async isChangeReviewerButtonPresent():Promise<Boolean>
-    {
+    async isChangeReviewerButtonPresent():Promise<Boolean>{
         await browser.wait(this.EC.visibilityOf($(this.selectors.changeReviewerBtn)));
         return await $(this.selectors.changeReviewerBtn).isDisplayed();
     }
 
-    async clickChangeReviewerBtn():Promise<void>
-    {
+    async clickChangeReviewerBtn():Promise<void>{
         await browser.wait(this.EC.visibilityOf($(this.selectors.changeReviewerBtn)));
         await $(this.selectors.changeReviewerBtn).click();
     }
 
-    async isAssignToMeButtonPresent():Promise<Boolean>
-    {
+    async isAssignToMeButtonPresent():Promise<Boolean>{
         await browser.wait(this.EC.visibilityOf($(this.selectors.assigneToMeReviewerAssign)));
         return await $(this.selectors.assigneToMeReviewerAssign).isDisplayed();
     }
@@ -121,8 +118,7 @@ class EditKnowledgePage {
         return await $(this.selectors.reviewerfldStatusBlade).getAttribute("disabled")=="true";
     }
 
-    async isReviewPendingButtonDisplayed():Promise<Boolean>
-    {
+    async isReviewPendingButtonDisplayed():Promise<Boolean>{
         await browser.wait(this.EC.visibilityOf($(this.selectors.reviewPendingBtn)));
         return await $(this.selectors.reviewPendingBtn).isDisplayed();
     }
