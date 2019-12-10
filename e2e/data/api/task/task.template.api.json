@@ -81,7 +81,7 @@
       },
       "8": {
         "id": 8,
-        "value": "External Task Name"
+        "value": "External Task Summary"
       },
       "300287900": {
         "id": 300287900,
@@ -101,7 +101,7 @@
       },
       "1000001437": {
         "id": 1000001437,
-        "value": "External Task Summary"
+        "value": "External Task Name"
       }
     }
   }

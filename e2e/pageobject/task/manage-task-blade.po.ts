@@ -47,7 +47,7 @@ class ManageTaskBlade {
     async clickTaskLinkOnManageTask(taskName: string): Promise<void> {
         await browser.wait(this.EC.or(async () => {
             let count = await $$(this.selectors.taskFromManageTasks).count();
-            return count >= 2;
+            return count >= 1;
         }));
         await browser.wait(this.EC.elementToBeClickable(element(by.linkText(taskName))));
         await element(by.linkText(taskName)).click();
