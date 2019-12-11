@@ -1,37 +1,37 @@
 {
-    "DRDMV-19020":{
-        "TemplateName":"Reference",
-        "Company":"Petramco",
-        "KnowledgeTitle":"KnowledgeTitle_19020",
-        "KnowledgeSet":"HR"
+    "DRDMV-19020": {
+        "TemplateName": "Reference",
+        "Company": "Petramco",
+        "KnowledgeTitle": "KnowledgeTitle_19020",
+        "KnowledgeSet": "HR"
     },
-    "DRDMV-19079":{
-        "TemplateName":"Reference",
-        "Company":"Petramco",
-        "KnowledgeTitle":"KnowledgeTitle_19079",
-        "KnowledgeSet":"HR",
-        "DraftStatus":"Draft",
+    "DRDMV-19079": {
+        "TemplateName": "Reference",
+        "Company": "Petramco",
+        "KnowledgeTitle": "KnowledgeTitle_19079",
+        "KnowledgeSet": "HR",
+        "DraftStatus": "Draft",
         "ReviewStatus": "SME Review"
     },
-    "DRDMV-19080":{
-        "TemplateName":"Reference",
-        "Company":"Petramco",
-        "KnowledgeTitle":"KnowledgeTitle_19080",
-        "KnowledgeSet":"HR"
-     },
-     "DRDMV-19081":{
-        "TemplateName":"Reference",
-        "Company":"Petramco",
-        "KnowledgeTitle":"KnowledgeTitle_19081",
-        "KnowledgeSet":"HR",
-        "DraftStatus":"Draft",
+    "DRDMV-19080": {
+        "TemplateName": "Reference",
+        "Company": "Petramco",
+        "KnowledgeTitle": "KnowledgeTitle_19080",
+        "KnowledgeSet": "HR"
+    },
+    "DRDMV-19081": {
+        "TemplateName": "Reference",
+        "Company": "Petramco",
+        "KnowledgeTitle": "KnowledgeTitle_19081",
+        "KnowledgeSet": "HR",
+        "DraftStatus": "Draft",
         "ReviewStatus": "SME Review",
-        "PublishedStatus":"Published",
-        "RetiredStatus":"Retired",
-        "ClosedStatus":"Closed"
-     },
-     "DRDMV-19508":{
-        "TemplateName":"Reference",
-        "Company":"Petramco"
+        "PublishedStatus": "Published",
+        "RetiredStatus": "Retired",
+        "ClosedStatus": "Closed"
+    },
+    "DRDMV-19508": {
+        "TemplateName": "Reference",
+        "Company": "Petramco"
     }
 }

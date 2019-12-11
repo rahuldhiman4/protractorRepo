@@ -1,17 +1,15 @@
 import axios, { AxiosResponse } from "axios";
-import { browser } from 'protractor';
-import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
-import coreApi from "../api/api.core.util";
-import { CaseTemplate } from "../api/constant.api";
-import { TaskTemplate } from "../api/constant.api";
-import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
-import { IPerson } from 'e2e/data/api/interface/person.interface.api';
 import { IBusinessUnit } from 'e2e/data/api/interface/business.unit.interface.api';
 import { IDepartment } from 'e2e/data/api/interface/department.interface.api';
+import { IPerson } from 'e2e/data/api/interface/person.interface.api';
 import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.api';
-import apiCoreUtil from '../api/api.core.util';
-import {INotesTemplate} from '../data/api/interface/notes.template.interface.api';
-import {IFlowset} from '../data/api/interface/flowset.interface.api';
+import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
+import { browser } from 'protractor';
+import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
+import { CaseTemplate, TaskTemplate } from "../api/constant.api";
+import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
+import { IFlowset } from '../data/api/interface/flowset.interface.api';
+import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -82,8 +80,8 @@ class ApiHelper {
         var templateData = await templateDataFile.ManualTaskTemplate;
 
         templateData.fieldInstances[7].value = TaskTemplate[data.templateStatus];
-        templateData.fieldInstances[8].value = data.templateName;
-        templateData.fieldInstances[1000001437].value = data.templateSummary;
+        templateData.fieldInstances[8].value = data.templateSummary;
+        templateData.fieldInstances[1000001437].value = data.templateName;
         //data.company ? templateData.fieldInstances[301566300].value = data.templateSummary;
 
         var newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
@@ -149,14 +147,15 @@ class ApiHelper {
         };
     }
 
-    async createBusinessUnit(data: IBusinessUnit):Promise<string>{
+    async createBusinessUnit(data: IBusinessUnit): Promise<string> {
         var businessUnitGuid = await coreApi.getBusinessUnitGuid(data.orgName);
         if (businessUnitGuid == null) {
             var businessUnitDataFile = await require('../data/api/foundation/business.unit.api.json');
             var businessData = await businessUnitDataFile.NewBusinessUnit;
             businessData.fieldInstances[1000000010].value = data.orgName;
-            if(data.relatedOrgId!=null){
-            businessData.fieldInstances[304411161].value = data.relatedOrgId;}
+            if (data.relatedOrgId != null) {
+                businessData.fieldInstances[304411161].value = data.relatedOrgId;
+            }
 
             const newBusinessUnit = await coreApi.createRecordInstance(businessData);
             console.log('Create New Business Unit API Status =============>', newBusinessUnit.status);
@@ -176,14 +175,15 @@ class ApiHelper {
         }
     }
 
-    async createDepartment(data: IDepartment):Promise<string>{
+    async createDepartment(data: IDepartment): Promise<string> {
         var departmentGuid = await coreApi.getDepartmentGuid(data.orgName);
         if (departmentGuid == null) {
             var departmentDataFile = await require('../data/api/foundation/department.api.json');
             var departmentData = await departmentDataFile.NewDepartment;
             departmentData.fieldInstances[1000000010].value = data.orgName;
-            if(data.relatedOrgId!=null){
-            departmentData.fieldInstances[304411161].value = data.relatedOrgId;}
+            if (data.relatedOrgId != null) {
+                departmentData.fieldInstances[304411161].value = data.relatedOrgId;
+            }
 
             const newDepartment = await coreApi.createRecordInstance(departmentData);
             console.log('Create New Department API Status =============>', newDepartment.status);
@@ -201,14 +201,15 @@ class ApiHelper {
         }
     }
 
-    async createSupportGroup(data: ISupportGroup):Promise<string>{
+    async createSupportGroup(data: ISupportGroup): Promise<string> {
         var supportGroupGuid = await coreApi.getSupportGroupGuid(data.orgName);
         if (supportGroupGuid == null) {
             var suppGrpDataFile = await require('../data/api/foundation/support.group.api.json');
             var suppGrpData = await suppGrpDataFile.NewSupportGroup;
             suppGrpData.fieldInstances[1000000010].value = data.orgName;
-            if(data.relatedOrgId!=null){
-            suppGrpData.fieldInstances[304411161].value = data.relatedOrgId;}
+            if (data.relatedOrgId != null) {
+                suppGrpData.fieldInstances[304411161].value = data.relatedOrgId;
+            }
 
             const newSuppGrp = await coreApi.createRecordInstance(suppGrpData);
             console.log('Create New Support Group API Status =============>', newSuppGrp.status);

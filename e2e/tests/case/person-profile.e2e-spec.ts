@@ -1,7 +1,7 @@
 import { browser } from "protractor";
-import loginPage from "../../pageobject/login.po";
-import navigationPage from "../../pageobject/navigation.po";
-import personProfile from "../../pageobject/case/person-profile.po";
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
+import personProfile from "../../pageobject/common/person-profile.po";
 
 describe('Person Profile test', () => {
     beforeAll(async () => {

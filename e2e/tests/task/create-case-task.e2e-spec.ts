@@ -1,18 +1,18 @@
 import { browser } from "protractor";
+import apiHelper from "../../api/api.helper";
 import caseTaskTab from '../../pageobject/case/case-task-tab.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
-import loginPage from "../../pageobject/login.po";
-import navigationPage from "../../pageobject/navigation.po";
-import selectTaskTemplate from "../../pageobject/task/console-tasktemplate.po";
-import taskTemplate from "../../pageobject/task/create-tasktemplate.po";
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
+import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
+import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTask from "../../pageobject/task/edit-task.po";
-import editTaskTemplate from "../../pageobject/task/edit-tasktemplate.po";
+import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
-import viewTaskTemplate from "../../pageobject/task/view-tasktemplate.po";
-import utilCommon from '../../utils/ui/util.common';
-import apiHelper from "../../api/api.helper";
+import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
+import utilCommon from '../../utils/util.common';
 
 describe('Create Case Task', () => {
     beforeAll(async () => {
@@ -329,7 +329,7 @@ describe('Create Case Task', () => {
 
         let TaskTemplate = 'Manual task' + Math.floor(Math.random() * 1000000);
         let TaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
-      
+
         //manual Task template
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
@@ -349,6 +349,6 @@ describe('Create Case Task', () => {
         await expect(viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
         await expect(viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
         await expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('- Global -');
-    },120*1000);
+    }, 120 * 1000);
 });
 

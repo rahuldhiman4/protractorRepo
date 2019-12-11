@@ -1,11 +1,11 @@
 import { browser } from "protractor";
-import loginPage from "../../pageobject/login.po";
-import createCaseTemplate from "../../pageobject/case/create-casetemplate.po";
-import editCaseTemplate from "../../pageobject/case/edit-casetemplate.po";
-import copyCaseTemplate from "../../pageobject/case/copy-casetemplate.po";
-import navigationPage from "../../pageobject/navigation.po";
-import consoleCasetemplatePo from '../../pageobject/case/console-casetemplate.po';
 import apiHelper from '../../api/api.helper';
+import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
+import copyCaseTemplate from "../../pageobject/settings/case-management/copy-casetemplate.po";
+import createCaseTemplate from "../../pageobject/settings/case-management/create-casetemplate.po";
+import editCaseTemplate from "../../pageobject/settings/case-management/edit-casetemplate.po";
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
 
 describe('Copy Case Template', () => {
     beforeAll(async () => {

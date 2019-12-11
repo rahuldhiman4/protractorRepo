@@ -1,4 +1,4 @@
-import { ProtractorExpectedConditions, protractor, browser, $, $$, Key } from "protractor"
+import { $, $$, browser, Key, protractor, ProtractorExpectedConditions } from "protractor";
 
 class SelectCaseTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

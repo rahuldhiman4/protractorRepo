@@ -1,6 +1,6 @@
-import { element, by, ProtractorExpectedConditions, protractor, browser, $, $$ } from "protractor"
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import viewCasePo from '../../pageobject/case/view-case.po';
-import utilCommon from '../../utils/ui/util.common';
+import utilCommon from '../../utils/util.common';
 
 class CreateCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

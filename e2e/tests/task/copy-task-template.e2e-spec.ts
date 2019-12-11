@@ -2,15 +2,15 @@ import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import createCasePage from '../../pageobject/case/create-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
-import loginPage from "../../pageobject/login.po";
-import navigationPage from "../../pageobject/navigation.po";
-import selectTaskTemplate from "../../pageobject/task/console-tasktemplate.po";
-import copyTemplate from "../../pageobject/task/copy-tasktemplate.po";
-import taskTemplate from "../../pageobject/task/create-tasktemplate.po";
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
+import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
+import copyTemplate from "../../pageobject/settings/task-management/copy-tasktemplate.po";
+import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
-import viewTaskTemplate from "../../pageobject/task/view-tasktemplate.po";
-import utilCommon from '../../utils/ui/util.common';
+import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
+import utilCommon from '../../utils/util.common';
 
 describe('Copy Task Template', () => {
     beforeAll(async () => {

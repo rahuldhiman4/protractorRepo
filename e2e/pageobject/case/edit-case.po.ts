@@ -1,5 +1,5 @@
-import { ProtractorExpectedConditions, protractor, browser, element, by, $, $$ } from "protractor"
-import util from "../../utils/ui/util.common";
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import util from "../../utils/util.common";
 
 class CaseEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -80,7 +80,7 @@ class CaseEditPage {
         activityFeed: '[author="feedItem.author"]',
         activityChangeFile: '.d-icon-files_change_o',
     }
- 
+
     async waitForEditCasePageToBeDisplayed(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.cancelBtn)));
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelBtn)));

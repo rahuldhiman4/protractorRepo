@@ -1,4 +1,4 @@
-import { ProtractorExpectedConditions, protractor, browser, element, by, $, $$ } from "protractor"
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 
 class CreateQuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

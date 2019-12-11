@@ -1,6 +1,6 @@
-import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
-import gridUtil from '../../utils/ui/util.grid'
-import util from '../../utils/ui/util.common'
+import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import util from '../../utils/util.common';
+import gridUtil from '../../utils/util.grid';
 
 class AddRelatedCasesPopupPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
