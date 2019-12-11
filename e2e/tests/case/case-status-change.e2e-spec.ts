@@ -5,6 +5,8 @@ import { default as caseViewPage, default as viewCasePo } from '../../pageobject
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import utilCommon from '../../utils/util.common';
+import apiHelper from '../../api/api.helper';
+import gridUtil from '../../utils/util.grid';
 
 describe('Case Status Change', () => {
     beforeAll(async () => {
@@ -15,6 +17,120 @@ describe('Case Status Change', () => {
     afterAll(async () => {
         await navigationPage.signOut();
     });
+
+    fit('DRDMV-2530: [Case Status] Case status change from New', async () => {
+        var guid:string="d628a20f-e852-4a84-87e6-f5191f77ddf6";
+        var priority:string="Medium";
+        var statusNew:string="New";
+        var statusAssigned:string="Assigned";
+        var statusPending:string="Pending";
+        var statusCancled:string="Canceled";
+        var summary:string="Test case for DRDMV-2530";
+        var caseData =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-2530",
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        var newCase1 = await apiHelper.createCase(caseData);
+        var caseId1: string = newCase1.displayId;
+
+        await gridUtil.searchAndOpenHyperlink(caseId1); 
+        await viewCasePo.clickEditCaseButton();
+        expect(await viewCasePo.isEditLinkDisplay()).toBeFalsy('edit link should not display');
+        await editCasePage.clickOnCancelCaseButton(); 
+        await viewCasePo.clickOnStatus(); 
+        let statuses:string[]=[];
+        statuses = ["New","Assigned","In Progress","Pending","Canceled"] 
+        var boln:boolean=await viewCasePo.isCaseStatusesDisplayed(statuses);
+        expect (boln).toBeTruthy('Statues does not match On view case');
+        await viewCasePo.clickOnCancelButtonOfUpdateStatus();
+        expect(await viewCasePo.getTextOfStatus()).toBe(statusNew);
+        await navigationPage.gotoCaseConsole();
+        await gridUtil.searchRecord(caseId1);  
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Case ID',caseId1)).toBe(caseId1);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Priority',priority)).toBe(priority);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Status',statusNew)).toBe(statusNew);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Summary',summary)).toBe(summary);
+        await gridUtil.searchAndOpenHyperlink(caseId1);
+        // Select Assigned status and save.
+        await viewCasePo.changeCaseStatus(statusAssigned);
+        await viewCasePo.clickSaveStatus();
+        await utilCommon.waitUntilPopUpDisappear();
+        expect(await viewCasePo.getTextOfStatus()).toBe(statusAssigned);
+        await navigationPage.gotoCaseConsole();
+        await gridUtil.searchRecord(caseId1);  
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Case ID',caseId1)).toBe(caseId1);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Priority',priority)).toBe(priority);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Status',statusAssigned)).toBe(statusAssigned);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Summary',summary)).toBe(summary);
+        console.log('Assigned status success');
+        // - Change status from New to Canceled.
+        var newCase2 = await apiHelper.createCase(caseData);
+        var caseId2: string = newCase2.displayId;
+        await gridUtil.clearFilter();
+        await gridUtil.searchRecord(caseId2);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Case ID',caseId2)).toBe(caseId2);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Priority',priority)).toBe(priority);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Status',statusNew)).toBe(statusNew);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Summary',summary)).toBe(summary);
+        await gridUtil.searchAndOpenHyperlink(caseId2);
+        expect(await viewCasePo.getTextOfStatus()).toBe(statusNew);
+        await viewCasePo.changeCaseStatus(statusCancled);
+        expect(await viewCasePo.isStatusReasonOptionDisplayed('Approval Rejected')).toBeTruthy('Approval Rejected option not displayed');
+        await viewCasePo.clearStatusReason();
+        expect(await viewCasePo.isStatusReasonOptionDisplayed('Customer Canceled')).toBeTruthy('Customer Canceled option not displayed');
+        await viewCasePo.clearStatusReason();
+        // await viewCasePo.clickOnStatus();
+        await viewCasePo.setStatusReason('Customer Canceled');
+        await viewCasePo.clickSaveStatus();
+        await utilCommon.waitUntilPopUpDisappear();
+        expect(await viewCasePo.getTextOfStatus()).toBe(statusCancled),'status should be new of Cancelled';
+        await navigationPage.gotoCaseConsole();
+        await gridUtil.searchRecord(caseId2);  
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Case ID',caseId2)).toBe(caseId2);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Priority',priority)).toBe(priority);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Status',statusCancled)).toBe(statusCancled);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Summary',summary)).toBe(summary);
+        console.log('Canceled status success');
+        // - Change status from New to Pending.
+        var newCase3 = await apiHelper.createCase(caseData);
+        var caseId3: string = newCase3.displayId;
+        await gridUtil.clearFilter();
+        await gridUtil.searchRecord(caseId3);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Case ID',caseId3)).toBe(caseId3);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Priority',priority)).toBe(priority);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Status',statusNew)).toBe(statusNew);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Summary',summary)).toBe(summary);
+        await gridUtil.searchAndOpenHyperlink(caseId3);
+        expect(await viewCasePo.getTextOfStatus()).toBe(statusNew),'status should be new of status';
+        await viewCasePo.changeCaseStatus(statusPending);
+        await viewCasePo.setStatusReason('Approval');
+        await viewCasePo.clickSaveStatus();
+        expect(utilCommon.getPopUpMessage()).toBe('ERROR (10000): Case status updated to Pending for Approval only when approval is initiated. You cannot manually select this status.');
+        await utilCommon.closePopUpMessage();
+        expect(await viewCasePo.isStatusReasonOptionDisplayed('Approval')).toBeTruthy('Approval option not displayed');
+        await viewCasePo.clearStatusReason();
+        expect(await viewCasePo.isStatusReasonOptionDisplayed('Customer Response')).toBeTruthy('Customer Response option not displayed');
+        await viewCasePo.clearStatusReason();
+        expect(await viewCasePo.isStatusReasonOptionDisplayed('Error')).toBeTruthy('Error option not displayed');
+        await viewCasePo.clearStatusReason();
+        expect(await viewCasePo.isStatusReasonOptionDisplayed('Required Fields Are Missing')).toBeTruthy('Required Fields Are Missing option not displayed');
+        await viewCasePo.clearStatusReason();
+        expect(await viewCasePo.isStatusReasonOptionDisplayed('Third Party')).toBeTruthy('Third Party option not displayed');
+        await viewCasePo.clearStatusReason();
+        await viewCasePo.setStatusReason('Customer Response');
+        await viewCasePo.clickSaveStatus();
+        await utilCommon.waitUntilPopUpDisappear();
+        expect(await viewCasePo.getTextOfStatus()).toBe(statusPending),'status should be new of Pending';
+        await navigationPage.gotoCaseConsole();
+        await gridUtil.searchRecord(caseId3);  
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Case ID',caseId3)).toBe(caseId3);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Priority',priority)).toBe(priority);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Status',statusPending)).toBe(statusPending);
+        expect(await gridUtil.getSelectedGridRecordValue(guid,'Summary',summary)).toBe(summary);
+        console.log('Pending status success');
+    }, 270 * 1000);
 
     it('DRDMV-1618: [Case] Fields validation for case in Resolved status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

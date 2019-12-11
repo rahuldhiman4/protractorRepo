@@ -137,10 +137,9 @@ export class GridOperation {
         let gridRecords = '//div[@class="ui-grid-canvas"]/div';
         let columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
         columnPosition = columnPosition + 1;
-        await element($(this.selectors.refreshButton)).click();
         var gridRows: number = await element.all(by.xpath(gridRecords)).count();
         if (gridRows > 0) {
-            let gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[1]/div[${columnPosition}]/div`;
+            let gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[2]/div[${columnPosition}]/div`;
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(gridRecordCellValue))));
             gridRecord = await element(by.xpath(gridRecordCellValue)).getText();
         } else {
@@ -149,6 +148,14 @@ export class GridOperation {
         return gridRecord;
     }
 
+    async searchRecord(id: string) {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));
+        await $(this.selectors.summaryField1).clear();
+        await $(this.selectors.summaryField1).sendKeys(id);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton1)));
+        await $(this.selectors.searchButton1).click();
+        await browser.sleep(3000);
+    }
 
 }
 

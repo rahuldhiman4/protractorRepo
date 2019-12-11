@@ -20,6 +20,7 @@ class CreateCasePage {
         category1: '[rx-view-component-id="9e97113b-b045-4cd6-b776-368bea50f137"]',
         category2: '[rx-view-component-id="20067485-2b38-44a0-a6ed-aec998df377b"]',
         category3: '[rx-view-component-id="9bfb3795-0543-4a17-a374-28dc586d1e03"]',
+        category4: '[rx-view-component-id="ba093458-4486-4619-8587-4d3edbd45e45"]',        
         assignToMeButton: '[rx-view-component-id="000ed75a-487c-4fa2-b615-7d7b0bddc6dc"] button',
         saveCaseButton: '[rx-view-component-id="cdb4375b-706d-4efc-be66-a8f32b1434ed"] button',
         gotoCaseButton__preview: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
@@ -119,6 +120,22 @@ class CreateCasePage {
         await $(this.selectors.contact).sendKeys(contact);
         await browser.wait(this.EC.visibilityOf($(this.selectors.contacts)));
         await $$(this.selectors.contacts).first().click();
+    }
+
+    async selectCategoryTier4(categValue: string): Promise<void> {
+        let categ3 = $(this.selectors.category4);
+        await (categ3.$('.ui-select-match')).click();
+        await (categ3.$('input')).sendKeys(categValue);
+        await browser.wait(this.EC.elementToBeClickable(categ3.$(`[title="${categValue}"]`)));
+        await (categ3.$(`[title="${categValue}"]`)).click();
+    }
+
+    async getTextOfCategoryTier4(categValue: string): Promise<string> {
+        let categ4 = $(this.selectors.category4);
+        await (categ4.$('.ui-select-match')).click();
+        await (categ4.$('input')).sendKeys(categValue);
+        await browser.wait(this.EC.elementToBeClickable(categ4.$(`[title="${categValue}"]`)));
+        return await (categ4.$(`[title="${categValue}"]`)).getText();
     }
 }
 
