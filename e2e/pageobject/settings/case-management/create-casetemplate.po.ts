@@ -1,8 +1,8 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import { ICaseTemplate } from "../../data/ui/caseTemplate.interface";
-import caseTemplateGrid from "../../pageobject/case/console-casetemplate.po";
-import commonUtils from "../../utils/util.common";
-import changeAssignemetBlade from '../common/change-assignment-blade.po';
+import { ICaseTemplate } from "../../../data/ui/caseTemplate.interface";
+import caseTemplateGrid from "../../../pageobject/settings/case-management/console-casetemplate.po";
+import commonUtils from "../../../utils/util.common";
+import changeAssignemetBlade from '../../common/change-assignment-blade.po';
 
 class CreateCaseTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

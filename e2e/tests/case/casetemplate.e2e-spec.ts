@@ -1,8 +1,8 @@
 import { browser } from "protractor";
-import consoleCasetemplatePo from '../../pageobject/case/console-casetemplate.po';
-import createCaseTemplate from "../../pageobject/case/create-casetemplate.po";
-import { default as editCaseTemplate, default as editCasetemplatePo } from "../../pageobject/case/edit-casetemplate.po";
-import viewCaseTemplate from "../../pageobject/case/view-casetemplate.po";
+import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
+import createCaseTemplate from "../../pageobject/settings/case-management/create-casetemplate.po";
+import { default as editCaseTemplate, default as editCasetemplatePo } from "../../pageobject/settings/case-management/edit-casetemplate.po";
+import viewCaseTemplate from "../../pageobject/settings/case-management/view-casetemplate.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import utilCommon from '../../utils/util.common';

@@ -1,5 +1,5 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import CreateTaskTemplatePage from "../../pageobject/task/create-tasktemplate.po";
+import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
 import util from "../../utils/util.common";
 
 class CreateAdhocTaskTemplatePage {
