@@ -1,4 +1,4 @@
-import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $$, $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import editCasePage from "../../pageobject/case/edit-case.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 
@@ -12,6 +12,8 @@ class ViewCasePage {
         statusChange: '[rx-view-component-id="48bbcbbf-564c-4d46-8dc2-1e7670c187ff"] .status-transition',
         statusChangeReason: '[rx-view-component-id="049c43a1-4cbd-482d-980d-5db4ed78f295"]',
         statusDropDown: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"]',
+        statusList: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"] .ui-select__rx-choice',
+        statusDisplay: '[aria-label="Status activate"]',
         coreTaskArrow: '[rx-view-component-id="0733a05e-2eea-4fe5-90a8-909238dc6389"] i',
         addTaskButton: '[rx-view-component-id="db1c57fc-c332-40fa-b1c0-759e21d9ad5c"] button',
         editLink: '.edit-link',
@@ -76,6 +78,15 @@ class ViewCasePage {
         await browser.sleep(2000);
     }
 
+    async isEditLinkDisplay(): Promise<boolean> {
+        return await $(this.selectors.editLink).getAttribute("aria-hidden") == "false";
+    }
+
+    async clickOnstatusReason(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
+        await $(this.selectors.statusChangeReason).click();
+    }
+
     async goToManageTask(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.coreTaskArrow)));
         await $(this.selectors.coreTaskArrow).click();
@@ -114,6 +125,23 @@ class ViewCasePage {
         await browser.wait(this.EC.elementToBeClickable(statusReason.$(this.selectors.searchInput)));
         await (statusReason.$(this.selectors.searchInput)).sendKeys(statusValue);
         return await element(by.cssContainingText((this.selectors.statusChangeReason + ' .ui-select__rx-choice'), statusValue)).isDisplayed();
+    }
+
+    async isCaseStatusesDisplayed(data: string[]): Promise<boolean> {
+        let arr: string[] = [];
+        const statusUpdate = $(this.selectors.statusDropDown);
+        await browser.wait(this.EC.elementToBeClickable(statusUpdate.$(this.selectors.statusDisplay)));
+        await (statusUpdate.$(this.selectors.statusDisplay)).click();
+        let allStatus: number = await $$(this.selectors.statusList).count();
+        for (var i = 0; i < allStatus; i++) {
+            var ab: string = await $$(this.selectors.statusList).get(i).getText();
+            arr[i] = ab;
+        }
+        arr = arr.sort();
+        data = data.sort();
+        return arr.length === data.length && arr.every(
+            (value, index) => (value === data[index])
+        );
     }
 
     async clearStatusReason(): Promise<void> {
