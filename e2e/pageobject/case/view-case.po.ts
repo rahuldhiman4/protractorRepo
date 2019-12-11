@@ -78,8 +78,8 @@ class ViewCasePage {
         await browser.sleep(2000);
     }
 
-    async isEditLinkDisplay(): Promise<boolean>{
-        return await $(this.selectors.editLink).getAttribute("aria-hidden")=="false";
+    async isEditLinkDisplay(): Promise<boolean> {
+        return await $(this.selectors.editLink).getAttribute("aria-hidden") == "false";
     }
 
     async clickOnstatusReason(): Promise<void> {
@@ -128,22 +128,21 @@ class ViewCasePage {
     }
 
     async isCaseStatusesDisplayed(data: string[]): Promise<boolean> {
-        let arr:string[]=[];
+        let arr: string[] = [];
         const statusUpdate = $(this.selectors.statusDropDown);
         await browser.wait(this.EC.elementToBeClickable(statusUpdate.$(this.selectors.statusDisplay)));
         await (statusUpdate.$(this.selectors.statusDisplay)).click();
-        let statuses = '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"] .ui-select__rx-choice';
-        let allStatus:number = await $$(statuses).count();
-        for(var i=0; i<allStatus; i++){
-            var ab:string = await $$(statuses).get(i).getText();
-            arr[i] = ab; 
+        let allStatus: number = await $$(this.selectors.statusList).count();
+        for (var i = 0; i < allStatus; i++) {
+            var ab: string = await $$(this.selectors.statusList).get(i).getText();
+            arr[i] = ab;
         }
         arr = arr.sort();
         data = data.sort();
-        return arr.length ===data.length && arr.every(
-            (value, index) => (value ===data[index])
-        ); 
-    } 
+        return arr.length === data.length && arr.every(
+            (value, index) => (value === data[index])
+        );
+    }
 
     async clearStatusReason(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));

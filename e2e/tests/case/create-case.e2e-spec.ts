@@ -32,7 +32,6 @@ describe("Quick Case", () => {
         await createCasePage.selectCategoryTier2('Social');
         await createCasePage.selectCategoryTier3('Chatter');
         await createCasePage.selectCategoryTier4('Failure');
-        expect (await createCasePage.getTextOfCategoryTier4('Failure')).toBe('Failure'),'CategoryTier4 Value is missing';
     })
 
 })

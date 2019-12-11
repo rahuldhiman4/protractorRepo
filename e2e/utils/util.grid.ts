@@ -110,7 +110,7 @@ export class GridOperation {
         await gridvalueLink.click();
     }
 
-    async clickOnSelectedGridRecord(guid: string, columnHeader: string, filterOptionValue: string): Promise<void> {
+    async clickOnSelectedGridRecord(guid: string, columnHeader: string): Promise<void> {
         let gridRecord: string;
         columnHeader = "'" + columnHeader + "'";
         guid = "'" + guid + "'";
@@ -129,7 +129,7 @@ export class GridOperation {
         }
     }
 
-    async getSelectedGridRecordValue(guid: string, columnHeader: string, filterOptionValue: string): Promise<string> {
+    async getSelectedGridRecordValue(guid: string, columnHeader: string): Promise<string> {
         let gridRecord: string;
         columnHeader = "'" + columnHeader + "'";
         guid = "'" + guid + "'";

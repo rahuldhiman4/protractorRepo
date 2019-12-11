@@ -123,20 +123,13 @@ class CreateCasePage {
     }
 
     async selectCategoryTier4(categValue: string): Promise<void> {
-        let categ3 = $(this.selectors.category4);
-        await (categ3.$('.ui-select-match')).click();
-        await (categ3.$('input')).sendKeys(categValue);
-        await browser.wait(this.EC.elementToBeClickable(categ3.$(`[title="${categValue}"]`)));
-        await (categ3.$(`[title="${categValue}"]`)).click();
-    }
-
-    async getTextOfCategoryTier4(categValue: string): Promise<string> {
         let categ4 = $(this.selectors.category4);
         await (categ4.$('.ui-select-match')).click();
         await (categ4.$('input')).sendKeys(categValue);
         await browser.wait(this.EC.elementToBeClickable(categ4.$(`[title="${categValue}"]`)));
-        return await (categ4.$(`[title="${categValue}"]`)).getText();
+        await (categ4.$(`[title="${categValue}"]`)).click();
     }
+
 }
 
 export default new CreateCasePage();
