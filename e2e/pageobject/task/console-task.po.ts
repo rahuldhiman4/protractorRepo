@@ -14,7 +14,6 @@ class TaskGridPage {
         tableValue: '.ui-grid-cell-contents',
     }
 
-
     async setTaskSearchBoxValue(input: string): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.searchTemplate)));
         await $(this.selectors.searchTemplate).clear();

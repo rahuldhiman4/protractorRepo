@@ -1,8 +1,6 @@
-import { ProtractorExpectedConditions, protractor, browser, element, by, $ } from "protractor"
-import manageTask from "../../pageobject/task/manage-task-blade.po";
+import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import editCasePage from "../../pageobject/case/edit-case.po";
-import utilCommon from '../../utils/ui/util.common';
-
+import manageTask from "../../pageobject/task/manage-task-blade.po";
 
 class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -17,7 +15,7 @@ class ViewCasePage {
         coreTaskArrow: '[rx-view-component-id="0733a05e-2eea-4fe5-90a8-909238dc6389"] i',
         addTaskButton: '[rx-view-component-id="db1c57fc-c332-40fa-b1c0-759e21d9ad5c"] button',
         editLink: '.edit-link',
-        searchInput:'input[type="search"]',
+        searchInput: 'input[type="search"]',
         caseIdText: '[rx-view-component-id="7b47ca08-e9d4-4656-8f96-3bc751c098b0"] .title',
         requesterName: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .person-main a',
         requesterPhoneNo: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .ac-link-person-phone',
@@ -41,7 +39,7 @@ class ViewCasePage {
 
     async clickOnCancelButtonOfUpdateStatus(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelUpdateStatus)));
-        await $(this.selectors.cancelUpdateStatus).click();        
+        await $(this.selectors.cancelUpdateStatus).click();
     }
 
     async getErrorMsgOfInprogressStatus(): Promise<string> {
@@ -120,7 +118,7 @@ class ViewCasePage {
 
     async clearStatusReason(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
-        await $(this.selectors.statusChangeReason + " "+this.selectors.searchInput).clear();
+        await $(this.selectors.statusChangeReason + " " + this.selectors.searchInput).clear();
     }
 
     async clickAddTaskButton() {

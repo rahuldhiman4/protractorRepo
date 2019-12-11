@@ -1,7 +1,7 @@
 import { browser } from "protractor";
-import loginPage from "../../pageobject/login.po";
-import navigationPage from "../../pageobject/navigation.po";
 import createQuickCasePage from '../../pageobject/case/create-case-quick.po';
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
 
 fdescribe('Parallel task execution', () => {
     beforeAll(async () => {

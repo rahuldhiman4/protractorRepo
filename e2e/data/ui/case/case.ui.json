@@ -2,22 +2,22 @@
     "caseData_DRDMV18972": {
         "requester1": "Thad Esser",
         "requester2": "Qiwei Liu",
-        "caseSummary":"Creating Quick Case"
+        "caseSummary": "Creating Quick Case"
     },
     "caseData_DRDMV18973": {
         "requester": "Qiwei Liu",
         "contact": "Thad Esser",
-        "caseSummary":"Change my Last Name"
+        "caseSummary": "Change my Last Name"
     },
     "caseData_DRDMV18980": {
         "requester": "Qiwei Liu",
         "requester2": "Qiang Du",
-        "description":"Change my Last Name",
+        "description": "Change my Last Name",
         "contact": "Thad Esser"
     },
     "caseData_DRDMV18983": {
         "requester": "Qiwei Liu",
-        "description":"Change my Last Name",
-        "warningMsg":"Requester not found"
+        "description": "Change my Last Name",
+        "warningMsg": "Requester not found"
     }
 }

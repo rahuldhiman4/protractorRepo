@@ -1,4 +1,4 @@
-import { ProtractorExpectedConditions, protractor, browser, $ } from 'protractor';
+import { $, browser, protractor, ProtractorExpectedConditions } from 'protractor';
 class ViewCaseTemplate {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -6,7 +6,7 @@ class ViewCaseTemplate {
     selectors = {
         identityValidationValue: '[rx-view-component-id="dead2a5c-4753-40c6-9709-4b8ea9c454fd"] .d-textfield__rx-value',
         templateName: '[rx-view-component-id="08a1650a-ac21-405a-8362-ddd780425a75"] span'
-       
+
     }
 
     async getIdentityValdationValue(): Promise<string> {

@@ -1,16 +1,16 @@
 import { browser } from "protractor";
-import loginPage from "../../pageobject/login.po";
+import addRelatedCasespopup from '../../pageobject/case/add-related-cases-pop.po';
+import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import createCasePage from '../../pageobject/case/create-case.po';
-import navigationPage from "../../pageobject/navigation.po";
 import caseEditPage from '../../pageobject/case/edit-case.po';
 import caseViewPage from '../../pageobject/case/view-case.po';
-import relatedTabPage from '../../pageobject/case/related-person-tab.po';
-import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
-import relatedCasePage from '../../pageobject/case/related-case-tab.po';
-import personProfilePage from '../../pageobject/case/person-profile.po';
-import gridUtil from '../../utils/ui/util.grid';
-import addRelatedCasespopup from '../../pageobject/case/add-related-cases-pop.po';
-import utilCommon from '../../utils/ui/util.common';
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
+import personProfilePage from '../../pageobject/common/person-profile.po';
+import relatedCasePage from '../../pageobject/common/related-case-tab.po';
+import relatedTabPage from '../../pageobject/common/related-person-tab.po';
+import utilCommon from '../../utils/util.common';
+import gridUtil from '../../utils/util.grid';
 
 describe('Case And Employee Relationship', () => {
     beforeAll(async () => {

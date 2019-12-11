@@ -2,7 +2,7 @@
     "notificationData_DRDMV19109": {
         "TemplateName": "Task SLA Missed",
         "CopyTemplateHeader": "Copy Template",
-        "Company":"Petramco",
-        "CopiedTemplateName":"DRDMV-19109_CopiedTemplate"
+        "Company": "Petramco",
+        "CopiedTemplateName": "DRDMV-19109_CopiedTemplate"
     }
 }

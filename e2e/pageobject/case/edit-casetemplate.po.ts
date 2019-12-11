@@ -1,6 +1,6 @@
-import { ProtractorExpectedConditions, protractor, browser, $, $$ } from "protractor"
 import { ICaseTemplate } from 'e2e/data/ui/caseTemplate.interface';
-import commonUtils from "../../utils/ui/util.common";
+import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import commonUtils from "../../utils/util.common";
 
 class EditCaseTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

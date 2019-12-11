@@ -1,17 +1,17 @@
 import { browser } from "protractor";
-import activitytab from "../../pageobject/activity-tab.po";
 import createCasePage from '../../pageobject/case/create-case.po';
 import { default as viewCasePage, default as viewCasePo } from "../../pageobject/case/view-case.po";
-import changeAssignmentBlade from '../../pageobject/change-assignemet-blade.po';
-import loginPage from "../../pageobject/login.po";
-import navigationPage from "../../pageobject/navigation.po";
+import changeAssignmentBlade from '../../pageobject/common/change-assignment-blade.po';
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
+import activitytab from "../../pageobject/social/activity-tab.po";
 import taskConsole from "../../pageobject/task/console-task.po";
 import selectTaskTemplate from "../../pageobject/task/console-tasktemplate.po";
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import taskTemplate from "../../pageobject/task/create-tasktemplate.po";
 import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
-import utilCommon from '../../utils/ui/util.common';
+import utilCommon from '../../utils/util.common';
 
 describe('Create Adhoc task', () => {
     beforeAll(async () => {

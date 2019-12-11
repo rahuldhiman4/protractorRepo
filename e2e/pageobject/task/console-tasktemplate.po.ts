@@ -15,7 +15,6 @@ class TaskTemplateGridPage {
         availableFilterDrpDown: '.d-accordion__title',
         applyFilter: '.rx-search-filter-heading__apply',
         removeFilter: '..d-tag-remove-button',
-
     }
 
     async setTaskSearchBoxValue(input: string): Promise<void> {

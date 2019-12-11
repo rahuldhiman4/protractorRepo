@@ -1,4 +1,4 @@
-import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
+import { protractor, ProtractorExpectedConditions } from "protractor";
 
 class CaseConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

@@ -1,24 +1,24 @@
 {
-    "NewSupportGroup": {
-        "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
-        "recordDefinitionName": "com.bmc.arsys.rx.foundation:Support Group",
-        "fieldInstances": {
-          "304410941": {
-            "id": 304410941,
-            "value": 600
-          },
-          "304411161": {
-            "id": 304411161,
-            "value": "AG005056AC2B58tgEgTQRvVoBwQzAD"
-          },
-          "1000000000": {
-            "id": 1000000000,
-            "value": "Support Group Create for UI"
-          },
-          "1000000010": {
-            "id": 1000000010,
-            "value": "New Support Group"
-          }
-        }
+  "NewSupportGroup": {
+    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+    "recordDefinitionName": "com.bmc.arsys.rx.foundation:Support Group",
+    "fieldInstances": {
+      "304410941": {
+        "id": 304410941,
+        "value": 600
+      },
+      "304411161": {
+        "id": 304411161,
+        "value": "AG005056AC2B58tgEgTQRvVoBwQzAD"
+      },
+      "1000000000": {
+        "id": 1000000000,
+        "value": "Support Group Create for UI"
+      },
+      "1000000010": {
+        "id": 1000000010,
+        "value": "New Support Group"
       }
+    }
+  }
 }

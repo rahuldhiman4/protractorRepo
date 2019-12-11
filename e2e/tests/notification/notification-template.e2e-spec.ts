@@ -1,9 +1,9 @@
-import { browser, $, protractor, ProtractorExpectedConditions } from "protractor";
-import navigationPage from "../../pageobject/navigation.po";
-import loginPage from "../../pageobject/login.po"
-import notificationTempGridPage from "../../pageobject/notification/console-notificationTemplate.po"
+import { browser, protractor, ProtractorExpectedConditions } from "protractor";
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
+import notificationTempGridPage from "../../pageobject/notification/console-notificationTemplate.po";
 
-describe("Notification Template",()=>{
+describe("Notification Template", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
     const notifTempGridPageTitle = 'Manage Notification Template - Business Workflows';
@@ -17,11 +17,11 @@ describe("Notification Template",()=>{
         await navigationPage.signOut();
     });
 
-    it('DRDMV-19109: [Copy Notification] - UI behavior when copying a notification template',async()=>{
+    it('DRDMV-19109: [Copy Notification] - UI behavior when copying a notification template', async () => {
         let notificationData = require('../../data/ui/notification/notificationTemplate.ui.json');
         let expectedJsonName = 'notificationData_DRDMV19109';
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation,notifTempGridPageTitle);
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
         await expect(notificationTempGridPage.isCopyTemplateButtonDisabled()).toBeTruthy();
         await notificationTempGridPage.searchTemplate(notificationData[expectedJsonName].TemplateName);
         await notificationTempGridPage.selectTemplate();
@@ -45,7 +45,7 @@ describe("Notification Template",()=>{
         await notificationTempGridPage.clickCopyTemplateButtonInCopyTempWindow();
         //Validate if the new copied template is created
         await notificationTempGridPage.searchTemplate(notificationData[expectedJsonName].CopiedTemplateName);
-        await notificationTempGridPage.clickAndOpenTemplate(notificationData[expectedJsonName].CopiedTemplateName); 
+        await notificationTempGridPage.clickAndOpenTemplate(notificationData[expectedJsonName].CopiedTemplateName);
     })
 
 })

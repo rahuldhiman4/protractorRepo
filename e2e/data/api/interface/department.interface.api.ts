@@ -1,4 +1,4 @@
-export interface IDepartment{
+export interface IDepartment {
     orgName: string,
     relatedOrgId: string,
     orgDescroption?: string

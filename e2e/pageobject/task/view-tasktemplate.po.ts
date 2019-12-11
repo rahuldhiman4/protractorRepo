@@ -1,4 +1,4 @@
-import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
+import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 
 class ViewTaskTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -18,7 +18,6 @@ class ViewTaskTemplate {
         ownerCompanyValue: '[rx-view-component-id="37dd629c-6d13-4e6d-b70e-90b91dd5b484"] p',
         ownerGroupValue: '[rx-view-component-id="f02e4c7b-93f9-4b35-af23-f522d56daa4b"] p',
         editLink: '[rx-view-component-id="0ff4dfc7-09f3-4d12-bc32-5c9426f6cc6c"] .rx-record-editor-edit',
-
     }
 
 

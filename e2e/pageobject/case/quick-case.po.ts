@@ -1,8 +1,8 @@
-import { ProtractorExpectedConditions, ElementFinder, protractor, browser, element, by, $, $$, Key, Button, ElementArrayFinder } from "protractor"
+import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
 
-class QuickCasePage{
+class QuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    
+
     selectors = {
         smartSearchTextBox: '.smart-recorder-textarea',
         confirmedItemSelection: '.smart-recorder-confirmedItem_header',
@@ -17,51 +17,52 @@ class QuickCasePage{
         smartSearchText: '.smart-recorder-highlightPerfectMatch'
     }
 
-    async setAndSelectRequesterName(name:string): Promise<void>{
-        name = "@"+name;
+    async setAndSelectRequesterName(name: string): Promise<void> {
+        name = "@" + name;
         await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
         await $(this.selectors.smartSearchTextBox).sendKeys(name);
         await browser.wait(this.EC.visibilityOf($$(this.selectors.searchResult).first()));
         await $$(this.selectors.searchResult).first().click();
     }
 
-    async setCaseSummary(summary:string): Promise<void>{
+    async setCaseSummary(summary: string): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
         await $(this.selectors.smartSearchTextBox).sendKeys(summary);
     }
 
-    async getRequester(): Promise<string>{
+    async getRequester(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($$(this.selectors.smartSearchText).first()));
         return await $$(this.selectors.smartSearchText).first().getText();
     }
 
-    async validatePersonAndHisRelation(relationType: string): Promise<string>{
-        let employee:string;
+    async validatePersonAndHisRelation(relationType: string): Promise<string> {
+        let employee: string;
         let elementCount = await $$(this.selectors.confirmedItemSelection).count();
-        for(let i=0;i<elementCount;i++){
+        for (let i = 0; i < elementCount; i++) {
             let actualRelationType = await $$(this.selectors.confirmedItemSelection).get(i).$('button').getText();
-            if(actualRelationType==relationType){
+            if (actualRelationType == relationType) {
                 employee = await $$(this.selectors.confirmedItemSelection).get(i).$('.smart-recorder-confirmedItem-selection+div').getText();
-                break;}
+                break;
+            }
         }
         return employee;
     }
 
-    async isSummOrDescPopulatedAtSmartTextArea(text: string): Promise<number>{
+    async isSummOrDescPopulatedAtSmartTextArea(text: string): Promise<number> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
-        let flag:number = (await $(this.selectors.smartSearchTextBox).getText()).search(text);
+        let flag: number = (await $(this.selectors.smartSearchTextBox).getText()).search(text);
         //-1 is returned as a flag, if text fetched through the locator doesn't consist of the 'text' passed
         return flag;
     }
 
-    async verifyQuickCasePageAsEmpty(): Promise<void>{
+    async verifyQuickCasePageAsEmpty(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
         await expect($(this.selectors.smartSearchTextBox).getText()).toEqual("");
     }
 
-    async isCreateButtonDisabled(): Promise<boolean>{
+    async isCreateButtonDisabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseButton)));
-        return await $(this.selectors.createCaseButton).getAttribute("disabled")=="true";
+        return await $(this.selectors.createCaseButton).getAttribute("disabled") == "true";
     }
 
     async getPopUpMessage() {

@@ -1,8 +1,8 @@
-import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
+import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import { ICaseTemplate } from "../../data/ui/caseTemplate.interface";
-import changeAssignemetBlade from '../change-assignemet-blade.po';
 import caseTemplateGrid from "../../pageobject/case/console-casetemplate.po";
-import commonUtils from "../../utils/ui/util.common";
+import commonUtils from "../../utils/util.common";
+import changeAssignemetBlade from '../common/change-assignment-blade.po';
 
 class CreateCaseTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -168,8 +168,8 @@ class CreateCaseTemplate {
         await $(this.selectors.caseDescription).clear();
         await $(this.selectors.caseDescription).sendKeys(caseDescription);
     }
-    
-    async getPanelHeading():Promise<string>{
+
+    async getPanelHeading(): Promise<string> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.panelHeadingOfSetting)));
         return await $(this.selectors.panelHeadingOfSetting).getText();
     }
