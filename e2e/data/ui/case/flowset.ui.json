@@ -2,7 +2,7 @@
     "flowsetMandatoryFields": {
         "flowsetName": "Test Flowset name",
         "flowsetStatus": 10,
-        "company":"Petramco",
+        "company": "Petramco",
         "description": "test description"
     }
 }

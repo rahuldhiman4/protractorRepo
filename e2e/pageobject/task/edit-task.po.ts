@@ -1,4 +1,4 @@
-import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
+import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 
 class EditTask {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -10,16 +10,16 @@ class EditTask {
         saveButton: '[rx-view-component-id="a19228d0-81a9-4b19-9cb3-b5bd9550966f"] button'
     }
 
-    async clickOnAssignToMe(){
+    async clickOnAssignToMe() {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMe)));
         $(this.selectors.assignToMe).click();
     }
 
-    async clickOnSaveButton(){
+    async clickOnSaveButton() {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         $(this.selectors.saveButton).click();
     }
-    
+
     async getTaskTypeValueAttribute(attribute: string): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.taskTypeValue)));
         return await $(this.selectors.taskTypeValue).getAttribute(attribute);

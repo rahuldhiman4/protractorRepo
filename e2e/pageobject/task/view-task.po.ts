@@ -1,5 +1,5 @@
-import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
-import utilCommon from 'e2e/utils/ui/util.common';
+import utilCommon from '../../utils/util.common';
+import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 
 class ViewTask {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -68,7 +68,7 @@ class ViewTask {
     async isCaseViewLinkDisplayed(): Promise<boolean> {
         try {
             await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewCaseLink)));
-            return true ;
+            return true;
         } catch (error) {
             return false;
         }

@@ -1,4 +1,4 @@
-import { ProtractorExpectedConditions, protractor, browser, $ } from "protractor"
+import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 
 class CaseTaskTab {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

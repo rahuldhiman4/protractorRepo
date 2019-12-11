@@ -1,28 +1,28 @@
 {
-    "NewDepartment": {
-        "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
-        "recordDefinitionName": "com.bmc.arsys.rx.foundation:Department",
-        "fieldInstances": {
-          "304410941": {
-            "id": 304410941,
-            "value": 200
-          },
-          "304411161": {
-            "id": 304411161,
-            "value": "AG005056AC2B58tgEgTQRvVoBwQzAD"
-          },
-          "1000000000": {
-            "id": 1000000000,
-            "value": "Department created for UI Test"
-          },
-          "1000000010": {
-            "id": 1000000010,
-            "value": "New Department"
-          },
-          "304410661": {
-            "id": 304410661,
-            "value": "Support"
-          }
-        }
+  "NewDepartment": {
+    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+    "recordDefinitionName": "com.bmc.arsys.rx.foundation:Department",
+    "fieldInstances": {
+      "304410941": {
+        "id": 304410941,
+        "value": 200
+      },
+      "304411161": {
+        "id": 304411161,
+        "value": "AG005056AC2B58tgEgTQRvVoBwQzAD"
+      },
+      "1000000000": {
+        "id": 1000000000,
+        "value": "Department created for UI Test"
+      },
+      "1000000010": {
+        "id": 1000000010,
+        "value": "New Department"
+      },
+      "304410661": {
+        "id": 304410661,
+        "value": "Support"
       }
+    }
+  }
 }

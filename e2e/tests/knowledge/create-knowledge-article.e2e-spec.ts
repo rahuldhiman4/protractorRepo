@@ -1,12 +1,12 @@
 import { browser, protractor, ProtractorExpectedConditions } from "protractor";
-import loginPage from "../../pageobject/login.po";
-import navigationPage from "../../pageobject/navigation.po";
-import changeAssignmentBlade from "../../pageobject/change-assignemet-blade.po";
-import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po"
-import editKnowledgePage from "../../pageobject/knowledge/edit-knowledge.po";
-import apiHelper from '../../api/api.helper';
 import apiCoreUtil from '../../api/api.core.util';
-import utilCommon from '../../utils/ui/util.common';
+import apiHelper from '../../api/api.helper';
+import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
+import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
+import editKnowledgePage from "../../pageobject/knowledge/edit-knowledge.po";
+import utilCommon from '../../utils/util.common';
 
 describe('Knowledge Article', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -25,14 +25,14 @@ describe('Knowledge Article', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async()=>{
+    afterEach(async () => {
         await browser.refresh();
         await utilCommon.waitUntilSpinnerToHide();
     });
 
-    async function foundationData(company:string){
+    async function foundationData(company: string) {
         await apiHelper.apiLogin('tadmin');
-        let businessData = businessDataFile['BusinessUnitData']; 
+        let businessData = businessDataFile['BusinessUnitData'];
         let departmentData = departmentDataFile['DepartmentData'];
         let suppGrpData = supportGrpDataFile['SuppGrpData'];
         let personData = personDataFile['PersonData'];
@@ -44,8 +44,8 @@ describe('Knowledge Article', () => {
         suppGrpData.relatedOrgId = depId;
         await apiHelper.createSupportGroup(suppGrpData);
         await apiHelper.createNewUser(personData);
-        await apiHelper.associatePersonToSupportGroup(personData.userId,suppGrpData.orgName);
-        await apiHelper.associatePersonToCompany(personData.userId,company)
+        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
+        await apiHelper.associatePersonToCompany(personData.userId, company)
     }
 
     it('DRDMV-19020 - On Create KA, Assign to me button should process properly on KA', async () => {

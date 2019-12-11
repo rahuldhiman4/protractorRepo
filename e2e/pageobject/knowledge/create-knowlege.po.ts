@@ -1,5 +1,5 @@
-import { $, ProtractorExpectedConditions, browser, protractor, element, by, $$ } from "protractor";
-import utilCommon from '../../utils/ui/util.common';
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../utils/util.common';
 
 class CreateKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -48,12 +48,12 @@ class CreateKnowledgePage {
         await $$(this.selectors.activityTab).last().click();
     }
 
-    async clickChangeAssignmentButton(): Promise<void>{
+    async clickChangeAssignmentButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Change Assignment'))));
         await element(by.buttonText('Change Assignment')).click();
     }
 
-    async clickAssignToMeButton(): Promise<void>{
+    async clickAssignToMeButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMeBtn)));
         await $(this.selectors.assignToMeBtn).click();
     }
