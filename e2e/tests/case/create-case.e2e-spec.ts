@@ -2,6 +2,7 @@ import { browser, protractor, ProtractorExpectedConditions } from "protractor";
 import createCasePage from "../../pageobject/case/create-case.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import utilCommon from '../../utils/util.common';
 
 describe("Quick Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -18,6 +19,11 @@ describe("Quick Case", () => {
         await navigationPage.signOut();
     });
 
+    afterEach(async () => {
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
+    });
+
     it('DRDMV-15253: Verify Category Tier 4 Can be Populated After Tier 3 selection', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester('adam');
@@ -27,7 +33,6 @@ describe("Quick Case", () => {
         await createCasePage.selectCategoryTier3('Chatter');
         await createCasePage.selectCategoryTier4('Failure');
         expect (await createCasePage.getTextOfCategoryTier4('Failure')).toBe('Failure'),'CategoryTier4 Value is missing';
-        browser.sleep(3000);
     })
 
 })

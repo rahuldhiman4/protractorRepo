@@ -18,7 +18,12 @@ describe('Case Status Change', () => {
         await navigationPage.signOut();
     });
 
-    fit('DRDMV-2530: [Case Status] Case status change from New', async () => {
+    afterEach(async () => {
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
+    });
+
+    it('DRDMV-2530: [Case Status] Case status change from New', async () => {
         var guid:string="d628a20f-e852-4a84-87e6-f5191f77ddf6";
         var priority:string="Medium";
         var statusNew:string="New";
