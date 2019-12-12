@@ -20,7 +20,7 @@ describe('Case Status Change', () => {
     });
 
     //kgaikwad
-    it('DRDMV-17650: The Menu Items View would be re-arranged so that fields are in Proper sequence.', async () => {
+    fit('DRDMV-17650: The Menu Items View would be re-arranged so that fields are in Proper sequence.', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
         await editMenuItemsConfigPo.clickOnMenuOptionLink();
@@ -35,4 +35,12 @@ describe('Case Status Change', () => {
         await utilCommon.selectDropDown('a548d907-8c6b-46ab-bc83-88a5310e04b7','Deprecated');
         expect(await editMenuItemsConfigPo.isToggleButtonPresence()).toBeTruthy('Toggle Button is missing');
     });
+
+    it('DRDMV-17637: [UI] "Resolution Code" new option available in Menu Items', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+        await editMenuItemsConfigPo.clickOnMenuOptionLink();
+        await utilCommon.selectDropDown('da9b9818-7b4c-43ec-9c4b-41e0cda49b8d','Resolution Code');        
+    });
+
 })
