@@ -98,13 +98,14 @@ class CreateCasePage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
         await $(this.selectors.saveCaseButton).click();
         await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickGoToCaseButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.gotoCaseButton__preview)));
         await $(this.selectors.gotoCaseButton__preview).click();
         await browser.wait(this.EC.elementToBeClickable($(viewCasePo.selectors.addTaskButton)));
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickSelectCaseTemplateButton(): Promise<void> {
