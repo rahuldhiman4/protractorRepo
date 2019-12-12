@@ -3,7 +3,6 @@ import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions }
 class PersonProfilePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        tabLocator: '[rx-view-component-id="a8207936-a379-4f6c-b450-90facc6b893c"] a',
         personName: '[rx-view-component-id="bfa03a3b-cc7c-4d33-95d5-2c63a882aaeb"] .ac-person-full-name',
         personImage: '.d-n-nav__profile img',
         managerImage: '[rx-view-component-id="6f4a19be-2c96-4c58-b9c7-a49e2beb0c7b"] img',
@@ -23,8 +22,7 @@ class PersonProfilePage {
     }
 
     async navigateToRelatedCase(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.tabLocator).get(2)));
-        await $$(this.selectors.tabLocator).get(2).click();
+        await this.navigateToTab('Related Cases');
     }
 
     async getPersonName(): Promise<string> {

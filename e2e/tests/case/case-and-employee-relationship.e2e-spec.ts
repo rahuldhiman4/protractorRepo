@@ -22,6 +22,12 @@ describe('Case And Employee Relationship', () => {
         await navigationPage.signOut();
     });
 
+    afterEach(async () => {
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
+    });
+
+    //asahitya
     it('DRDMV-16241,DRDMV-16242: Add person with different relations', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("Allen");
@@ -50,8 +56,9 @@ describe('Case And Employee Relationship', () => {
         await addRelatedPopupPage.addPerson('Brain Adams', 'Witness');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(5);
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Brain Adams', 'Witness')).toBeTruthy();
-    }, 90 * 1000)
+    })
 
+    //asahitya
     it('DRDMV-16896: Multiple people can be added by same Relationship', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("Allen");
@@ -74,6 +81,7 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Lily Anthony', 'Inspector')).toBeTruthy();
     });
 
+    //asahitya
     it('DRDMV-16248: Related Persons tab is available on Person Profile check UI', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("Allen");
@@ -87,7 +95,8 @@ describe('Case And Employee Relationship', () => {
         await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
         await relatedTabPage.clickRelatedPersonName('Brad Pitt');
         await relatedTabPage.addRelatedPerson();
-        await addRelatedPopupPage.addPerson('Bobby Hill', 'Manager');
+        await addRelatedPopupPage.addPerson('Bobby Hill', 'Former Manager');
+        await relatedTabPage.waitUntilNewRelatedPersonAdded(2);
         expect(await relatedTabPage.getRelatedPersonCompanyName('Bobby Hill')).toBe('Petramco');
         expect(await relatedTabPage.getRelatedPersonEmail('Bobby Hill')).toBe('bhill@petramco.com');
         expect(await relatedTabPage.getRelatedPersonPhoneNumber('Bobby Hill')).toBe('+556132296002');
@@ -96,6 +105,7 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedTabPage.isEmailLinkNotPresent('Bobby Hill')).toBeTruthy();
     });
 
+    //asahitya
     it('DRDMV-17037: Related Case tab is available on Person Profile', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("Allen");
@@ -103,18 +113,19 @@ describe('Case And Employee Relationship', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
-        var caseId: string = await caseViewPage.getCaseID();
+        let caseId: string = await caseViewPage.getCaseID();
         await caseEditPage.navigateToRelatedPersonsTab();
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Brad Pitt', 'Inspector');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
         await relatedTabPage.clickRelatedPersonName('Brad Pitt');
         await personProfilePage.navigateToRelatedCase();
+        await relatedCasePage.waitUntilNewRelatedCaseAdded(1);
         expect(await relatedCasePage.getRelatedCaseAssignee(caseId)).toBe('Qianru Tao');
         expect(await relatedCasePage.getRelatedCaseModDate(caseId)).toContain('Modified')
         expect(await relatedCasePage.getRelatedCasePriority(caseId)).toBe('Medium');
-        expect(await relatedCasePage.getRelatedCaseRelation(caseId)).toBe('Inspector');
         expect(await relatedCasePage.getRelatedCaseStatus(caseId)).toBe('Assigned');
+        expect(await relatedCasePage.getRelatedCaseRelation(caseId)).toBe('Related to');
     });
 
     it('DRDMV-17035: Remove Related Case from Case', async () => {

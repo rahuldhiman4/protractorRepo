@@ -18,11 +18,11 @@ class RelatedCasePage {
 
     async getRelatedCasePriority(caseId: string): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedCases)));
-        var allPersonNum: number = await $$(this.selectors.allRelatedCases).count();
+        let allPersonNum: number = await $$(this.selectors.allRelatedCases).count();
         let priority: string;
-        for (var i = 0; i < allPersonNum; i++) {
-            var person = await $$(this.selectors.allRelatedCases).get(i);
-            var nm: string = await person.$(this.selectors.caseId).getText();
+        for (let i = 0; i < allPersonNum; i++) {
+            let person = await $$(this.selectors.allRelatedCases).get(i);
+            let nm: string = await person.$(this.selectors.caseId).getText();
             if (nm == caseId) {
                 priority = await person.$(this.selectors.priority).getText();
                 break;
@@ -33,11 +33,11 @@ class RelatedCasePage {
 
     async getRelatedCaseModDate(caseId: string): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedCases)));
-        var allPersonNum: number = await $$(this.selectors.allRelatedCases).count();
+        let allPersonNum: number = await $$(this.selectors.allRelatedCases).count();
         let modDate: string;
-        for (var i = 0; i < allPersonNum; i++) {
-            var person = await $$(this.selectors.allRelatedCases).get(i);
-            var nm: string = await person.$(this.selectors.caseId).getText();
+        for (let i = 0; i < allPersonNum; i++) {
+            let person = await $$(this.selectors.allRelatedCases).get(i);
+            let nm: string = await person.$(this.selectors.caseId).getText();
             if (nm == caseId) {
                 modDate = await person.$(this.selectors.modifiedDate).getText();
                 break;
@@ -48,13 +48,16 @@ class RelatedCasePage {
 
     async getRelatedCaseRelation(caseId: string): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedCases)));
-        var allPersonNum: number = await $$(this.selectors.allRelatedCases).count();
+        let allCaseNum: number = await $$(this.selectors.allRelatedCases).count();
         let relation: string;
-        for (var i = 0; i < allPersonNum; i++) {
-            var person = await $$(this.selectors.allRelatedCases).get(i);
-            var nm: string = await person.$(this.selectors.caseId).getText();
+        for (let i = 0; i < allCaseNum; i++) {
+            let cases = await $$(this.selectors.allRelatedCases).get(i);
+            let nm: string = await cases.$(this.selectors.caseId).getText();
             if (nm == caseId) {
-                relation = await person.$(this.selectors.relationship).getText();
+                await browser.wait(this.EC.or(async () => {
+                    await cases.$(this.selectors.relationship).getAttribute('title');
+                }), 3000);
+                relation = await cases.$(this.selectors.relationship).getAttribute('title');
                 break;
             }
         }
@@ -63,11 +66,11 @@ class RelatedCasePage {
 
     async getRelatedCaseStatus(caseId: string): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedCases)));
-        var allPersonNum: number = await $$(this.selectors.allRelatedCases).count();
+        let allPersonNum: number = await $$(this.selectors.allRelatedCases).count();
         let caseStatus: string;
-        for (var i = 0; i < allPersonNum; i++) {
-            var person = await $$(this.selectors.allRelatedCases).get(i);
-            var nm: string = await person.$(this.selectors.caseId).getText();
+        for (let i = 0; i < allPersonNum; i++) {
+            let person = await $$(this.selectors.allRelatedCases).get(i);
+            let nm: string = await person.$(this.selectors.caseId).getText();
             if (nm == caseId) {
                 caseStatus = await person.$(this.selectors.status).getText();
                 break;
@@ -78,11 +81,11 @@ class RelatedCasePage {
 
     async getRelatedCaseAssignee(caseId: string): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedCases)));
-        var allPersonNum: number = await $$(this.selectors.allRelatedCases).count();
+        let allPersonNum: number = await $$(this.selectors.allRelatedCases).count();
         let caseAssignee: string;
-        for (var i = 0; i < allPersonNum; i++) {
-            var person = await $$(this.selectors.allRelatedCases).get(i);
-            var nm: string = await person.$(this.selectors.caseId).getText();
+        for (let i = 0; i < allPersonNum; i++) {
+            let person = await $$(this.selectors.allRelatedCases).get(i);
+            let nm: string = await person.$(this.selectors.caseId).getText();
             if (nm == caseId) {
                 caseAssignee = await person.$(this.selectors.assignee).getText();
                 break;
@@ -98,10 +101,10 @@ class RelatedCasePage {
 
     async openCaseFromRelatedCases(caseId: string): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedCases)));
-        var allCasesNum: number = await $$(this.selectors.allRelatedCases).count();
-        for (var i = 0; i < allCasesNum; i++) {
-            var cases = await $$(this.selectors.allRelatedCases).get(i);
-            var nm: string = await cases.$(this.selectors.caseId).getText();
+        let allCasesNum: number = await $$(this.selectors.allRelatedCases).count();
+        for (let i = 0; i < allCasesNum; i++) {
+            let cases = await $$(this.selectors.allRelatedCases).get(i);
+            let nm: string = await cases.$(this.selectors.caseId).getText();
             if (nm == caseId) {
                 await cases.$(this.selectors.caseSummary).click();
                 break;
@@ -111,10 +114,10 @@ class RelatedCasePage {
 
     async removeRelatedCase(caseId: string): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedCases)));
-        var allCasesNum: number = await $$(this.selectors.allRelatedCases).count();
-        for (var i = 0; i < allCasesNum; i++) {
-            var cases = await $$(this.selectors.allRelatedCases).get(i);
-            var nm: string = await cases.$(this.selectors.caseId).getText();
+        let allCasesNum: number = await $$(this.selectors.allRelatedCases).count();
+        for (let i = 0; i < allCasesNum; i++) {
+            let cases = await $$(this.selectors.allRelatedCases).get(i);
+            let nm: string = await cases.$(this.selectors.caseId).getText();
             if (nm == caseId) {
                 await cases.$(this.selectors.removeCaseButton).click();
                 break;
@@ -125,11 +128,11 @@ class RelatedCasePage {
 
     async isCasePresent(caseId: string): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.addRelatedCasesButton)));
-        var allCasesNum: number = await $$(this.selectors.allRelatedCases).count();
+        let allCasesNum: number = await $$(this.selectors.allRelatedCases).count();
         let status: boolean = true;;
-        for (var i = 0; i < allCasesNum; i++) {
-            var cases = await $$(this.selectors.allRelatedCases).get(i);
-            var nm: string = await cases.$(this.selectors.caseId).getText();
+        for (let i = 0; i < allCasesNum; i++) {
+            let cases = await $$(this.selectors.allRelatedCases).get(i);
+            let nm: string = await cases.$(this.selectors.caseId).getText();
             if (nm == caseId) {
                 await cases.$(this.selectors.removeCaseButton).click();
                 status = false;
