@@ -26,6 +26,10 @@ describe('Notes template', () => {
         await navigationPage.signOut();
     });
 
+    afterEach(async () => {
+//        await browser.refresh();
+    });
+
     it('DRDMV-16026 : [Design Time] Verify case Business analyst is able create ,edit and delete Knowledge Notes template', async () => {
         await navigationPage.gotoSettingsPage();
         var templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
@@ -183,7 +187,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
         }
-    });
+    },120*1000);
 
     it('DRDMV-15999 : [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
         await navigationPage.gotoSettingsPage();
@@ -397,7 +401,7 @@ describe('Notes template', () => {
             await viewCasePage.clickAddTaskButton();
             await viewCasePage.addTaskFromTaskTemplate(taskTemplateName);
             await browser.sleep(2000);
-            await manageTask.clickTaskLinkOnManageTask(taskTemplateName);
+            await manageTask.clickTaskLinkOnManageTask(manualTaskSummary);
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();

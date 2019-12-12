@@ -51,7 +51,7 @@ class ManageTaskBlade {
         }));
         await browser.wait(this.EC.elementToBeClickable(element(by.linkText(taskName))));
         await element(by.linkText(taskName)).click();
-        utilCommon.waitUntilSpinnerToHide();
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {
