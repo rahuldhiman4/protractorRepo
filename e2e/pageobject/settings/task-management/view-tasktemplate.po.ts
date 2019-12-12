@@ -3,6 +3,8 @@ import { $, browser, protractor, ProtractorExpectedConditions } from "protractor
 class ViewTaskTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        manageDynamicField: '[rx-view-component-id="60aedaf2-92a3-433f-8024-34e26e71350c"] button',
+        dynamicFieldTitle: '.simple-field .d-textfield__item',
         processnameValue: '[rx-view-component-id="5e792424-a4d7-4235-8715-be24149be51b"] p',
         copyTaskButton: '[rx-view-component-id="e2ec0e87-e65d-4926-9efc-25e3ad329e52"] button',
         templateName: '[rx-view-component-id="72010a6d-c0d7-433a-ab9d-3203fb373518"] span',
@@ -20,6 +22,16 @@ class ViewTaskTemplate {
         editLink: '[rx-view-component-id="0ff4dfc7-09f3-4d12-bc32-5c9426f6cc6c"] .rx-record-editor-edit',
     }
 
+
+    async getDynamicFieldTitle(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.dynamicFieldTitle)));
+        return await $(this.selectors.dynamicFieldTitle).getText();
+    }
+
+    async clickOnManageDynamicFieldLink(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.manageDynamicField)));
+        await $(this.selectors.manageDynamicField).click();
+    }
 
     async getOwnerCompanyValue(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.ownerCompanyValue)));
