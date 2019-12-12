@@ -53,7 +53,8 @@ describe('Notes template', () => {
         await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
         await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
         await editNotetemplate.clickOnCancelButton();
-        await consoleNotesTemplate.selectCheckBox();
+        await browser.refresh();
+        await consoleNotesTemplate.selectCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
@@ -83,7 +84,8 @@ describe('Notes template', () => {
         await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
         await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
         await editNotetemplate.clickOnCancelButton();
-        await consoleNotesTemplate.selectCheckBox();
+        await browser.refresh();
+        await consoleNotesTemplate.selectCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
@@ -113,7 +115,8 @@ describe('Notes template', () => {
         await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
         await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
         await editNotetemplate.clickOnCancelButton();
-        await consoleNotesTemplate.selectCheckBox();
+        await browser.refresh();
+        await consoleNotesTemplate.selectCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
@@ -143,7 +146,8 @@ describe('Notes template', () => {
         await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
         await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
         await editNotetemplate.clickOnCancelButton();
-        await consoleNotesTemplate.selectCheckBox();
+        await browser.refresh();
+        await consoleNotesTemplate.selectCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');

@@ -1,4 +1,5 @@
 import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../utils/util.common';
 
 class NavigationPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -75,6 +76,7 @@ class NavigationPage {
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.caseConsoleMenuItem))));
             await element(by.xpath(this.selectors.caseConsoleMenuItem)).click();
         }
+        await utilCommon.waitUntilSpinnerToHide();
         await browser.wait(this.EC.titleContains('Cases - Business Workflows'), 30000);
     }
 
