@@ -9,7 +9,7 @@ export class Util {
         popUpMsgLocator: '.rx-growl-item__message',
         warningOk: '.d-modal__footer button[class*="d-button d-button_primary d-button_small"]',
         warningCancel: '.d-modal__footer button[class*="d-button d-button_secondary d-button_small"]',
-        closeTipMsg: '.close.rx-growl-close'
+        closeTipMsg: '.rx-growl-close'
     }
 
     async selectDropDown(guid: string, value: string): Promise<void> {

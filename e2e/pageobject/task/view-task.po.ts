@@ -1,9 +1,15 @@
+import { $, browser, protractor, ProtractorExpectedConditions, element, by,$$ } from "protractor";
 import utilCommon from '../../utils/util.common';
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 
 class ViewTask {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        changeStatusButton: '.status-transition',
+        statusDropDown: '[rx-view-component-id="aea81ee2-85d9-4bb6-adb4-08c29028d45d"]',
+        saveStatus: '[rx-view-component-id="6759ba60-df0d-4d5e-8eb9-5101490fd4d4"] button',
+        cancleStatus: '[rx-view-component-id="debcdc88-fb42-4003-96d6-1eeb807206b7"] button',
+        allStatus: '.ui-select-choices-row-inner',
+        updateStatusDropDown: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"] .form-control',
         taskTypeValue: '[rx-view-component-id="057f2521-313b-40c9-be56-829827512abf"] p',
         editButton: '.edit-link ',
         categoryTier1Value: '[rx-view-component-id="909ad3ad-6706-4d46-bb5a-bc48fa6ca98e"] p',
@@ -28,6 +34,40 @@ class ViewTask {
         assigneeName: '[rx-view-component-id="1801d8c6-4997-4253-b716-809b39909598"] .person-main',
         assignGroupText: '[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] .d-textfield__label',
         assignCompany: '[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] .d-textfield__label',
+    }
+
+    async clickOnChangeStatus(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeStatusButton)));
+        await $(this.selectors.changeStatusButton).click();
+    }
+
+    async clickOnSaveStatus(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveStatus)));
+        await $(this.selectors.saveStatus).click();
+    }
+
+    async clickOnCancelStatus(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancleStatus)));
+        await $(this.selectors.cancleStatus).click();
+    }
+
+    async changeTaskStatus(statusValue: string): Promise<void> {
+        const statusUpdate = $(this.selectors.statusDropDown);
+        await browser.wait(this.EC.elementToBeClickable(statusUpdate.$('[aria-label="Status activate"]')));
+        await (statusUpdate.$('[aria-label="Status activate"]')).click();
+        await element(by.cssContainingText(this.selectors.statusDropDown + ' .ui-select__rx-choice', statusValue)).click();
+    }
+
+
+    async getUpdateTaskStatusDrpdownValue(no: number): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.allStatus)));
+        return await $$(this.selectors.allStatus).get(no).getText();
+    }
+
+
+    async clickOnUpdateStatusDrpdown(): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.updateStatusDropDown)));
+        await $(this.selectors.updateStatusDropDown).click();
     }
 
     async clickOnEditTask(): Promise<void> {
