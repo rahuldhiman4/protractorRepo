@@ -125,6 +125,11 @@ class CaseEditPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
         await $(this.selectors.saveCaseButton).click();
     }
+    
+    async clickOnCancelCaseButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelBtn)));
+        await $(this.selectors.cancelBtn).click();
+    }
 
     async verifyCaseAssignee(name: string): Promise<void> {
         expect(await browser.wait(this.EC.visibilityOf($(`a[title="${name}"]`))));
