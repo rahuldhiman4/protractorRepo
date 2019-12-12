@@ -49,7 +49,8 @@ describe('Notes template', () => {
         await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
         await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
         await editNotetemplate.clickOnCancelButton();
-        await consoleNotesTemplate.selectCheckBox();
+        await browser.refresh();
+        await consoleNotesTemplate.selectCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
@@ -79,7 +80,8 @@ describe('Notes template', () => {
         await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
         await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
         await editNotetemplate.clickOnCancelButton();
-        await consoleNotesTemplate.selectCheckBox();
+        await browser.refresh();
+        await consoleNotesTemplate.selectCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
@@ -109,7 +111,8 @@ describe('Notes template', () => {
         await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
         await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
         await editNotetemplate.clickOnCancelButton();
-        await consoleNotesTemplate.selectCheckBox();
+        await browser.refresh();
+        await consoleNotesTemplate.selectCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
@@ -139,7 +142,8 @@ describe('Notes template', () => {
         await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
         await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
         await editNotetemplate.clickOnCancelButton();
-        await consoleNotesTemplate.selectCheckBox();
+        await browser.refresh();
+        await consoleNotesTemplate.selectCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
@@ -183,7 +187,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
         }
-    });
+    },120*1000);
 
     it('DRDMV-15999 : [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
         await navigationPage.gotoSettingsPage();
@@ -397,7 +401,7 @@ describe('Notes template', () => {
             await viewCasePage.clickAddTaskButton();
             await viewCasePage.addTaskFromTaskTemplate(taskTemplateName);
             await browser.sleep(2000);
-            await manageTask.clickTaskLinkOnManageTask(taskTemplateName);
+            await manageTask.clickTaskLinkOnManageTask(manualTaskSummary);
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
