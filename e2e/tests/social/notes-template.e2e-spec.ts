@@ -26,10 +26,6 @@ describe('Notes template', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-//        await browser.refresh();
-    });
-
     it('DRDMV-16026 : [Design Time] Verify case Business analyst is able create ,edit and delete Knowledge Notes template', async () => {
         await navigationPage.gotoSettingsPage();
         var templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
