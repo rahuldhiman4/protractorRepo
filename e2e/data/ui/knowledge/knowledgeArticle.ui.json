@@ -33,5 +33,17 @@
     "DRDMV-19508": {
         "TemplateName": "Reference",
         "Company": "Petramco"
+    },
+    "DRDMV-19501": {
+        "TemplateName": "Reference",
+        "Company": "Petramco",
+        "KnowledgeTitle": "KnowledgeTitle_19501",
+        "KnowledgeSet": "HR"
+    },
+    "DRDMV-19082": {
+        "TemplateName": "Reference",
+        "Company": "Petramco",
+        "KnowledgeTitle": "KnowledgeTitle_19082",
+        "KnowledgeSet": "HR"
     }
 }

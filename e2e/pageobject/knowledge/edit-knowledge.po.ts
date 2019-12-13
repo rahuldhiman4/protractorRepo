@@ -72,7 +72,7 @@ class EditKnowledgePage {
         for (let i = 0; i < fldsCount; i++) {
             let elem = await $$(this.selectors.knowledgeMetadataSection).get(i);
             if (await elem.$('.d-textfield__item').getText() == fldName) {
-                expect(await elem.$('.d-textfield__rx-value').getText()).toBe(fldVal);
+                expect (await elem.$('.d-textfield__rx-value').getText()).toBe(fldVal);
                 break;
             }
         }
