@@ -1,6 +1,7 @@
 import { $$, $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import editCasePage from "../../pageobject/case/edit-case.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
+import utilCommon from '../../utils/util.common';
 
 class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -38,7 +39,29 @@ class ViewCasePage {
         addToWatchlist: '[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button',
         caseSummary: '[rx-view-component-id="8ebc1637-af05-4a08-b873-4f810c4981b9"] p',
         inprogressErrorMsg: '[rx-view-component-id="dd40ce76-9d16-4c6a-b1a1-16fe6aa6721f"] p',
+        resolutionCodeText: '[rx-view-component-id="8eae4351-a5ac-4079-b77f-df2cc969a0d8"] .d-textfield__item',
+        resolutionDescriptionText: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .d-textfield__item',
+        resolutionCodeId: '[rx-view-component-id="fb07b5ff-3c9b-454a-8b0c-a1dfd9987856"]',
+        resolutionCodeDropDownClick: '.ui-select-match-text',
+        resolutionCodeDropDownSearch: '.ui-select-search',
+        resolutionDescriptionTextBoxId: '[rx-view-component-id="d98df37c-7a96-43c3-bf69-2e6e735031ae"]',
+        emptyResolutionDescriptionTextBox: '.d-textfield__label .ng-empty',
     }
+
+    async isResolutionDescriptionTextBoxEmpty(): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.resolutionDescriptionTextBoxId)));
+        let statusstr = $(this.selectors.resolutionDescriptionTextBoxId);
+        return await (statusstr.$(this.selectors.emptyResolutionDescriptionTextBox)).isPresent();
+
+    }
+    // ui-select__rx-choice
+    async selectResolutionCodeDropDown(resolutionCode:string): Promise<void> {
+        const codeUpdate = $(this.selectors.resolutionCodeId);
+        await browser.wait(this.EC.elementToBeClickable(codeUpdate.$(this.selectors.resolutionCodeDropDownClick)));
+        await (codeUpdate.$(this.selectors.resolutionCodeDropDownClick)).click();
+        await browser.wait(this.EC.elementToBeClickable(codeUpdate.$(this.selectors.resolutionCodeDropDownSearch)));
+        await element(by.cssContainingText((this.selectors.resolutionCodeId + $(this.selectors.resolutionCodeDropDownSearch)), resolutionCode)).click;   
+     }
 
     async clickOnCancelButtonOfUpdateStatus(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelUpdateStatus)));
@@ -161,7 +184,6 @@ class ViewCasePage {
     }
 
     async getCaseID(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskButton)));
         await browser.wait(this.EC.visibilityOf($(this.selectors.caseIdText)));
         return await $(this.selectors.caseIdText).getText();
     }

@@ -252,7 +252,9 @@ class CaseEditPage {
     }
 
     async updateResolutionDescription(resolutionDescription: string): Promise<void> {
-        await util.selectDropDown(this.selectors.resolutionDescription, resolutionDescription);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.resolutionDescription)));
+        await $(this.selectors.resolutionDescription).clear();
+        await $(this.selectors.resolutionDescription).sendKeys(resolutionDescription);    
     }
 
     async updateDescription(descriptionVal: string): Promise<void> {
