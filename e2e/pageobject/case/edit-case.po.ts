@@ -86,6 +86,11 @@ class CaseEditPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelBtn)));
     }
 
+    async clickOnAssignToMe(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMe)));
+        await $(this.selectors.assignToMe).click();
+    }
+
     async clickChangeAssignmentButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignment)));
         await $(this.selectors.changeAssignment).click();
@@ -484,6 +489,11 @@ class CaseEditPage {
     async getChangeCaseTemplate(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.changeCaseTemplate)));
         return await $(this.selectors.changeCaseTemplate).getText();
+    }
+
+    async clickOnChangeCaseTemplate(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeCaseTemplate)));
+        await $(this.selectors.changeCaseTemplate).click();
     }
 }
 

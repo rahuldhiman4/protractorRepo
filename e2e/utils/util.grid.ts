@@ -1,5 +1,5 @@
 import { $, browser, by, By, element, protractor, ProtractorExpectedConditions, until } from 'protractor';
-import { Util } from './util.common';
+import utilCommon, { Util } from './util.common';
 
 export class GridOperation {
 
@@ -17,7 +17,10 @@ export class GridOperation {
         filterPreset: '.rx-filter-presets-dropdown__trigger',
         clearFilterButton: 'button[rx-id="clear-button"]',
         filterClose: '.d-tag-remove-button',
-        refreshButton: 'button.d-icon-refresh'
+        gridRecords: '(//div[@class="ui-grid-canvas"]/div)[2]',
+        refreshButton: 'button.d-icon-refresh',
+        searchInput: '[rx-id="search-text-input"]',
+        searchIcon: '[rx-id="submit-search-button"]',
     }
 
     getGridLocator(locatorName: string, gridId: string) {
@@ -157,6 +160,35 @@ export class GridOperation {
         await browser.sleep(3000);
     }
 
+    async searchOnGridConsole(searchValue: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchInput)));
+        await $(this.selectors.searchInput).clear();
+        await $(this.selectors.searchInput).sendKeys(searchValue);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchIcon)));
+        await $(this.selectors.searchIcon).click();
+        await utilCommon.waitUntilSpinnerToHide();
+        await browser.wait(this.EC.or(async () => {
+            let count = await element.all(by.xpath(this.selectors.gridRecords)).count();
+            return count >= 1;
+        }), 10000);
+    }
+
+    async searchAndSelectGridRecord(searchValue: string, guid?: string): Promise<void> {
+        await this.searchOnGridConsole(searchValue);
+        let gridRecordCheckbox: string;
+        if (guid) {
+            gridRecordCheckbox = `//*[@rx-view-component-id="${guid}"]//div[@class="ui-grid-cell-contents"]/ancestor::div[@role='presentation'][contains(@class,'left')]//div[@class='ui-grid-row']`;
+        } else {
+            gridRecordCheckbox = `//div[@class="ui-grid-cell-contents"]/ancestor::div[@role='presentation'][contains(@class,'left')]//div[@class='ui-grid-row']`;
+        }
+        browser.sleep(2000);
+        await browser.wait(this.EC.or(async () => {
+            let count = await element.all(by.xpath(gridRecordCheckbox)).count();
+            return count >= 1;
+        }), 5000);
+        await element.all(by.xpath(gridRecordCheckbox)).first().click();
+        browser.sleep(1000);
+    }
 }
 
 export default new GridOperation();

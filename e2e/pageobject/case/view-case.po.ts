@@ -6,6 +6,7 @@ class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
+        reOpenCase: '[rx-view-component-id="2d51cf41-f176-4e20-bc48-f2741bcbbcb0"] button',
         saveUpdateStatus: '[rx-view-component-id="ee5dd503-a10e-4d22-9ac5-99c400892bb7"] button',
         cancelUpdateStatus: '[rx-view-component-id="7cffd3f8-5b84-4e7f-a4b3-6c0a3dd27855"] button',
         stopWatching: '[rx-view-component-id="a62c849f-5bb0-480f-9811-50def59d82d0"] button',
@@ -42,6 +43,11 @@ class ViewCasePage {
     async clickOnCancelButtonOfUpdateStatus(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelUpdateStatus)));
         await $(this.selectors.cancelUpdateStatus).click();
+    }
+
+    async clickOnReopenCaseLink(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.reOpenCase)));
+        await $(this.selectors.reOpenCase).click();        
     }
 
     async getErrorMsgOfInprogressStatus(): Promise<string> {
@@ -155,6 +161,7 @@ class ViewCasePage {
     }
 
     async getCaseID(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskButton)));
         await browser.wait(this.EC.visibilityOf($(this.selectors.caseIdText)));
         return await $(this.selectors.caseIdText).getText();
     }

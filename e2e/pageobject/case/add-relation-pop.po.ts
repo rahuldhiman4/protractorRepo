@@ -1,6 +1,7 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import util from '../../utils/util.common';
 import gridUtil from '../../utils/util.grid';
+import utilCommon from '../../utils/util.common';
 
 class AddRelationshipPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -14,7 +15,7 @@ class AddRelationshipPage {
     }
 
     async searchAndSelectPerson(personName: string): Promise<void> {
-        await gridUtil.searchAndSelectAllCheckBoxWOGrid(personName);
+        await gridUtil.searchAndSelectGridRecord(personName);
     }
 
     async clickNextButton() {
@@ -29,6 +30,7 @@ class AddRelationshipPage {
     async clickSaveButton() {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
+        utilCommon.waitUntilSpinnerToHide();
     }
 
     async addPerson(name: string, relation: string) {

@@ -350,5 +350,7 @@ describe('Create Case Task', () => {
         await expect(viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
         await expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('- Global -');
     }, 120 * 1000);
+
+	
 });
 

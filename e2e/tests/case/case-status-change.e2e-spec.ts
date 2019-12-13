@@ -24,7 +24,7 @@ describe('Case Status Change', () => {
     });
 
     //kgaikwad
-    fit('DRDMV-2530: [Case Status] Case status change from New', async () => {
+    it('DRDMV-2530: [Case Status] Case status change from New', async () => {
         var priority: string = "Medium";
         var statusNew: string = "New";
         var statusAssigned: string = "Assigned";

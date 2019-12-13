@@ -18,6 +18,16 @@ class ChangeAssignmentBlade {
         supportGroup: 'selectedSupportGroupId',
     }
 
+    async isAssignToMeCheckBoxSelected(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeCheckBox)));
+        return await $(this.selectors.assignToMeCheckBox).isSelected();
+    }
+
+    async getCompanyDefaultValue(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.company))));
+        return await element(by.model(this.selectors.company)).getText();
+    }
+
     async isAssignToMeCheckBoxPresent(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeCheckBox)));
         return await $(this.selectors.assignToMeCheckBox).isDisplayed();
