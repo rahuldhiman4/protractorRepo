@@ -45,10 +45,9 @@ class ConsoleNotesTemplate {
         await $(this.selectors.deleteButton).click();
     }
 
-    async selectCheckBox(): Promise<void> {
+    async selectCheckBox(name:string): Promise<void> {
         await browser.wait(this.EC.invisibilityOf($(this.selectors.body)));
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectCheckBox)));
-        await $(this.selectors.selectCheckBox).click();
+        await utilGrid.searchAndSelectGridRecord(name);
     }
 
     async isTemplatePresentOnGrid(templateNameValue): Promise<boolean> {
