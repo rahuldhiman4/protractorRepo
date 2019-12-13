@@ -1,4 +1,6 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilGrid from "../../utils/util.grid";
+import utilCommon from "../../utils/util.common";
 
 class PersonProfilePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -12,7 +14,9 @@ class PersonProfilePage {
         site: '[rx-view-component-id="d8be57c9-ee7c-4b08-84af-90c9a552b919"] .ac-text-site-value',
         managerName: '[rx-view-component-id="6f4a19be-2c96-4c58-b9c7-a49e2beb0c7b"] .person-name a',
         tabs: '[rx-view-component-id="a8207936-a379-4f6c-b450-90facc6b893c"] a.rx-tab',
-        activityNotes: '.activity-feed-note input[title]'
+        activityNotes: '.activity-feed-note input[title]',
+        requestedCasesGuid: 'cdba89ff-683c-42ba-9c2a-3adf4322504c',
+        assignedCasesGuid: '08bd2811-37eb-43a3-a1fe-de845fe6c5a6'
     }
 
     async navigateToTab(tabName: string): Promise<void> {
@@ -75,6 +79,18 @@ class PersonProfilePage {
     async isActivityNotesDisplayed(): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
         return await $(this.selectors.activityNotes).isPresent();
+    }
+
+    async isCasePresentOnRequestedCases(caseId:string): Promise<boolean>{
+        await utilGrid.clearFilter();
+        await utilGrid.searchOnGridConsole(caseId);
+        return caseId==await utilGrid.getSelectedGridRecordValue(this.selectors.requestedCasesGuid, "Case ID");
+    }
+
+    async isCasePresentOnAssignedCases(caseId:string): Promise<boolean>{
+        await utilGrid.clearFilter();
+        await utilGrid.searchOnGridConsole(caseId);
+        return caseId==await utilGrid.getSelectedGridRecordValue(this.selectors.assignedCasesGuid, "Case ID");
     }
 
 }

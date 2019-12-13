@@ -86,6 +86,7 @@ export class GridOperation {
         await browser.sleep(3000);
         await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText('.ui-grid__link', id))));
         await element(by.cssContainingText('.ui-grid__link', id)).click();
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clearFilter(): Promise<void> {
@@ -142,7 +143,7 @@ export class GridOperation {
         columnPosition = columnPosition + 1;
         var gridRows: number = await element.all(by.xpath(gridRecords)).count();
         if (gridRows > 0) {
-            let gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[2]/div[${columnPosition}]/div`;
+            let gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[1]/div[${columnPosition}]/div`;
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(gridRecordCellValue))));
             gridRecord = await element(by.xpath(gridRecordCellValue)).getText();
         } else {
@@ -167,10 +168,6 @@ export class GridOperation {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchIcon)));
         await $(this.selectors.searchIcon).click();
         await utilCommon.waitUntilSpinnerToHide();
-        await browser.wait(this.EC.or(async () => {
-            let count = await element.all(by.xpath(this.selectors.gridRecords)).count();
-            return count >= 1;
-        }), 10000);
     }
 
     async searchAndSelectGridRecord(searchValue: string, guid?: string): Promise<void> {

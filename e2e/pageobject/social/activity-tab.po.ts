@@ -110,10 +110,10 @@ class ActivityTabPage {
     }
 
     async clickOnPostButton(): Promise<void> {
+        await utilCommon.waitUntilSpinnerToHide();
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNotePostButton)));
         await $(this.selectors.addNotePostButton).click();
         await utilCommon.waitUntilSpinnerToHide();
-        //        await browser.sleep(3000);
     }
 
     async clickOnCancelButton(): Promise<void> {
