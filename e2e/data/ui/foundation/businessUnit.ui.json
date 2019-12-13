@@ -2,5 +2,14 @@
     "BusinessUnitData": {
         "orgName": "UI-BusinessUnit",
         "relatedOrgId": null
+    },
+    "BusinessUnitData19501": {
+        "orgName": "UI-BusinessUnit-19501",
+        "relatedOrgId": null
+    },
+    "BusinessUnitData19082": {
+        "orgName": "UI-BusinessUnit-19082",
+        "relatedOrgId": null,
+        "domainTag":"FacilityDomain"
     }
 }

@@ -44,6 +44,14 @@ class ApiCoreUtil {
         return allRecords;
     }
 
+    async getDomainTagGuid(domainTagName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Domain Tag Registry");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[8] === domainTagName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
     async getOrganizationGuid(orgName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Primary Organization");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {

@@ -8,6 +8,7 @@ class ChangeAssignmentBlade {
         assignmentDropDownList: '.rx-assignment_modal_filters .rx-assignment-select',
         selectOptions: '.options-box .options li',
         cancelButton: '.rx-assignment-modal-footer button.d-button_secondary',
+        multipleSuppGrpMsg: '.manual-select-sg-msg',
         assignToMeCheckBox: '.rx-assignment_assignToMe span',
         searchAsignee: '.d-icon-search input',
         assignee: '.rx-assignment-person-fullName',
@@ -76,6 +77,11 @@ class ChangeAssignmentBlade {
     async clickOnCancelButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
+    }
+
+    async verifyMultipleSupportGrpMessageDisplayed():Promise<void>{
+        await browser.wait(this.EC.visibilityOf($(this.selectors.multipleSuppGrpMsg)));
+        expect (await $(this.selectors.multipleSuppGrpMsg).getText()).toBe('You belong to multiple support groups. Select a specific support group to continue.');
     }
 
     async selectCompany(companyValue: string): Promise<void> {

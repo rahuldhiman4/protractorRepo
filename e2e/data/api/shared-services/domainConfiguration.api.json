@@ -1,0 +1,20 @@
+{
+    "DomainConfiguration":{
+        "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+        "recordDefinitionName": "com.bmc.dsm.shared-services-lib:Domain Configuration",
+        "fieldInstances": {
+          "8": {
+            "id": 8,
+            "value": "Domain Configuration description"
+          },
+          "450000152": {
+            "id": 450000152,
+            "value": "AGGADGG8ECDC0AQC40YHQB68TEGONO"
+          },
+          "450000153": {
+            "id": 450000153,
+            "value": 0
+          }
+        }
+      }
+}

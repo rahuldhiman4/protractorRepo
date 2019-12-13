@@ -7,7 +7,7 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import utilCommon from '../../utils/util.common';
 
-describe('case Template', () => {
+describe('Case Template', () => {
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login("qkatawazi");
@@ -15,6 +15,7 @@ describe('case Template', () => {
 
     afterEach(async () => {
         await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
     })
 
     afterAll(async () => {
