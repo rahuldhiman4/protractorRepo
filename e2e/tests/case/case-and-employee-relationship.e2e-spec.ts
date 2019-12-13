@@ -128,6 +128,7 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedCasePage.getRelatedCaseRelation(caseId)).toBe('Related to');
     });
 
+    //asahitya
     it('DRDMV-17035: Remove Related Case from Case', async () => {
         //create case 1
         await navigationPage.gotCreateCase();
@@ -136,7 +137,6 @@ describe('Case And Employee Relationship', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
-        await utilCommon.closePopUpMessage();
         let caseId1: string = await caseViewPage.getCaseID();
 
         //create case 2
@@ -146,7 +146,6 @@ describe('Case And Employee Relationship', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
-        await utilCommon.closePopUpMessage();
         let caseId2: string = await caseViewPage.getCaseID();
 
         //create case 3
@@ -156,7 +155,6 @@ describe('Case And Employee Relationship', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
-        await utilCommon.closePopUpMessage();
         let caseId3: string = await caseViewPage.getCaseID();
 
         //Add case 1 and case 2 in related cases
@@ -188,5 +186,5 @@ describe('Case And Employee Relationship', () => {
         await gridUtil.searchAndOpenHyperlink(caseId2);
         await caseEditPage.navigateToRelatedCasesTab();
         expect(await relatedCasePage.isCasePresent(caseId3)).toBeTruthy();
-    }, 120 * 1000);
+    });
 })
