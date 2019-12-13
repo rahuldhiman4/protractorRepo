@@ -12,6 +12,7 @@ class CreateKnowledgePage {
         knowledgeSet: '7f2de840-20ec-47e8-805f-4db8edc1b5f4',
         assignToMeBtn: '[rx-view-component-id="8cb384cb-598d-46f4-a858-08111a6c51bd"] .assign-to-me-component .d-button',
         docEditorSection: '.doc-editor__section',
+        knowledgeMetadataSection: '[rx-view-component-id="830947fd-773e-4a70-860a-98893c9b36b4"] .d-textfield'
     }
 
     async clickOnTemplate(TemplateName: string): Promise<void> {
@@ -36,6 +37,18 @@ class CreateKnowledgePage {
     async clickOnSaveKnowledgeButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveKnowlegeButton)));
         await $(this.selectors.saveKnowlegeButton).click();
+    }
+
+    async verifyAssignmentFieldsPresentAndDisabled(fldName: String): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeMetadataSection)));
+        let fldsCount = await $$(this.selectors.knowledgeMetadataSection).count();
+        for (let i = 0; i < fldsCount; i++) {
+            let elem = await $$(this.selectors.knowledgeMetadataSection).get(i);
+            if (await elem.$('.d-textfield__item').getText() == fldName) {
+                expect (await elem.$('.btn-default').getAttribute("disabled") == "true").toBeTruthy();
+                break;
+            }
+        }
     }
 
     async clickOnviewArticleLinkButton(): Promise<void> {
