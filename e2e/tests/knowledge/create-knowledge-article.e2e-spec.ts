@@ -14,11 +14,14 @@ describe('Knowledge Article', () => {
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
+    const domainTagDataFile = require('../../data/ui/foundation/domainTag.ui.json');
 
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('peter');
         await foundationData('Petramco');
+        await foundationData19501('Petramco');
+        await foundationData19082('Petramco');
     });
 
     afterAll(async () => {
@@ -217,4 +220,105 @@ describe('Knowledge Article', () => {
         await changeAssignmentBlade.selectAssignee(personData.firstName);
         await changeAssignmentBlade.clickOnAssignButton();
     });
+
+    async function foundationData19501(company: string) {
+        await apiHelper.apiLogin('tadmin');
+        let businessData = businessDataFile['BusinessUnitData19501'];
+        let departmentData = departmentDataFile['DepartmentData19501'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData19501'];
+        let personData = personDataFile['PersonData'];   //Associate the existing person to new orgs
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        departmentData.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData);
+        suppGrpData.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData);
+        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
+        await apiHelper.associatePersonToCompany(personData.userId, company)
+    }
+
+    it('DRDMV-19501: On Create KA, Agent having access to multiple support groups on "Assign to me" click should process properly on KA', async () => {
+        try{
+        let businessData2 = businessDataFile['BusinessUnitData19501'];
+        let departmentData2 = departmentDataFile['DepartmentData19501'];
+        let suppGrpData2 = supportGrpDataFile['SuppGrpData19501'];
+        let personData = personDataFile['PersonData'];  //This person is associated to 2 given support grps as created is beforeall method
+        let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
+        let knowledgeData = knowledgeDataFile['DRDMV-19501'];
+        await navigationPage.signOut();
+        await loginPage.loginWithCredentials(personData.userId + "@petramco.com", 'Password_1234');
+        await navigationPage.gotoCreateKnowledge();
+        await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+        await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+        await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Assigned Company');
+        await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Business Unit');
+        await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Department');
+        await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Assigned Group');
+        await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Assigned To');
+        await createKnowledgePage.clickAssignToMeButton();
+        await changeAssignmentBlade.verifyMultipleSupportGrpMessageDisplayed();
+        await changeAssignmentBlade.selectCompany(knowledgeData.Company);
+        await changeAssignmentBlade.selectBusinessUnit(businessData2.orgName);
+        await changeAssignmentBlade.selectDepartment(departmentData2.orgName);
+        await changeAssignmentBlade.selectSupportGroup(suppGrpData2.orgName);
+        await changeAssignmentBlade.clickOnAssignButton();
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+    }
+    catch (Error) {
+        console.log(Error);
+    }
+    finally {
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
+        await navigationPage.signOut();
+        await loginPage.login('peter');
+    }
+    },(160*1000));
+
+    async function foundationData19082(company: string) {
+        await apiHelper.apiLogin('tadmin');
+        let domainTagData = domainTagDataFile['DomainTagData'];
+        let businessData = (businessDataFile['BusinessUnitData19082']);
+        let departmentData = departmentDataFile['DepartmentData19082'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData19082'];
+        let personData = personDataFile['PersonData19082'];
+        await apiHelper.createDomainTag(domainTagData);
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        departmentData.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData);
+        suppGrpData.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData);
+        await apiHelper.createNewUser(personData);
+        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
+        await apiHelper.associatePersonToCompany(personData.userId, company)
+    }
+
+   it('DRDMV-19082: Domain config should be honored while Assigning Assignee and Reviewer', async () => {
+       //All below BU, Dep and Supp grps are tagged to DomainName
+        let businessData = businessDataFile['BusinessUnitData19082'];
+        let departmentData = departmentDataFile['DepartmentData19082'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData19082'];
+        let personData = personDataFile['PersonData19082'];
+        let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
+        let knowledgeData = knowledgeDataFile['DRDMV-19082'];
+        await navigationPage.gotoCreateKnowledge();
+        await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+        await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+        await createKnowledgePage.clickChangeAssignmentButton();
+        await changeAssignmentBlade.selectCompany(knowledgeData.Company);
+        await changeAssignmentBlade.selectBusinessUnit(businessData.orgName);
+        await changeAssignmentBlade.selectDepartment(departmentData.orgName);
+        await changeAssignmentBlade.selectSupportGroup(suppGrpData.orgName);
+        await changeAssignmentBlade.selectAssignee(personData.firstName);
+        await changeAssignmentBlade.clickOnAssignButton();
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+    });
+
 })

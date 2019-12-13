@@ -173,16 +173,21 @@ export class GridOperation {
         }), 10000);
     }
 
-    async searchAndSelectGridRecord(guid: string, searchValue: string): Promise<void> {
+    async searchAndSelectGridRecord(searchValue: string, guid?: string): Promise<void> {
         await this.searchOnGridConsole(searchValue);
-        let gridRecordCheckbox = `//*[@rx-view-component-id="${guid}"]//div[@class="ui-grid-cell-contents"]/ancestor::div[@role='presentation'][contains(@class,'left')]//div[@class='ui-grid-row']`;
-        browser.sleep(1500);
+        let gridRecordCheckbox: string;
+        if (guid) {
+            gridRecordCheckbox = `//*[@rx-view-component-id="${guid}"]//div[@class="ui-grid-cell-contents"]/ancestor::div[@role='presentation'][contains(@class,'left')]//div[@class='ui-grid-row']`;
+        } else {
+            gridRecordCheckbox = `//div[@class="ui-grid-cell-contents"]/ancestor::div[@role='presentation'][contains(@class,'left')]//div[@class='ui-grid-row']`;
+        }
+        browser.sleep(2000);
         await browser.wait(this.EC.or(async () => {
             let count = await element.all(by.xpath(gridRecordCheckbox)).count();
             return count >= 1;
         }), 5000);
         await element.all(by.xpath(gridRecordCheckbox)).first().click();
-        browser.sleep(500);
+        browser.sleep(1000);
     }
 }
 
