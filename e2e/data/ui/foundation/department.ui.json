@@ -2,5 +2,14 @@
     "DepartmentData": {
         "orgName": "UI-Department",
         "relatedOrgId": null
+    },
+    "DepartmentData19501": {
+        "orgName": "UI-Department-19501",
+        "relatedOrgId": null
+    },
+    "DepartmentData19082": {
+        "orgName": "UI-Department-19082",
+        "relatedOrgId": null,
+        "domainTag":"FacilityDomain"
     }
 }
