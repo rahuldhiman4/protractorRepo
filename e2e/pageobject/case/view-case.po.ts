@@ -44,6 +44,7 @@ class ViewCasePage {
         resolutionCodeId: '[rx-view-component-id="fb07b5ff-3c9b-454a-8b0c-a1dfd9987856"]',
         resolutionCodeDropDownClick: '.ui-select-match-text',
         resolutionCodeDropDownSearch: '.ui-select-search',
+        resolutionCodeSelect: '.ui-select__rx-choice',
         resolutionDescriptionTextBoxId: '[rx-view-component-id="d98df37c-7a96-43c3-bf69-2e6e735031ae"]',
         emptyResolutionDescriptionTextBox: '.d-textfield__label .ng-empty',
     }
@@ -52,9 +53,8 @@ class ViewCasePage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.resolutionDescriptionTextBoxId)));
         let statusstr = $(this.selectors.resolutionDescriptionTextBoxId);
         return await (statusstr.$(this.selectors.emptyResolutionDescriptionTextBox)).isPresent();
-
     }
-    // ui-select__rx-choice
+
     async selectResolutionCodeDropDown(resolutionCode:string): Promise<void> {
         const codeUpdate = $(this.selectors.resolutionCodeId);
         await browser.wait(this.EC.elementToBeClickable(codeUpdate.$(this.selectors.resolutionCodeDropDownClick)));

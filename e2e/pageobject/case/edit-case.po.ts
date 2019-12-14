@@ -251,6 +251,10 @@ class CaseEditPage {
         await util.selectDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
     }
 
+    async isValuePresentInResolutionCode(resolutionCode: string): Promise<void> {
+        await util.isValuePresentInDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
+    }
+
     async updateResolutionDescription(resolutionDescription: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.resolutionDescription)));
         await $(this.selectors.resolutionDescription).clear();

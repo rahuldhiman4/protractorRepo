@@ -16,6 +16,7 @@ class CreateNewMenuOptionPage {
         statusDropDown: '[rx-view-component-id="a548d907-8c6b-46ab-bc83-88a5310e04b7"] .ui-select-match-text',
         statusDropDownGuid: "a548d907-8c6b-46ab-bc83-88a5310e04b7",
         toggleButtonId: '[rx-view-component-id="39a7280b-4078-4f9a-8058-2b0ff972c151"]',
+        toggleButtonGuid: '39a7280b-4078-4f9a-8058-2b0ff972c151',
         toggleButtonCheckIcon: '.d-button-group__item .d-icon-check',
         toggleButtonCircleIcon: '.d-icon-circle_slash_o',        
         localizeLink: '[rx-view-component-id="d40aa6f2-090d-4641-9779-ae724673575c"] .d-icon-left-pencil',
@@ -57,6 +58,22 @@ class CreateNewMenuOptionPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.toggleButtonId)));
         let statusstr = $(this.selectors.toggleButtonId);
         return await (statusstr.$(this.selectors.toggleButtonCheckIcon)).isDisplayed();
+    }
+
+    // async OnAvailableOnUiToggleButton(): Promise<void> {
+    //     await browser.wait(this.EC.elementToBeClickable($(this.selectors.toggleButtonId)));
+    //     let statusstr = $(this.selectors.toggleButtonId);
+    //     await (statusstr.$(this.selectors.toggleButtonCheckIcon)).click();
+    // }
+
+    // async OffAvailableOnUiToggleButton(): Promise<void> {
+    //     await browser.wait(this.EC.elementToBeClickable($(this.selectors.toggleButtonId)));
+    //     let statusstr = $(this.selectors.toggleButtonId);
+    //     await (statusstr.$(this.selectors.toggleButtonCircleIcon)).click();
+    // }
+
+    async selectAvailableOnUiToggleButton(booleanVal:boolean): Promise<void> {
+        await utilCommon.selectToggleButton(this.selectors.toggleButtonGuid,booleanVal);
     }
 
     async isStatusDropDownPresent(): Promise<boolean> {
