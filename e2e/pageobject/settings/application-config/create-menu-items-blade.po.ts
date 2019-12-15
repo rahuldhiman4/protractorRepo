@@ -20,7 +20,8 @@ class CreateNewMenuOptionPage {
         toggleButtonCheckIcon: '.d-button-group__item .d-icon-check',
         toggleButtonCircleIcon: '.d-icon-circle_slash_o',        
         localizeLink: '[rx-view-component-id="d40aa6f2-090d-4641-9779-ae724673575c"] .d-icon-left-pencil',
-        valueTextBox: '.ng-pristine[aria-label="Value for default locale"]',
+        // valueTextBox: '.ng-pristine[aria-label="Value for default locale"]',
+        valueTextBox: '.d-textfield__input[aria-label="Value for default locale"]',
         saveButtonLocalizevalue: '.d-button_primary[rx-id="save-button"]',
         saveButton: '[rx-view-component-id="010dbf48-bda5-495c-9cb7-6376a28f5c43"] .d-button_primary',        
     }
@@ -34,6 +35,11 @@ class CreateNewMenuOptionPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButtonLocalizevalue)));
         await $(this.selectors.saveButtonLocalizevalue).click();
         await utilCommon.waitUntilPopUpDisappear();
+    }
+
+    async clearValueTextBox(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.valueTextBox)));
+        await $(this.selectors.valueTextBox).clear();
     }
 
     async valueTextBox(str:string): Promise<void> {
@@ -59,18 +65,6 @@ class CreateNewMenuOptionPage {
         let statusstr = $(this.selectors.toggleButtonId);
         return await (statusstr.$(this.selectors.toggleButtonCheckIcon)).isDisplayed();
     }
-
-    // async OnAvailableOnUiToggleButton(): Promise<void> {
-    //     await browser.wait(this.EC.elementToBeClickable($(this.selectors.toggleButtonId)));
-    //     let statusstr = $(this.selectors.toggleButtonId);
-    //     await (statusstr.$(this.selectors.toggleButtonCheckIcon)).click();
-    // }
-
-    // async OffAvailableOnUiToggleButton(): Promise<void> {
-    //     await browser.wait(this.EC.elementToBeClickable($(this.selectors.toggleButtonId)));
-    //     let statusstr = $(this.selectors.toggleButtonId);
-    //     await (statusstr.$(this.selectors.toggleButtonCircleIcon)).click();
-    // }
 
     async selectAvailableOnUiToggleButton(booleanVal:boolean): Promise<void> {
         await utilCommon.selectToggleButton(this.selectors.toggleButtonGuid,booleanVal);
