@@ -1,11 +1,15 @@
 import { $$, $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import editCasePage from "../../pageobject/case/edit-case.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
+import utilCommon from '../../utils/util.common';
 
 class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
+        categoryTier1Value: '[rx-view-component-id="593784cc-6bce-4bfd-82e1-7ca55aa28517"] p',
+        categoryTier2Value: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] p',
+        categoryTier3Value: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] p',
         reOpenCase: '[rx-view-component-id="2d51cf41-f176-4e20-bc48-f2741bcbbcb0"] button',
         saveUpdateStatus: '[rx-view-component-id="ee5dd503-a10e-4d22-9ac5-99c400892bb7"] button',
         cancelUpdateStatus: '[rx-view-component-id="7cffd3f8-5b84-4e7f-a4b3-6c0a3dd27855"] button',
@@ -38,6 +42,16 @@ class ViewCasePage {
         addToWatchlist: '[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button',
         caseSummary: '[rx-view-component-id="8ebc1637-af05-4a08-b873-4f810c4981b9"] p',
         inprogressErrorMsg: '[rx-view-component-id="dd40ce76-9d16-4c6a-b1a1-16fe6aa6721f"] p',
+        priority: '.selection-field',
+    }
+
+    async isCaseReopenLinkPresent(): Promise<boolean> {
+        await browser.wait(this.EC.presenceOf($('[rx-view-component-id="2d51cf41-f176-4e20-bc48-f2741bcbbcb0"]')));
+        let presentInDom: boolean = await $(this.selectors.reOpenCase).isPresent();
+        if (presentInDom) {
+            await browser.wait(this.EC.visibilityOf($(this.selectors.reOpenCase)), 5000);
+        }
+        return presentInDom;
     }
 
     async clickOnCancelButtonOfUpdateStatus(): Promise<void> {
@@ -47,12 +61,33 @@ class ViewCasePage {
 
     async clickOnReopenCaseLink(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.reOpenCase)));
-        await $(this.selectors.reOpenCase).click();        
+        await $(this.selectors.reOpenCase).click(); 
+        await utilCommon.waitUntilPopUpDisappear();       
     }
 
     async getErrorMsgOfInprogressStatus(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.inprogressErrorMsg)));
         return await $(this.selectors.inprogressErrorMsg).getText();
+    }
+
+    async getPriorityValue(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.priority)));
+        return await $(this.selectors.priority).getText();
+    }
+
+    async getCategoryTier1Value(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier1Value)));
+        return await $(this.selectors.categoryTier1Value).getText();
+    }
+
+    async getCategoryTier2Value(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier2Value)));
+        return await $(this.selectors.categoryTier2Value).getText();
+    }
+
+    async getCategoryTier3Value(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3Value)));
+        return await $(this.selectors.categoryTier3Value).getText();
     }
 
     async getTextOfStatus(): Promise<string> {
@@ -81,7 +116,7 @@ class ViewCasePage {
     async clickSaveStatus(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveUpdateStatus)));
         await $(this.selectors.saveUpdateStatus).click();
-        await browser.sleep(2000);
+        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async isEditLinkDisplay(): Promise<boolean> {
@@ -108,7 +143,7 @@ class ViewCasePage {
     }
 
     async clickEditCaseButton(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.editLink)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
         await $(this.selectors.editLink).click();
         await browser.wait(this.EC.visibilityOf($(editCasePage.selectors.cancelBtn)));
     }
