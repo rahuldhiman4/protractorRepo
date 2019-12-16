@@ -60,11 +60,12 @@ class ViewCasePage {
     }
 
     async selectResolutionCodeDropDown(resolutionCode: string): Promise<void> {
-        const codeUpdate = $(this.selectors.resolutionCodeId);
-        await browser.wait(this.EC.elementToBeClickable(codeUpdate.$(this.selectors.resolutionCodeDropDownClick)));
-        await (codeUpdate.$(this.selectors.resolutionCodeDropDownClick)).click();
-        await browser.wait(this.EC.elementToBeClickable(codeUpdate.$(this.selectors.resolutionCodeDropDownSearch)));
-        await element(by.cssContainingText((this.selectors.resolutionCodeId + $(this.selectors.resolutionCodeDropDownSearch)), resolutionCode)).click;
+        // const codeUpdate = $(this.selectors.resolutionCodeId);
+        // await browser.wait(this.EC.elementToBeClickable(codeUpdate.$(this.selectors.resolutionCodeDropDownClick)));
+        // await (codeUpdate.$(this.selectors.resolutionCodeDropDownClick)).click();
+        // await browser.wait(this.EC.elementToBeClickable(codeUpdate.$(this.selectors.resolutionCodeDropDownSearch)));
+        // await element(by.cssContainingText((this.selectors.resolutionCodeId + $(this.selectors.resolutionCodeDropDownSearch)), resolutionCode)).click;
+        await utilCommon.selectDropDown('fb07b5ff-3c9b-454a-8b0c-a1dfd9987856',resolutionCode);
     }
 
 

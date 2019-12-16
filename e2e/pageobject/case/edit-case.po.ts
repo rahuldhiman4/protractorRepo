@@ -1,5 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import util from "../../utils/util.common";
+import utilCommon from "../../utils/util.common";
 
 class CaseEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -192,31 +192,31 @@ class CaseEditPage {
     }
 
     async updateCasePriority(casePriority: string): Promise<void> {
-        await util.selectDropDown(this.selectors.priorityGuid, casePriority);
+        await utilCommon.selectDropDown(this.selectors.priorityGuid, casePriority);
     }
 
     async updateCaseCategoryTier1(caseCategoryTier1: string): Promise<void> {
-        await util.selectDropDown(this.selectors.categoryTier1Guid, caseCategoryTier1);
+        await utilCommon.selectDropDown(this.selectors.categoryTier1Guid, caseCategoryTier1);
     }
 
     async updateCaseCategoryTier2(caseCategoryTier2: string): Promise<void> {
-        await util.selectDropDown(this.selectors.categoryTier2Guid, caseCategoryTier2);
+        await utilCommon.selectDropDown(this.selectors.categoryTier2Guid, caseCategoryTier2);
     }
 
     async updateCaseCategoryTier3(caseCategoryTier3: string): Promise<void> {
-        await util.selectDropDown(this.selectors.categoryTier3Guid, caseCategoryTier3);
+        await utilCommon.selectDropDown(this.selectors.categoryTier3Guid, caseCategoryTier3);
     }
 
     async updateCaseCategoryTier4(caseCategoryTier4: string): Promise<void> {
-        await util.selectDropDown(this.selectors.categoryTier4Guid, caseCategoryTier4);
+        await utilCommon.selectDropDown(this.selectors.categoryTier4Guid, caseCategoryTier4);
     }
 
     async updateLabel(label: string): Promise<void> {
-        await util.selectDropDown(this.selectors.labelGuid, label);
+        await utilCommon.selectDropDown(this.selectors.labelGuid, label);
     }
 
     async updateCaseSite(caseSite: string): Promise<void> {
-        await util.selectDropDown(this.selectors.siteGuid, caseSite);
+        await utilCommon.selectDropDown(this.selectors.siteGuid, caseSite);
     }
 
     async updateSiteChangeReason(siteChangeReasonVal: string): Promise<void> {
@@ -248,11 +248,11 @@ class CaseEditPage {
     }
 
     async updateResolutionCode(resolutionCode: string): Promise<void> {
-        await util.selectDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
+        await utilCommon.selectDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
     }
 
     async isValuePresentInResolutionCode(resolutionCode: string): Promise<void> {
-        await util.isValuePresentInDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
+        await utilCommon.isValuePresentInDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
     }
 
     async updateResolutionDescription(resolutionDescription: string): Promise<void> {

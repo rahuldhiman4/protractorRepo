@@ -8,7 +8,7 @@ class CreateNewMenuOptionPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        menuOptionLink: '[rx-view-component-id="306a51e0-cb89-45db-9270-c40b4ec3b149"] span',
+        menuOptionLink: '[rx-view-component-id="306a51e0-cb89-45db-9270-c40b4ec3b149"] button',
         menuNameDropDown: '[rx-view-component-id="da9b9818-7b4c-43ec-9c4b-41e0cda49b8d"] .ui-select-match .btn-default',
         menuNameDropDownGuid: "da9b9818-7b4c-43ec-9c4b-41e0cda49b8d",
         menuOptionId: '[rx-view-component-id="d40aa6f2-090d-4641-9779-ae724673575c"]',
@@ -20,33 +20,26 @@ class CreateNewMenuOptionPage {
         toggleButtonCheckIcon: '.d-button-group__item .d-icon-check',
         toggleButtonCircleIcon: '.d-icon-circle_slash_o',        
         localizeLink: '[rx-view-component-id="d40aa6f2-090d-4641-9779-ae724673575c"] .d-icon-left-pencil',
-        // valueTextBox: '.ng-pristine[aria-label="Value for default locale"]',
-        valueTextBox: '.d-textfield__input[aria-label="Value for default locale"]',
-        saveButtonLocalizevalue: '.d-button_primary[rx-id="save-button"]',
-        saveButton: '[rx-view-component-id="010dbf48-bda5-495c-9cb7-6376a28f5c43"] .d-button_primary',        
+        saveButton: '[rx-view-component-id="010dbf48-bda5-495c-9cb7-6376a28f5c43"] .d-button_primary', 
+        cancelButton: '[rx-view-component-id="3fbaa9bf-7a3d-42b5-8afe-bc2c0f982520"] .d-button_secondary',       
+        createNewMenuOptionDialogueBox:'a.modal-dialog .modal-contentsf',
     }
 
+    async isCreateNewMenuOptionBladeDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createNewMenuOptionDialogueBox)));
+        return await $(this.selectors.createNewMenuOptionDialogueBox).isEnabled();
+    }
+    
     async clickOnSaveButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
-    async clickOnSaveButtonOfLocalizeValue(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButtonLocalizevalue)));
-        await $(this.selectors.saveButtonLocalizevalue).click();
-        await utilCommon.waitUntilPopUpDisappear();
+    async clickOnCancelButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        await $(this.selectors.cancelButton).click();
     }
 
-    async clearValueTextBox(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.valueTextBox)));
-        await $(this.selectors.valueTextBox).clear();
-    }
-
-    async valueTextBox(str:string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.valueTextBox)));
-        await $(this.selectors.valueTextBox).sendKeys(str);
-    }
-    
     async clickOnLocalizeLink(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.localizeLink)));
         await $(this.selectors.localizeLink).click();
@@ -88,7 +81,7 @@ class CreateNewMenuOptionPage {
 
     async clickOnMenuOptionLink(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuOptionLink)));
-        await element(by.cssContainingText(this.selectors.menuOptionLink, 'Menu Option')).click();
+        await $(this.selectors.menuOptionLink).click();
     }
 }
 
