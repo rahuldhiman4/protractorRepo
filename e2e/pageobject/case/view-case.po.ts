@@ -1,4 +1,4 @@
-import { $$, $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import editCasePage from "../../pageobject/case/edit-case.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import utilCommon from '../../utils/util.common';
@@ -44,12 +44,10 @@ class ViewCasePage {
         inprogressErrorMsg: '[rx-view-component-id="dd40ce76-9d16-4c6a-b1a1-16fe6aa6721f"] p',
         resolutionCodeText: '[rx-view-component-id="8eae4351-a5ac-4079-b77f-df2cc969a0d8"] .d-textfield__item',
         resolutionDescriptionText: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .d-textfield__item',
-        resolutionCodeId: '[rx-view-component-id="fb07b5ff-3c9b-454a-8b0c-a1dfd9987856"]',
-        resolutionCodeDropDownClick: '.ui-select-match-text',
-        resolutionCodeDropDownSearch: '.ui-select-search',
         resolutionCodeSelect: '.ui-select__rx-choice',
         resolutionDescriptionTextBoxId: '[rx-view-component-id="d98df37c-7a96-43c3-bf69-2e6e735031ae"]',
         emptyResolutionDescriptionTextBox: '.d-textfield__label .ng-empty',
+        resolutionCodeDropDownGuid: 'fb07b5ff-3c9b-454a-8b0c-a1dfd9987856',
         priority: '.selection-field',
     }
 
@@ -60,14 +58,8 @@ class ViewCasePage {
     }
 
     async selectResolutionCodeDropDown(resolutionCode: string): Promise<void> {
-        // const codeUpdate = $(this.selectors.resolutionCodeId);
-        // await browser.wait(this.EC.elementToBeClickable(codeUpdate.$(this.selectors.resolutionCodeDropDownClick)));
-        // await (codeUpdate.$(this.selectors.resolutionCodeDropDownClick)).click();
-        // await browser.wait(this.EC.elementToBeClickable(codeUpdate.$(this.selectors.resolutionCodeDropDownSearch)));
-        // await element(by.cssContainingText((this.selectors.resolutionCodeId + $(this.selectors.resolutionCodeDropDownSearch)), resolutionCode)).click;
-        await utilCommon.selectDropDown('fb07b5ff-3c9b-454a-8b0c-a1dfd9987856',resolutionCode);
+        await utilCommon.selectDropDown(this.selectors.resolutionCodeDropDownGuid, resolutionCode);
     }
-
 
     async isCaseReopenLinkPresent(): Promise<boolean> {
         await browser.wait(this.EC.presenceOf($('[rx-view-component-id="2d51cf41-f176-4e20-bc48-f2741bcbbcb0"]')));

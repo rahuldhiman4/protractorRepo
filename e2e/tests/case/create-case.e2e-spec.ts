@@ -51,7 +51,6 @@ describe("Create Case", () => {
 
     it('DRDMV-17653: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {
         let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        // var randVal:string='DRDMV'+str;
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
         await createMenuItems.clickOnMenuOptionLink();
