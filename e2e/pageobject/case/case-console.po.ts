@@ -16,6 +16,26 @@ class CaseConsolePage {
         tableValue: '.ui-grid-cell-contents',
     }
 
+    async setCaseSearchBoxValue(input: string): Promise<void> {
+        await gridUtil.searchOnGridConsole(input);
+        await utilCommon.waitUntilSpinnerToHide();
+    }
+
+    async clickFirstLinkInCaseSearchGrid(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedCaseLink)));
+        await $$(this.selectors.recommendedCaseLink).first().click();
+    }
+
+    async isCaseIdHyperlinked(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.recommendedCaseLink)));
+        return await $$(this.selectors.recommendedCaseLink).first().isDisplayed();
+    }
+
+    async clickFirstCheckBoxInCaseSearchGrid(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedCaseCheckBox)));
+        await $(this.selectors.recommendedCaseCheckBox).click();
+    }
+
     async searchCase(caseId: string): Promise<void> {
         await gridUtil.clearFilter();
         await gridUtil.searchRecord(caseId);
@@ -42,27 +62,6 @@ class CaseConsolePage {
         let priorityValue = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Status');
         return status === priorityValue;
 
-    }
-
-    async setCaseSearchBoxValue(input: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.searchCase)));
-        await $(this.selectors.searchCase).clear();
-        await $(this.selectors.searchCase).sendKeys(input, Key.ENTER);
-    }
-
-    async clickFirstLinkInCaseSearchGrid(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedCaseLink)));
-        await $$(this.selectors.recommendedCaseLink).first().click();
-    }
-
-    async isCaseIdHyperlinked(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.recommendedCaseLink)));
-        return await $$(this.selectors.recommendedCaseLink).first().isDisplayed();
-    }
-
-    async clickFirstCheckBoxInCaseSearchGrid(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedCaseCheckBox)));
-        await $(this.selectors.recommendedCaseCheckBox).click();
     }
 
     async isCaseSummaryPresent(summary: string): Promise<boolean> {

@@ -19,5 +19,37 @@
         "requester": "Qiwei Liu",
         "description": "Change my Last Name",
         "warningMsg": "Requester not found"
+    },
+    "complexSurvey1": {
+        "Status": "2000",
+        "Company": "Petramco",
+        "Description": "This case was created by java integration tests",
+        "Requester": "qtao",
+        "Priority": "4000",
+        "Service Request ID": "12341231",
+        "Summary": "Testing case creation with maximal input data",
+        "Support Group": "Compensation and Benefits",
+        "Assignee": "qkatawazi"
+    },
+    "DRDMV-14087": {
+        "Status": "2000",
+        "Company": "Petramco",
+        "Description": "This case was created by java integration tests",
+        "Requester": "Elizabeth",
+        "Priority": "4000",
+        "Summary": "Testing case creation with maximal input data",
+        "Support Group": "Compensation and Benefits",
+        "Assignee": "qkatawazi"
+    },
+    "DRDMV-14088": {
+        "Status": "2000",
+        "Company": "Petramco",
+        "Description": "This case was created by java integration tests",
+        "Requester": "qkatawazi",
+        "Priority": "4000",
+        "Summary": "Testing case creation with maximal input data",
+        "Support Group": "Compensation and Benefits",
+        "Assignee": "Elizabeth"
     }
+
 }
