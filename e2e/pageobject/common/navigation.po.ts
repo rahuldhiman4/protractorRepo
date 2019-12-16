@@ -15,7 +15,8 @@ class NavigationPage {
         settingsMenuItemContainer: 'rx-administration-settings',
         profileMenu: '.d-n-nav__profile',
         signOutMenuItem: '.d-n-nav__profile a',
-        workspaceMenu: '//rx-shell//*[text()="Workspace"]/..'
+        workspaceMenu: '//rx-shell//*[text()="Workspace"]/..',
+        modalOpen: '.modal-open',
     }
 
     verticalSelectors = {
@@ -66,6 +67,7 @@ class NavigationPage {
 
     async gotoCaseConsole(): Promise<void> {
         if (await this.isHambergerIconPresent()) {
+            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.hamburgerIcon).$('button')));
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
             await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.caseConsoleMenuItem))));
@@ -122,10 +124,12 @@ class NavigationPage {
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createKnowledgeMenu))));
             await element(by.xpath(this.selectors.createKnowledgeMenu)).click();
         }
+        await utilCommon.waitUntilSpinnerToHide();
         await browser.wait(this.EC.titleContains('Knowledge Article Templates Preview - Business Workflows'), 30000);
     }
 
     async gotoSettingsPage(): Promise<void> {
+        await browser.wait(this.EC.invisibilityOf($(this.selectors.modalOpen)), 2000);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
         await $(this.selectors.settingsButton).click();
         await browser.wait(this.EC.visibilityOf($(this.selectors.settingsMenuItemContainer)));

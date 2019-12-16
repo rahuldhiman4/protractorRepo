@@ -9,7 +9,7 @@ export class Util {
         popUpMsgLocator: '.rx-growl-item__message',
         warningOk: '.d-modal__footer button[class*="d-button d-button_primary d-button_small"]',
         warningCancel: '.d-modal__footer button[class*="d-button d-button_secondary d-button_small"]',
-        closeTipMsg: '.rx-growl-close'
+        closeTipMsg: '.close'
     }
 
     async selectDropDown(guid: string, value: string): Promise<void> {
@@ -31,14 +31,37 @@ export class Util {
         await option.click();
     }
 
-    async getPopUpMessage() {
+    async isDrpDownvalueDisplayed(guid: string,data: string[]): Promise<boolean> {
+        let arr: string[] = [];
+        const dropDown = await $(`[rx-view-component-id="${guid}"]`);
+        const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+        await browser.wait(this.EC.elementToBeClickable(dropDownBoxElement));
+        await dropDownBoxElement.click();
+        let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
+        for (var i = 0; i < drpDwnvalue; i++) {
+            var ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
+            arr[i] = ab;
+        }
+        arr = arr.sort();
+        data = data.sort();
+        return arr.length === data.length && arr.every(
+            (value, index) => (value === data[index])
+        );
+    }
+
+    async getPopUpMessage(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
         return await $(this.selectors.popUpMsgLocator).getText();
     }
 
-    async getPopUpMessages(messageNo: number) {
+    async isPopUpMessagePresent(value: string) : Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
-        return await $$(this.selectors.popUpMsgLocator).get(messageNo).getText();
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.popUpMsgLocator).count();
+            return count >= 1;
+        }));
+        let option:boolean = await element(by.cssContainingText(this.selectors.popUpMsgLocator, value)).isDisplayed();
+        return option;
     }
 
     async selectDropDownWithName(name: string, value: string): Promise<void> {

@@ -1,6 +1,7 @@
 import { $, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
 import casetemplateBlade from '../../case/select-casetemplate-blade.po';
 import utilGrid from "../../../utils/util.grid";
+import utilCommon from "../../../utils/util.common";
 
 class CaseTemplateConsole {
 
@@ -30,9 +31,7 @@ class CaseTemplateConsole {
     }
 
     async searchAndselectCaseTemplate(caseTemplateValue: string): Promise<void> {
-        await casetemplateBlade.setSearchBoxValue(caseTemplateValue);
-        browser.sleep(4000);
-        await casetemplateBlade.clickOnFirstCheckBox();
+       await utilGrid.searchAndSelectGridRecord(this.selectors.gridGUID,caseTemplateValue);
     }
     async getCaseTemplateNamePresentOnGrid(templateName: string): Promise<string> {
         await browser.wait(this.EC.visibilityOf(element(by.cssContainingText((this.selectors.gridLink), templateName))));
