@@ -3,6 +3,7 @@ import apiHelper from "../../api/api.helper";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfile from "../../pageobject/common/person-profile.po";
+import utilCommon from '../../utils/util.common';
 
 describe('Person Profile test', () => {
     beforeAll(async () => {
@@ -14,8 +15,9 @@ describe('Person Profile test', () => {
         await navigationPage.signOut();
     });
 
-    beforeEach(async () => {
+    afterEach(async () => {
         await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('DRDMV-14085: Verify Profile picture of logged in user on My profile page', async () => {

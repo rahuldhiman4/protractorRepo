@@ -33,9 +33,9 @@
     },
     "DRDMV-14087": {
         "Status": "2000",
-        "Company": "Good Times Sports Inc.",
+        "Company": "Petramco",
         "Description": "This case was created by java integration tests",
-        "Requester": "Petramco",
+        "Requester": "Elizabeth",
         "Priority": "4000",
         "Summary": "Testing case creation with maximal input data",
         "Support Group": "Compensation and Benefits",
