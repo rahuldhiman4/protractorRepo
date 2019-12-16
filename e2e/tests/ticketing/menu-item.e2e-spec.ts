@@ -38,7 +38,6 @@ describe('Menu Item', () => {
         await createMenuItems.selectStatusDropDown('Active');
         await createMenuItems.selectStatusDropDown('Inactive');
         await createMenuItems.selectStatusDropDown('Deprecated');
-        browser.sleep(5000);
         expect(await createMenuItems.isToggleButtonPresent()).toBeTruthy('Toggle Button is missing');
     });
 
@@ -51,7 +50,7 @@ describe('Menu Item', () => {
     });
 
     //kgaikwad
-    fit('DRDMV-16173: [Menu Items] - Multiple records with same name and type are not allowed', async () => {
+    it('DRDMV-16173: [Menu Items] - Multiple records with same name and type are not allowed', async () => {
         let lableRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let sourceRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let label = 'Legal' + lableRandVal;
