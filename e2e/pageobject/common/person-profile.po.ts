@@ -1,6 +1,5 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from "../../utils/util.grid";
-import utilCommon from "../../utils/util.common";
 
 class PersonProfilePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -81,16 +80,16 @@ class PersonProfilePage {
         return await $(this.selectors.activityNotes).isPresent();
     }
 
-    async isCasePresentOnRequestedCases(caseId:string): Promise<boolean>{
+    async isCasePresentOnRequestedCases(caseId: string): Promise<boolean> {
         await utilGrid.clearFilter();
         await utilGrid.searchOnGridConsole(caseId);
-        return caseId==await utilGrid.getSelectedGridRecordValue(this.selectors.requestedCasesGuid, "Case ID");
+        return caseId == await utilGrid.getSelectedGridRecordValue(this.selectors.requestedCasesGuid, "Case ID");
     }
 
-    async isCasePresentOnAssignedCases(caseId:string): Promise<boolean>{
+    async isCasePresentOnAssignedCases(caseId: string): Promise<boolean> {
         await utilGrid.clearFilter();
         await utilGrid.searchOnGridConsole(caseId);
-        return caseId==await utilGrid.getSelectedGridRecordValue(this.selectors.assignedCasesGuid, "Case ID");
+        return caseId == await utilGrid.getSelectedGridRecordValue(this.selectors.assignedCasesGuid, "Case ID");
     }
 
 }

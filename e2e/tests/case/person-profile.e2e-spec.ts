@@ -1,9 +1,8 @@
 import { browser } from "protractor";
+import apiHelper from "../../api/api.helper";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfile from "../../pageobject/common/person-profile.po";
-import apiHelper from "../../api/api.helper"
-import { async } from 'q';
 
 describe('Person Profile test', () => {
     beforeAll(async () => {
@@ -36,16 +35,16 @@ describe('Person Profile test', () => {
         await personProfile.navigateToTab("Requested Cases");
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
-        let response=await apiHelper.createCase(caseData['DRDMV-14087']);
-        let caseDisplayId= response.displayId;
+        let response = await apiHelper.createCase(caseData['DRDMV-14087']);
+        let caseDisplayId = response.displayId;
         expect(await personProfile.isCasePresentOnRequestedCases(caseDisplayId)).toBeTruthy("Case is not present");
     });
 
     it('DRDMV-14088: Verify cases visible in Assiged cases tab of My profile page are according to permissions of logged in user', async () => {
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
-        let response=await apiHelper.createCase(caseData['DRDMV-14088']);
-        let caseDisplayId= response.displayId;
+        let response = await apiHelper.createCase(caseData['DRDMV-14088']);
+        let caseDisplayId = response.displayId;
         await personProfile.navigateToTab("Assigned Cases");
         expect(await personProfile.isCasePresentOnAssignedCases(caseDisplayId)).toBeTruthy("Case is not present");
     });

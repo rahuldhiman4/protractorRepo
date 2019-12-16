@@ -22,7 +22,7 @@
     },
     "complexSurvey1": {
         "Status": "2000",
-        "Company": "Good Times Sports Inc.",
+        "Company": "Petramco",
         "Description": "This case was created by java integration tests",
         "Requester": "qtao",
         "Priority": "4000",
@@ -35,7 +35,7 @@
         "Status": "2000",
         "Company": "Good Times Sports Inc.",
         "Description": "This case was created by java integration tests",
-        "Requester": "Elizabeth",
+        "Requester": "Petramco",
         "Priority": "4000",
         "Summary": "Testing case creation with maximal input data",
         "Support Group": "Compensation and Benefits",
@@ -43,7 +43,7 @@
     },
     "DRDMV-14088": {
         "Status": "2000",
-        "Company": "Good Times Sports Inc.",
+        "Company": "Petramco",
         "Description": "This case was created by java integration tests",
         "Requester": "qkatawazi",
         "Priority": "4000",

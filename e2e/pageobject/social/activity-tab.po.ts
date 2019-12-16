@@ -93,6 +93,7 @@ class ActivityTabPage {
         await $(this.selectors.addNoteBoxEdit).sendKeys(`@${tagPerson}`);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)));
         await $(this.selectors.personPopup).click();
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clearActivityNote(): Promise<void> {
@@ -110,7 +111,6 @@ class ActivityTabPage {
     }
 
     async clickOnPostButton(): Promise<void> {
-        await utilCommon.waitUntilSpinnerToHide();
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNotePostButton)));
         await $(this.selectors.addNotePostButton).click();
         await utilCommon.waitUntilSpinnerToHide();
