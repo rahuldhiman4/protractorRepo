@@ -145,12 +145,14 @@ class NavigationPage {
                 await element(by.xpath(`//rx-administration-settings//*[text()="${menuItems[i]}"]`)).click();
             }
         }
+        await utilCommon.waitUntilSpinnerToHide();
         await browser.wait(this.EC.titleContains(expectedTitle));
         return await browser.getTitle();
     }
 
     async goToPersonProfile(): Promise<void> {
         await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
         await browser.wait(this.EC.visibilityOf($(this.selectors.profileMenu)));
         await browser.actions().mouseMove($(this.selectors.profileMenu)).perform();
         await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.signOutMenuItem, 'My Profile'))));
@@ -160,6 +162,7 @@ class NavigationPage {
 
     async signOut(): Promise<void> {
         await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
         await browser.wait(this.EC.visibilityOf($(this.selectors.profileMenu)));
         await browser.actions().mouseMove($(this.selectors.profileMenu)).perform();
         await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.signOutMenuItem, 'Sign Out'))));
