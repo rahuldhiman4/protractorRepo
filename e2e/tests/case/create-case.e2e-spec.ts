@@ -1,4 +1,4 @@
-import { browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import caseConsolePage from '../../pageobject/case/case-console.po';
 import createCasePage from "../../pageobject/case/create-case.po";
 import editCasePage from '../../pageobject/case/edit-case.po';
@@ -9,8 +9,17 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import createCaseTemplate from '../../pageobject/settings/case-management/create-casetemplate.po';
 import utilCommon from '../../utils/util.common';
+import createMenuItems from '../../pageobject/settings/application-config/create-menu-items-blade.po';
+import apiHelper from '../../api/api.helper';
+import caseConsole from '../../pageobject/case/case-console.po';
+import viewCasePo from "../../pageobject/case/view-case.po";
+import editCasePo from '../../pageobject/case/edit-case.po';
+import utilGrid from '../../utils/util.grid';
+import menuItemConsole from '../../pageobject/settings/application-config/menu-items-config-console.po';
+import editMenuItemsConfigPo from '../../pageobject/settings/application-config/edit-menu-items-config.po';
+import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 
-describe("Quick Case", () => {
+describe("Create Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     const requester = "Requester";
     const contact = "Contact";
@@ -39,6 +48,117 @@ describe("Quick Case", () => {
         await createCasePage.selectCategoryTier3('Chatter');
         await createCasePage.selectCategoryTier4('Failure');
     })
+
+    it('DRDMV-17653: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {
+        let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+        await createMenuItems.clickOnMenuOptionLink();
+        await createMenuItems.selectMenuNameDropDown('Resolution Code');
+        await createMenuItems.clickOnLocalizeLink();
+        await utilCommon.waitUntilSpinnerToHide();
+        await localizeValuePopPo.valueTextBox(randVal);
+        await localizeValuePopPo.clickOnSaveButton();
+        await createMenuItems.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
+        await utilGrid.searchRecord(randVal);
+        await navigationPage.gotoCaseConsole();
+        var caseData =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-2530",
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        var newCase1 = await apiHelper.createCase(caseData);
+        var caseId: string = newCase1.displayId;
+        await caseConsole.searchAndOpenCase(caseId);
+        expect(await $(viewCasePo.selectors.resolutionCodeText).isDisplayed()).toBeTruthy('Missing Resolution Text');
+        expect(await $(viewCasePo.selectors.resolutionDescriptionText).isDisplayed()).toBeTruthy('Missing Resolution Description Text');
+        await viewCasePo.clickEditCaseButton();
+        await editCasePo.updateResolutionCode(randVal);
+        await editCasePo.updateResolutionDescription(randVal);
+        await editCasePo.clickSaveCase();
+        await utilCommon.waitUntilSpinnerToHide();
+        await viewCasePo.changeCaseStatus('Resolved');
+        await viewCasePo.setStatusReason('Customer Follow-Up Required');
+        await viewCasePo.selectResolutionCodeDropDown(randVal);
+        expect(await viewCasePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
+        await viewCasePo.clickSaveStatus();
+        await utilCommon.waitUntilPopUpDisappear();
+        expect(await viewCasePo.getTextOfStatus()).toBe('Resolved');
+        await viewCasePo.changeCaseStatus('Closed');
+        await viewCasePo.selectResolutionCodeDropDown(randVal);
+        expect(await viewCasePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
+        await viewCasePo.clickSaveStatus();
+        await utilCommon.waitUntilPopUpDisappear();
+        expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
+    }, 130 * 1000);
+
+    it('DRDMV-18031: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
+        let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+        await createMenuItems.clickOnMenuOptionLink();
+        await createMenuItems.selectMenuNameDropDown('Resolution Code');
+        await createMenuItems.clickOnLocalizeLink();
+        await utilCommon.waitUntilSpinnerToHide();
+        await localizeValuePopPo.valueTextBox(randVal);
+        await localizeValuePopPo.clickOnSaveButton();
+        await utilCommon.waitUntilSpinnerToHide();
+        await createMenuItems.selectStatusDropDown('Active');
+        await createMenuItems.selectAvailableOnUiToggleButton(true);
+        await createMenuItems.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
+
+        await navigationPage.gotoCaseConsole();
+        var caseData1 =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-2530",
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        var newCase1 = await apiHelper.createCase(caseData1);
+        var caseId1: string = newCase1.displayId;
+        await caseConsole.searchAndOpenCase(caseId1);
+        await viewCasePo.clickEditCaseButton();
+        await editCasePo.updateResolutionCode(randVal);
+        await editCasePo.clickSaveCase();
+        await utilCommon.waitUntilSpinnerToHide();
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+        await utilCommon.waitUntilSpinnerToHide();
+        await menuItemConsole.searchAndEditMenuOption(randVal);
+        await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(false);
+        await editMenuItemsConfigPo.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
+
+        await navigationPage.gotoCaseConsole();
+        var caseData2 =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-2530",
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        var newCase2 = await apiHelper.createCase(caseData2);
+        var caseId2: string = newCase2.displayId;
+        await caseConsole.searchAndOpenCase(caseId2);
+        await viewCasePo.clickEditCaseButton();
+        expect(await editCasePo.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
+        await editCasePo.clickOnCancelCaseButton();
+        await utilCommon.clickOnWarningOk();
+        await utilCommon.waitUntilSpinnerToHide();
+        await navigationPage.gotoCaseConsole();
+        await caseConsole.searchAndOpenCase(caseId1);
+        await viewCasePo.clickEditCaseButton();
+        expect(await editCasePo.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
+    }, 180 * 1000);
 
     it('DRDMV-16081: Verify allow case reopen tag in case template', async () => {
         try {
@@ -199,6 +319,5 @@ describe("Quick Case", () => {
             await loginPage.login("qkatawazi");
         }
 
-    });
-
-})
+    })
+});
