@@ -1,7 +1,9 @@
 import { browser } from "protractor";
+import apiHelper from "../../api/api.helper";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfile from "../../pageobject/common/person-profile.po";
+import utilCommon from '../../utils/util.common';
 
 describe('Person Profile test', () => {
     beforeAll(async () => {
@@ -11,6 +13,11 @@ describe('Person Profile test', () => {
 
     afterAll(async () => {
         await navigationPage.signOut();
+    });
+
+    afterEach(async () => {
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('DRDMV-14085: Verify Profile picture of logged in user on My profile page', async () => {
@@ -24,6 +31,24 @@ describe('Person Profile test', () => {
 
     it('DRDMV-17018: Check agent can not add notes to own Person profile in agent work history tab', async () => {
         expect(await personProfile.isActivityNotesDisplayed()).toBeFalsy("Activity Notes are available");
+    });
+
+    it('DRDMV-14087: Verify cases visible in Requested cases tab of My profile page are according to permissions of logged in user', async () => {
+        await personProfile.navigateToTab("Requested Cases");
+        await apiHelper.apiLogin("qtao");
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['DRDMV-14087']);
+        let caseDisplayId = response.displayId;
+        expect(await personProfile.isCasePresentOnRequestedCases(caseDisplayId)).toBeTruthy("Case is not present");
+    });
+
+    it('DRDMV-14088: Verify cases visible in Assiged cases tab of My profile page are according to permissions of logged in user', async () => {
+        await apiHelper.apiLogin("qtao");
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['DRDMV-14088']);
+        let caseDisplayId = response.displayId;
+        await personProfile.navigateToTab("Assigned Cases");
+        expect(await personProfile.isCasePresentOnAssignedCases(caseDisplayId)).toBeTruthy("Case is not present");
     });
 
     it('DRDMV-14023: Verify My Profile Console', async () => {

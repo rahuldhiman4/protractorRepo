@@ -54,7 +54,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
-    });
+    }, 90 * 1000);
 
     it('DRDMV-16010 : [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {
         await navigationPage.gotoCaseConsole();
@@ -175,19 +175,20 @@ describe('Notes template', () => {
             await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
             await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
             await editNotetemplate.clickOnCancelButton();
-            await browser.sleep(1000);
+            await utilCommon.waitUntilSpinnerToHide();
             await consoleNotesTemplate.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
             await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
         }
         catch (e) {
-            console.log(e)
+            expect(false).toBeTruthy();
+            console.log(e);
         }
         finally {
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
         }
-    },120*1000);
+    }, 120 * 1000);
 
     it('DRDMV-15999 : [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
         await navigationPage.gotoSettingsPage();
@@ -196,6 +197,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnCreateNotesTemplate();
         await expect(createNotesTemplate.isSaveButtonDisabled()).toBeFalsy();
         await expect(createNotesTemplate.isCreateNotesTemplateUIPresent()).toBeTruthy();
+        await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows')).toEqual('Activity Notes Template Console - Person - Business Workflows');
@@ -203,6 +205,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnCreateNotesTemplate();
         await expect(createNotesTemplate.isSaveButtonDisabled()).toBeFalsy();
         await expect(createNotesTemplate.isCreateNotesTemplateUIPresent()).toBeTruthy();
+        await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows')).toEqual('Activity Notes Template Console - Task - Business Workflows');
@@ -210,6 +213,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnCreateNotesTemplate();
         await expect(createNotesTemplate.isSaveButtonDisabled()).toBeFalsy();
         await expect(createNotesTemplate.isCreateNotesTemplateUIPresent()).toBeTruthy();
+        await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows')).toEqual('Activity Notes Template Console - Knowledge - Business Workflows');
@@ -217,6 +221,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnCreateNotesTemplate();
         await expect(createNotesTemplate.isSaveButtonDisabled()).toBeFalsy();
         await expect(createNotesTemplate.isCreateNotesTemplateUIPresent()).toBeTruthy();
+        await utilCommon.waitUntilSpinnerToHide();
     }, 200 * 1000);
 
     it('DRDMV-16111 : [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
@@ -228,6 +233,7 @@ describe('Notes template', () => {
         await expect(editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.')
         await editNotetemplate.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
+        await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows')).toEqual('Activity Notes Template Console - Person - Business Workflows');
@@ -237,6 +243,7 @@ describe('Notes template', () => {
         await expect(editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.')
         await editNotetemplate.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
+        await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows')).toEqual('Activity Notes Template Console - Task - Business Workflows');
@@ -246,6 +253,7 @@ describe('Notes template', () => {
         await expect(editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.')
         await editNotetemplate.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
+        await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows')).toEqual('Activity Notes Template Console - Knowledge - Business Workflows');
@@ -255,6 +263,7 @@ describe('Notes template', () => {
         await expect(editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.')
         await editNotetemplate.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
+        await utilCommon.waitUntilSpinnerToHide();
     }, 200 * 1000);
 
     it('DRDMV-16040 :[Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case ( one at a time can post)', async () => {
@@ -356,6 +365,7 @@ describe('Notes template', () => {
             expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
         }
         catch (e) {
+            expect(false).toBeTruthy();
             console.log(e);
         }
         finally {
@@ -400,7 +410,7 @@ describe('Notes template', () => {
             await utilGrid.searchAndOpenHyperlink(displayId);
             await viewCasePage.clickAddTaskButton();
             await viewCasePage.addTaskFromTaskTemplate(taskTemplateName);
-            await browser.sleep(2000);
+            await utilCommon.waitUntilSpinnerToHide();
             await manageTask.clickTaskLinkOnManageTask(manualTaskSummary);
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
@@ -409,6 +419,7 @@ describe('Notes template', () => {
             await activityTabPo.clickOnPostButton();
             expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
         } catch (e) {
+            expect(false).toBeTruthy();
             console.log(e);
         }
         finally {
