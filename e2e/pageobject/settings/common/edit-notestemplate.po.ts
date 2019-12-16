@@ -89,14 +89,14 @@ class editNotesTemplate {
         return await $(this.selectors.localMessageVerification).getText();
     }
 
-    async isStatusFieldDisabled(): Promise<boolean> {
+    async isStatusFieldEnabled(): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
-        return await $(this.selectors.editStatus).getAttribute("disabled") == "true";
+        return await $(this.selectors.editStatus).isEnabled();
     }
 
-    async isDescriptionFieldDisabled(): Promise<boolean> {
+    async isDescriptionFieldEnabled(): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
-        return await $(this.selectors.editDescription).getAttribute("disabled") == "true";
+        return await $(this.selectors.editDescription).isEnabled();
     }
 
 }
