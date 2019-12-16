@@ -42,6 +42,8 @@ class AutomatedStatusTransitionConfigCreatePage {
     async saveConfig(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
+        await commonUtil.waitUntilPopUpDisappear();
+        await commonUtil.waitUntilSpinnerToHide();
     }
 
     async createAutomatedStatusTransition(data: Map<string, string>): Promise<void> {
