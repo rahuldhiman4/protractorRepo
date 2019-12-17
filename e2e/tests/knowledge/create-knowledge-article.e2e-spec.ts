@@ -4,6 +4,7 @@ import apiHelper from '../../api/api.helper';
 import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import KnowledgeConsolePage from "../../pageobject/knowledge/console-knowledge.po";
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePage from "../../pageobject/knowledge/edit-knowledge.po";
 import utilCommon from '../../utils/util.common';
@@ -239,44 +240,42 @@ describe('Knowledge Article', () => {
     }
 
     it('DRDMV-19501: On Create KA, Agent having access to multiple support groups on "Assign to me" click should process properly on KA', async () => {
-        try{
-        let businessData2 = businessDataFile['BusinessUnitData19501'];
-        let departmentData2 = departmentDataFile['DepartmentData19501'];
-        let suppGrpData2 = supportGrpDataFile['SuppGrpData19501'];
-        let personData = personDataFile['PersonData'];  //This person is associated to 2 given support grps as created is beforeall method
-        let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
-        let knowledgeData = knowledgeDataFile['DRDMV-19501'];
-        await navigationPage.signOut();
-        await loginPage.loginWithCredentials(personData.userId + "@petramco.com", 'Password_1234');
-        await navigationPage.gotoCreateKnowledge();
-        await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
-        await createKnowledgePage.clickOnUseSelectedTemplateButton();
-        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-        await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
-        await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Assigned Company');
-        await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Business Unit');
-        await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Department');
-        await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Assigned Group');
-        await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Assigned To');
-        await createKnowledgePage.clickAssignToMeButton();
-        await changeAssignmentBlade.verifyMultipleSupportGrpMessageDisplayed();
-        await changeAssignmentBlade.selectCompany(knowledgeData.Company);
-        await changeAssignmentBlade.selectBusinessUnit(businessData2.orgName);
-        await changeAssignmentBlade.selectDepartment(departmentData2.orgName);
-        await changeAssignmentBlade.selectSupportGroup(suppGrpData2.orgName);
-        await changeAssignmentBlade.clickOnAssignButton();
-        await createKnowledgePage.clickOnSaveKnowledgeButton();
-    }
-    catch (Error) {
-        console.log(Error);
-    }
-    finally {
-        await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
-        await navigationPage.signOut();
-        await loginPage.login('peter');
-    }
-    },(160*1000));
+        try {
+            let businessData2 = businessDataFile['BusinessUnitData19501'];
+            let departmentData2 = departmentDataFile['DepartmentData19501'];
+            let suppGrpData2 = supportGrpDataFile['SuppGrpData19501'];
+            let personData = personDataFile['PersonData'];  //This person is associated to 2 given support grps as created is beforeall method
+            let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
+            let knowledgeData = knowledgeDataFile['DRDMV-19501'];
+            await navigationPage.signOut();
+            await loginPage.loginWithCredentials(personData.userId + "@petramco.com", 'Password_1234');
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Assigned Company');
+            await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Business Unit');
+            await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Department');
+            await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Assigned Group');
+            await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Assigned To');
+            await createKnowledgePage.clickAssignToMeButton();
+            await changeAssignmentBlade.verifyMultipleSupportGrpMessageDisplayed();
+            await changeAssignmentBlade.selectCompany(knowledgeData.Company);
+            await changeAssignmentBlade.selectBusinessUnit(businessData2.orgName);
+            await changeAssignmentBlade.selectDepartment(departmentData2.orgName);
+            await changeAssignmentBlade.selectSupportGroup(suppGrpData2.orgName);
+            await changeAssignmentBlade.clickOnAssignButton();
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+        }
+        catch (Error) {
+            console.log(Error);
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        }
+    }, (160 * 1000));
 
     async function foundationData19082(company: string) {
         await apiHelper.apiLogin('tadmin');
@@ -298,8 +297,8 @@ describe('Knowledge Article', () => {
         await apiHelper.associatePersonToCompany(personData.userId, company)
     }
 
-   it('DRDMV-19082: Domain config should be honored while Assigning Assignee and Reviewer', async () => {
-       //All below BU, Dep and Supp grps are tagged to DomainName
+    it('DRDMV-19082: Domain config should be honored while Assigning Assignee and Reviewer', async () => {
+        //All below BU, Dep and Supp grps are tagged to DomainName
         let businessData = businessDataFile['BusinessUnitData19082'];
         let departmentData = departmentDataFile['DepartmentData19082'];
         let suppGrpData = supportGrpDataFile['SuppGrpData19082'];
@@ -321,4 +320,33 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.clickOnSaveKnowledgeButton();
     });
 
+    it('DRDMV-799,DRDMV-788: [KM-BWF integration] [Knowledge Article] Mandatory fields of the Create Knowledge Article view', async () => {
+        try {
+            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let knowledgeTitle: string = 'Knowledge Template' + randomStr;
+
+            await loginPage.login('fritz');
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await expect(createKnowledgePage.isKnowledgeTitleRequired()).toBeTruthy(" Required Text is not present in knowledge title");
+            await expect(createKnowledgePage.is\KnowledgeSetRequired()).toBeTruthy("Required Text is not present in knowledge Set");
+            await expect(createKnowledgePage.isAuthorRequired()).toBeTruthy("Required Text is not present in author");
+            await expect(createKnowledgePage.isSaveButtonEnabled());
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
+            await createKnowledgePage.selectKnowledgeSet('HR');
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await createKnowledgePage.clickBackButton();
+            await navigationPage.gotoKnowledgeConsole();
+            await KnowledgeConsolePage.searchKnowledgeArticle(knowledgeTitle);
+            await expect(KnowledgeConsolePage.isArticleIdDisplayed()).toBeTruthy("Knowledge Article is not displayed");
+           
+        } catch (Error) {
+            console.log(Error);
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        }
+    });
 })

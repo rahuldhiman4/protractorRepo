@@ -17,10 +17,11 @@ class AddRelatedCasesPopupPage {
     async clickSaveButton() {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
+        util.waitUntilSpinnerToHide();
     }
 
-    async searchAndSelectPerson(caseId: string): Promise<void> {
-        await gridUtil.searchAndSelectAllCheckBoxWOGrid(caseId);
+    async searchAndSelectEntity(caseId: string): Promise<void> {
+        await gridUtil.searchAndSelectGridRecord(caseId);
     }
 
     async selectRelationshipType(relationshipType: string) {
@@ -28,7 +29,7 @@ class AddRelatedCasesPopupPage {
     }
 
     async addRelatedCase(caseId: string, relation: string) {
-        await this.searchAndSelectPerson(caseId);
+        await this.searchAndSelectEntity(caseId);
         await this.clickNextButton();
         await this.selectRelationshipType(relation);
         await this.clickSaveButton();

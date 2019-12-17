@@ -92,10 +92,6 @@ class PersonProfilePage {
         return caseId == await utilGrid.getSelectedGridRecordValue(this.selectors.assignedCasesGuid, "Case ID");
     }
 
-    async isRequestedColumnSorted(column:string, sortType: string): Promise<boolean>{
-        return await utilGrid.isGridColumnSorted(column, sortType, this.selectors.reqguid);
-    }
-
 }
 
 export default new PersonProfilePage();
