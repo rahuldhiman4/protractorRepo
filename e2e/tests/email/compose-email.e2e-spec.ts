@@ -7,6 +7,8 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import composeMail from '../../pageobject/email/compose-mail.po';
 import utilCommon from "../../utils/util.common";
+import utilGrid from '../../utils/util.grid';
+import selectEmailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
 
 
 describe("compose email", () => {
@@ -57,7 +59,7 @@ describe("compose email", () => {
         expect(await composeMail.isDiscardButtonPresent()).toBeTruthy('Discard Button is missing');
         await composeMail.CloseComposeEmail();
         await viewCasePo.isEmailLinkPresent();
-        
+
         await navigationPage.gotoQuickCase();
         await quickCase.setAndSelectRequesterName('adam');
         await quickCase.setCaseSummary('new case');
@@ -97,5 +99,25 @@ describe("compose email", () => {
         await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnDiscardButton();
         expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?');
+    })
+
+    it('DRDMV-10453: Email Template grid columns', async () => {
+        await navigationPage.gotoCaseConsole();
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        var caseData =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-8377RandVal" + summary,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        var newCase = await apiHelper.createCase(caseData);
+        var caseId: string = newCase.displayId;
+        await caseConsole.searchAndOpenCase(caseId);
+        expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
+        await viewCasePo.clickOnEmailLink();
+        await composeMail.clickOnSelectEmailTemplateLink();
+        expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('Message Subject')).toBe('Message Subject');
     })
 })

@@ -18,6 +18,12 @@ class ComposeMail {
         getTextOfWarningMsg: '.d-modal__dialog .d-modal__content-item',
     }
 
+    async clickOnSelectEmailTemplateLink(): Promise<void> {
+        let commonIdstr = $(this.selectors.commonId);
+        await browser.wait(this.EC.elementToBeClickable(commonIdstr.$(this.selectors.selectEmailTemplateLink)));
+        await (commonIdstr.$(this.selectors.selectEmailTemplateLink)).click();
+    }
+    
     async getTextOfDiscardButtonWarningMessage(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.getTextOfWarningMsg)));
         return await $(this.selectors.getTextOfWarningMsg).getText();        
@@ -67,7 +73,7 @@ class ComposeMail {
         let commonIdstr = $(this.selectors.commonId);
         await browser.wait(this.EC.elementToBeClickable(commonIdstr.$(this.selectors.selectEmailTemplateLink)));
         return await (commonIdstr.$(this.selectors.selectEmailTemplateLink)).isEnabled();
-    }
+    }    
 
     async isMessageBodyFontPannelBarPresent(): Promise<boolean> {
         let commonIdstr = $(this.selectors.commonId);
