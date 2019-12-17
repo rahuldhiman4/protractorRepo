@@ -7,6 +7,7 @@ class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
+        emailLink:'[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
         categoryTier1Value: '[rx-view-component-id="593784cc-6bce-4bfd-82e1-7ca55aa28517"] p',
         categoryTier2Value: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] p',
         categoryTier3Value: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] p',
@@ -49,6 +50,17 @@ class ViewCasePage {
         emptyResolutionDescriptionTextBox: '.d-textfield__label .ng-empty',
         resolutionCodeDropDownGuid: 'fb07b5ff-3c9b-454a-8b0c-a1dfd9987856',
         priority: '.selection-field',
+    }
+
+    async isEmailLinkPresent(): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
+        return await ($(this.selectors.emailLink)).isEnabled();
+    }
+
+    async clickOnEmailLink(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
+        await ($(this.selectors.emailLink)).click();
+        // await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isResolutionDescriptionTextBoxEmpty(): Promise<boolean> {
