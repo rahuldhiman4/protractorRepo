@@ -188,7 +188,7 @@ describe('Case Status Change', () => {
     });
 
     //kgaikwad
-    fit('DRDMV-1233: [Case Status Reason] Status Reason change without status transition', async () => {
+    it('DRDMV-1233: [Case Status Reason] Status Reason change without status transition', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
