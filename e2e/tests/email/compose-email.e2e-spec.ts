@@ -56,8 +56,8 @@ describe("compose email", () => {
         expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
         expect(await composeMail.isDiscardButtonPresent()).toBeTruthy('Discard Button is missing');
         await composeMail.CloseComposeEmail();
-        await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
+        await viewCasePo.isEmailLinkPresent();
+        
         await navigationPage.gotoQuickCase();
         await quickCase.setAndSelectRequesterName('adam');
         await quickCase.setCaseSummary('new case');
