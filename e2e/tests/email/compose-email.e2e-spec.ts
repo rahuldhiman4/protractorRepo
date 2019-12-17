@@ -1,13 +1,13 @@
 import { browser, protractor, ProtractorExpectedConditions } from "protractor";
+import apiHelper from '../../api/api.helper';
+import caseConsole from '../../pageobject/case/case-console.po';
 import quickCase from "../../pageobject/case/quick-case.po";
+import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import utilCommon from "../../utils/util.common"
-import apiHelper from '../../api/api.helper';
 import composeMail from '../../pageobject/email/compose-mail.po';
-import caseConsole from '../../pageobject/case/case-console.po';
-import viewCasePo from '../../pageobject/case/view-case.po';
- 
+import utilCommon from "../../utils/util.common";
+
 
 describe("compose email", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -35,7 +35,7 @@ describe("compose email", () => {
         var caseData =
         {
             "Requester": "qtao",
-            "Summary": "Test case for DRDMV-8377RandVal"+summary,
+            "Summary": "Test case for DRDMV-8377RandVal" + summary,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
@@ -44,18 +44,18 @@ describe("compose email", () => {
         var caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
-        await viewCasePo.clickOnEmailLink(); 
+        await viewCasePo.clickOnEmailLink();
         expect(await composeMail.isComposeEmailTitlePreset('Compose Email')).toBeTruthy('Compose email title missing');
         expect(await composeMail.isToPresent()).toBeTruthy('To title missing');
         expect(await composeMail.isCcPresent()).toBeTruthy('Cc title missing');
         expect(await composeMail.isSubjectPresent()).toBeTruthy('Subject title missing');
-        expect(await composeMail.getTextOfSubject()).toBe(caseId +":  ");
+        expect(await composeMail.getTextOfSubject()).toBe(caseId + ":  ");
         expect(await composeMail.isSelectEmailTemplateLinkPresent()).toBeTruthy('SelectEmailTemplateLink is missing');
         expect(await composeMail.isMessageBodyFontPannelBarPresent()).toBeTruthy('MessageBodyFontPannelBar is missing');
         expect(await composeMail.isAttachLinkPresent()).toBeTruthy('Attach Link is  missing');
         expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
         expect(await composeMail.isDiscardButtonPresent()).toBeTruthy('Discard Button is missing');
-        await composeMail.CloseComposeEmail(); 
+        await composeMail.CloseComposeEmail();
         await browser.refresh();
         await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoQuickCase();
@@ -64,19 +64,19 @@ describe("compose email", () => {
         await quickCase.createCaseButton();
         await utilCommon.closePopUpMessage();
         await quickCase.gotoCaseButton();
-        var quickCaseId:string= await viewCasePo.getCaseID();
+        var quickCaseId: string = await viewCasePo.getCaseID();
         await viewCasePo.clickOnEmailLink();
         expect(await composeMail.isComposeEmailTitlePreset('Compose Email')).toBeTruthy('Compose email title missing');
         expect(await composeMail.isToPresent()).toBeTruthy('To title missing');
         expect(await composeMail.isCcPresent()).toBeTruthy('Cc title missing');
         expect(await composeMail.isSubjectPresent()).toBeTruthy('Subject title missing');
-        expect(await composeMail.getTextOfSubject()).toBe(quickCaseId +":  ");
+        expect(await composeMail.getTextOfSubject()).toBe(quickCaseId + ":  ");
         expect(await composeMail.isSelectEmailTemplateLinkPresent()).toBeTruthy('SelectEmailTemplateLink is missing');
         expect(await composeMail.isMessageBodyFontPannelBarPresent()).toBeTruthy('MessageBodyFontPannelBar is missing');
         expect(await composeMail.isAttachLinkPresent()).toBeTruthy('Attach Link is  missing');
         expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
         expect(await composeMail.isDiscardButtonPresent()).toBeTruthy('Discard Button is missing');
-        await composeMail.CloseComposeEmail();          
+        await composeMail.CloseComposeEmail();
     })
 
     it('DRDMV-8391: Negative:Compose email discard changes validation', async () => {
@@ -85,7 +85,7 @@ describe("compose email", () => {
         var caseData =
         {
             "Requester": "qtao",
-            "Summary": "Test case for DRDMV-8377RandVal"+summary,
+            "Summary": "Test case for DRDMV-8377RandVal" + summary,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
@@ -94,7 +94,7 @@ describe("compose email", () => {
         var caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
-        await viewCasePo.clickOnEmailLink(); 
+        await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnDiscardButton();
         expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?');
     })
