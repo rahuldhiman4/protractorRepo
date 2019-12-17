@@ -143,7 +143,7 @@ export class GridOperation {
         columnPosition = columnPosition + 1;
         var gridRows: number = await element.all(by.xpath(gridRecords)).count();
         if (gridRows > 0) {
-            let gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[1]/div[${columnPosition}]/div`;
+            let gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[2]/div[${columnPosition}]/div`;
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(gridRecordCellValue))));
             gridRecord = await element(by.xpath(gridRecordCellValue)).getText();
         } else {
