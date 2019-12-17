@@ -4,6 +4,7 @@ import utilCommon from '../../utils/util.common';
 class CreateKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        backButton: '[rx-view-component-id="88ec72f0-2c65-4640-9455-54b6db3517f2"] button',
         clickOnReferenceTemplate: '[rx-view-component-id="6e402c66-fcdc-464b-b6e7-7e963d9c3a17"] .sectionsName',
         knowledgeTitleEditBox: '[rx-view-component-id="291bf2bb-1eac-404e-94ba-762a50da5ac9"] .ng-pristine',
         saveKnowlegeButton: '[rx-view-component-id="2fdb0ffb-560d-46b4-b7af-379d90bcb0a8"] .d-button',
@@ -12,7 +13,9 @@ class CreateKnowledgePage {
         knowledgeSet: '7f2de840-20ec-47e8-805f-4db8edc1b5f4',
         assignToMeBtn: '[rx-view-component-id="8cb384cb-598d-46f4-a858-08111a6c51bd"] .assign-to-me-component .d-button',
         docEditorSection: '.doc-editor__section',
-        knowledgeMetadataSection: '[rx-view-component-id="830947fd-773e-4a70-860a-98893c9b36b4"] .d-textfield'
+        knowledgeMetadataSection: '[rx-view-component-id="830947fd-773e-4a70-860a-98893c9b36b4"] .d-textfield',
+        knowledgeSetRequiedtext: '[name="knowledgeSet"]',
+        authorRequiredText: '[rx-view-component-id="cbf446b0-c8f6-433e-9a8e-b9a30f7ab79c"] .d-textfield__input',
     }
 
     async clickOnTemplate(TemplateName: string): Promise<void> {
@@ -37,6 +40,7 @@ class CreateKnowledgePage {
     async clickOnSaveKnowledgeButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveKnowlegeButton)));
         await $(this.selectors.saveKnowlegeButton).click();
+        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async verifyAssignmentFieldsPresentAndDisabled(fldName: String): Promise<void> {
@@ -61,6 +65,26 @@ class CreateKnowledgePage {
         await $$(this.selectors.activityTab).last().click();
     }
 
+    async isKnowledgeTitleRequired(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeTitleEditBox)));
+        return await $(this.selectors.knowledgeTitleEditBox).getAttribute("required")=="true";
+    }
+
+    async isKnowledgeSetRequired(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeSetRequiedtext)));
+        return await $(this.selectors.knowledgeSetRequiedtext).getAttribute("required")=="true";
+    }
+
+    async isAuthorRequired(): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.authorRequiredText).last()));
+        return await $(this.selectors.knowledgeSetRequiedtext).getAttribute("is-required")=="true";
+    }
+
+    async isSaveButtonEnabled(): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveKnowlegeButton)));
+       return await $(this.selectors.saveKnowlegeButton).isEnabled();
+    }
+
     async clickChangeAssignmentButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Change Assignment'))));
         await element(by.buttonText('Change Assignment')).click();
@@ -69,6 +93,12 @@ class CreateKnowledgePage {
     async clickAssignToMeButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMeBtn)));
         await $(this.selectors.assignToMeBtn).click();
+    }
+
+    async clickBackButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
+        await $(this.selectors.backButton).click();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.saveKnowlegeButton)));
     }
 }
 
