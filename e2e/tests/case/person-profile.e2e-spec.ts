@@ -4,11 +4,13 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfile from "../../pageobject/common/person-profile.po";
 import utilCommon from '../../utils/util.common';
+import activityTabPage from '../../pageobject/social/activity-tab.po';
 
 describe('Person Profile test', () => {
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('elizabeth');
+        await navigationPage.goToPersonProfile();
     });
 
     afterAll(async () => {
@@ -21,7 +23,6 @@ describe('Person Profile test', () => {
     });
 
     it('DRDMV-14085: Verify Profile picture of logged in user on My profile page', async () => {
-        await navigationPage.goToPersonProfile();
         expect(await personProfile.isPersonProfileImageDisplayed()).toBeTruthy("Person Profile image is not displayed");
     });
 
@@ -75,6 +76,31 @@ describe('Person Profile test', () => {
         await personProfile.navigateToTab("Support Groups");
         await personProfile.navigateToTab("Related Cases");
         await personProfile.navigateToTab("Related Persons");
+    });
+
+    it('DRDMV-17020: Check agent can view the notes of other agents Person profile in agent work history tab for which he is submitter of the note', async () => {
+        await activityTabPage.addActivityNote("DRDMV-17020");
+        await activityTabPage.clickOnPostButton();
+        expect(await activityTabPage.isTextPresentInActivityLog("DRDMV-17020")).toBeTruthy("Activity notes is missing");
+    });
+
+    it('DRDMV-17019: Check agent cannot view notes to own Person profile in agent work history tab', async () => {
+        await activityTabPage.addActivityNote("DRDMV-17019");
+        await activityTabPage.clickOnPostButton();
+        try {
+            await navigationPage.signOut();
+            await loginPage.login("hannah");
+            await navigationPage.goToPersonProfile();
+            expect(await activityTabPage.isTextPresentInActivityLog("DRDMV-17019")).toBeFalsy("Notes are avaialble on Hannah's Profile");
+        }
+        catch (e) {
+            console.log(e);
+            expect(false).toBeTruthy();
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login("elizabeth");
+        }
     });
 
 })
