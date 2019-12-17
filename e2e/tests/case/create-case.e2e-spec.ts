@@ -1,23 +1,20 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import caseConsolePage from '../../pageobject/case/case-console.po';
+import apiHelper from '../../api/api.helper';
+import caseConsolePagePage from '../../pageobject/case/case-console.po';
 import createCasePage from "../../pageobject/case/create-case.po";
 import editCasePage from '../../pageobject/case/edit-case.po';
 import selectCaseTemplateBlade from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
+import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import createMenuItems from '../../pageobject/settings/application-config/create-menu-items-blade.po';
+import editMenuItemsConfigPo from '../../pageobject/settings/application-config/edit-menu-items-config.po';
+import menuItemConsole from '../../pageobject/settings/application-config/menu-items-config-console.po';
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import createCaseTemplate from '../../pageobject/settings/case-management/create-casetemplate.po';
 import utilCommon from '../../utils/util.common';
-import createMenuItems from '../../pageobject/settings/application-config/create-menu-items-blade.po';
-import apiHelper from '../../api/api.helper';
-import caseConsole from '../../pageobject/case/case-console.po';
-import viewCasePo from "../../pageobject/case/view-case.po";
-import editCasePo from '../../pageobject/case/edit-case.po';
 import utilGrid from '../../utils/util.grid';
-import menuItemConsole from '../../pageobject/settings/application-config/menu-items-config-console.po';
-import editMenuItemsConfigPo from '../../pageobject/settings/application-config/edit-menu-items-config.po';
-import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 
 describe("Create Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -73,27 +70,27 @@ describe("Create Case", () => {
         await apiHelper.apiLogin('qkatawazi');
         var newCase1 = await apiHelper.createCase(caseData);
         var caseId: string = newCase1.displayId;
-        await caseConsole.searchAndOpenCase(caseId);
-        expect(await $(viewCasePo.selectors.resolutionCodeText).isDisplayed()).toBeTruthy('Missing Resolution Text');
-        expect(await $(viewCasePo.selectors.resolutionDescriptionText).isDisplayed()).toBeTruthy('Missing Resolution Description Text');
-        await viewCasePo.clickEditCaseButton();
-        await editCasePo.updateResolutionCode(randVal);
-        await editCasePo.updateResolutionDescription(randVal);
-        await editCasePo.clickSaveCase();
+        await caseConsolePage.searchAndOpenCase(caseId);
+        expect(await $(viewCasePage.selectors.resolutionCodeText).isDisplayed()).toBeTruthy('Missing Resolution Text');
+        expect(await $(viewCasePage.selectors.resolutionDescriptionText).isDisplayed()).toBeTruthy('Missing Resolution Description Text');
+        await viewCasePage.clickEditCaseButton();
+        await editCasePage.updateResolutionCode(randVal);
+        await editCasePage.updateResolutionDescription(randVal);
+        await editCasePage.clickSaveCase();
         await utilCommon.waitUntilSpinnerToHide();
-        await viewCasePo.changeCaseStatus('Resolved');
-        await viewCasePo.setStatusReason('Customer Follow-Up Required');
-        await viewCasePo.selectResolutionCodeDropDown(randVal);
-        expect(await viewCasePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
-        await viewCasePo.clickSaveStatus();
+        await viewCasePage.changeCaseStatus('Resolved');
+        await viewCasePage.setStatusReason('Customer Follow-Up Required');
+        await viewCasePage.selectResolutionCodeDropDown(randVal);
+        expect(await viewCasePage.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
+        await viewCasePage.clickSaveStatus();
         await utilCommon.waitUntilPopUpDisappear();
-        expect(await viewCasePo.getTextOfStatus()).toBe('Resolved');
-        await viewCasePo.changeCaseStatus('Closed');
-        await viewCasePo.selectResolutionCodeDropDown(randVal);
-        expect(await viewCasePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
-        await viewCasePo.clickSaveStatus();
+        expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
+        await viewCasePage.changeCaseStatus('Closed');
+        await viewCasePage.selectResolutionCodeDropDown(randVal);
+        expect(await viewCasePage.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
+        await viewCasePage.clickSaveStatus();
         await utilCommon.waitUntilPopUpDisappear();
-        expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
+        expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
     }, 130 * 1000);
 
     it('DRDMV-18031: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
@@ -123,10 +120,10 @@ describe("Create Case", () => {
         await apiHelper.apiLogin('qkatawazi');
         var newCase1 = await apiHelper.createCase(caseData1);
         var caseId1: string = newCase1.displayId;
-        await caseConsole.searchAndOpenCase(caseId1);
-        await viewCasePo.clickEditCaseButton();
-        await editCasePo.updateResolutionCode(randVal);
-        await editCasePo.clickSaveCase();
+        await caseConsolePage.searchAndOpenCase(caseId1);
+        await viewCasePage.clickEditCaseButton();
+        await editCasePage.updateResolutionCode(randVal);
+        await editCasePage.clickSaveCase();
         await utilCommon.waitUntilSpinnerToHide();
 
         await navigationPage.gotoSettingsPage();
@@ -148,16 +145,16 @@ describe("Create Case", () => {
         await apiHelper.apiLogin('qkatawazi');
         var newCase2 = await apiHelper.createCase(caseData2);
         var caseId2: string = newCase2.displayId;
-        await caseConsole.searchAndOpenCase(caseId2);
-        await viewCasePo.clickEditCaseButton();
-        expect(await editCasePo.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
-        await editCasePo.clickOnCancelCaseButton();
+        await caseConsolePage.searchAndOpenCase(caseId2);
+        await viewCasePage.clickEditCaseButton();
+        expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
+        await editCasePage.clickOnCancelCaseButton();
         await utilCommon.clickOnWarningOk();
         await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
-        await caseConsole.searchAndOpenCase(caseId1);
-        await viewCasePo.clickEditCaseButton();
-        expect(await editCasePo.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
+        await caseConsolePage.searchAndOpenCase(caseId1);
+        await viewCasePage.clickEditCaseButton();
+        expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
     }, 180 * 1000);
 
     it('DRDMV-16081: Verify allow case reopen tag in case template', async () => {
@@ -258,8 +255,8 @@ describe("Create Case", () => {
             await createCasePage.clickGoToCaseButton();
             await expect(viewCasePage.getPriorityValue()).toBe('Medium');
             await navigationPage.gotoCaseConsole();
-            await caseConsolePage.setCaseSearchBoxValue(caseSummary);
-            await expect(caseConsolePage.isCaseIdHyperlinked()).toBeTruthy('Unable to find the created case');
+            await caseConsolePagePage.setCaseSearchBoxValue(caseSummary);
+            await expect(caseConsolePagePage.isCaseIdHyperlinked()).toBeTruthy('Unable to find the created case');
         } catch (error) {
             console.log(error);
             await expect(true).toBeFalsy();
@@ -308,8 +305,8 @@ describe("Create Case", () => {
             await expect(viewCasePage.getCategoryTier2Value()).toBe('Social');
             await expect(viewCasePage.getCategoryTier3Value()).toBe('Chatter');
             await navigationPage.gotoCaseConsole();
-            await caseConsolePage.setCaseSearchBoxValue(caseSummary);
-            await expect(caseConsolePage.isCaseIdHyperlinked()).toBeTruthy('Unable to find the created case');
+            await caseConsolePagePage.setCaseSearchBoxValue(caseSummary);
+            await expect(caseConsolePagePage.isCaseIdHyperlinked()).toBeTruthy('Unable to find the created case');
         } catch (error) {
             console.log(error);
             await expect(true).toBeFalsy();
