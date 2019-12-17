@@ -49,8 +49,8 @@ class CaseConsolePage {
     }
 
     async isCaseIdPresent(caseId: string): Promise<boolean> {
-        let priorityValue = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Case ID');
-        return caseId === priorityValue;
+        let caseIDfromGrid = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Case ID');
+        return caseId === caseIDfromGrid;
     }
 
     async isCasePriorityPresent(priority: string): Promise<boolean> {
@@ -59,16 +59,14 @@ class CaseConsolePage {
     }
 
     async isCaseStatusPresent(status: string): Promise<boolean> {
-        let priorityValue = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Status');
-        return status === priorityValue;
-
+        let caseStatus = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Status');
+        return status === caseStatus;
     }
 
     async isCaseSummaryPresent(summary: string): Promise<boolean> {
-        let priorityValue = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Summary');
-        return summary === priorityValue;
+        let caseSummary = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Summary');
+        return summary === caseSummary;
     }
-
 }
 
 export default new CaseConsolePage();

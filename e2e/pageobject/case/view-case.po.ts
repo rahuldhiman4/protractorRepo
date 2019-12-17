@@ -17,6 +17,8 @@ class ViewCasePage {
         statusChange: '[rx-view-component-id="48bbcbbf-564c-4d46-8dc2-1e7670c187ff"] .status-transition',
         statusChangeReason: '[rx-view-component-id="049c43a1-4cbd-482d-980d-5db4ed78f295"]',
         statusDropDown: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"]',
+        statusDropDownGuid: '3c8d9278-fc1f-430c-b866-cdc9d217318b',
+        statusChangeReasonGuid: '049c43a1-4cbd-482d-980d-5db4ed78f295',
         statusList: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"] .ui-select__rx-choice',
         statusDisplay: '[aria-label="Status activate"]',
         coreTaskArrow: '[rx-view-component-id="0733a05e-2eea-4fe5-90a8-909238dc6389"] i',
@@ -129,10 +131,12 @@ class ViewCasePage {
         await $(this.selectors.addToWatchlist).click();
     }
 
-    async clickSaveStatus(): Promise<void> {
+    async clickSaveStatus(expectedStatus?: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveUpdateStatus)));
         await $(this.selectors.saveUpdateStatus).click();
-        await utilCommon.waitUntilPopUpDisappear();
+        if (expectedStatus) {
+            await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.statusChange, expectedStatus))));
+        }
     }
 
     async isEditLinkDisplay(): Promise<boolean> {
@@ -152,10 +156,7 @@ class ViewCasePage {
     async changeCaseStatus(statusValue: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
-        const statusUpdate = $(this.selectors.statusDropDown);
-        await browser.wait(this.EC.elementToBeClickable(statusUpdate.$('[aria-label="Status activate"]')));
-        await (statusUpdate.$('[aria-label="Status activate"]')).click();
-        await element(by.cssContainingText(this.selectors.statusDropDown + ' .ui-select__rx-choice', statusValue)).click();
+        await utilCommon.selectDropDown(this.selectors.statusDropDownGuid, statusValue);
     }
 
     async clickEditCaseButton(): Promise<void> {
@@ -164,15 +165,23 @@ class ViewCasePage {
         await browser.wait(this.EC.visibilityOf($(editCasePage.selectors.cancelBtn)));
     }
 
-    async setStatusReason(statusValue: string): Promise<void> {
+    async setStatusReason(statusReasonValue: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
         await $(this.selectors.statusChangeReason).click();
-        const statusReason = $(this.selectors.statusChangeReason);
-        await browser.wait(this.EC.elementToBeClickable(statusReason.$(this.selectors.searchInput)));
-        await (statusReason.$(this.selectors.searchInput)).sendKeys(statusValue);
-        var option = await element(by.cssContainingText((this.selectors.statusChangeReason + ' .ui-select__rx-choice'), statusValue));
-        await browser.wait(this.EC.visibilityOf(option));
-        await option.click();
+        await browser.wait(this.EC.or(async () => {
+            await browser.wait(this.EC.invisibilityOf(element(by.cssContainingText(this.selectors.statusChangeReason + ' .ui-select__rx-choice', 'Loading data...'))));
+            let count = await $$(this.selectors.statusChangeReason + ' .ui-select__rx-choice').count();
+            return count >= 2;
+        }));
+        let option = await element(by.cssContainingText((this.selectors.statusChangeReason + ' .ui-select__rx-choice'), statusReasonValue));
+        await browser.sleep(1000);
+        await browser.wait(this.EC.elementToBeClickable(option), 2000).then(async function () {
+            await option.click();
+        });
+    }
+
+    async allStatusReasonOptionsPresent(list: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusChangeReasonGuid, list);
     }
 
     async isStatusReasonOptionDisplayed(statusValue: string): Promise<boolean> {
