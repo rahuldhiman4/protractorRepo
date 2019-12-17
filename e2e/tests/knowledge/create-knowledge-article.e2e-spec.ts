@@ -320,7 +320,7 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.clickOnSaveKnowledgeButton();
     });
 
-    fit('DRDMV-799,DRDMV-788: [KM-BWF integration] [Knowledge Article] Mandatory fields of the Create Knowledge Article view', async () => {
+    it('DRDMV-799,DRDMV-788: [KM-BWF integration] [Knowledge Article] Mandatory fields of the Create Knowledge Article view', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let knowledgeTitle: string = 'Knowledge Template' + randomStr;
