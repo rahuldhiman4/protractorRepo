@@ -4,6 +4,7 @@ import utilCommon from '../../utils/util.common';
 class CreateKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        knowledgeId: '.d-icon-lightbulb_o',
         backButton: '[rx-view-component-id="88ec72f0-2c65-4640-9455-54b6db3517f2"] button',
         clickOnReferenceTemplate: '[rx-view-component-id="6e402c66-fcdc-464b-b6e7-7e963d9c3a17"] .sectionsName',
         knowledgeTitleEditBox: '[rx-view-component-id="291bf2bb-1eac-404e-94ba-762a50da5ac9"] .ng-pristine',
@@ -77,7 +78,7 @@ class CreateKnowledgePage {
 
     async isAuthorRequired(): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($$(this.selectors.authorRequiredText).last()));
-        return await $(this.selectors.knowledgeSetRequiedtext).getAttribute("is-required")=="true";
+        return await $(this.selectors.knowledgeSetRequiedtext).getAttribute("is-required") == "true";
     }
 
     async isSaveButtonEnabled(): Promise<boolean> {
@@ -99,6 +100,11 @@ class CreateKnowledgePage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         await $(this.selectors.backButton).click();
         await browser.wait(this.EC.visibilityOf($(this.selectors.saveKnowlegeButton)));
+    }
+
+    async getKnowledgeId(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeId)));
+      return  await $(this.selectors.knowledgeId).getText();
     }
 }
 
