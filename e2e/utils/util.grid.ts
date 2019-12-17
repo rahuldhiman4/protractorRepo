@@ -1,7 +1,5 @@
 import { $, browser, by, By, element, protractor, ProtractorExpectedConditions, until } from 'protractor';
 import utilCommon, { Util } from './util.common';
-import _ from 'lodash/cloneDeep';
-import { notEqual } from 'assert';
 
 export class GridOperation {
 
