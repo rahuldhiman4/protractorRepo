@@ -1,4 +1,4 @@
-import { $, browser, protractor, ProtractorExpectedConditions, element, by,$$ } from "protractor";
+import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 class ViewTask {
@@ -52,10 +52,7 @@ class ViewTask {
     }
 
     async changeTaskStatus(statusValue: string): Promise<void> {
-        const statusUpdate = $(this.selectors.statusDropDown);
-        await browser.wait(this.EC.elementToBeClickable(statusUpdate.$('[aria-label="Status activate"]')));
-        await (statusUpdate.$('[aria-label="Status activate"]')).click();
-        await element(by.cssContainingText(this.selectors.statusDropDown + ' .ui-select__rx-choice', statusValue)).click();
+        await utilCommon.selectDropDown2($(this.selectors.statusDropDown), statusValue);
     }
 
 
