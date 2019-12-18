@@ -466,6 +466,14 @@ class ApiHelper {
         };
     }
 
+    async createComplexSurvey(data: any): Promise<void> {
+        const complexSurvey = await axios.post(
+            "api/com.bmc.dsm.catalog-lib/surveys",
+            data
+        );
+        console.log("Complex Survey status ==>>> " + complexSurvey.status);
+    }
+
 }
 
 export default new ApiHelper();

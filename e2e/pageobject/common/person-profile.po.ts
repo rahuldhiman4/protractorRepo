@@ -1,4 +1,4 @@
-import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import {$$, $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from "../../utils/util.grid";
 
 class PersonProfilePage {
@@ -15,7 +15,10 @@ class PersonProfilePage {
         tabs: '[rx-view-component-id="a8207936-a379-4f6c-b450-90facc6b893c"] a.rx-tab',
         activityNotes: '.activity-feed-note input[title]',
         requestedCasesGuid: 'cdba89ff-683c-42ba-9c2a-3adf4322504c',
-        assignedCasesGuid: '08bd2811-37eb-43a3-a1fe-de845fe6c5a6'
+        assignedCasesGuid: '08bd2811-37eb-43a3-a1fe-de845fe6c5a6',
+        threeDots: '.d-icon-ellipsis',
+        selectVisibleColumns: '.d-dropdown__menu-options-item a'
+
     }
 
     async navigateToTab(tabName: string): Promise<void> {
@@ -91,6 +94,10 @@ class PersonProfilePage {
         await utilGrid.searchOnGridConsole(caseId);
         return caseId == await utilGrid.getSelectedGridRecordValue(this.selectors.assignedCasesGuid, "Case ID");
     }
+
+    async isReqtab
+
+    //async getAllGuidColumns
 
 }
 
