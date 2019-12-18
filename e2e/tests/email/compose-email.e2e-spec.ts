@@ -6,9 +6,8 @@ import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import composeMail from '../../pageobject/email/compose-mail.po';
-import utilCommon from "../../utils/util.common";
-import utilGrid from '../../utils/util.grid';
 import selectEmailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
+import utilCommon from "../../utils/util.common";
 
 
 describe("compose email", () => {
@@ -42,12 +41,12 @@ describe("compose email", () => {
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qkatawazi');
-        var newCase = await apiHelper.createCase(caseData);
-        var caseId: string = newCase.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
-        expect(await composeMail.isComposeEmailTitlePreset('Compose Email')).toBeTruthy('Compose email title missing');
+        expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
         expect(await composeMail.isToOrCCInputTetxboxPresent('To')).toBeTruthy('To title missing');
         expect(await composeMail.isToOrCCInputTetxboxPresent('Cc')).toBeTruthy('Cc title missing');
         expect(await composeMail.isSubjectPresent()).toBeTruthy('Subject title missing');
@@ -66,9 +65,9 @@ describe("compose email", () => {
         await quickCase.createCaseButton();
         await utilCommon.closePopUpMessage();
         await quickCase.gotoCaseButton();
-        var quickCaseId: string = await viewCasePo.getCaseID();
+        let quickCaseId: string = await viewCasePo.getCaseID();
         await viewCasePo.clickOnEmailLink();
-        expect(await composeMail.isComposeEmailTitlePreset('Compose Email')).toBeTruthy('Compose email title missing');
+        expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
         expect(await composeMail.isToOrCCInputTetxboxPresent('To')).toBeTruthy('To title missing');
         expect(await composeMail.isToOrCCInputTetxboxPresent('Cc')).toBeTruthy('Cc title missing');
         expect(await composeMail.isSubjectPresent()).toBeTruthy('Subject title missing');
@@ -98,7 +97,7 @@ describe("compose email", () => {
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnDiscardButton();
-        expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?');
+        expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?'), 'Warning Email message is missing';
     })
 
     it('DRDMV-10453: Email Template grid columns', async () => {
@@ -118,8 +117,7 @@ describe("compose email", () => {
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnSelectEmailTemplateLink();
-        let columnHeaders: string[] = [];
-        columnHeaders= ["Template Name", "Message Subject", "Locale"] 
+        let columnHeaders: string[] = ["Template Name", "Message Subject", "Locale"];
         expect(await selectEmailTemplateBladePo.areColumnHeaderMatches(columnHeaders)).toBeTruthy('wrong column headers');
     })
 
@@ -141,11 +139,9 @@ describe("compose email", () => {
         await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnSelectEmailTemplateLink();
         await utilCommon.waitUntilSpinnerToHide();
-        let columns: string[] = [];
-        columns= ["ID", "Display ID", "Company","Description","Label","Template Id",] 
+        let columns: string[] = ["ID", "Display ID", "Company", "Description", "Label", "Template Id",];
         await selectEmailTemplateBladePo.addGridColumn(columns);
-        let columnHeaders: string[] = [];
-        columnHeaders= ["Template Name", "Message Subject", "Locale", "ID", "Display ID", "Company","Description","Label","Template Id",] 
+        let columnHeaders: string[] = ["Template Name", "Message Subject", "Locale", "ID", "Display ID", "Company", "Description", "Label", "Template Id"];
         expect(await selectEmailTemplateBladePo.areColumnHeaderMatches(columnHeaders)).toBeTruthy('wrong column headers');
     })
 
@@ -167,6 +163,6 @@ describe("compose email", () => {
         await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnSelectEmailTemplateLink();
         await utilCommon.waitUntilSpinnerToHide();
-        expect (selectEmailTemplateBladePo.isApplyButtonDisabled()).toBeFalsy('Apply button is clickable');
+        expect(selectEmailTemplateBladePo.isApplyButtonEnabled()).toBeFalsy('Apply button is clickable');
     })
 })

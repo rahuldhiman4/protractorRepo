@@ -1,22 +1,19 @@
-import {element, by, $, browser, protractor, ProtractorExpectedConditions, $$ } from "protractor";
-import utilCommon from '../../utils/util.common';
 import { resolve } from 'path';
+import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../utils/util.common';
 
 class ComposeMail {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         title: '.modal-title',
-        crossIcon:'.dialog-header-confirm .close',
-        commonId:'[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"]',
-        to: '.d-textfield__input[aria-label="To"]',
-        cc:'.d-textfield__input[aria-label="Cc"]',
-        subject:'.subject-name span',
-        selectEmailTemplateLink:'.select-template-button',
-        messageBodyFontPannelBar:'.cke_inner .cke_reset_all',
-        attachLink:'.attachment-button button',
+        crossIcon: '.dialog-header-confirm .close',
+        commonId: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"]',
+        selectEmailTemplateLink: '.select-template-button',
+        messageBodyFontPannelBar: '.cke_inner .cke_reset_all',
+        attachLink: '.attachment-button button',
         sendButton: '[rx-view-component-id="58d8a41f-6c8f-4f23-b986-6a94d35b0fbe"] button',
         discardButton: '[rx-view-component-id="038eaa3f-f2ff-4c6d-a5d1-351449671b76"] button',
-        getTextOfWarningMsg: '.d-modal__dialog .d-modal__content-item',
+        getTextOfWarningMsg: '.d-modal__content-item',
         emailIcon: '.d-icon-left-envelope',
         composeEmailUI: '[rx-view-definition-guid="a69ea993-2e45-4ae7-9435-25ba53cbad88"]',
         selectEmailTemplate: '.select-template-button',
@@ -24,9 +21,9 @@ class ComposeMail {
         popupTemplate: '.popup-template',
         attachButton: '[rx-view-definition-guid="a69ea993-2e45-4ae7-9435-25ba53cbad88"] .ac-attachment-button',
         emailBody: '.cke_editable_themed',
-        fristClickInEmail: '.cke_editable_themed br',
+        firstClickInEmail: '.cke_editable_themed br',
         email: 'iframe[class="cke_wysiwyg_frame cke_reset"]',
-        attachementName: '.rx-attachment-view-name',
+        attachmentName: '.rx-attachment-view-name',
         getsubject: '.subject-name span',
         attachmentField: '.attachment-button input',
         selectTemplateButton: '.select-template-button',
@@ -36,21 +33,21 @@ class ComposeMail {
     }
 
     async clickOnSelectEmailTemplateLink(): Promise<void> {
-            await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectTemplateButton)));
-            await $(this.selectors.selectTemplateButton).click();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectTemplateButton)));
+        await $(this.selectors.selectTemplateButton).click();
     }
-    
+
     async getTextOfDiscardButtonWarningMessage(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.getTextOfWarningMsg)));
-        return await $(this.selectors.getTextOfWarningMsg).getText();        
+        return await utilCommon.getWarningMessagegText();
     }
 
     async clickOnDiscardButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.discardButton)));
-        await $(this.selectors.discardButton).click();        
+        await $(this.selectors.discardButton).click();
     }
 
-    async isComposeEmailTitlePreset(title:string): Promise<boolean> {
+    async isComposeEmailTitlePresent(title: string): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.title)));
         return await element(by.cssContainingText((this.selectors.title), title)).isPresent();
     }
@@ -62,19 +59,19 @@ class ComposeMail {
     }
 
     async isSubjectPresent(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.subject)));
-        return await $(this.selectors.subject).isPresent();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.getsubject)));
+        return await $(this.selectors.getsubject).isPresent();
     }
 
     async getSubject(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.subject)));
-        return await $(this.selectors.subject).getText();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.getsubject)));
+        return await $(this.selectors.getsubject).getText();
     }
 
     async isSelectEmailTemplateLinkPresent(): Promise<boolean> {
-         await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectEmailTemplateLink)));
-        return await $(this.selectors.selectEmailTemplateLink).isPresent();        
-    }    
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectEmailTemplateLink)));
+        return await $(this.selectors.selectEmailTemplateLink).isPresent();
+    }
 
     async isMessageBodyFontPannelBarPresent(): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.messageBodyFontPannelBar)));
@@ -90,10 +87,10 @@ class ComposeMail {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.sendButton)));
         return await $(this.selectors.sendButton).isPresent();
     }
-    
+
     async isDiscardButtonPresent(): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.discardButton)));
-        return await $(this.selectors.discardButton).isPresent();        
+        return await $(this.selectors.discardButton).isPresent();
     }
 
     async addAttachment(): Promise<void> {
@@ -125,7 +122,7 @@ class ComposeMail {
     async setEmailBody(value: string): Promise<void> {
         await browser.sleep(4000);
         var elem = $('iframe.cke_wysiwyg_frame');
-        await browser.switchTo().frame(elem.getWebElement());
+        await browser.switchTo().frame(elem);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)));
         await $(this.selectors.emailBody).click();
         var elm = $(this.selectors.emailBody);
@@ -136,7 +133,7 @@ class ComposeMail {
     async getEmailBody(): Promise<string> {
         let value;
         var elem = $('iframe.cke_wysiwyg_frame');
-        await browser.switchTo().frame(elem.getWebElement());
+        await browser.switchTo().frame(elem);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)));
         value = await $(this.selectors.emailBody).getText();
         await browser.switchTo().defaultContent();
@@ -174,12 +171,12 @@ class ComposeMail {
         return await element.isDisplayed();
     }
 
-    async setToOrCCInputTetxboxPresent(value: String, EmailIdForToOrCc: string): Promise<void> {
+    async setToOrCCInputTetxboxPresent(value: String, emailIdForToOrCc: string): Promise<void> {
         let element = await $(`input[aria-label="${value}"]`);
         await browser.wait(this.EC.elementToBeClickable(element));
         await element.click();
         await element.clear();
-        await element.sendKeys(EmailIdForToOrCc);
+        await element.sendKeys(emailIdForToOrCc);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.popupEmail)));
         await $(this.selectors.popupEmail).click();
 

@@ -9,7 +9,13 @@ export class Util {
         popUpMsgLocator: '.rx-growl-item__message',
         warningOk: '.d-modal__footer button[class*="d-button d-button_primary d-button_small"]',
         warningCancel: '.d-modal__footer button[class*="d-button d-button_secondary d-button_small"]',
-        closeTipMsg: '.rx-growl-close'
+        closeTipMsg: '.rx-growl-close',
+        warningMsgText: '.d-modal__content-item',
+    }
+
+    async getWarningMessagegText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.warningMsgText)));
+        return await $(this.selectors.warningMsgText).getText();
     }
 
     async selectDropDown(guid: string, value: string): Promise<void> {

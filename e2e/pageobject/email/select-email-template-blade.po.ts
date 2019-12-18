@@ -1,5 +1,4 @@
-import {element, by, $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
+import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../utils/util.grid';
 
 class SelectEmailTemplateBlad {
@@ -14,38 +13,38 @@ class SelectEmailTemplateBlad {
         addColumnIcon: 'rx-record-grid-menu.rx-record-grid-toolbar__item_visible-columns .d-icon-ellipsis',
     }
 
-    async isApplyButtonDisabled():Promise<boolean>{
+    async isApplyButtonEnabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.applyButton)));
         return await $(this.selectors.applyButton).isEnabled();
     }
 
-    async addGridColumn(columnName:string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.gridGuid,columnName);
+    async addGridColumn(columnName: string[]): Promise<void> {
+        await utilGrid.addGridColumn(this.selectors.gridGuid, columnName);
     }
 
-    async removeGridColumn(columnName:string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.gridGuid,columnName);
+    async removeGridColumn(columnName: string[]): Promise<void> {
+        await utilGrid.removeGridColumn(this.selectors.gridGuid, columnName);
     }
 
-    async getSelectedGridRecordValue(columnHeader:string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid,columnHeader);
-    }
-    
-    async areColumnHeaderMatches(columnHeader:string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.gridGuid,columnHeader);       
+    async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
     }
 
-    async searchAndSelectEmailTemplate(templateName:string): Promise<void> {
-        await utilGrid.searchAndSelectFirstCheckBox(this.selectors.gridGuid,templateName);
-    } 
+    async areColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {
+        return await utilGrid.areColumnHeaderMatches(this.selectors.gridGuid, columnHeader);
+    }
 
-    async searchEmailTemplate(templateName:string): Promise<void> {
-        await utilGrid.searchRecord(templateName);
-    } 
+    async searchAndSelectEmailTemplate(templateName: string): Promise<void> {
+        await utilGrid.searchAndSelectFirstCheckBox(this.selectors.gridGuid, templateName);
+    }
 
-    async getGridRecordValue(columnHeader:string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid,columnHeader);
-    }     
+    async searchEmailTemplate(templateName: string): Promise<void> {
+        await utilGrid.searchOnGridConsole(templateName);
+    }
+
+    async getGridRecordValue(columnHeader: string): Promise<string> {
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+    }
 }
 
 export default new SelectEmailTemplateBlad();

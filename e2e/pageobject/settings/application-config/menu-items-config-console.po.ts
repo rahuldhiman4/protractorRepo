@@ -1,6 +1,6 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../../utils/util.grid';
 import utilCommon from '../../../utils/util.common';
+import utilGrid from '../../../utils/util.grid';
 
 class MenuItemsConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -10,13 +10,13 @@ class MenuItemsConsolePage {
         gridGuid: 'b09e033f-cd38-4a33-92ae-0832c9de8dcb',
     }
 
-    async searchRecord(value: string): Promise<void> {
-        await utilGrid.searchRecord(value);
+    async searchOnGridConsole(value: string): Promise<void> {
+        await utilGrid.searchOnGridConsole(value);
         await utilCommon.waitUntilSpinnerToHide();
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid,columnHeader);
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
     }
 
     async searchAndEditMenuOption(menuOption: string): Promise<void> {
