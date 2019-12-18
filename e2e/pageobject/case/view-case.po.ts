@@ -171,8 +171,8 @@ class ViewCasePage {
         await updateStatusBlade.changeStatus(statusValue);
     }
 
-    async allStatusOptionsPresent(list: string[]): Promise<void> {
-        await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusDropDownGuid,list);
+    async allStatusOptionsPresent(list: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusDropDownGuid,list);
     }
 
     async clickEditCaseButton(): Promise<void> {
@@ -196,23 +196,6 @@ class ViewCasePage {
         await browser.wait(this.EC.elementToBeClickable(statusReason.$(this.selectors.searchInput)));
         await (statusReason.$(this.selectors.searchInput)).sendKeys(statusValue);
         return await element(by.cssContainingText((this.selectors.statusChangeReason + ' .ui-select__rx-choice'), statusValue)).isDisplayed();
-    }
-
-    async isCaseStatusesDisplayed(data: string[]): Promise<boolean> {
-        let arr: string[] = [];
-        const statusUpdate = $(this.selectors.statusDropDown);
-        await browser.wait(this.EC.elementToBeClickable(statusUpdate.$(this.selectors.statusDisplay)));
-        await (statusUpdate.$(this.selectors.statusDisplay)).click();
-        let allStatus: number = await $$(this.selectors.statusList).count();
-        for (var i = 0; i < allStatus; i++) {
-            var ab: string = await $$(this.selectors.statusList).get(i).getText();
-            arr[i] = ab;
-        }
-        arr = arr.sort();
-        data = data.sort();
-        return arr.length === data.length && arr.every(
-            (value, index) => (value === data[index])
-        );
     }
 
     async clearStatusReason(): Promise<void> {
