@@ -324,23 +324,24 @@ describe('Knowledge Article', () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let knowledgeTitle: string = 'Knowledge Template' + randomStr;
-
-            await loginPage.login('fritz');
+            await navigationPage.signOut();
+            await loginPage.login('peter');
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await expect(createKnowledgePage.isKnowledgeTitleRequired()).toBeTruthy(" Required Text is not present in knowledge title");
-            await expect(createKnowledgePage.is\KnowledgeSetRequired()).toBeTruthy("Required Text is not present in knowledge Set");
+            await expect(createKnowledgePage.isKnowledgeSetRequired()).toBeTruthy("Required Text is not present in knowledge Set");
             await expect(createKnowledgePage.isAuthorRequired()).toBeTruthy("Required Text is not present in author");
             await expect(createKnowledgePage.isSaveButtonEnabled());
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
             await createKnowledgePage.selectKnowledgeSet('HR');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
+            var knowledgeIdValue: string = await createKnowledgePage.getKnowledgeId();
             await createKnowledgePage.clickBackButton();
             await navigationPage.gotoKnowledgeConsole();
             await KnowledgeConsolePage.searchKnowledgeArticle(knowledgeTitle);
-            await expect(KnowledgeConsolePage.isArticleIdDisplayed()).toBeTruthy("Knowledge Article is not displayed");
-           
+            await expect(KnowledgeConsolePage.isArticleIdDisplayed(knowledgeIdValue)).toBeTruthy("Knowledge Article is not displayed");
+
         } catch (Error) {
             console.log(Error);
         }

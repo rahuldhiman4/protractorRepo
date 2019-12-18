@@ -100,7 +100,7 @@ export class GridOperation {
             }
         }
         catch (Ex) {
-            await console.log("Filters are already clear");
+            console.log("Filters are already cleared");
         }
     }
 
@@ -143,7 +143,14 @@ export class GridOperation {
         columnPosition = columnPosition + 1;
         var gridRows: number = await element.all(by.xpath(gridRecords)).count();
         if (gridRows > 0) {
-            let gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[2]/div[${columnPosition}]/div`;
+            let gridRecordCheckbox: string = `//div[@class="ui-grid-cell-contents"]/ancestor::div[@role='presentation'][contains(@class,'left')]//div[@class='ui-grid-row']`;
+            let count = await element.all(by.xpath(gridRecordCheckbox)).count();
+            let gridRecordCellValue = null;
+            if(count > 0){
+                gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[2]/div[${columnPosition}]/div`;
+            } else {
+                gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[1]/div[${columnPosition}]/div`;
+            }
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(gridRecordCellValue))));
             gridRecord = await element(by.xpath(gridRecordCellValue)).getText();
         } else {
@@ -185,6 +192,59 @@ export class GridOperation {
         }), 5000);
         await element.all(by.xpath(gridRecordCheckbox)).first().click();
         browser.sleep(1000);
+    }
+
+    async isGridColumnSorted(columnHeader: string, sortType: string, guid?: string): Promise<boolean> {
+        let arr: string[] = [];
+        columnHeader = "'" + columnHeader + "'";
+        guid = "'" + guid + "'";
+
+        //Clicking on columns based on sort type
+        let columnHeaderLocator = await element(by.xpath(`//*[@rx-view-component-id=${guid}]//div[@role="columnheader"]//*[text()=${columnHeader}]`));
+        let ariaSort = `//*[@rx-view-component-id=${guid}]//div[@role="columnheader"]//*[text()=${columnHeader}]//ancestor::div[@aria-sort]`;
+        for (let i: number = 0; i < 3; i++) {
+            await browser.wait(this.EC.visibilityOf(element(by.xpath(ariaSort))));
+            await browser.sleep(3000);
+            let sortValue = await element(by.xpath(ariaSort)).getAttribute("aria-sort");
+            if (sortValue == sortType) {
+                console.log("Sorted as: " + sortType);
+                break;
+            }
+            else {
+                await browser.wait(this.EC.elementToBeClickable(columnHeaderLocator));
+                await columnHeaderLocator.click();
+                await utilCommon.waitUntilSpinnerToHide();
+            }
+        }
+
+        //Verifying if columns are sorted
+        let gridColumnHeaderPosition = `//*[@rx-view-component-id=${guid}]//span[@class="ui-grid-header-cell-label"][text()=${columnHeader}]/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
+        let gridRecords = '//div[@class="ui-grid-canvas"]/div';
+        let columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
+        columnPosition = columnPosition + 1;
+        var gridRows: number = await element.all(by.xpath(gridRecords)).count();
+        let gridRecordCellValue;
+        console.log(gridRows);
+        for (let i: number = 1; i <= gridRows; i++) {
+            try{
+                gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[${i}]/div[${columnPosition}]/div`;
+                arr[i] = await element(by.xpath(gridRecordCellValue)).getText();
+            }
+            catch(e){
+                break;
+            }
+        }
+        arr.shift();
+        const copy = Object.assign([], arr);
+        arr.sort();
+        if (sortType == "descending") {
+            arr.reverse();
+        }
+        console.log(arr);
+        console.log(copy);
+        return arr.length === copy.length && arr.every(
+            (value, index) => (value === copy[index])
+        );
     }
 }
 
