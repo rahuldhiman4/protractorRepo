@@ -51,6 +51,18 @@ class ViewCasePage {
         emptyResolutionDescriptionTextBox: '.d-textfield__label .ng-empty',
         resolutionCodeDropDownGuid: 'fb07b5ff-3c9b-454a-8b0c-a1dfd9987856',
         priority: '.selection-field',
+        emailLink:'[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
+    }    
+    
+    async clickOnEmailLink(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
+        await ($(this.selectors.emailLink)).click();
+        await utilCommon.waitUntilSpinnerToHide();
+    }
+
+    async isEmailLinkPresent(): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
+        return await ($(this.selectors.emailLink)).isPresent();
     }
 
     async isResolutionDescriptionTextBoxEmpty(): Promise<boolean> {
@@ -220,42 +232,42 @@ class ViewCasePage {
         await $(this.selectors.addTaskButton).click();
     }
 
-    async getCaseID(): Promise<string> {
+    async getCaseID(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.caseIdText)));
         return await $(this.selectors.caseIdText).getText();
     }
 
-    async getRequesterName(): Promise<string> {
+    async getRequesterName(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.requesterName)));
         return await $(this.selectors.requesterName).getText();
     }
 
-    async getRequesterPhoneNo(): Promise<string> {
+    async getRequesterPhoneNo(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.requesterPhoneNo)));
         return await $(this.selectors.requesterPhoneNo).getText();
     }
 
-    async getRequesterEmail(): Promise<string> {
+    async getRequesterEmail(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.requesterEmail)));
         return await $(this.selectors.requesterEmail).getText();
     }
 
-    async getContactPersonName(): Promise<string> {
+    async getContactPersonName(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.contactPersonName)));
         return await $(this.selectors.contactPersonName).getText();
     }
 
-    async getCaseSummary(): Promise<string> {
+    async getCaseSummary(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
         return await $(this.selectors.caseSummary).getText();
     }
 
-    async getContactPersonerPhoneNo(): Promise<string> {
+    async getContactPersonerPhoneNo(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.contactPersonContact)));
         return await $(this.selectors.contactPersonContact).getText();
     }
 
-    async getContactPersonalEmail(): Promise<string> {
+    async getContactPersonalEmail(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.contactPersonEmail)));
         return await $(this.selectors.contactPersonEmail).getText();
     }
@@ -265,7 +277,7 @@ class ViewCasePage {
         await $(this.selectors.stopWatching).click();
     }
 
-    async clickOnContactPersonerDrpDwn(): Promise<void> {
+    async clickOnContactPersonerDrpDwn(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.contactPersonDrpDwn)));
         await $(this.selectors.contactPersonDrpDwn).click();
     }

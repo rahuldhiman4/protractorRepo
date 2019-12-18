@@ -1,4 +1,5 @@
 import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../utils/util.common';
 
 class QuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -8,8 +9,8 @@ class QuickCasePage {
         confirmedItemSelection: '.smart-recorder-confirmedItem_header',
         searchResult: '.smart-recorder__popup-item-email',
         caseTemplate: '.smart-recorder__popup-item-highlight',
-        createCaseButton: '.smart-recorder__footer button.d-button_primary',
-        gotoCaseButton__preview: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
+        createCaseButton: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .smart-recorder__footer button.d-button_primary',
+        gotoCaseButton: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
         validateButton: '[rx-view-component-id="390a77cd-518e-4d67-abb4-bc4d410ce3df"] button',
         pinValidateInput: '[rx-view-component-id="bfe9a8e0-26e7-43a5-9561-1c92539bdda3"] input',
         pinOk: '[rx-view-component-id="ea1b7291-a0de-47d6-9239-cccf6b850a86"] button',
@@ -63,6 +64,17 @@ class QuickCasePage {
     async isCreateButtonDisabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseButton)));
         return await $(this.selectors.createCaseButton).getAttribute("disabled") == "true";
+    }
+
+    async createCaseButton(): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseButton)));
+        await $(this.selectors.createCaseButton).click();        
+    }
+
+    async gotoCaseButton(): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton)));
+        await $(this.selectors.gotoCaseButton).click();
+        await utilCommon.waitUntilSpinnerToHide();        
     }
 
     async getPopUpMessage() {
