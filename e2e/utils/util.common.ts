@@ -11,6 +11,12 @@ export class Util {
         warningCancel: '.d-modal__footer button[class*="d-button d-button_secondary d-button_small"]',
         closeTipMsg: '.rx-growl-close',
         dropDownChoice: '.ui-select__rx-choice',
+        warningMsgText: '.d-modal__content-item',
+    }
+
+    async getWarningMessagegText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.warningMsgText)));
+        return await $(this.selectors.warningMsgText).getText();
     }
 
     async selectDropDown(guid: string, value: string): Promise<void> {
@@ -177,12 +183,16 @@ export class Util {
     }
 
     async waitUntilSpinnerToHide(): Promise<void> {
-        await browser.wait(this.EC.presenceOf($('.d-preloader')));
-        await browser.wait(this.EC.or(async () => {
-            await $$('.d-preloader').each(async function (element) {
-                await element.getAttribute('innerHTML') == null
-            });
-        }), 30 * 1000);
+        try {
+            await browser.wait(this.EC.presenceOf($('.d-preloader')), 5 * 1000);
+            await browser.wait(this.EC.or(async () => {
+                await $$('.d-preloader').each(async function (element) {
+                    await element.getAttribute('innerHTML') == null;
+                });
+            }), 7 * 1000);
+        } catch (error) {
+            console.log('Spinner not present on the page');
+        }
     }
 }
 
