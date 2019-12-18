@@ -82,7 +82,7 @@ describe('Login and create case from API', () => {
         await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
     });
 
-    fit('Associate task template to case template', async () => {
+    it('Associate task template to case template', async () => {
 
         await apiHelper.apiLogin('qkatawazi');
 
@@ -118,7 +118,7 @@ describe('Login and create case from API', () => {
         //await apiHelper.associateCaseTemplateWithTwoTaskTemplate('CTPL-0000000215', 'TTPL-0000000517', 'TTPL-0000000518', "sequential");
     });
 
-    fit('create notes template', async () => {
+    it('create notes template', async () => {
         await apiHelper.apiLogin('tadmin');
         let randomStr = [...Array(4)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
         let notesTemplateData = require('../data/ui/social/notesTemplate.ui.json');
@@ -127,4 +127,19 @@ describe('Login and create case from API', () => {
         await apiHelper.createNotesTemplate("People", notesTemplateData['notesTemplateWithMandatoryField']);
     });
 
+    fit('associate categories', async () => {
+        // associate Briefings to Incident
+        let globalCategName = 'DemoCateg1';
+        let categName2 = 'DemoCateg2';
+        let categName3 = 'DemoCateg3';
+        let categName4 = 'DemoCateg4';
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.createOperationalCategory(globalCategName, true);
+        await apiHelper.createOperationalCategory(categName2);
+        await apiHelper.createOperationalCategory(categName3);
+        await apiHelper.createOperationalCategory(categName4);
+        await apiHelper.associateCategoryToCategory(globalCategName, categName2);
+        await apiHelper.associateCategoryToCategory(categName2, categName3);
+        await apiHelper.associateCategoryToCategory(categName3, categName4);
+    });
 })

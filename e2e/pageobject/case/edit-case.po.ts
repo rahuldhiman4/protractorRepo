@@ -130,7 +130,7 @@ class CaseEditPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
         await $(this.selectors.saveCaseButton).click();
     }
-    
+
     async clickOnCancelCaseButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelBtn)));
         await $(this.selectors.cancelBtn).click();
@@ -180,15 +180,13 @@ class CaseEditPage {
 
     async clearCaseSummary(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.summary)));
-        await $((this.selectors.summary)).clear();
-
+        await $(this.selectors.summary).clear();
     }
 
     async updateCaseSummary(summary: string): Promise<void> {
-        var summarySelector = await this.selectors.summary;
-        await browser.wait(this.EC.elementToBeClickable($(summarySelector)));
-        await $((summarySelector)).clear;
-        await $((summarySelector)).sendKeys(summary);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summary)));
+        await $(this.selectors.summary).clear();
+        await $(this.selectors.summary).sendKeys(summary);
     }
 
     async updateCasePriority(casePriority: string): Promise<void> {
@@ -258,7 +256,7 @@ class CaseEditPage {
     async updateResolutionDescription(resolutionDescription: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.resolutionDescription)));
         await $(this.selectors.resolutionDescription).clear();
-        await $(this.selectors.resolutionDescription).sendKeys(resolutionDescription);    
+        await $(this.selectors.resolutionDescription).sendKeys(resolutionDescription);
     }
 
     async updateDescription(descriptionVal: string): Promise<void> {

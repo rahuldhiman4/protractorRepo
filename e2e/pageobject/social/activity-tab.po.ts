@@ -236,10 +236,10 @@ class ActivityTabPage {
     }
 
     async isTextPresentInActivityLog(caseActivityLogText: string): Promise<boolean> {
-        try {
+        try{
             return await element(by.cssContainingText(this.selectors.activityLog, caseActivityLogText)).isDisplayed();
         }
-        catch (e) {
+        catch(e){
             return false;
         }
     }
