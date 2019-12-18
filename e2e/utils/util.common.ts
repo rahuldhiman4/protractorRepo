@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from 'protractor';
 
 export class Util {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -9,7 +9,8 @@ export class Util {
         popUpMsgLocator: '.rx-growl-item__message',
         warningOk: '.d-modal__footer button[class*="d-button d-button_primary d-button_small"]',
         warningCancel: '.d-modal__footer button[class*="d-button d-button_secondary d-button_small"]',
-        closeTipMsg: '.rx-growl-close'
+        closeTipMsg: '.rx-growl-close',
+        dropDownChoice: '.ui-select__rx-choice',
     }
 
     async selectDropDown(guid: string, value: string): Promise<void> {
@@ -27,6 +28,21 @@ export class Util {
         var optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
         await browser.sleep(1000);
         var option = await element(by.cssContainingText(optionCss, value));
+        await browser.wait(this.EC.elementToBeClickable(option), 2000).then(async function () {
+            await option.click();
+        });
+    }
+
+    async selectDropDown2(dropDownElementFinder: ElementFinder, value: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable(dropDownElementFinder));
+        await dropDownElementFinder.click();
+        await browser.wait(this.EC.or(async () => {
+            await browser.wait(this.EC.invisibilityOf(element(by.cssContainingText(this.selectors.dropDownChoice, 'Loading data...'))));
+            let count = await $$(this.selectors.dropDownChoice).count();
+            return count >= 1;
+        }));
+        let option = await element(by.cssContainingText(this.selectors.dropDownChoice, value));
+        await browser.sleep(1000);
         await browser.wait(this.EC.elementToBeClickable(option), 2000).then(async function () {
             await option.click();
         });
