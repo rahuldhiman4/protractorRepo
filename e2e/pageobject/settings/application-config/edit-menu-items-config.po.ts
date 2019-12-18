@@ -39,7 +39,7 @@ class MenuItemsConfigEditPage {
         await utilCommon.selectDropDown(this.selectors.statusDropDownGuid, value);
     }
 
-    async isStatusDropDownValueMatch(value: string[]): Promise<boolean> {
+    async isStatusDropDownValuesMatch(value: string[]): Promise<boolean> {
        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusDropDownGuid, value);
     }
 
