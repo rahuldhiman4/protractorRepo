@@ -48,10 +48,10 @@ describe("compose email", () => {
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
         expect(await composeMail.isComposeEmailTitlePreset('Compose Email')).toBeTruthy('Compose email title missing');
-        expect(await composeMail.isToPresent()).toBeTruthy('To title missing');
-        expect(await composeMail.isCcPresent()).toBeTruthy('Cc title missing');
+        expect(await composeMail.isToOrCCInputTetxboxPresent('To')).toBeTruthy('To title missing');
+        expect(await composeMail.isToOrCCInputTetxboxPresent('Cc')).toBeTruthy('Cc title missing');
         expect(await composeMail.isSubjectPresent()).toBeTruthy('Subject title missing');
-        expect(await composeMail.getTextOfSubject()).toBe(caseId + ":  ");
+        expect(await composeMail.getSubject()).toBe(caseId + ":  ");
         expect(await composeMail.isSelectEmailTemplateLinkPresent()).toBeTruthy('SelectEmailTemplateLink is missing');
         expect(await composeMail.isMessageBodyFontPannelBarPresent()).toBeTruthy('MessageBodyFontPannelBar is missing');
         expect(await composeMail.isAttachLinkPresent()).toBeTruthy('Attach Link is  missing');
@@ -69,10 +69,10 @@ describe("compose email", () => {
         var quickCaseId: string = await viewCasePo.getCaseID();
         await viewCasePo.clickOnEmailLink();
         expect(await composeMail.isComposeEmailTitlePreset('Compose Email')).toBeTruthy('Compose email title missing');
-        expect(await composeMail.isToPresent()).toBeTruthy('To title missing');
-        expect(await composeMail.isCcPresent()).toBeTruthy('Cc title missing');
+        expect(await composeMail.isToOrCCInputTetxboxPresent('To')).toBeTruthy('To title missing');
+        expect(await composeMail.isToOrCCInputTetxboxPresent('Cc')).toBeTruthy('Cc title missing');
         expect(await composeMail.isSubjectPresent()).toBeTruthy('Subject title missing');
-        expect(await composeMail.getTextOfSubject()).toBe(quickCaseId + ":  ");
+        expect(await composeMail.getSubject()).toBe(quickCaseId + ":  ");
         expect(await composeMail.isSelectEmailTemplateLinkPresent()).toBeTruthy('SelectEmailTemplateLink is missing');
         expect(await composeMail.isMessageBodyFontPannelBarPresent()).toBeTruthy('MessageBodyFontPannelBar is missing');
         expect(await composeMail.isAttachLinkPresent()).toBeTruthy('Attach Link is  missing');
@@ -121,7 +121,6 @@ describe("compose email", () => {
         expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('Template Name')).toBe('Template Name');
         expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('Message Subject')).toBe('Message Subject');
         expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('Locale')).toBe('Locale');
-
     })
 
     it('DRDMV-10390: Visible Columns on Email Template Grid on Compose Email UI', async () => {

@@ -20,27 +20,15 @@ class SelectEmailTemplateBlad {
     }
 
     async clickOnColumnListIcon(): Promise<void> {
-        let gridGuid = $(this.selectors.gridId);
-        await browser.wait(this.EC.elementToBeClickable(gridGuid.$(this.selectors.addColumnIcon)));
-        await (gridGuid.$(this.selectors.addColumnIcon)).click();
+        await utilGrid.clickOnColumnListIcon();      
     }
 
     async clickOnAddColumnCheckBox(columnName:string): Promise<void> {
-        var customxpath = `//*[@rx-view-component-id="${this.selectors.gridGuid}"]//li[@class="d-dropdown__menu-options-item"]//a[text()="${columnName}"][1]`;
-        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customxpath))));
-        let attrbuteVal=await element(by.xpath(customxpath)).getAttribute('aria-checked');
-        if(attrbuteVal=='false'){
-            await element(by.xpath(customxpath)).click();
-        } else{console.log('Column already selected');}
+        await utilGrid.clickOnAddColumnCheckBox(this.selectors.gridGuid,columnName);
     }
 
     async clickOnRemoveColumnCheckBox(columnName:string): Promise<void> {
-        var customxpath = `//*[@rx-view-component-id="${this.selectors.gridGuid}"]//li[@class="d-dropdown__menu-options-item"]//a[text()="${columnName}"][1]`;
-        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customxpath))));
-        let attrbuteVal=await element(by.xpath(customxpath)).getAttribute('aria-checked');
-        if(attrbuteVal=='true'){
-            await element(by.xpath(customxpath)).click();
-        } else{console.log('Column already unchecked');}
+        await utilGrid.clickOnRemoveColumnCheckBox(this.selectors.gridGuid,columnName);
     }
 
     async getSelectedGridRecordValue(columnHeader:string): Promise<string> {
