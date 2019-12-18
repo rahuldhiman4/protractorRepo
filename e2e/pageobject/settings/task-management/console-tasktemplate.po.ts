@@ -1,4 +1,5 @@
 import { $, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../../utils/util.common';
 
 class TaskTemplateGridPage {
 
@@ -21,6 +22,7 @@ class TaskTemplateGridPage {
         await browser.wait(this.EC.visibilityOf($(this.selectors.searchTemplate)));
         await $(this.selectors.searchTemplate).clear();
         await $(this.selectors.searchTemplate).sendKeys(input, Key.ENTER);
+        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async clickFirstLinkInTaskTemplateSearchGrid(): Promise<void> {
@@ -40,6 +42,7 @@ class TaskTemplateGridPage {
 
     async clickOnAutomationTaskTemplateButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.automationtaskTemplateButton)));
+        await browser.sleep(2000);
         await $(this.selectors.automationtaskTemplateButton).click();
     }
 

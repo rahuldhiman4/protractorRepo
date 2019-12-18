@@ -1,6 +1,6 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import apiHelper from '../../api/api.helper';
-import caseConsolePagePage from '../../pageobject/case/case-console.po';
+import caseConsolePage from '../../pageobject/case/case-console.po';
 import createCasePage from "../../pageobject/case/create-case.po";
 import editCasePage from '../../pageobject/case/edit-case.po';
 import selectCaseTemplateBlade from '../../pageobject/case/select-casetemplate-blade.po';
@@ -22,7 +22,6 @@ describe("Create Case", () => {
     const contact = "Contact";
 
     beforeAll(async () => {
-        browser.waitForAngularEnabled(false);
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login("qkatawazi");
     });
@@ -229,7 +228,6 @@ describe("Create Case", () => {
             console.log(error);
             await expect(true).toBeFalsy();
         } finally {
-            await browser.refresh();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
@@ -255,13 +253,12 @@ describe("Create Case", () => {
             await createCasePage.clickGoToCaseButton();
             await expect(viewCasePage.getPriorityValue()).toBe('Medium');
             await navigationPage.gotoCaseConsole();
-            await caseConsolePagePage.setCaseSearchBoxValue(caseSummary);
-            await expect(caseConsolePagePage.isCaseIdHyperlinked()).toBeTruthy('Unable to find the created case');
+            await caseConsolePage.setCaseSearchBoxValue(caseSummary);
+            await expect(caseConsolePage.isCaseIdHyperlinked()).toBeTruthy('Unable to find the created case');
         } catch (error) {
             console.log(error);
             await expect(true).toBeFalsy();
         } finally {
-            await browser.refresh();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
@@ -305,13 +302,12 @@ describe("Create Case", () => {
             await expect(viewCasePage.getCategoryTier2Value()).toBe('Social');
             await expect(viewCasePage.getCategoryTier3Value()).toBe('Chatter');
             await navigationPage.gotoCaseConsole();
-            await caseConsolePagePage.setCaseSearchBoxValue(caseSummary);
-            await expect(caseConsolePagePage.isCaseIdHyperlinked()).toBeTruthy('Unable to find the created case');
+            await caseConsolePage.setCaseSearchBoxValue(caseSummary);
+            await expect(caseConsolePage.isCaseIdHyperlinked()).toBeTruthy('Unable to find the created case');
         } catch (error) {
             console.log(error);
             await expect(true).toBeFalsy();
         } finally {
-            await browser.refresh();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
