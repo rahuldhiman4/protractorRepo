@@ -36,7 +36,6 @@ class ApiCoreUtil {
             + "&pageSize=-1&recorddefinition="
             + recordName
             + "&startIndex=0";
-
         let allRecords = await axios.get(
             dataPageUri
         );
@@ -95,7 +94,7 @@ class ApiCoreUtil {
     async getCategoryGuid(category: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Operational Category");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-            return obj[4] === category;
+            return obj[304405421] === category;
         });
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
@@ -117,7 +116,6 @@ class ApiCoreUtil {
     }
 
     async associateFoundationElements(associationName: string, entity1: string, entity2: string): Promise<void> {
-
         const associateEntities = await axios.post(
             "api/rx/application/command",
             {
