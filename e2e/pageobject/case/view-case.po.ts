@@ -2,6 +2,7 @@ import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions }
 import editCasePage from "../../pageobject/case/edit-case.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import utilCommon from '../../utils/util.common';
+import updateStatusBlade from '../../pageobject/common/update.status.blade.po';
 
 class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -49,7 +50,6 @@ class ViewCasePage {
         resolutionCodeSelect: '.ui-select__rx-choice',
         resolutionDescriptionTextBoxId: '[rx-view-component-id="d98df37c-7a96-43c3-bf69-2e6e735031ae"]',
         emptyResolutionDescriptionTextBox: '.d-textfield__label .ng-empty',
-        resolutionCodeDropDownGuid: 'fb07b5ff-3c9b-454a-8b0c-a1dfd9987856',
         priority: '.selection-field',
         emailLink:'[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
     }    
@@ -72,7 +72,7 @@ class ViewCasePage {
     }
 
     async selectResolutionCodeDropDown(resolutionCode: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.resolutionCodeDropDownGuid, resolutionCode);
+        await updateStatusBlade.selectResolutionCode(resolutionCode);
     }
 
     async isCaseReopenLinkPresent(): Promise<boolean> {
@@ -168,7 +168,11 @@ class ViewCasePage {
     async changeCaseStatus(statusValue: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
-        await utilCommon.selectDropDown(this.selectors.statusDropDownGuid, statusValue);
+        await updateStatusBlade.changeStatus(statusValue);
+    }
+
+    async allStatusOptionsPresent(list: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusDropDownGuid,list);
     }
 
     async clickEditCaseButton(): Promise<void> {
@@ -178,18 +182,7 @@ class ViewCasePage {
     }
 
     async setStatusReason(statusReasonValue: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
-        await $(this.selectors.statusChangeReason).click();
-        await browser.wait(this.EC.or(async () => {
-            await browser.wait(this.EC.invisibilityOf(element(by.cssContainingText(this.selectors.statusChangeReason + ' .ui-select__rx-choice', 'Loading data...'))));
-            let count = await $$(this.selectors.statusChangeReason + ' .ui-select__rx-choice').count();
-            return count >= 2;
-        }));
-        let option = await element(by.cssContainingText((this.selectors.statusChangeReason + ' .ui-select__rx-choice'), statusReasonValue));
-        await browser.sleep(1000);
-        await browser.wait(this.EC.elementToBeClickable(option), 2000).then(async function () {
-            await option.click();
-        });
+        await updateStatusBlade.setStatusReason(statusReasonValue);
     }
 
     async allStatusReasonOptionsPresent(list: string[]): Promise<boolean> {
@@ -203,23 +196,6 @@ class ViewCasePage {
         await browser.wait(this.EC.elementToBeClickable(statusReason.$(this.selectors.searchInput)));
         await (statusReason.$(this.selectors.searchInput)).sendKeys(statusValue);
         return await element(by.cssContainingText((this.selectors.statusChangeReason + ' .ui-select__rx-choice'), statusValue)).isDisplayed();
-    }
-
-    async isCaseStatusesDisplayed(data: string[]): Promise<boolean> {
-        let arr: string[] = [];
-        const statusUpdate = $(this.selectors.statusDropDown);
-        await browser.wait(this.EC.elementToBeClickable(statusUpdate.$(this.selectors.statusDisplay)));
-        await (statusUpdate.$(this.selectors.statusDisplay)).click();
-        let allStatus: number = await $$(this.selectors.statusList).count();
-        for (var i = 0; i < allStatus; i++) {
-            var ab: string = await $$(this.selectors.statusList).get(i).getText();
-            arr[i] = ab;
-        }
-        arr = arr.sort();
-        data = data.sort();
-        return arr.length === data.length && arr.every(
-            (value, index) => (value === data[index])
-        );
     }
 
     async clearStatusReason(): Promise<void> {
