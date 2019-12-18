@@ -171,6 +171,10 @@ class ViewCasePage {
         await utilCommon.selectDropDown(this.selectors.statusDropDownGuid, statusValue);
     }
 
+    async allStatusOptionsPresent(list: string[]): Promise<void> {
+        await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusDropDownGuid,list);
+    }
+
     async clickEditCaseButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
         await $(this.selectors.editLink).click();

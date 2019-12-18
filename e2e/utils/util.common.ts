@@ -167,12 +167,16 @@ export class Util {
     }
 
     async waitUntilSpinnerToHide(): Promise<void> {
-        await browser.wait(this.EC.presenceOf($('.d-preloader')));
-        await browser.wait(this.EC.or(async () => {
-            await $$('.d-preloader').each(async function (element) {
-                await element.getAttribute('innerHTML') == null
-            });
-        }), 30 * 1000);
+        try {
+            await browser.wait(this.EC.presenceOf($('.d-preloader')), 5 * 1000);
+            await browser.wait(this.EC.or(async () => {
+                await $$('.d-preloader').each(async function (element) {
+                    await element.getAttribute('innerHTML') == null;
+                });
+            }), 7 * 1000);
+        } catch (error) {
+            console.log('Spinner not present on the page');
+        }
     }
 }
 
