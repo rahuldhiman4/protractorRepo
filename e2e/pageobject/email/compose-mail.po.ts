@@ -55,7 +55,7 @@ class ComposeMail {
         return await element(by.cssContainingText((this.selectors.title), title)).isPresent();
     }
 
-    async CloseComposeEmail(): Promise<void> {
+    async closeComposeEmail(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.crossIcon)));
         await ($(this.selectors.crossIcon)).click();
         await utilCommon.waitUntilSpinnerToHide();
@@ -125,21 +125,21 @@ class ComposeMail {
     async setEmailBody(value: string): Promise<void> {
         await browser.sleep(4000);
         var elem = $('iframe.cke_wysiwyg_frame');
-        browser.switchTo().frame(elem.getWebElement());
+        await browser.switchTo().frame(elem.getWebElement());
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)));
         await $(this.selectors.emailBody).click();
         var elm = $(this.selectors.emailBody);
         await browser.actions().sendKeys(protractor.Key.chord(protractor.Key.CONTROL, protractor.Key.HOME)).sendKeys(value).perform();
-        browser.switchTo().defaultContent();
+        await browser.switchTo().defaultContent();
     }
 
     async getEmailBody(): Promise<string> {
         let value;
         var elem = $('iframe.cke_wysiwyg_frame');
-        browser.switchTo().frame(elem.getWebElement());
+        await browser.switchTo().frame(elem.getWebElement());
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)));
         value = await $(this.selectors.emailBody).getText();
-        browser.switchTo().defaultContent();
+        await browser.switchTo().defaultContent();
         return value;
     }
 
@@ -181,15 +181,15 @@ class ComposeMail {
         await element.clear();
         await element.sendKeys(EmailIdForToOrCc);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.popupEmail)));
-        $(this.selectors.popupEmail).click();
+        await $(this.selectors.popupEmail).click();
 
     }
 
-    async selectEmailfromPopUp(EmailIdForToOrCc: string): Promise<void> {
+    async selectEmailFromPopUp(emailIdForToOrCc: string): Promise<void> {
         let element = await browser.wait(this.EC.elementToBeClickable($(this.selectors.popupEmail)));
         let popupemail = await $(this.selectors.popupEmail);
         let isclicked = await popupemail.getAttribute('aria-label');
-        if (isclicked.contains(EmailIdForToOrCc)) {
+        if (isclicked.contains(emailIdForToOrCc)) {
             await popupemail.click();
         }
     }

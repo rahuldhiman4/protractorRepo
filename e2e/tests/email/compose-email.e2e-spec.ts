@@ -57,7 +57,7 @@ describe("compose email", () => {
         expect(await composeMail.isAttachLinkPresent()).toBeTruthy('Attach Link is  missing');
         expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
         expect(await composeMail.isDiscardButtonPresent()).toBeTruthy('Discard Button is missing');
-        await composeMail.CloseComposeEmail();
+        await composeMail.closeComposeEmail();
         await viewCasePo.isEmailLinkPresent();
 
         await navigationPage.gotoQuickCase();
@@ -78,7 +78,7 @@ describe("compose email", () => {
         expect(await composeMail.isAttachLinkPresent()).toBeTruthy('Attach Link is  missing');
         expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
         expect(await composeMail.isDiscardButtonPresent()).toBeTruthy('Discard Button is missing');
-        await composeMail.CloseComposeEmail();
+        await composeMail.closeComposeEmail();
     })
 
     it('DRDMV-8391: Negative:Compose email discard changes validation', async () => {
@@ -118,9 +118,9 @@ describe("compose email", () => {
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnSelectEmailTemplateLink();
-        expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('Template Name')).toBe('Template Name');
-        expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('Message Subject')).toBe('Message Subject');
-        expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('Locale')).toBe('Locale');
+        let columnHeaders: string[] = [];
+        columnHeaders= ["Template Name", "Message Subject", "Locale"] 
+        expect(await selectEmailTemplateBladePo.areColumnHeaderMatches(columnHeaders)).toBeTruthy('wrong column headers');
     })
 
     it('DRDMV-10390: Visible Columns on Email Template Grid on Compose Email UI', async () => {
@@ -141,24 +141,12 @@ describe("compose email", () => {
         await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnSelectEmailTemplateLink();
         await utilCommon.waitUntilSpinnerToHide();
-        await selectEmailTemplateBladePo.clickOnColumnListIcon();
-        await selectEmailTemplateBladePo.clickOnAddColumnCheckBox('Company');
-        await selectEmailTemplateBladePo.clickOnAddColumnCheckBox('Description');
-        await selectEmailTemplateBladePo.clickOnAddColumnCheckBox('Display ID');
-        await selectEmailTemplateBladePo.clickOnAddColumnCheckBox('ID');
-        await selectEmailTemplateBladePo.clickOnAddColumnCheckBox('Label');
-        await selectEmailTemplateBladePo.clickOnAddColumnCheckBox('Template Id');
-        await selectEmailTemplateBladePo.clickOnColumnListIcon();
-        await utilCommon.waitUntilSpinnerToHide();
-        expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('Template Name')).toBe('Template Name');
-        expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('Message Subject')).toBe('Message Subject');
-        expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('Locale')).toBe('Locale');
-        expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('Company')).toBe('Company');
-        expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('Description')).toBe('Description');
-        expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('Display ID')).toBe('Display ID');
-        expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('ID')).toBe('ID');
-        expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('Label')).toBe('Label');
-        expect(await selectEmailTemplateBladePo.getTextOfGridColumnHeader('Template Id')).toBe('Template Id');
+        let columns: string[] = [];
+        columns= ["ID", "Display ID", "Company","Description","Label","Template Id",] 
+        await selectEmailTemplateBladePo.addGridColumn(columns);
+        let columnHeaders: string[] = [];
+        columnHeaders= ["Template Name", "Message Subject", "Locale", "ID", "Display ID", "Company","Description","Label","Template Id",] 
+        expect(await selectEmailTemplateBladePo.areColumnHeaderMatches(columnHeaders)).toBeTruthy('wrong column headers');
     })
 
     it('DRDMV-10409: Apply button disable', async () => {

@@ -19,26 +19,20 @@ class SelectEmailTemplateBlad {
         return await $(this.selectors.applyButton).isEnabled();
     }
 
-    async clickOnColumnListIcon(): Promise<void> {
-        await utilGrid.clickOnColumnListIcon();      
+    async addGridColumn(columnName:string[]): Promise<void> {
+        await utilGrid.addGridColumn(this.selectors.gridGuid,columnName);
     }
 
-    async clickOnAddColumnCheckBox(columnName:string): Promise<void> {
-        await utilGrid.clickOnAddColumnCheckBox(this.selectors.gridGuid,columnName);
-    }
-
-    async clickOnRemoveColumnCheckBox(columnName:string): Promise<void> {
-        await utilGrid.clickOnRemoveColumnCheckBox(this.selectors.gridGuid,columnName);
+    async removeGridColumn(columnName:string[]): Promise<void> {
+        await utilGrid.removeGridColumn(this.selectors.gridGuid,columnName);
     }
 
     async getSelectedGridRecordValue(columnHeader:string): Promise<string> {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid,columnHeader);
     }
     
-    async getTextOfGridColumnHeader(columnHeader:string): Promise<string> {
-        var customxpath = `//rx-record-grid[@rx-view-component-id="092ad269-6be6-4240-a867-8af4c8c6e2c9"]//span[@class="ui-grid-header-cell-label" and text()="${columnHeader}"]`;
-        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customxpath))));
-        return await element(by.xpath(customxpath)).getText();        
+    async areColumnHeaderMatches(columnHeader:string[]): Promise<boolean> {
+        return await utilGrid.areColumnHeaderMatches(this.selectors.gridGuid,columnHeader);       
     }
 
     async searchAndSelectEmailTemplate(templateName:string): Promise<void> {
