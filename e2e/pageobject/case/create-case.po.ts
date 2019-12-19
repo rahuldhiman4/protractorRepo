@@ -165,8 +165,8 @@ class CreateCasePage {
         await $(this.selectors.summary).sendKeys(summary);
     }
 
-    async allPriorityOptionsPresent(list: string[]): Promise<void> {
-        await utilCommon.isDrpDownvalueDisplayed(this.selectors.priorityGuid,list);
+    async allPriorityOptionsPresent(list: string[]): Promise<boolean> {
+     return await utilCommon.isDrpDownvalueDisplayed(this.selectors.priorityGuid,list);
     }
 
     async setDescription(description: string): Promise<void> {
