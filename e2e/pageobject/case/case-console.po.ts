@@ -16,38 +16,9 @@ class CaseConsolePage {
         tableValue: '.ui-grid-cell-contents',
     }
 
-    async searchCase(caseId: string): Promise<void> {
-        await gridUtil.clearFilter();
-        await gridUtil.searchRecord(caseId);
-        await utilCommon.waitUntilSpinnerToHide();
-    }
-
-    async searchAndOpenCase(caseId: string): Promise<void> {
-        await gridUtil.clearFilter();
-        await gridUtil.searchAndOpenHyperlink(caseId);
-        await utilCommon.waitUntilSpinnerToHide();
-    }
-
-    async isCaseIdPresent(caseId: string): Promise<boolean> {
-        let priorityValue = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Case ID');
-        return caseId === priorityValue;
-    }
-
-    async isCasePriorityPresent(priority: string): Promise<boolean> {
-        let priorityValue = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Priority');
-        return priority === priorityValue;
-    }
-
-    async isCaseStatusPresent(status: string): Promise<boolean> {
-        let priorityValue = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Status');
-        return status === priorityValue;
-
-    }
-
     async setCaseSearchBoxValue(input: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.searchCase)));
-        await $(this.selectors.searchCase).clear();
-        await $(this.selectors.searchCase).sendKeys(input, Key.ENTER);
+        await gridUtil.searchOnGridConsole(input);
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickFirstLinkInCaseSearchGrid(): Promise<void> {
@@ -65,11 +36,37 @@ class CaseConsolePage {
         await $(this.selectors.recommendedCaseCheckBox).click();
     }
 
-    async isCaseSummaryPresent(summary: string): Promise<boolean> {
-        let priorityValue = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Summary');
-        return summary === priorityValue;
+    async searchCase(caseId: string): Promise<void> {
+        await gridUtil.clearFilter();
+        await gridUtil.searchRecord(caseId);
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
+    async searchAndOpenCase(caseId: string): Promise<void> {
+        await gridUtil.clearFilter();
+        await gridUtil.searchAndOpenHyperlink(caseId);
+        await utilCommon.waitUntilSpinnerToHide();
+    }
+
+    async isCaseIdPresent(caseId: string): Promise<boolean> {
+        let caseIDfromGrid = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Case ID');
+        return caseId === caseIDfromGrid;
+    }
+
+    async isCasePriorityPresent(priority: string): Promise<boolean> {
+        let priorityValue = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Priority');
+        return priority === priorityValue;
+    }
+
+    async isCaseStatusPresent(status: string): Promise<boolean> {
+        let caseStatus = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Status');
+        return status === caseStatus;
+    }
+
+    async isCaseSummaryPresent(summary: string): Promise<boolean> {
+        let caseSummary = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Summary');
+        return summary === caseSummary;
+    }
 }
 
 export default new CaseConsolePage();

@@ -1,4 +1,7 @@
 import { $, $$, browser, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
+
 
 class SelectCaseTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -39,9 +42,11 @@ class SelectCaseTemplateBlade {
         await $(this.selectors.refreshbutton).click();
     }
 
-    async clickOnFirstCheckBox(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchTextbox)));
-        await $$(this.selectors.caseTemplateCheckBox).first().click();
+
+    async selectCaseTemplate(templateName:string): Promise<void> {
+        await this.clickOnAllTemplateTab();
+        await utilGrid.searchAndSelectGridRecord(templateName);
+        await this.clickOnApplyButton();
     }
 
     async clickOnApplyButton(): Promise<void> {

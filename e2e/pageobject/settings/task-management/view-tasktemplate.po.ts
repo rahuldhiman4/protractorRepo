@@ -83,7 +83,7 @@ class ViewTaskTemplate {
         return await $(this.selectors.taskTypeValue).getText();
     }
 
-    async gettaskDescriptionNameValue(): Promise<string> {
+    async getTaskDescriptionNameValue(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.taskDescriptionValue)));
         return await $(this.selectors.taskDescriptionValue).getText();
     }

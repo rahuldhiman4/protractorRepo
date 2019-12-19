@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from 'protractor';
 
 export class Util {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -9,7 +9,14 @@ export class Util {
         popUpMsgLocator: '.rx-growl-item__message',
         warningOk: '.d-modal__footer button[class*="d-button d-button_primary d-button_small"]',
         warningCancel: '.d-modal__footer button[class*="d-button d-button_secondary d-button_small"]',
-        closeTipMsg: '.rx-growl-close'
+        closeTipMsg: '.rx-growl-close',
+        dropDownChoice: '.ui-select__rx-choice',
+        warningMsgText: '.d-modal__content-item',
+    }
+
+    async getWarningMessagegText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.warningMsgText)));
+        return await $(this.selectors.warningMsgText).getText();
     }
 
     async selectDropDown(guid: string, value: string): Promise<void> {
@@ -27,18 +34,75 @@ export class Util {
         var optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
         await browser.sleep(1000);
         var option = await element(by.cssContainingText(optionCss, value));
-        await browser.wait(this.EC.visibilityOf(option));
-        await option.click();
+        await browser.wait(this.EC.elementToBeClickable(option), 2000).then(async function () {
+            await option.click();
+        });
     }
 
-    async getPopUpMessage() {
+    async selectDropDown2(dropDownElementFinder: ElementFinder, value: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable(dropDownElementFinder));
+        await dropDownElementFinder.click();
+        await browser.wait(this.EC.or(async () => {
+            await browser.wait(this.EC.invisibilityOf(element(by.cssContainingText(this.selectors.dropDownChoice, 'Loading data...'))));
+            let count = await $$(this.selectors.dropDownChoice).count();
+            return count >= 1;
+        }));
+        let option = await element(by.cssContainingText(this.selectors.dropDownChoice, value));
+        await browser.sleep(1000);
+        await browser.wait(this.EC.elementToBeClickable(option), 2000).then(async function () {
+            await option.click();
+        });
+    }
+
+    async isValuePresentInDropDown(guid: string, value: string): Promise<boolean> {
+        const dropDown = await $(`[rx-view-component-id="${guid}"]`);
+        const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+        const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
+        await browser.wait(this.EC.elementToBeClickable(dropDownBoxElement));
+        await dropDownBoxElement.click();
+        await browser.wait(this.EC.visibilityOf(dropDownInputElement));
+        await dropDownInputElement.sendKeys(value);
+        await this.waitUntilSpinnerToHide();
+        let count = await dropDown.$$(this.selectors.dropDownOption).count();
+        if (count >= 1) { return true; } else { return false; }
+    }
+
+    async isDrpDownvalueDisplayed(guid: string, data: string[]): Promise<boolean> {
+        let arr: string[] = [];
+        const dropDown = await $(`[rx-view-component-id="${guid}"]`);
+        const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+        await browser.wait(this.EC.elementToBeClickable(dropDownBoxElement));
+        await dropDownBoxElement.click();
+        await browser.wait(this.EC.or(async () => {
+            await browser.wait(this.EC.invisibilityOf(element(by.cssContainingText(this.selectors.dropDownOption, 'Loading data...'))));
+            let count = await dropDown.$$(this.selectors.dropDownOption).count();
+            return count >= 1;
+        }));
+        let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
+        for (var i = 0; i < drpDwnvalue; i++) {
+            var ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
+            arr[i] = ab;
+        }
+        arr = arr.sort();
+        data = data.sort();
+        return arr.length === data.length && arr.every(
+            (value, index) => (value === data[index])
+        );
+    }
+
+    async getPopUpMessage(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
         return await $(this.selectors.popUpMsgLocator).getText();
     }
 
-    async getPopUpMessages(messageNo: number) {
+    async isPopUpMessagePresent(value: string): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
-        return await $$(this.selectors.popUpMsgLocator).get(messageNo).getText();
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.popUpMsgLocator).count();
+            return count >= 1;
+        }));
+        let option: boolean = await element(by.cssContainingText(this.selectors.popUpMsgLocator, value)).isDisplayed();
+        return option;
     }
 
     async selectDropDownWithName(name: string, value: string): Promise<void> {
@@ -65,8 +129,12 @@ export class Util {
     }
 
     async closePopUpMessage(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeTipMsg)));
-        await $(this.selectors.closeTipMsg).click();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
+        await $$(this.selectors.closeTipMsg).then(async function (popups) {
+            for (let i = 0; i < popups.length; i++) {
+                await popups[i].click();
+            }
+        });
     }
 
     async clickOnWarningOk(): Promise<void> {
@@ -115,12 +183,16 @@ export class Util {
     }
 
     async waitUntilSpinnerToHide(): Promise<void> {
-        await browser.wait(this.EC.presenceOf($('.d-preloader')));
-        await browser.wait(this.EC.or(async () => {
-            await $$('.d-preloader').each(async function (element) {
-                await element.getAttribute('innerHTML') == null
-            });
-        }), 30 * 1000);
+        try {
+            await browser.wait(this.EC.presenceOf($('.d-preloader')), 5 * 1000);
+            await browser.wait(this.EC.or(async () => {
+                await $$('.d-preloader').each(async function (element) {
+                    await element.getAttribute('innerHTML') == null;
+                });
+            }), 7 * 1000);
+        } catch (error) {
+            console.log('Spinner not present on the page');
+        }
     }
 }
 

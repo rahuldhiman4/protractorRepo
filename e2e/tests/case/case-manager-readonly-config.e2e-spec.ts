@@ -27,6 +27,7 @@ import configureDataSourceEditPage from "../../pageobject/settings/slm/edit-conf
 import goalTypeEditPage from "../../pageobject/settings/slm/edit-goal-type.po";
 import goalTypeConfigConsole from "../../pageobject/settings/slm/goal-type-config-console.po";
 import taskStatusConfig from "../../pageobject/settings/task-management/task-status-config.po";
+import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
 
 describe('Case Manager Read-only Config', () => {
@@ -35,45 +36,50 @@ describe('Case Manager Read-only Config', () => {
         await loginPage.login('qdu');
     });
 
-    afterEach(async () => {
-        await browser.refresh();
-    });
-
     afterAll(async () => {
         await navigationPage.signOut();
     });
 
+    afterEach(async () => {
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
+    });
+
+    // asahitya
     it('DRDMV-17553: Case manager - automatic case status transtion rule console validations', async () => {
-        await navigationPage.signOut();
         try {
+            await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows'));
-            let automatedStatusTransitionData = require('../../data/ui/automatedStatusTransition.ui.json');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
+            let automatedStatusTransitionData = await require('../../data/ui/case/automatedStatusTransition.ui.json');
             var configName: string = await automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].name + Math.floor(Math.random() * 100000);
             automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].name = configName;
+            automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].changeStatusAfter = Math.floor(Math.random() * 180) + 1;
             await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(automatedStatusTransitionData);
         }
         catch (Ex) {
             console.log("Issue while creating the Automated status transition");
+            expect(true).toBeFalsy();
         }
         finally {
             await navigationPage.signOut();
             await loginPage.login('qdu');
         }
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows'));
-        expect(await automatedStatusTransitionConsole.isAddAutomatedStatusTransitionBtnDisabled()).toBeTruthy();
-        await utilGrid.searchAndSelectAllCheckBoxWOGrid(configName);
-        expect(await automatedStatusTransitionConsole.isDeleteAutomatedStatusTransitionBtnDisabled()).toBeTruthy();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
+        expect(await automatedStatusTransitionConsole.isAddAutomatedStatusTransitionBtnEnabled()).toBeFalsy();
+        await utilGrid.searchAndSelectGridRecord(configName);
+        expect(await automatedStatusTransitionConsole.isDeleteAutomatedStatusTransitionBtnEnabled()).toBeFalsy();
         await browser.refresh();
-        await utilGrid.searchAndOpenHyperlink(configName);
-        expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionNameDisabled()).toBeTruthy();
-        expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionSaveBtnDisabled()).toBeTruthy();
-        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
+        await automatedStatusTransitionConsole.openAutomatedTransitionConfig(configName);
+        expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionNameEnabled()).toBeFalsy();
+        expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionSaveBtnEnabled()).toBeFalsy();
     });
 
+    // asahitya
     it('DRDMV-18033: Check Case manager is not able to perform Create Update Delete operation on Case Assignment Mapping', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
@@ -89,6 +95,7 @@ describe('Case Manager Read-only Config', () => {
         await browser.refresh();
     });
 
+    // asahitya
     it('DRDMV-18037: Check Case manager is not able to perform Create Update Delete operation on Read Access mapping', async () => {
         await navigationPage.gotCreateCase();
         await navigationPage.gotoSettingsPage();
@@ -105,6 +112,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     //Defect: Description and Status fields are enabled
+    // asahitya
     it('DRDMV-18072: Check Case manager is not able to perform Create Update operation on Process Library configuration', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
@@ -116,6 +124,7 @@ describe('Case Manager Read-only Config', () => {
         await browser.refresh();
     });
 
+    // asahitya
     it('DRDMV-18069: Check Case manager is not able to perform Create Update operation on Menu Items', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
@@ -127,6 +136,7 @@ describe('Case Manager Read-only Config', () => {
         await browser.refresh();
     });
 
+    // asahitya
     it('DRDMV-18038: Check Case manager is not able to perform Create Update Delete operation on Case-> Status Configuration', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
@@ -134,6 +144,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await caseStatusConfig.isEditLifrCycleBtnDisabled()).toBeTruthy("Edit Life Cycle button is enabled");
     });
 
+    // asahitya
     it('DRDMV-18057: Check Case manager is not able to perform Create Update Delete operation on Task->Status Configuration', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
@@ -142,6 +153,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await taskStatusConfig.isEditLifrCycleBtnDisabled()).toBeTruthy("Edit Life Cycle button is enabled");
     });
 
+    // asahitya
     it('DRDMV-18169: Check Case manager is not able to perform Create Update operation on Goal Type', async () => {
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type - Business Workflows');
         expect(await goalTypeConfigConsole.isAddGoalTypeBtnDisabled()).toBeTruthy("Add button is enabled");
@@ -151,6 +163,7 @@ describe('Case Manager Read-only Config', () => {
         browser.refresh();
     });
 
+    // asahitya
     it('DRDMV-18095: Check Case manager is not able to perform Create Update operation on Configure Data Source', async () => {
         await navigationPage.gotCreateCase();
         await navigationPage.gotoSettingsPage();
@@ -166,6 +179,7 @@ describe('Case Manager Read-only Config', () => {
         await browser.refresh();
     });
 
+    // asahitya
     it('DRDMV-18093: Check Case manager is not able to perform Create Update operation on Business Time Shared Entity', async () => {
         await navigationPage.gotCreateCase();
         await navigationPage.gotoSettingsPage();
@@ -180,6 +194,7 @@ describe('Case Manager Read-only Config', () => {
         await browser.refresh();
     });
 
+    // asahitya
     it('DRDMV-18083: Check Case manager is not able to perform Create Update operation on Business Time Segment', async () => {
         await navigationPage.gotCreateCase();
         await navigationPage.gotoSettingsPage();
@@ -192,6 +207,8 @@ describe('Case Manager Read-only Config', () => {
         await browser.refresh();
     });
 
+    //Defect: Description and Status fields are enabled
+    // asahitya
     it('DRDMV-18034: Check Case manager is not able to perform Create Update Delete operation on Note template', async () => {
         //API call to create the case notes template
         await apiHelper.apiLogin('qkatawazi');
@@ -209,11 +226,13 @@ describe('Case Manager Read-only Config', () => {
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
         await browser.refresh();
         await utilGrid.searchAndOpenHyperlink(notesTemplateName);
-        expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
-        expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
+        expect(await editNotesTemplateConfig.isStatusFieldEnabled()).toBeFalsy("Status field is enabled");
+        expect(await editNotesTemplateConfig.isDescriptionFieldEnabled()).toBeFalsy("Description field is enabled");
         await browser.refresh();
     });
 
+    //Defect: Description and Status fields are enabled
+    // asahitya
     it('DRDMV-18056: Check Case manager is not able to perform Create Update Delete operation on Task->Note Template', async () => {
         //API call to create the case notes template
         await apiHelper.apiLogin('qkatawazi');
@@ -231,11 +250,13 @@ describe('Case Manager Read-only Config', () => {
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
         await browser.refresh();
         await utilGrid.searchAndOpenHyperlink(notesTemplateName);
-        expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
-        expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
+        expect(await editNotesTemplateConfig.isStatusFieldEnabled()).toBeFalsy("Status field is enabled");
+        expect(await editNotesTemplateConfig.isDescriptionFieldEnabled()).toBeFalsy("Description field is enabled");
         await browser.refresh();
     });
 
+    //Defect: Description and Status fields are enabled
+    // asahitya
     it('DRDMV-18042: Check Case manager is not able to perform Create Update Delete operation on People->Note Template', async () => {
         //API call to create the case notes template
         await apiHelper.apiLogin('qkatawazi');
@@ -253,12 +274,14 @@ describe('Case Manager Read-only Config', () => {
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
         await browser.refresh();
         await utilGrid.searchAndOpenHyperlink(notesTemplateName);
-        expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
-        expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
+        expect(await editNotesTemplateConfig.isStatusFieldEnabled()).toBeFalsy("Status field is enabled");
+        expect(await editNotesTemplateConfig.isDescriptionFieldEnabled()).toBeFalsy("Description field is enabled");
         await browser.refresh();
     });
 
-    it('DRDMV-18042: Check Case manager is not able to perform Create Update Delete operation on People->Note Template', async () => {
+    //Defect: Description and Status fields are enabled
+    // asahitya
+    it('DRDMV-18071: Check Case manager is not able to perform Create Update operation on Define Flowset configuration', async () => {
         //API call to create the flowset
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

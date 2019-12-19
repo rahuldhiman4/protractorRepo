@@ -1,6 +1,7 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../utils/util.grid';
 import activityTab from './activity-tab.po';
+import utilCommon from '../../utils/util.common';
 
 class notesTemplateUsage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -33,6 +34,7 @@ class notesTemplateUsage {
         await utilGrid.searchAndSelectFirstCheckBox(this.selectors.searchGuid, notesTemplate);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyButton)));
         await $(this.selectors.applyButton).click();
+        await utilCommon.waitUntilSpinnerToHide();
         await browser.wait(this.EC.visibilityOf($(this.selectors.settingsButton)));
         await browser.wait(this.EC.elementToBeClickable($('.activity-feed-note-buttons__right .d-button.d-button_primary')));
     }

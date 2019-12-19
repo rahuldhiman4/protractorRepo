@@ -93,6 +93,7 @@ class ActivityTabPage {
         await $(this.selectors.addNoteBoxEdit).sendKeys(`@${tagPerson}`);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)));
         await $(this.selectors.personPopup).click();
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clearActivityNote(): Promise<void> {
@@ -113,7 +114,6 @@ class ActivityTabPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNotePostButton)));
         await $(this.selectors.addNotePostButton).click();
         await utilCommon.waitUntilSpinnerToHide();
-        //        await browser.sleep(3000);
     }
 
     async clickOnCancelButton(): Promise<void> {
@@ -231,7 +231,12 @@ class ActivityTabPage {
     }
 
     async isTextPresentInActivityLog(caseActivityLogText: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.activityLog, caseActivityLogText)).isDisplayed();
+        try{
+            return await element(by.cssContainingText(this.selectors.activityLog, caseActivityLogText)).isDisplayed();
+        }
+        catch(e){
+            return false;
+        }
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {

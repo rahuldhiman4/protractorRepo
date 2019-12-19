@@ -26,7 +26,7 @@ describe('Copy Task Template', () => {
     afterEach(async () => {
         await browser.refresh();
         await utilCommon.waitUntilSpinnerToHide();
-    })
+    });
 
     it('DRDMV-14214: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -149,7 +149,6 @@ describe('Copy Task Template', () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
             .toEqual('Task Templates - Business Workflows');
-        await browser.sleep(2000);
         await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
         await taskTemplatePage.setTemplateName(automationTaskTemplate);
         await taskTemplatePage.setTaskSummary(automationTaskSummary);
@@ -221,7 +220,6 @@ describe('Copy Task Template', () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
             .toEqual('Task Templates - Business Workflows');
-        await browser.sleep(2000);
         await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
         await taskTemplatePage.setTemplateName(automationTaskTemplate);
         await taskTemplatePage.setTaskSummary(automationTaskSummary);
@@ -333,7 +331,7 @@ describe('Copy Task Template', () => {
         await expect(await viewTaskTemplate.getSummaryValue()).toBe(manualTaskSummary);
         await expect(await viewTaskTemplate.getTaskTypeValue()).toBe('Automated');
         await expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('Petramco');
-        await expect(await viewTaskTemplate.gettaskDescriptionNameValue()).toBe(Description);
+        await expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe(Description);
         await expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Applications');
         await expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
         await expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
@@ -355,7 +353,6 @@ describe('Copy Task Template', () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
             .toEqual('Task Templates - Business Workflows');
-        await browser.sleep(4000);
         await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
         await taskTemplatePage.setTemplateName(TaskTemplate);
         await taskTemplatePage.setTaskSummary(TaskSummary);
@@ -518,7 +515,7 @@ describe('Copy Task Template', () => {
         await expect(await viewTaskTemplate.getSummaryValue()).toBe(taskSummary);
         await expect(await viewTaskTemplate.getTaskTypeValue()).toBe('External');
         await expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('Petramco');
-        await expect(await viewTaskTemplate.gettaskDescriptionNameValue()).toBe(description);
+        await expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe(description);
         await expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Applications');
         await expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
         await expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
@@ -600,7 +597,7 @@ describe('Copy Task Template', () => {
         await expect(await viewTaskTemplate.getSummaryValue()).toBe(taskSummary);
         await expect(await viewTaskTemplate.getTaskTypeValue()).toBe('Manual');
         await expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('Petramco');
-        await expect(await viewTaskTemplate.gettaskDescriptionNameValue()).toBe(description);
+        await expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe(description);
         await expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Applications');
         await expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
         await expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
@@ -667,7 +664,6 @@ describe('Copy Task Template', () => {
         //Automation Task template
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await browser.sleep(2000);
         await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
         await taskTemplatePage.setTemplateName(automationTaskTemplate);
         await taskTemplatePage.setTaskSummary(automationTaskSummary);
