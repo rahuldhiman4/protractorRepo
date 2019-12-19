@@ -3,8 +3,8 @@ import apiHelper from "../../api/api.helper";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfile from "../../pageobject/common/person-profile.po";
-import utilCommon from '../../utils/util.common';
 import activityTabPage from '../../pageobject/social/activity-tab.po';
+import utilCommon from '../../utils/util.common';
 
 describe('Person Profile test', () => {
     beforeAll(async () => {

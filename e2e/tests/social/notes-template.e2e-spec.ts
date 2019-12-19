@@ -22,13 +22,13 @@ describe('Notes template', () => {
         loginPage.login("elizabeth");
     });
 
+    afterAll(async () => {
+        await navigationPage.signOut();
+    });
+
     afterEach(async () => {
         await browser.refresh();
         await utilCommon.waitUntilSpinnerToHide();
-    })
-    
-    afterAll(async () => {
-        await navigationPage.signOut();
     });
 
     it('DRDMV-16026: [Design Time] Verify case Business analyst is able create ,edit and delete Knowledge Notes template', async () => {

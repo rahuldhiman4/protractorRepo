@@ -4,11 +4,11 @@ import { default as viewCasePage, default as viewCasePo } from "../../pageobject
 import changeAssignmentBlade from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
+import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import activitytab from "../../pageobject/social/activity-tab.po";
 import taskConsole from "../../pageobject/task/console-task.po";
-import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
-import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import utilCommon from '../../utils/util.common';
@@ -21,6 +21,11 @@ describe('Create Adhoc task', () => {
 
     afterAll(async () => {
         await navigationPage.signOut();
+    });
+
+    afterEach(async () => {
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('DRDMV-3820,DRDMV-1239: Adhoc Task Create view (UI verification)', async () => {

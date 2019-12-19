@@ -2,8 +2,9 @@ import { browser } from "protractor";
 import createQuickCasePage from '../../pageobject/case/create-case-quick.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import utilCommon from '../../utils/util.common';
 
-fdescribe('Parallel task execution', () => {
+describe('Parallel task execution', () => {
     beforeAll(async () => {
         await browser.manage().window().maximize();
         await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);

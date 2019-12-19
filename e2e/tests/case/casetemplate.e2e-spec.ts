@@ -1,10 +1,10 @@
 import { browser } from "protractor";
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import createCaseTemplate from "../../pageobject/settings/case-management/create-casetemplate.po";
 import { default as editCaseTemplate, default as editCasetemplatePo } from "../../pageobject/settings/case-management/edit-casetemplate.po";
 import viewCaseTemplate from "../../pageobject/settings/case-management/view-casetemplate.po";
-import loginPage from "../../pageobject/common/login.po";
-import navigationPage from "../../pageobject/common/navigation.po";
 import utilCommon from '../../utils/util.common';
 
 var caseTemplate = require('../../data/ui/case/casetemplate.ui.json');
@@ -15,13 +15,13 @@ describe('Case Template', () => {
         await loginPage.login("qkatawazi");
     });
 
+    afterAll(async () => {
+        await navigationPage.signOut();
+    });
+
     afterEach(async () => {
         await browser.refresh();
         await utilCommon.waitUntilSpinnerToHide();
-    })
-
-    afterAll(async () => {
-        await navigationPage.signOut();
     });
 
     it('DRDMV-10477,DRDMV-10483: Case Template creation with Template validation as OPTIONAL using BA login', async () => {
