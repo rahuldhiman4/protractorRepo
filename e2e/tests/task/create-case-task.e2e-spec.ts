@@ -20,13 +20,13 @@ describe('Create Case Task', () => {
         await loginPage.login('qkatawazi');
     });
 
+    afterAll(async () => {
+        await navigationPage.signOut();
+    });
+
     afterEach(async () => {
         await browser.refresh();
         await utilCommon.waitUntilSpinnerToHide();
-    });
-
-    afterAll(async () => {
-        await navigationPage.signOut();
     });
 
     //ankagraw

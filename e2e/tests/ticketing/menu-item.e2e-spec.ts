@@ -3,10 +3,7 @@ import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import createMenuItems from '../../pageobject/settings/application-config/create-menu-items-blade.po';
-import editMenuItemsConfigPo from '../../pageobject/settings/application-config/edit-menu-items-config.po';
-import menuItemsConfigConsolePo from '../../pageobject/settings/application-config/menu-items-config-console.po';
 import utilCommon from '../../utils/util.common';
-
 
 describe('Menu Item', () => {
     beforeAll(async () => {

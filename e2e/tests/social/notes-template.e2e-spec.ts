@@ -26,7 +26,12 @@ describe('Notes template', () => {
         await navigationPage.signOut();
     });
 
-    it('DRDMV-16026 : [Design Time] Verify case Business analyst is able create ,edit and delete Knowledge Notes template', async () => {
+    afterEach(async () => {
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
+    });
+
+    it('DRDMV-16026: [Design Time] Verify case Business analyst is able create ,edit and delete Knowledge Notes template', async () => {
         await navigationPage.gotoSettingsPage();
         var templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
         expect(await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows')).toEqual('Activity Notes Template Console - Knowledge - Business Workflows');
@@ -56,7 +61,7 @@ describe('Notes template', () => {
         await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
     }, 90 * 1000);
 
-    it('DRDMV-16010 : [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {
+    it('DRDMV-16010: [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows')).toEqual('Activity Notes Template Console - Case - Business Workflows');
@@ -87,7 +92,7 @@ describe('Notes template', () => {
         await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
     });
 
-    it('DRDMV-16028 : [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
+    it('DRDMV-16028: [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows')).toEqual('Activity Notes Template Console - Person - Business Workflows');
@@ -118,7 +123,7 @@ describe('Notes template', () => {
         await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
     }, 200 * 1000);
 
-    it('DRDMV-16027 : [Design Time] Verify case Business analyst is able create ,edit and delete Task Notes template', async () => {
+    it('DRDMV-16027: [Design Time] Verify case Business analyst is able create ,edit and delete Task Notes template', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows')).toEqual('Activity Notes Template Console - Task - Business Workflows');
@@ -149,7 +154,7 @@ describe('Notes template', () => {
         await expect(utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
     });
 
-    it('DRDMV-16181 : [Design Time ] Knowledge user is able to create,edit(update), Delete Knowledge Notes Template', async () => {
+    it('DRDMV-16181: [Design Time ] Knowledge user is able to create,edit(update), Delete Knowledge Notes Template', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login("khardison");
@@ -190,7 +195,7 @@ describe('Notes template', () => {
         }
     }, 120 * 1000);
 
-    it('DRDMV-15999 : [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
+    it('DRDMV-15999: [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows')).toEqual('Activity Notes Template Console - Case - Business Workflows');
         await expect(consoleNotesTemplate.isNotesTemplateUIConsolePresent()).toBeTruthy
@@ -224,7 +229,7 @@ describe('Notes template', () => {
         await utilCommon.waitUntilSpinnerToHide();
     }, 200 * 1000);
 
-    it('DRDMV-16111 : [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
+    it('DRDMV-16111: [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows')).toEqual('Activity Notes Template Console - Case - Business Workflows');
         var caseNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
@@ -266,7 +271,7 @@ describe('Notes template', () => {
         await utilCommon.waitUntilSpinnerToHide();
     }, 200 * 1000);
 
-    it('DRDMV-16040 :[Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case ( one at a time can post)', async () => {
+    it('DRDMV-16040:[Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case ( one at a time can post)', async () => {
         await navigationPage.gotoSettingsPage();
         //task template 1
         await apiHelper.apiLogin('tadmin');
