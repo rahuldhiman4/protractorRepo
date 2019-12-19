@@ -36,13 +36,13 @@ describe('Case Manager Read-only Config', () => {
         await loginPage.login('qdu');
     });
 
+    afterAll(async () => {
+        await navigationPage.signOut();
+    });
+
     afterEach(async () => {
         await browser.refresh();
         await utilCommon.waitUntilSpinnerToHide();
-    });
-
-    afterAll(async () => {
-        await navigationPage.signOut();
     });
 
     // asahitya

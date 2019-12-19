@@ -1,11 +1,12 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import copyCaseTemplate from "../../pageobject/settings/case-management/copy-casetemplate.po";
 import createCaseTemplate from "../../pageobject/settings/case-management/create-casetemplate.po";
 import editCaseTemplate from "../../pageobject/settings/case-management/edit-casetemplate.po";
-import loginPage from "../../pageobject/common/login.po";
-import navigationPage from "../../pageobject/common/navigation.po";
+import utilCommon from '../../utils/util.common';
 
 describe('Copy Case Template', () => {
     beforeAll(async () => {
@@ -13,12 +14,13 @@ describe('Copy Case Template', () => {
         await loginPage.login("qkatawazi");
     });
 
-    afterEach(async () => {
-        await browser.refresh();
-    })
-
     afterAll(async () => {
         await navigationPage.signOut();
+    });
+
+    afterEach(async () => {
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('DRDMV-13551,DRDMV-13529: Create a Copy of Case template where Company is copied properly', async () => {
