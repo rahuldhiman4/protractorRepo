@@ -175,7 +175,6 @@ describe('Menu Item', () => {
     it('DRDMV-16105: [UI] "[Menu Items] - Update records', async () => {
         let lableRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let sourceRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        console.log(lableRandVal);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
         await createMenuItems.clickOnMenuOptionLink();
@@ -241,8 +240,6 @@ describe('Menu Item', () => {
     it('DRDMV-16106: [Menu Items] - Menu Items grid Validation', async () => {
         let lableRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let sourceRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        console.log(lableRandVal);
-        console.log(sourceRandVal);
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
