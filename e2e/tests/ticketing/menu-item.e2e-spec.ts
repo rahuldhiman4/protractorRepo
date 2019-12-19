@@ -3,6 +3,8 @@ import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import createMenuItems from '../../pageobject/settings/application-config/create-menu-items-blade.po';
+import menuItemsConfigConsolePo from '../../pageobject/settings/application-config/menu-items-config-console.po'
+import editMenuItemsConfigPo from '../../pageobject/settings/application-config/edit-menu-items-config.po'
 import utilCommon from '../../utils/util.common';
 
 describe('Menu Item', () => {
@@ -211,7 +213,7 @@ describe('Menu Item', () => {
         let statusdropDown1: string[] = ["Deprecated", "Inactive", "Active"];
         expect(await editMenuItemsConfigPo.isStatusDropDownValuesMatch(statusdropDown1)).toBeTruthy('wrong column headers');
         await editMenuItemsConfigPo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.'),'Saved successfully. Popup is missing';
         await utilCommon.waitUntilPopUpDisappear();
 
         await menuItemsConfigConsolePo.searchAndEditMenuOption(lableRandVal);
@@ -226,13 +228,13 @@ describe('Menu Item', () => {
         expect(await editMenuItemsConfigPo.isStatusDropDownValuesMatch(statusDropDown2)).toBeTruthy('wrong column headers');
         await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(true);
         await editMenuItemsConfigPo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.'),'Saved successfully. Popup is missing';
         await utilCommon.waitUntilPopUpDisappear();
 
         await menuItemsConfigConsolePo.searchOnGridConsole(lableRandVal);
-        expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Name')).toBe('Label');
-        expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(lableRandVal);
-        expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Status')).toBe('Active');
+        expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Name')).toBe('Label'),'Menu Name column value is missing.';
+        expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(lableRandVal),'Menu Option column value is missing';
+        expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Status')).toBe('Active'),'Status column value is missing';
     }, 130 * 1000);
 
     //kgaikwad
