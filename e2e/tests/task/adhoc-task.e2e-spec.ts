@@ -23,7 +23,7 @@ describe('Create Adhoc task', () => {
         await navigationPage.signOut();
     });
 
-    it('DRDMV-3820, DRDMV-1239: Adhoc Task Create view (UI verification)', async () => {
+    it('DRDMV-3820,DRDMV-1239: Adhoc Task Create view (UI verification)', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         //Create Case
         await navigationPage.gotCreateCase();
@@ -103,7 +103,6 @@ describe('Create Adhoc task', () => {
         await expect(activitytab.isActivityTextPresent()).toBeTruthy();
     });
 
-
     it('DRDMV-7130: [Automatic Task] - Create Ad hoc Task', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         await navigationPage.gotCreateCase();
@@ -126,7 +125,7 @@ describe('Create Adhoc task', () => {
         await expect(viewTask.isProcessNameValue()).toBeTruthy();
     });
 
-    it('DRDMV-1580, DRDMV-12243: Adhoc Task details view (UI verification))', async () => {
+    it('DRDMV-1580,DRDMV-12243: Adhoc Task details view (UI verification))', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
