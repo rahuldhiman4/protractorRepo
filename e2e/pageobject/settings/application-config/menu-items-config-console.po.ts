@@ -15,6 +15,22 @@ class MenuItemsConsolePage {
         await utilCommon.waitUntilSpinnerToHide();
     }
 
+    async addColumnOnGrid(columnHeader: string[]): Promise<void> {
+        await utilGrid.addGridColumn(this.selectors.gridGuid, columnHeader);
+    }
+
+    async clearSearchBox(): Promise<void> {
+        await utilGrid.clearSearchBox();
+    }
+
+    async removeColumnOnGrid(columnHeader: string[]): Promise<void> {
+        await utilGrid.removeGridColumn(this.selectors.gridGuid, columnHeader);
+    }
+
+    async isGridColumnSorted(columnHeader: string, sortType: string): Promise<boolean> {
+        return await utilGrid.isGridColumnSorted(columnHeader, sortType, this.selectors.gridGuid);
+    }
+
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
     }
@@ -23,6 +39,8 @@ class MenuItemsConsolePage {
         await utilGrid.searchAndOpenHyperlink(menuOption);
         await utilCommon.waitUntilSpinnerToHide();
     }
+
+
 
     async isAddButtonDisabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.addMenuOptionBtn)));

@@ -124,6 +124,11 @@ export class GridOperation {
         await element(by.cssContainingText('.ui-grid__link', id)).click();
     }
 
+    async clearSearchBox() {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));
+        await $(this.selectors.summaryField1).clear();
+    }
+
     async searchAndOpenHyperlink(id: string) {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));
         await $(this.selectors.summaryField1).clear();

@@ -237,4 +237,58 @@ describe('Menu Item', () => {
         expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(lableRandVal);
         expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Status')).toBe('Active');
     }, 130 * 1000);
+
+    //kgaikwad
+    it('DRDMV-16106: [Menu Items] - Menu Items grid Validation', async () => {
+        let lableRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let sourceRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        console.log(lableRandVal);
+        console.log(sourceRandVal);
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+        await createMenuItems.clickOnMenuOptionLink();
+        await createMenuItems.selectMenuNameDropDown('Label');
+        await createMenuItems.clickOnLocalizeLink();
+        await utilCommon.waitUntilSpinnerToHide();
+        await localizeValuePopPo.valueTextBox(lableRandVal);
+        await localizeValuePopPo.clickOnSaveButton();
+        await utilCommon.waitUntilSpinnerToHide();
+        await createMenuItems.selectStatusDropDown('Active');
+        await createMenuItems.selectAvailableOnUiToggleButton(true);
+        await createMenuItems.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
+
+        await createMenuItems.clickOnMenuOptionLink();
+        await createMenuItems.selectMenuNameDropDown('Source');
+        await createMenuItems.clickOnLocalizeLink();
+        await utilCommon.waitUntilSpinnerToHide();
+        await localizeValuePopPo.valueTextBox(sourceRandVal);
+        await localizeValuePopPo.clickOnSaveButton();
+        await utilCommon.waitUntilSpinnerToHide();
+        await createMenuItems.selectStatusDropDown('Inactive');
+        await createMenuItems.selectAvailableOnUiToggleButton(true);
+        await createMenuItems.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
+
+        await menuItemsConfigConsolePo.searchOnGridConsole(lableRandVal);
+        expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(lableRandVal), 'Menu Option of label is missing from grid';
+        await menuItemsConfigConsolePo.searchOnGridConsole(sourceRandVal);
+        expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(sourceRandVal), 'Menu Option of source is missing from grid';
+
+        let column1: string[] = ["ID", "Created Date", "Modified Date", "Menu Name", "Menu Options", "Status"];
+        await menuItemsConfigConsolePo.addColumnOnGrid(column1);
+        let column2: string[] = ["ID", "Created Date", "Modified Date"];
+        await menuItemsConfigConsolePo.removeColumnOnGrid(column2);
+        await menuItemsConfigConsolePo.clearSearchBox();
+        await menuItemsConfigConsolePo.isGridColumnSorted('Menu Options', 'descending');
+        await menuItemsConfigConsolePo.isGridColumnSorted('Menu Name', 'descending');
+        await menuItemsConfigConsolePo.searchOnGridConsole(lableRandVal);
+        await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options');
+
+        await menuItemsConfigConsolePo.searchOnGridConsole(lableRandVal);
+        expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(lableRandVal), 'Menu Option of label is missing from grid';
+        await menuItemsConfigConsolePo.searchOnGridConsole(sourceRandVal);
+        expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(sourceRandVal), 'Menu Option of source is missing from grid';
+    }, 130 * 1000);
 })
