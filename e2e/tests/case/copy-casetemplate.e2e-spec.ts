@@ -113,7 +113,7 @@ describe('Copy Case Template', () => {
         }
     }, 200 * 1000);
 
-    it('DRDMV-13550 : Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
+    it('DRDMV-13550: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
         try {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
@@ -163,7 +163,7 @@ describe('Copy Case Template', () => {
         }
     }, 200 * 1000);
 
-    it('DRDMV-13815 : Instruction come Warning Message is displayed on Create Copy Case Template Page', async () => {
+    it('DRDMV-13815: Instruction come Warning Message is displayed on Create Copy Case Template Page', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
         var caseTemplate = await require('../../data/ui/casetemplate.ui.json');
