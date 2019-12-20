@@ -1,13 +1,9 @@
 import { browser } from "protractor";
+import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import createMenuItems from '../../pageobject/settings/application-config/create-menu-items-blade.po';
 import utilCommon from '../../utils/util.common';
-import menuItemsConfigConsolePo from '../../pageobject/settings/application-config/menu-items-config-console.po';
-import editMenuItemsConfigPo from '../../pageobject/settings/application-config/edit-menu-items-config.po';
-import utilGrid from '../../utils/util.grid';
-import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
-
 
 describe('Menu Item', () => {
     beforeAll(async () => {
@@ -172,5 +168,5 @@ describe('Menu Item', () => {
         expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
         await utilCommon.waitUntilPopUpDisappear();
     }, 150 * 1000);
-  
+
 })

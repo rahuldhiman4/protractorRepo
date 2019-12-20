@@ -2,6 +2,7 @@ import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions }
 import editCasePage from "../../pageobject/case/edit-case.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import utilCommon from '../../utils/util.common';
+import updateStatusBlade from '../../pageobject/common/update.status.blade.po';
 
 class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -17,6 +18,8 @@ class ViewCasePage {
         statusChange: '[rx-view-component-id="48bbcbbf-564c-4d46-8dc2-1e7670c187ff"] .status-transition',
         statusChangeReason: '[rx-view-component-id="049c43a1-4cbd-482d-980d-5db4ed78f295"]',
         statusDropDown: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"]',
+        statusDropDownGuid: '3c8d9278-fc1f-430c-b866-cdc9d217318b',
+        statusChangeReasonGuid: '049c43a1-4cbd-482d-980d-5db4ed78f295',
         statusList: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"] .ui-select__rx-choice',
         statusDisplay: '[aria-label="Status activate"]',
         coreTaskArrow: '[rx-view-component-id="0733a05e-2eea-4fe5-90a8-909238dc6389"] i',
@@ -47,8 +50,19 @@ class ViewCasePage {
         resolutionCodeSelect: '.ui-select__rx-choice',
         resolutionDescriptionTextBoxId: '[rx-view-component-id="d98df37c-7a96-43c3-bf69-2e6e735031ae"]',
         emptyResolutionDescriptionTextBox: '.d-textfield__label .ng-empty',
-        resolutionCodeDropDownGuid: 'fb07b5ff-3c9b-454a-8b0c-a1dfd9987856',
         priority: '.selection-field',
+        emailLink:'[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
+    }    
+    
+    async clickOnEmailLink(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
+        await ($(this.selectors.emailLink)).click();
+        await utilCommon.waitUntilSpinnerToHide();
+    }
+
+    async isEmailLinkPresent(): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
+        return await ($(this.selectors.emailLink)).isPresent();
     }
 
     async isResolutionDescriptionTextBoxEmpty(): Promise<boolean> {
@@ -58,7 +72,7 @@ class ViewCasePage {
     }
 
     async selectResolutionCodeDropDown(resolutionCode: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.resolutionCodeDropDownGuid, resolutionCode);
+        await updateStatusBlade.selectResolutionCode(resolutionCode);
     }
 
     async isCaseReopenLinkPresent(): Promise<boolean> {
@@ -129,10 +143,12 @@ class ViewCasePage {
         await $(this.selectors.addToWatchlist).click();
     }
 
-    async clickSaveStatus(): Promise<void> {
+    async clickSaveStatus(expectedStatus?: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveUpdateStatus)));
         await $(this.selectors.saveUpdateStatus).click();
-        await utilCommon.waitUntilPopUpDisappear();
+        if (expectedStatus) {
+            await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.statusChange, expectedStatus))));
+        }
     }
 
     async isEditLinkDisplay(): Promise<boolean> {
@@ -152,10 +168,11 @@ class ViewCasePage {
     async changeCaseStatus(statusValue: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
-        const statusUpdate = $(this.selectors.statusDropDown);
-        await browser.wait(this.EC.elementToBeClickable(statusUpdate.$('[aria-label="Status activate"]')));
-        await (statusUpdate.$('[aria-label="Status activate"]')).click();
-        await element(by.cssContainingText(this.selectors.statusDropDown + ' .ui-select__rx-choice', statusValue)).click();
+        await updateStatusBlade.changeStatus(statusValue);
+    }
+
+    async allStatusOptionsPresent(list: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusDropDownGuid,list);
     }
 
     async clickEditCaseButton(): Promise<void> {
@@ -164,15 +181,12 @@ class ViewCasePage {
         await browser.wait(this.EC.visibilityOf($(editCasePage.selectors.cancelBtn)));
     }
 
-    async setStatusReason(statusValue: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
-        await $(this.selectors.statusChangeReason).click();
-        const statusReason = $(this.selectors.statusChangeReason);
-        await browser.wait(this.EC.elementToBeClickable(statusReason.$(this.selectors.searchInput)));
-        await (statusReason.$(this.selectors.searchInput)).sendKeys(statusValue);
-        var option = await element(by.cssContainingText((this.selectors.statusChangeReason + ' .ui-select__rx-choice'), statusValue));
-        await browser.wait(this.EC.visibilityOf(option));
-        await option.click();
+    async setStatusReason(statusReasonValue: string): Promise<void> {
+        await updateStatusBlade.setStatusReason(statusReasonValue);
+    }
+
+    async allStatusReasonOptionsPresent(list: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusChangeReasonGuid, list);
     }
 
     async isStatusReasonOptionDisplayed(statusValue: string): Promise<boolean> {
@@ -182,23 +196,6 @@ class ViewCasePage {
         await browser.wait(this.EC.elementToBeClickable(statusReason.$(this.selectors.searchInput)));
         await (statusReason.$(this.selectors.searchInput)).sendKeys(statusValue);
         return await element(by.cssContainingText((this.selectors.statusChangeReason + ' .ui-select__rx-choice'), statusValue)).isDisplayed();
-    }
-
-    async isCaseStatusesDisplayed(data: string[]): Promise<boolean> {
-        let arr: string[] = [];
-        const statusUpdate = $(this.selectors.statusDropDown);
-        await browser.wait(this.EC.elementToBeClickable(statusUpdate.$(this.selectors.statusDisplay)));
-        await (statusUpdate.$(this.selectors.statusDisplay)).click();
-        let allStatus: number = await $$(this.selectors.statusList).count();
-        for (var i = 0; i < allStatus; i++) {
-            var ab: string = await $$(this.selectors.statusList).get(i).getText();
-            arr[i] = ab;
-        }
-        arr = arr.sort();
-        data = data.sort();
-        return arr.length === data.length && arr.every(
-            (value, index) => (value === data[index])
-        );
     }
 
     async clearStatusReason(): Promise<void> {
@@ -211,42 +208,42 @@ class ViewCasePage {
         await $(this.selectors.addTaskButton).click();
     }
 
-    async getCaseID(): Promise<string> {
+    async getCaseID(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.caseIdText)));
         return await $(this.selectors.caseIdText).getText();
     }
 
-    async getRequesterName(): Promise<string> {
+    async getRequesterName(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.requesterName)));
         return await $(this.selectors.requesterName).getText();
     }
 
-    async getRequesterPhoneNo(): Promise<string> {
+    async getRequesterPhoneNo(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.requesterPhoneNo)));
         return await $(this.selectors.requesterPhoneNo).getText();
     }
 
-    async getRequesterEmail(): Promise<string> {
+    async getRequesterEmail(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.requesterEmail)));
         return await $(this.selectors.requesterEmail).getText();
     }
 
-    async getContactPersonName(): Promise<string> {
+    async getContactPersonName(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.contactPersonName)));
         return await $(this.selectors.contactPersonName).getText();
     }
 
-    async getCaseSummary(): Promise<string> {
+    async getCaseSummary(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
         return await $(this.selectors.caseSummary).getText();
     }
 
-    async getContactPersonerPhoneNo(): Promise<string> {
+    async getContactPersonerPhoneNo(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.contactPersonContact)));
         return await $(this.selectors.contactPersonContact).getText();
     }
 
-    async getContactPersonalEmail(): Promise<string> {
+    async getContactPersonalEmail(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.contactPersonEmail)));
         return await $(this.selectors.contactPersonEmail).getText();
     }
@@ -256,7 +253,7 @@ class ViewCasePage {
         await $(this.selectors.stopWatching).click();
     }
 
-    async clickOnContactPersonerDrpDwn(): Promise<void> {
+    async clickOnContactPersonerDrpDwn(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.contactPersonDrpDwn)));
         await $(this.selectors.contactPersonDrpDwn).click();
     }

@@ -7,11 +7,11 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
-import editTask from "../../pageobject/task/edit-task.po";
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
+import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
+import editTask from "../../pageobject/task/edit-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
-import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import utilCommon from '../../utils/util.common';
 
 describe('Create Case Task', () => {
@@ -24,6 +24,12 @@ describe('Create Case Task', () => {
         await navigationPage.signOut();
     });
 
+    afterEach(async () => {
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
+    });
+
+    //ankagraw
     it('DRDMV-7165,DRDMV-7147: Update Task Type field for any task	', async () => {
         let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
         let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
@@ -99,6 +105,7 @@ describe('Create Case Task', () => {
         await loginPage.login('qkatawazi');
     }, 180 * 1000);
 
+    //ankagraw
     it('DRDMV-7148,DRDMV-7140: Automatic Task data validation once Task is created	', async () => {
         let autmationTaskTemplateWithRequiredData = 'Automatic task With Required Field' + Math.floor(Math.random() * 1000000);
         let autmationTaskSummaryWithRequiredData = 'Automatic task Summary With Required Field' + Math.floor(Math.random() * 1000000);
@@ -197,6 +204,7 @@ describe('Create Case Task', () => {
         await loginPage.login('qkatawazi');
     }, 360 * 1000);
 
+    //ankagraw
     it('DRDMV-7124: [Automatic Task] - Task Template UI in Edit mode: New fields validations ', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
@@ -259,7 +267,7 @@ describe('Create Case Task', () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
             .toEqual('Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(`manualTaskTemplateActive appt`);
+        await selectTaskTemplate.setTaskSearchBoxValue(`manualTaskTemplateActive ${randomStr}`);
         await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
         await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Manual');
         await viewTaskTemplate.clickOnEditLink();
@@ -323,12 +331,22 @@ describe('Create Case Task', () => {
         await expect(editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
     });
 
-    it('DRDMV-12039, DRDMV-12040: [ Task ] - Verify Associated menu for Task will show global configuration values as well	 ', async () => {
-        // await apiHelper.apiLogin('tadmin');       
-        // await apiHelper.associateCategoryToOrganization('Applications', '- Global -');
+    //ankagraw
+    it('DRDMV-12039,DRDMV-12040,DRDMV-12009: [ Task ] - Verify Associated menu for Task will show global configuration values as well	 ', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let globalCategName = 'DemoCateg1';
+        let categName2 = 'DemoCateg2';
+        let categName3 = 'DemoCateg3';
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.createOperationalCategory(globalCategName, true);
+        await apiHelper.createOperationalCategory(categName2);
+        await apiHelper.createOperationalCategory(categName3);
+        await apiHelper.associateCategoryToCategory(globalCategName, categName2);
+        await apiHelper.associateCategoryToCategory(categName2, categName3);
 
-        let TaskTemplate = 'Manual task' + Math.floor(Math.random() * 1000000);
-        let TaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
+        let TaskTemplate = 'Manual task' + randomStr;
+        let TaskSummary = 'Summary' + randomStr;
+        let manualSummary = 'Summary' + randomStr;
 
         //manual Task template
         await navigationPage.gotoSettingsPage();
@@ -339,18 +357,138 @@ describe('Create Case Task', () => {
         await taskTemplate.setTaskSummary(TaskSummary);
         await taskTemplate.setTaskDescription('Description');
         await taskTemplate.selectCompanyByName('Global');
-        await taskTemplate.selectTaskCategoryTier1('Applications');
-        await taskTemplate.selectTaskCategoryTier2('Social');
-        await taskTemplate.selectTaskCategoryTier3('Chatter');
+        await taskTemplate.selectTaskCategoryTier1(globalCategName);
+        await taskTemplate.selectTaskCategoryTier2(categName2);
+        await taskTemplate.selectTaskCategoryTier3(categName3);
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.clickOnSaveTaskTemplate();
         await utilCommon.waitUntilPopUpDisappear();
-        await expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Applications');
-        await expect(viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
-        await expect(viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
-        await expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('- Global -');
-    }, 120 * 1000);
+        await expect(await viewTaskTemplate.getCategoryTier1Value()).toBe(globalCategName);
+        await expect(viewTaskTemplate.getCategoryTier2Value()).toBe(categName2);
+        await expect(viewTaskTemplate.getCategoryTier3Value()).toBe(categName3);
+        await expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('- Global -')
 
-	
+        //Create a Case
+        await navigationPage.signOut();
+        await loginPage.login('qtao');
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + manualSummary);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.selectCategoryTier1(globalCategName);
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await expect(viewCasePage.getCategoryTier1Value()).toBe(globalCategName, "Global Category Not Present");
+
+        //Got To Another Case
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary 123 ' + manualSummary);
+        await createCasePage.selectCategoryTier1('Applications');
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await expect(viewCasePage.getCategoryTier1Value()).toBe('Applications', "Applications Category Not Present");
+    }, 180 * 1000);
+
+    //ankagraw
+    it('DRDMV-12558: Task Template submitter from different company of owner group can edit the template', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let TaskTemplate = 'Manual task' + randomStr;
+        let TaskSummary = 'Summary' + randomStr;
+        let description = 'description' + randomStr;
+        await apiHelper.apiLogin('tadmin');
+        var userData = {
+            "firstName": "Petramco",
+            "lastName": "Psilon",
+            "userId": "DRDMV-12558",
+        }
+        await apiHelper.createNewUser(userData);
+        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
+        await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
+        await apiHelper.associatePersonToSupportGroup(userData.userId, "Psilon Support Group2");
+        await navigationPage.signOut();
+        await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.clickOnManualTaskTemplateButton();
+        await taskTemplate.setTemplateName(TaskTemplate);
+        await taskTemplate.setTaskSummary(TaskSummary);
+        await taskTemplate.selectCompanyByName('Petramco');
+        await taskTemplate.selectOwnerCompany('Psilon');
+        await taskTemplate.clickOnSaveTaskTemplate();
+        await utilCommon.waitUntilPopUpDisappear();
+
+        //search above template
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.setTaskSearchBoxValue(TaskTemplate);
+        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await viewTaskTemplate.clickOnEditLink();
+        await editTaskTemplate.setDescription(description);
+        await editTaskTemplate.selectTaskCategoryTier1('Applications');
+        await editTaskTemplate.selectTaskCategoryTier2('Social');
+        await editTaskTemplate.selectTaskCategoryTier3('Chatter');
+        await editTaskTemplate.clickOnSaveButton();
+        await expect(viewTaskTemplate.getTaskDescriptionNameValue()).toBe(description, 'description is not present');
+        await expect(viewTaskTemplate.getCategoryTier1Value()).toBe('Applications', 'Applications is not present');
+        await expect(viewTaskTemplate.getCategoryTier2Value()).toBe('Social', 'Social is not present');
+        await expect(viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter', 'Chatter is not present');
+    });
+
+    //ankagraw
+    it('DRDMV-12582: Task Template access when owner group from different company is applied', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let TaskTemplate = 'Manual task' + randomStr;
+        let TaskSummary = 'Summary' + randomStr;
+        let description = 'description' + randomStr;
+        await apiHelper.apiLogin('tadmin');
+        var userData = {
+            "firstName": "Petramco",
+            "lastName": "Psilon",
+            "userId": "DRDMV-12582",
+        }
+        await apiHelper.createNewUser(userData);
+        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
+        await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
+        await apiHelper.associatePersonToSupportGroup(userData.userId, "Facilities");
+        await apiHelper.associatePersonToSupportGroup(userData.userId, "Psilon Support Group2");
+
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.clickOnManualTaskTemplateButton();
+        await taskTemplate.setTemplateName(TaskTemplate);
+        await taskTemplate.setTaskSummary(TaskSummary);
+        await taskTemplate.selectTemplateStatus('Active');
+        await taskTemplate.selectCompanyByName('Petramco');
+        await taskTemplate.selectOwnerGroup('Facilities');
+        await taskTemplate.clickOnSaveTaskTemplate();
+        await utilCommon.waitUntilPopUpDisappear();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+
+        //search above template
+        await navigationPage.signOut();
+        await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.setTaskSearchBoxValue(TaskTemplate);
+        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await editTaskTemplate.clickOnEditMetadataLink();
+        await editTaskTemplate.selectTemplateStatus('Draft');
+        await editTaskTemplate.clickOnSaveMetadataLink();
+        await editTaskTemplate.clickOnEditMetadataLink();
+        await editTaskTemplate.selectOwnerCompany('Psilon');
+        await editTaskTemplate.selectOwnerGroup('Psilon Support Group2');
+        await editTaskTemplate.clickOnSaveMetadataLink();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.setTaskSearchBoxValue(TaskTemplate);
+        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await viewTaskTemplate.clickOnEditLink();
+        await editTaskTemplate.setDescription(description);
+        await editTaskTemplate.clickOnSaveButton();
+        await expect(viewTaskTemplate.getTaskDescriptionNameValue()).toBe(description, "Unable to find the description");
+    });
 });
-

@@ -2,6 +2,7 @@ import { browser, protractor, ProtractorExpectedConditions } from "protractor";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import notificationTempGridPage from "../../pageobject/notification/console-notificationTemplate.po";
+import utilCommon from '../../utils/util.common';
 
 describe("Notification Template", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -15,6 +16,11 @@ describe("Notification Template", () => {
 
     afterAll(async () => {
         await navigationPage.signOut();
+    });
+
+    afterEach(async () => {
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('DRDMV-19109: [Copy Notification] - UI behavior when copying a notification template', async () => {

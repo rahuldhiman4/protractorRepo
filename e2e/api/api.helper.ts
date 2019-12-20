@@ -10,7 +10,7 @@ import { CaseTemplate, TaskTemplate } from "../api/constant.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
 import { IFlowset } from '../data/api/interface/flowset.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
-import {IDomainTag} from '../data/api/interface/domain.tag.interface.api';
+import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -51,40 +51,40 @@ class ApiHelper {
         };
     }
 
-    async createDomainTag(data: IDomainTag):Promise<string>{
+    async createDomainTag(data: IDomainTag): Promise<string> {
         var domainTagGuid = await coreApi.getDomainTagGuid(data.domainTagName);
-        if(domainTagGuid==null){
-        var domainTagFile = await require('../data/api/foundation/domainTag.api.json');
-        var domainTagData = await domainTagFile.DomainTag;
+        if (domainTagGuid == null) {
+            var domainTagFile = await require('../data/api/foundation/domainTag.api.json');
+            var domainTagData = await domainTagFile.DomainTag;
 
-        domainTagData.fieldInstances[8].value = data.domainTagName;
-        var newDomainTag: AxiosResponse = await coreApi.createRecordInstance(domainTagData);
+            domainTagData.fieldInstances[8].value = data.domainTagName;
+            var newDomainTag: AxiosResponse = await coreApi.createRecordInstance(domainTagData);
 
-        console.log('Create Domain Tag Status =============>', newDomainTag.status);
-        const domainTagDetails = await axios.get(
-            await newDomainTag.headers.location
-        );
+            console.log('Create Domain Tag Status =============>', newDomainTag.status);
+            const domainTagDetails = await axios.get(
+                await newDomainTag.headers.location
+            );
 
-        console.log('New Domain Tag API Status =============>', domainTagDetails.status);
+            console.log('New Domain Tag API Status =============>', domainTagDetails.status);
 
-        //Once Domain Tag is created, make it active
-        var domainConfigFile = await require('../data/api/shared-services/domainConfiguration.api.json');
-        var domainConfigData = await domainConfigFile.DomainConfiguration;
+            //Once Domain Tag is created, make it active
+            var domainConfigFile = await require('../data/api/shared-services/domainConfiguration.api.json');
+            var domainConfigData = await domainConfigFile.DomainConfiguration;
 
-        domainConfigData.fieldInstances[450000152].value = domainTagDetails.data.id;
-        var newDomainConfig: AxiosResponse = await coreApi.createRecordInstance(domainConfigData);
+            domainConfigData.fieldInstances[450000152].value = domainTagDetails.data.id;
+            var newDomainConfig: AxiosResponse = await coreApi.createRecordInstance(domainConfigData);
 
-        console.log('Active Domain Configuration Status =============>', newDomainConfig.status);
-        const domainConfigDetails = await axios.get(
-            await newDomainConfig.headers.location
-        );
+            console.log('Active Domain Configuration Status =============>', newDomainConfig.status);
+            const domainConfigDetails = await axios.get(
+                await newDomainConfig.headers.location
+            );
 
-        console.log('New Domain Config API Status =============>', domainConfigDetails.status);
+            console.log('New Domain Config API Status =============>', domainConfigDetails.status);
 
-        //Returning the new Domain Tag created
-        return domainTagDetails.data.id;
+            //Returning the new Domain Tag created
+            return domainTagDetails.data.id;
         }
-        else{
+        else {
             console.log('Domain Tag already exists =============>', domainTagGuid);
             return domainTagGuid;
         }
@@ -196,7 +196,7 @@ class ApiHelper {
             if (data.relatedOrgId != null) {
                 businessData.fieldInstances[304411161].value = data.relatedOrgId;
             }
-            if(data.domainTag!=null){
+            if (data.domainTag != null) {
                 let domainGuid = await apiCoreUtil.getDomainTagGuid(data.domainTag);
                 businessData.fieldInstances[304417331].value = domainGuid;
             }
@@ -229,7 +229,7 @@ class ApiHelper {
                 departmentData.fieldInstances[304411161].value = data.relatedOrgId;
             }
 
-            if(data.domainTag!=null){
+            if (data.domainTag != null) {
                 let domainGuid = await apiCoreUtil.getDomainTagGuid(data.domainTag);
                 departmentData.fieldInstances[304417331].value = domainGuid;
             }
@@ -260,7 +260,7 @@ class ApiHelper {
                 suppGrpData.fieldInstances[304411161].value = data.relatedOrgId;
             }
 
-            if(data.domainTag!=null){
+            if (data.domainTag != null) {
                 let domainGuid = await apiCoreUtil.getDomainTagGuid(data.domainTag);
                 suppGrpData.fieldInstances[304417331].value = domainGuid;
             }
@@ -332,6 +332,39 @@ class ApiHelper {
         let organizationGuid = await coreApi.getOrganizationGuid(organization);
         let categoryGuid = await coreApi.getCategoryGuid(category);
         await coreApi.associateFoundationElements("Organization Uses Categorization", organizationGuid, categoryGuid);
+    }
+
+    async createOperationalCategory(category: string, isGlobal?: boolean): Promise<IIDs> {
+        let recordDisplayId: string = null;
+        let categoryGuid = await coreApi.getCategoryGuid(category);
+        if (categoryGuid == null) {
+            let categoryDataFile = await require('../data/api/foundation/category.api.json');
+            let categoryData = null;
+            if (isGlobal) {
+                categoryData = await categoryDataFile.NewGlobalCateg;
+            } else {
+                categoryData = await categoryDataFile.NewOperationalCateg;
+            }
+            categoryData.fieldInstances[304405421].value = category;
+            categoryData.fieldInstances[304405421].valueByLocale['en-US'] = category;
+
+            const newCategory = await coreApi.createRecordInstance(categoryData);
+            console.log('Create New Category API Status =============>', newCategory.status);
+
+            const categoryDetails = await axios.get(
+                newCategory.headers.location
+            );
+
+            console.log('Get New Category Details API Status =============>', categoryDetails.status);
+            categoryGuid = categoryDetails.data.id;
+            recordDisplayId = categoryDetails.data.displayId;
+        } else {
+            console.log('New User API Status =============> Category already exists =============> ', categoryGuid);
+        }
+        return {
+            id: categoryGuid,
+            displayId: recordDisplayId
+        };
     }
 
     async associateCategoryToCategory(category1: string, category2: string): Promise<void> {
