@@ -25,6 +25,7 @@ describe('Edit Case', () => {
         await utilCommon.waitUntilSpinnerToHide();
     });
 
+    //ankagraw
     it('DRDMV-3765: [Case] [Edit Case] Edit Case view (UI verification)', async () => {
         let Summary = 'Summary' + Math.floor(Math.random() * 1000000);
 
@@ -70,12 +71,9 @@ describe('Edit Case', () => {
         await expect(editCasePage.isResourcePresent()).toBeTruthy();
         await expect(editCasePage.isActivityPresent()).toBeTruthy();
         await expect(editCasePage.isActivityFeedPresent()).toBeTruthy();
-        console.log("Activity");
-
         await expect(editCasePage.isRequesterTextDisplayed()).toBeTruthy();
         await expect(editCasePage.isRequesterImageDisplayed()).toBeTruthy();
         await expect(editCasePage.isSiteTextPresent()).toBeTruthy();
-        console.log("Requester Text: ");
 
         await editCasePage.clickOnRequesterName();
         await utilCommon.switchToNewWidnow(1);
@@ -99,7 +97,7 @@ describe('Edit Case', () => {
         await editCasePage.waitForEditCasePageToBeDisplayed();
         await expect(editCasePage.getSelectCaseTemplate()).toBe('Select Case Template');
         await editCasePage.clickOnSelectCaseTemplate();
-        await caseTemplatePage.selectCaseTemplate('Add User');
+        await caseTemplatePage.selectCaseTemplate('401K Status');
 
         await expect(editCasePage.getChangeCaseTemplate()).toBe('Change Case Template');
         await editCasePage.clickSaveCase();

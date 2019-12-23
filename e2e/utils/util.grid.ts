@@ -220,6 +220,28 @@ export class GridOperation {
         return gridRecord;
     }
 
+
+    async getAllValuesFromColoumn(guid: string, columnHeader: string): Promise<string[]> {
+        let gridRecord: string[]= [];
+        columnHeader = "'" + columnHeader + "'";
+        guid = "'" + guid + "'";
+        let gridColumnHeaderPosition = `//*[@rx-view-component-id=${guid}]//span[@class="ui-grid-header-cell-label"][text()=${columnHeader}]/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
+        let gridAllColumnHeaderPosition = `//*[@rx-view-component-id=${guid}]//span[@class="ui-grid-header-cell-label"]/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
+        let allElement = "[role='gridcell']";
+        let allElementSize: number = await element.all(by.css(allElement)).count();
+        let columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
+        let coloumnSize:number = await element.all(by.xpath(gridAllColumnHeaderPosition)).count()+1;
+        columnPosition = columnPosition + 2;
+        console.log('Count:' +allElementSize+","+columnPosition+','+coloumnSize);
+        for(columnPosition;columnPosition<allElementSize; columnPosition=columnPosition+coloumnSize){
+            gridRecord[columnPosition]= await browser.element(by.xpath("(//*[@class='ui-grid-cell-contents'])"+"["+columnPosition+"]")).getText()
+        }
+        let returnedvalue =gridRecord.filter(function (el) {
+                        return el != null;
+                      });
+        return returnedvalue ;
+    }
+
     async searchRecord(id: string) {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));
         await $(this.selectors.summaryField1).clear();

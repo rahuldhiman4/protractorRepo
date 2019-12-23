@@ -34,6 +34,11 @@ class ViewTask {
         assigneeName: '[rx-view-component-id="1801d8c6-4997-4253-b716-809b39909598"] .person-main',
         assignGroupText: '[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] .d-textfield__label',
         assignCompany: '[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] .d-textfield__label',
+        taskStatusGuid: 'aea81ee2-85d9-4bb6-adb4-08c29028d45d',
+    }
+
+    async allTaskOptionsPresent(list: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.taskStatusGuid, list);
     }
 
     async clickOnChangeStatus(): Promise<void> {
