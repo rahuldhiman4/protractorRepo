@@ -39,6 +39,10 @@ class MenuItemsConfigEditPage {
         await utilCommon.selectDropDown(this.selectors.statusDropDownGuid, value);
     }
 
+    async isStatusDropDownValuesMatch(value: string[]): Promise<boolean> {
+       return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusDropDownGuid, value);
+    }
+
     async selectAvailableOnUIToggleButton(booleanVal: boolean): Promise<void> {
         await utilCommon.selectToggleButton(this.selectors.toggleButtonGuid, booleanVal);
     }
