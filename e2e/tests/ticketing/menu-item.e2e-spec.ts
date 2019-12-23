@@ -172,7 +172,7 @@ describe('Menu Item', () => {
     }, 150 * 1000);
 
     //kgaikwad
-    fit('DRDMV-16105,DRDMV-16106: [Menu Items] - Update records AND grid Validation', async () => {
+    it('DRDMV-16105,DRDMV-16106: [Menu Items] - Update records AND grid Validation', async () => {
         let lableRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let sourceRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let resolutionCodeRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
