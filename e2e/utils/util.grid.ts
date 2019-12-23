@@ -23,7 +23,7 @@ export class GridOperation {
         searchInput: '[rx-id="search-text-input"]',
         searchIcon: '[rx-id="submit-search-button"]',
         addColumnIcon: 'rx-record-grid-menu.rx-record-grid-toolbar__item_visible-columns .d-icon-ellipsis',
-        blankGridRecord: 'div.ui-grid-row'
+        gridRecordPresent: 'div.ui-grid-row'
     }
 
     async areColumnHeaderMatches(guid: string, columnHeader: string[]): Promise<boolean> {
