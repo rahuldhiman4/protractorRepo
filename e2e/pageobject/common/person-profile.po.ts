@@ -16,8 +16,7 @@ class PersonProfilePage {
         activityNotes: '.activity-feed-note input[title]',
         requestedCasesGuid: 'cdba89ff-683c-42ba-9c2a-3adf4322504c',
         assignedCasesGuid: '08bd2811-37eb-43a3-a1fe-de845fe6c5a6',
-        threeDots: '.d-icon-ellipsis',
-        selectVisibleColumns: '.d-dropdown__menu-options-item a'
+        requestedCaseGuid: '934faa1d-0932-4141-9a6e-7f6ac1726427'
 
     }
 
@@ -95,9 +94,39 @@ class PersonProfilePage {
         return caseId == await utilGrid.getSelectedGridRecordValue(this.selectors.assignedCasesGuid, "Case ID");
     }
 
-    async isReqtab
+    async addRequestedCaseGridColumn(columnNames: string[]): Promise<void> {
+        await utilGrid.addGridColumn(this.selectors.requestedCaseGuid, columnNames);
+    }
 
-    //async getAllGuidColumns
+    async removeRequestedCaseGridColumn(columnNames: string[]): Promise<void> {
+        await utilGrid.removeGridColumn(this.selectors.requestedCaseGuid, columnNames);
+    }
+
+    async addAssignedCaseGridColumn(columnNames: string[]): Promise<void> {
+        await utilGrid.addGridColumn(this.selectors.assignedCasesGuid, columnNames);
+    }
+
+    async removeAssignedCaseGridColumn(columnNames: string[]): Promise<void> {
+        await utilGrid.removeGridColumn(this.selectors.assignedCasesGuid, columnNames);
+    }
+
+    async areRequestedCaseColumnMatches(columnNames: string[]): Promise<boolean> {
+        return await utilGrid.areColumnHeaderMatches(this.selectors.requestedCaseGuid, columnNames);
+    }
+
+    async areAssignedCaseColumnMatches(columnNames: string[]): Promise<boolean> {
+        return await utilGrid.areColumnHeaderMatches(this.selectors.assignedCasesGuid, columnNames);
+    }
+
+    async isRequestedCasesColumnsSortedAscending(columnName: string): Promise<boolean>{
+        await utilGrid.clearFilter();
+        return await utilGrid.isGridColumnSorted(columnName, "ascending", this.selectors.requestedCaseGuid);
+    }
+
+    async isAssignedCasesColumnsSortedAscending(columnName: string): Promise<boolean>{
+        await utilGrid.clearFilter();
+        return await utilGrid.isGridColumnSorted(columnName, "ascending", this.selectors.assignedCasesGuid);
+    }
 
 }
 

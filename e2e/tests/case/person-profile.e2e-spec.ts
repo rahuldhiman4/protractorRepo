@@ -103,4 +103,60 @@ describe('Person Profile test', () => {
         }
     });
 
+    it('DRDMV-14028: Verify Requested Cases tab of My Profile console', async () => {
+        await navigationPage.goToPersonProfile();
+        await personProfile.navigateToTab("Requested Cases");
+        //let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await apiHelper.apiLogin("qtao");
+        let caseData = require('../../data/ui/case/case.ui.json');
+        for (let i: number = 0; i < 4; i++) {
+            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            caseData['DRDMV-14087'].summary = "DRDMV-14028 " + randomStr;
+            let response = await apiHelper.createCase(caseData['DRDMV-14087']);
+        }
+
+        //Verifying default column matching
+        let defaultRequestedCaseColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Created Date", "Support Group", "Assignee"];
+        expect(await personProfile.areRequestedCaseColumnMatches(defaultRequestedCaseColumns)).toBeTruthy("Default Requested columns are not matching");
+
+        //Verifying all columns
+        let allRequestedCaseColumns: string[] = ["Assigned Business Unit", "Assigned Company", "Assigned Department", "Assignee ID", "Assignee Login Name", "Flowset", "ID", "Label", "Modified Date", "Region", "Site", "Source", "Status Value"];
+        await personProfile.addRequestedCaseGridColumn(allRequestedCaseColumns);
+        let expectedAllColumns: string[] = ["Assigned Business Unit", "Assigned Company", "Assigned Department", "Assignee ID", "Assignee Login Name", "Flowset", "ID", "Label", "Modified Date", "Region", "Site", "Source", "Status Value", "Case ID", "Priority", "Status", "Summary", "Created Date", "Support Group", "Assignee"];
+        expect(await personProfile.areRequestedCaseColumnMatches(expectedAllColumns)).toBeTruthy("All Requested columns are not matching");
+        await personProfile.removeRequestedCaseGridColumn(allRequestedCaseColumns);
+
+        //Verify sorting
+        expect(await personProfile.isRequestedCasesColumnsSortedAscending("Case ID")).toBeTruthy("Columns are not sorted");
+    });
+
+    fit('DRDMV-14029: Verify Assigned Cases tab of My Profile console', async () => {
+        await navigationPage.goToPersonProfile();
+        await personProfile.navigateToTab("Assigned Cases");
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await apiHelper.apiLogin("qtao");
+        let caseData = require('../../data/ui/case/case.ui.json');
+        for (let i: number = 0; i < 4; i++) {
+            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            caseData['DRDMV-14088'].summary = "DRDMV-14029 " + randomStr;
+            let response = await apiHelper.createCase(caseData['DRDMV-14088']);
+        }
+
+        //Verifying default column matching
+        let defaultAssignedCaseColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Requester", "Modified Date"];
+        expect(await personProfile.areAssignedCaseColumnMatches(defaultAssignedCaseColumns)).toBeTruthy("Default Requested columns are not matching");
+
+        //Verifying all columns
+        let allAssignedCaseColumns: string[] = ["Assignee Login Name", "Company", "ID", "Label", "Region", "Request ID", "Site", "Source", "Status Value", "Support Group"];
+        await personProfile.addAssignedCaseGridColumn(allAssignedCaseColumns);
+        let expectedAllColumns: string[] = ["Assignee Login Name", "Company", "ID", "Label", "Region", "Request ID", "Site", "Source", "Status Value", "Support Group", "Case ID", "Priority", "Status", "Summary", "Requester", "Modified Date"];
+        expect(await personProfile.areAssignedCaseColumnMatches(expectedAllColumns)).toBeTruthy("All Requested columns are not matching");
+        await personProfile.removeAssignedCaseGridColumn(allAssignedCaseColumns);
+
+        //Verify sorting
+        expect(await personProfile.isAssignedCasesColumnsSortedAscending("Case ID")).toBeTruthy("Columns are not sorted");
+    });
+
+
+
 })
