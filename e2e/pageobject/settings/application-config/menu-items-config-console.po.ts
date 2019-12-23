@@ -17,14 +17,17 @@ class MenuItemsConsolePage {
 
     async addColumnOnGrid(columnHeader: string[]): Promise<void> {
         await utilGrid.addGridColumn(this.selectors.gridGuid, columnHeader);
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
-    async clearSearchBox(): Promise<void> {
-        await utilGrid.clearSearchBox();
+    async clearGridSearchBox(): Promise<void> {
+        await utilGrid.clearGridSearchBox();
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async removeColumnOnGrid(columnHeader: string[]): Promise<void> {
         await utilGrid.removeGridColumn(this.selectors.gridGuid, columnHeader);
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isGridColumnSorted(columnHeader: string, sortType: string): Promise<boolean> {
@@ -33,6 +36,10 @@ class MenuItemsConsolePage {
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+    }
+
+    async areColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {
+        return await utilGrid.areColumnHeaderMatches(this.selectors.gridGuid, columnHeader);
     }
 
     async searchAndEditMenuOption(menuOption: string): Promise<void> {

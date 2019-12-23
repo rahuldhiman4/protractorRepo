@@ -14,6 +14,7 @@ export class GridOperation {
         selectAllCheckBox: 'grid.selection.selectAll',
         summaryField1: 'input[role="search"]',
         searchButton1: 'button[rx-id="submit-search-button"]',
+        clearGridSearchBoxButton: '.d-textfield__action[aria-label="Clear Search Field"]',
         filterPreset: '.rx-filter-presets-dropdown__trigger',
         clearFilterButton: 'button[rx-id="clear-button"]',
         filterClose: '.d-tag-remove-button',
@@ -124,9 +125,12 @@ export class GridOperation {
         await element(by.cssContainingText('.ui-grid__link', id)).click();
     }
 
-    async clearSearchBox() {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));
-        await $(this.selectors.summaryField1).clear();
+    async clearGridSearchBox() {
+        let clearBtn:boolean=await $(this.selectors.clearGridSearchBoxButton).isDisplayed();
+        if(clearBtn==true){
+            await browser.wait(this.EC.visibilityOf($(this.selectors.clearGridSearchBoxButton)));
+            await $(this.selectors.clearGridSearchBoxButton).click();
+        }else{console.log('Grid search box is already cleared')}
     }
 
     async searchAndOpenHyperlink(id: string) {
@@ -288,12 +292,13 @@ export class GridOperation {
         }
         arr.shift();
         const copy = Object.assign([], arr);
-        arr.sort();
+        await arr.sort(function(a, b){
+                      return a.localeCompare(b);  
+                    })
+            
         if (sortType == "descending") {
             arr.reverse();
         }
-        console.log(arr);
-        console.log(copy);
         return arr.length === copy.length && arr.every(
             (value, index) => (value === copy[index])
         );
