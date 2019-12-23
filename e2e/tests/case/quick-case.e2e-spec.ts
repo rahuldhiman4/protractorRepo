@@ -2,6 +2,7 @@ import { browser, protractor, ProtractorExpectedConditions } from "protractor";
 import quickCase from "../../pageobject/case/quick-case.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import utilCommon from '../../utils/util.common';
 
 describe("Quick Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -12,6 +13,11 @@ describe("Quick Case", () => {
         browser.waitForAngularEnabled(false);
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login("qkatawazi");
+    });
+
+    afterEach(async () => {
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
     });
 
     afterAll(async () => {

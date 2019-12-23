@@ -247,7 +247,7 @@ describe("Create Case", () => {
             await utilCommon.closePopUpMessage();
             await utilCommon.waitUntilPopUpDisappear();
             await createCasePage.setSummary(caseSummary);
-            await createCasePage.allPriorityOptionsPresent(prioirtyValue);
+            await expect(createCasePage.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await createCasePage.clickGoToCaseButton();

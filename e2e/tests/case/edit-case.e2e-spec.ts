@@ -20,6 +20,11 @@ describe('Edit Case', () => {
         await navigationPage.signOut();
     });
 
+    afterEach(async () => {
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
+    });
+
     it('DRDMV-3765: [Case] [Edit Case] Edit Case view (UI verification)', async () => {
         let Summary = 'Summary' + Math.floor(Math.random() * 1000000);
 
@@ -94,10 +99,7 @@ describe('Edit Case', () => {
         await editCasePage.waitForEditCasePageToBeDisplayed();
         await expect(editCasePage.getSelectCaseTemplate()).toBe('Select Case Template');
         await editCasePage.clickOnSelectCaseTemplate();
-        await caseTemplatePage.clickOnAllTemplateTab();
-        await browser.sleep(2000);
-        await caseTemplatePage.clickOnFirstCheckBox();
-        await caseTemplatePage.clickOnApplyButton();
+        await caseTemplatePage.selectCaseTemplate('Add User');
 
         await expect(editCasePage.getChangeCaseTemplate()).toBe('Change Case Template');
         await editCasePage.clickSaveCase();

@@ -32,8 +32,9 @@ class ConsoleNotesTemplate {
         return await $(this.selectors.templateNameFromGrid).getText();
     }
 
-    async searchAndSelectFristCheckBox(temmplateNameValue: string): Promise<void> {
-        await utilGrid.searchAndSelectFirstCheckBox(this.selectors.gridGuid, temmplateNameValue);
+    async searchAndClickNotesTemplateCheckBox(temmplateNameValue: string): Promise<void> {
+        await browser.wait(this.EC.invisibilityOf($(this.selectors.body)));
+        await utilGrid.searchAndSelectGridRecord(temmplateNameValue);
     }
 
     async searchAndClickOnNotesTemplate(templateName: string): Promise<void> {
@@ -43,11 +44,6 @@ class ConsoleNotesTemplate {
     async clickOnDeleteButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.deleteButton)));
         await $(this.selectors.deleteButton).click();
-    }
-
-    async selectCheckBox(name:string): Promise<void> {
-        await browser.wait(this.EC.invisibilityOf($(this.selectors.body)));
-        await utilGrid.searchAndSelectGridRecord(name);
     }
 
     async isTemplatePresentOnGrid(templateNameValue): Promise<boolean> {

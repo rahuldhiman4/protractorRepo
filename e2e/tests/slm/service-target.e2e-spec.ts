@@ -7,6 +7,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
 import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 import SlmProgressBar from '../../pageobject/slm/slm-progressbar.po';
+import utilCommon from '../../utils/util.common';
 
 var caseBAUser = 'qkatawazi';
 
@@ -18,6 +19,11 @@ describe('Service Taret Tests', () => {
 
     afterAll(async () => {
         await navigationPage.signOut();
+    });
+
+    afterEach(async () => {
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('DRDMV-17016:Check if expression is build by using all available field with different relation', async () => {

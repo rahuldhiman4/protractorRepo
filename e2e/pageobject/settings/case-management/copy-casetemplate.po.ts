@@ -1,4 +1,4 @@
-import { ICaseTemplate } from 'e2e/data/ui/caseTemplate.interface';
+import { ICaseTemplate } from 'e2e/data/ui/interface/caseTemplate.interface';
 import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import commonUtils from "../../../utils/util.common";
 

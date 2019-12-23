@@ -36,13 +36,13 @@ describe('Case Manager Read-only Config', () => {
         await loginPage.login('qdu');
     });
 
+    afterAll(async () => {
+        await navigationPage.signOut();
+    });
+
     afterEach(async () => {
         await browser.refresh();
         await utilCommon.waitUntilSpinnerToHide();
-    });
-
-    afterAll(async () => {
-        await navigationPage.signOut();
     });
 
     // asahitya
@@ -52,7 +52,7 @@ describe('Case Manager Read-only Config', () => {
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
-            let automatedStatusTransitionData = await require('../../data/ui/automatedStatusTransition.ui.json');
+            let automatedStatusTransitionData = await require('../../data/ui/case/automatedStatusTransition.ui.json');
             var configName: string = await automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].name + Math.floor(Math.random() * 100000);
             automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].name = configName;
             automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].changeStatusAfter = Math.floor(Math.random() * 180) + 1;

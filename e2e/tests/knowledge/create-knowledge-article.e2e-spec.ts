@@ -52,7 +52,7 @@ describe('Knowledge Article', () => {
         await apiHelper.associatePersonToCompany(personData.userId, company)
     }
 
-    it('DRDMV-19020 - On Create KA, Assign to me button should process properly on KA', async () => {
+    it('DRDMV-19020: On Create KA, Assign to me button should process properly on KA', async () => {
         try {
             let suppGrpData = supportGrpDataFile['SuppGrpData'];
             let personData = personDataFile['PersonData'];
@@ -85,7 +85,7 @@ describe('Knowledge Article', () => {
         }
     });
 
-    it('DRDMV-19079 - Change Reviewer blade should process properly on KA', async () => {
+    it('DRDMV-19079: Change Reviewer blade should process properly on KA', async () => {
         try {
             let businessData = businessDataFile['BusinessUnitData'];
             let departmentData = departmentDataFile['DepartmentData'];
@@ -131,7 +131,7 @@ describe('Knowledge Article', () => {
         }
     });
 
-    it('DRDMV-19080 - On Edit KA, Change Assignment blade should process properly ', async () => {
+    it('DRDMV-19080: On Edit KA, Change Assignment blade should process properly ', async () => {
         try {
             let businessData = businessDataFile['BusinessUnitData'];
             let departmentData = departmentDataFile['DepartmentData'];
@@ -173,7 +173,7 @@ describe('Knowledge Article', () => {
         }
     });
 
-    it('DRDMV-19081 - Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
+    it('DRDMV-19081: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
         try {
             let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
             let knowledgeData = knowledgeDataFile['DRDMV-19081'];
@@ -198,7 +198,7 @@ describe('Knowledge Article', () => {
         }
     });
 
-    it('DRDMV-19508 - On Create KA, Change Assignment blade should process properly', async () => {
+    it('DRDMV-19508: On Create KA, Change Assignment blade should process properly', async () => {
         let businessData = businessDataFile['BusinessUnitData'];
         let departmentData = departmentDataFile['DepartmentData'];
         let suppGrpData = supportGrpDataFile['SuppGrpData'];
