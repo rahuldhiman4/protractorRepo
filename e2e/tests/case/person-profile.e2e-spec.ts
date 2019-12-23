@@ -130,7 +130,7 @@ describe('Person Profile test', () => {
         expect(await personProfile.isRequestedCasesColumnsSortedAscending("Case ID")).toBeTruthy("Columns are not sorted");
     });
 
-    fit('DRDMV-14029: Verify Assigned Cases tab of My Profile console', async () => {
+    it('DRDMV-14029: Verify Assigned Cases tab of My Profile console', async () => {
         await navigationPage.goToPersonProfile();
         await personProfile.navigateToTab("Assigned Cases");
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
