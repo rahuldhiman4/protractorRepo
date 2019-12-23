@@ -6,11 +6,12 @@ import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.ap
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
 import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
-import { CaseTemplate, TaskTemplate } from "../api/constant.api";
+import { CaseTemplate, TaskTemplate, MenuItemStatus } from "../api/constant.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
 import { IFlowset } from '../data/api/interface/flowset.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
+import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -498,6 +499,29 @@ class ApiHelper {
             displayId: flowsetDetails.data.displayId
         };
     }
+
+    async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
+                let randomStr = [...Array(6)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
+        console.log(data);
+                let menuItemFile = await require('../data/api/shared-services/menuItemConfiguration.api.json');
+         console.log('New Menu Item API Status =============>');        
+        let menuItemData = await menuItemFile.MenuItemConfiguration;
+                menuItemData.fieldInstances[450000153].value = data.menuType;
+                menuItemData.fieldInstances[450000152].value = data.menuItemName;
+                menuItemData.fieldInstances[7].value = MenuItemStatus[data.menuItemStatus];
+                menuItemData.fieldInstances[450000154].value = randomStr;
+         console.log('New Menu Item Data =============>'+        menuItemData);
+                const menuItem = await coreApi.createRecordInstance(menuItemData);
+                const menuItemDetails = await axios.get(
+                    menuItem.headers.location
+                );
+                console.log('New Menu Item API Status =============>', menuItemDetails.status);
+        
+                return {
+                    id: menuItemDetails.data.id,
+                    displayId: menuItemDetails.data.displayId
+                };
+            } 
 
 }
 
