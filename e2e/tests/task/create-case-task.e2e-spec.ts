@@ -491,4 +491,55 @@ describe('Create Case Task', () => {
         await editTaskTemplate.clickOnSaveButton();
         await expect(viewTaskTemplate.getTaskDescriptionNameValue()).toBe(description, "Unable to find the description");
     });
+
+    it('DRDMV-7149: [Automatic Task] - Automated Task Status transition validation', async () => {
+
+        let automationTaskTemplate = 'Automatic task' + Math.floor(Math.random() * 1000000);
+        let automationTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
+        let createCase = 'Create Case task' + Math.floor(Math.random() * 1000000);
+        let processName = 'process' + Math.floor(Math.random() * 1000000);
+        let status:string []=["Completed","Canceled","Closed"];
+
+        var templateData4 = {
+            "templateName": automationTaskTemplate,
+            "templateSummary": automationTaskSummary,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.bwfa",
+            "processName": processName,
+        }
+        //Automation Task template
+        await apiHelper.apiLogin('qkatawazi');
+        let temp1 = await apiHelper.createAutomatedTaskTemplate(templateData4);
+
+        //case create
+        await navigationPage.signOut();
+        await loginPage.login('qtao');
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + createCase);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await viewCasePage.clickAddTaskButton();
+        await viewCasePage.addTaskFromTaskTemplate(automationTaskTemplate);
+        await manageTask.clickTaskLinkOnManageTask(automationTaskSummary);
+        await viewTask.clickOnChangeStatus();
+        await viewTask.changeTaskStatus('Canceled');
+        await viewTask.clickOnSaveStatus();
+        await expect(utilCommon.getPopUpMessage()).toBe('ERROR (222103): The Task can be moved to next stage only when the case is not in the Pending  status.');
+        await viewTask.clickOnCancelStatus();
+        await utilCommon.clickOnWarningOk();
+        await viewTask.clickOnViewCase();
+
+        //validate Automation Template With Required Field
+        await viewCasePage.changeCaseStatus("In Progress");
+        await viewCasePage.clickSaveStatus();
+        await utilCommon.waitUntilPopUpDisappear();
+        await viewCasePage.goToManageTask();
+        await manageTask.clickTaskLinkOnManageTask(automationTaskSummary);
+        await viewTask.clickOnChangeStatus();
+        await viewTask.clickOnUpdateStatusDrpdown();
+        await expect(viewTask.allTaskOptionsPresent(status)).toBeTruthy("Staus Not Found");
+        await viewTask.clickOnCancelStatus();
+    }, 120 * 1000);
 });
