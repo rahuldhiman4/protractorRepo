@@ -2,9 +2,9 @@ import { browser } from "protractor";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import createDocumentLibraryPo from '../../pageobject/settings/document-management/create-document-library.po';
-import utilCommon from '../../utils/util.common';
 import documentLibraryConsolePo from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
+import utilCommon from '../../utils/util.common';
 
 describe('Menu Item', () => {
     beforeAll(async () => {
@@ -33,7 +33,7 @@ describe('Menu Item', () => {
         await createDocumentLibraryPo.selectCompany('Petramco');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
-        
+
         await documentLibraryConsolePo.searchAndEditDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnsaveButton();
@@ -46,10 +46,10 @@ describe('Menu Item', () => {
         await documentLibraryConsolePo.searchAndEditDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeTruthy('Delete buttton is not enabled');
         await editDocumentLibraryPo.clickOnDeleteButton();
-        expect(await editDocumentLibraryPo.getTextWarningPopUpMessageForDeleteDocuement('Are you sure you want to delete the document?')).toBe('Are you sure you want to delete the document?'),'Warning Message of Delete button is missing';
+        expect(await editDocumentLibraryPo.getTextWarningPopUpMessageForDeleteDocuement('Are you sure you want to delete the document?')).toBe('Are you sure you want to delete the document?'), 'Warning Message of Delete button is missing';
         await editDocumentLibraryPo.clickOnYesButtonOfWarningPopUpMessageForDeleteDocument();
-        expect (await utilCommon.getPopUpMessage()).toBe('Document deleted successfully.');
+        expect(await utilCommon.getPopUpMessage()).toBe('Document deleted successfully.');
         await utilCommon.waitUntilPopUpDisappear();
-        expect (await documentLibraryConsolePo.isGridRecordPresent()).toBeFalsy('Grid Record displayed which should not be');
+        expect(await documentLibraryConsolePo.isGridRecordPresent()).toBeFalsy('Grid Record displayed which should not be');
     })
 })

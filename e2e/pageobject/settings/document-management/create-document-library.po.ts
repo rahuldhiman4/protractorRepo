@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { $$,$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class DocumentLibraryPage {
@@ -20,7 +20,7 @@ class DocumentLibraryPage {
         console.log(absolutePath);
         await $(this.selectors.attachmentField).sendKeys(absolutePath);
     }
-    
+
     async openAddNewDocumentBlade(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addDocumentButton)));
         await $(this.selectors.addDocumentButton).click();
@@ -32,11 +32,11 @@ class DocumentLibraryPage {
     }
 
     async selectCompany(companyName: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyFieldGuid,companyName);
+        await utilCommon.selectDropDown(this.selectors.companyFieldGuid, companyName);
     }
 
     async selectOwnerGroup(ownerGroupName: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.ownerGroupFieldGuid,ownerGroupName);
+        await utilCommon.selectDropDown(this.selectors.ownerGroupFieldGuid, ownerGroupName);
     }
 
     async clickOnSaveButton(): Promise<void> {

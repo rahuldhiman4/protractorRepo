@@ -1,4 +1,4 @@
-import { element, by, $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class EditDocumentLibraryPage {
@@ -19,16 +19,16 @@ class EditDocumentLibraryPage {
 
     async clickOnYesButtonOfWarningPopUpMessageForDeleteDocument(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.deleteDocWarningMsgYesButton)));
-       await $(this.selectors.deleteDocWarningMsgYesButton).click();
+        await $(this.selectors.deleteDocWarningMsgYesButton).click();
     }
 
     async selectStatus(status: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusGuid,status);
+        await utilCommon.selectDropDown(this.selectors.statusGuid, status);
     }
 
     async clickOnsaveButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
-       await $(this.selectors.saveButton).click();
+        await $(this.selectors.saveButton).click();
     }
 
     async clickOnDeleteButton(): Promise<void> {

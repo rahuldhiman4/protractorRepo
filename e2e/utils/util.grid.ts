@@ -1,4 +1,4 @@
-import { $, $$, browser, by, By, element, protractor, ProtractorExpectedConditions, until } from 'protractor';
+import { $, browser, by, By, element, protractor, ProtractorExpectedConditions, until } from 'protractor';
 import utilCommon, { Util } from './util.common';
 
 export class GridOperation {
