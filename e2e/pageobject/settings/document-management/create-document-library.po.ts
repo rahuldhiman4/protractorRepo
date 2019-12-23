@@ -9,13 +9,11 @@ class DocumentLibraryPage {
         titleField: '[rx-view-component-id="f7b3ab85-7c96-4d90-8c9d-06b4a761b090"] input',
         attachmentField: '[rx-view-component-id="d9a66a3a-d637-45d7-bb1c-bd60a50c5914"] input',
         companyFieldGuid: 'cc6775d9-040f-4fde-bddf-7ab2334d6881',
-        selectOptionList: 'ul.ui-select-choices',
         ownerGroupFieldGuid: '001ddea2-b59d-49dc-ac5e-628f3a75e9fa',
         saveButton: '[rx-view-component-id="2ddf1845-1e5a-48f9-b6fd-1497f9be0daf"] button',
     }
 
-    async addAttachment(): Promise<void> {
-        const fileToUpload = '../../../data/ui/attachment/demo.txt';
+    async addAttachment(fileToUpload:string): Promise<void> {
         const absolutePath = resolve(__dirname, fileToUpload);
         console.log(absolutePath);
         await $(this.selectors.attachmentField).sendKeys(absolutePath);
@@ -41,7 +39,7 @@ class DocumentLibraryPage {
 
     async clickOnSaveButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
-        $(this.selectors.saveButton).click();
+        await $(this.selectors.saveButton).click();
     }
 }
 

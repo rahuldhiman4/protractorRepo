@@ -10,14 +10,17 @@ class EditDocumentLibraryPage {
         cancelButton: 'rx-view-component-id="61a48596-d3c0-462d-825b-4d6172e351b3"',
         deleteDocWarningMsg: '[rx-view-component-id="c652354a-1524-4235-b1db-6b397fc9699a"] span',
         deleteDocWarningMsgYesButton: '[rx-view-component-id="e40ad54c-ad9a-480a-aa63-a8b399caf20e"] button',
+
+        attachmentField: '[rx-view-component-id="8cfc0c35-081a-40cb-ae85-527045bede0c"] button',
+
     }
 
-    async getTextWarningPopUpMessageForDeleteDocuement(message: string): Promise<string> {
+    async getDeleteWarningMsgText(message: string): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.deleteDocWarningMsg)));
         return await element(by.cssContainingText((this.selectors.deleteDocWarningMsg), message)).getText();
     }
 
-    async clickOnYesButtonOfWarningPopUpMessageForDeleteDocument(): Promise<void> {
+    async clickOnYesButtonOfDeleteWarningMsg(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.deleteDocWarningMsgYesButton)));
         await $(this.selectors.deleteDocWarningMsgYesButton).click();
     }
@@ -26,7 +29,7 @@ class EditDocumentLibraryPage {
         await utilCommon.selectDropDown(this.selectors.statusGuid, status);
     }
 
-    async clickOnsaveButton(): Promise<void> {
+    async clickOnSaveButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }

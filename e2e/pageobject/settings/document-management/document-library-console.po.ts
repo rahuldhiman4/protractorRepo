@@ -9,8 +9,9 @@ class DocumentLibraryPage {
         gridGuid: '5d1f94a9-693e-4dbf-896f-3b9689f95a42',
     }
 
-    async isGridRecordPresent(): Promise<boolean> {
-       return await utilGrid.isGridRecordPresent();
+    async isGridRecordPresent(searchRecord:string): Promise<boolean> {
+        await utilGrid.searchOnGridConsole(searchRecord);
+        return await utilGrid.isGridRecordPresent();
     }
 
     async searchOnGridConsole(value: string): Promise<void> {
@@ -41,11 +42,11 @@ class DocumentLibraryPage {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
     }
 
-    async areColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {
+    async areGridColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {
         return await utilGrid.areColumnHeaderMatches(this.selectors.gridGuid, columnHeader);
     }
 
-    async searchAndEditDocumentLibrary(value: string): Promise<void> {
+    async searchAndOpenDocumentLibrary(value: string): Promise<void> {
         await utilGrid.searchAndOpenHyperlink(value);
         await utilCommon.waitUntilSpinnerToHide();
     }
