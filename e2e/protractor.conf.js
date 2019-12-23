@@ -25,8 +25,8 @@ exports.config = {
     ]
   },
 
-  directConnect: true,
-  baseUrl: 'http://clm-aus-squo6y.bmc.com:8008',
+  directConnect: false,
+  baseUrl: 'http://clm-pun-t3erts.bmc.com:8008',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
