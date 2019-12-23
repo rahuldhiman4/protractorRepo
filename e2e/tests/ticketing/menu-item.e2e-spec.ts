@@ -64,7 +64,7 @@ describe('Menu Item', () => {
         await createMenuItems.selectMenuNameDropDown('Label');
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
-        await localizeValuePopPo.valueTextBox(label);
+        await localizeValuePopPo.setLocalizeValue(label);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.selectStatusDropDown('Active');
@@ -76,7 +76,7 @@ describe('Menu Item', () => {
         await createMenuItems.selectMenuNameDropDown('Source');
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
-        await localizeValuePopPo.valueTextBox(source);
+        await localizeValuePopPo.setLocalizeValue(source);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.selectStatusDropDown('Active');
@@ -88,7 +88,7 @@ describe('Menu Item', () => {
         await createMenuItems.selectMenuNameDropDown('Label');
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
-        await localizeValuePopPo.valueTextBox(label);
+        await localizeValuePopPo.setLocalizeValue(label);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.selectStatusDropDown('Active');
@@ -100,7 +100,7 @@ describe('Menu Item', () => {
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
-        await localizeValuePopPo.valueTextBox(label1);
+        await localizeValuePopPo.setLocalizeValue(label1);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.clickOnSaveButton();
@@ -110,7 +110,7 @@ describe('Menu Item', () => {
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
-        await localizeValuePopPo.valueTextBox(label2);
+        await localizeValuePopPo.setLocalizeValue(label2);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.clickOnSaveButton();
@@ -120,7 +120,7 @@ describe('Menu Item', () => {
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
-        await localizeValuePopPo.valueTextBox(source);
+        await localizeValuePopPo.setLocalizeValue(source);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.clickOnSaveButton();
@@ -131,7 +131,7 @@ describe('Menu Item', () => {
         await createMenuItems.selectMenuNameDropDown('Source');
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
-        await localizeValuePopPo.valueTextBox(source);
+        await localizeValuePopPo.setLocalizeValue(source);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.selectStatusDropDown('Active');
@@ -143,7 +143,7 @@ describe('Menu Item', () => {
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
-        await localizeValuePopPo.valueTextBox(source1);
+        await localizeValuePopPo.setLocalizeValue(source1);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.clickOnSaveButton();
@@ -153,7 +153,7 @@ describe('Menu Item', () => {
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
-        await localizeValuePopPo.valueTextBox(source2);
+        await localizeValuePopPo.setLocalizeValue(source2);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.clickOnSaveButton();
@@ -163,7 +163,7 @@ describe('Menu Item', () => {
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
-        await localizeValuePopPo.valueTextBox(label);
+        await localizeValuePopPo.setLocalizeValue(label);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.clickOnSaveButton();
@@ -183,7 +183,7 @@ describe('Menu Item', () => {
         await createMenuItems.selectMenuNameDropDown('Label');
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
-        await localizeValuePopPo.valueTextBox(lableRandVal);
+        await localizeValuePopPo.setLocalizeValue(lableRandVal);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.selectStatusDropDown('Active');
@@ -195,7 +195,7 @@ describe('Menu Item', () => {
         await createMenuItems.selectMenuNameDropDown('Source');
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
-        await localizeValuePopPo.valueTextBox(sourceRandVal);
+        await localizeValuePopPo.setLocalizeValue(sourceRandVal);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.selectStatusDropDown('Inactive');
@@ -207,7 +207,7 @@ describe('Menu Item', () => {
         await createMenuItems.selectMenuNameDropDown('Resolution Code');
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
-        await localizeValuePopPo.valueTextBox(resolutionCodeRandVal);
+        await localizeValuePopPo.setLocalizeValue(resolutionCodeRandVal);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.selectStatusDropDown('Active');
@@ -220,7 +220,7 @@ describe('Menu Item', () => {
         await editMenuItemsConfigPo.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
-        await localizeValuePopPo.valueTextBox(sourceRandVal);
+        await localizeValuePopPo.setLocalizeValue(sourceRandVal);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         let statusdropDown1: string[] = ["Deprecated", "Inactive", "Active"];
@@ -234,7 +234,7 @@ describe('Menu Item', () => {
         await editMenuItemsConfigPo.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
-        await localizeValuePopPo.valueTextBox(lableRandVal);
+        await localizeValuePopPo.setLocalizeValue(lableRandVal);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         let statusDropDown2: string[] = ["Deprecated", "Inactive", "Active"];
@@ -249,7 +249,7 @@ describe('Menu Item', () => {
         await editMenuItemsConfigPo.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
-        await localizeValuePopPo.valueTextBox(resolutionCodeRandVal);
+        await localizeValuePopPo.setLocalizeValue(resolutionCodeRandVal);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         let statusDropDown3: string[] = ["Deprecated", "Inactive", "Active"];
