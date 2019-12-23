@@ -17,7 +17,7 @@ class EditDocumentLibraryPage {
         return await element(by.cssContainingText((this.selectors.deleteDocWarningMsg), message)).getText();
     }
 
-    async clickOnYesButtonOfWarningPopUpMessageForDeleteDocuement(): Promise<void> {
+    async clickOnYesButtonOfWarningPopUpMessageForDeleteDocument(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.deleteDocWarningMsgYesButton)));
        await $(this.selectors.deleteDocWarningMsgYesButton).click();
     }

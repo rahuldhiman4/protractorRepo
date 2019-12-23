@@ -47,7 +47,7 @@ describe('Menu Item', () => {
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeTruthy('Delete buttton is not enabled');
         await editDocumentLibraryPo.clickOnDeleteButton();
         expect(await editDocumentLibraryPo.getTextWarningPopUpMessageForDeleteDocuement('Are you sure you want to delete the document?')).toBe('Are you sure you want to delete the document?'),'Warning Message of Delete button is missing';
-        await editDocumentLibraryPo.clickOnYesButtonOfWarningPopUpMessageForDeleteDocuement();
+        await editDocumentLibraryPo.clickOnYesButtonOfWarningPopUpMessageForDeleteDocument();
         expect (await utilCommon.getPopUpMessage()).toBe('Document deleted successfully.');
         await utilCommon.waitUntilPopUpDisappear();
         expect (await documentLibraryConsolePo.isGridRecordPresent()).toBeFalsy('Grid Record displayed which should not be');
