@@ -81,7 +81,7 @@ describe('Document Library', () => {
     })
 
       //kgaikwad
-      fit('DRDMV-13074: Verify Delete button on document', async () => {
+      it('DRDMV-13074: Verify Document Managment Grid Console', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
         await utilCommon.waitUntilSpinnerToHide();
