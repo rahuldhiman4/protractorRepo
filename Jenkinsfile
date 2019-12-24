@@ -93,6 +93,7 @@ node('master') {
     //
     stage('Build & Unit test') {
       sh """
+        npm install -g typescript
         cd e2e
         tsc
       """
