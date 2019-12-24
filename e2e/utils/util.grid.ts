@@ -48,7 +48,7 @@ export class GridOperation {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addColumnIcon)));
         await ($(this.selectors.addColumnIcon)).click();
         for (let i: number = 0; i < columnName.length; i++) {
-            var customxpath = `//*[@rx-view-component-id="${guid}"]//li[@class="d-dropdown__menu-options-item"]//a[text()="${columnName[i]}"][1]`;
+            var customxpath = `//*[@rx-view-component-id="${guid}"]//li[@class="d-dropdown__menu-options-item" or @class="d-dropdown__menu-options-item ng-enter-prepare"]//a[text()="${columnName[i]}"][1]`;
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customxpath))));
             let attrbuteVal = await element(by.xpath(customxpath)).getAttribute('aria-checked');
             if (attrbuteVal == 'false') {
@@ -64,7 +64,7 @@ export class GridOperation {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addColumnIcon)));
         await ($(this.selectors.addColumnIcon)).click();
         for (let i: number = 0; i < columnName.length; i++) {
-            var customxpath = `//*[@rx-view-component-id="${guid}"]//li[@class="d-dropdown__menu-options-item"]//a[text()="${columnName[i]}"][1]`;
+            var customxpath = `//*[@rx-view-component-id="${guid}"]//li[@class="d-dropdown__menu-options-item" or @class="d-dropdown__menu-options-item ng-enter-prepare"]//a[text()="${columnName[i]}"][1]`;
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customxpath))));
             let attrbuteVal = await element(by.xpath(customxpath)).getAttribute('aria-checked');
             if (attrbuteVal == 'true') {

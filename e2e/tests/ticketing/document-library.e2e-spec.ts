@@ -58,7 +58,6 @@ describe('Document Library', () => {
     it('DRDMV-13045: Verify Delete button on document', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        console.log(titleRandVal);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
         await utilCommon.waitUntilSpinnerToHide();
@@ -79,5 +78,18 @@ describe('Document Library', () => {
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'),'Missing grid record value';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is not enabled');
+    })
+
+      //kgaikwad
+      fit('DRDMV-13074: Verify Delete button on document', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await utilCommon.waitUntilSpinnerToHide();
+        let columns1: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified"];
+        expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns1)).toBeTruthy('column headers does not match');
+        let columns2: string[] = ["Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "GUID", "Region"];
+        await documentLibraryConsolePo.addColumnOnGrid(columns2);
+        expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns2)).toBeTruthy('column headers does not match');
+        await documentLibraryConsolePo.removeColumnOnGrid(columns2);
     })
 })
