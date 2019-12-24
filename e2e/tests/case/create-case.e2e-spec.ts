@@ -53,7 +53,7 @@ describe("Create Case", () => {
         await createMenuItems.selectMenuNameDropDown('Resolution Code');
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
-        await localizeValuePopPo.valueTextBox(randVal);
+        await localizeValuePopPo.setLocalizeValue(randVal);
         await localizeValuePopPo.clickOnSaveButton();
         await createMenuItems.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
@@ -100,7 +100,7 @@ describe("Create Case", () => {
         await createMenuItems.selectMenuNameDropDown('Resolution Code');
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
-        await localizeValuePopPo.valueTextBox(randVal);
+        await localizeValuePopPo.setLocalizeValue(randVal);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.selectStatusDropDown('Active');
