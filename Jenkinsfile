@@ -93,8 +93,8 @@ node('master') {
     //
     stage('Build & Unit test') {
       sh """
-        npm i
-        npm run build
+        cd e2e
+        tsc
       """
     }
     //
