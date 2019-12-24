@@ -68,16 +68,17 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
-        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'),'Missing grid record value';
+        await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
+        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'),'status is not in draft status';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled).toBeTruthy('Delete Button is not enabled');
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
-        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'),'Missing grid record value';
+        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'),'status is not in Published status';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is not enabled');
+        expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is enabled');
     })
 
       //kgaikwad
@@ -92,4 +93,6 @@ describe('Document Library', () => {
         expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns2)).toBeTruthy('column headers does not match');
         await documentLibraryConsolePo.removeColumnOnGrid(columns2);
     })
+
+
 })
