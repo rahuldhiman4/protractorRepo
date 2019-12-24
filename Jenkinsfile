@@ -93,8 +93,10 @@ node('master') {
     //
     stage('Build & Unit test') {
       sh """
-        npm i
-        npm run build
+        npm install -g typescript@3.6.4
+        npm install @types/node
+        cd e2e
+        tsc
       """
     }
     //
