@@ -12,7 +12,7 @@ import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
 import { IFlowset } from '../data/api/interface/flowset.interface.api';
 import { IMenuItem } from '../data/api/interface/menu.items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
-
+import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -436,6 +436,24 @@ class ApiHelper {
         apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
     }
 
+    async createEmailTemplate(data: IEmailTemplate): Promise<boolean> {
+        let emailTemplateFile = await require('../data/api/email/email.template.api.json');
+        let templateData = await emailTemplateFile.EmailTemplateData;
+        let companyGuid = await coreApi.getOrganizationGuid(data.Company);
+        templateData.processInputValues["Company"] = companyGuid;
+        templateData.processInputValues["TemplateName"] = data.TemplateName;
+        templateData.processInputValues["Status"] = data.Status;
+        templateData.processInputValues["Description"] = data.Description;
+        templateData.processInputValues["EmailMessageSubject"] = data.EmailMessageSubject;
+        templateData.processInputValues["EmailMessageBody"] = data.EmailMessageBody;
+        templateData.processInputValues["Module"] = "Cases";
+        templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.case-lib:Case";
+        const newTemplate = await coreApi.createEmailOrNotesTemplate(templateData);
+        console.log('Create Email Template API Status =============>', newTemplate.status);
+        return newTemplate.status == 201;
+    }
+
+
     async createNotesTemplate(module: string, data: INotesTemplate): Promise<boolean> {
         let notesTemplateFile = await require('../data/api/social/notes.template.api.json');
         let templateData = await notesTemplateFile.NotesTemplateData;
@@ -475,11 +493,11 @@ class ApiHelper {
                 break;
             }
         }
-        const newTemplate = await coreApi.createNotesTemplate(templateData);
+        const newTemplate = await coreApi.createEmailOrNotesTemplate(templateData);
         console.log('Create Notes Template API Status =============>', newTemplate.status);
         return newTemplate.status == 201;
     }
-
+    
     async createNewFlowset(data: IFlowset): Promise<IIDs> {
         let flowsetFile = await require('../data/api/case/flowset.api.json');
         let flowsetData = await flowsetFile.FlowsetData;
