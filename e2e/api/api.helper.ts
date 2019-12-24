@@ -11,7 +11,8 @@ import { ICaseTemplate } from "../data/api/interface/case.template.interface.api
 import { IFlowset } from '../data/api/interface/flowset.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
-import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
+import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
+import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -436,6 +437,23 @@ class ApiHelper {
         apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
     }
 
+    async createEmailTemplate(data: IEmailTemplate): Promise<boolean> {
+        let emailTemplateFile = await require('../data/api/email/email.template.api.json');
+        let templateData = await emailTemplateFile.EmailTemplateData;
+        let companyGuid = await coreApi.getOrganizationGuid(data.Company);
+        templateData.processInputValues["Company"] = companyGuid;
+        templateData.processInputValues["TemplateName"] = data.TemplateName;
+        templateData.processInputValues["Status"] = data.Status;
+        templateData.processInputValues["Description"] = data.Description;
+        templateData.processInputValues["EmailMessageSubject"] = data.EmailMessageSubject;
+        templateData.processInputValues["EmailMessageBody"] = data.EmailMessageBody;
+        templateData.processInputValues["Module"] = "Cases";
+        templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.case-lib:Case";
+        const newTemplate = await coreApi.createEmailOrNotesTemplate(templateData);
+        console.log('Create Email Template API Status =============>', newTemplate.status);
+        return newTemplate.status == 201;
+    }
+
     async createNotesTemplate(module: string, data: INotesTemplate): Promise<boolean> {
         let notesTemplateFile = await require('../data/api/social/notes.template.api.json');
         let templateData = await notesTemplateFile.NotesTemplateData;
@@ -475,7 +493,7 @@ class ApiHelper {
                 break;
             }
         }
-        const newTemplate = await coreApi.createNotesTemplate(templateData);
+        const newTemplate = await coreApi.createEmailOrNotesTemplate(templateData);
         console.log('Create Notes Template API Status =============>', newTemplate.status);
         return newTemplate.status == 201;
     }
@@ -500,28 +518,28 @@ class ApiHelper {
         };
     }
 
-    async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
-                let randomStr = [...Array(6)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
+    async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
+        let randomStr = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         console.log(data);
-                let menuItemFile = await require('../data/api/shared-services/menuItemConfiguration.api.json');
-         console.log('New Menu Item API Status =============>');        
-        let menuItemData = await menuItemFile.MenuItemConfiguration;
-                menuItemData.fieldInstances[450000153].value = data.menuType;
-                menuItemData.fieldInstances[450000152].value = data.menuItemName;
-                menuItemData.fieldInstances[7].value = MenuItemStatus[data.menuItemStatus];
-                menuItemData.fieldInstances[450000154].value = randomStr;
-         console.log('New Menu Item Data =============>'+        menuItemData);
-                const menuItem = await coreApi.createRecordInstance(menuItemData);
-                const menuItemDetails = await axios.get(
-                    menuItem.headers.location
-                );
-                console.log('New Menu Item API Status =============>', menuItemDetails.status);
-        
-                return {
-                    id: menuItemDetails.data.id,
-                    displayId: menuItemDetails.data.displayId
-                };
-            } 
+        let menuItemFile = await require('../data/api/shared-services/menuItemConfiguration.api.json');
+        console.log('New Menu Item API Status =============>');
+        let menuItemData = await menuItemFile.MenuItemConfiguration;
+        menuItemData.fieldInstances[450000153].value = data.menuType;
+        menuItemData.fieldInstances[450000152].value = data.menuItemName;
+        menuItemData.fieldInstances[7].value = MenuItemStatus[data.menuItemStatus];
+        menuItemData.fieldInstances[450000154].value = randomStr;
+        console.log('New Menu Item Data =============>' + menuItemData);
+        const menuItem = await coreApi.createRecordInstance(menuItemData);
+        const menuItemDetails = await axios.get(
+            menuItem.headers.location
+        );
+        console.log('New Menu Item API Status =============>', menuItemDetails.status);
+
+        return {
+            id: menuItemDetails.data.id,
+            displayId: menuItemDetails.data.displayId
+        };
+    }
 
 }
 
