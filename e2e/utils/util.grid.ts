@@ -41,7 +41,7 @@ export class GridOperation {
     }
 
     async isGridRecordPresent(): Promise<boolean> {
-        return await $(this.selectors.blankGridRecord).isPresent();
+        return await $(this.selectors.gridRecordPresent).isPresent();
     }
 
     async addGridColumn(guid: string, columnName: string[]): Promise<void> {
