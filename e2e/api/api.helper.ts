@@ -167,7 +167,6 @@ class ApiHelper {
 
         var templateDataFile = await require('../data/api/task/task.template.api.json');
         var templateData = await templateDataFile.AutoTaskTemplateNewProcess;
-
         templateData.fieldInstances[7].value = TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
