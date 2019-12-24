@@ -93,8 +93,8 @@ node('master') {
     //
     stage('Build & Unit test') {
       sh """
-        npm update @types/node
         npm install -g typescript@3.6.4
+        npm update @types/node
         cd e2e
         tsc
       """
