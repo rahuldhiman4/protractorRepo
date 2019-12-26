@@ -1,13 +1,17 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 import utilGrid from '../../../utils/util.grid';
 
-class MenuItemsConsolePage {
+class DocumentLibraryPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
-
     selectors = {
-        addMenuOptionBtn: '[rx-view-component-id="306a51e0-cb89-45db-9270-c40b4ec3b149"] button',
-        gridGuid: 'b09e033f-cd38-4a33-92ae-0832c9de8dcb',
+        addDocumentButton: '[rx-view-component-id="c2df3218-8ef7-402c-bdc2-721e891346bb"] button',
+        gridGuid: '5d1f94a9-693e-4dbf-896f-3b9689f95a42',
+    }
+
+    async isGridRecordPresent(searchRecord:string): Promise<boolean> {
+        await utilGrid.searchOnGridConsole(searchRecord);
+        return await utilGrid.isGridRecordPresent();
     }
 
     async searchOnGridConsole(value: string): Promise<void> {
@@ -38,22 +42,16 @@ class MenuItemsConsolePage {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
     }
 
-    async areColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {
+    async areGridColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {
         return await utilGrid.areColumnHeaderMatches(this.selectors.gridGuid, columnHeader);
     }
 
-    async searchAndEditMenuOption(menuOption: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(menuOption);
+    async searchAndOpenDocumentLibrary(value: string): Promise<void> {
+        await utilGrid.searchAndOpenHyperlink(value);
         await utilCommon.waitUntilSpinnerToHide();
     }
 
 
-
-    async isAddButtonDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.addMenuOptionBtn)));
-        return await $(this.selectors.addMenuOptionBtn).getAttribute("disabled") == "true";
-    }
-
 }
 
-export default new MenuItemsConsolePage();
+export default new DocumentLibraryPage();

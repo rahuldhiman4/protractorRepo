@@ -13,3 +13,8 @@ export enum Case {
     Assigned = 2000,
     New = 1000,
 }
+
+export enum MenuItemStatus {
+    Active = 0,
+    Inactive = 5,
+} 

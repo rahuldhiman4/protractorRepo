@@ -20,7 +20,7 @@ class AddLocalizeValue {
         await $(this.selectors.valueTextBox).clear();
     }
 
-    async valueTextBox(value:string): Promise<void> {
+    async setLocalizeValue(value:string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.valueTextBox)));
         await $(this.selectors.valueTextBox).sendKeys(value);
     }
