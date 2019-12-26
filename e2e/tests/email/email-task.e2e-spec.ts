@@ -158,16 +158,16 @@ describe('Email', () => {
         await expect(await emailPo.getEmailBody()).toContain('Regards');
         await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
         await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
-        expect(await emailPo.countOfPersonsOnEntered3Char('To', 'fri')).toBe(3);
-        expect(await emailPo.countOfPersonsOnEntered3Char('Cc', 'fri')).toBe(3);
+        expect(await emailPo.searchPerson('To', 'fri')).toBe(3);
+        expect(await emailPo.searchPerson('Cc', 'fri')).toBe(3);
         await emailPo.clickOnDiscardButton();
         await utilCommon.clickOnWarningOk();
         await viewTask.clickOnRequesterEmail();
         await expect(await emailPo.getEmailBody()).toContain('Regards');
         await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
         await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
-        expect(await emailPo.countOfPersonsOnEntered3Char('To', 'fri')).toBe(3);
-        expect(await emailPo.countOfPersonsOnEntered3Char('Cc', 'fri')).toBe(3);
+        expect(await emailPo.searchPerson('To', 'fri')).toBe(3);
+        expect(await emailPo.searchPerson('Cc', 'fri')).toBe(3);
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
         expect(await emailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
         //verify activity email post
@@ -183,16 +183,16 @@ describe('Email', () => {
         await expect(await emailPo.getEmailBody()).toContain('Regards');
         await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
         await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
-        expect(await emailPo.countOfPersonsOnEntered3Char('To', 'fri')).toBe(3);
-        expect(await emailPo.countOfPersonsOnEntered3Char('Cc', 'fri')).toBe(3);
+        expect(await emailPo.searchPerson('To', 'fri')).toBe(3);
+        expect(await emailPo.searchPerson('Cc', 'fri')).toBe(3);
         await emailPo.clickOnDiscardButton();
         await utilCommon.clickOnWarningOk();
         await viewTask.clickOnRequesterEmail();
         await expect(await emailPo.getEmailBody()).toContain('Regards');
         await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
         await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
-        expect(await emailPo.countOfPersonsOnEntered3Char('To', 'fri')).toBe(3);
-        expect(await emailPo.countOfPersonsOnEntered3Char('Cc', 'fri')).toBe(3);
+        expect(await emailPo.searchPerson('To', 'fri')).toBe(3);
+        expect(await emailPo.searchPerson('Cc', 'fri')).toBe(3);
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
         expect(await emailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
         //verify activity email post
