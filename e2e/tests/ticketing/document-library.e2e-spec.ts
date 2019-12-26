@@ -34,7 +34,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectCompany('Petramco');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
-
+        await utilCommon.waitUntilPopUpDisappear();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
@@ -52,5 +52,47 @@ describe('Document Library', () => {
         expect(await utilCommon.getPopUpMessage()).toBe('Document deleted successfully.');
         await utilCommon.waitUntilPopUpDisappear();
         expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Grid Record displayed which should not be');
+    },120*1000)
+
+    //kgaikwad
+    it('DRDMV-13045: Verify Delete button on document', async () => {
+        let filePath = '../../../data/ui/attachment/demo.txt';
+        let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await utilCommon.waitUntilSpinnerToHide();
+        await createDocumentLibraryPo.openAddNewDocumentBlade();
+        await createDocumentLibraryPo.addAttachment(filePath);
+        await createDocumentLibraryPo.setTitle(titleRandVal);
+        await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+        await createDocumentLibraryPo.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
+        await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
+        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'),'status is not in draft status';
+        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+        expect(await editDocumentLibraryPo.isDeleteButtonEnabled).toBeTruthy('Delete Button is not enabled');
+        await editDocumentLibraryPo.selectStatus('Published');
+        await editDocumentLibraryPo.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
+        await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
+        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'),'status is not in Published status';
+        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+        expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is enabled');
     })
+
+      //kgaikwad
+      it('DRDMV-13074: Verify Document Managment Grid Console', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await utilCommon.waitUntilSpinnerToHide();
+        let columns1: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified"];
+        expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns1)).toBeTruthy('column headers does not match');
+        let columns2: string[] = ["Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "GUID", "Region"];
+        await documentLibraryConsolePo.addColumnOnGrid(columns2);
+        expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns2)).toBeTruthy('column headers does not match');
+        await documentLibraryConsolePo.removeColumnOnGrid(columns2);
+    })
+
+
 })
