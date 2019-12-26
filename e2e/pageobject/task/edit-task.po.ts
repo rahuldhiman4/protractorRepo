@@ -1,4 +1,5 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import changeAssignmentBladePo from '../common/change-assignment-blade.po';
 
 class EditTask {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -7,7 +8,8 @@ class EditTask {
         cancelButton: '[rx-view-component-id="705c3907-a82e-4de4-a8b0-32fe00483403"] button',
         processNameValue: '[rx-view-component-id="7260c238-9e41-4d31-90de-2d46443117b4"] input',
         assignToMe: '.d-icon-left-user_plus',
-        saveButton: '[rx-view-component-id="a19228d0-81a9-4b19-9cb3-b5bd9550966f"] button'
+        saveButton: '[rx-view-component-id="a19228d0-81a9-4b19-9cb3-b5bd9550966f"] button',
+        changesAssignmentButton: '[rx-view-component-id="c423242c-28ca-4fd2-a81c-4495bf2fffb7"] button',
     }
 
     async clickOnAssignToMe() {
@@ -15,7 +17,13 @@ class EditTask {
         $(this.selectors.assignToMe).click();
     }
 
+    async clickOnChangeAssignementButton() {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changesAssignmentButton)));
+        $(this.selectors.changesAssignmentButton).click();
+    }
+
     async clickOnSaveButton() {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changesAssignmentButton)))
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         $(this.selectors.saveButton).click();
     }

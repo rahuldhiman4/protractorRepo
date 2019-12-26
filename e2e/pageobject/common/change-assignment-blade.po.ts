@@ -62,6 +62,7 @@ class ChangeAssignmentBlade {
         await browser.wait(this.EC.visibilityOf($(this.selectors.assignButton)));
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignButton)));
         await $(this.selectors.assignButton).click();
+        await browser.wait(this.EC.invisibilityOf($(this.selectors.assignToMeCheckBox)));
     }
 
     async isAssignButtonDisabled(): Promise<Boolean> {
