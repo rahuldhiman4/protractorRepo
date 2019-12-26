@@ -193,7 +193,7 @@ class ComposeMail {
         }
     }
 
-    async countOfPersonsOnEntered3Char(value: string, EmailIdForToOrCc: string): Promise<number> {
+    async searchPerson(value: string, EmailIdForToOrCc: string): Promise<number> {
         let countOfPersons=0;
         let element = await $(`input[aria-label="${value}"]`);
         await browser.wait(this.EC.elementToBeClickable(element));
