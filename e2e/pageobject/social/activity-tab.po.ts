@@ -41,7 +41,7 @@ class ActivityTabPage {
     }
 
     async clickOnReply(): Promise<void> {
-        utilCommon.waitUntilSpinnerToHide();
+        await utilCommon.waitUntilSpinnerToHide();
         await element(by.xpath("(//div[contains(@class,'d-icon-reply')])[1]")).click();
     }
 
