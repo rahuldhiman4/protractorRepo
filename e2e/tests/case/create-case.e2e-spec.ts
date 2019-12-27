@@ -53,7 +53,7 @@ describe("Create Case", () => {
         await createMenuItems.selectMenuNameDropDown('Resolution Code');
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
-        await localizeValuePopPo.valueTextBox(randVal);
+        await localizeValuePopPo.setLocalizeValue(randVal);
         await localizeValuePopPo.clickOnSaveButton();
         await createMenuItems.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
@@ -100,7 +100,7 @@ describe("Create Case", () => {
         await createMenuItems.selectMenuNameDropDown('Resolution Code');
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
-        await localizeValuePopPo.valueTextBox(randVal);
+        await localizeValuePopPo.setLocalizeValue(randVal);
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.selectStatusDropDown('Active');
@@ -312,5 +312,104 @@ describe("Create Case", () => {
             await loginPage.login("qkatawazi");
         }
 
-    })
+    });
+
+    it('DRDMV-11856: [Case Creation] create case with Global case template without flowset ', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplate1 = 'Case Template 1' + randomStr;
+        let caseTemplateSummary1 = 'Summary' + randomStr;
+
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
+
+        //case template with reopen case
+        await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+        await createCaseTemplate.setTemplateName(caseTemplate1);
+        await createCaseTemplate.setCompanyName('Global');
+        await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
+        await createCaseTemplate.setTemplateStatusDropdownValue('Active')
+        await createCaseTemplate.clickSaveCaseTemplate();
+
+        //create case
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester('adam');
+        await createCasePage.setSummary(caseTemplate1);
+        await createCasePage.clickSelectCaseTemplateButton();
+        await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate1);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await expect(viewCasePage.getCaseSummary()).toBe(caseTemplate1);
+    });
+
+    it('DRDMV-16076: Reopen configurations available on Case Template Create screen ', async () => {
+        
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplate1 = 'Case Template 1' + randomStr;
+        let caseTemplate2 = 'Case Template 2' + randomStr;
+
+        let caseTemplateSummary1 = 'Summary 1' + randomStr;
+        let caseTemplateSummary2 = 'Summary 2' + randomStr;
+
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
+
+        //case template with reopen case
+        await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+        await createCaseTemplate.setTemplateName(caseTemplate1);
+        await createCaseTemplate.setCompanyName('Petramco');
+        await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
+        await createCaseTemplate.setAllowCaseReopenValue('Yes');
+        await createCaseTemplate.setTemplateStatusDropdownValue('Active')
+        await createCaseTemplate.clickSaveCaseTemplate();
+
+        //case template with reopen case
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
+        await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+        await createCaseTemplate.setTemplateName(caseTemplate2);
+        await createCaseTemplate.setCompanyName('Petramco');
+        await createCaseTemplate.setCaseSummary(caseTemplateSummary2);
+        await createCaseTemplate.setAllowCaseReopenValue('No');
+        await createCaseTemplate.setTemplateStatusDropdownValue('Active')
+        await createCaseTemplate.clickSaveCaseTemplate();
+
+        //create case
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester('adam');
+        await createCasePage.setSummary('Summary');
+        await createCasePage.clickSelectCaseTemplateButton();
+        await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate1);
+        await createCasePage.clickAssignToMeButton();
+
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await viewCasePage.changeCaseStatus('In Progress');
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.changeCaseStatus('Resolved');
+        await viewCasePage.setStatusReason('Auto Resolved');
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.changeCaseStatus('Closed');
+        await viewCasePage.clickSaveStatus();
+        await expect(viewCasePage.isCaseReopenLinkPresent()).toBeTruthy();
+
+        //add second case template
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester('adam');
+        await createCasePage.setSummary('Summary 2');
+        await createCasePage.clickSelectCaseTemplateButton();
+        await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate2);
+        await createCasePage.clickAssignToMeButton();
+
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await viewCasePage.changeCaseStatus('In Progress');
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.changeCaseStatus('Resolved');
+        await viewCasePage.setStatusReason('Auto Resolved');
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.changeCaseStatus('Closed');
+        await viewCasePage.clickSaveStatus();
+        await expect(viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+    }, 240 * 1000);
 });

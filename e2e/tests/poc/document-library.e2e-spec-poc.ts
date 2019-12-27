@@ -1,7 +1,7 @@
 import { browser, protractor, ProtractorExpectedConditions } from "protractor";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import documentLibraryPage from '../../pageobject/settings/document-management/document-library.po';
+import documentLibraryPage from '../../pageobject/settings/document-management/create-document-library.po';
 
 describe('document library', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -24,16 +24,17 @@ describe('document library', () => {
     }, 120 * 1000);
 
     it('should add new document', async () => {
+        let filePath = '../../../data/ui/attachment/demo.txt';
+        let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await browser.sleep(2000);
         await documentLibraryPage.openAddNewDocumentBlade();
-        await documentLibraryPage.addAttachment();
-        let title = `Document-${new Date().valueOf()}`;
-        await documentLibraryPage.enterTitle(title);
+        await documentLibraryPage.addAttachment(filePath);
+        await documentLibraryPage.setTitle(titleRandVal);
         await documentLibraryPage.selectCompany('Petramco');
-        await documentLibraryPage.selectOwnerGroup('Workforce Administration');
-        await documentLibraryPage.saveNewDocument();
-        expect(await documentLibraryPage.getAlertText()).toEqual('Saved successfully.');
-        await documentLibraryPage.searchGrid(title);
-        expect(await documentLibraryPage.getFirstCellText()).toEqual(title);
+        await documentLibraryPage.selectOwnerGroup('Compensation and Benefits');
+        await documentLibraryPage.clickOnSaveButton();
         await browser.sleep(5000);
     }, 120 * 1000);
 })

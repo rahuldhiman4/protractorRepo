@@ -34,6 +34,10 @@ class ActivityTabPage {
         emailPersonProfilePopUp: '.popup-info .popup-email',
         phoneNumberPersonProfilePopUp: '.popup-info .popup-phone-number',
         authorFieldEmpty: '.d-textfield__label .ng-not-empty',
+        emailContent: '.log-item__content email',
+        emailAttachmentFileName: '.log-item__content email .rx-attachment-view-name',
+        emailReply: '.log-item__content email .d-icon-reply',
+        emailReplyAll: '.log-item__content email .d-icon-arrow_u',
         dwpSurveyText: '.dwp_survey .log-item__body div',
         viewSurveyBtn: '.dwp_survey .d-button_link',
         dwpQuestions: '.dwp_question',
@@ -42,6 +46,39 @@ class ActivityTabPage {
         dwpIcon: '.dwp_survey .log-item__icon',
         dwpFeedback: '.rx-content.dwp-comment',
         logItems: '.log-item__body'
+    }
+
+    async clickOnReply(): Promise<void> {
+        await utilCommon.waitUntilSpinnerToHide();
+        await element(by.xpath("(//div[contains(@class,'d-icon-reply')])[1]")).click();
+    }
+
+    async clickOnReplyAll(): Promise<void> {
+        utilCommon.waitUntilSpinnerToHide();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailReplyAll)));
+        await $(this.selectors.emailReplyAll).click();
+    }
+
+    async getemailContent(): Promise<string> {
+        await browser.sleep(2000);
+        await utilCommon.waitUntilSpinnerToHide();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailContent)), 5000);
+        let emailBody = await element(by.xpath('(//div[@class="log-item__content"]/email)[1]')).getText();
+        return emailBody;
+    }
+
+    async getemailAttachmentFileName(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailAttachmentFileName)), 5000);
+        let fileName = await $(this.selectors.emailAttachmentFileName).getText();
+        return fileName;
+    }
+
+    async getActivityNotesText(textToMatch: string): Promise<boolean> {
+        var elem = element(by.xpath("//div[contains(@class,'d-icon-note_pencil')]/following-sibling::div"));
+        browser.wait(this.EC.elementToBeClickable(elem));
+        var value = await elem.getText();
+        await utilCommon.waitUntilSpinnerToHide();
+        return value.includes(textToMatch) ? true : false;
     }
 
     async removeFilterList(): Promise<void> {
@@ -180,8 +217,6 @@ class ActivityTabPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.authorCloseButton)));
         await $(this.selectors.authorCloseButton).click();
     }
-
-
 
     async isAuthorBoxEmpty(): Promise<boolean> {
         browser.sleep(2000);

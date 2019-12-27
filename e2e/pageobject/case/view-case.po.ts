@@ -204,7 +204,7 @@ class ViewCasePage {
     }
 
     async clickAddTaskButton() {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskButton)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskButton)),3000);
         await $(this.selectors.addTaskButton).click();
     }
 

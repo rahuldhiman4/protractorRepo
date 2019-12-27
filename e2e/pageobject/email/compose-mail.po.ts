@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, by, element, protractor, ProtractorExpectedConditions, $$ } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 class ComposeMail {
@@ -18,7 +18,7 @@ class ComposeMail {
         composeEmailUI: '[rx-view-definition-guid="a69ea993-2e45-4ae7-9435-25ba53cbad88"]',
         selectEmailTemplate: '.select-template-button',
         popupEmail: '.popup-email',
-        popupTemplate: '.popup-template',
+        popupInfo: '.popup-info',
         attachButton: '[rx-view-definition-guid="a69ea993-2e45-4ae7-9435-25ba53cbad88"] .ac-attachment-button',
         emailBody: '.cke_editable_themed',
         firstClickInEmail: '.cke_editable_themed br',
@@ -64,7 +64,7 @@ class ComposeMail {
     }
 
     async getSubject(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.getsubject)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.getsubject)),2000);
         return await $(this.selectors.getsubject).getText();
     }
 
@@ -100,7 +100,7 @@ class ComposeMail {
     }
 
     async clickOnEmailIconLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailIcon)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailIcon)),3000);
         await $(this.selectors.emailIcon).click();
     }
 
@@ -128,10 +128,12 @@ class ComposeMail {
         var elm = $(this.selectors.emailBody);
         await browser.actions().sendKeys(protractor.Key.chord(protractor.Key.CONTROL, protractor.Key.HOME)).sendKeys(value).perform();
         await browser.switchTo().defaultContent();
+        await browser.sleep(1000);
     }
 
     async getEmailBody(): Promise<string> {
         let value;
+        await browser.sleep(2000);
         var elem = $('iframe.cke_wysiwyg_frame');
         await browser.switchTo().frame(elem);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)));
@@ -141,7 +143,7 @@ class ComposeMail {
     }
 
     async clickOnSendButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.sendButton)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.sendButton)),3000);
         await $(this.selectors.sendButton).click();
     }
 
@@ -171,7 +173,7 @@ class ComposeMail {
         return await element.isDisplayed();
     }
 
-    async setToOrCCInputTetxboxPresent(value: String, emailIdForToOrCc: string): Promise<void> {
+    async setToOrCCInputTetxbox(value: String, emailIdForToOrCc: string): Promise<void> {
         let element = await $(`input[aria-label="${value}"]`);
         await browser.wait(this.EC.elementToBeClickable(element));
         await element.click();
@@ -189,6 +191,29 @@ class ComposeMail {
         if (isclicked.contains(emailIdForToOrCc)) {
             await popupemail.click();
         }
+    }
+
+    async searchPerson(value: string, EmailIdForToOrCc: string): Promise<number> {
+        let countOfPersons=0;
+        let element = await $(`input[aria-label="${value}"]`);
+        await browser.wait(this.EC.elementToBeClickable(element));
+        await element.click();
+        await element.clear();
+        await element.sendKeys(EmailIdForToOrCc);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.popupEmail)));
+        await this.setToOrCCInputTetxbox(value, EmailIdForToOrCc);
+        await browser.wait(this.EC.visibilityOf($(this.selectors.popupInfo)));
+        let values:number= await $$(this.selectors.popupInfo).count();
+        for (let i = 0; i < values; i++) {
+            let person = await $$(this.selectors.popupInfo).get(i);
+            let nm: string = await person.getText();
+            if (nm.includes(value)) {
+                countOfPersons++;
+            }
+        }
+        element.clear();
+        await browser.wait(this.EC.invisibilityOf($(this.selectors.popupInfo)));
+        return countOfPersons;
     }
 }
 

@@ -1,5 +1,5 @@
-import { $, $$, browser, Key, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
+import { $, browser, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import createCasePage from '../../pageobject/case/create-case.po';
 import utilGrid from '../../utils/util.grid';
 
 
@@ -42,11 +42,11 @@ class SelectCaseTemplateBlade {
         await $(this.selectors.refreshbutton).click();
     }
 
-
-    async selectCaseTemplate(templateName:string): Promise<void> {
+    async selectCaseTemplate(templateName: string): Promise<void> {
         await this.clickOnAllTemplateTab();
         await utilGrid.searchAndSelectGridRecord(templateName);
         await this.clickOnApplyButton();
+        await browser.wait(this.EC.elementToBeClickable($(createCasePage.selectors.selectCaseTemplateButton)));
     }
 
     async clickOnApplyButton(): Promise<void> {

@@ -118,6 +118,15 @@ describe('Login and create case from API', () => {
         //await apiHelper.associateCaseTemplateWithTwoTaskTemplate('CTPL-0000000215', 'TTPL-0000000517', 'TTPL-0000000518', "sequential");
     });
 
+    it('create Email template', async () => {
+        await apiHelper.apiLogin('tadmin');
+        let randomStr = [...Array(4)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
+        let emailTemplateData = require('../data/ui/email/email.template.ui.json');
+        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
+        emailTemplateData['notesTemplateWithMandatoryField'].templateName = emailTemplateName; 
+        await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+    });
+    
     it('create notes template', async () => {
         await apiHelper.apiLogin('tadmin');
         let randomStr = [...Array(4)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
@@ -127,7 +136,7 @@ describe('Login and create case from API', () => {
         await apiHelper.createNotesTemplate("People", notesTemplateData['notesTemplateWithMandatoryField']);
     });
 
-    fit('associate categories', async () => {
+    it('associate categories', async () => {
         // associate Briefings to Incident
         let globalCategName = 'DemoCateg1';
         let categName2 = 'DemoCateg2';
@@ -141,5 +150,14 @@ describe('Login and create case from API', () => {
         await apiHelper.associateCategoryToCategory(globalCategName, categName2);
         await apiHelper.associateCategoryToCategory(categName2, categName3);
         await apiHelper.associateCategoryToCategory(categName3, categName4);
+    });
+
+    it('create menu item', async () => {
+        await apiHelper.apiLogin('qkatawazi');
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let menuItemDataFile = require('../data/ui/ticketing/menuItem.ui.json');
+        let menuItemName: string = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
+        menuItemDataFile['sampleMenuItem'].menuItemName = menuItemName;
+        await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
     });
 })
