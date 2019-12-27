@@ -6,7 +6,7 @@ import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.ap
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
 import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
-import { CaseTemplate, MenuItemStatus, TaskTemplate } from "../api/constant.api";
+import { CaseTemplate, MenuItemStatus, TaskTemplate, NotificationType } from "../api/constant.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
 import { IFlowset } from '../data/api/interface/flowset.interface.api';
@@ -539,6 +539,28 @@ async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
             id: menuItemDetails.data.id,
             displayId: menuItemDetails.data.displayId
         };
+    }
+
+    async createComplexSurvey(data: any): Promise<void> {
+        const complexSurvey = await axios.post(
+            "api/com.bmc.dsm.catalog-lib/surveys",
+            data
+        );
+        console.log("Complex Survey status ==>>> " + complexSurvey.status);
+    }
+
+    async setDefaultNotificationForUser(user:string, notificationType: string): Promise<void>{
+        let personGuid:string = await coreApi.getPersonGuid(user);
+        let notificationTypeFile = await require('../data/api/foundation/default.notification.user.api.json');
+        let defaultNotificationData = await notificationTypeFile.NotificationSet;
+        defaultNotificationData.id = personGuid;
+        defaultNotificationData.fieldInstances[430000003].value = NotificationType[notificationType];
+        let uri:string = "api/rx/application/record/recordinstance/com.bmc.arsys.rx.foundation%3APerson/" + personGuid; 
+        const notificationSetting = await axios.put(
+            uri,
+            defaultNotificationData
+        );
+        console.log("Alert status ==>>> " + notificationSetting.status);
     }
 
 

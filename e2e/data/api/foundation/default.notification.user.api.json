@@ -1,0 +1,15 @@
+{
+    "NotificationSet": {
+        "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+        "id": "0673cd5ddeddba6bdb610bd65d696e75337d9a364d2e61ca089f5d198d2702ec03cc00b46057b6b83db4df976bd6a8b35014b3e14ded75f6796c011b942d1436",
+        "displayId": "2472",
+        "recordDefinitionName": "com.bmc.arsys.rx.foundation:Person",
+        "fieldInstances": {
+            "430000003": {
+                "id": 430000003,
+                "value": 1,
+                "permissionType": "CHANGE"
+            }
+        }
+    }
+}

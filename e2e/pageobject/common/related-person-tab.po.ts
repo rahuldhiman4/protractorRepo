@@ -1,4 +1,4 @@
-import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
 
 class RelatedPersonPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -14,6 +14,7 @@ class RelatedPersonPage {
         relations: ' .person-relationship p',
         personOrganization: ' .person-organization',
         emailLink: ' .list-email',
+        email: '//*[contains(@class, "person-info-card person-list")]//*[contains(@class, "-email")]',
         site: ' .ac-text-site-value',
         phoneNumber: ' .ac-link-person-phone'
     }
@@ -121,7 +122,7 @@ class RelatedPersonPage {
             var person = await $$(this.selectors.allRelatedPersons).get(i);
             var nm: string = await person.$(this.selectors.relatedPersonNames).getText();
             if (nm == personName) {
-                email = await person.$(this.selectors.emailLink).getText();
+                email = await element(by.xpath(this.selectors.email)).getText();
                 break;
             }
         }

@@ -20,7 +20,7 @@
         "description": "Change my Last Name",
         "warningMsg": "Requester not found"
     },
-    "complexSurvey1": {
+    "complexSurvey": {
         "Status": "2000",
         "Company": "Petramco",
         "Description": "This case was created by java integration tests",
@@ -50,6 +50,15 @@
         "Summary": "Testing case creation with maximal input data",
         "Support Group": "Compensation and Benefits",
         "Assignee": "Elizabeth"
+    },
+    "caseData_DRDMV16243": {
+        "Status": "2000",
+        "Company": "Petramco",
+        "Description": "This case was created by java integration tests",
+        "Requester": "qkatawazi",
+        "Priority": "4000",
+        "Summary": "Testing Realated Persons",
+        "Support Group": "Compensation and Benefits",
+        "Assignee": "Elizabeth"
     }
-
 }

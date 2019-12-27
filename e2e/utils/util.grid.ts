@@ -29,12 +29,12 @@ export class GridOperation {
     async areColumnHeaderMatches(guid: string, columnHeader: string[]): Promise<boolean> {
         let arr: string[] = [];
         for (let i: number = 0; i < columnHeader.length; i++) {
-            var customxpath = `//*[@rx-view-component-id="${guid}"]//span[@class="ui-grid-header-cell-label" and text()="${columnHeader[i]}"]`;
-            let columns = await element(by.xpath(customxpath)).getText();
+            var customxpath = `(//*[@rx-view-component-id="${guid}"]//span[@class="ui-grid-header-cell-label"])[${i + 1}]`;
+            let columns = await element(by.xpath(customxpath)).getAttribute("innerText");
             arr[i] = columns;
         }
-        arr = arr.sort();
-        columnHeader = columnHeader.sort();
+        arr.sort();
+        columnHeader.sort();
         return arr.length === columnHeader.length && arr.every(
             (value, index) => (value === columnHeader[index])
         );
@@ -53,7 +53,7 @@ export class GridOperation {
             let attrbuteVal = await element(by.xpath(customxpath)).getAttribute('aria-checked');
             if (attrbuteVal == 'false') {
                 await element(by.xpath(customxpath)).click();
-            } else { console.log('Column already selected'); }
+            } else { console.log('Column: ', columnName[i], ' already selected'); }
         }
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addColumnIcon)));
         await ($(this.selectors.addColumnIcon)).click();
@@ -322,7 +322,6 @@ export class GridOperation {
         await arr.sort(function (a, b) {
             return a.localeCompare(b);
         })
-
         if (sortType == "descending") {
             arr.reverse();
         }
