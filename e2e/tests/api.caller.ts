@@ -118,6 +118,15 @@ describe('Login and create case from API', () => {
         //await apiHelper.associateCaseTemplateWithTwoTaskTemplate('CTPL-0000000215', 'TTPL-0000000517', 'TTPL-0000000518', "sequential");
     });
 
+    it('create Email template', async () => {
+        await apiHelper.apiLogin('tadmin');
+        let randomStr = [...Array(4)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
+        let emailTemplateData = require('../data/ui/email/email.template.ui.json');
+        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
+        emailTemplateData['notesTemplateWithMandatoryField'].templateName = emailTemplateName; 
+        await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+    });
+    
     it('create notes template', async () => {
         await apiHelper.apiLogin('tadmin');
         let randomStr = [...Array(4)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
