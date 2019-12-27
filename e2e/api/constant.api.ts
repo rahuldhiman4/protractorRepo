@@ -17,4 +17,10 @@ export enum Case {
 export enum MenuItemStatus {
     Active = 0,
     Inactive = 5,
-} 
+}
+
+export enum NotificationType {
+    Alert = 1,
+    Email = 2,
+    AlertAndEmail = 3,
+}
