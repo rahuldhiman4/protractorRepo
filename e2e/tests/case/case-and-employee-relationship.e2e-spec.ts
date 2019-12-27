@@ -211,11 +211,11 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    fit('DRDMV-17036: Check details shown for Employees on Related People tab', async () => {
+    it('DRDMV-17036: Check details shown for Employees on Related People tab', async () => {
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
         let response1 = await apiHelper.createCase(caseData['caseData_DRDMV16243']);
-        let response2 = await apiHelper.createCase(caseData['caseData_DRDMV16243']);        
+        let response2 = await apiHelper.createCase(caseData['caseData_DRDMV16243']);
         let caseDisplayId1 = response1.displayId;
         let caseDisplayId2 = response2.displayId;
         await navigationPage.gotoCaseConsole();

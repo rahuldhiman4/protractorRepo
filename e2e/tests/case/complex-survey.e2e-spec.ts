@@ -291,7 +291,7 @@ describe('Complex Surveys', () => {
         await activityTabPage.closeSurveyInformation();
     })
 
-    fit('DRDMV-18123: [Complex Survey] - Survey Details Order in Case Activity', async () => {
+    it('DRDMV-18123: [Complex Survey] - Survey Details Order in Case Activity', async () => {
         await apiHelper.apiLogin("qkatawazi");
         let serviceReqId: string = "sid" + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = require('../../data/ui/case/case.ui.json');
@@ -301,7 +301,7 @@ describe('Complex Surveys', () => {
         let cmplxSurveyData = require("../../data/api/case/complexSurvey.api.json");
         cmplxSurveyData['SimpleSurveyLongFeedback_DRDMV-18117_1'].serviceRequestId = serviceReqId;
         await apiHelper.createComplexSurvey(cmplxSurveyData['SimpleSurveyLongFeedback_DRDMV-18117_1']);
-        await utilGrid.searchAndOpenHyperlink(caseDisplayId); 
+        await utilGrid.searchAndOpenHyperlink(caseDisplayId);
         await browser.sleep(8000);
         await activityTabPage.addActivityNote("hello");
         await activityTabPage.clickOnPostButton();
@@ -317,7 +317,7 @@ describe('Complex Surveys', () => {
         let cmplxSurveyData = require("../../data/api/case/complexSurvey.api.json");
         cmplxSurveyData['SimpleSurveyLongFeedback_DRDMV-18117_1'].serviceRequestId = serviceReqId;
         await apiHelper.createComplexSurvey(cmplxSurveyData['SimpleSurveyLongFeedback_DRDMV-18117_1']);
-        await utilGrid.searchAndOpenHyperlink(caseDisplayId); 
+        await utilGrid.searchAndOpenHyperlink(caseDisplayId);
         await activityTabPage.addActivityNote("hello");
         await activityTabPage.clickOnPostButton();
         await activityTabPage.clickOnFilterButton();

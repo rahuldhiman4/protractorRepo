@@ -83,16 +83,16 @@ class RelatedCasePage {
     async getRelatedCaseSummary(caseId: string): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedCases)));
         let allCasesNum: number = await $$(this.selectors.allRelatedCases).count();
-        let caseStatus: string;
+        let caseSummary: string;
         for (let i = 0; i < allCasesNum; i++) {
             let cases = await $$(this.selectors.allRelatedCases).get(i);
             let nm: string = await cases.$(this.selectors.caseId).getText();
             if (nm == caseId) {
-                caseStatus = await cases.$(this.selectors.summary).getText();
+                caseSummary = await cases.$(this.selectors.summary).getText();
                 break;
             }
         }
-        return caseStatus;
+        return caseSummary;
     }
 
     async getRelatedCaseAssignee(caseId: string): Promise<string> {
