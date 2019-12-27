@@ -38,7 +38,10 @@ class ActivityTabPage {
         viewSurveyBtn: '.dwp_survey .d-button_link',
         dwpQuestions: '.dwp_question',
         dwpAnswers: '.dwp_answer',
-        closeButton: '.modal-dialog button'
+        closeButton: '.modal-dialog button',
+        dwpIcon: '.dwp_survey .log-item__icon',
+        dwpFeedback: '.rx-content.dwp-comment',
+        logItems: '.log-item__body'
     }
 
     async removeFilterList(): Promise<void> {
@@ -236,10 +239,10 @@ class ActivityTabPage {
     }
 
     async isTextPresentInActivityLog(caseActivityLogText: string): Promise<boolean> {
-        try{
+        try {
             return await element(by.cssContainingText(this.selectors.activityLog, caseActivityLogText)).isDisplayed();
         }
-        catch(e){
+        catch (e) {
             return false;
         }
     }
@@ -316,6 +319,10 @@ class ActivityTabPage {
         await $(this.selectors.viewSurveyBtn).click();
     }
 
+    async isViewSurveyInformationLinkPresent(): Promise<boolean> {
+        return await $(this.selectors.viewSurveyBtn).isPresent();
+    }
+
     async getAllSurveyTextOnActivityTab(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.dwpSurveyText)));
         let allText: number = await $$(this.selectors.dwpSurveyText).count();
@@ -327,33 +334,56 @@ class ActivityTabPage {
         return dwpActivityText;
     }
 
-    async getSurveyQuestionTextOnSurveyInfo(index:number): Promise<string>{
-        let question = $$(this.selectors.dwpQuestions).get(index-1);
+    async getRatingTextOnActivityTab(): Promise<string> {
+        let surveyXpath = await $$(this.selectors.dwpSurveyText).get(0);
+        await browser.wait(this.EC.visibilityOf(surveyXpath));
+        return surveyXpath.getText();
+    }
+
+
+    async getSurveyQuestionTextOnSurveyInfo(index: number): Promise<string> {
+        let question = $$(this.selectors.dwpQuestions).get(index - 1);
         await browser.wait(this.EC.visibilityOf(question));
         return await question.getText();
     }
 
-    async getSurveyAnswerTextOnSurveyInfo(index:number): Promise<string>{
-        let answer = $$(this.selectors.dwpAnswers).get(index-1);
+    async getSurveyAnswerTextOnSurveyInfo(index: number): Promise<string> {
+        let answer = $$(this.selectors.dwpAnswers).get(index - 1);
         await browser.wait(this.EC.visibilityOf(answer));
         return await answer.getText();
     }
 
-    async closeSurveyInformation(): Promise<void>{
+    async closeSurveyInformation(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         await $(this.selectors.closeButton).click();
         await browser.wait(this.EC.invisibilityOf($('.modal-dialog')));
     }
 
-    async getComplexSurveyModalTitle():Promise<string>{
+    async getComplexSurveyModalTitle(): Promise<string> {
         await browser.wait(this.EC.elementToBeClickable($('.modal-title')));
         return await $('.modal-title').getText();
     }
 
-    async getRatingText(): Promise<string>{
+    async getRatingText(): Promise<string> {
         await browser.wait(this.EC.elementToBeClickable($('.rating')));
         return await $('.rating').getText();
     }
+
+    async getDWPIconClassAttribute(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.dwpIcon)));
+        return await $(this.selectors.dwpIcon).getAttribute("class");
+    }
+
+    async getDWPFeedback(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.dwpFeedback)));
+        return await $(this.selectors.dwpFeedback).getText();
+    }
+
+    async isOnlySurveyRecordFiltered(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.logItems)));
+        return await $$(this.selectors.logItems).count() === 1;
+    }
+
 }
 
 export default new ActivityTabPage();

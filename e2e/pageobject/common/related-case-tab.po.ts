@@ -9,6 +9,7 @@ class RelatedCasePage {
         modifiedDate: ' .case-summary__meta-data__modified-date',
         relationship: ' .case-relationship .field__value',
         status: ' .status .field__value',
+        summary: ' .case-summary__name-adhoc__name',
         assignee: ' .assignee__field a',
         caseSummary: ' .case-summary__name-adhoc a',
         removeCaseButton: ' .close.close-button',
@@ -73,6 +74,21 @@ class RelatedCasePage {
             let nm: string = await person.$(this.selectors.caseId).getText();
             if (nm == caseId) {
                 caseStatus = await person.$(this.selectors.status).getText();
+                break;
+            }
+        }
+        return caseStatus;
+    }
+
+    async getRelatedCaseSummary(caseId: string): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedCases)));
+        let allCasesNum: number = await $$(this.selectors.allRelatedCases).count();
+        let caseStatus: string;
+        for (let i = 0; i < allCasesNum; i++) {
+            let cases = await $$(this.selectors.allRelatedCases).get(i);
+            let nm: string = await cases.$(this.selectors.caseId).getText();
+            if (nm == caseId) {
+                caseStatus = await cases.$(this.selectors.summary).getText();
                 break;
             }
         }
