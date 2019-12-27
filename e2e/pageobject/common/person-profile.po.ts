@@ -1,4 +1,4 @@
-import {$$, $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from "../../utils/util.grid";
 
 class PersonProfilePage {
