@@ -95,7 +95,7 @@ describe('Document Library', () => {
     })
 
 //kgaikwad
-    fit('DRDMV-13075,DRDMV-13038 : Verify document can be publish And Verify Search on Document Managment Console ', async () => {
+    it('DRDMV-13075,DRDMV-13038 : Verify document can be publish And Verify Search on Document Managment Console ', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
