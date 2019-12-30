@@ -35,12 +35,12 @@ class EditDocumentLibraryPage {
         addSupportDepartmentAddButton: '.ac-support-department-add',
         addSupportGroup: '.ac-support-group-field button',
         addSupportGroupAddButton: '.flex-item .ac-support-group-add',
-        
+
     }
-    
+
     async isStatusDropDownvalueMatches(dropDownValues: string[]): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.cancelButton)));
-       return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusGuid, dropDownValues)
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusGuid, dropDownValues)
     }
 
     async getDeleteWarningMsgText(message: string): Promise<string> {
@@ -106,7 +106,7 @@ class EditDocumentLibraryPage {
         await browser.wait(this.EC.visibilityOf($(this.selectors.department)));
         return await $(this.selectors.department).getAttribute('disabled') == 'true';
     }
-    
+
     async isOwnerGroupDropDownDisabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.ownerGroup)));
         return await $(this.selectors.ownerGroup).getAttribute('disabled') == 'true';
@@ -208,12 +208,7 @@ class EditDocumentLibraryPage {
         return await $(this.selectors.addSupportGroupAddButton).getAttribute('disabled') == 'true';
     }
 
-
-
-
-
-
-       async isDeleteButtonDisplayed(): Promise<boolean> {
+    async isDeleteButtonDisplayed(): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         return await $(this.selectors.deleteButton).isDisplayed();
     }
