@@ -11,6 +11,9 @@ import relatedCasePage from '../../pageobject/common/related-case-tab.po';
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import utilCommon from '../../utils/util.common';
 import gridUtil from '../../utils/util.grid';
+import apiHelper from '../../api/api.helper';
+import utilGrid from '../../utils/util.grid';
+import editCasePo from '../../pageobject/case/edit-case.po';
 
 describe('Case And Employee Relationship', () => {
     beforeAll(async () => {
@@ -186,5 +189,46 @@ describe('Case And Employee Relationship', () => {
         await gridUtil.searchAndOpenHyperlink(caseId2);
         await caseEditPage.navigateToRelatedCasesTab();
         expect(await relatedCasePage.isCasePresent(caseId3)).toBeTruthy();
+    });
+
+    //asahitya
+    it('DRDMV-16243: Check details shown for Employees on Related People tab', async () => {
+        await apiHelper.apiLogin("qtao");
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['caseData_DRDMV16243']);
+        let caseDisplayId = response.displayId;
+        await navigationPage.gotoCaseConsole();
+        await utilGrid.searchAndOpenHyperlink(caseDisplayId);
+        await editCasePo.navigateToRelatedPersonsTab();
+        await relatedTabPage.addRelatedPerson();
+        await addRelatedPopupPage.addPerson('Qianru Tao', 'Inspector');
+        await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
+        expect(await relatedTabPage.getRelatedPersonCompanyName('Qianru Tao')).toBe("Petramco", "Related Person Company name does not match");
+        expect(await relatedTabPage.getRelatedPersonPhoneNumber('Qianru Tao')).toBe("+15123431921", "Related Person Phone number does not match");
+        expect(await relatedTabPage.getRelatedPersonEmail('Qianru Tao')).toBe("qtao@petramco.com", "Related Person Email ID does not match");
+        expect(await relatedTabPage.getRelatedPersonRelationship('Qianru Tao')).toBe("Inspector", "Related Person Relationship does not match");
+        expect(await relatedTabPage.getRelatedPersonSite('Qianru Tao')).toBe("Houston\n2101 CityWest Blvd., Houston, Texas, 77042, United States", "Related Person Phone number does not match");
+    });
+
+    //asahitya
+    it('DRDMV-17036: Check details shown for Employees on Related People tab', async () => {
+        await apiHelper.apiLogin("qtao");
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response1 = await apiHelper.createCase(caseData['caseData_DRDMV16243']);
+        let response2 = await apiHelper.createCase(caseData['caseData_DRDMV16243']);
+        let caseDisplayId1 = response1.displayId;
+        let caseDisplayId2 = response2.displayId;
+        await navigationPage.gotoCaseConsole();
+        await utilGrid.searchAndOpenHyperlink(caseDisplayId1);
+        await editCasePo.navigateToRelatedCasesTab();
+        await relatedCasePage.addRelatedCases();
+        await addRelatedCasespopup.addRelatedCase(caseDisplayId2, "Child");
+        await relatedCasePage.waitUntilNewRelatedCaseAdded(1);
+        expect(await relatedCasePage.getRelatedCaseAssignee(caseDisplayId2)).toBe("Elizabeth Peters");
+        expect(await relatedCasePage.getRelatedCasePriority(caseDisplayId2)).toBe("Low");
+        expect(await relatedCasePage.getRelatedCaseModDate(caseDisplayId2)).toContain("Modified");
+        expect(await relatedCasePage.getRelatedCaseRelation(caseDisplayId2)).toBe("Child");
+        expect(await relatedCasePage.getRelatedCaseStatus(caseDisplayId2)).toBe("Assigned");
+        expect(await relatedCasePage.getRelatedCaseSummary(caseDisplayId2)).toBe("Testing Realated Persons");
     });
 })
