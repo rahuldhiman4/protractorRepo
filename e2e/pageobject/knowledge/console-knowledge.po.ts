@@ -1,5 +1,6 @@
 import { $, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 
 class ConsoleKnowledge {
 
@@ -28,9 +29,14 @@ class ConsoleKnowledge {
         return await element(by.cssContainingText(this.selectors.recommendedArticleLink, input)).isDisplayed();
     }
 
+    async isGridRecordPresent(searchRecord: string): Promise<boolean> {
+        await utilGrid.searchOnGridConsole(searchRecord);
+        return await utilGrid.isGridRecordPresent();
+    }
+
     async getKnowledgeArticleTitle(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeArticleTitle)));
         return await $(this.selectors.knowledgeArticleTitle).getText();
     }
-    }
+}
 export default new ConsoleKnowledge();

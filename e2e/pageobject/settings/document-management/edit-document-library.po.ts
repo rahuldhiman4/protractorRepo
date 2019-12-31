@@ -11,7 +11,7 @@ class EditDocumentLibraryPage {
         status: '[rx-view-component-id="0a8b7179-dd0a-47f9-8515-7c7aceda3118"] .btn-default',
         saveButton: '[rx-view-component-id="8035353f-acb0-4bb5-a5c5-fe7626c01b3e"] button',
         deleteButton: '[rx-view-component-id="6e44c878-cc4a-4de1-8626-c786b5d309d7"] button',
-        cancelButton: 'rx-view-component-id="61a48596-d3c0-462d-825b-4d6172e351b3"',
+        cancelButton: '[rx-view-component-id="61a48596-d3c0-462d-825b-4d6172e351b3"] button',
         deleteDocWarningMsg: '[rx-view-component-id="c652354a-1524-4235-b1db-6b397fc9699a"] span',
         deleteDocWarningMsgYesButton: '[rx-view-component-id="e40ad54c-ad9a-480a-aa63-a8b399caf20e"] button',
         attachmentField: '[rx-view-component-id="8cfc0c35-081a-40cb-ae85-527045bede0c"] button',
@@ -26,7 +26,7 @@ class EditDocumentLibraryPage {
         region: '[rx-view-component-id="836aa6d7-1d77-46b4-b270-50d7d25424ba"] .ui-select-toggle',
         site: '[rx-view-component-id="b22d4dc1-83b5-4b06-a2c0-10e3865fb46e"] .ui-select-toggle',
         tabs: '.rx-tab',
-        supportGroupAccessGroupButton: '.rx-case-access-block .ac-manage-support',
+        supportGroupAccessButton: '.rx-case-access-block .ac-manage-support',
         addCompany: '.flex-item .ac-company-field .dropdown-toggle',
         addCompanyAddButton: '.flex-item .ac-add-company',
         addBussinessUnit: '.ac-business-unit-field .dropdown-toggle',
@@ -35,6 +35,13 @@ class EditDocumentLibraryPage {
         addSupportDepartmentAddButton: '.ac-support-department-add',
         addSupportGroup: '.ac-support-group-field button',
         addSupportGroupAddButton: '.flex-item .ac-support-group-add',
+        attachedItem: '.rx-attachment-view-thumbnail',
+
+    }
+
+    async isStatusDropDownvalueMatches(dropDownValues: string[]): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.cancelButton)));
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusGuid, dropDownValues)
     }
 
     async getDeleteWarningMsgText(message: string): Promise<string> {
@@ -100,7 +107,7 @@ class EditDocumentLibraryPage {
         await browser.wait(this.EC.visibilityOf($(this.selectors.department)));
         return await $(this.selectors.department).getAttribute('disabled') == 'true';
     }
-    
+
     async isOwnerGroupDropDownDisabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.ownerGroup)));
         return await $(this.selectors.ownerGroup).getAttribute('disabled') == 'true';
@@ -156,9 +163,9 @@ class EditDocumentLibraryPage {
         return await $(this.selectors.site).getAttribute('disabled') == 'true';
     }
 
-    async isSupportGroupAccessGroupButtonDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupAccessGroupButton)));
-        return await $(this.selectors.supportGroupAccessGroupButton).getAttribute('disabled') == 'true';
+    async isSupportGroupAccessButtonDisabled(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupAccessButton)));
+        return await $(this.selectors.supportGroupAccessButton).getAttribute('disabled') == 'true';
     }
 
     async isAddCompanyDropDownDisabled(): Promise<boolean> {
@@ -201,9 +208,144 @@ class EditDocumentLibraryPage {
         return await $(this.selectors.addSupportGroupAddButton).getAttribute('disabled') == 'true';
     }
 
-       async isDeleteButtonDisplay(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
+    async isDeleteButtonDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         return await $(this.selectors.deleteButton).isDisplayed();
+    }
+
+    async isSaveButtonDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
+        return await $(this.selectors.saveButton).isDisplayed();
+    }
+
+    async isCancelButtonDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.cancelButton)));
+        return await $(this.selectors.cancelButton).isDisplayed();
+    }
+
+    async isAttachmentFieldDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.attachmentField)));
+        return await $(this.selectors.attachmentField).isDisplayed();
+    }
+
+    async isAttachedItemDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.attachmentField)));
+        return await $(this.selectors.attachmentField).isDisplayed();
+    }
+
+    async isTitleTextBoxDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.titleTextBox)));
+        return await $(this.selectors.titleTextBox).isDisplayed();
+    }
+
+    async isCompanyDropDownDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.company)));
+        return await $(this.selectors.company).isDisplayed();
+    }
+
+    async isBussinessUnitDropDownDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.bussinessUnit)));
+        return await $(this.selectors.bussinessUnit).isDisplayed();
+    }
+
+    async isDepartmentDropDownDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.department)));
+        return await $(this.selectors.department).isDisplayed();
+    }
+
+    async isOwnerGroupDropDownDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerGroup)));
+        return await $(this.selectors.ownerGroup).isDisplayed();
+    }
+
+    async isStatusDropDownDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.status)));
+        return await $(this.selectors.status).isDisplayed();
+    }
+
+    async isShareExternallyToogleButtonDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.shareExternallyToggleButton)));
+        return await $(this.selectors.shareExternallyToggleButton).isDisplayed();
+    }
+
+    async isKeywordsFieldDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.keywords)));
+        return await $(this.selectors.keywords).isDisplayed();
+    }
+
+    async isCategoryTier1Displayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier1)));
+        return await $(this.selectors.categoryTier1).isDisplayed();
+    }
+
+    async isCategoryTier2Displayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier2)));
+        return await $(this.selectors.categoryTier2).isDisplayed();
+    }
+
+    async isCategoryTier3Displayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3)));
+        return await $(this.selectors.categoryTier3).isDisplayed();
+    }
+
+    async isCategoryTier4Displayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier4)));
+        return await $(this.selectors.categoryTier4).isDisplayed();
+    }
+
+    async isRegionDropDownDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.region)));
+        return await $(this.selectors.region).isDisplayed();
+    }
+
+    async isSiteDropDownDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.site)));
+        return await $(this.selectors.site).isDisplayed();
+    }
+
+    async isSupportGroupAccessButtonDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupAccessButton)));
+        return await $(this.selectors.supportGroupAccessButton).isDisplayed();
+    }
+
+    async isAddCompanyDropDownDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.addCompany)));
+        return await $(this.selectors.addCompany).isDisplayed();
+    }
+
+    async isAddCompanyAddButtonDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.addCompanyAddButton)));
+        return await $(this.selectors.addCompanyAddButton).isDisplayed();
+    }
+
+    async isAddBussinessUnitDropDownDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.addBussinessUnit)));
+        return await $(this.selectors.addBussinessUnit).isDisplayed();
+    }
+
+    async isAddBussinessUnitAddButtonDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.addBussinessUnitAddButton)));
+        return await $(this.selectors.addBussinessUnitAddButton).isDisplayed();
+    }
+
+    async isAddSupportDepartmentDropDownDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.addSupportDepartment)));
+        return await $(this.selectors.addSupportDepartment).isDisplayed();
+    }
+
+    async isAddSupportDepartmentAddButtonDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.addSupportDepartmentAddButton)));
+        return await $(this.selectors.addSupportDepartmentAddButton).isDisplayed();
+    }
+
+    async isAddSupportGroupDropDownDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.addSupportGroup)));
+        return await $(this.selectors.addSupportGroup).isDisplayed();
+    }
+
+    async isAddSupportGroupAddButtonDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.addSupportGroupAddButton)));
+        return await $(this.selectors.addSupportGroupAddButton).isDisplayed();
     }
 }
 
