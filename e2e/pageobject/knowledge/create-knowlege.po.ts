@@ -4,6 +4,7 @@ import utilCommon from '../../utils/util.common';
 class CreateKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        createKnowledgeTitle: '[rx-view-component-id="cebb7cbd-0e7b-48a2-9944-c11d3ba255d0"] span',
         knowledgeId: '.d-icon-lightbulb_o',
         backButton: '[rx-view-component-id="88ec72f0-2c65-4640-9455-54b6db3517f2"] button',
         clickOnReferenceTemplate: '[rx-view-component-id="6e402c66-fcdc-464b-b6e7-7e963d9c3a17"] .sectionsName',
@@ -105,6 +106,11 @@ class CreateKnowledgePage {
     async getKnowledgeId(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeId)));
       return  await $(this.selectors.knowledgeId).getText();
+    }
+
+    async getCreateKnowledgeTitle(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.createKnowledgeTitle)));
+        return await $(this.selectors.createKnowledgeTitle).getText();
     }
 }
 

@@ -1,0 +1,7 @@
+{
+    "sampleMenuItem": {
+        "menuItemName": "Test Menu Item name",
+        "menuItemStatus": "Active",
+        "menuType": "Label"
+    }
+}

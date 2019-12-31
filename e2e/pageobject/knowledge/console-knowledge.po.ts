@@ -13,6 +13,8 @@ class ConsoleKnowledge {
         applyFilter: '.rx-search-filter-heading__apply',
         removeFilter: '..d-tag-remove-button',
         tableValue: '.ui-grid-cell-contents',
+        knowledgeArticleTitle: '[rx-view-component-id="11f37569-5ecd-4239-aaa7-075d1874b1d1"] span',
+        searchFilterOptions: '.search-filter__option-item_search',
     }
 
     async searchKnowledgeArticle(input: string): Promise<void> {
@@ -26,10 +28,15 @@ class ConsoleKnowledge {
         await browser.wait(this.EC.visibilityOf($(this.selectors.recommendedArticleLink)));
         return await element(by.cssContainingText(this.selectors.recommendedArticleLink, input)).isDisplayed();
     }
-    
-    async isGridRecordPresent(searchRecord:string): Promise<boolean> {
+
+    async isGridRecordPresent(searchRecord: string): Promise<boolean> {
         await utilGrid.searchOnGridConsole(searchRecord);
         return await utilGrid.isGridRecordPresent();
+    }
+
+    async getKnowledgeArticleTitle(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeArticleTitle)));
+        return await $(this.selectors.knowledgeArticleTitle).getText();
     }
 }
 export default new ConsoleKnowledge();
