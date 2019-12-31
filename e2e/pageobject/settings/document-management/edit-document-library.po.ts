@@ -26,7 +26,7 @@ class EditDocumentLibraryPage {
         region: '[rx-view-component-id="836aa6d7-1d77-46b4-b270-50d7d25424ba"] .ui-select-toggle',
         site: '[rx-view-component-id="b22d4dc1-83b5-4b06-a2c0-10e3865fb46e"] .ui-select-toggle',
         tabs: '.rx-tab',
-        supportGroupAccessGroupButton: '.rx-case-access-block .ac-manage-support',
+        supportGroupAccessButton: '.rx-case-access-block .ac-manage-support',
         addCompany: '.flex-item .ac-company-field .dropdown-toggle',
         addCompanyAddButton: '.flex-item .ac-add-company',
         addBussinessUnit: '.ac-business-unit-field .dropdown-toggle',
@@ -35,6 +35,7 @@ class EditDocumentLibraryPage {
         addSupportDepartmentAddButton: '.ac-support-department-add',
         addSupportGroup: '.ac-support-group-field button',
         addSupportGroupAddButton: '.flex-item .ac-support-group-add',
+        attachedItem: '.rx-attachment-view-thumbnail',
 
     }
 
@@ -114,8 +115,7 @@ class EditDocumentLibraryPage {
 
     async isStatusDropDownDisabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.status)));
-        // return await $(this.selectors.status).getAttribute('aria-disabled') == 'true';
-        return await $(this.selectors.status).isEnabled();
+        return await $(this.selectors.status).getAttribute('aria-disabled') == 'true';
     }
 
     async isShareExternallyToogleButtonDisabled(): Promise<boolean> {
@@ -163,9 +163,9 @@ class EditDocumentLibraryPage {
         return await $(this.selectors.site).getAttribute('disabled') == 'true';
     }
 
-    async isSupportGroupAccessGroupButtonDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupAccessGroupButton)));
-        return await $(this.selectors.supportGroupAccessGroupButton).getAttribute('disabled') == 'true';
+    async isSupportGroupAccessButtonDisabled(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupAccessButton)));
+        return await $(this.selectors.supportGroupAccessButton).getAttribute('disabled') == 'true';
     }
 
     async isAddCompanyDropDownDisabled(): Promise<boolean> {
@@ -224,6 +224,11 @@ class EditDocumentLibraryPage {
     }
 
     async isAttachmentFieldDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.attachmentField)));
+        return await $(this.selectors.attachmentField).isDisplayed();
+    }
+
+    async isAttachedItemDisplayed(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.attachmentField)));
         return await $(this.selectors.attachmentField).isDisplayed();
     }
@@ -298,9 +303,9 @@ class EditDocumentLibraryPage {
         return await $(this.selectors.site).isDisplayed();
     }
 
-    async isSupportGroupAccessGroupButtonDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupAccessGroupButton)));
-        return await $(this.selectors.supportGroupAccessGroupButton).isDisplayed();
+    async isSupportGroupAccessButtonDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupAccessButton)));
+        return await $(this.selectors.supportGroupAccessButton).isDisplayed();
     }
 
     async isAddCompanyDropDownDisplayed(): Promise<boolean> {

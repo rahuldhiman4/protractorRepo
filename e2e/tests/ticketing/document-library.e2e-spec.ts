@@ -6,6 +6,7 @@ import documentLibraryConsolePo from '../../pageobject/settings/document-managem
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
 import utilCommon from '../../utils/util.common';
 import consoleKnowledgePo from '../../pageobject/knowledge/console-knowledge.po';
+import utilGrid from '../../utils/util.grid';
 
 describe('Document Library', () => {
     beforeAll(async () => {
@@ -138,7 +139,7 @@ describe('Document Library', () => {
         expect(await editDocumentLibraryPo.isRegionDropDownDisabled()).toBeTruthy('Region Drop Down field is enabled');
         expect(await editDocumentLibraryPo.isSiteDropDownDisabled()).toBeTruthy('Site Drop Down field is enabled');
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
-        expect(await editDocumentLibraryPo.isSupportGroupAccessGroupButtonDisabled()).toBeTruthy('Support Group Access Group Button is enabled');
+        expect(await editDocumentLibraryPo.isSupportGroupAccessButtonDisabled()).toBeTruthy('Support Group Access Group Button is enabled');
         expect(await editDocumentLibraryPo.isAddCompanyDropDownDisabled()).toBeTruthy('Add Compnay Drop Down is enabled');
         expect(await editDocumentLibraryPo.isAddCompanyAddButtonDisabled()).toBeTruthy('Add Company Add Button is enabled');
         expect(await editDocumentLibraryPo.isAddBussinessUnitDropDownDisabled()).toBeTruthy('Add Bussiness Unit Drop Down is enabled');
@@ -173,6 +174,7 @@ describe('Document Library', () => {
         expect(await editDocumentLibraryPo.isCancelButtonDisplayed()).toBeTruthy('Cancel button is not displayed');
 
         expect(await editDocumentLibraryPo.isAttachmentFieldDisplayed()).toBeTruthy('Attachment Field is not displayed');
+        expect(await editDocumentLibraryPo.isAttachedItemDisplayed()).toBeTruthy('Attached Item is not displayed');
         expect(await editDocumentLibraryPo.isTitleTextBoxDisplayed()).toBeTruthy('Title Text Box is not displayed');
         expect(await editDocumentLibraryPo.isCompanyDropDownDisplayed()).toBeTruthy('Company Drop Down is not displayed');
         expect(await editDocumentLibraryPo.isBussinessUnitDropDownDisplayed()).toBeTruthy('Bussiness Unit Drop Down is not displayed');
@@ -190,7 +192,7 @@ describe('Document Library', () => {
         expect(await editDocumentLibraryPo.isSiteDropDownDisplayed()).toBeTruthy('Site Drop Down is not displayed');
         
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
-        expect(await editDocumentLibraryPo.isSupportGroupAccessGroupButtonDisplayed()).toBeTruthy('Support Group Access Group Button is not displayed');
+        expect(await editDocumentLibraryPo.isSupportGroupAccessButtonDisplayed()).toBeTruthy('Support Group Access Group Button is not displayed');
         expect(await editDocumentLibraryPo.isAddCompanyDropDownDisplayed()).toBeTruthy('Add Company Drop Down is not displayed');
         expect(await editDocumentLibraryPo.isAddCompanyAddButtonDisplayed()).toBeTruthy('Add Company Add Button is not displayed');
         expect(await editDocumentLibraryPo.isAddBussinessUnitDropDownDisplayed()).toBeTruthy('Add Bussiness Unit Drop Down is not displayed');
@@ -205,16 +207,15 @@ describe('Document Library', () => {
         let column: string[] = ["Author"];
         await documentLibraryConsolePo.addColumnOnGrid(column);
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
-        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Author')).toBe('Qadim Katawazi'),'Author is not displayed';
+        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Author')).toBe('Qadim Katawazi','Author is not displayed') ;
         await documentLibraryConsolePo.removeColumnOnGrid(column);
     })
 
      //kgaikwad
-     it('DRDMV-13085: Verify document created will not listed in Knowledge articles grid', async () => {
+     fit('DRDMV-13085: Verify document created will not listed in Knowledge articles grid', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
-        await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
         await utilCommon.waitUntilSpinnerToHide();
         await createDocumentLibraryPo.openAddNewDocumentBlade();
@@ -225,6 +226,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         await navigationPage.gotoKnowledgeConsole();
-        expect(await consoleKnowledgePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Record is preset on knowledge article grid');
+        await utilGrid.clearFilter();
+        expect(await consoleKnowledgePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Record is present on knowledge article grid');
     })
 })
