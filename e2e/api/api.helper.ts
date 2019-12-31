@@ -10,7 +10,7 @@ import { CaseTemplate, MenuItemStatus, TaskTemplate, NotificationType } from "..
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
 import { IFlowset } from '../data/api/interface/flowset.interface.api';
-import { IMenuItem } from '../data/api/interface/menu.items.interface.api';
+import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
 import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
 axios.defaults.baseURL = browser.baseUrl;
@@ -497,12 +497,17 @@ class ApiHelper {
         console.log('Create Notes Template API Status =============>', newTemplate.status);
         return newTemplate.status == 201;
     }
-    
-    async createNewFlowset(data: IFlowset): Promise<IIDs> {
+
+    async createNewFlowset(data: IFlowset): Promise<IIDs> {
         let flowsetFile = await require('../data/api/case/flowset.api.json');
         let flowsetData = await flowsetFile.FlowsetData;
         let companyGuid = await coreApi.getOrganizationGuid(data.company);
-        flowsetData.fieldInstances[1000000001].value = companyGuid;
+        if (data.company == '- Global -') {
+            flowsetData.fieldInstances[1000000001].value = '5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330';
+        }
+        else {
+            flowsetData.fieldInstances[1000000001].value = companyGuid;
+        }
         flowsetData.fieldInstances[450000002].value = data.flowsetName;
         flowsetData.fieldInstances[8].value = data.description;
         flowsetData.fieldInstances[7].value = data.flowsetStatus;
@@ -510,7 +515,7 @@ class ApiHelper {
         const flowsetDetails = await axios.get(
             flowset.headers.location
         );
-        console.log('New Case Details API Status =============>', flowsetDetails.status);
+        console.log('New Case Details API Status =============>', flowsetDetails.status);
 
         return {
             id: flowsetDetails.data.id,

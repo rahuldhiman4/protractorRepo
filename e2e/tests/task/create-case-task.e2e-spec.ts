@@ -13,6 +13,7 @@ import editTask from "../../pageobject/task/edit-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 
 describe('Create Case Task', () => {
     beforeAll(async () => {
@@ -498,7 +499,7 @@ describe('Create Case Task', () => {
         let automationTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
         let createCase = 'Create Case task' + Math.floor(Math.random() * 1000000);
         let processName = 'process' + Math.floor(Math.random() * 1000000);
-        let status:string []=["Completed","Canceled","Closed"];
+        let status: string[] = ["Completed", "Canceled", "Closed"];
 
         var templateData4 = {
             "templateName": automationTaskTemplate,
@@ -542,4 +543,50 @@ describe('Create Case Task', () => {
         await expect(viewTask.allTaskOptionsPresent(status)).toBeTruthy("Staus Not Found");
         await viewTask.clickOnCancelStatus();
     }, 120 * 1000);
+
+    it('DRDMV-7121: [Automatic Task] - Task Template Console: Verify Task Type column, filter ', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        var templateData = {
+            "templateName": `manualTaskTemplateActive ${randomStr}`,
+            "templateSummary": `manualTaskTemplateActive ${randomStr}`,
+            "templateStatus": "Active",
+        }
+        var templateData4 = {
+            "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": `Case Process 1 ${randomStr}`,
+        }
+
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createAutomatedTaskTemplate(templateData4);
+        await apiHelper.createManualTaskTemplate(templateData);
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await utilGrid.clearFilter();
+        await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Manual');
+        await expect(await selectTaskTemplate.isTaskTypeFilterValue('Manual')).toBeTruthy();
+        await utilGrid.clearFilter();
+        await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Automated');
+        await utilCommon.waitUntilSpinnerToHide();
+        await browser.sleep(2000);
+        await expect(await selectTaskTemplate.isTaskTypeFilterValue('Automated')).toBeTruthy();
+    });
+
+
+    it('DRDMV-3766: [Task Template Console] Task Template Console verification', async () => {
+        await apiHelper.apiLogin('qkatawazi');
+        let addColoumn: string[] = ['Label'];
+        let allColoumn: string[] = ['Template Name', 'Template Status', 'Task Type', 'Task Category Tier 1', 'Task Category Tier 2', 'Assignee', 'Support Group', 'Modified Date', 'Task Company'];
+        let updateAllColoumn: string[] = ['Template Name', 'Template Status', 'Task Type', 'Task Category Tier 1', 'Task Category Tier 2', 'Assignee', 'Support Group', 'Modified Date', 'Task Company', 'Label'];
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await expect(selectTaskTemplate.isAllColoumnTitleDisplayed(allColoumn)).toBeTruthy("All Coloumn is not present");
+        await selectTaskTemplate.addColumn(addColoumn);
+        await expect(selectTaskTemplate.isAllColoumnTitleDisplayed(updateAllColoumn)).toBeTruthy("Updated All Coloumn is not present");
+        await selectTaskTemplate.removeColumn(addColoumn);
+
+    });
 });

@@ -14,6 +14,7 @@ class CaseConsolePage {
         applyFilter: '.rx-search-filter-heading__apply',
         removeFilter: '..d-tag-remove-button',
         tableValue: '.ui-grid-cell-contents',
+        caseTitle: '[rx-view-component-id="72f24e08-7a88-4479-8eb1-d254dde49c6c"] span',
     }
 
     async setCaseSearchBoxValue(input: string): Promise<void> {
@@ -29,6 +30,11 @@ class CaseConsolePage {
     async isCaseIdHyperlinked(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.recommendedCaseLink)));
         return await $$(this.selectors.recommendedCaseLink).first().isDisplayed();
+    }
+
+    async getCaseTitle(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.caseTitle)));
+        return await $(this.selectors.caseTitle).getText();
     }
 
     async clickFirstCheckBoxInCaseSearchGrid(): Promise<void> {

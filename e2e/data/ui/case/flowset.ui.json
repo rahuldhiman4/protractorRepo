@@ -4,5 +4,11 @@
         "flowsetStatus": 10,
         "company": "Petramco",
         "description": "test description"
+    },
+    "flowsetGlobalFields" : {
+        "flowsetName": "Test Flowset Global name",
+        "flowsetStatus": 10,
+        "company": "- Global -",
+        "description": "test description"
     }
 }
