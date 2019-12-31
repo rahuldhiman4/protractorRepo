@@ -6,7 +6,6 @@ import documentLibraryConsolePo from '../../pageobject/settings/document-managem
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
 import utilCommon from '../../utils/util.common';
 import consoleKnowledgePo from '../../pageobject/knowledge/console-knowledge.po';
-import utilGrid from '../../utils/util.grid';
 
 describe('Document Library', () => {
     beforeAll(async () => {
@@ -212,12 +211,11 @@ describe('Document Library', () => {
     })
 
      //kgaikwad
-     fit('DRDMV-13085: Verify document created will not listed in Knowledge articles grid', async () => {
+     it('DRDMV-13085: Verify document created will not listed in Knowledge articles grid', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await utilCommon.waitUntilSpinnerToHide();
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
