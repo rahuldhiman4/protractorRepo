@@ -1,4 +1,4 @@
-import { protractor, ProtractorExpectedConditions, browser } from "protractor";
+import {$,element, by, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilCommon from '../../../utils/util.common';
 import utilGrid from '../../../utils/util.grid';
 
@@ -7,6 +7,7 @@ class DocumentLibraryPage {
     selectors = {
         addDocumentButton: '[rx-view-component-id="c2df3218-8ef7-402c-bdc2-721e891346bb"] button',
         gridGuid: '5d1f94a9-693e-4dbf-896f-3b9689f95a42',
+        documentLibraryText: '.rx-admin-settings-tree .tree-label',
     }
 
     async isGridRecordPresent(searchRecord:string): Promise<boolean> {
@@ -49,6 +50,10 @@ class DocumentLibraryPage {
     async searchAndOpenDocumentLibrary(value: string): Promise<void> {
         await utilGrid.searchAndOpenHyperlink(value);
         await utilCommon.waitUntilSpinnerToHide();
+    }
+
+    async isDocumentLibraryLinkTextPresent(treeText: string): Promise<boolean> {
+        return await element(by.cssContainingText((this.selectors.documentLibraryText), treeText)).isDisplayed();
     }
 
 

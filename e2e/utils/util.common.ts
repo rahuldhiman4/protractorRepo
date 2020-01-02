@@ -12,6 +12,12 @@ export class Util {
         closeTipMsg: '.rx-growl-close',
         dropDownChoice: '.ui-select__rx-choice',
         warningMsgText: '.d-modal__content-item',
+        configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
+    }
+
+    async isConfigurationOptionsErrorMessageDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.configurationOptionsErrorMessage)));
+        return await $(this.selectors.configurationOptionsErrorMessage).isDisplayed();
     }
 
     async getWarningMessagegText(): Promise<string> {
