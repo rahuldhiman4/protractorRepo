@@ -231,13 +231,19 @@ describe('Document Library', () => {
 
     //kgaikwad
     it('DRDMV-13083: Verify Knowledge Users will not be able to view document Managment link', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await navigationPage.signOut();
-        await loginPage.login('kayo');
-        await navigationPage.gotoSettingsPage();
-        expect(await utilCommon.isConfigurationOptionsErrorMessageDisplayed()).toBeTruthy('Document Management Link text is not displayed setting page');
+        try {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.signOut();
+            await loginPage.login('kayo');
+            await navigationPage.gotoSettingsPage();
+            expect(await utilCommon.isConfigurationOptionMessageDisplayed('Configuration options not created for these settings.')).toBeTruthy('Document Management Link text is not displayed setting page');
+        } catch (e) {
+            console.log(e);
+            await expect(true).toBeFalsy();
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
     })
-
-
 })

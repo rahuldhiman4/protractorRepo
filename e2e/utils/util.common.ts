@@ -15,9 +15,10 @@ export class Util {
         configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
     }
 
-    async isConfigurationOptionsErrorMessageDisplayed(): Promise<boolean> {
+    async isConfigurationOptionMessageDisplayed(errorMessage): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.configurationOptionsErrorMessage)));
-        return await $(this.selectors.configurationOptionsErrorMessage).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.configurationOptionsErrorMessage, errorMessage)).isDisplayed();
+
     }
 
     async getWarningMessagegText(): Promise<string> {
