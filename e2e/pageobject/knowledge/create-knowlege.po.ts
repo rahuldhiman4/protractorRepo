@@ -18,7 +18,16 @@ class CreateKnowledgePage {
         knowledgeMetadataSection: '[rx-view-component-id="830947fd-773e-4a70-860a-98893c9b36b4"] .d-textfield',
         knowledgeSetRequiedtext: '[name="knowledgeSet"]',
         authorRequiredText: '[rx-view-component-id="cbf446b0-c8f6-433e-9a8e-b9a30f7ab79c"] .d-textfield__input',
+        attachmentField: '[rx-view-component-id="bf6900ad-d67a-4705-b907-3caa50b640c7"] .d-icon-paperclip'
     }
+
+    async isAttachDocumentBladeDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentField)));
+        let attartibute= await $(this.selectors.attachmentField).getAttribute('ng-disabled');
+        if(attartibute=='openDocumentLibrary()'){return true;}
+        if(attartibute=='showFileUploadDialog()'){return false;}
+    }
+
 
     async clickOnTemplate(TemplateName: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.clickOnReferenceTemplate)));

@@ -2,11 +2,14 @@ import { browser } from "protractor";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import consoleKnowledgePo from '../../pageobject/knowledge/console-knowledge.po';
+import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
+import informationTabPo from '../../pageobject/knowledge/information-tab.po';
 import createDocumentLibraryPo from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryConsolePo from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+
 
 describe('Document Library', () => {
     beforeAll(async () => {
@@ -245,5 +248,37 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
+    })
+
+    //kgaikwad
+    it('DRDMV-13079: Verify document will not appear in knowledge article searches	', async () => {
+        let filePath = '../../../data/ui/attachment/demo.txt';
+        let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await utilCommon.waitUntilSpinnerToHide();
+        await createDocumentLibraryPo.openAddNewDocumentBlade();
+        await createDocumentLibraryPo.addAttachment(filePath);
+        await createDocumentLibraryPo.setTitle(titleRandVal);
+        await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+        await createDocumentLibraryPo.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
+
+        await navigationPage.gotoCreateKnowledge();
+        await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
+        await createKnowlegePo.clickOnTemplate('Reference');
+        await createKnowlegePo.clickOnUseSelectedTemplateButton();
+        await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16754');
+        await createKnowlegePo.selectKnowledgeSet('HR');
+        expect(await createKnowlegePo.isAttachDocumentBladeDisplayed()).toBeFalsy('Attach Document Blade is displayed');
+        await createKnowlegePo.clickOnSaveKnowledgeButton();
+        await createKnowlegePo.clickOnviewArticleLinkButton();
+
+        // // View Knowledege Page
+        await utilCommon.switchToNewWidnow(1);
+        await informationTabPo.clickOnEditButton();
+        expect(await informationTabPo.isAttachDocumentBladeDisplayed()).toBeFalsy('Attach Document Blade is displayed');
+
     })
 })
