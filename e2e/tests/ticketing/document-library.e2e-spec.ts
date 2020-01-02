@@ -229,12 +229,15 @@ describe('Document Library', () => {
         expect(await consoleKnowledgePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Record is present on knowledge article grid');
     })
 
+    //kgaikwad
     it('DRDMV-13083: Verify Knowledge Users will not be able to view document Managment link', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
         await navigationPage.signOut();
         await loginPage.login('kayo');
         await navigationPage.gotoSettingsPage();
         expect(await utilCommon.isConfigurationOptionsErrorMessageDisplayed()).toBeTruthy('Document Management Link text is not displayed setting page');
     })
-    
+
 
 })
