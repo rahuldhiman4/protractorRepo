@@ -29,18 +29,19 @@ export class GridOperation {
     async areColumnHeaderMatches(guid: string, columnHeader: string[]): Promise<boolean> {
         let arr: string[] = [];
         for (let i: number = 0; i < columnHeader.length; i++) {
-            var customxpath = `//*[@rx-view-component-id="${guid}"]//span[@class="ui-grid-header-cell-label" and text()="${columnHeader[i]}"]`;
-            let columns = await element(by.xpath(customxpath)).getText();
+            var customxpath = `(//*[@rx-view-component-id="${guid}"]//span[@class="ui-grid-header-cell-label"])[${i + 1}]`;
+            let columns = await element(by.xpath(customxpath)).getAttribute("innerText");
             arr[i] = columns;
         }
-        arr = arr.sort();
-        columnHeader = columnHeader.sort();
+        arr.sort();
+        columnHeader.sort();
         return arr.length === columnHeader.length && arr.every(
             (value, index) => (value === columnHeader[index])
         );
     }
 
     async isGridRecordPresent(): Promise<boolean> {
+         browser.sleep(5000);
         return await $(this.selectors.gridRecordPresent).isPresent();
     }
 
@@ -48,12 +49,12 @@ export class GridOperation {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addColumnIcon)));
         await ($(this.selectors.addColumnIcon)).click();
         for (let i: number = 0; i < columnName.length; i++) {
-            var customxpath = `//*[@rx-view-component-id="${guid}"]//li[@class="d-dropdown__menu-options-item"]//a[text()="${columnName[i]}"][1]`;
+            var customxpath = `(//*[@rx-view-component-id="${guid}"]//li[contains(@class,"d-dropdown__menu-options-item")]//a[text()="${columnName[i]}"])[1]`;
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customxpath))));
             let attrbuteVal = await element(by.xpath(customxpath)).getAttribute('aria-checked');
             if (attrbuteVal == 'false') {
                 await element(by.xpath(customxpath)).click();
-            } else { console.log('Column already selected'); }
+            } else { console.log('Column: ', columnName[i], ' already selected'); }
         }
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addColumnIcon)));
         await ($(this.selectors.addColumnIcon)).click();
@@ -64,7 +65,7 @@ export class GridOperation {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addColumnIcon)));
         await ($(this.selectors.addColumnIcon)).click();
         for (let i: number = 0; i < columnName.length; i++) {
-            var customxpath = `//*[@rx-view-component-id="${guid}"]//li[@class="d-dropdown__menu-options-item"]//a[text()="${columnName[i]}"][1]`;
+            var customxpath = `(//*[@rx-view-component-id="${guid}"]//li[contains(@class,"d-dropdown__menu-options-item")]//a[text()="${columnName[i]}"])[1]`;
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customxpath))));
             let attrbuteVal = await element(by.xpath(customxpath)).getAttribute('aria-checked');
             if (attrbuteVal == 'true') {
@@ -158,6 +159,7 @@ export class GridOperation {
                 await browser.wait(this.EC.elementToBeClickable($(this.selectors.clearFilterButton)));
                 await $(this.selectors.clearFilterButton).click();
                 await browser.sleep(1000);
+                await utilCommon.waitUntilSpinnerToHide();
             }
         }
         catch (Ex) {
@@ -322,7 +324,6 @@ export class GridOperation {
         await arr.sort(function (a, b) {
             return a.localeCompare(b);
         })
-
         if (sortType == "descending") {
             arr.reverse();
         }

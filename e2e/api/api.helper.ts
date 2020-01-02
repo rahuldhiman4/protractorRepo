@@ -6,13 +6,13 @@ import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.ap
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
 import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
-import { CaseTemplate, MenuItemStatus, TaskTemplate } from "../api/constant.api";
+import { CaseTemplate, MenuItemStatus, TaskTemplate, NotificationType } from "../api/constant.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
 import { IFlowset } from '../data/api/interface/flowset.interface.api';
-import { IMenuItem } from '../data/api/interface/menu.items.interface.api';
+import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
-
+import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -436,6 +436,24 @@ class ApiHelper {
         apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
     }
 
+    async createEmailTemplate(data: IEmailTemplate): Promise<boolean> {
+        let emailTemplateFile = await require('../data/api/email/email.template.api.json');
+        let templateData = await emailTemplateFile.EmailTemplateData;
+        let companyGuid = await coreApi.getOrganizationGuid(data.Company);
+        templateData.processInputValues["Company"] = companyGuid;
+        templateData.processInputValues["TemplateName"] = data.TemplateName;
+        templateData.processInputValues["Status"] = data.Status;
+        templateData.processInputValues["Description"] = data.Description;
+        templateData.processInputValues["EmailMessageSubject"] = data.EmailMessageSubject;
+        templateData.processInputValues["EmailMessageBody"] = data.EmailMessageBody;
+        templateData.processInputValues["Module"] = "Cases";
+        templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.case-lib:Case";
+        const newTemplate = await coreApi.createEmailOrNotesTemplate(templateData);
+        console.log('Create Email Template API Status =============>', newTemplate.status);
+        return newTemplate.status == 201;
+    }
+
+
     async createNotesTemplate(module: string, data: INotesTemplate): Promise<boolean> {
         let notesTemplateFile = await require('../data/api/social/notes.template.api.json');
         let templateData = await notesTemplateFile.NotesTemplateData;
@@ -475,16 +493,21 @@ class ApiHelper {
                 break;
             }
         }
-        const newTemplate = await coreApi.createNotesTemplate(templateData);
+        const newTemplate = await coreApi.createEmailOrNotesTemplate(templateData);
         console.log('Create Notes Template API Status =============>', newTemplate.status);
         return newTemplate.status == 201;
     }
 
-    async createNewFlowset(data: IFlowset): Promise<IIDs> {
+    async createNewFlowset(data: IFlowset): Promise<IIDs> {
         let flowsetFile = await require('../data/api/case/flowset.api.json');
         let flowsetData = await flowsetFile.FlowsetData;
         let companyGuid = await coreApi.getOrganizationGuid(data.company);
-        flowsetData.fieldInstances[1000000001].value = companyGuid;
+        if (data.company == '- Global -') {
+            flowsetData.fieldInstances[1000000001].value = '5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330';
+        }
+        else {
+            flowsetData.fieldInstances[1000000001].value = companyGuid;
+        }
         flowsetData.fieldInstances[450000002].value = data.flowsetName;
         flowsetData.fieldInstances[8].value = data.description;
         flowsetData.fieldInstances[7].value = data.flowsetStatus;
@@ -492,7 +515,7 @@ class ApiHelper {
         const flowsetDetails = await axios.get(
             flowset.headers.location
         );
-        console.log('New Case Details API Status =============>', flowsetDetails.status);
+        console.log('New Case Details API Status =============>', flowsetDetails.status);
 
         return {
             id: flowsetDetails.data.id,
@@ -500,28 +523,51 @@ class ApiHelper {
         };
     }
 
-    async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
+async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
         let randomStr = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         console.log(data);
         let menuItemFile = await require('../data/api/shared-services/menuItemConfiguration.api.json');
-        console.log('New Menu Item API Status =============>');
+        console.log('New Menu Item API Status =============>');
         let menuItemData = await menuItemFile.MenuItemConfiguration;
         menuItemData.fieldInstances[450000153].value = data.menuType;
         menuItemData.fieldInstances[450000152].value = data.menuItemName;
         menuItemData.fieldInstances[7].value = MenuItemStatus[data.menuItemStatus];
         menuItemData.fieldInstances[450000154].value = randomStr;
-        console.log('New Menu Item Data =============>' + menuItemData);
+        console.log('New Menu Item Data =============>' + menuItemData);
         const menuItem = await coreApi.createRecordInstance(menuItemData);
         const menuItemDetails = await axios.get(
             menuItem.headers.location
         );
-        console.log('New Menu Item API Status =============>', menuItemDetails.status);
+        console.log('New Menu Item API Status =============>', menuItemDetails.status);
 
         return {
             id: menuItemDetails.data.id,
             displayId: menuItemDetails.data.displayId
         };
     }
+
+    async createComplexSurvey(data: any): Promise<void> {
+        const complexSurvey = await axios.post(
+            "api/com.bmc.dsm.catalog-lib/surveys",
+            data
+        );
+        console.log("Complex Survey status ==>>> " + complexSurvey.status);
+    }
+
+    async setDefaultNotificationForUser(user:string, notificationType: string): Promise<void>{
+        let personGuid:string = await coreApi.getPersonGuid(user);
+        let notificationTypeFile = await require('../data/api/foundation/default.notification.user.api.json');
+        let defaultNotificationData = await notificationTypeFile.NotificationSet;
+        defaultNotificationData.id = personGuid;
+        defaultNotificationData.fieldInstances[430000003].value = NotificationType[notificationType];
+        let uri:string = "api/rx/application/record/recordinstance/com.bmc.arsys.rx.foundation%3APerson/" + personGuid; 
+        const notificationSetting = await axios.put(
+            uri,
+            defaultNotificationData
+        );
+        console.log("Alert status ==>>> " + notificationSetting.status);
+    }
+
 
 }
 
