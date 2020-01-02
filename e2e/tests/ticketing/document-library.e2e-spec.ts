@@ -1,11 +1,11 @@
 import { browser } from "protractor";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import consoleKnowledgePo from '../../pageobject/knowledge/console-knowledge.po';
 import createDocumentLibraryPo from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryConsolePo from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
 import utilCommon from '../../utils/util.common';
-import consoleKnowledgePo from '../../pageobject/knowledge/console-knowledge.po';
 import utilGrid from '../../utils/util.grid';
 
 describe('Document Library', () => {
@@ -54,7 +54,7 @@ describe('Document Library', () => {
         expect(await utilCommon.getPopUpMessage()).toBe('Document deleted successfully.');
         await utilCommon.waitUntilPopUpDisappear();
         expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Grid Record displayed which should not be');
-    },120*1000)
+    }, 120 * 1000)
 
     //kgaikwad
     it('DRDMV-13045: Verify Delete button on document', async () => {
@@ -71,20 +71,20 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
-        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'),'status is not in draft status';
+        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'status is not in draft status';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled).toBeTruthy('Delete Button is not enabled');
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
-        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'),'status is not in Published status';
+        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'status is not in Published status';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is enabled');
     })
 
-      //kgaikwad
-      it('DRDMV-13074: Verify Document Managment Grid Console', async () => {
+    //kgaikwad
+    it('DRDMV-13074: Verify Document Managment Grid Console', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
         await utilCommon.waitUntilSpinnerToHide();
@@ -96,7 +96,7 @@ describe('Document Library', () => {
         await documentLibraryConsolePo.removeColumnOnGrid(columns2);
     })
 
-//kgaikwad
+    //kgaikwad
     it('DRDMV-13075,DRDMV-13038 : Verify document can be publish And Verify Search on Document Managment Console ', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -150,7 +150,7 @@ describe('Document Library', () => {
         expect(await editDocumentLibraryPo.isAddSupportDepartmentAddButtonDisabled()).toBeTruthy('Add Support Department Add Button is enabled');
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete button is enabled');
         expect(await editDocumentLibraryPo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
-    },120*1000)
+    }, 120 * 1000)
 
     //kgaikwad
     it('DRDMV-13021: Verify edit document UI', async () => {
@@ -182,14 +182,14 @@ describe('Document Library', () => {
         expect(await editDocumentLibraryPo.isStatusDropDownDisplayed()).toBeTruthy('Status Drop Down is not displayed');
         expect(await editDocumentLibraryPo.isShareExternallyToogleButtonDisplayed()).toBeTruthy('Share Externally Toggle Button is not displayed');
         expect(await editDocumentLibraryPo.isKeywordsFieldDisplayed()).toBeTruthy('Keywords Field is not displayed');
-        
+
         expect(await editDocumentLibraryPo.isCategoryTier1Displayed()).toBeTruthy('CategoryTier1 Drop Down is not displayed');
         expect(await editDocumentLibraryPo.isCategoryTier2Displayed()).toBeTruthy('CategoryTier2 Drop Down is not displayed');
         expect(await editDocumentLibraryPo.isCategoryTier3Displayed()).toBeTruthy('CategoryTier3 Drop Down is not displayed');
         expect(await editDocumentLibraryPo.isCategoryTier4Displayed()).toBeTruthy('CategoryTier4 Drop Down is not displayed');
         expect(await editDocumentLibraryPo.isRegionDropDownDisplayed()).toBeTruthy('Region Drop Down is not displayed');
         expect(await editDocumentLibraryPo.isSiteDropDownDisplayed()).toBeTruthy('Site Drop Down is not displayed');
-        
+
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
         expect(await editDocumentLibraryPo.isSupportGroupAccessButtonDisplayed()).toBeTruthy('Support Group Access Group Button is not displayed');
         expect(await editDocumentLibraryPo.isAddCompanyDropDownDisplayed()).toBeTruthy('Add Company Drop Down is not displayed');
@@ -206,12 +206,12 @@ describe('Document Library', () => {
         let column: string[] = ["Author"];
         await documentLibraryConsolePo.addColumnOnGrid(column);
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
-        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Author')).toBe('Qadim Katawazi','Author is not displayed') ;
+        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Author')).toBe('Qadim Katawazi', 'Author is not displayed');
         await documentLibraryConsolePo.removeColumnOnGrid(column);
     })
 
-     //kgaikwad
-     it('DRDMV-13085: Verify document created will not listed in Knowledge articles grid', async () => {
+    //kgaikwad
+    it('DRDMV-13085: Verify document created will not listed in Knowledge articles grid', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
@@ -227,5 +227,23 @@ describe('Document Library', () => {
         await navigationPage.gotoKnowledgeConsole();
         await utilGrid.clearFilter();
         expect(await consoleKnowledgePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Record is present on knowledge article grid');
+    })
+
+    //kgaikwad
+    it('DRDMV-13083: Verify Knowledge Users will not be able to view document Managment link', async () => {
+        try {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.signOut();
+            await loginPage.login('kayo');
+            await navigationPage.gotoSettingsPage();
+            expect(await utilCommon.isConfigurationOptionMessageDisplayed('Configuration options not created for these settings.')).toBeTruthy('Document Management Link text is not displayed setting page');
+        } catch (e) {
+            console.log(e);
+            await expect(true).toBeFalsy();
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
     })
 })
