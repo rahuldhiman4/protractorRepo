@@ -13,6 +13,7 @@ class SelectCaseTemplateBlade {
         checkBox: 'ui-grid-icon-ok',
         applyButton: '[rx-view-component-id="f348e681-ac02-452c-b37f-009ac4434053"] button',
         caseTemplateCheckBox: '.ui-grid-icon-ok',
+        caseTemplateLink: 'ui-grid__link',
     }
 
     async clickOnRecommendedTemplateTab(): Promise<void> {
@@ -23,6 +24,11 @@ class SelectCaseTemplateBlade {
     async clickOnCaseTemplateCheckbox(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseTemplateCheckBox)));
         await $(this.selectors.caseTemplateCheckBox).click();
+    }
+
+    async clickOnCaseTemplateLink(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseTemplateLink)));
+        await $(this.selectors.caseTemplateLink).click();
     }
 
     async clickOnAllTemplateTab(): Promise<void> {
