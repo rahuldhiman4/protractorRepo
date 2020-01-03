@@ -22,7 +22,6 @@ class ViewCasePage {
         statusChangeReasonGuid: '049c43a1-4cbd-482d-980d-5db4ed78f295',
         statusList: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"] .ui-select__rx-choice',
         statusDisplay: '[aria-label="Status activate"]',
-        coreTaskArrow: '[rx-view-component-id="0733a05e-2eea-4fe5-90a8-909238dc6389"] i',
         addTaskButton: '[rx-view-component-id="db1c57fc-c332-40fa-b1c0-759e21d9ad5c"] button',
         editLink: '.edit-link',
         searchInput: 'input[type="search"]',
@@ -131,13 +130,6 @@ class ViewCasePage {
         await $(this.selectors.statusChange).click();
     }
 
-    async addTaskFromTaskTemplate(templateName: string) {
-        await manageTask.clickAddTaskFromTemplateButton();
-        await manageTask.setTaskSearchBoxValue(templateName);
-        await manageTask.clickFirstCheckBoxInTaskTemplateSearchGrid();
-        await manageTask.clickOnTaskGridSaveButton();
-    }
-
     async clickAddToWatchlistLink(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
         await $(this.selectors.addToWatchlist).click();
@@ -158,11 +150,6 @@ class ViewCasePage {
     async clickOnstatusReason(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
         await $(this.selectors.statusChangeReason).click();
-    }
-
-    async goToManageTask(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.coreTaskArrow)));
-        await $(this.selectors.coreTaskArrow).click();
     }
 
     async changeCaseStatus(statusValue: string): Promise<void> {

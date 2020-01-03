@@ -26,7 +26,7 @@ class ManageTaskBlade {
     }
 
     async getSortedValuesFromColumn(columnHeader: string): Promise<boolean> {
-   return await utilGrid.isGridColumnSorted(columnHeader,'ascending',this.selectors.taskTemplateGuid);
+        return await utilGrid.isGridColumnSorted(columnHeader, 'ascending', this.selectors.taskTemplateGuid);
     }
 
     async getFilterValue(copy: string): Promise<boolean> {
@@ -37,8 +37,8 @@ class ManageTaskBlade {
         return arr.length == filtered.length;
     }
 
-    async clickonColumnHeader(value:string): Promise<void> {
-        let column =await element(by.cssContainingText(this.selectors.columnHeaders,value));
+    async clickonColumnHeader(value: string): Promise<void> {
+        let column = await element(by.cssContainingText(this.selectors.columnHeaders, value));
         await browser.wait(this.EC.elementToBeClickable(column));
         await column.click();
     }
@@ -96,6 +96,7 @@ class ManageTaskBlade {
         await $(this.selectors.closeButton).click();
         await browser.wait(this.EC.invisibilityOf($('.modal-dialog')));
         await browser.wait(this.EC.visibilityOf($(caseViewPage.selectors.editLink)));
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isTaskLinkOnManageTask(taskSummary: string): Promise<boolean> {
@@ -103,11 +104,11 @@ class ManageTaskBlade {
         return await element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary)).isDisplayed();
     }
 
-    async addTaskFromTaskTemplate(templateName: string) {
+    async addTaskFromTaskTemplate(templateSummary: string): Promise<boolean> {
         await this.clickAddTaskFromTemplateButton();
-        await this.setTaskSearchBoxValue(templateName);
-        await this.clickFirstCheckBoxInTaskTemplateSearchGrid();
+        await utilGrid.searchAndSelectGridRecord(templateSummary);
         await this.clickOnTaskGridSaveButton();
+        return await this.isTaskLinkOnManageTask(templateSummary);
     }
 }
 

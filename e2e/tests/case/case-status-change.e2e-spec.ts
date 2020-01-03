@@ -448,7 +448,7 @@ describe('Case Status Change', () => {
         await viewCasePage.changeCaseStatus('Pending');
         await viewCasePage.setStatusReason('Third Party');
         await viewCasePage.clickSaveStatus();
-        await viewCasePage.goToManageTask();
+        await viewCasePage.clickAddTaskButton();
         await manageTask.clickTaskLinkOnManageTask(manualSummary);
         await expect(viewTask.getTaskStatusValue()).toBe('Assigned', 'Assigned status not found');
 
@@ -466,7 +466,7 @@ describe('Case Status Change', () => {
         await viewCasePage.changeCaseStatus('Canceled');
         await viewCasePage.setStatusReason('Approval Rejected');
         await viewCasePage.clickSaveStatus();
-        await viewCasePage.goToManageTask();
+        await viewCasePage.clickAddTaskButton();
         await manageTask.clickTaskLinkOnManageTask(manualSummary);
         await expect(viewTask.getTaskStatusValue()).toBe('Canceled', 'canceled status not found');
     });

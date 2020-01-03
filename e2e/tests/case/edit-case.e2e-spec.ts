@@ -104,5 +104,5 @@ describe('Edit Case', () => {
         await expect(editCasePage.isActivityFeedPresent()).toBeTruthy();
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
-    }, 150 * 1000);
+    });
 });
