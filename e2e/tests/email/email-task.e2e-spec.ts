@@ -1,23 +1,20 @@
 import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
+import { default as viewCasePage, default as viewCasePo } from "../../pageobject/case/view-case.po";
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import emailPo from '../../pageobject/email/compose-mail.po';
-import socialActivity from '../../pageobject/social/activity-tab.po'
-import utilCommon from '../../utils/util.common';
-import apiHelper from '../../api/api.helper';
-import utilGrid from '../../utils/util.grid';
-import activityTabPo from '../../pageobject/social/activity-tab.po';
-import viewCasePage from "../../pageobject/case/view-case.po";
-import viewTask from "../../pageobject/task/view-task.po";
+import editAcknowledgmentTemplatePo from '../../pageobject/email/edit-acknowledgment-template.po';
+import emailTemplateBladePo from '../../pageobject/email/email-template-blade.po';
+import { default as activityTabPo, default as socialActivity } from '../../pageobject/social/activity-tab.po';
 import editTask from "../../pageobject/task/edit-task.po";
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import emailTemplateBladePo from '../../pageobject/email/email-template-blade.po';
-import editAcknowledgmentTemplatePo from '../../pageobject/email/edit-acknowledgment-template.po';
+import viewTask from "../../pageobject/task/view-task.po";
+import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 
 describe('Email', () => {
-    const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         loginPage.login("fritz");
@@ -33,8 +30,9 @@ describe('Email', () => {
     });
 
     it('DRDMV-19011: Automated task should not have email options but other type of task should have email option	', async () => {
-        let taskTemplateName = 'Manual  task' + randomStr;
-        let manualTaskSummary = 'ManualSummary' + randomStr;
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let taskTemplateName = 'Manual task ' + randomStr;
+        let manualTaskSummary = 'ManualSummary ' + randomStr;
         var templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
@@ -43,8 +41,8 @@ describe('Email', () => {
         await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(templateData);
 
-        let externalTaskTemplateName = 'External  task' + randomStr;
-        let externalTaskSummary = 'ExternalSummary' + randomStr;
+        let externalTaskTemplateName = 'External task ' + randomStr;
+        let externalTaskSummary = 'ExternalSummary ' + randomStr;
         var externaltemplateData = {
             "templateName": `${externalTaskTemplateName}`,
             "templateSummary": `${externalTaskSummary}`,
@@ -52,8 +50,8 @@ describe('Email', () => {
         }
         await apiHelper.createExternalTaskTemplate(externaltemplateData);
 
-        let automatedTaskTemplateName = 'Automated  task' + randomStr;
-        let automatedTaskSummary = 'AutomatedSummary' + randomStr;
+        let automatedTaskTemplateName = 'Automated task ' + randomStr;
+        let automatedTaskSummary = 'AutomatedSummary ' + randomStr;
         var automatedtemplateData = {
             "templateName": `${automatedTaskTemplateName}`,
             "templateSummary": `${automatedTaskSummary}`,
@@ -76,12 +74,9 @@ describe('Email', () => {
         await utilGrid.clearFilter();
         await utilGrid.searchAndOpenHyperlink(displayId);
         await viewCasePage.clickAddTaskButton();
-        await viewCasePage.addTaskFromTaskTemplate(taskTemplateName);
-        await browser.sleep(2000);
-        await viewCasePage.addTaskFromTaskTemplate(automatedTaskTemplateName);
-        await browser.sleep(2000);
-        await viewCasePage.addTaskFromTaskTemplate(externalTaskTemplateName);
-        await browser.sleep(2000);
+        expect(await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary)).toBeTruthy(manualTaskSummary + ' Task is not added to case');
+        expect(await manageTaskBladePo.addTaskFromTaskTemplate(automatedTaskSummary)).toBeTruthy(automatedTaskSummary + ' Task is not added to case');
+        expect(await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary)).toBeTruthy(externalTaskSummary + ' Task is not added to case');
         await manageTaskBladePo.clickTaskLinkOnManageTask(automatedTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         await emailPo.clickOnEmailIconLink();
@@ -111,9 +106,10 @@ describe('Email', () => {
         await emailPo.clickOnDiscardButton();
         await utilCommon.clickOnWarningOk();
 
-    }, 1200 * 1000)
+    }, 120 * 1000)
 
     it('DRDMV-19008: Email icon and Requester email link should open compose email dialog in Task', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual  task' + randomStr;
         let manualTaskSummary = 'ManualSummary' + randomStr;
         var templateData = {
@@ -145,10 +141,8 @@ describe('Email', () => {
         await utilGrid.clearFilter();
         await utilGrid.searchAndOpenHyperlink(displayId);
         await viewCasePage.clickAddTaskButton();
-        await viewCasePage.addTaskFromTaskTemplate(taskTemplateName);
-        await browser.sleep(2000);
-        await viewCasePage.addTaskFromTaskTemplate(externalTaskTemplateName);
-        await browser.sleep(2000);
+        expect(await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary)).toBeTruthy(manualTaskSummary + ' Task is not added to case');
+        expect(await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary)).toBeTruthy(externalTaskSummary + ' Task is not added to case');
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         await browser.sleep(2000);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
@@ -201,6 +195,7 @@ describe('Email', () => {
     })
 
     it('DRDMV-19009: Verify Subject of Email from Task Compose email', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         try {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -235,10 +230,8 @@ describe('Email', () => {
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(displayId);
             await viewCasePage.clickAddTaskButton();
-            await viewCasePage.addTaskFromTaskTemplate(taskTemplateName);
-            await browser.sleep(2000);
-            await viewCasePage.addTaskFromTaskTemplate(externalTaskTemplateName);
-            await browser.sleep(2000);
+            expect(await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary)).toBeTruthy(manualTaskSummary + ' Task is not added to case');
+            expect(await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary)).toBeTruthy(externalTaskSummary + ' Task is not added to case');
             await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
             await browser.sleep(2000);
             await viewTask.clickOnEditTask();
@@ -292,9 +285,10 @@ describe('Email', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         }
-    }, 1200 * 1000)
+    }, 120 * 1000)
 
     it('DRDMV-19558: Verify social notes other than email should not have reply and reply all options', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual  task' + randomStr;
         let manualTaskSummary = 'ManualSummary' + randomStr;
         var templateData = {
@@ -321,7 +315,7 @@ describe('Email', () => {
         await expect(socialActivity.getActivityNotesText('Reply')).toBeFalsy();
         await expect(socialActivity.getActivityNotesText('Reply all')).toBeFalsy();
         await viewCasePage.clickAddTaskButton();
-        await viewCasePage.addTaskFromTaskTemplate(taskTemplateName);
+        expect(await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary)).toBeTruthy(manualTaskSummary + ' Task is not added to case');
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         await socialActivity.addActivityNote('This is case notes templates');
         await socialActivity.clickOnPostButton();
@@ -330,6 +324,7 @@ describe('Email', () => {
     })
 
     it('DRDMV-19556: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual  task' + randomStr;
         let manualTaskSummary = 'ManualSummary' + randomStr;
         var templateData = {
@@ -360,9 +355,8 @@ describe('Email', () => {
         await utilGrid.clearFilter();
         await utilGrid.searchAndOpenHyperlink(displayId);
         await viewCasePage.clickAddTaskButton();
-        await viewCasePage.addTaskFromTaskTemplate(taskTemplateName);
-        await viewCasePage.addTaskFromTaskTemplate(externalTaskTemplateName);
-        await browser.sleep(2000);
+        expect(await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary)).toBeTruthy(manualTaskSummary + ' Task is not added to case');
+        expect(await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary)).toBeTruthy(externalTaskSummary + ' Task is not added to case');
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         await browser.sleep(2000);
         var ManualtaskID = await viewTask.getTaskID();
@@ -462,6 +456,7 @@ describe('Email', () => {
 
 
     it('DRDMV-19555: In Case of Reply/Reply All  if we select new Email template then previous contents should not be erased.', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         let emailTemplateData = require('../../data/ui/email/email.template.api.json');
         let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
@@ -501,9 +496,8 @@ describe('Email', () => {
         await utilGrid.clearFilter();
         await utilGrid.searchAndOpenHyperlink(displayId);
         await viewCasePage.clickAddTaskButton();
-        await viewCasePage.addTaskFromTaskTemplate(taskTemplateName);
-        await viewCasePage.addTaskFromTaskTemplate(externalTaskTemplateName);
-        await browser.sleep(2000);
+        expect(await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary)).toBeTruthy(manualTaskSummary + ' Task is not added to case');
+        expect(await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary)).toBeTruthy(externalTaskSummary + ' Task is not added to case');
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         await viewTask.clickOnEditTask();
         await editTask.clickOnChangeAssignementButton();
@@ -570,6 +564,7 @@ describe('Email', () => {
     })
 
     it('DRDMV-19550: Email Templates option driven by Task assignee permission for case', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         try {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -604,10 +599,8 @@ describe('Email', () => {
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(displayId);
             await viewCasePage.clickAddTaskButton();
-            await viewCasePage.addTaskFromTaskTemplate(taskTemplateName);
-            await browser.sleep(2000);
-            await viewCasePage.addTaskFromTaskTemplate(externalTaskTemplateName);
-            await browser.sleep(2000);
+            expect(await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary)).toBeTruthy(manualTaskSummary + ' Task is not added to case');
+            expect(await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary)).toBeTruthy(externalTaskSummary + ' Task is not added to case');
             await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
@@ -626,7 +619,7 @@ describe('Email', () => {
             await navigationPage.gotoTaskConsole();
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(ExternaltaskID);
-            await viewTask.clickOnRequesterEmail(); 
+            await viewTask.clickOnRequesterEmail();
             // https://jira.bmc.com/browse/DRDMV-19670  defect
             expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeFalsy();
             await emailPo.clickOnDiscardButton();

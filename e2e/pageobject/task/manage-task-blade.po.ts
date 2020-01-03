@@ -96,6 +96,7 @@ class ManageTaskBlade {
         await $(this.selectors.closeButton).click();
         await browser.wait(this.EC.invisibilityOf($('.modal-dialog')));
         await browser.wait(this.EC.visibilityOf($(caseViewPage.selectors.editLink)));
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isTaskLinkOnManageTask(taskSummary: string): Promise<boolean> {

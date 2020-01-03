@@ -77,8 +77,8 @@ describe('Create Case Task', () => {
         await viewCasePage.clickAddTaskButton();
 
         //Add Manual task and Automation Task in Case
-        await viewCasePage.addTaskFromTaskTemplate(manualTaskTemplate);
-        await viewCasePage.addTaskFromTaskTemplate(automationTaskTemplate);
+        expect(await manageTask.addTaskFromTaskTemplate(manualTaskTemplate)).toBeTruthy(manualTaskTemplate + ' Task is not added to case');
+        expect(await manageTask.addTaskFromTaskTemplate(automationTaskTemplate)).toBeTruthy(automationTaskTemplate + ' Task is not added to case');
 
         //validate Manual Template
         await manageTask.clickTaskLinkOnManageTask(manualTaskSummary);
@@ -157,8 +157,8 @@ describe('Create Case Task', () => {
         await viewCasePage.clickAddTaskButton();
 
         //Add Automation Task templates in Case
-        await viewCasePage.addTaskFromTaskTemplate(autmationTaskTemplateWithRequiredData);
-        await viewCasePage.addTaskFromTaskTemplate(automationTaskTemplateWithallField);
+        expect(await manageTask.addTaskFromTaskTemplate(autmationTaskTemplateWithRequiredData)).toBeTruthy(autmationTaskTemplateWithRequiredData + ' Task is not added to case');
+        expect(await manageTask.addTaskFromTaskTemplate(automationTaskTemplateWithallField)).toBeTruthy(automationTaskTemplateWithallField + ' Task is not added to case');
 
         //validate Automation Template With Required Field
         await manageTask.clickTaskLinkOnManageTask(automationTaskSummaryWithallField);
@@ -522,7 +522,7 @@ describe('Create Case Task', () => {
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
         await viewCasePage.clickAddTaskButton();
-        await viewCasePage.addTaskFromTaskTemplate(automationTaskTemplate);
+        expect(await manageTask.addTaskFromTaskTemplate(automationTaskTemplate)).toBeTruthy(automationTaskTemplate + ' Task is not added to case');
         await manageTask.clickTaskLinkOnManageTask(automationTaskSummary);
         await viewTask.clickOnChangeStatus();
         await viewTask.changeTaskStatus('Canceled');
@@ -536,7 +536,7 @@ describe('Create Case Task', () => {
         await viewCasePage.changeCaseStatus("In Progress");
         await viewCasePage.clickSaveStatus();
         await utilCommon.waitUntilPopUpDisappear();
-        await viewCasePage.goToManageTask();
+        await viewCasePage.clickAddTaskButton();
         await manageTask.clickTaskLinkOnManageTask(automationTaskSummary);
         await viewTask.clickOnChangeStatus();
         await viewTask.clickOnUpdateStatusDrpdown();
