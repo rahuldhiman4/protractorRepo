@@ -183,9 +183,9 @@ describe("Create Case", () => {
             await createCaseTemplate.setTemplateStatusDropdownValue('Active')
             await createCaseTemplate.clickSaveCaseTemplate();
 
-            //case template with reopen case
+            //case template without reopen case
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(caseTemplate2);
             await createCaseTemplate.setCompanyName('Petramco');
