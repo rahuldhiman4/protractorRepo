@@ -50,13 +50,18 @@ class ViewCasePage {
         resolutionDescriptionTextBoxId: '[rx-view-component-id="d98df37c-7a96-43c3-bf69-2e6e735031ae"]',
         emptyResolutionDescriptionTextBox: '.d-textfield__label .ng-empty',
         priority: '.selection-field',
-        emailLink:'[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
+        emailLink:'[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button'
     }    
     
     async clickOnEmailLink(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
         await ($(this.selectors.emailLink)).click();
         await utilCommon.waitUntilSpinnerToHide();
+    }
+
+    async clickOnRequestersEmail():Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesterEmail)));
+        await ($(this.selectors.requesterEmail)).click();
     }
 
     async isEmailLinkPresent(): Promise<boolean> {

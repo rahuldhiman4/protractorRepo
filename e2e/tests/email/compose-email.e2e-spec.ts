@@ -8,17 +8,18 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import composeMail from '../../pageobject/email/compose-mail.po';
 import selectEmailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
 import utilCommon from "../../utils/util.common";
+import utilGrid from '../../utils/util.grid';
+import emailTemplateBladePo from '../../pageobject/email/email-template-blade.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
 
+var emailTemplateData = require('../../data/ui/email/email.template.api.json');
 
 describe("compose email", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    const requester = "Requester";
-    const contact = "Contact";
-
     beforeAll(async () => {
         browser.waitForAngularEnabled(false);
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
-        await loginPage.login("qkatawazi");
+        await loginPage.login("qtao");
     });
 
     afterAll(async () => {
@@ -164,5 +165,155 @@ describe("compose email", () => {
         await composeMail.clickOnSelectEmailTemplateLink();
         await utilCommon.waitUntilSpinnerToHide();
         expect(selectEmailTemplateBladePo.isApplyButtonEnabled()).toBeFalsy('Apply button is clickable');
+    })
+   
+    it('DRDMV-10394: Apply Email Template', async () => {
+        await navigationPage.gotoCaseConsole();
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await apiHelper.apiLogin('qkatawazi');
+        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + summary;
+        emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
+        await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+        var caseData =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-10394 RandVal" + summary,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin('qtao');
+        var newCase = await apiHelper.createCase(caseData);
+        var caseId: string = newCase.displayId;
+        await utilGrid.clearFilter();
+        await caseConsole.searchAndOpenCase(caseId);
+        expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
+        await viewCasePo.clickOnEmailLink();
+        await composeMail.clickOnSelectEmailTemplateLink();
+        await utilCommon.waitUntilSpinnerToHide();
+        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
+        await emailTemplateBladePo.clickOnApplyButton();
+        await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+        expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
+        expect(await composeMail.getSubject()).toContain(caseId);
+        expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
+        await composeMail.clickOnSendButton();
+        expect(await activityTabPo.getemailContent()).toContain('Qianru Tao sent an email');
+        expect(await activityTabPo.getemailContent()).toContain('To: Fritz Schulz');
+        expect(await activityTabPo.getemailContent()).toContain(caseId+ ':'+'Leave summary');
+        expect(await activityTabPo.getemailContent()).toContain('I am taking leave today.');
+    }),
+    
+    it('DRDMV-10401: Email Body override with template details', async () => {
+        await navigationPage.gotoCaseConsole();
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await apiHelper.apiLogin('qkatawazi');
+        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + summary;
+        emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
+        await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+        var caseData =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-10401 RandVal" + summary,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin('qtao');
+        var newCase = await apiHelper.createCase(caseData);
+        var caseId: string = newCase.displayId;
+        await utilGrid.clearFilter();
+        await caseConsole.searchAndOpenCase(caseId);
+        expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
+        await viewCasePo.clickOnEmailLink();
+        expect(await composeMail.getSubject()).toContain(caseId);
+        await expect(await composeMail.getEmailBody()).toContain('Regards');
+        await expect(await composeMail.getEmailBody()).toContain('Qianru Tao');
+        await expect(await composeMail.getEmailBody()).toContain('qtao@petramco.com');
+        await composeMail.clickOnSelectEmailTemplateLink();
+        await utilCommon.waitUntilSpinnerToHide();
+        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
+        await emailTemplateBladePo.clickOnApplyButton();
+        await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+        expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
+        expect(await composeMail.getSubject()).toContain(caseId);
+        expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
+        expect((await composeMail.isTextPresentInEmailBody('qtao@petramco.com'))).toBeFalsy();
+        expect((await composeMail.isTextPresentInEmailBody('Qianru Tao'))).toBeFalsy();
+        await composeMail.clickOnSendButton();
+    }),
+
+    it('DRDMV-10398,DRDMV-10396: Email Template List Update in case compose email', async () => {
+        await navigationPage.gotoCaseConsole();
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await apiHelper.apiLogin('qkatawazi');
+        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + summary;
+        emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
+        await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+        var caseData =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-10398 RandVal" + summary,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin('qtao');
+        var newCase = await apiHelper.createCase(caseData);
+        var caseId: string = newCase.displayId;
+        await utilGrid.clearFilter();
+        await caseConsole.searchAndOpenCase(caseId);
+        expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
+        await viewCasePo.clickOnRequestersEmail();
+        await composeMail.clickOnSelectEmailTemplateLink();
+        await utilCommon.waitUntilSpinnerToHide();
+        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
+        await emailTemplateBladePo.clickOnApplyButton();
+        await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+        expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
+        expect(await composeMail.getSubject()).toContain(caseId);
+        expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
+        expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplateName);
+        await composeMail.clickOnSendButton();
+    }),
+
+    it('DRDMV-10395: Email template Update', async () => {
+        await navigationPage.gotoCaseConsole();
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await apiHelper.apiLogin('qkatawazi');
+        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + summary;
+        emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
+        await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+        let emailTemplate1: string = await emailTemplateData['emailTemplateForSalary'].TemplateName + summary;
+        emailTemplateData['emailTemplateForSalary'].TemplateName = emailTemplate1;
+        await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateForSalary']);
+        var caseData =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-10395 RandVal" + summary,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin('qtao');
+        var newCase = await apiHelper.createCase(caseData);
+        var caseId: string = newCase.displayId;
+        await utilGrid.clearFilter();
+        await caseConsole.searchAndOpenCase(caseId);
+        await viewCasePo.clickOnEmailLink();
+        await composeMail.clickOnSelectEmailTemplateLink();
+        await utilCommon.waitUntilSpinnerToHide();
+        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
+        await emailTemplateBladePo.clickOnApplyButton();
+        await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+        expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
+        expect(await composeMail.getSubject()).toContain(caseId);
+        expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
+        expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplateName);
+        await composeMail.clickOnSelectEmailTemplateLink();
+        await utilCommon.waitUntilSpinnerToHide();
+        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplate1);
+        await emailTemplateBladePo.clickOnApplyButton();
+        expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI have checked my salary.\n\nThanks.');
+        expect(await composeMail.getSubject()).toContain(caseId);
+        expect(await composeMail.getSubjectInputValue()).toContain('Salary summary');
+        expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate1);        
+        await composeMail.clickOnSendButton();
     })
 })
