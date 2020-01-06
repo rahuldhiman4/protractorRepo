@@ -15,6 +15,9 @@ import consoleCasetemplatePo from '../../pageobject/settings/case-management/con
 import createCaseTemplate from '../../pageobject/settings/case-management/create-casetemplate.po';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
+import KnowledgeConsolePage from "../../pageobject/knowledge/console-knowledge.po";
+import taskConsolepage from "../../pageobject/task/console-task.po";
 
 describe("Create Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -180,9 +183,9 @@ describe("Create Case", () => {
             await createCaseTemplate.setTemplateStatusDropdownValue('Active')
             await createCaseTemplate.clickSaveCaseTemplate();
 
-            //case template with reopen case
+            //case template without reopen case
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(caseTemplate2);
             await createCaseTemplate.setCompanyName('Petramco');
@@ -343,7 +346,7 @@ describe("Create Case", () => {
     });
 
     it('DRDMV-16076: Reopen configurations available on Case Template Create screen ', async () => {
-        
+
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplate1 = 'Case Template 1' + randomStr;
         let caseTemplate2 = 'Case Template 2' + randomStr;
@@ -412,4 +415,58 @@ describe("Create Case", () => {
         await viewCasePage.clickSaveStatus();
         await expect(viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
     }, 240 * 1000);
+
+    it('DRDMV-1237: [Global navigation] Navigation to Workspaces and Create subitems in the Shell ', async () => {
+        await navigationPage.signOut();
+        await loginPage.login('qtao');
+        await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
+        await navigationPage.gotoTaskConsole();
+        await expect((await taskConsolepage.getTaskTitle()).trim()).toBe('Tasks', "task title is not displayed in task Console Page");
+        await navigationPage.gotoCaseConsole();
+        await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
+        await navigationPage.gotoKnowledgeConsole();
+        await expect((await KnowledgeConsolePage.getKnowledgeArticleTitle()).trim()).toBe('Knowledge Articles', "Knowledge title is not displayed in Knowledge Console Page");
+        await navigationPage.gotCreateCase();
+        await expect((await createCasePage.getCreateCaseTitle()).trim()).toBe('Create Case', "Create Case title is not displayed in Create Case Page");
+        await navigationPage.gotoCreateKnowledge();
+        await expect((await createKnowledgePage.getCreateKnowledgeTitle()).trim()).toBe('Create Knowledge', "Create Knowledge title is not displayed in Create knowledge Page");
+    });
+
+    it('DRDMV-7027: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
+        await navigationPage.signOut();
+        await loginPage.login('qtao');
+        await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
+        await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
+        await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
+        await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
+        await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
+        await expect(navigationPage.isCreateKnowledge()).toBeTruthy("Create knowledge is not displayed ");
+        await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
+        await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
+        await navigationPage.gotoSettingsPage();
+
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
+        await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
+        await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
+        await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
+        await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
+        await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
+        await expect(navigationPage.isCreateKnowledge()).toBeTruthy("Create knowledge is not displayed ");
+        await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
+        await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
+        await navigationPage.gotoSettingsPage();
+
+        await navigationPage.signOut();
+        await loginPage.login('qdu');
+        await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
+        await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
+        await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
+        await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
+        await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
+        await expect(navigationPage.isCreateKnowledge()).toBeTruthy("Create knowledge is not displayed ");
+        await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
+        await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
+        await navigationPage.gotoSettingsPage();
+    });
 });

@@ -1,6 +1,7 @@
 import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import caseViewPage from "../../pageobject/case/view-case.po";
 import utilCommon from "../../utils/util.common";
+import utilGrid from '../../utils/util.grid';
 
 class ManageTaskBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -14,12 +15,32 @@ class ManageTaskBlade {
         canceltaskTemplatbutton: '[rx-view-component-id="ba0bd5fe-391a-4885-8f0c-56cfead43ebd"] button',
         recommendedTemplateCheckbox: '[rx-view-component-id="da1ffbb0-567a-4199-b94f-413bee7f149b"] .ui-grid-icon-ok',
         closeButton: '[rx-view-component-id="8e7b2768-299d-468a-bd46-4827677e8eff"] button',
+        columnHeaders: '.ui-grid-header-cell-label',
+        taskTemplateGuid: '0f3712cc-95da-49c3-b2b0-6b7409c8349b',
     }
 
     async clickAddTaskFromTemplateButton(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.closeButton)));
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskFromTemplateButton)));
         await $(this.selectors.addTaskFromTemplateButton).click();
+    }
+
+    async getSortedValuesFromColumn(columnHeader: string): Promise<boolean> {
+        return await utilGrid.isGridColumnSorted(columnHeader, 'ascending', this.selectors.taskTemplateGuid);
+    }
+
+    async getFilterValue(copy: string): Promise<boolean> {
+        let arr: string[] = await utilGrid.getAllValuesFromColoumn((this.selectors.taskTemplateGuid), 'Task Type');
+        let filtered: string[] = arr.filter(function (el) {
+            return el == copy;
+        });
+        return arr.length == filtered.length;
+    }
+
+    async clickonColumnHeader(value: string): Promise<void> {
+        let column = await element(by.cssContainingText(this.selectors.columnHeaders, value));
+        await browser.wait(this.EC.elementToBeClickable(column));
+        await column.click();
     }
 
     async clickManageTaskCloseButton(): Promise<void> {
@@ -75,6 +96,7 @@ class ManageTaskBlade {
         await $(this.selectors.closeButton).click();
         await browser.wait(this.EC.invisibilityOf($('.modal-dialog')));
         await browser.wait(this.EC.visibilityOf($(caseViewPage.selectors.editLink)));
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isTaskLinkOnManageTask(taskSummary: string): Promise<boolean> {
@@ -82,11 +104,11 @@ class ManageTaskBlade {
         return await element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary)).isDisplayed();
     }
 
-    async addTaskFromTaskTemplate(templateName: string) {
+    async addTaskFromTaskTemplate(templateSummary: string): Promise<boolean> {
         await this.clickAddTaskFromTemplateButton();
-        await this.setTaskSearchBoxValue(templateName);
-        await this.clickFirstCheckBoxInTaskTemplateSearchGrid();
+        await utilGrid.searchAndSelectGridRecord(templateSummary);
         await this.clickOnTaskGridSaveButton();
+        return await this.isTaskLinkOnManageTask(templateSummary);
     }
 }
 

@@ -41,6 +41,7 @@ export class GridOperation {
     }
 
     async isGridRecordPresent(): Promise<boolean> {
+         browser.sleep(5000);
         return await $(this.selectors.gridRecordPresent).isPresent();
     }
 
@@ -158,6 +159,7 @@ export class GridOperation {
                 await browser.wait(this.EC.elementToBeClickable($(this.selectors.clearFilterButton)));
                 await $(this.selectors.clearFilterButton).click();
                 await browser.sleep(1000);
+                await utilCommon.waitUntilSpinnerToHide();
             }
         }
         catch (Ex) {
@@ -258,6 +260,7 @@ export class GridOperation {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchIcon)));
         await $(this.selectors.searchIcon).click();
         await utilCommon.waitUntilSpinnerToHide();
+        await browser.sleep(1000);
     }
 
     async searchAndSelectGridRecord(searchValue: string, guid?: string): Promise<void> {

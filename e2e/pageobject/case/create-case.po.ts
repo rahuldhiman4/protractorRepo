@@ -5,6 +5,7 @@ import utilCommon from '../../utils/util.common';
 class CreateCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        createCaseTitle: '[rx-view-component-id="20fd268e-bab1-44f9-af13-a27fe2f1cf50"] span',
         priorityGuid:'367e71d0-f31f-452a-934b-d7a78125cdf1',
         attachmentLink: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] button',
         autoCategorization: '[rx-view-component-id="cfb3cc65-210c-4530-b529-3bc414b6d8dc"] button',
@@ -42,6 +43,11 @@ class CreateCasePage {
         clearTemplateButton: '[rx-view-component-id="d996182c-0930-40ed-987f-43e6da0a8d8a"] button',
         contact: '[rx-view-component-id="e1f5a770-e416-4ed1-bfea-eefeed86544b"] input',
         drpDownValue:'.ui-select-choices-row-inner',
+    }
+
+    async getCreateCaseTitle(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseTitle)));
+        return await $(this.selectors.createCaseTitle).getText();
     }
 
     async clickChangeAssignmentButton(): Promise<void> {

@@ -5,6 +5,7 @@ import commonUtils from "../../../utils/util.common";
 class EditCaseTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        editCaseCompany: '[rx-view-component-id="39db6cc5-79ae-4934-a4bc-74765278fcda"] .btn-default',
         editcaseTemplate: '[rx-view-component-id="672c4706-9ce0-46be-9a3a-a639ded79b23"] .edit-link',
         editTemplateMetaData: '[rx-view-component-id="c9f48c1b-75e2-411c-929c-76bdce069a3d"] .edit-link',
         caseSummary: '[rx-view-component-id="e3cb1a92-1e94-477d-93fa-b63b29c1c129"] input',
@@ -224,6 +225,11 @@ class EditCaseTemplate {
         await browser.wait(this.EC.visibilityOf($(this.selectors.caseDescription)));
         await $(this.selectors.caseDescription).clear();
         await $(this.selectors.caseDescription).sendKeys(caseDescription);
+    }
+
+    async isCaseCompanyDisabled(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.editCaseCompany)));
+        return await $(this.selectors.editCaseCompany).getAttribute('disabled');
     }
 }
 
