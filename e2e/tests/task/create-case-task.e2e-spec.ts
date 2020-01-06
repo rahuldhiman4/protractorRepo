@@ -14,6 +14,7 @@ import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import consoleTask from "../../pageobject/task/console-task.po"
 
 describe('Create Case Task', () => {
     beforeAll(async () => {
@@ -76,11 +77,10 @@ describe('Create Case Task', () => {
         await viewCasePage.clickAddTaskButton();
 
         //Add Manual task and Automation Task in Case
-        await viewCasePage.addTaskFromTaskTemplate(manualTaskTemplate);
-        await viewCasePage.addTaskFromTaskTemplate(automationTaskTemplate);
+        expect(await manageTask.addTaskFromTaskTemplate(manualTaskTemplate)).toBeTruthy(manualTaskTemplate + ' Task is not added to case');
+        expect(await manageTask.addTaskFromTaskTemplate(automationTaskTemplate)).toBeTruthy(automationTaskTemplate + ' Task is not added to case');
 
         //validate Manual Template
-        browser.sleep(2000);
         await manageTask.clickTaskLinkOnManageTask(manualTaskSummary);
         await viewTask.clickOnEditTask();
         var manual: string = await editTask.getTaskTypeValue();
@@ -157,11 +157,10 @@ describe('Create Case Task', () => {
         await viewCasePage.clickAddTaskButton();
 
         //Add Automation Task templates in Case
-        await viewCasePage.addTaskFromTaskTemplate(autmationTaskTemplateWithRequiredData);
-        await viewCasePage.addTaskFromTaskTemplate(automationTaskTemplateWithallField);
+        expect(await manageTask.addTaskFromTaskTemplate(autmationTaskTemplateWithRequiredData)).toBeTruthy(autmationTaskTemplateWithRequiredData + ' Task is not added to case');
+        expect(await manageTask.addTaskFromTaskTemplate(automationTaskTemplateWithallField)).toBeTruthy(automationTaskTemplateWithallField + ' Task is not added to case');
 
         //validate Automation Template With Required Field
-        browser.sleep(3000);
         await manageTask.clickTaskLinkOnManageTask(automationTaskSummaryWithallField);
         var tasktypeWithAllData: string = await viewTask.getTaskTypeValue();
         await expect(tasktypeWithAllData).toBe('Automated');
@@ -493,6 +492,7 @@ describe('Create Case Task', () => {
         await expect(viewTaskTemplate.getTaskDescriptionNameValue()).toBe(description, "Unable to find the description");
     });
 
+    //ankagraw
     it('DRDMV-7149: [Automatic Task] - Automated Task Status transition validation', async () => {
 
         let automationTaskTemplate = 'Automatic task' + Math.floor(Math.random() * 1000000);
@@ -522,7 +522,7 @@ describe('Create Case Task', () => {
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
         await viewCasePage.clickAddTaskButton();
-        await viewCasePage.addTaskFromTaskTemplate(automationTaskTemplate);
+        expect(await manageTask.addTaskFromTaskTemplate(automationTaskTemplate)).toBeTruthy(automationTaskTemplate + ' Task is not added to case');
         await manageTask.clickTaskLinkOnManageTask(automationTaskSummary);
         await viewTask.clickOnChangeStatus();
         await viewTask.changeTaskStatus('Canceled');
@@ -536,7 +536,7 @@ describe('Create Case Task', () => {
         await viewCasePage.changeCaseStatus("In Progress");
         await viewCasePage.clickSaveStatus();
         await utilCommon.waitUntilPopUpDisappear();
-        await viewCasePage.goToManageTask();
+        await viewCasePage.clickAddTaskButton();
         await manageTask.clickTaskLinkOnManageTask(automationTaskSummary);
         await viewTask.clickOnChangeStatus();
         await viewTask.clickOnUpdateStatusDrpdown();
@@ -544,6 +544,7 @@ describe('Create Case Task', () => {
         await viewTask.clickOnCancelStatus();
     }, 120 * 1000);
 
+    //ankagraw
     it('DRDMV-7121: [Automatic Task] - Task Template Console: Verify Task Type column, filter ', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         var templateData = {
@@ -575,7 +576,7 @@ describe('Create Case Task', () => {
         await expect(await selectTaskTemplate.isTaskTypeFilterValue('Automated')).toBeTruthy();
     });
 
-
+    //ankagraw
     it('DRDMV-3766: [Task Template Console] Task Template Console verification', async () => {
         await apiHelper.apiLogin('qkatawazi');
         let addColoumn: string[] = ['Label'];
@@ -588,5 +589,95 @@ describe('Create Case Task', () => {
         await expect(selectTaskTemplate.isAllColoumnTitleDisplayed(updateAllColoumn)).toBeTruthy("Updated All Coloumn is not present");
         await selectTaskTemplate.removeColumn(addColoumn);
 
+    });
+
+    //ankagraw
+    it('DRDMV-7201: [Automatic Task] - Task Console: Task Type column and filter validation', async () => {
+
+        await navigationPage.gotoTaskConsole();
+        await utilGrid.clearFilter();
+        await expect(consoleTask.getSortedValueFromColumn("Task Type")).toBe("Manual", " Unable to find manual");
+        await expect(consoleTask.clickOnColumnAndisColumnSortedAsending("Task Type")).toBeTruthy();
+        await expect(consoleTask.clickOnColumnAndisColumnSortedDescending("Task Type")).toBeTruthy();
+        await expect(consoleTask.getSortedValueFromColumn("Task Type")).toBe("Automated", " Unable to find automated");
+        await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Manual');
+        await expect(await consoleTask.getFilterValue('Manual')).toBeTruthy();
+        await utilGrid.clearFilter();
+        await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Automated');
+        await utilCommon.waitUntilSpinnerToHide();
+        await expect(await consoleTask.getFilterValue('Automated')).toBeTruthy();
+    });
+
+    //ankagraw
+    it('DRDMV-7141: [Automatic Task] - Task template selection Console: Verify Task Type column, filter', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        var templateData = {
+            "templateName": `manualTaskTemplateActive ${randomStr}`,
+            "templateSummary": `manualTaskTemplateActive ${randomStr}`,
+            "templateStatus": "Active",
+        }
+        var templateData4 = {
+            "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": `Case Process 1 ${randomStr}`,
+        }
+
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createAutomatedTaskTemplate(templateData4);
+        await apiHelper.createManualTaskTemplate(templateData);
+
+        await loginPage.login('qkatawazi');
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester('adam');
+        await createCasePage.setSummary('set summary');
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await viewCasePage.clickAddTaskButton();
+        await manageTask.clickAddTaskFromTemplateButton();
+        await utilGrid.clearFilter();
+        await expect(manageTask.getSortedValuesFromColumn('Task Type')).toBeTruthy();
+        await manageTask.clickonColumnHeader('Task Type');
+        await expect(manageTask.getSortedValuesFromColumn('Task Type')).toBeTruthy();
+        await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Manual');
+        await expect(await manageTask.getFilterValue('Manual')).toBeTruthy();
+        await utilGrid.clearFilter();
+        await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Automated');
+        await utilCommon.waitUntilSpinnerToHide();
+        await expect(await manageTask.getFilterValue('Automated')).toBeTruthy();
+    });
+
+    //ankagraw
+    it('DRDMV-2475: [Permissions] Settings menu for Case Functional Roles', async () => {
+        await loginPage.login('qkatawazi');
+        let caseManagementList: string[] = ['', 'Case Management', 'Approvals', 'Assignment', 'Automated Status Transition', 'Notes Template', 'Read Access', 'Status Configuration', 'Templates'];
+        let manageFlowsetList: string[] = ['', 'Manage Flowsets', 'Define Flowsets', 'Process Library'];
+        let serviceLevelManagementList: string[] = ['', 'Service Level Management', 'Business Time Segment', 'Business Time Shared Entity', 'Configure Data Source', 'Goal Type', 'Service Target', 'Service Target Group'];
+        let taskManagementList: string[] = ['', 'Task Management', 'Notes Template', 'Status Configuration', 'Templates'];
+        let emailtList: string[] = ['', 'Email', 'Acknowledgment Templates', 'Configuration', 'Templates'];
+        let notificationConfigurationList: string[] = ['', 'Notification Configuration', 'Manage Events', 'Manage Templates'];
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.isSettingsSubMenu("Case Management", caseManagementList);
+        await navigationPage.isSettingsSubMenu("Manage Flowsets", manageFlowsetList);
+        await navigationPage.isSettingsSubMenu("Service Level Management", serviceLevelManagementList);
+        await navigationPage.isSettingsSubMenu("Task Management", taskManagementList);
+        await navigationPage.isSettingsSubMenu("Email", emailtList);
+        await navigationPage.isSettingsSubMenu("Notification Configuration", notificationConfigurationList);
+
+        await navigationPage.signOut();
+        await loginPage.login('qdu');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.isSettingsSubMenu("Case Management", caseManagementList);
+        await navigationPage.isSettingsSubMenu("Manage Flowsets", manageFlowsetList);
+        await navigationPage.isSettingsSubMenu("Service Level Management", serviceLevelManagementList);
+        await navigationPage.isSettingsSubMenu("Task Management", taskManagementList);
+
+        await navigationPage.signOut();
+        await loginPage.login('qtao');
+        await navigationPage.gotoSettingsPage();
+        await expect(navigationPage.isSettingMenuPresent('Case Management')).toBeFalsy();
     });
 });

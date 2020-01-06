@@ -260,6 +260,7 @@ export class GridOperation {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchIcon)));
         await $(this.selectors.searchIcon).click();
         await utilCommon.waitUntilSpinnerToHide();
+        await browser.sleep(1000);
     }
 
     async searchAndSelectGridRecord(searchValue: string, guid?: string): Promise<void> {

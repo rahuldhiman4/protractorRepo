@@ -29,6 +29,14 @@ class TaskGridPage {
         return sortedValue;
       }
 
+      async clickOnColumnAndisColumnSortedAsending(colounm:string): Promise<boolean> {
+         return await utilGrid.isGridColumnSorted(colounm,'ascending',this.selectors.taskGuid);
+      }
+
+      async clickOnColumnAndisColumnSortedDescending(colounm:string): Promise<boolean> {
+      return  await utilGrid.isGridColumnSorted(colounm,'descending',this.selectors.taskGuid);
+    }
+
       async clickonColumnHeader(value:string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.columnHeaders)));
         await element(by.cssContainingText(this.selectors.columnHeaders,value)).click();

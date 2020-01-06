@@ -425,7 +425,7 @@ describe('Notes template', () => {
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(displayId);
             await viewCasePage.clickAddTaskButton();
-            await viewCasePage.addTaskFromTaskTemplate(taskTemplateName);
+            expect(await manageTask.addTaskFromTaskTemplate(manualTaskSummary)).toBeTruthy(manualTaskSummary + ' Task is not added to case');
             await utilCommon.waitUntilSpinnerToHide();
             await manageTask.clickTaskLinkOnManageTask(manualTaskSummary);
             await viewTask.clickOnEditTask();

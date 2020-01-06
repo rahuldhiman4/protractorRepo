@@ -196,10 +196,8 @@ describe('Create Adhoc task', () => {
         await viewCasePage.clickAddTaskButton();
 
         //Add Manual task and Automation Task in Case
-        await viewCasePage.addTaskFromTaskTemplate(manualTaskTemplate);
-        browser.sleep(2000);
+        expect(await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplate)).toBeTruthy(manualTaskTemplate + ' Task is not added to case');
         await manageTaskBladePo.clickOnCloseButton();
-        await browser.sleep(2000);
         await viewCasePage.changeCaseStatus('In Progress');
         await viewCasePage.clickSaveStatus();
 
