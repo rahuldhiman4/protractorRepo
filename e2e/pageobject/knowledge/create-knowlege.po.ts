@@ -18,7 +18,8 @@ class CreateKnowledgePage {
         knowledgeMetadataSection: '[rx-view-component-id="830947fd-773e-4a70-860a-98893c9b36b4"] .d-textfield',
         knowledgeSetRequiedtext: '[name="knowledgeSet"]',
         authorRequiredText: '[rx-view-component-id="cbf446b0-c8f6-433e-9a8e-b9a30f7ab79c"] .d-textfield__input',
-        attachmentField: '[rx-view-component-id="bf6900ad-d67a-4705-b907-3caa50b640c7"] .d-icon-paperclip'
+        attachmentField: '[rx-view-component-id="bf6900ad-d67a-4705-b907-3caa50b640c7"] .d-icon-paperclip',
+        templateHeading: '[rx-view-component-id="6e402c66-fcdc-464b-b6e7-7e963d9c3a17"] .templateName',
     }
 
     async isAttachDocumentBladeDisplayed(): Promise<boolean> {
@@ -28,6 +29,11 @@ class CreateKnowledgePage {
         if(attartibute=='showFileUploadDialog()'){return false;}
     }
 
+    async isDocumentTemplatePresent(documentheading:string): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.clickOnReferenceTemplate)));
+        return await element(by.cssContainingText(this.selectors.templateHeading, documentheading)).isPresent();
+
+    }
 
     async clickOnTemplate(TemplateName: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.clickOnReferenceTemplate)));

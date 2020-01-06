@@ -1,4 +1,4 @@
-import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { Key, $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class EditDocumentLibraryPage {
@@ -18,7 +18,7 @@ class EditDocumentLibraryPage {
         bussinessUnit: '[rx-view-component-id="43f01d2a-f8cc-450d-9209-5ac53426f3bb"] .btn-default',
         department: '[rx-view-component-id="04c57da2-5942-407c-9f87-5670a08ab18e"] .btn-default',
         shareExternallyToggleButton: '[rx-view-component-id="422e33d2-be19-42f7-985b-af73daf4d87f"] .ng-valid-required',
-        keywords: '[rx-view-component-id="3d940c59-00f7-477a-915b-b1e7fc8a91f6"] .ng-valid-max-tags',
+        keywords: '.d-input-tags input',
         categoryTier1: '[rx-view-component-id="6d7ee978-79a7-4460-90d6-e0c9841fd0f0"] .ui-select-toggle',
         categoryTier2: '[rx-view-component-id="400ac801-1c40-43c7-87c3-a21e1d5531e9"] .ui-select-toggle',
         categoryTier3: '[rx-view-component-id="6d35f3df-e3eb-4e6c-8ba8-ff0c683a9bb7"] .ui-select-toggle',
@@ -36,7 +36,97 @@ class EditDocumentLibraryPage {
         addSupportGroup: '.ac-support-group-field button',
         addSupportGroupAddButton: '.flex-item .ac-support-group-add',
         attachedItem: '.rx-attachment-view-thumbnail',
+        addCompanyGuid: '3fa92444-5e60-4ac2-9f4e-aab0e2acfc31',
+        removeGroupAccessWarningMsg: '.ac-remove-group-access-massage span[ng-bind-html="groupRemoveMessage"]',
+        removeGroupWarningMsgYesButton: '.ac-remove-group-yes',
+        groupAccessDropDownInput: '.flex-item .search-box [placeholder="Search Organizations"]',
+        sameSupportGroupErrorMsg: '.ac-group-not-unique .rx-case-access-remove-text',
+    }
 
+    async sameSupportGroupErrorMessageDisplayed(message:string): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.sameSupportGroupErrorMsg)));
+        return await (element(by.cssContainingText(this.selectors.sameSupportGroupErrorMsg,message))).isDisplayed();
+    }
+
+    async updateKeywordField(value:string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.keywords)));
+        await $(this.selectors.keywords).sendKeys(value);
+        await this.clickOnAdditionalDetailsOrReadAccessTab('Additional Details');
+    }
+
+    async clickOnSupportGroupAccessButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.supportGroupAccessButton)));
+        await $(this.selectors.supportGroupAccessButton).click();
+    }
+
+    async clickOnRemoveGroupWarningMsgYesButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.removeGroupWarningMsgYesButton)));
+        await $(this.selectors.removeGroupWarningMsgYesButton).click();
+    }
+
+    async isremoveGroupAccessWarningMessageDisplayed(message: string): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.removeGroupAccessWarningMsg)));
+        return await element(by.cssContainingText((this.selectors.removeGroupAccessWarningMsg), message)).isDisplayed();
+    }
+
+    async closeGroupAccessTag(groupAcessTagName: string): Promise<void> {
+        let customxpath = `(//span[@class="rx-case-access-name" and text()="${groupAcessTagName}"]//following-sibling::span[@class="d-icon-cross"])`;
+        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customxpath))));
+        await element(by.xpath(customxpath)).click();
+    }
+
+    async clearDropDownOfSupportGroupAccessDropDown(dropDownName: string): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.addCompany)));
+        let customxpath = `(//label[@aria-label="${dropDownName}"]//parent::div//span[@class="cross d-icon-cross"])`;
+        await element(by.xpath(customxpath)).click();
+    }
+
+    async selectSupportGroupAccessDropDown(dropDownName: string, dropDownValuevalue: string): Promise<void> {
+        let customxpath = `(//*[@aria-label="${dropDownName}"]//following-sibling::*//button[@id="btn-select"])`;
+        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customxpath))));
+        await element(by.xpath(customxpath)).click();
+        let customxpath2 = `(//div[@class="options-box"]//li[text()="${dropDownValuevalue}"][1])`;
+        await browser.wait(this.EC.visibilityOf(element(by.xpath(customxpath2))));
+        await element(by.xpath(customxpath2)).click();
+    }
+
+    async clickOnSupportGroupAccessDropDownsAddButton(dropdownName:string): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.addCompanyAddButton)));
+        if (dropdownName == 'Add Company') {
+            await browser.wait(this.EC.elementToBeClickable($(this.selectors.addCompanyAddButton)));
+            await $(this.selectors.addCompanyAddButton).click();
+            await utilCommon.waitUntilSpinnerToHide();
+        }
+        if (dropdownName == 'Add Business Unit') {
+            await browser.wait(this.EC.elementToBeClickable($(this.selectors.addBussinessUnitAddButton)));
+            await $(this.selectors.addBussinessUnitAddButton).click();
+            await utilCommon.waitUntilSpinnerToHide();
+        }
+       
+        if (dropdownName == 'Add Support Department') {
+            await browser.wait(this.EC.elementToBeClickable($(this.selectors.addSupportDepartmentAddButton)));
+            await $(this.selectors.addSupportDepartmentAddButton).click();
+            await utilCommon.waitUntilSpinnerToHide();
+        }
+        
+        if (dropdownName == 'Add Support Group') {
+            await browser.wait(this.EC.elementToBeClickable($(this.selectors.addSupportGroupAddButton)));
+            await $(this.selectors.addSupportGroupAddButton).click();
+            await utilCommon.waitUntilSpinnerToHide();
+        }
+        else{
+            console.log('Drop down values does not match')
+        }
+    }
+
+    async selectSupportGroupDropDownValue(value: string): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.addSupportGroup)));
+        await utilCommon.selectDropDown(this.selectors.addSupportGroup, value);
+    }
+
+    async clickOnSupportGroupAddButton(): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.addSupportGroupAddButton)));
+        await $(this.selectors.addSupportGroupAddButton).click();
     }
 
     async isStatusDropDownvalueMatches(dropDownValues: string[]): Promise<boolean> {
@@ -123,9 +213,9 @@ class EditDocumentLibraryPage {
         return await $(this.selectors.shareExternallyToggleButton).getAttribute('disabled') == 'true';
     }
 
-    async isKeywordsFieldDisabled(): Promise<boolean> {
+    async isKeywordsFieldEnabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.keywords)));
-        return await $(this.selectors.keywords).getAttribute('disabled') == 'true';
+        return await $(this.selectors.keywords).isEnabled();
     }
 
     async clickOnAdditionalDetailsOrReadAccessTab(tabName: string): Promise<void> {
