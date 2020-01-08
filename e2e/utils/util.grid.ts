@@ -22,6 +22,9 @@ export class GridOperation {
         refreshButton: 'button.d-icon-refresh',
         searchInput: '[rx-id="search-text-input"]',
         searchIcon: '[rx-id="submit-search-button"]',
+        searchGridRefreshIcon: '[rx-id="refresh-button"]',
+        selectFilterOption: '.d-dropdown__menu-options-item a',
+        gridColumnHeader: '.ui-grid-header-cell-label',
         addColumnIcon: 'rx-record-grid-menu.rx-record-grid-toolbar__item_visible-columns .d-icon-ellipsis',
         gridRecordPresent: 'div.ui-grid-row'
     }
@@ -183,9 +186,12 @@ export class GridOperation {
         guid = "'" + guid + "'";
         var gridColumnHeaderPosition = `//*[@rx-view-component-id=${guid}]//span[@class="ui-grid-header-cell-label"][text()=${columnHeader}]/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
         var gridRecords = '//div[@class="ui-grid-canvas"]/div';
-        let columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
+        try{
+        var columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
+         }catch(Ex){
+            columnPosition = 0;  
+         }
         columnPosition = columnPosition + 1;
-        await element($(this.selectors.refreshButton)).click();
         var gridRows: number = await element.all(by.xpath(gridRecords)).count();
         if (gridRows > 0) {
             let gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[1]/div[${columnPosition}]/div`;
@@ -198,9 +204,7 @@ export class GridOperation {
 
     async getSelectedGridRecordValue(guid: string, columnHeader: string): Promise<string> {
         let gridRecord: string;
-        columnHeader = "'" + columnHeader + "'";
-        guid = "'" + guid + "'";
-        let gridColumnHeaderPosition = `//*[@rx-view-component-id=${guid}]//span[@class="ui-grid-header-cell-label"][text()=${columnHeader}]/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
+        let gridColumnHeaderPosition = `//*[@rx-view-component-id='${guid}']//span[@class="ui-grid-header-cell-label"][text()='${columnHeader}']/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
         let gridRecords = '//div[@class="ui-grid-canvas"]/div';
         let columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
         columnPosition = columnPosition + 1;
@@ -210,14 +214,15 @@ export class GridOperation {
             let count = await element.all(by.xpath(gridRecordCheckbox)).count();
             let gridRecordCellValue = null;
             if (count > 0) {
-                gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[2]/div[${columnPosition}]/div`;
+                gridRecordCellValue = `(//*[@rx-view-component-id='${guid}']//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[2]/div[${columnPosition}]/div`;
             } else {
-                gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[1]/div[${columnPosition}]/div`;
+                gridRecordCellValue = `(//*[@rx-view-component-id='${guid}']//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[1]/div[${columnPosition}]/div`;
             }
             await browser.wait(this.EC.elementToBeClickable(element(by.xpath(gridRecordCellValue))));
             gridRecord = await element(by.xpath(gridRecordCellValue)).getText();
         } else {
             console.log("No Records Found.");
+            gridRecord="";
         }
         return gridRecord;
     }
@@ -260,6 +265,8 @@ export class GridOperation {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchIcon)));
         await $(this.selectors.searchIcon).click();
         await utilCommon.waitUntilSpinnerToHide();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.refreshButton)));
+        await $(this.selectors.refreshButton).click();
         await browser.sleep(1000);
     }
 
@@ -331,6 +338,11 @@ export class GridOperation {
         return arr.length === copy.length && arr.every(
             (value, index) => (value === copy[index])
         );
+    }
+
+    async clickOnSearchRefreshIcon(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchGridRefreshIcon)));
+        await $(this.selectors.searchGridRefreshIcon).click();
     }
 }
 

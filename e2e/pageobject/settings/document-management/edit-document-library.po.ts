@@ -36,7 +36,8 @@ class EditDocumentLibraryPage {
         addSupportGroup: '.ac-support-group-field button',
         addSupportGroupAddButton: '.flex-item .ac-support-group-add',
         attachedItem: '.rx-attachment-view-thumbnail',
-
+        editDocumentRegionGuid: '836aa6d7-1d77-46b4-b270-50d7d25424ba',
+        editDocumentSiteGuid: '6b73d5aa-fdeb-4d10-aa35-14e842e35a95',
     }
 
     async isStatusDropDownvalueMatches(dropDownValues: string[]): Promise<boolean> {
@@ -347,6 +348,16 @@ class EditDocumentLibraryPage {
         await browser.wait(this.EC.visibilityOf($(this.selectors.addSupportGroupAddButton)));
         return await $(this.selectors.addSupportGroupAddButton).isDisplayed();
     }
+
+    async getRegionSelectedValue(fieldName:string):Promise<string>{
+        return await utilCommon.getSelectedFieldValue(fieldName);
+     }   
+
+    async getSiteSelectedValue(fieldName:string):Promise<string>{
+        return await utilCommon.getSelectedFieldValue(fieldName);
+     }   
+   
+
 }
 
 export default new EditDocumentLibraryPage();

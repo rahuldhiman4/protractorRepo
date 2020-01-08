@@ -18,6 +18,8 @@ class NavigationPage {
         workspaceMenu: '//rx-shell//*[text()="Workspace"]/..',
         modalOpen: '.modal-open',
         helpIcon: '//*[@class="d-n-menu__link d-icon-left-question_circle"]',
+        switchToApplicationDropDown: 'button.d-icon-right-angle_down',
+        selectApplication: '.d-n-dropdown__link',
     }
 
     verticalSelectors = {
@@ -266,7 +268,7 @@ class NavigationPage {
             await element(by.xpath(this.selectors.createKnowledgeMenu)).click();
         }
         await utilCommon.waitUntilSpinnerToHide();
-        await browser.wait(this.EC.titleContains('Knowledge Article Templates Preview - Business Workflows'), 30000);
+        await browser.wait(this.EC.titleContains('Knowledge Article Templates Preview'), 30000);
     }
 
     async gotoSettingsPage(): Promise<void> {
@@ -279,13 +281,26 @@ class NavigationPage {
     async gotoSettingsMenuItem(pathStr: string, expectedTitle: string): Promise<string> {
         const menuItems: Array<string> = pathStr.split('--');
         await browser.wait(this.EC.visibilityOf($('treecontrol')));
+        let menuItemStr = '//div[contains(@class,"tree-selected")]';
+        let ismenuItemSelected:boolean = false;
+        try{
+            ismenuItemSelected = await element(by.xpath(menuItemStr)).isEnabled();
+        }catch(Ex){
+            ismenuItemSelected==false;
+        }
+        if(ismenuItemSelected){
+           let menuItemVal = await element(by.xpath(menuItemStr)).getText();
+           if(menuItems.includes(menuItemVal)){
+               console.log("Menu Item already selected.");
+           }
+        }else{
         for (let i = 0; i < menuItems.length; i++) {
             if (i < menuItems.length - 1) {
                 await element(by.xpath(`//rx-administration-settings//*[text()="${menuItems[i]}"]/../*[@class="tree-branch-head"]`)).click();
             } else {
                 await element(by.xpath(`//rx-administration-settings//*[text()="${menuItems[i]}"]`)).click();
             }
-        }
+        }}
         await utilCommon.waitUntilSpinnerToHide();
         await browser.wait(this.EC.titleContains(expectedTitle));
         return await browser.getTitle();
@@ -339,6 +354,15 @@ class NavigationPage {
         await element(by.cssContainingText(this.selectors.signOutMenuItem, 'Sign Out')).click();
         await browser.wait(this.EC.titleContains('Login - Business Workflows'));
     }
+
+    async switchToAnotherApplication(applicationName: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.switchToApplicationDropDown)));
+        await $(this.selectors.switchToApplicationDropDown).click();
+        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.selectApplication, applicationName))));
+        element(by.cssContainingText(this.selectors.selectApplication, applicationName)).click();
+        browser.sleep(2000);
+    }
+
 }
 
 export default new NavigationPage();

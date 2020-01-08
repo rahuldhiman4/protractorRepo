@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from 'protractor';
+import { browser, until, ExpectedConditions, element, by, $, $$, ProtractorExpectedConditions, protractor, ElementFinder } from 'protractor';
 
 export class Util {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -9,7 +9,12 @@ export class Util {
         popUpMsgLocator: '.rx-growl-item__message',
         warningOk: '.d-modal__footer button[class*="d-button d-button_primary d-button_small"]',
         warningCancel: '.d-modal__footer button[class*="d-button d-button_secondary d-button_small"]',
-        closeTipMsg: '.rx-growl-close',
+        closeTipMsg: '.close.rx-growl-close',
+        errorMsg: '.rx-growl-item__message',
+        advancedSearchInput: 'input.rx-adv-search-textField',
+        advancedSearchSettingsBtn: 'button.d-icon-adjust_settings',
+        advancedSearchSettingsBtnClose: 'button[ng-hide="showAdvOptions"]',
+        advancedSearchResult: '.km-group-list-item__description',
         dropDownChoice: '.ui-select__rx-choice',
         warningMsgText: '.d-modal__content-item',
         configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
@@ -201,6 +206,21 @@ export class Util {
             console.log('Spinner not present on the page');
         }
     }
+
+    async getSelectedFieldValue(fieldName:string):Promise<string>{
+        let metadataField = `//span[@class='d-textfield__item'][text()='${fieldName}']/following-sibling::*//span[contains(@class,'ui-select-match-text')]`;
+        await browser.wait(this.EC.visibilityOf(element(by.xpath(metadataField))));
+        let actualFieldVal:string = await element(by.xpath(metadataField)).getText();
+        return actualFieldVal;
+        }
+        
+    async isFieldLabelDisplayed(guid: string, fieldName: string): Promise<boolean> {
+        let fieldLabel = `[rx-view-component-id='${guid}'] .d-textfield__item`;
+        await browser.wait(this.EC.visibilityOf($(fieldLabel)));
+        return await element(by.cssContainingText(fieldLabel, fieldName)).isEnabled();
+    }
+
+
 }
 
 export default new Util();

@@ -34,6 +34,7 @@ class ActivityTabPage {
         emailPersonProfilePopUp: '.popup-info .popup-email',
         phoneNumberPersonProfilePopUp: '.popup-info .popup-phone-number',
         authorFieldEmpty: '.d-textfield__label .ng-not-empty',
+        attachmentLink: '.ac-attachment-button',
         emailContent: '.log-item__content email',
         emailAttachmentFileName: '.log-item__content email .rx-attachment-view-name',
         emailReply: '.log-item__content email .d-icon-reply',
@@ -307,6 +308,11 @@ class ActivityTabPage {
         var customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='log-item__body']//a[text()="${authorText}"]`;
         await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customXpath))));
         return await element(by.xpath(customXpath)).isDisplayed();
+    }
+
+    async clickOnAttachLink(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentLink)));
+        await $(this.selectors.attachmentLink).click();
     }
 
     async isPersonLinkPresent(): Promise<boolean> {
