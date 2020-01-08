@@ -29,11 +29,12 @@ class ComposeMail {
         selectTemplateButton: '.select-template-button',
         toEmailgetText: 'rx-person-group-drop-down-list-multi-select[ng-model="toList"]  .personContainer .padTop3',
         ccEmailgetText: 'rx-person-group-drop-down-list-multi-select[ng-model="ccList"]  .personContainer .padTop3',
-
+        subjectInput:'.subject-name input',
+        templateNameHeader:'.template-seperator'
     }
 
     async clickOnSelectEmailTemplateLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectTemplateButton)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectTemplateButton)),2000);
         await $(this.selectors.selectTemplateButton).click();
     }
 
@@ -120,24 +121,30 @@ class ComposeMail {
     }
 
     async setEmailBody(value: string): Promise<void> {
-        await browser.sleep(4000);
         var elem = $('iframe.cke_wysiwyg_frame');
         await browser.switchTo().frame(elem);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)));
         await $(this.selectors.emailBody).click();
         var elm = $(this.selectors.emailBody);
         await browser.actions().sendKeys(protractor.Key.chord(protractor.Key.CONTROL, protractor.Key.HOME)).sendKeys(value).perform();
-        await browser.switchTo().defaultContent();
-        await browser.sleep(1000);
+        await browser.switchTo().defaultContent();;
+    }
+
+    async isTextPresentInEmailBody(textvalue:string):Promise<boolean>{
+            let value;
+            var elem = $('iframe.cke_wysiwyg_frame');
+            await browser.switchTo().frame(elem.getWebElement());
+            await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)),2000);
+            value = await $(this.selectors.emailBody).getText();
+            await browser.switchTo().defaultContent();
+            return value.includes(textvalue)?true:false;
+    
     }
 
     async getEmailBody(): Promise<string> {
-        let value;
-        await browser.sleep(2000);
-        var elem = $('iframe.cke_wysiwyg_frame');
-        await browser.switchTo().frame(elem);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)));
-        value = await $(this.selectors.emailBody).getText();
+        await browser.switchTo().frame(element(by.css("iframe.cke_wysiwyg_frame")).getWebElement());
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
+        let value = await $(this.selectors.emailBody).getText();;
         await browser.switchTo().defaultContent();
         return value;
     }
@@ -182,6 +189,19 @@ class ComposeMail {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.popupEmail)));
         await $(this.selectors.popupEmail).click();
 
+    }
+
+    async getSubjectInputValue(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.subjectInput)));
+        var newInput = $(this.selectors.subjectInput);
+        await $(this.selectors.subjectInput).click();
+        let templateName = await newInput.getAttribute('value');
+        return templateName;
+    }
+
+    async getEmailTemplateNameHeading():Promise<string>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateNameHeader)));
+        return $(this.selectors.templateNameHeader).getText();
     }
 
     async selectEmailFromPopUp(emailIdForToOrCc: string): Promise<void> {

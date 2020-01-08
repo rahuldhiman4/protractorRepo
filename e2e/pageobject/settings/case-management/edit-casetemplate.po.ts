@@ -1,6 +1,7 @@
 import { ICaseTemplate } from 'e2e/data/ui/interface/caseTemplate.interface';
 import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import commonUtils from "../../../utils/util.common";
+import utilCommon from '../../../utils/util.common';
 
 class EditCaseTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -43,6 +44,7 @@ class EditCaseTemplate {
         copyTemplate: '[rx-view-component-id="0bb1dd3b-639f-4019-adbd-96faae6920ef"] button',
         accessTab: '[rx-view-component-id="f76e9987-cfa0-4742-b92f-087bd38c59df"] [ng-repeat="tab in tabs track by $index"]',
         taskFlow: '[rx-view-component-id="f76e9987-cfa0-4742-b92f-087bd38c59df"] .d-icon-left-pencil',
+        assignmentMethodValue: '[rx-view-component-id="9183824b-61c4-4a00-bcfa-7f4e7461e10c"] .ui-select-match-text',
         tier1ValueOnCaseTemplate: '[rx-view-component-id="241f0e58-3106-4f8a-a1cc-43554414bb7c"] .d-textfield__rx-value',
         tier2ValueOnCaseTemplate: '[rx-view-component-id="4f950be7-d968-41a4-8bb9-018674e53f88"] .d-textfield__rx-value',
         tier3ValueOnCaseTemplate: '[rx-view-component-id="a7fbc4bc-23c6-4f92-818a-5554107d04c0"] .d-textfield__rx-value',
@@ -215,6 +217,15 @@ class EditCaseTemplate {
         await commonUtils.selectToggleButton(this.selectors.resolutionDescription, value)
     }
 
+    async clearCaseSummary():Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummary)));
+        await $(this.selectors.caseSummary).clear();
+    }
+
+    async getErrorMessage():Promise<string>{
+        return await utilCommon.getPopUpMessage();
+    }
+
     async changeCaseSummary(caseSummaryValue: string): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
         await $(this.selectors.caseSummary).clear();
@@ -227,7 +238,12 @@ class EditCaseTemplate {
         await $(this.selectors.caseDescription).sendKeys(caseDescription);
     }
 
-    async isCaseCompanyDisabled(): Promise<string> {
+    async getValueOfAssignmentMethod(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignmentMethodValue)));
+        return await $(this.selectors.assignmentMethodValue).getText(); 
+     }
+
+     async isCaseCompanyDisabled(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.editCaseCompany)));
         return await $(this.selectors.editCaseCompany).getAttribute('disabled');
     }

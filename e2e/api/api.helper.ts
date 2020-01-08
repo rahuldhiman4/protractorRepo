@@ -16,6 +16,8 @@ import { IEmailTemplate } from '../data/api/interface/email.template.interface.a
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
+const globalGuid='5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330';
+const globalCompanyStr='- Global -';
 
 export interface IIDs {
     id: string;
@@ -23,6 +25,7 @@ export interface IIDs {
 }
 
 class ApiHelper {
+    
     async apiLogin(user: string): Promise<void> {
         var loginJson = await require('../data/userdata.json');
         var username: string = await loginJson[user].userName;
@@ -91,18 +94,26 @@ class ApiHelper {
         }
     }
 
-    async createCaseTemplate(data: ICaseTemplate): Promise<IIDs> {
+    async createDyanmicDataOnTemplate(templateGuid:string,payloadName:string): Promise<void> {
+        var templateDynamicDataFile = await require('../data/api/ticketing/dynamic.data.api.json');
+        var templateData = await templateDynamicDataFile[payloadName]; 
+        templateData['templateId']= templateGuid;
+        var newCaseTemplate: AxiosResponse = await coreApi.createDyanmicData(templateData);
+        console.log('Create Dynamic on Template API Status =============>', newCaseTemplate.status);
+    }
 
+    async createCaseTemplate(data: ICaseTemplate): Promise<IIDs> {
         var templateDataFile = await require('../data/api/case/case.template.api.json');
         var templateData = await templateDataFile.CaseTemplateData;
-
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[7].value = CaseTemplate[data.templateStatus];
+        if(data.company=='- Global -'){
+            templateData.fieldInstances[301566300].value = globalGuid;
+            templateData.fieldInstances[1000000001].value = globalCompanyStr;    
+            }
         //templateData.fieldInstances[301566300].value = this.getCompanyGuid(data.company);
-
         var newCaseTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
-
         console.log('Create Case Template API Status =============>', newCaseTemplate.status);
         const caseTemplateDetails = await axios.get(
             await newCaseTemplate.headers.location
@@ -119,20 +130,21 @@ class ApiHelper {
 
         var templateDataFile = await require('../data/api/task/task.template.api.json');
         var templateData = await templateDataFile.ManualTaskTemplate;
-
         templateData.fieldInstances[7].value = TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
+        if(data.company=='- Global -'){
+            templateData.fieldInstances[301566300].value = globalGuid;
+            templateData.fieldInstances[1000000001].value = globalCompanyStr;    
+            }
         //data.company ? templateData.fieldInstances[301566300].value = data.templateSummary;
-
         var newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
-
         console.log('Create Manual Task Template API Status =============>', newTaskTemplate.status);
         const taskTemplateDetails = await axios.get(
             await newTaskTemplate.headers.location
         );
         console.log('New Manual Task Template Details API Status =============>', taskTemplateDetails.status);
-
+        
         return {
             id: taskTemplateDetails.data.id,
             displayId: taskTemplateDetails.data.displayId
@@ -567,7 +579,6 @@ async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
         );
         console.log("Alert status ==>>> " + notificationSetting.status);
     }
-
 
 }
 
