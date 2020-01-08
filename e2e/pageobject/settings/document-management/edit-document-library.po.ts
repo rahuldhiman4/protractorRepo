@@ -64,7 +64,7 @@ class EditDocumentLibraryPage {
         await $(this.selectors.removeGroupWarningMsgYesButton).click();
     }
 
-    async isremoveGroupAccessWarningMessageDisplayed(message: string): Promise<boolean> {
+    async isRemoveGroupAccessWarningMessageDisplayed(message: string): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.removeGroupAccessWarningMsg)));
         return await element(by.cssContainingText((this.selectors.removeGroupAccessWarningMsg), message)).isDisplayed();
     }
