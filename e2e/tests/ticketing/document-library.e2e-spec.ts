@@ -9,6 +9,8 @@ import documentLibraryConsolePo from '../../pageobject/settings/document-managem
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import resources from '../../pageobject/common/resources-tab.po'
+import quickCasePo from '../../pageobject/case/quick-case.po';
 
 
 describe('Document Library', () => {
@@ -251,7 +253,7 @@ describe('Document Library', () => {
     })
 
     //kgaikwad
-    fit('DRDMV-13079: Verify document will not appear in knowledge article searches	', async () => {
+    it('DRDMV-13079: Verify document will not appear in knowledge article searches	', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
@@ -264,6 +266,12 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
+
+        await navigationPage.gotoQuickCase();
+        await quickCasePo.setAndSelectRequesterName('Angelina Jolie');
+        await quickCasePo.setCaseSummary(titleRandVal);
+        let column:string=await resources.getCountOfHeading('Recommended Knowledge ')
+        expect (await resources.getCountOfHeading('Recommended Knowledge ')).toBe('0','heading Count is not correct');
 
         await navigationPage.gotoCreateKnowledge();
         await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
@@ -282,7 +290,7 @@ describe('Document Library', () => {
     })
 
     //kgaikwad
-    it('DRDMV-13041: Verify Support Group Level Read access of Document	', async () => {
+    fit('DRDMV-13041: Verify Support Group Level Read access of Document	', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
@@ -298,13 +306,11 @@ describe('Document Library', () => {
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
 
-        await editDocumentLibraryPo.selectSupportGroupAccessDropDown('Add Support Group', 'Employee Relations');
-        await editDocumentLibraryPo.clickOnSupportGroupAccessDropDownsAddButton('Add Support Group');
-        browser.sleep(3000);
+        await editDocumentLibraryPo.selectReadAccessDropDown('Add Support Group', 'Employee Relations');
+        await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
         await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-        await editDocumentLibraryPo.selectSupportGroupAccessDropDown('Add Company', 'Petramco');
-        await editDocumentLibraryPo.clickOnSupportGroupAccessDropDownsAddButton('Add Company');
-        browser.sleep(3000);
+        await editDocumentLibraryPo.selectReadAccessDropDown('Add Company', 'Petramco');
+        await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Company');
         await editDocumentLibraryPo.clickOnCancelButton();
 
         try {
@@ -344,29 +350,29 @@ describe('Document Library', () => {
             await utilCommon.closePopUpMessage();
 
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectSupportGroupAccessDropDown('Add Company', 'BMC Software');
-            await editDocumentLibraryPo.clickOnSupportGroupAccessDropDownsAddButton('Add Company');
+            await editDocumentLibraryPo.selectReadAccessDropDown('Add Company', 'BMC Software');
+            await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Company');
             await utilCommon.waitUntilSpinnerToHide();
             expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
             await utilCommon.closePopUpMessage();
 
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectSupportGroupAccessDropDown('Add Business Unit', 'ESM');
-            await editDocumentLibraryPo.clickOnSupportGroupAccessDropDownsAddButton('Add Business Unit');
+            await editDocumentLibraryPo.selectReadAccessDropDown('Add Business Unit', 'ESM');
+            await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Business Unit');
             await utilCommon.waitUntilSpinnerToHide();
             expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
             await utilCommon.closePopUpMessage();
 
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectSupportGroupAccessDropDown('Add Support Department', 'Engineering');
-            await editDocumentLibraryPo.clickOnSupportGroupAccessDropDownsAddButton('Add Support Department');
+            await editDocumentLibraryPo.selectReadAccessDropDown('Add Support Department', 'Engineering');
+            await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Department');
             await utilCommon.waitUntilSpinnerToHide();
             expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
             await utilCommon.closePopUpMessage();
 
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectSupportGroupAccessDropDown('Add Support Group', 'Accounts Payable (AP)');
-            await editDocumentLibraryPo.clickOnSupportGroupAccessDropDownsAddButton('Add Support Group');
+            await editDocumentLibraryPo.selectReadAccessDropDown('Add Support Group', 'Accounts Payable (AP)');
+            await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
             await utilCommon.waitUntilSpinnerToHide();
             expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
             await utilCommon.closePopUpMessage();
@@ -403,12 +409,11 @@ describe('Document Library', () => {
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft', 'Draft Status is missing');
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
-        await editDocumentLibraryPo.selectSupportGroupAccessDropDown('Add Company', 'BMC Software');
-        await editDocumentLibraryPo.clickOnSupportGroupAccessDropDownsAddButton('Add Company');
-        browser.sleep(3000);
+        await editDocumentLibraryPo.selectReadAccessDropDown('Add Company', 'BMC Software');
+        await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Company');
         await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-        await editDocumentLibraryPo.selectSupportGroupAccessDropDown('Add Support Group', 'Compensation and Benefits');
-        await editDocumentLibraryPo.clickOnSupportGroupAccessDropDownsAddButton('Add Support Group');
+        await editDocumentLibraryPo.selectReadAccessDropDown('Add Support Group', 'Compensation and Benefits');
+        await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
         expect(await editDocumentLibraryPo.sameSupportGroupErrorMessageDisplayed(' This group has been added with the another access. Please contact the administrator to replace the settings')).toBeTruthy('Same Support Group select error message displayed ');
     })
 

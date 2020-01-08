@@ -43,6 +43,7 @@ class EditDocumentLibraryPage {
         sameSupportGroupErrorMsg: '.ac-group-not-unique .rx-case-access-remove-text',
         editDocumentRegionGuid: '836aa6d7-1d77-46b4-b270-50d7d25424ba',
         editDocumentSiteGuid: '6b73d5aa-fdeb-4d10-aa35-14e842e35a95',
+        readAcessCrossButton: '[rx-view-component-id="3fa92444-5e60-4ac2-9f4e-aab0e2acfc31"] .d-icon-cross:not([aria-hidden])',
     }
 
     async sameSupportGroupErrorMessageDisplayed(message:string): Promise<boolean> {
@@ -83,7 +84,7 @@ class EditDocumentLibraryPage {
         await element(by.xpath(customxpath)).click();
     }
 
-    async selectSupportGroupAccessDropDown(dropDownName: string, dropDownValuevalue: string): Promise<void> {
+    async selectReadAccessDropDown(dropDownName: string, dropDownValuevalue: string): Promise<void> {
         let customxpath = `(//*[@aria-label="${dropDownName}"]//following-sibling::*//button[@id="btn-select"])`;
         await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customxpath))));
         await element(by.xpath(customxpath)).click();
@@ -92,29 +93,37 @@ class EditDocumentLibraryPage {
         await element(by.xpath(customxpath2)).click();
     }
 
-    async clickOnSupportGroupAccessDropDownsAddButton(dropdownName:string): Promise<void> {
+    async clickOnReadAccessAddButton(dropdownName:string): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.addCompanyAddButton)));
         if (dropdownName == 'Add Company') {
             await browser.wait(this.EC.elementToBeClickable($(this.selectors.addCompanyAddButton)));
             await $(this.selectors.addCompanyAddButton).click();
             await utilCommon.waitUntilSpinnerToHide();
+            await browser.wait(this.EC.elementToBeClickable($(this.selectors.readAcessCrossButton)));
+            await browser.sleep(3000);
         }
-        if (dropdownName == 'Add Business Unit') {
+        else if (dropdownName == 'Add Business Unit') {
             await browser.wait(this.EC.elementToBeClickable($(this.selectors.addBussinessUnitAddButton)));
             await $(this.selectors.addBussinessUnitAddButton).click();
             await utilCommon.waitUntilSpinnerToHide();
+            await browser.wait(this.EC.elementToBeClickable($(this.selectors.readAcessCrossButton)));
+            await browser.sleep(3000);
         }
        
-        if (dropdownName == 'Add Support Department') {
+        else if (dropdownName == 'Add Support Department') {
             await browser.wait(this.EC.elementToBeClickable($(this.selectors.addSupportDepartmentAddButton)));
             await $(this.selectors.addSupportDepartmentAddButton).click();
             await utilCommon.waitUntilSpinnerToHide();
+            await browser.wait(this.EC.elementToBeClickable($(this.selectors.readAcessCrossButton)));
+            await browser.sleep(3000);
         }
         
-        if (dropdownName == 'Add Support Group') {
+        else if (dropdownName == 'Add Support Group') {
             await browser.wait(this.EC.elementToBeClickable($(this.selectors.addSupportGroupAddButton)));
             await $(this.selectors.addSupportGroupAddButton).click();
             await utilCommon.waitUntilSpinnerToHide();
+            await browser.wait(this.EC.elementToBeClickable($(this.selectors.readAcessCrossButton)));
+            await browser.sleep(3000);
         }
         else{
             console.log('Drop down values does not match')

@@ -18,6 +18,7 @@ export class Resources {
         dropDownChoice: '.ui-select__rx-choice',
         warningMsgText: '.d-modal__content-item',
         configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
+        headingName: '.km-group__header span'
     }
 
 
@@ -67,6 +68,13 @@ export class Resources {
     async getAdvancedSearchResult(): Promise<string> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
         return await $(this.selectors.advancedSearchResult).getText();
+    }
+
+    async getCountOfHeading(headerName:string): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.headingName)));
+        let kk:string= await element(by.xpath(`//h3[@class="km-group__header" and contains(text(),'${headerName}')]//span`)).getText();
+        console.log("abc",await kk.substring(1,kk.length-1));
+        return await kk.substring(1,kk.length-1);
     }
 
 }
