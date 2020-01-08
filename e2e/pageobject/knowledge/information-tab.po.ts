@@ -14,9 +14,8 @@ class InformationTabPage {
 
     async isAttachDocumentBladeDisplayed(): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentField)));
-        let attartibute= await $(this.selectors.attachmentField).getAttribute('ng-disabled');
-        if(attartibute=='openDocumentLibrary()'){return true;}
-        if(attartibute=='showFileUploadDialog()'){return false;}
+        let attribute= await $(this.selectors.attachmentField).getAttribute('ng-click');
+        return attribute =='openDocumentLibrary()' ? true : false
     }
 }
 export default new InformationTabPage();
