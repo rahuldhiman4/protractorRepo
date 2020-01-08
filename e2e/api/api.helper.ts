@@ -6,13 +6,13 @@ import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.ap
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
 import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
-import { CaseTemplate, MenuItemStatus, TaskTemplate, NotificationType } from "../api/constant.api";
+import { CaseTemplate, MenuItemStatus, NotificationType, TaskTemplate } from "../api/constant.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
+import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
 import { IFlowset } from '../data/api/interface/flowset.interface.api';
 import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
-import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -523,7 +523,7 @@ class ApiHelper {
         };
     }
 
-async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
+    async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
         let randomStr = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         console.log(data);
         let menuItemFile = await require('../data/api/shared-services/menuItemConfiguration.api.json');
@@ -554,13 +554,13 @@ async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
         console.log("Complex Survey status ==>>> " + complexSurvey.status);
     }
 
-    async setDefaultNotificationForUser(user:string, notificationType: string): Promise<void>{
-        let personGuid:string = await coreApi.getPersonGuid(user);
+    async setDefaultNotificationForUser(user: string, notificationType: string): Promise<void> {
+        let personGuid: string = await coreApi.getPersonGuid(user);
         let notificationTypeFile = await require('../data/api/foundation/default.notification.user.api.json');
         let defaultNotificationData = await notificationTypeFile.NotificationSet;
         defaultNotificationData.id = personGuid;
         defaultNotificationData.fieldInstances[430000003].value = NotificationType[notificationType];
-        let uri:string = "api/rx/application/record/recordinstance/com.bmc.arsys.rx.foundation%3APerson/" + personGuid; 
+        let uri: string = "api/rx/application/record/recordinstance/com.bmc.arsys.rx.foundation%3APerson/" + personGuid;
         const notificationSetting = await axios.put(
             uri,
             defaultNotificationData
@@ -568,7 +568,36 @@ async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
         console.log("Alert status ==>>> " + notificationSetting.status);
     }
 
+    async deleteDynamicFieldAndGroup(dynamicAttributeName?: string): Promise<boolean> {
+        if (dynamicAttributeName) {
+            let dynamicFieldGuid = await coreApi.getDynamicFieldGuid(dynamicAttributeName);
+            let dynamicGroupGuid = await coreApi.getDynamicGroupGuid(dynamicAttributeName);
+            if (dynamicFieldGuid) {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.ticketing-lib:AttributeDefinition', dynamicFieldGuid);
+            } else if (dynamicGroupGuid) {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.ticketing-lib:AttributeGroupDefinition', dynamicGroupGuid);
+            }
+        }
+        else {
+            let allDynamicFieldRecords = await coreApi.getGuid('com.bmc.dsm.ticketing-lib:AttributeDefinition');
+            let dynamicFieldArrayMap = allDynamicFieldRecords.data.data.map(async (obj: string) => {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.ticketing-lib:AttributeDefinition', obj[179]);
+            });
+            let isAllDynamicFieldDeleted: boolean = await Promise.all(dynamicFieldArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
 
+            let allDynamicGroupRecords = await coreApi.getGuid('com.bmc.dsm.ticketing-lib:AttributeGroupDefinition');
+            let dynamicGroupArrayMap = allDynamicGroupRecords.data.data.map(async (obj: string) => {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.ticketing-lib:AttributeGroupDefinition', obj[179]);
+            });
+            let isAllDynamicGroupDeleted: boolean = await Promise.all(dynamicGroupArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
+
+            return isAllDynamicFieldDeleted === isAllDynamicGroupDeleted === true;
+        }
+    }
 }
 
 export default new ApiHelper();

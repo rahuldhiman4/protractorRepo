@@ -23,6 +23,14 @@ class ApiCoreUtil {
         return newRecord;
     }
 
+    async deleteRecordInstance(recordName: string, recordGUID: string): Promise<boolean> {
+        const deleteRecord = await axios.delete(
+            recordInstanceUri + "/" + recordName + "/" + recordGUID
+        );
+        console.log('Delete RecordInstance API Status =============>', deleteRecord.status);
+       return deleteRecord.status == 204;
+    }
+
     async getRecordInstanceDetails(recordName: string, recordGUID: string): Promise<any> {
         let uri = `api/rx/application/record/recordinstance/${recordName}/${recordGUID}`;
         const recorInstanceDetails = await axios.get(
@@ -41,6 +49,22 @@ class ApiCoreUtil {
         );
         console.log('Get GUID API Status =============>', allRecords.status);
         return allRecords;
+    }
+
+    async getDynamicFieldGuid(dynamicFieldName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.ticketing-lib:AttributeDefinition");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[8] === dynamicFieldName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getDynamicGroupGuid(dynamicFieldName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.ticketing-lib:AttributeGroupDefinition");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[8] === dynamicFieldName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
     async getDomainTagGuid(domainTagName: string): Promise<string> {

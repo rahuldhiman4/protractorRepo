@@ -160,4 +160,12 @@ describe('Login and create case from API', () => {
         menuItemDataFile['sampleMenuItem'].menuItemName = menuItemName;
         await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
     });
+
+    fit('delete all', async() => {
+        await apiHelper.apiLogin('tadmin');
+        var recDeleted = await apiHelper.deleteDynamicFieldAndGroup('FG2');
+        console.log("Record deleted...", recDeleted);
+        var deleted = await apiHelper.deleteDynamicFieldAndGroup();
+        console.log("Records deleted...", deleted);
+    })
 })
