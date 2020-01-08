@@ -14,6 +14,14 @@ export enum Case {
     New = 1000,
 }
 
+export enum Knowledge {
+    Draft = 2000,
+    SMEReview = 3000,
+    Published = 5000,
+    Retired = 6000,
+    Closed = 9000,
+    Canceled = 7000,
+}
 export enum MenuItemStatus {
     Active = 0,
     Inactive = 5,

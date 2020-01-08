@@ -1,4 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../utils/util.common';
 
 class NotificationTemplateGridPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -13,6 +14,7 @@ class NotificationTemplateGridPage {
         clearCompanyDropDownCopyTempWindow: ".modal-content [class*=glyphicon-remove]",
         tempNameCopyTempWindow: ".modal-content [class*='d-textfield__input field']",
         saveButton: "[rx-view-component-id='50e25982-5452-4f20-ac79-5682de7cb467'] button",
+        createNotificationTemplate: "[rx-view-component-id='48d1ab7c-3e17-458c-9d57-4acb72f49595'] button",
         searchBox: "[rx-view-component-id='7d5c5beb-d652-4bf9-9fc7-ccc7100d3b77'] [rx-id='search-text-input']"
     }
 
@@ -65,6 +67,12 @@ class NotificationTemplateGridPage {
     async clearCompanyDropDownValPresentInCopyTempWindow() {
         await browser.wait(this.EC.visibilityOf($(this.selectors.clearCompanyDropDownCopyTempWindow)));
         await $(this.selectors.clearCompanyDropDownCopyTempWindow).click();
+    }
+
+    async clickOnCreateNotificationTemplate():Promise<void>{
+        await utilCommon.waitUntilSpinnerToHide();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createNotificationTemplate)));
+        await $(this.selectors.createNotificationTemplate).click();
     }
 
     async isTemplateNameTxtBoxPresentInCopyTempWindow(): Promise<Boolean> {

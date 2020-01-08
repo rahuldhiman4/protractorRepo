@@ -6,16 +6,19 @@ import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.ap
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
 import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
-import { CaseTemplate, MenuItemStatus, NotificationType, TaskTemplate } from "../api/constant.api";
+import { CaseTemplate, TaskTemplate, Knowledge, NotificationType, MenuItemStatus } from "../api/constant.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
-import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
-import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
 import { IFlowset } from '../data/api/interface/flowset.interface.api';
 import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
+import { IKnowledgeArticles } from 'e2e/data/api/interface/knowledge.articles.interface.api';
+import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
+import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
+const globalGuid='5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330';
+const globalCompanyStr='- Global -';
 
 export interface IIDs {
     id: string;
@@ -23,6 +26,7 @@ export interface IIDs {
 }
 
 class ApiHelper {
+    
     async apiLogin(user: string): Promise<void> {
         var loginJson = await require('../data/userdata.json');
         var username: string = await loginJson[user].userName;
@@ -91,18 +95,26 @@ class ApiHelper {
         }
     }
 
-    async createCaseTemplate(data: ICaseTemplate): Promise<IIDs> {
+    async createDyanmicDataOnTemplate(templateGuid:string,payloadName:string): Promise<void> {
+        var templateDynamicDataFile = await require('../data/api/ticketing/dynamic.data.api.json');
+        var templateData = await templateDynamicDataFile[payloadName]; 
+        templateData['templateId']= templateGuid;
+        var newCaseTemplate: AxiosResponse = await coreApi.createDyanmicData(templateData);
+        console.log('Create Dynamic on Template API Status =============>', newCaseTemplate.status);
+    }
 
+    async createCaseTemplate(data: ICaseTemplate): Promise<IIDs> {
         var templateDataFile = await require('../data/api/case/case.template.api.json');
         var templateData = await templateDataFile.CaseTemplateData;
-
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[7].value = CaseTemplate[data.templateStatus];
+        if(data.company=='- Global -'){
+            templateData.fieldInstances[301566300].value = globalGuid;
+            templateData.fieldInstances[1000000001].value = globalCompanyStr;    
+            }
         //templateData.fieldInstances[301566300].value = this.getCompanyGuid(data.company);
-
         var newCaseTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
-
         console.log('Create Case Template API Status =============>', newCaseTemplate.status);
         const caseTemplateDetails = await axios.get(
             await newCaseTemplate.headers.location
@@ -119,20 +131,21 @@ class ApiHelper {
 
         var templateDataFile = await require('../data/api/task/task.template.api.json');
         var templateData = await templateDataFile.ManualTaskTemplate;
-
         templateData.fieldInstances[7].value = TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
+        if(data.company=='- Global -'){
+            templateData.fieldInstances[301566300].value = globalGuid;
+            templateData.fieldInstances[1000000001].value = globalCompanyStr;    
+            }
         //data.company ? templateData.fieldInstances[301566300].value = data.templateSummary;
-
         var newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
-
         console.log('Create Manual Task Template API Status =============>', newTaskTemplate.status);
         const taskTemplateDetails = await axios.get(
             await newTaskTemplate.headers.location
         );
         console.log('New Manual Task Template Details API Status =============>', taskTemplateDetails.status);
-
+        
         return {
             id: taskTemplateDetails.data.id,
             displayId: taskTemplateDetails.data.displayId
@@ -290,6 +303,7 @@ class ApiHelper {
             userData.fieldInstances[1000000019].value = data.firstName;
             userData.fieldInstances[1000000018].value = data.lastName;
             userData.fieldInstances[4].value = data.userId;
+            userData.fieldInstances[430000002].value = data.userPermission ? apiCoreUtil.getGuid(data.userPermission) : userData.fieldInstances[430000002].value;
             //data.emailId ? userData.fieldInstances[1000000048].value = data.emailId : null;
 
             const newUser = await coreApi.createRecordInstance(userData);
@@ -372,6 +386,17 @@ class ApiHelper {
         let category1Guid = await coreApi.getCategoryGuid(category1);
         let category2Guid = await coreApi.getCategoryGuid(category2);
         await coreApi.associateFoundationElements("Categorization to Categorization", category1Guid, category2Guid);
+    }
+
+    async associateCategoryUnderDomainTag(categoryTier: string, domainTagGuid: string): Promise<boolean> {
+        let domainTagFile = await require('../data/api/foundation/domain.tag.api.json');
+        let domainTagData = await domainTagFile.associateDomainTagToCategory;
+        //get category guid to associate under domain tag
+        let categoryGuid = await coreApi.getCategoryGuid(categoryTier);
+        domainTagData.id = categoryGuid;
+        domainTagData.fieldInstances[304417331].value = domainTagGuid;
+        let domainTagResponse: AxiosResponse = await coreApi.updateRecordInstance("com.bmc.arsys.rx.foundation:Operational Category", categoryGuid, domainTagData);
+        return domainTagResponse.status == 204;
     }
 
     async associateCaseTemplateWithOneTaskTemplate(caseTemplateId: string, taskTemplateId: string): Promise<void> {
@@ -498,6 +523,39 @@ class ApiHelper {
         return newTemplate.status == 201;
     }
 
+    async createKnowledgeArticle(data: IKnowledgeArticles): Promise<IIDs> {
+        let knowledgeArticleFile = await require('../data/api/knowledge/knowledge.article.api.json');
+        let knowledgeArticleData = await knowledgeArticleFile.KnowledgeArticleData;
+        knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
+        knowledgeArticleData.fieldInstances[302300502].value = data.title;
+        knowledgeArticleData.fieldInstances[302312187].value = data.templateId;
+        knowledgeArticleData.fieldInstances[1000000063].value = data.categoryTier1 ? apiCoreUtil.getGuid(data.categoryTier1) : knowledgeArticleData.fieldInstances[1000000063].value;
+        knowledgeArticleData.fieldInstances[1000000064].value = data.categoryTier2 ? apiCoreUtil.getGuid(data.categoryTier2) : knowledgeArticleData.fieldInstances[1000000064].value;
+        knowledgeArticleData.fieldInstances[1000000065].value = data.categoryTier3 ? apiCoreUtil.getGuid(data.categoryTier3) : knowledgeArticleData.fieldInstances[1000000065].value;
+        knowledgeArticleData.fieldInstances[200000007].value = data.region ? apiCoreUtil.getGuid(data.region) : knowledgeArticleData.fieldInstances[200000007].value;
+        knowledgeArticleData.fieldInstances[260000001].value = data.site ? apiCoreUtil.getGuid(data.site) : knowledgeArticleData.fieldInstances[260000001].value;
+
+        var knowledgeArticleResponse: AxiosResponse = await coreApi.createRecordInstance(knowledgeArticleData);
+        console.log('Create Knowledge Article API Status =============>', knowledgeArticleResponse.status);
+        if (knowledgeArticleResponse.status == 201) {
+            const knowledgeArticleDetails = await axios.get(await knowledgeArticleResponse.headers.location);
+            return {
+                id: knowledgeArticleDetails.data.id,
+                displayId: knowledgeArticleDetails.data.displayId
+            };
+        }
+    }
+
+    async updateKnowledgeArticleStatus(articleGuid: string, articleStatus: string): Promise<boolean> {
+        let knowledgeArticleFile = await require('../data/api/knowledge/knowledge.article.api.json');
+        let knowledgeArticleData = await knowledgeArticleFile.updateKnowledgeArticleData;
+        knowledgeArticleData.id = articleGuid;
+        knowledgeArticleData.fieldInstances[302300500].value = articleStatus;
+        var knowledgeArticleResponse: AxiosResponse = await coreApi.updateRecordInstance("com.bmc.dsm.knowledge:Knowledge Article Template", articleGuid, knowledgeArticleData);
+        console.log("Status", knowledgeArticleResponse.status);
+        return knowledgeArticleResponse.status == 204;
+    }
+
     async createNewFlowset(data: IFlowset): Promise<IIDs> {
         let flowsetFile = await require('../data/api/case/flowset.api.json');
         let flowsetData = await flowsetFile.FlowsetData;
@@ -521,6 +579,43 @@ class ApiHelper {
             id: flowsetDetails.data.id,
             displayId: flowsetDetails.data.displayId
         };
+    }
+
+    async createNewDomainTag(domainTag: string): Promise<IIDs> {
+        let domainTagFile = await require('../data/api/foundation/domain.tag.api.json');
+        let domainTagData = await domainTagFile.createDomainTag;
+        domainTagData.fieldInstances[8].value = domainTag;
+        var domainTagResponse: AxiosResponse = await coreApi.createRecordInstance(domainTagData);
+        console.log('Create Domain Tag API Status =============>', domainTagResponse.status);
+        const domainTagDetails = await axios.get(
+            await domainTagResponse.headers.location
+        );
+        return {
+            id: domainTagDetails.data.id,
+            displayId: domainTagDetails.data.displayId
+        };
+    }
+
+    async EnableDomainTag(category: string): Promise<boolean> {
+        let domainTagFile = await require('../data/api/foundation/domain.tag.api.json');
+        let domainTagData = await domainTagFile.enableDomainTag;
+        let categoryGuid = await apiCoreUtil.getCategoryGuid(category);
+        domainTagData.id = categoryGuid;
+        domainTagData.fieldInstances[8].value = 'BWF Domain';
+        domainTagData.fieldInstances[450000152].value = categoryGuid;
+        var domainTagResponse: AxiosResponse = await coreApi.updateRecordInstance('com.bmc.dsm.shared-services-lib:Domain Configuration', categoryGuid, domainTagData);
+        console.log('Enable Domain Tag API Status =============>', domainTagResponse.status);
+        return domainTagResponse.status == 201;
+    }
+
+    async DisableDomainTag(domainTagGuid: string): Promise<boolean> {
+        let domainTagFile = await require('../data/api/foundation/domain.tag.api.json');
+        let domainTagData = await domainTagFile.disableDomainTag;
+        domainTagData.id = domainTagGuid;
+        domainTagData.fieldInstances[450000152] = domainTagGuid;
+        var domainTagResponse: AxiosResponse = await coreApi.updateRecordInstance('com.bmc.dsm.shared-services-lib:Domain Configuration', domainTagGuid, domainTagData);
+        console.log('Disable Domain Tag API Status =============>', domainTagResponse.status);
+        return domainTagResponse.status == 204;
     }
 
     async createNewMenuItem(data: IMenuItem): Promise<IIDs> {

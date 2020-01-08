@@ -3,6 +3,7 @@ import * as uuid from 'uuid';
 
 const recordInstanceUri = "api/rx/application/record/recordinstance";
 const templateUri = "api/rx/application/command";
+const dynamicDataUri = "api/com.bmc.dsm.ticketing-lib/dynamicdata/definition";
 
 class ApiCoreUtil {
     async createRecordInstance(jsonBody: string): Promise<AxiosResponse> {
@@ -99,6 +100,20 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getFunctionalRoleGuid(functionalRole: string): Promise<string> {
+        let dataPageUri = "rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.functionalrole.datapage.FunctionalRoleDataPageQuery"
+            + "&pageSize=50&startIndex=0"
+        let allRecords = await axios.get(
+            dataPageUri
+        );
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            obj[0] === functionalRole;
+        });
+        console.log('Get Functional Role GUID API Status =============>', entityObj);
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+
     async getBusinessUnitGuid(orgName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Business Unit");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
@@ -163,16 +178,24 @@ class ApiCoreUtil {
         return newGuid;
     }
 
-    
- async createEmailOrNotesTemplate(jsonBody: string): Promise<AxiosResponse> {
-    const notesTemplate = await axios.post(
-        templateUri,
-        jsonBody
-    );
-    console.log('Create Email/Notes Template API Status =============>', notesTemplate.status);
-    return notesTemplate;
-}
-}
 
+    async createEmailOrNotesTemplate(jsonBody: string): Promise<AxiosResponse> {
+        const template = await axios.post(
+            templateUri,
+            jsonBody
+        );
+        console.log('Create Email/Notes Template API Status =============>', template.status);
+        return template;
+    }
+
+    async createDyanmicData(jsonBody: string): Promise<AxiosResponse> {
+        const newRecord = await axios.post(
+            dynamicDataUri,
+            jsonBody
+        );
+        console.log('Dyanmic data added API Status =============>', newRecord.status);
+        return newRecord;
+    }
+}
 
 export default new ApiCoreUtil();

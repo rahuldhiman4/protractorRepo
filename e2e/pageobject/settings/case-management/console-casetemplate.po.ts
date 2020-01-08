@@ -1,4 +1,4 @@
-import { $, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
+import { $, browser, by, element, protractor, ProtractorExpectedConditions, $$ } from 'protractor';
 import casetemplateBlade from '../../case/select-casetemplate-blade.po';
 import utilGrid from "../../../utils/util.grid";
 import utilCommon from "../../../utils/util.common";
@@ -12,7 +12,8 @@ class CaseTemplateConsole {
         copyCaseTemplate: '[rx-view-component-id="92e13921-bf7b-494e-9d65-609a07c36505"] button',
         gridGUID: "1c10246e-18ed-4201-91b7-210e7a975f9c",
         searchButton: "1c10246e-18ed-4201-91b7-210e7a975f9c",
-        gridLink: '[rx-view-component-id="1c10246e-18ed-4201-91b7-210e7a975f9c"] .ui-grid__link'
+        gridLink: '[rx-view-component-id="1c10246e-18ed-4201-91b7-210e7a975f9c"] .ui-grid__link',
+        recordvalue:'.ui-grid-canvas .ui-grid-row'
     }
 
     async clickOnCreateCaseTemplateButton(): Promise<void> {
@@ -33,10 +34,32 @@ class CaseTemplateConsole {
     async searchAndselectCaseTemplate(caseTemplateValue: string): Promise<void> {
        await utilGrid.searchAndSelectGridRecord(this.selectors.gridGUID,caseTemplateValue);
     }
+
     async getCaseTemplateNamePresentOnGrid(templateName: string): Promise<string> {
         await browser.wait(this.EC.visibilityOf(element(by.cssContainingText((this.selectors.gridLink), templateName))));
         return element(by.cssContainingText((this.selectors.gridLink), templateName)).getText();
     }
-}
+
+    async addColumnOnGrid(columnName: string[]): Promise<void> {
+        await utilGrid.addGridColumn(this.selectors.gridGUID, columnName);      
+    }
+
+    async removeColumnFromGrid(columnName: string[]):Promise<void>{
+        await utilGrid.removeGridColumn(this.selectors.gridGUID, columnName)
+    }
+
+    async isValueDisplayed(columnName:string): Promise<string> {
+        return  await utilGrid.getSelectedGridRecordValue(this.selectors.gridGUID, columnName);
+    }
+
+    async clickOnClearSearchIcon():Promise<void>{
+        await utilGrid.clearGridSearchBox();
+    }
+
+    async moreRecordsArePresentAfterClear():Promise<number>{
+        await utilCommon.waitUntilSpinnerToHide();
+        return await $$(this.selectors.recordvalue).count();
+    }
+}   
 
 export default new CaseTemplateConsole();
