@@ -20,6 +20,21 @@ class CreateKnowledgePage {
         authorRequiredText: '[rx-view-component-id="cbf446b0-c8f6-433e-9a8e-b9a30f7ab79c"] .d-textfield__input',
         attachmentField: '[rx-view-component-id="bf6900ad-d67a-4705-b907-3caa50b640c7"] .d-icon-paperclip',
         templateHeading: '[rx-view-component-id="6e402c66-fcdc-464b-b6e7-7e963d9c3a17"] .templateName',
+        regionGuid : '[rx-view-component-id="17b172fd-28d5-4553-bd22-b59695953287"]',
+        siteGuid : '[rx-view-component-id="ba9870e4-81f4-45ea-b034-9aff10bc3ab7"]',
+        editRegionGuid : '[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"]',
+        editSiteGuid : '[rx-view-component-id="aa218b2b-4fa3-4525-82f3-3e0f9bfc4193"]',
+        documentRegionGuid : '[rx-view-component-id="cec69daa-b696-415b-b2ab-ebec81251d10"]',
+        documentSiteGuid : '[rx-view-component-id="904078f1-17f1-4ac6-ab8a-a2f6e661f01d"]',
+        editDocumentRegionGuid : '[rx-view-component-id="836aa6d7-1d77-46b4-b270-50d7d25424ba"]',
+        editDocumentSiteGuid : '[rx-view-component-id="6b73d5aa-fdeb-4d10-aa35-14e842e35a95"]',
+        knowledgeHamburgerGuid : '[rx-view-component-id="a9dfa448-2900-4a2b-a230-503f4a0ac12e"]',
+        documentHamburgerGuid : '[rx-view-component-id="5d1f94a9-693e-4dbf-896f-3b9689f95a42"]',
+        knowledgeArticleGridConsoleGuid : '[rx-view-component-id="0df18e99-4315-457c-aef0-3abc96fb08ee"]',
+        categoryTier1Guid : 'b51fcb01-f3d1-4da2-a42d-ffc5873a21b3',
+        categoryTier2Guid : '6f480482-c224-4742-b941-bce655d40fde',
+        categoryTier3Guid : '2774b518-00ab-4e02-bb23-95bdb0285840',
+        categoryTier4Guid : 'd0bd4f0d-a53e-4c67-8419-016a926a7651',
     }
 
     async isAttachDocumentBladeDisplayed(): Promise<boolean> {
@@ -31,7 +46,6 @@ class CreateKnowledgePage {
     async isDocumentTemplatePresent(documentheading:string): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.clickOnReferenceTemplate)));
         return await element(by.cssContainingText(this.selectors.templateHeading, documentheading)).isPresent();
-
     }
 
     async clickOnTemplate(TemplateName: string): Promise<void> {
@@ -65,7 +79,7 @@ class CreateKnowledgePage {
         for (let i = 0; i < fldsCount; i++) {
             let elem = await $$(this.selectors.knowledgeMetadataSection).get(i);
             if (await elem.$('.d-textfield__item').getText() == fldName) {
-                expect (await elem.$('.btn-default').getAttribute("disabled") == "true").toBeTruthy();
+                expect(await elem.$('.btn-default').getAttribute("disabled") == "true").toBeTruthy();
                 break;
             }
         }
@@ -83,12 +97,12 @@ class CreateKnowledgePage {
 
     async isKnowledgeTitleRequired(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeTitleEditBox)));
-        return await $(this.selectors.knowledgeTitleEditBox).getAttribute("required")=="true";
+        return await $(this.selectors.knowledgeTitleEditBox).getAttribute("required") == "true";
     }
 
     async isKnowledgeSetRequired(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeSetRequiedtext)));
-        return await $(this.selectors.knowledgeSetRequiedtext).getAttribute("required")=="true";
+        return await $(this.selectors.knowledgeSetRequiedtext).getAttribute("required") == "true";
     }
 
     async isAuthorRequired(): Promise<boolean> {
@@ -98,7 +112,7 @@ class CreateKnowledgePage {
 
     async isSaveButtonEnabled(): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveKnowlegeButton)));
-       return await $(this.selectors.saveKnowlegeButton).isEnabled();
+        return await $(this.selectors.saveKnowlegeButton).isEnabled();
     }
 
     async clickChangeAssignmentButton(): Promise<void> {
@@ -111,6 +125,58 @@ class CreateKnowledgePage {
         await $(this.selectors.assignToMeBtn).click();
     }
 
+    async isCategoryTier1FieldLabelDisplayed(fieldName: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier1Guid,fieldName);
+    }
+
+    async isCategoryTier2FieldLabelDisplayed(fieldName: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier2Guid,fieldName);
+    }
+
+    async isCategoryTier3FieldLabelDisplayed(fieldName: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier3Guid,fieldName);
+    }
+
+    async isCategoryTier4FieldLabelDisplayed( fieldName: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier4Guid,fieldName);
+    }
+
+
+    async selectCategoryTier1Option(fieldOption: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.categoryTier1Guid,fieldOption);
+    }
+
+    async selectCategoryTier2Option(fieldOption: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.categoryTier2Guid,fieldOption);
+    }
+
+    async selectCategoryTier3Option(fieldOption: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.categoryTier3Guid,fieldOption);
+    }
+
+    async selectCategoryTier4Option(fieldOption: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.categoryTier4Guid,fieldOption);
+    }
+
+    async clickOnDropDownOption(guid: string): Promise<void> {
+        let category = await $(`[rx-view-component-id='${guid}'] div.ui-select-match`);
+        await category.click();
+    }
+
+    async selectRegionDropDownOption(fieldOption: string): Promise<void> {
+       await utilCommon.selectDropDown(this.selectors.regionGuid,fieldOption);
+        }
+
+    async selectSiteDropDownOption(fieldOption: string): Promise<void> {
+       await utilCommon.selectDropDown(this.selectors.siteGuid,fieldOption);
+    }
+
+    async selectKnowledgeTemplate(fieldName: string): Promise<void> {
+        let templateName = `[rx-view-component-id='6e402c66-fcdc-464b-b6e7-7e963d9c3a17'] [title='${fieldName}']`;
+        await browser.wait(this.EC.elementToBeClickable($(templateName)));
+        await $(templateName).click();
+    }
+
     async clickBackButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         await $(this.selectors.backButton).click();
@@ -119,7 +185,7 @@ class CreateKnowledgePage {
 
     async getKnowledgeId(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeId)));
-      return  await $(this.selectors.knowledgeId).getText();
+        return await $(this.selectors.knowledgeId).getText();
     }
 
     async getCreateKnowledgeTitle(): Promise<string> {

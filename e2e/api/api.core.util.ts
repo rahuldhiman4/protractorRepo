@@ -76,6 +76,20 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getFunctionalRoleGuid(functionalRole: string): Promise<string> {
+        let dataPageUri = "rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.functionalrole.datapage.FunctionalRoleDataPageQuery"
+            + "&pageSize=50&startIndex=0"
+        let allRecords = await axios.get(
+            dataPageUri
+        );
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            obj[0] === functionalRole;
+        });
+        console.log('Get Functional Role GUID API Status =============>', entityObj);
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+
     async getBusinessUnitGuid(orgName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Business Unit");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
@@ -158,8 +172,6 @@ class ApiCoreUtil {
         console.log('Dyanmic data added API Status =============>', newRecord.status);
         return newRecord;
     }
-
 }
-
 
 export default new ApiCoreUtil();

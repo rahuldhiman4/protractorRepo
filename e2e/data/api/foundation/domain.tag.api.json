@@ -1,0 +1,53 @@
+{
+    "CreateDomainTag": {
+        "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+        "recordDefinitionName": "com.bmc.arsys.rx.foundation:Domain Tag Registry",
+        "fieldInstances": {
+            "8": {
+                "id": 8,
+                "value": "HR"
+            }
+        }
+    },
+    "EnableDomainTag": {
+        "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+        "recordDefinitionName": "com.bmc.dsm.shared-services-lib:Domain Configuration",
+        "id": "AGGADGG8ECDC0AQC0M4FQB2U4LDZP8",
+        "fieldInstances": {
+            "8": {
+                "id": 8,
+                "value": "BWF Domain"
+            },
+            "450000152": {
+                "id": 450000152,
+                "value": "AGGADGG8ECDC0AQC0M4FQB2U4LDZP8"
+            }
+        }
+    },
+    "disableDomainTag": {
+        "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+        "id": "AGGADGG8ECDC0AQC0MYCQB2UY8ECKF",
+        "recordDefinitionName": "com.bmc.dsm.shared-services-lib:Domain Configuration",
+        "fieldInstances": {
+            "450000152": {
+                "id": 450000152,
+                "value": "AGGADGG8ECDC0AQCYL1TQCAS62EXKI"
+            },
+            "450000153": {
+                "id": 450000153,
+                "value": 10
+            }
+        }
+    },
+    "AssociateDomainTagToCategory": {
+        "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+        "id": "cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c",
+        "recordDefinitionName": "com.bmc.arsys.rx.foundation:Operational Category",
+        "fieldInstances": {
+            "304417331": {
+                "id": 304417331,
+                "value": "AGGADGG8ECDC0AQC1FW9QB33WZHL6G"
+            }
+        }
+    }
+}

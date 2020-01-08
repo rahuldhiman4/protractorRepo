@@ -213,6 +213,10 @@ class ComposeMail {
         }
     }
 
+    async clickOnAttachmentLink():Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachButton)));
+        await $(this.selectors.attachButton).click();
+    }
     async searchPerson(value: string, EmailIdForToOrCc: string): Promise<number> {
         let countOfPersons=0;
         let element = await $(`input[aria-label="${value}"]`);

@@ -16,7 +16,10 @@ class EditKnowledgePage {
         reviewPendingBtn: '[rx-view-component-id="f0cf7f67-da22-4149-a54d-ec3b95fe05e6"] .d-button',
         editLinkKnowledgeMetadata: '[rx-view-component-id="56cc9627-6ef9-46f8-9b76-728349193ed2"] .btn-link',
         saveBtnEditMetadata: '[rx-view-component-id="7f856f67-5b84-47e0-b175-76a281e8a4fb"] .d-button_primary',
-        knowledgeMetadataSection: '[rx-view-component-id="6cdbaf54-4c29-4ca0-ab73-aa165234f9ed"] .d-textfield'
+        knowledgeMetadataSection: '[rx-view-component-id="6cdbaf54-4c29-4ca0-ab73-aa165234f9ed"] .d-textfield',
+        editRegionGuid : 'd5c6cfef-2d53-48df-a03a-1a3e8381eef5',
+        editSiteGuid : 'aa218b2b-4fa3-4525-82f3-3e0f9bfc4193',
+
     }
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
@@ -78,6 +81,22 @@ class EditKnowledgePage {
         }
     }
 
+    async selectRegionDropDownOption(fieldOption: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.editRegionGuid,fieldOption);
+        }
+
+    async selectSiteDropDownOption(fieldOption: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.editSiteGuid,fieldOption);
+    }
+
+    async updateRegionDropDownOption(guid: string, fieldOption: string): Promise<void> {
+       await utilCommon.selectDropDown(this.selectors.editRegionGuid,fieldOption);
+    }
+
+    async updateSiteDropDownOption(guid: string, fieldOption: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.editSiteGuid,fieldOption);
+    }
+
     async isChangeReviewerButtonPresent(): Promise<Boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.changeReviewerBtn)));
         return await $(this.selectors.changeReviewerBtn).isDisplayed();
@@ -122,6 +141,18 @@ class EditKnowledgePage {
         await browser.wait(this.EC.visibilityOf($(this.selectors.reviewPendingBtn)));
         return await $(this.selectors.reviewPendingBtn).isDisplayed();
     }
+
+    async getCategoryTier1SelectedValue(fieldName:string):Promise<string>{
+        return await utilCommon.getSelectedFieldValue(fieldName);
+     }   
+
+    async getRegionSelectedValue(fieldName:string):Promise<string>{
+        return await utilCommon.getSelectedFieldValue(fieldName);
+     }   
+
+     async getSiteSelectedValue(fieldName:string):Promise<string>{
+        return await utilCommon.getSelectedFieldValue(fieldName);
+     }   
 
 }
 

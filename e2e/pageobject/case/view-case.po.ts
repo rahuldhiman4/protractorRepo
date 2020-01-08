@@ -43,6 +43,7 @@ class ViewCasePage {
         attachmentsLink: '[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
         addToWatchlist: '[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button',
         caseSummary: '[rx-view-component-id="8ebc1637-af05-4a08-b873-4f810c4981b9"] p',
+        caseSite: '[rx-view-component-id="4a58cc3b-e699-4357-a68a-482163d6cbbe"] p',
         inprogressErrorMsg: '[rx-view-component-id="dd40ce76-9d16-4c6a-b1a1-16fe6aa6721f"] p',
         resolutionCodeText: '[rx-view-component-id="8eae4351-a5ac-4079-b77f-df2cc969a0d8"] .d-textfield__item',
         resolutionDescriptionText: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .d-textfield__item',
@@ -228,6 +229,11 @@ class ViewCasePage {
     async getCaseSummary(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
         return await $(this.selectors.caseSummary).getText();
+    }
+
+    async getCaseSite(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSite)));
+        return await $(this.selectors.caseSite).getText();
     }
 
     async getContactPersonerPhoneNo(): Promise<string> {
