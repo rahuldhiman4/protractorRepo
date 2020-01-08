@@ -1,4 +1,4 @@
-import { Key, $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import {  $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class EditDocumentLibraryPage {
