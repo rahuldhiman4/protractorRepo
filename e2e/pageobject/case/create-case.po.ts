@@ -24,6 +24,7 @@ class CreateCasePage {
         summary: '[rx-view-component-id="d73c8aff-f9e0-4eef-8226-a65f19fab4db"] input',
         contactInput: '[rx-view-component-id="e1f5a770-e416-4ed1-bfea-eefeed86544b"] input',
         contactRequesters: '[rx-view-component-id="e1f5a770-e416-4ed1-bfea-eefeed86544b"] .uib-typeahead-match',
+        siteDropDown: '[rx-view-component-id="1113b368-e1eb-40e9-898f-65c075565462"] .ui-select-toggle',
         site: '[rx-view-component-id="1113b368-e1eb-40e9-898f-65c075565462"] input[type="search"]',
         siteOption: '[rx-view-component-id="1113b368-e1eb-40e9-898f-65c075565462"] .ui-select__rx-choice',
         priorityDropDown: '[rx-view-component-id="367e71d0-f31f-452a-934b-d7a78125cdf1"] .ui-select-toggle',
@@ -149,6 +150,8 @@ class CreateCasePage {
     }
 
     async selectSite(siteName: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.siteDropDown)));
+        await $(this.selectors.siteDropDown).click();
         await $(this.selectors.site).click();
         await $(this.selectors.site).sendKeys(siteName);
         await element(by.cssContainingText(this.selectors.siteOption, siteName)).click();
