@@ -216,8 +216,7 @@ export class Util {
     let str3 = "example";
     console.log(formatString(str1, str2, str3)); Output ==>  "This is the best example."
     */
-
-    async formatString(str: string, ...val: string[]) {
+    formatString(str: string, ...val: string[]) {
         for (let index = 0; index < val.length; index++) {
             str = str.replace(`{${index}}`, val[index]);
         }
@@ -236,8 +235,6 @@ export class Util {
         await browser.wait(this.EC.visibilityOf($(fieldLabel)));
         return await element(by.cssContainingText(fieldLabel, fieldName)).isEnabled();
     }
-
-
 }
 
 export default new Util();
