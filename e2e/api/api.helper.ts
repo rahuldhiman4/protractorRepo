@@ -19,6 +19,7 @@ axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 const globalGuid='5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330';
 const globalCompanyStr='- Global -';
+const commandeUri = 'api/rx/application/command';
 
 export interface IIDs {
     id: string;
@@ -473,9 +474,13 @@ class ApiHelper {
         templateData.processInputValues["EmailMessageBody"] = data.EmailMessageBody;
         templateData.processInputValues["Module"] = "Cases";
         templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.case-lib:Case";
-        const newTemplate = await coreApi.createEmailOrNotesTemplate(templateData);
-        console.log('Create Email Template API Status =============>', newTemplate.status);
-        return newTemplate.status == 201;
+        const emailTemplateResponse = await axios.post(
+            commandeUri,
+            templateData
+        );
+
+        console.log('Create Email Template API Status =============>', emailTemplateResponse.status);
+        return emailTemplateResponse.status ==201;
     }
 
 
@@ -518,9 +523,13 @@ class ApiHelper {
                 break;
             }
         }
-        const newTemplate = await coreApi.createEmailOrNotesTemplate(templateData);
-        console.log('Create Notes Template API Status =============>', newTemplate.status);
-        return newTemplate.status == 201;
+        const notesTemplateResponse = await axios.post(
+            commandeUri,
+            templateData
+        );
+
+        console.log('Create Email Template API Status =============>', notesTemplateResponse.status);
+        return notesTemplateResponse.status ==201;
     }
 
     async createKnowledgeArticle(data: IKnowledgeArticles): Promise<IIDs> {
@@ -692,6 +701,40 @@ class ApiHelper {
 
             return isAllDynamicFieldDeleted === isAllDynamicGroupDeleted === true;
         }
+    }
+
+    async updateNotificationEmailListForSupportGroup(supportGroup: string, notificationList: string): Promise<void> {
+        let supportGroupGuid: string = await coreApi.getSupportGroupGuid(supportGroup);
+        let notificationEmailFile = await require('../data/api/foundation/notifications.email.list.update.api.json');
+        let notificationEmailList = await notificationEmailFile.NotificationEmailList;
+        notificationEmailList["id"] = supportGroupGuid;
+        notificationEmailList.fieldInstances[303500800]["value"] = notificationList;
+        let uri: string = "api/rx/application/record/recordinstance/com.bmc.arsys.rx.foundation%3ASupport%20Group/" + supportGroupGuid;
+        console.log(notificationEmailList);
+        const notificationSetting = await axios.put(
+            uri,
+            notificationEmailList
+        );
+        console.log("Set Notification Email List status ==>>> " + notificationSetting.status);
+    }
+    
+    
+	async updateCaseAccess(caseGuid:string , data:any): Promise<number>{
+        let accessFile = await require('../data/api/case/case.access.api.json');
+        let caseAccessData = await accessFile.CaseAccess;
+        caseAccessData.processInputValues['Record Instance ID'] = caseGuid;
+        caseAccessData.processInputValues['Type'] = data.type;
+        caseAccessData.processInputValues['Operation'] = data.operation;
+        caseAccessData.processInputValues['Security Type'] = data.security;
+        caseAccessData.processInputValues['Value'] = data.username;
+        
+        const updateCaseAccess = await axios.post(
+            commandeUri,
+            caseAccessData
+        );
+
+        console.log('Create Email Template API Status =============>', updateCaseAccess.status);
+        return updateCaseAccess.status;
     }
 }
 

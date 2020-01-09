@@ -141,6 +141,11 @@ class ViewCasePage {
         await $(this.selectors.addToWatchlist).click();
     }
 
+    async getAddToWatchlistLinkText(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
+        return await $(this.selectors.addToWatchlist).getText();
+    }
+
     async clickSaveStatus(expectedStatus?: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveUpdateStatus)));
         await $(this.selectors.saveUpdateStatus).click();
@@ -249,6 +254,11 @@ class ViewCasePage {
     async clickStopWatchingLink(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.stopWatching)));
         await $(this.selectors.stopWatching).click();
+    }
+
+    async getStopWatchingLinkText(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.stopWatching)));
+        return await $(this.selectors.stopWatching).getText();
     }
 
     async clickOnContactPersonerDrpDwn(): Promise<void> {
