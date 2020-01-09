@@ -73,7 +73,6 @@ export class Resources {
     async getCountOfHeading(headerName:string): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.headingName)));
         let count:string= await element(by.xpath(`//h3[@class="km-group__header" and contains(text(),'${headerName}')]//span`)).getText();
-        console.log("abc",await count.substring(1,count.length-1));
         return await count.substring(1,count.length-1);
     }
 

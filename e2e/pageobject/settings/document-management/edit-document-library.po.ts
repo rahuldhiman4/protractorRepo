@@ -89,7 +89,7 @@ class EditDocumentLibraryPage {
         await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customxpath))));
         await element(by.xpath(customxpath)).click();
         let customxpath2 = `(//div[@class="options-box"]//li[text()="${dropDownValuevalue}"][1])`;
-        await browser.wait(this.EC.visibilityOf(element(by.xpath(customxpath2))));
+        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customxpath2))));
         await element(by.xpath(customxpath2)).click();
     }
 
@@ -100,14 +100,12 @@ class EditDocumentLibraryPage {
             await $(this.selectors.addCompanyAddButton).click();
             await utilCommon.waitUntilSpinnerToHide();
             await browser.wait(this.EC.elementToBeClickable($(this.selectors.readAcessCrossButton)));
-            await browser.sleep(3000);
         }
         else if (dropdownName == 'Add Business Unit') {
             await browser.wait(this.EC.elementToBeClickable($(this.selectors.addBussinessUnitAddButton)));
             await $(this.selectors.addBussinessUnitAddButton).click();
             await utilCommon.waitUntilSpinnerToHide();
             await browser.wait(this.EC.elementToBeClickable($(this.selectors.readAcessCrossButton)));
-            await browser.sleep(3000);
         }
        
         else if (dropdownName == 'Add Support Department') {
@@ -115,7 +113,6 @@ class EditDocumentLibraryPage {
             await $(this.selectors.addSupportDepartmentAddButton).click();
             await utilCommon.waitUntilSpinnerToHide();
             await browser.wait(this.EC.elementToBeClickable($(this.selectors.readAcessCrossButton)));
-            await browser.sleep(3000);
         }
         
         else if (dropdownName == 'Add Support Group') {
@@ -123,7 +120,6 @@ class EditDocumentLibraryPage {
             await $(this.selectors.addSupportGroupAddButton).click();
             await utilCommon.waitUntilSpinnerToHide();
             await browser.wait(this.EC.elementToBeClickable($(this.selectors.readAcessCrossButton)));
-            await browser.sleep(3000);
         }
         else{
             console.log('Drop down values does not match')

@@ -290,7 +290,7 @@ describe('Document Library', () => {
     })
 
     //kgaikwad
-    fit('DRDMV-13041: Verify Support Group Level Read access of Document	', async () => {
+    it('DRDMV-13041: Verify Support Group Level Read access of Document	', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
@@ -439,7 +439,6 @@ describe('Document Library', () => {
 
     it('DRDMV-13081: Verify OOB Document template will not appear in knowledge console', async () => {
         await navigationPage.gotoCreateKnowledge();
-            await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
             expect(await createKnowlegePo.isDocumentTemplatePresent('Document')).toBeFalsy('Document heading is not displayed');
     })
 
