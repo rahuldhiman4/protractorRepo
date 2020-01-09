@@ -18,6 +18,8 @@ class CreateKnowledgePage {
         knowledgeMetadataSection: '[rx-view-component-id="830947fd-773e-4a70-860a-98893c9b36b4"] .d-textfield',
         knowledgeSetRequiedtext: '[name="knowledgeSet"]',
         authorRequiredText: '[rx-view-component-id="cbf446b0-c8f6-433e-9a8e-b9a30f7ab79c"] .d-textfield__input',
+        attachmentField: '[rx-view-component-id="bf6900ad-d67a-4705-b907-3caa50b640c7"] .d-icon-paperclip',
+        templateHeading: '[rx-view-component-id="6e402c66-fcdc-464b-b6e7-7e963d9c3a17"] .templateName',
         regionGuid: '[rx-view-component-id="17b172fd-28d5-4553-bd22-b59695953287"]',
         siteGuid: '[rx-view-component-id="ba9870e4-81f4-45ea-b034-9aff10bc3ab7"]',
         editRegionGuid: '[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"]',
@@ -33,6 +35,17 @@ class CreateKnowledgePage {
         categoryTier2Guid: '6f480482-c224-4742-b941-bce655d40fde',
         categoryTier3Guid: '2774b518-00ab-4e02-bb23-95bdb0285840',
         categoryTier4Guid: 'd0bd4f0d-a53e-4c67-8419-016a926a7651',
+    }
+
+    async isAttachDocumentBladeDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentField)));
+        let attribute = await $(this.selectors.attachmentField).getAttribute('ng-click');
+        return attribute == 'openDocumentLibrary()' ? true : false
+    }
+
+    async isDocumentTemplatePresent(documentheading: string): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.clickOnReferenceTemplate)));
+        return await element(by.cssContainingText(this.selectors.templateHeading, documentheading)).isPresent();
     }
 
     async clickOnTemplate(TemplateName: string): Promise<void> {
