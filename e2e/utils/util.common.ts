@@ -181,6 +181,7 @@ export class Util {
         await browser.getAllWindowHandles().then(async function (handles) {
             await browser.switchTo().window(handles[windowNum]);
         });
+        await browser.sleep(2000);
     }
 
     async switchToDefaultWindowClosingOtherTabs(): Promise<void> {
@@ -192,6 +193,7 @@ export class Util {
             }
             await browser.switchTo().window(handles[0]);
         });
+        await browser.sleep(2000);
     }
 
     async waitUntilSpinnerToHide(): Promise<void> {
@@ -214,28 +216,25 @@ export class Util {
     let str3 = "example";
     console.log(formatString(str1, str2, str3)); Output ==>  "This is the best example."
     */
-
     formatString(str: string, ...val: string[]) {
         for (let index = 0; index < val.length; index++) {
-          str = str.replace(`{${index}}`, val[index]);
+            str = str.replace(`{${index}}`, val[index]);
         }
         return str;
-      }
-      
-    async getSelectedFieldValue(fieldName:string):Promise<string>{
+    }
+
+    async getSelectedFieldValue(fieldName: string): Promise<string> {
         let metadataField = `//span[@class='d-textfield__item'][text()='${fieldName}']/following-sibling::*//span[contains(@class,'ui-select-match-text')]`;
         await browser.wait(this.EC.visibilityOf(element(by.xpath(metadataField))));
-        let actualFieldVal:string = await element(by.xpath(metadataField)).getText();
+        let actualFieldVal: string = await element(by.xpath(metadataField)).getText();
         return actualFieldVal;
-        }
-        
+    }
+
     async isFieldLabelDisplayed(guid: string, fieldName: string): Promise<boolean> {
         let fieldLabel = `[rx-view-component-id='${guid}'] .d-textfield__item`;
         await browser.wait(this.EC.visibilityOf($(fieldLabel)));
         return await element(by.cssContainingText(fieldLabel, fieldName)).isEnabled();
     }
-
-
 }
 
 export default new Util();
