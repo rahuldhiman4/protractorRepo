@@ -425,6 +425,12 @@ class ActivityTabPage {
         return await $$(this.selectors.logItems).count() === 1;
     }
 
+    async isComplexSurveyOrderIsThird(): Promise<boolean> {
+        await utilCommon.waitUntilSpinnerToHide();
+        await browser.wait(this.EC.visibilityOf(element(by.xpath("(//div[@class='log-item__content'])[3]//div[text()='View Survey Information']"))));
+        return await element(by.xpath("(//div[@class='log-item__content'])[3]//div[text()='View Survey Information']")).isPresent();
+    }
+
 }
 
 export default new ActivityTabPage();

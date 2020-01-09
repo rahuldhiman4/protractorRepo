@@ -305,6 +305,7 @@ describe('Complex Surveys', () => {
         await browser.sleep(8000);
         await activityTabPage.addActivityNote("hello");
         await activityTabPage.clickOnPostButton();
+        expect(await activityTabPage.isComplexSurveyOrderIsThird()).toBeTruthy();
     })
 
     it('DRDMV-18125: [Complex Survey] - Filter survey details in Case Activity', async () => {
@@ -321,7 +322,7 @@ describe('Complex Surveys', () => {
         await activityTabPage.addActivityNote("hello");
         await activityTabPage.clickOnPostButton();
         await activityTabPage.clickOnFilterButton();
-        await activityTabPage.selectFilterCheckBox('Complex Survey');
+        await activityTabPage.selectFilterCheckBox('DWP Survey');
         await activityTabPage.clickOnFilterApplyButton();
         expect(await activityTabPage.isOnlySurveyRecordFiltered()).toBeTruthy("Multiple records are present");
     })

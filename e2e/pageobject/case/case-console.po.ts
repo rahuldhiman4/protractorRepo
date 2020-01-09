@@ -1,4 +1,4 @@
-import { $, $$, browser, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 import gridUtil from '../../utils/util.grid';
 
@@ -14,6 +14,8 @@ class CaseConsolePage {
         applyFilter: '.rx-search-filter-heading__apply',
         removeFilter: '..d-tag-remove-button',
         tableValue: '.ui-grid-cell-contents',
+        addToWatchlist: '[rx-view-component-id="10a1551f-f216-4af7-8d62-cc79ad19f8c3"] button',
+        watchlistIcon: '[rx-view-component-id="deafbff6-199a-46f5-b7bf-642cda73c5f1"] button',
         caseTitle: '[rx-view-component-id="72f24e08-7a88-4479-8eb1-d254dde49c6c"] span',
     }
 
@@ -72,6 +74,31 @@ class CaseConsolePage {
     async isCaseSummaryPresent(summary: string): Promise<boolean> {
         let caseSummary = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Summary');
         return summary === caseSummary;
+    }
+
+    async selectCase(caseID: string): Promise<void> {
+        await gridUtil.clickCheckBoxOfValueInGrid(caseID);
+    }
+
+    async clickOnAddToWatchlist(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
+        await $(this.selectors.addToWatchlist).click();
+    }
+
+    async clickOnWatchlistIcon(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.watchlistIcon)));
+        await $(this.selectors.watchlistIcon).click();
+        await utilCommon.waitUntilSpinnerToHide();
+    }
+
+    async getAddToWatchlistText(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
+        return await $(this.selectors.addToWatchlist).getText();
+    }
+
+    async getWatchlistIconText(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.watchlistIcon)));
+        return await $(this.selectors.watchlistIcon).getText();
     }
 }
 
