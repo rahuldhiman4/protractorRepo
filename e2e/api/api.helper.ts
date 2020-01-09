@@ -663,6 +663,36 @@ class ApiHelper {
         console.log("Alert status ==>>> " + notificationSetting.status);
     }
 
+    async deleteDynamicFieldAndGroup(dynamicAttributeName?: string): Promise<boolean> {
+        if (dynamicAttributeName) {
+            let dynamicFieldGuid = await coreApi.getDynamicFieldGuid(dynamicAttributeName);
+            let dynamicGroupGuid = await coreApi.getDynamicGroupGuid(dynamicAttributeName);
+            if (dynamicFieldGuid) {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.ticketing-lib:AttributeDefinition', dynamicFieldGuid);
+            } else if (dynamicGroupGuid) {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.ticketing-lib:AttributeGroupDefinition', dynamicGroupGuid);
+            }
+        }
+        else {
+            let allDynamicFieldRecords = await coreApi.getGuid('com.bmc.dsm.ticketing-lib:AttributeDefinition');
+            let dynamicFieldArrayMap = allDynamicFieldRecords.data.data.map(async (obj: string) => {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.ticketing-lib:AttributeDefinition', obj[179]);
+            });
+            let isAllDynamicFieldDeleted: boolean = await Promise.all(dynamicFieldArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
+
+            let allDynamicGroupRecords = await coreApi.getGuid('com.bmc.dsm.ticketing-lib:AttributeGroupDefinition');
+            let dynamicGroupArrayMap = allDynamicGroupRecords.data.data.map(async (obj: string) => {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.ticketing-lib:AttributeGroupDefinition', obj[179]);
+            });
+            let isAllDynamicGroupDeleted: boolean = await Promise.all(dynamicGroupArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
+
+            return isAllDynamicFieldDeleted === isAllDynamicGroupDeleted === true;
+        }
+    }
 }
 
 export default new ApiHelper();
