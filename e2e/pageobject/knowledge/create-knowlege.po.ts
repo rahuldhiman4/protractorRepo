@@ -14,29 +14,26 @@ class CreateKnowledgePage {
         activityTab: '[rx-view-component-id="3982f4ea-16a0-41aa-982e-879143a19b00"] .rx-tab a',
         knowledgeSet: '7f2de840-20ec-47e8-805f-4db8edc1b5f4',
         assignToMeBtn: '[rx-view-component-id="8cb384cb-598d-46f4-a858-08111a6c51bd"] .assign-to-me-component .d-button',
-        docEditorSection: '.doc-editor__section',
+        docEditorSection: '.doc-editor__section .d-textfield__label',
         knowledgeMetadataSection: '[rx-view-component-id="830947fd-773e-4a70-860a-98893c9b36b4"] .d-textfield',
         knowledgeSetRequiedtext: '[name="knowledgeSet"]',
         authorRequiredText: '[rx-view-component-id="cbf446b0-c8f6-433e-9a8e-b9a30f7ab79c"] .d-textfield__input',
-        regionGuid : '[rx-view-component-id="17b172fd-28d5-4553-bd22-b59695953287"]',
-        siteGuid : '[rx-view-component-id="ba9870e4-81f4-45ea-b034-9aff10bc3ab7"]',
-        editRegionGuid : '[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"]',
-        editSiteGuid : '[rx-view-component-id="aa218b2b-4fa3-4525-82f3-3e0f9bfc4193"]',
-        documentRegionGuid : '[rx-view-component-id="cec69daa-b696-415b-b2ab-ebec81251d10"]',
-        documentSiteGuid : '[rx-view-component-id="904078f1-17f1-4ac6-ab8a-a2f6e661f01d"]',
-        editDocumentRegionGuid : '[rx-view-component-id="836aa6d7-1d77-46b4-b270-50d7d25424ba"]',
-        editDocumentSiteGuid : '[rx-view-component-id="6b73d5aa-fdeb-4d10-aa35-14e842e35a95"]',
-        knowledgeHamburgerGuid : '[rx-view-component-id="a9dfa448-2900-4a2b-a230-503f4a0ac12e"]',
-        documentHamburgerGuid : '[rx-view-component-id="5d1f94a9-693e-4dbf-896f-3b9689f95a42"]',
-        knowledgeArticleGridConsoleGuid : '[rx-view-component-id="0df18e99-4315-457c-aef0-3abc96fb08ee"]',
-        categoryTier1Guid : 'b51fcb01-f3d1-4da2-a42d-ffc5873a21b3',
-        categoryTier2Guid : '6f480482-c224-4742-b941-bce655d40fde',
-        categoryTier3Guid : '2774b518-00ab-4e02-bb23-95bdb0285840',
-        categoryTier4Guid : 'd0bd4f0d-a53e-4c67-8419-016a926a7651',
+        regionGuid: '[rx-view-component-id="17b172fd-28d5-4553-bd22-b59695953287"]',
+        siteGuid: '[rx-view-component-id="ba9870e4-81f4-45ea-b034-9aff10bc3ab7"]',
+        editRegionGuid: '[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"]',
+        editSiteGuid: '[rx-view-component-id="aa218b2b-4fa3-4525-82f3-3e0f9bfc4193"]',
+        documentRegionGuid: '[rx-view-component-id="cec69daa-b696-415b-b2ab-ebec81251d10"]',
+        documentSiteGuid: '[rx-view-component-id="904078f1-17f1-4ac6-ab8a-a2f6e661f01d"]',
+        editDocumentRegionGuid: '[rx-view-component-id="836aa6d7-1d77-46b4-b270-50d7d25424ba"]',
+        editDocumentSiteGuid: '[rx-view-component-id="6b73d5aa-fdeb-4d10-aa35-14e842e35a95"]',
+        knowledgeHamburgerGuid: '[rx-view-component-id="a9dfa448-2900-4a2b-a230-503f4a0ac12e"]',
+        documentHamburgerGuid: '[rx-view-component-id="5d1f94a9-693e-4dbf-896f-3b9689f95a42"]',
+        knowledgeArticleGridConsoleGuid: '[rx-view-component-id="0df18e99-4315-457c-aef0-3abc96fb08ee"]',
+        categoryTier1Guid: 'b51fcb01-f3d1-4da2-a42d-ffc5873a21b3',
+        categoryTier2Guid: '6f480482-c224-4742-b941-bce655d40fde',
+        categoryTier3Guid: '2774b518-00ab-4e02-bb23-95bdb0285840',
+        categoryTier4Guid: 'd0bd4f0d-a53e-4c67-8419-016a926a7651',
     }
-
-
-    
 
     async clickOnTemplate(TemplateName: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.clickOnReferenceTemplate)));
@@ -57,6 +54,7 @@ class CreateKnowledgePage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeTitleEditBox)));
         await $(this.selectors.knowledgeTitleEditBox).sendKeys(addTextKnowlegeTitleField);
     }
+
     async clickOnSaveKnowledgeButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveKnowlegeButton)));
         await $(this.selectors.saveKnowlegeButton).click();
@@ -78,6 +76,12 @@ class CreateKnowledgePage {
     async clickOnviewArticleLinkButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewArticleLink)));
         await $(this.selectors.viewArticleLink).click();
+        await browser.wait(this.EC.or(async () => {
+            let count = await browser.getAllWindowHandles().then(async function (handles) {
+                return handles.length;
+            });
+            return count >= 2;
+        }));
     }
 
     async clickOnActivityTab(): Promise<void> {
@@ -116,36 +120,36 @@ class CreateKnowledgePage {
     }
 
     async isCategoryTier1FieldLabelDisplayed(fieldName: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier1Guid,fieldName);
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier1Guid, fieldName);
     }
 
     async isCategoryTier2FieldLabelDisplayed(fieldName: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier2Guid,fieldName);
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier2Guid, fieldName);
     }
 
     async isCategoryTier3FieldLabelDisplayed(fieldName: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier3Guid,fieldName);
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier3Guid, fieldName);
     }
 
-    async isCategoryTier4FieldLabelDisplayed( fieldName: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier4Guid,fieldName);
+    async isCategoryTier4FieldLabelDisplayed(fieldName: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier4Guid, fieldName);
     }
 
 
     async selectCategoryTier1Option(fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier1Guid,fieldOption);
+        await utilCommon.selectDropDown(this.selectors.categoryTier1Guid, fieldOption);
     }
 
     async selectCategoryTier2Option(fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier2Guid,fieldOption);
+        await utilCommon.selectDropDown(this.selectors.categoryTier2Guid, fieldOption);
     }
 
     async selectCategoryTier3Option(fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier3Guid,fieldOption);
+        await utilCommon.selectDropDown(this.selectors.categoryTier3Guid, fieldOption);
     }
 
     async selectCategoryTier4Option(fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier4Guid,fieldOption);
+        await utilCommon.selectDropDown(this.selectors.categoryTier4Guid, fieldOption);
     }
 
     async clickOnDropDownOption(guid: string): Promise<void> {
@@ -154,11 +158,11 @@ class CreateKnowledgePage {
     }
 
     async selectRegionDropDownOption(fieldOption: string): Promise<void> {
-       await utilCommon.selectDropDown(this.selectors.regionGuid,fieldOption);
-        }
+        await utilCommon.selectDropDown(this.selectors.regionGuid, fieldOption);
+    }
 
     async selectSiteDropDownOption(fieldOption: string): Promise<void> {
-       await utilCommon.selectDropDown(this.selectors.siteGuid,fieldOption);
+        await utilCommon.selectDropDown(this.selectors.siteGuid, fieldOption);
     }
 
     async selectKnowledgeTemplate(fieldName: string): Promise<void> {
