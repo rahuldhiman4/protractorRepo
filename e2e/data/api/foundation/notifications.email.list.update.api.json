@@ -1,0 +1,13 @@
+{
+    "NotificationEmailList": {
+        "id": "fe6ac9e3407639a147cc153d2144e3bf1346fb2d0283f4f38358cbfb8b24fc8f1276043915cf7a02e2bd94c6b0e63cb16a4319ac2979696b39f3520be822cdba",
+        "recordDefinitionName": "com.bmc.arsys.rx.foundation:Support Group",
+        "fieldInstances": {
+            "303500800": {
+                "id": 303500800,
+                "value": "hr_cb@petramco.com",
+                "permissionType": "CHANGE"
+            }
+        }
+    }
+}

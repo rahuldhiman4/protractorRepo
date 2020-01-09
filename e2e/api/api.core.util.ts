@@ -178,16 +178,6 @@ class ApiCoreUtil {
         return newGuid;
     }
 
-
-    async createEmailOrNotesTemplate(jsonBody: string): Promise<AxiosResponse> {
-        const template = await axios.post(
-            templateUri,
-            jsonBody
-        );
-        console.log('Create Email/Notes Template API Status =============>', template.status);
-        return template;
-    }
-
     async createDyanmicData(jsonBody: string): Promise<AxiosResponse> {
         const newRecord = await axios.post(
             dynamicDataUri,

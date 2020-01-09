@@ -60,5 +60,43 @@
         "Summary": "Testing Realated Persons",
         "Support Group": "Compensation and Benefits",
         "Assignee": "Elizabeth"
+    },
+    "caseWatchlist": {
+        "Status": "2000",
+        "Company": "Petramco",
+        "Description": "This case was created by java integration tests",
+        "Requester": "qtao",
+        "Priority": "4000",
+        "Summary": "Testing Realated Persons",
+        "Support Group": "Compensation and Benefits",
+        "Assignee": "qtao"
+    },
+    "caseWatchlist_Resolved": {
+        "Status": "5000",
+        "Company": "Petramco",
+        "Description": "This case was created by java integration tests",
+        "Requester": "qtao",
+        "Priority": "4000",
+        "Summary": "Testing Realated Persons",
+        "Support Group": "Compensation and Benefits",
+        "Assignee": "qtao"
+    },
+    "caseWatchlist_1": {
+        "Status": "1000",
+        "Company": "Petramco",
+        "Description": "This case was created by java integration tests",
+        "Requester": "qtao",
+        "Priority": "4000",
+        "Summary": "Testing Realated Persons"
+    },
+    "caseWatchlist_2": {
+        "Status": "2000",
+        "Company": "Petramco",
+        "Description": "This case was created by java integration tests",
+        "Requester": "Elizabeth",
+        "Priority": "4000",
+        "Summary": "Testing Realated Persons",
+        "Support Group": "Compensation and Benefits",
+        "Assignee": "qkatawazi"
     }
 }

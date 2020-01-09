@@ -207,6 +207,21 @@ export class Util {
         }
     }
 
+    /*Work as same as String.format i.e. first parameter is a string with multiple variables embedded and other parameters will replace the embedded variables of first string
+    Example: 
+    let str1 = "This is {0} best {1}.";
+    let str2 = "the";
+    let str3 = "example";
+    console.log(formatString(str1, str2, str3)); Output ==>  "This is the best example."
+    */
+
+    formatString(str: string, ...val: string[]) {
+        for (let index = 0; index < val.length; index++) {
+          str = str.replace(`{${index}}`, val[index]);
+        }
+        return str;
+      }
+      
     async getSelectedFieldValue(fieldName:string):Promise<string>{
         let metadataField = `//span[@class='d-textfield__item'][text()='${fieldName}']/following-sibling::*//span[contains(@class,'ui-select-match-text')]`;
         await browser.wait(this.EC.visibilityOf(element(by.xpath(metadataField))));
