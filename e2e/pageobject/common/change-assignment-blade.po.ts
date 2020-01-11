@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, Key } from "protractor";
+import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 
 class ChangeAssignmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -151,10 +151,11 @@ class ChangeAssignmentBlade {
         await browser.wait(this.EC.or(async () => {
             let count = await $$(this.selectors.assignee).count();
             return count >= 2;
-        }))
-        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.assignee, name))));
-        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.assignee, name))));
-        await element(by.cssContainingText(this.selectors.assignee, name)).click();
+        }));
+        var option = await element(by.cssContainingText(this.selectors.assignee, name));
+        await browser.wait(this.EC.elementToBeClickable(option)).then(async function () {
+            await option.click();
+        });
     }
 
     async setAssignee(company: string, group: string, assignee: string): Promise<void> {
