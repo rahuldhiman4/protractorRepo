@@ -1,0 +1,1148 @@
+import { browser } from "protractor";
+import loginPage from '../../pageobject/common/login.po';
+import navigationPage from '../../pageobject/common/navigation.po';
+import apiHelper from '../../api/api.helper';
+import gridUtil from '../../utils/util.grid';
+import caseConsole from '../../pageobject/case/case-console.po';
+import caseWatchlist from '../../pageobject/case/case-watchlist-blade.po';
+import utilGrid from '../../utils/util.grid';
+import { security, operation, type } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
+import viewCasePage from "../../pageobject/case/view-case.po";
+import changeAssignment from "../../pageobject/common/change-assignment-blade.po";
+import editCase from '../../pageobject/case/edit-case.po';
+import notificationAlerts from '../../pageobject/notification/notification.po';
+
+describe('Case Watchlist', () => {
+
+    var caseAssignmentChangesStr: string = 'Case Assignment Changes';
+    var caseGroupAssignmentChangesStr: string = 'Case Group Assignment Changes';
+    var caseStatusChangesStr: string = 'Case Status Changes';
+    var inProgressStr = 'In Progress';
+    var pendingStr = "Pending";
+    var petramcoStr = "Petramco";
+    var compensationAndBenefitsStr = "Compensation and Benefits";
+    var qannisStr = "qannis";
+    var elizabethPetersStr = "Elizabeth Peters";
+    var qianruTaoStr = "Qianru Tao";
+    var assignmentNotificationStr = "Watchlist Alert: {0} assigned to {1} by {2}.";
+    var statusNotificationStr = "Watchlist Alert: {0} Marked: {1} by {2}.";
+    var groupAssignmentNotificationStr = "Watchlist Alert: {0} was assigned to group {1} by {2}";
+    var qtaoStr = "qtao";
+    var qyuanStr = "qyuan";
+    var customerResponseStr = "Customer Response";
+    var resolvedStr = "Resolved";
+    var qingYuanStr = "Qing Yuan";
+    var auSupport1Str = "AU Support 1";
+    var kasiaOstlunStr = "Kasia Ostlun";
+
+    beforeAll(async () => {
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await loginPage.login(qyuanStr);
+        await apiHelper.apiLogin("tadmin");
+        await apiHelper.updateNotificationEmailListForSupportGroup("Compensation and Benefits", "");
+        await apiHelper.setDefaultNotificationForUser(qannisStr, "Alert");
+        await apiHelper.setDefaultNotificationForUser(qyuanStr, "Alert");
+        await apiHelper.setDefaultNotificationForUser(qtaoStr, "Alert");
+    });
+
+    afterAll(async () => {
+        await apiHelper.apiLogin("tadmin");
+        await apiHelper.updateNotificationEmailListForSupportGroup("Compensation and Benefits", "hr_cb@petramco.com");
+        await navigationPage.signOut();
+    });
+
+    afterEach(async () => {
+        await browser.refresh();
+        await navigationPage.gotoCaseConsole();
+    });
+
+    it('DRDMV-15985: Verify that all the selected Cases are available in Watchlist modal', async () => {
+        await apiHelper.apiLogin(qtaoStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let caseId: string[] = [];
+        for (let i: number = 0; i < 3; i++) {
+            let response = await apiHelper.createCase(caseData['caseWatchlist']);
+            caseId[i] = response.displayId;
+        }
+        await utilGrid.clearFilter();
+        await browser.refresh();
+        for (let i: number = 0; i < 3; i++) {
+            await gridUtil.clickCheckBoxOfValueInGrid(caseId[i]);
+        }
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+        await caseConsole.clickOnWatchlistIcon();
+        for (let i: number = 0; i < 3; i++) {
+            expect(await caseWatchlist.isCasePresent(caseId[i])).toBeTruthy(caseId[i] + ": Case is not present");
+        }
+    });
+
+    it('DRDMV-16015: Verify that Case Agent can select, un-select and sort the cases in Watchlist modal', async () => {
+        await apiHelper.apiLogin(qtaoStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let caseId: string[] = [];
+        for (let i: number = 0; i < 3; i++) {
+            let response = await apiHelper.createCase(caseData['caseWatchlist']);
+            caseId[i] = response.displayId;
+        }
+        await utilGrid.clearFilter();
+        await browser.refresh();
+        for (let i: number = 0; i < 3; i++) {
+            await gridUtil.clickCheckBoxOfValueInGrid(caseId[i]);
+        }
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+        await caseConsole.clickOnWatchlistIcon();
+        await caseWatchlist.selectAllCases();
+        expect(await caseWatchlist.isAllCasesSelected()).toBeTruthy("All cases are not selected");
+        await caseWatchlist.selectAllCases();
+        expect(await caseWatchlist.isAllCasesUnSelected()).toBeTruthy("All cases are selected");
+        expect(await caseWatchlist.isColumnSorted("Case ID")).toBeTruthy("Columns are not sorted");
+    });
+
+    it('DRDMV-16017: Verify that Case Agent can search the cases in modal', async () => {
+        await apiHelper.apiLogin(qtaoStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let caseId: string[] = [];
+        for (let i: number = 0; i < 3; i++) {
+            let response = await apiHelper.createCase(caseData['caseWatchlist']);
+            caseId[i] = response.displayId;
+        }
+        await utilGrid.clearFilter();
+        await browser.refresh();
+        for (let i: number = 0; i < 3; i++) {
+            await gridUtil.clickCheckBoxOfValueInGrid(caseId[i]);
+        }
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+        await caseConsole.clickOnWatchlistIcon();
+        await caseWatchlist.isCaseSearchGiveCorrectResult(caseId[0]);
+    });
+
+    it('DRDMV-16018: Verify the default columns and total columns available in Watchlist modal', async () => {
+        await caseConsole.clickOnWatchlistIcon();
+        let defaultAssignedCaseColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee"];
+        expect(await caseWatchlist.areWatchlistColumnMatches(defaultAssignedCaseColumns)).toBeTruthy("Default columns are not matching");
+        let remainingColumns: string[] = ["Assigned Company", "ID"];
+        await caseWatchlist.addWatchlistGridColumn(remainingColumns);
+        let expectedColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee", "Assigned Company", "ID"];
+        expect(await caseWatchlist.areWatchlistColumnMatches(expectedColumns)).toBeTruthy("All columns are not matching");
+        await caseWatchlist.removeWatchlistGridColumn(remainingColumns);
+    });
+
+    it('DRDMV-16019: Verify that Case Agent can filter the cases in Watchlist modal', async () => {
+        await apiHelper.apiLogin(qtaoStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let caseId: string[] = [];
+        for (let i: number = 0; i < 3; i++) {
+            let response = await apiHelper.createCase(caseData['caseWatchlist_Resolved']);
+            caseId[i] = response.displayId;
+        }
+        await utilGrid.clearFilter();
+        await browser.refresh();
+        for (let i: number = 0; i < 3; i++) {
+            await gridUtil.clickCheckBoxOfValueInGrid(caseId[i]);
+        }
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+        await caseConsole.clickOnWatchlistIcon();
+        await caseWatchlist.addFilter("Status", "Resolved");
+        expect(await caseWatchlist.isEntireColumnContainsValue("Status", "Resolved")).toBeTruthy("Records are not filtered"); //Need to fix common method written by Ankush
+    });
+
+    it('DRDMV-16043: Verify that Case Agent can remove the cases from Watchlist', async () => {
+        await apiHelper.apiLogin(qtaoStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let caseId: string[] = [];
+        for (let i: number = 0; i < 2; i++) {
+            let response = await apiHelper.createCase(caseData['caseWatchlist_Resolved']);
+            caseId[i] = response.displayId;
+        }
+        await utilGrid.clearFilter();
+        await browser.refresh();
+        for (let i: number = 0; i < 2; i++) {
+            await gridUtil.clickCheckBoxOfValueInGrid(caseId[i]);
+        }
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+        await caseConsole.clickOnWatchlistIcon();
+        await caseWatchlist.selectCase(caseId[0]);
+        await caseWatchlist.selectCase(caseId[1]);
+        await caseWatchlist.clickOnRemoveBtn();
+        await caseWatchlist.clearWatchlistFilter();
+        expect(await caseWatchlist.isCasePresent(caseId[0])).toBeFalsy(caseId[0] + ": Case is not removed");
+        expect(await caseWatchlist.isCasePresent(caseId[1])).toBeFalsy(caseId[1] + ": Case is not removed");
+    });
+
+    it('DRDMV-16020: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
+        await apiHelper.apiLogin(qtaoStr);
+
+        //Create case
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['caseWatchlist']);
+        let caseId = response.displayId;
+        let caseGuid = response.id;
+        console.log(caseId);
+
+        //Write access to qtao
+        let caseAccessDataQtao = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['witeAccess'],
+            "username": 'qtao'
+        }
+        await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
+
+        //Read access to qannis
+        let caseAccessDataQannis = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['readAccess'],
+            "username": qannisStr
+        }
+        await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQannis);
+
+        //login with qannis and Add the case to Watchlist
+        try {
+            await navigationPage.signOut();
+            await loginPage.login(qannisStr);
+            await utilGrid.clearFilter();
+            await gridUtil.clickCheckBoxOfValueInGrid(caseId);
+            await caseConsole.clickOnAddToWatchlist();
+            await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+            await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+            await caseWatchlist.saveEvents();
+            expect(await utilCommon.getPopUpMessage()).toBe("INFO (222157): Added 1 selected case(s) to the watchlist.");
+
+            //login with qtao and update the case assignment and case status
+            await navigationPage.signOut();
+            await loginPage.login(qtaoStr);
+            await utilGrid.searchAndOpenHyperlink(caseId);
+            await viewCasePage.changeCaseStatus(inProgressStr);
+            await viewCasePage.clickSaveStatus();
+            await viewCasePage.clickEditCaseButton();
+            await editCase.clickChangeAssignmentButton();
+            await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, elizabethPetersStr);
+            await editCase.clickSaveCase();
+
+            //login with qannis, verify the notifications and remove the case from watchlist
+            await navigationPage.signOut();
+            await loginPage.login(qannisStr);
+            await notificationAlerts.clickOnNotificationIcon();
+            let assignmentNotification = utilCommon.formatString(assignmentNotificationStr, caseId, elizabethPetersStr, qianruTaoStr);
+            let statusNotification = utilCommon.formatString(statusNotificationStr, caseId, inProgressStr, qianruTaoStr);
+            expect(await notificationAlerts.isAlertPresent(assignmentNotification)).toBeTruthy(assignmentNotification + " is not present");
+            expect(await notificationAlerts.isAlertPresent(statusNotification)).toBeTruthy(statusNotification + " is not present");
+            await notificationAlerts.clickOnNotificationIcon();
+
+            //Remove the case from watchlist
+            await caseConsole.clickOnWatchlistIcon();
+            await caseWatchlist.selectCase(caseId);
+            await caseWatchlist.clickOnRemoveBtn();
+            await caseWatchlist.clickOnBackBtn();
+
+            //Login with qtao and update the case status and assignment
+            await navigationPage.signOut();
+            await loginPage.login("qtao");
+            await utilGrid.searchAndOpenHyperlink(caseId);
+            await viewCasePage.changeCaseStatus(pendingStr);
+            await viewCasePage.setStatusReason(customerResponseStr);
+            await viewCasePage.clickSaveStatus();
+            await viewCasePage.clickEditCaseButton();
+            await editCase.clickChangeAssignmentButton();
+            await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Peter Kahn");
+            await editCase.clickSaveCase();
+
+            //login with qannis, verify the notifications are not present
+            await navigationPage.signOut();
+            await loginPage.login(qannisStr);
+            await notificationAlerts.clickOnNotificationIcon();
+            let assignmentNotification1 = utilCommon.formatString(assignmentNotificationStr, caseId, "Peter Kahn", qianruTaoStr);
+            let statusNotification1 = utilCommon.formatString(statusNotificationStr, caseId, pendingStr, qianruTaoStr);
+            expect(await notificationAlerts.isAlertPresent(assignmentNotification1)).toBeFalsy(assignmentNotification1 + " is present");
+            expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeFalsy(statusNotification1 + " is present");
+            await notificationAlerts.clickOnNotificationIcon();
+        }
+        catch (ex) {
+            expect(false).toBeTruthy("Failed in try catch block");
+            console.log(ex);
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login(qyuanStr);
+        }
+    }, 140 * 1000);
+
+    it('DRDMV-16033: Verify that Case Agent is notified for OOB status changes in Case life cycle once Case Agent follow the case status change', async () => {
+        await apiHelper.apiLogin(qtaoStr);
+
+        //Create case
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['caseWatchlist']);
+        let caseId = response.displayId;
+
+        await browser.refresh();
+        await gridUtil.clickCheckBoxOfValueInGrid(caseId);
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222157): Added 1 selected case(s) to the watchlist.");
+
+        await utilGrid.searchAndOpenHyperlink(caseId);
+        await viewCasePage.changeCaseStatus(inProgressStr);
+        await viewCasePage.clickSaveStatus();
+        await utilCommon.closePopUpMessage();
+        await viewCasePage.changeCaseStatus(pendingStr);
+        await viewCasePage.setStatusReason(customerResponseStr);
+        await viewCasePage.clickSaveStatus();
+        await utilCommon.closePopUpMessage();
+        await viewCasePage.changeCaseStatus(resolvedStr);
+        await viewCasePage.setStatusReason("No Further Action Required");
+        await viewCasePage.clickSaveStatus();
+        await utilCommon.closePopUpMessage();
+        await viewCasePage.changeCaseStatus("Closed");
+        await viewCasePage.clickSaveStatus();
+        await utilCommon.closePopUpMessage();
+        let statusNotification1 = utilCommon.formatString(statusNotificationStr, caseId, inProgressStr, qingYuanStr);
+        let statusNotification2 = utilCommon.formatString(statusNotificationStr, caseId, pendingStr, qingYuanStr);
+        let statusNotification3 = utilCommon.formatString(statusNotificationStr, caseId, resolvedStr, qingYuanStr);
+        let statusNotification4 = utilCommon.formatString(statusNotificationStr, caseId, "Closed", qingYuanStr);
+
+        await browser.refresh();
+        await notificationAlerts.clickOnNotificationIcon();
+        expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeTruthy(statusNotification1 + " is not present");
+        expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeTruthy(statusNotification2 + " is not present");
+        expect(await notificationAlerts.isAlertPresent(statusNotification3)).toBeTruthy(statusNotification3 + " is not present");
+        expect(await notificationAlerts.isAlertPresent(statusNotification4)).toBeTruthy(statusNotification4 + " is not present");
+        await notificationAlerts.clickOnNotificationIcon();
+    });
+
+    it('DRDMV-16029: Verify that all the Case Agents having write access can follow/unfollow the cases', async () => {
+        await apiHelper.apiLogin(qyuanStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let caseId: string[] = [];
+        for (let i: number = 0; i < 3; i++) {
+            let response = await apiHelper.createCase(caseData['caseWatchlist']);
+            caseId[i] = response.displayId;
+        }
+        await browser.refresh();
+
+        await utilGrid.searchAndOpenHyperlink(caseId[1]);
+        await viewCasePage.clickAddToWatchlistLink();
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+
+        await viewCasePage.changeCaseStatus(inProgressStr);
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.clickEditCaseButton();
+        await editCase.clickChangeAssignmentButton();
+        await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, elizabethPetersStr);
+        await editCase.clickSaveCase();
+        await utilCommon.closePopUpMessage();
+
+        await navigationPage.gotoCaseConsole();
+        await caseConsole.clickOnWatchlistIcon();
+        await caseWatchlist.selectCase(caseId[1]);
+        await caseWatchlist.clickOnRemoveBtn();
+        await caseWatchlist.clickOnBackBtn();
+
+        await utilGrid.searchAndOpenHyperlink(caseId[1]);
+        await viewCasePage.changeCaseStatus(pendingStr);
+        await viewCasePage.setStatusReason(customerResponseStr);
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.clickEditCaseButton();
+        await editCase.clickChangeAssignmentButton();
+        await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
+        await editCase.clickSaveCase();
+
+        let assignmentNotification1 = utilCommon.formatString(assignmentNotificationStr, caseId[1], elizabethPetersStr, qingYuanStr);
+        let statusNotification1 = utilCommon.formatString(statusNotificationStr, caseId[1], inProgressStr, qingYuanStr);
+        let assignmentNotification2 = utilCommon.formatString(assignmentNotificationStr, caseId[1], kasiaOstlunStr, qingYuanStr);
+        let statusNotification2 = utilCommon.formatString(statusNotificationStr, caseId[1], pendingStr, qingYuanStr);
+
+        await browser.refresh();
+        await notificationAlerts.clickOnNotificationIcon();
+        expect(await notificationAlerts.isAlertPresent(assignmentNotification1)).toBeTruthy(assignmentNotification1 + " is not present");
+        expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeTruthy(statusNotification1 + " is not present");
+        expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeFalsy(assignmentNotification2 + " is present");
+        expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeFalsy(statusNotification2 + " is present");
+        await notificationAlerts.clickOnNotificationIcon();
+    });
+
+    it('DRDMV-16044,DRDMV-16060: Verify the position, Labels and * icon on Case console, Case and Watchlist modal', async () => {
+        await apiHelper.apiLogin(qyuanStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['caseWatchlist']);
+        let caseId = response.displayId;
+        await browser.refresh();
+        await gridUtil.clickCheckBoxOfValueInGrid(caseId);
+        expect(await caseConsole.getAddToWatchlistText()).toBe("Add to Watchlist", "Label is not matching");
+        expect(await caseConsole.getWatchlistIconText()).toBe("Watchlist", "Label is not matching");
+        await caseConsole.clickOnAddToWatchlist();
+        expect(await caseWatchlist.getCaseAssignmentChangesLabel()).toBe("Case Assignment Changes", "Label is not matching");
+        expect(await caseWatchlist.getCaseGroupAssignmentChangesLabel()).toBe("Case Group Assignment Changes", "Label is not matching");
+        expect(await caseWatchlist.getCaseStatusChangesLabel()).toBe("Case Status Changes", "Label is not matching");
+        expect(await caseWatchlist.getSaveButtonLabel()).toBe("Save", "Label is not matching");
+        expect(await caseWatchlist.getCloseButtonLabel()).toBe("Close", "Label is not matching");
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+        await caseConsole.clickOnWatchlistIcon();
+        await caseWatchlist.selectCase(caseId);
+        expect(await caseWatchlist.getRemoveButtonLabel()).toBe("Remove", "Label is not matching");
+        expect(await caseWatchlist.getUpdateWatchlistEventsButtonLabel()).toBe("Update Watchlist Events", "Label is not matching");
+        await caseWatchlist.clickOnBackBtn();
+        await caseConsole.clickOnWatchlistIcon();
+        await caseWatchlist.openCase(caseId);
+        expect(await viewCasePage.getCaseID()).toBe(caseId, "Case ID is not matching");
+        expect(await viewCasePage.getStopWatchingLinkText()).toBe("Stop Watching", "Label is not matching");
+        await viewCasePage.clickStopWatchingLink();
+        expect(await viewCasePage.getAddToWatchlistLinkText()).toBe("Add to Watchlist", "Label is not matching");
+    });
+
+    it('DRDMV-16554: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Edit', async () => {
+        await apiHelper.apiLogin(qyuanStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['caseWatchlist']);
+        let caseId = response.displayId;
+        await utilGrid.searchAndOpenHyperlink(caseId);
+        await viewCasePage.clickAddToWatchlistLink();
+        await caseWatchlist.addWatchlistEvent(caseGroupAssignmentChangesStr);
+        await caseWatchlist.saveEvents();
+
+        //Assign the case to Au Suppport 1 Group
+        await viewCasePage.clickEditCaseButton();
+        await editCase.clickChangeAssignmentButton();
+        await changeAssignment.setAssigneeGroup(auSupport1Str);
+        await editCase.clickSaveCase();
+
+        //Stop watching and change the Group Assignee to Compensation and Benefits
+        await viewCasePage.clickStopWatchingLink();
+        await viewCasePage.clickEditCaseButton();
+        await editCase.clickChangeAssignmentButton();
+        await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
+        await editCase.clickSaveCase();
+
+        await browser.refresh();
+        await notificationAlerts.clickOnNotificationIcon();
+        let groupAssignmentNotification1 = utilCommon.formatString(groupAssignmentNotificationStr, caseId, auSupport1Str, qingYuanStr);
+        let groupAssignmentNotification2 = utilCommon.formatString(groupAssignmentNotificationStr, caseId, compensationAndBenefitsStr, qingYuanStr);
+
+        expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification1)).toBeTruthy(groupAssignmentNotification1 + " is not present");
+        expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification2)).toBeFalsy(groupAssignmentNotification2 + " is present");
+        await notificationAlerts.clickOnNotificationIcon();
+    });
+
+    it('DRDMV-16555: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Console', async () => {
+        await apiHelper.apiLogin(qyuanStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['caseWatchlist']);
+        let caseId = response.displayId;
+        await browser.refresh();
+        await gridUtil.clickCheckBoxOfValueInGrid(caseId);
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent(caseGroupAssignmentChangesStr);
+        await caseWatchlist.saveEvents();
+        await utilGrid.searchAndOpenHyperlink(caseId);
+
+        //Assign the case to Au Suppport 1 Group
+        await viewCasePage.clickEditCaseButton();
+        await editCase.clickChangeAssignmentButton();
+        await changeAssignment.setAssigneeGroup(auSupport1Str);
+        await editCase.clickSaveCase();
+
+        //Stop watching and change the Group Assignee to Compensation and Benefits
+        await navigationPage.gotoCaseConsole();
+        await caseConsole.clickOnWatchlistIcon();
+        await caseWatchlist.selectCase(caseId);
+        await caseWatchlist.clickOnRemoveBtn();
+        await caseWatchlist.clickOnBackBtn();
+        await utilGrid.searchAndOpenHyperlink(caseId);
+
+        //Assign the case to Compensation and Benefits Group
+        await viewCasePage.clickEditCaseButton();
+        await editCase.clickChangeAssignmentButton();
+        await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
+        await editCase.clickSaveCase();
+
+        await browser.refresh();
+        await notificationAlerts.clickOnNotificationIcon();
+        let groupAssignmentNotification1 = utilCommon.formatString(groupAssignmentNotificationStr, caseId, auSupport1Str, qingYuanStr);
+        let groupAssignmentNotification2 = utilCommon.formatString(groupAssignmentNotificationStr, caseId, compensationAndBenefitsStr, qingYuanStr);
+
+        expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification1)).toBeTruthy(groupAssignmentNotification1 + " is not present");
+        expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification2)).toBeFalsy(groupAssignmentNotification2 + " is present");
+        await notificationAlerts.clickOnNotificationIcon();
+    });
+
+    it('DRDMV-16556: Verify that Agent remove the Case Group Assignment and Status from Watchlist update event then only Assignment change notifications will be shown', async () => {
+        await apiHelper.apiLogin(qtaoStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['caseWatchlist_2']);
+        let caseId = response.displayId;
+        let caseGuid = response.id;
+
+        //Write access to qtao
+        let caseAccessDataQtao = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['witeAccess'],
+            "username": qtaoStr
+        }
+        await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
+
+        try {
+            await navigationPage.signOut();
+            await loginPage.login(qtaoStr);
+            await utilGrid.clearFilter();
+            await utilGrid.clickCheckBoxOfValueInGrid(caseId);
+            await caseConsole.clickOnAddToWatchlist();
+            await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+            await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+            await caseWatchlist.addWatchlistEvent(caseGroupAssignmentChangesStr);
+            await caseWatchlist.saveEvents();
+            await caseConsole.clickOnWatchlistIcon();
+            await caseWatchlist.selectCase(caseId);
+            await caseWatchlist.clickOnUpdateWatchlistEventsBtn();
+            await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+            await caseWatchlist.saveEvents();
+            await caseWatchlist.openCase(caseId);
+
+            await viewCasePage.changeCaseStatus(inProgressStr);
+            await viewCasePage.clickSaveStatus();
+            await viewCasePage.clickEditCaseButton();
+            await editCase.clickChangeAssignmentButton();
+            await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
+            await editCase.clickSaveCase();
+            await utilCommon.closePopUpMessage();
+            await utilCommon.waitUntilPopUpDisappear();
+            await viewCasePage.clickEditCaseButton();
+            await editCase.clickChangeAssignmentButton();
+            await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
+            await editCase.clickSaveCase();
+            await utilCommon.closePopUpMessage();
+            await browser.refresh();
+
+            //Verify the notifications
+            await notificationAlerts.clickOnNotificationIcon();
+            let assignmentNotification = utilCommon.formatString(assignmentNotificationStr, caseId, kasiaOstlunStr, qianruTaoStr);
+            let statusNotification = utilCommon.formatString(statusNotificationStr, caseId, inProgressStr, qianruTaoStr);
+            let groupAssignmentNotification = utilCommon.formatString(groupAssignmentNotificationStr, caseId, compensationAndBenefitsStr, qianruTaoStr);
+
+            expect(await notificationAlerts.isAlertPresent(assignmentNotification)).toBeTruthy(assignmentNotification + " is not present");
+            expect(await notificationAlerts.isAlertPresent(statusNotification)).toBeFalsy(statusNotification + " is present");
+            expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification)).toBeFalsy(groupAssignmentNotification + " is present");
+            await notificationAlerts.clickOnNotificationIcon();
+        }
+        catch (ex) {
+            await expect(false).toBeTruthy("Failed in try catch block");
+            console.log(ex);
+        }
+        finally {
+            //Reset login
+            await navigationPage.signOut();
+            await loginPage.login(qyuanStr);
+        }
+    });
+
+    it('DRDMV-16557: Verify that Agent can update(add) Case group Assignment for any of the existing Watched case', async () => {
+        await apiHelper.apiLogin(qyuanStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['caseWatchlist_1']);
+        let caseId = response.displayId;
+        let caseGuid = response.id;
+
+        //Write access to qtao
+        let caseAccessDataQtao = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['witeAccess'],
+            "username": 'qtao'
+        }
+        await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
+
+        try {
+            //login with qtao
+            await navigationPage.signOut();
+            await loginPage.login(qtaoStr);
+
+            //Add Case to Watchlist with events Case Status Change and Case Assignment change
+            await utilGrid.clickCheckBoxOfValueInGrid(caseId);
+            await caseConsole.clickOnAddToWatchlist();
+            await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+            await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+            await caseWatchlist.saveEvents();
+
+            //Update case Watch with events Case Status Change and Case Group Assignment change
+            await caseConsole.clickOnWatchlistIcon();
+            await caseWatchlist.selectCase(caseId);
+            await caseWatchlist.clickOnUpdateWatchlistEventsBtn();
+            await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+            await caseWatchlist.addWatchlistEvent(caseGroupAssignmentChangesStr);
+            await caseWatchlist.saveEvents();
+
+            //Change case status, case assignment and case group assignment
+            await caseWatchlist.openCase(caseId);
+            await viewCasePage.clickEditCaseButton();
+            await editCase.clickChangeAssignmentButton();
+            await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
+            await editCase.clickSaveCase();
+            await utilCommon.closePopUpMessage();
+            await viewCasePage.changeCaseStatus("Assigned");
+            await viewCasePage.clickSaveStatus();
+            await utilCommon.waitUntilPopUpDisappear();
+            await browser.refresh();
+            await viewCasePage.clickEditCaseButton();
+            await editCase.clickChangeAssignmentButton();
+            await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
+            await editCase.clickSaveCase();
+
+            //Verify the notifications
+            await browser.refresh();
+            await notificationAlerts.clickOnNotificationIcon();
+            let assignmentNotification = utilCommon.formatString(assignmentNotificationStr, caseId, kasiaOstlunStr, qianruTaoStr);
+            let statusNotification = utilCommon.formatString(statusNotificationStr, caseId, "Assigned", qianruTaoStr);
+            let groupAssignmentNotification = utilCommon.formatString(groupAssignmentNotificationStr, caseId, compensationAndBenefitsStr, qianruTaoStr);
+
+            expect(await notificationAlerts.isAlertPresent(assignmentNotification)).toBeFalsy(assignmentNotification + " is present");
+            expect(await notificationAlerts.isAlertPresent(statusNotification)).toBeTruthy(statusNotification + " is not present");
+            expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification)).toBeTruthy(groupAssignmentNotification + " is not present");
+            await notificationAlerts.clickOnNotificationIcon();
+        }
+        catch (ex) {
+            expect(false).toBeTruthy("Failed in try block");
+            console.log(ex);
+        }
+        finally {
+            //Reset login
+            await navigationPage.signOut();
+            await loginPage.login(qyuanStr);
+        }
+    }, 180 * 1000);
+
+    it('DRDMV-16062: Verify that user add the watch from Case Console and remove the watch from Case then it should reflect', async () => {
+        await apiHelper.apiLogin(qyuanStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['caseWatchlist']);
+        let caseId = response.displayId;
+
+        //Add the case to watchlist
+        await browser.refresh();
+        await gridUtil.clickCheckBoxOfValueInGrid(caseId);
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222157): Added 1 selected case(s) to the watchlist.");
+
+        //Update the case status and case assignment
+        await utilGrid.searchAndOpenHyperlink(caseId);
+        await viewCasePage.changeCaseStatus(inProgressStr);
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.clickEditCaseButton();
+        await editCase.clickChangeAssignmentButton();
+        await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, elizabethPetersStr);
+        await editCase.clickSaveCase();
+
+        //Stop Watching the case from Case and update Case Status & Case Assignment
+        await viewCasePage.clickStopWatchingLink();
+        await viewCasePage.changeCaseStatus(pendingStr);
+        await viewCasePage.setStatusReason(customerResponseStr);
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.clickEditCaseButton();
+        await editCase.clickChangeAssignmentButton();
+        await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
+        await editCase.clickSaveCase();
+
+        //Verification of notifications
+        let assignmentNotification1 = utilCommon.formatString(assignmentNotificationStr, caseId, elizabethPetersStr, qingYuanStr);
+        let statusNotification1 = utilCommon.formatString(statusNotificationStr, caseId, inProgressStr, qingYuanStr);
+        let assignmentNotification2 = utilCommon.formatString(assignmentNotificationStr, caseId, kasiaOstlunStr, qingYuanStr);
+        let statusNotification2 = utilCommon.formatString(statusNotificationStr, caseId, pendingStr, qingYuanStr);
+
+        await browser.refresh();
+        await notificationAlerts.clickOnNotificationIcon();
+        expect(await notificationAlerts.isAlertPresent(assignmentNotification1)).toBeTruthy(assignmentNotification1 + " is not present");
+        expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeTruthy(statusNotification1 + " is not present");
+        expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeFalsy(assignmentNotification2 + " is present");
+        expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeFalsy(statusNotification2 + " is present");
+        await notificationAlerts.clickOnNotificationIcon();
+    });
+
+    it('DRDMV-16061: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
+        await apiHelper.apiLogin(qtaoStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let caseId: string[] = [];
+        for (let i: number = 0; i < 3; i++) {
+            let response = await apiHelper.createCase(caseData['caseWatchlist']);
+            caseId[i] = response.displayId;
+        }
+        await browser.refresh();
+
+        //Adding the cases to watchlist
+        for (let i: number = 0; i < 3; i++) {
+            await gridUtil.clickCheckBoxOfValueInGrid(caseId[i]);
+        }
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222157): Added 3 selected case(s) to the watchlist.");
+
+        //Adding the cases to watchlist again
+        for (let i: number = 0; i < 3; i++) {
+            await gridUtil.clickCheckBoxOfValueInGrid(caseId[i]);
+        }
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222157): Added 3 selected case(s) to the watchlist.");
+    });
+
+    it('DRDMV-16059: Verify that Save and Close buttons on Event Add are working correctly', async () => {
+        await apiHelper.apiLogin(qtaoStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['caseWatchlist']);
+        let caseId = response.displayId;
+        await browser.refresh();
+        await gridUtil.clickCheckBoxOfValueInGrid(caseId);
+        await caseConsole.clickOnAddToWatchlist();
+        expect(await caseWatchlist.isSaveEventsButtonEnabled()).toBeFalsy('Save button is enabled');
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        expect(await caseWatchlist.isSaveEventsButtonEnabled()).toBeTruthy('Save button is disabled');
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        expect(await caseWatchlist.isSaveEventsButtonEnabled()).toBeFalsy('Save button is enabled');
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        expect(await caseWatchlist.isSaveEventsButtonEnabled()).toBeTruthy('Save button is disabled');
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        expect(await caseWatchlist.isSaveEventsButtonEnabled()).toBeFalsy('Save button is enabled');
+        await caseWatchlist.addWatchlistEvent(caseGroupAssignmentChangesStr);
+        expect(await caseWatchlist.isSaveEventsButtonEnabled()).toBeTruthy('Save button is disabled');
+        await caseWatchlist.addWatchlistEvent(caseGroupAssignmentChangesStr);
+        expect(await caseWatchlist.isSaveEventsButtonEnabled()).toBeFalsy('Save button is enabled');
+        await caseWatchlist.clickOnCloseButton();
+    });
+
+    it('DRDMV-16058: Verify if Agent is added to Watchlist and later his read access is removed', async () => {
+        await apiHelper.apiLogin(qtaoStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['caseWatchlist']);
+        let caseId = response.displayId;
+        let caseGuid = response.id;
+
+        //Write access to qyuan
+        let caseAccessDataQyuan = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['witeAccess'],
+            "username": qyuanStr
+        }
+        await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQyuan);
+
+        //Read access to qannis
+        let caseAccessDataQannis = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['readAccess'],
+            "username": qannisStr
+        }
+        await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQannis);
+
+        try {
+            await navigationPage.signOut();
+            await loginPage.login(qannisStr);
+            await utilGrid.clearFilter();
+            await utilGrid.clickCheckBoxOfValueInGrid(caseId);
+            await caseConsole.clickOnAddToWatchlist();
+            await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+            await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+            await caseWatchlist.saveEvents();
+            expect(await utilCommon.getPopUpMessage()).toBe("INFO (222157): Added 1 selected case(s) to the watchlist.");
+
+            await navigationPage.signOut();
+            await loginPage.login(qyuanStr);
+            await utilGrid.searchAndOpenHyperlink(caseId);
+            await viewCasePage.changeCaseStatus(inProgressStr);
+            await viewCasePage.clickSaveStatus();
+            await viewCasePage.clickEditCaseButton();
+            await editCase.clickChangeAssignmentButton();
+            await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, elizabethPetersStr);
+            await editCase.clickSaveCase();
+
+            await apiHelper.apiLogin(qyuanStr);
+            //Remove access of Qannis
+            let caseAccessRemoveDataQannis = {
+                "operation": operation['deleteAccess'],
+                "type": type['user'],
+                "security": security['readAccess'],
+                "username": qannisStr
+            }
+            await apiHelper.updateCaseAccess(caseGuid, caseAccessRemoveDataQannis);
+
+            await utilCommon.closePopUpMessage();
+            await viewCasePage.changeCaseStatus(pendingStr);
+            await viewCasePage.setStatusReason(customerResponseStr);
+            await viewCasePage.clickSaveStatus();
+            await viewCasePage.clickEditCaseButton();
+            await editCase.clickChangeAssignmentButton();
+            await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
+            await editCase.clickSaveCase();
+
+            await navigationPage.signOut();
+            await loginPage.login(qannisStr);
+
+            //Verification of notifications
+            let assignmentNotification1 = utilCommon.formatString(assignmentNotificationStr, caseId, elizabethPetersStr, qingYuanStr);
+            let statusNotification1 = utilCommon.formatString(statusNotificationStr, caseId, inProgressStr, qingYuanStr);
+            let assignmentNotification2 = utilCommon.formatString(assignmentNotificationStr, caseId, kasiaOstlunStr, qingYuanStr);
+            let statusNotification2 = utilCommon.formatString(statusNotificationStr, caseId, pendingStr, qingYuanStr);
+
+            await notificationAlerts.clickOnNotificationIcon();
+            expect(await notificationAlerts.isAlertPresent(assignmentNotification1)).toBeTruthy(assignmentNotification1 + " is not present");
+            expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeTruthy(statusNotification1 + " is not present");
+            expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeFalsy(assignmentNotification2 + " is present");
+            expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeFalsy(statusNotification2 + " is present");
+            await notificationAlerts.clickOnNotificationIcon();
+        }
+        catch (ex) {
+            expect(false).toBeTruthy("Failed in try catch block");
+            console.log(ex);
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login(qyuanStr);
+        }
+    });
+
+    it('DRDMV-16055: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
+        await apiHelper.apiLogin(qtaoStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let caseId: string[] = [];
+        let caseGuid: string[] = [];
+        for (let i: number = 0; i < 2; i++) {
+            let response = await apiHelper.createCase(caseData['caseWatchlist']);
+            caseId[i] = response.displayId;
+            caseGuid[i] = response.id;
+        }
+        await browser.refresh();
+
+        //Write access to qyuan
+        let caseAccessDataQyuan = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['witeAccess'],
+            "username": qyuanStr
+        }
+        await apiHelper.updateCaseAccess(caseGuid[0], caseAccessDataQyuan);
+        await apiHelper.updateCaseAccess(caseGuid[1], caseAccessDataQyuan);
+
+        //Adding the cases to watchlist
+        for (let i: number = 0; i < 2; i++) {
+            await gridUtil.clickCheckBoxOfValueInGrid(caseId[i]);
+        }
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        await caseWatchlist.saveEvents();
+        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222157): Added 2 selected case(s) to the watchlist.");
+
+        //Update the events of first case from Console
+        await gridUtil.clickCheckBoxOfValueInGrid(caseId[0]);
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222157): Added 2 selected case(s) to the watchlist.");
+
+        //Change the case status and case assignment for first case
+        await utilGrid.searchAndOpenHyperlink(caseId[0]);
+        await viewCasePage.changeCaseStatus(inProgressStr);
+        await viewCasePage.clickSaveStatus();
+        await utilCommon.closePopUpMessage();
+        await viewCasePage.clickEditCaseButton();
+        await editCase.clickChangeAssignmentButton();
+        await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
+        await editCase.clickSaveCase();
+        await utilCommon.closePopUpMessage();
+
+        //Update the events of second case from Watchlist blade
+        await navigationPage.gotoCaseConsole();
+        await caseConsole.clickOnWatchlistIcon();
+        await caseWatchlist.selectCase(caseId[1]);
+        await caseWatchlist.clickOnUpdateWatchlistEventsBtn();
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+
+        //Change the case status and case assignment for second case
+        await caseWatchlist.openCase(caseId[1]);
+        await viewCasePage.changeCaseStatus(inProgressStr);
+        await viewCasePage.clickSaveStatus();
+        await utilCommon.closePopUpMessage();
+        await viewCasePage.clickEditCaseButton();
+        await editCase.clickChangeAssignmentButton();
+        await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
+        await editCase.clickSaveCase();
+        await utilCommon.closePopUpMessage();
+
+        //Verification of notifications
+        let assignmentNotification1 = utilCommon.formatString(assignmentNotificationStr, caseId[0], kasiaOstlunStr, qingYuanStr);
+        let statusNotification1 = utilCommon.formatString(statusNotificationStr, caseId[0], inProgressStr, qingYuanStr);
+        let assignmentNotification2 = utilCommon.formatString(assignmentNotificationStr, caseId[1], kasiaOstlunStr, qingYuanStr);
+        let statusNotification2 = utilCommon.formatString(statusNotificationStr, caseId[1], inProgressStr, qingYuanStr);
+
+        await browser.refresh();
+        await notificationAlerts.clickOnNotificationIcon();
+        expect(await notificationAlerts.isAlertPresent(assignmentNotification1)).toBeTruthy(assignmentNotification1 + " is not present");
+        expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeTruthy(statusNotification1 + " is not present");
+        expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeTruthy(assignmentNotification2 + " is not present");
+        expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeTruthy(statusNotification2 + " is not present");
+        await notificationAlerts.clickOnNotificationIcon();
+    });
+
+    it('DRDMV-16052: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
+        await apiHelper.apiLogin(qtaoStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let caseId: string[] = [];
+        let caseGuid: string[] = [];
+        for (let i: number = 0; i < 2; i++) {
+            let response = await apiHelper.createCase(caseData['caseWatchlist']);
+            caseId[i] = response.displayId;
+            caseGuid[i] = response.id;
+        }
+        await browser.refresh();
+
+        //Write access to qyuan
+        let caseAccessDataQyuan = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['witeAccess'],
+            "username": qyuanStr
+        }
+        await apiHelper.updateCaseAccess(caseGuid[0], caseAccessDataQyuan);
+        await apiHelper.updateCaseAccess(caseGuid[1], caseAccessDataQyuan);
+
+        //Adding the cases to watchlist
+        for (let i: number = 0; i < 2; i++) {
+            await gridUtil.clickCheckBoxOfValueInGrid(caseId[i]);
+        }
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222157): Added 2 selected case(s) to the watchlist.");
+
+        //Update the events of first case from Console
+        await gridUtil.clickCheckBoxOfValueInGrid(caseId[0]);
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222157): Added 2 selected case(s) to the watchlist.");
+
+        //Change the case status and case assignment for first case
+        await utilGrid.searchAndOpenHyperlink(caseId[0]);
+        await viewCasePage.changeCaseStatus(inProgressStr);
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.clickEditCaseButton();
+        await editCase.clickChangeAssignmentButton();
+        await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
+        await editCase.clickSaveCase();
+        await utilCommon.closePopUpMessage();
+
+        //Update the events of second case from Watchlist blade
+        await navigationPage.gotoCaseConsole();
+        await caseConsole.clickOnWatchlistIcon();
+        await caseWatchlist.selectCase(caseId[1]);
+        await caseWatchlist.clickOnUpdateWatchlistEventsBtn();
+        await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+        await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+        await caseWatchlist.saveEvents();
+
+        //Change the case status and case assignment for second case
+        await caseWatchlist.openCase(caseId[1]);
+        await viewCasePage.changeCaseStatus(inProgressStr);
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.clickEditCaseButton();
+        await editCase.clickChangeAssignmentButton();
+        await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
+        await editCase.clickSaveCase();
+
+        //Verification of notifications
+        let assignmentNotification1 = utilCommon.formatString(assignmentNotificationStr, caseId[0], kasiaOstlunStr, qingYuanStr);
+        let statusNotification1 = utilCommon.formatString(statusNotificationStr, caseId[0], inProgressStr, qingYuanStr);
+        let assignmentNotification2 = utilCommon.formatString(assignmentNotificationStr, caseId[1], kasiaOstlunStr, qingYuanStr);
+        let statusNotification2 = utilCommon.formatString(statusNotificationStr, caseId[1], inProgressStr, qingYuanStr);
+
+        await browser.refresh();
+        await notificationAlerts.clickOnNotificationIcon();
+        expect(await notificationAlerts.isAlertPresent(assignmentNotification1)).toBeTruthy(assignmentNotification1 + " is not present");
+        expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeTruthy(statusNotification1 + " is not present");
+        expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeTruthy(assignmentNotification2 + " is not present");
+        expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeTruthy(statusNotification2 + " is not present");
+        await notificationAlerts.clickOnNotificationIcon();
+    });
+
+    it('DRDMV-16050: Verify that write access Agent can add the case to watchlist from Case', async () => {
+        await apiHelper.apiLogin(qtaoStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['caseWatchlist']);
+        let caseId = response.displayId;
+        try {
+            await navigationPage.signOut();
+            await loginPage.login(qtaoStr);
+            await utilGrid.clearFilter();
+
+            await utilGrid.searchAndOpenHyperlink(caseId);
+            await viewCasePage.clickAddToWatchlistLink();
+            await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+            await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+            await caseWatchlist.saveEvents();
+
+            await viewCasePage.changeCaseStatus(inProgressStr);
+            await viewCasePage.clickSaveStatus();
+            await viewCasePage.clickEditCaseButton();
+            await editCase.clickChangeAssignmentButton();
+            await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, elizabethPetersStr);
+            await editCase.clickSaveCase();
+
+            await viewCasePage.clickStopWatchingLink();
+            await viewCasePage.changeCaseStatus(pendingStr);
+            await viewCasePage.setStatusReason(customerResponseStr);
+            await viewCasePage.clickSaveStatus();
+            await viewCasePage.clickEditCaseButton();
+            await editCase.clickChangeAssignmentButton();
+            await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
+            await editCase.clickSaveCase();
+
+            //Verification of notifications
+            let assignmentNotification1 = utilCommon.formatString(assignmentNotificationStr, caseId, elizabethPetersStr, qianruTaoStr);
+            let statusNotification1 = utilCommon.formatString(statusNotificationStr, caseId, inProgressStr, qianruTaoStr);
+            let assignmentNotification2 = utilCommon.formatString(assignmentNotificationStr, caseId, kasiaOstlunStr, qianruTaoStr);
+            let statusNotification2 = utilCommon.formatString(statusNotificationStr, caseId, pendingStr, qianruTaoStr);
+
+            await browser.refresh();
+            await notificationAlerts.clickOnNotificationIcon();
+            expect(await notificationAlerts.isAlertPresent(assignmentNotification1)).toBeTruthy(assignmentNotification1 + " is not present");
+            expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeTruthy(statusNotification1 + " is not present");
+            expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeFalsy(assignmentNotification2 + " is present");
+            expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeFalsy(statusNotification2 + " is present");
+            await notificationAlerts.clickOnNotificationIcon();
+        }
+        catch (ex) {
+            expect(false).toBeTruthy("Failed in try catch block");
+            console.log(ex);
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login(qyuanStr);
+        }
+    }, 120 * 1000);
+
+    it('DRDMV-16041: Verify that Case Agent can follow/unfollow the cases from case itself - Read only user', async () => {
+        await apiHelper.apiLogin(qtaoStr);
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['caseWatchlist']);
+        let caseId = response.displayId;
+        let caseGuid = response.id;
+
+        //Write access to qtao
+        let caseAccessDataQtao = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['witeAccess'],
+            "username": qyuanStr
+        }
+        await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
+
+        //Read access to qannis
+        let caseAccessDataQannis = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['readAccess'],
+            "username": qannisStr
+        }
+        await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQannis);
+        try {
+            await navigationPage.signOut();
+            await loginPage.login(qannisStr);
+
+            await utilGrid.searchAndOpenHyperlink(caseId);
+            await viewCasePage.clickAddToWatchlistLink();
+
+            await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
+            await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
+            await caseWatchlist.saveEvents();
+
+            await navigationPage.signOut();
+            await loginPage.login(qtaoStr);
+
+            await utilGrid.searchAndOpenHyperlink(caseId);
+            await viewCasePage.changeCaseStatus(inProgressStr);
+            await viewCasePage.clickSaveStatus();
+            await viewCasePage.clickEditCaseButton();
+            await editCase.clickChangeAssignmentButton();
+            await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, elizabethPetersStr);
+            await editCase.clickSaveCase();
+
+            await navigationPage.signOut();
+            await loginPage.login(qannisStr);
+
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.clickOnWatchlistIcon();
+            await caseWatchlist.selectCase(caseId);
+            await caseWatchlist.clickOnRemoveBtn();
+            await caseWatchlist.clickOnBackBtn();
+
+            await navigationPage.signOut();
+            await loginPage.login(qtaoStr);
+
+            await utilGrid.searchAndOpenHyperlink(caseId);
+            await viewCasePage.changeCaseStatus(pendingStr);
+            await viewCasePage.setStatusReason(customerResponseStr);
+            await viewCasePage.clickSaveStatus();
+            await viewCasePage.clickEditCaseButton();
+            await editCase.clickChangeAssignmentButton();
+            await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Peter Kahn");
+            await editCase.clickSaveCase();
+
+            await navigationPage.signOut();
+            await loginPage.login(qannisStr);
+
+            //Verification of notifications
+            let assignmentNotification1 = utilCommon.formatString(assignmentNotificationStr, caseId, elizabethPetersStr, qianruTaoStr);
+            let statusNotification1 = utilCommon.formatString(statusNotificationStr, caseId, inProgressStr, qianruTaoStr);
+            let assignmentNotification2 = utilCommon.formatString(assignmentNotificationStr, caseId, "Peter Kahn", qianruTaoStr);
+            let statusNotification2 = utilCommon.formatString(statusNotificationStr, caseId, pendingStr, qianruTaoStr);
+
+            await browser.refresh();
+            await notificationAlerts.clickOnNotificationIcon();
+            expect(await notificationAlerts.isAlertPresent(assignmentNotification1)).toBeTruthy(assignmentNotification1 + " is not present");
+            expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeTruthy(statusNotification1 + " is not present");
+            expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeFalsy(assignmentNotification2 + " is present");
+            expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeFalsy(statusNotification2 + " is present");
+            await notificationAlerts.clickOnNotificationIcon();
+        }
+        catch (ex) {
+            expect(false).toBeTruthy("Failed in try catch block");
+            console.log(ex);
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login(qyuanStr);
+        }
+    }, 160 * 1000);
+
+
+})

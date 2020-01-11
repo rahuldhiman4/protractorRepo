@@ -1,24 +1,26 @@
 import axios, { AxiosResponse } from "axios";
 import { IBusinessUnit } from 'e2e/data/api/interface/business.unit.interface.api';
 import { IDepartment } from 'e2e/data/api/interface/department.interface.api';
+import { IKnowledgeArticles } from 'e2e/data/api/interface/knowledge.articles.interface.api';
 import { IPerson } from 'e2e/data/api/interface/person.interface.api';
 import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.api';
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
 import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
-import { CaseTemplate, TaskTemplate, Knowledge, NotificationType, MenuItemStatus } from "../api/constant.api";
+import { CaseTemplate, MenuItemStatus, NotificationType, TaskTemplate } from "../api/constant.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
+import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
+import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
 import { IFlowset } from '../data/api/interface/flowset.interface.api';
 import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
-import { IKnowledgeArticles } from 'e2e/data/api/interface/knowledge.articles.interface.api';
-import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
-import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
+import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
-const globalGuid='5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330';
-const globalCompanyStr='- Global -';
+const globalGuid = '5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330';
+const globalCompanyStr = '- Global -';
+const commandeUri = 'api/rx/application/command';
 
 export interface IIDs {
     id: string;
@@ -26,7 +28,7 @@ export interface IIDs {
 }
 
 class ApiHelper {
-    
+
     async apiLogin(user: string): Promise<void> {
         var loginJson = await require('../data/userdata.json');
         var username: string = await loginJson[user].userName;
@@ -95,10 +97,10 @@ class ApiHelper {
         }
     }
 
-    async createDyanmicDataOnTemplate(templateGuid:string,payloadName:string): Promise<void> {
+    async createDyanmicDataOnTemplate(templateGuid: string, payloadName: string): Promise<void> {
         var templateDynamicDataFile = await require('../data/api/ticketing/dynamic.data.api.json');
-        var templateData = await templateDynamicDataFile[payloadName]; 
-        templateData['templateId']= templateGuid;
+        var templateData = await templateDynamicDataFile[payloadName];
+        templateData['templateId'] = templateGuid;
         var newCaseTemplate: AxiosResponse = await coreApi.createDyanmicData(templateData);
         console.log('Create Dynamic on Template API Status =============>', newCaseTemplate.status);
     }
@@ -109,10 +111,10 @@ class ApiHelper {
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[7].value = CaseTemplate[data.templateStatus];
-        if(data.company=='- Global -'){
+        if (data.company == '- Global -') {
             templateData.fieldInstances[301566300].value = globalGuid;
-            templateData.fieldInstances[1000000001].value = globalCompanyStr;    
-            }
+            templateData.fieldInstances[1000000001].value = globalCompanyStr;
+        }
         //templateData.fieldInstances[301566300].value = this.getCompanyGuid(data.company);
         var newCaseTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
         console.log('Create Case Template API Status =============>', newCaseTemplate.status);
@@ -134,10 +136,10 @@ class ApiHelper {
         templateData.fieldInstances[7].value = TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
-        if(data.company=='- Global -'){
+        if (data.company == '- Global -') {
             templateData.fieldInstances[301566300].value = globalGuid;
-            templateData.fieldInstances[1000000001].value = globalCompanyStr;    
-            }
+            templateData.fieldInstances[1000000001].value = globalCompanyStr;
+        }
         //data.company ? templateData.fieldInstances[301566300].value = data.templateSummary;
         var newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
         console.log('Create Manual Task Template API Status =============>', newTaskTemplate.status);
@@ -145,7 +147,7 @@ class ApiHelper {
             await newTaskTemplate.headers.location
         );
         console.log('New Manual Task Template Details API Status =============>', taskTemplateDetails.status);
-        
+
         return {
             id: taskTemplateDetails.data.id,
             displayId: taskTemplateDetails.data.displayId
@@ -400,65 +402,49 @@ class ApiHelper {
     }
 
     async associateCaseTemplateWithOneTaskTemplate(caseTemplateId: string, taskTemplateId: string): Promise<void> {
-        var oneTaskFlowProcess = await require('../data/api/task/taskflow.one.process.api.json');
-        var taskTemplateGuid = await coreApi.getTaskTemplateGuid(taskTemplateId);
-        var randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        oneTaskFlowProcess.name = await oneTaskFlowProcess.name + "_" + randomString;
+        let oneTaskFlowProcess = ONE_TASKFLOW;
+        oneTaskFlowProcess = Object.assign({}, oneTaskFlowProcess);
+        let taskTemplateGuid = await coreApi.getTaskTemplateGuid(taskTemplateId);
+        let randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        oneTaskFlowProcess.name = oneTaskFlowProcess.name + "_" + randomString;
+        let taskTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid);
+        let taskSummary = taskTemplateJsonData.fieldInstances[8].value;
 
-        var taskTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid);
-        var taskSummary = taskTemplateJsonData.fieldInstances[8].value;
+        oneTaskFlowProcess.flowElements[2].inputMap[2].expression = `"${taskSummary}"`;
+        oneTaskFlowProcess.flowElements[2].inputMap[3].expression = `"${taskTemplateGuid}"`;
 
-        oneTaskFlowProcess.flowElements.forEach(function (obj, index) {
-            if (obj.inputMap) {
-                obj.inputMap.forEach(function (innerObj: any) {
-                    if (innerObj.expression == `"templateId"`) {
-                        innerObj.expression = `"${taskTemplateGuid}"`;
-                    }
-                    if (innerObj.expression == "\"My one task process\"") {
-                        innerObj.expression = `"${taskSummary}"`;
-                    }
-                });
-            }
-        });
-        var processGuid = await coreApi.createProcess(oneTaskFlowProcess);
+        let processGuid = await coreApi.createProcess(oneTaskFlowProcess);
         console.log('New Process Created =============>', oneTaskFlowProcess.name, "=====GUID:", processGuid);
-        var caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
-        var caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
+
+        let caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
+        let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = oneTaskFlowProcess.name;
-        apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
+        await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
     }
 
     async associateCaseTemplateWithTwoTaskTemplate(caseTemplateId: string, taskTemplateId1: string, taskTemplateId2: string, order: string): Promise<void> {
-        var twoTaskFlowProcess: any;
+        let twoTaskFlowProcess: any;
         if (order.toLocaleLowerCase() === 'sequential')
-            twoTaskFlowProcess = await require('../data/api/task/taskflow.sequential.two.process.api.json');
+            twoTaskFlowProcess = TWO_TASKFLOW_SEQUENTIAL;
 
         if (order.toLocaleLowerCase() === 'parallel')
-            twoTaskFlowProcess = await require('../data/api/task/taskflow.parallel.two.process.api.json');
+            twoTaskFlowProcess = TWO_TASKFLOW_PARALLEL;
 
-        var taskTemplateGuid1 = await coreApi.getTaskTemplateGuid(taskTemplateId1);
-        var taskTemplateGuid2 = await coreApi.getTaskTemplateGuid(taskTemplateId2);
-        var randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        twoTaskFlowProcess = Object.assign({}, twoTaskFlowProcess);
+        let taskTemplateGuid1 = await coreApi.getTaskTemplateGuid(taskTemplateId1);
+        let taskTemplateGuid2 = await coreApi.getTaskTemplateGuid(taskTemplateId2);
+        let randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         twoTaskFlowProcess.name = await twoTaskFlowProcess.name + "_" + randomString;
 
-        twoTaskFlowProcess.flowElements.forEach(function (obj, index) {
-            if (obj.inputMap) {
-                obj.inputMap.forEach(function (innerObj: any) {
-                    if (innerObj.expression == `"templateId1"`) {
-                        innerObj.expression = `"${taskTemplateGuid1}"`;
-                    }
-                    if (innerObj.expression == `"templateId2"`) {
-                        innerObj.expression = `"${taskTemplateGuid2}"`;
-                    }
-                });
-            }
-        });
-        var processGuid = await coreApi.createProcess(twoTaskFlowProcess);
+        twoTaskFlowProcess.flowElements[2].inputMap[2].expression = `"${taskTemplateGuid1}"`;
+        twoTaskFlowProcess.flowElements[3].inputMap[2].expression = `"${taskTemplateGuid2}"`;
+
+        let processGuid = await coreApi.createProcess(twoTaskFlowProcess);
         console.log('New Process Created =============>', twoTaskFlowProcess.name, "=====GUID:", processGuid);
-        var caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
-        var caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
+        let caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
+        let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = twoTaskFlowProcess.name;
-        apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
+        await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
     }
 
     async createEmailTemplate(data: IEmailTemplate): Promise<boolean> {
@@ -473,9 +459,13 @@ class ApiHelper {
         templateData.processInputValues["EmailMessageBody"] = data.EmailMessageBody;
         templateData.processInputValues["Module"] = "Cases";
         templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.case-lib:Case";
-        const newTemplate = await coreApi.createEmailOrNotesTemplate(templateData);
-        console.log('Create Email Template API Status =============>', newTemplate.status);
-        return newTemplate.status == 201;
+        const emailTemplateResponse = await axios.post(
+            commandeUri,
+            templateData
+        );
+
+        console.log('Create Email Template API Status =============>', emailTemplateResponse.status);
+        return emailTemplateResponse.status == 201;
     }
 
 
@@ -518,9 +508,13 @@ class ApiHelper {
                 break;
             }
         }
-        const newTemplate = await coreApi.createEmailOrNotesTemplate(templateData);
-        console.log('Create Notes Template API Status =============>', newTemplate.status);
-        return newTemplate.status == 201;
+        const notesTemplateResponse = await axios.post(
+            commandeUri,
+            templateData
+        );
+
+        console.log('Create Email Template API Status =============>', notesTemplateResponse.status);
+        return notesTemplateResponse.status == 201;
     }
 
     async createKnowledgeArticle(data: IKnowledgeArticles): Promise<IIDs> {
@@ -692,6 +686,40 @@ class ApiHelper {
 
             return isAllDynamicFieldDeleted === isAllDynamicGroupDeleted === true;
         }
+    }
+
+    async updateNotificationEmailListForSupportGroup(supportGroup: string, notificationList: string): Promise<void> {
+        let supportGroupGuid: string = await coreApi.getSupportGroupGuid(supportGroup);
+        let notificationEmailFile = await require('../data/api/foundation/notifications.email.list.update.api.json');
+        let notificationEmailList = await notificationEmailFile.NotificationEmailList;
+        notificationEmailList["id"] = supportGroupGuid;
+        notificationEmailList.fieldInstances[303500800]["value"] = notificationList;
+        let uri: string = "api/rx/application/record/recordinstance/com.bmc.arsys.rx.foundation%3ASupport%20Group/" + supportGroupGuid;
+        console.log(notificationEmailList);
+        const notificationSetting = await axios.put(
+            uri,
+            notificationEmailList
+        );
+        console.log("Set Notification Email List status ==>>> " + notificationSetting.status);
+    }
+
+
+    async updateCaseAccess(caseGuid: string, data: any): Promise<number> {
+        let accessFile = await require('../data/api/case/case.access.api.json');
+        let caseAccessData = await accessFile.CaseAccess;
+        caseAccessData.processInputValues['Record Instance ID'] = caseGuid;
+        caseAccessData.processInputValues['Type'] = data.type;
+        caseAccessData.processInputValues['Operation'] = data.operation;
+        caseAccessData.processInputValues['Security Type'] = data.security;
+        caseAccessData.processInputValues['Value'] = data.username;
+
+        const updateCaseAccess = await axios.post(
+            commandeUri,
+            caseAccessData
+        );
+
+        console.log('Create Email Template API Status =============>', updateCaseAccess.status);
+        return updateCaseAccess.status;
     }
 }
 

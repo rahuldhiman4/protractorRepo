@@ -62,5 +62,13 @@
 	"hannah": {
 		"userName": "Hannah@petramco.com",
 		"userPassword": "Password_1234"
+	},
+	"qyuan": {
+		"userName": "qyuan@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"qannis": {
+		"userName": "qannis@petramco.com",
+		"userPassword": "Password_1234"
 	}
 }
