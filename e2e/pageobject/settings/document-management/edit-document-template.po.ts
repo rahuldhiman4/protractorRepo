@@ -13,6 +13,24 @@ class EditDocumentLibraryPage {
         labelDropDown: '[rx-view-component-id="72d4bfbf-ec5c-437e-b0f1-f216babb58f8"] .ui-select-allow-clear',
         labelDropDownGuid: '72d4bfbf-ec5c-437e-b0f1-f216babb58f8',
         pageHeader: '.modal-title',
+        documentBodyImg: '[rx-view-component-id="f6baa44c-1e91-49be-9164-1c56077900d8"] .cke_contents_ltr img',
+    }
+
+    async isDocumentBodyImgDisplay(): Promise<boolean> {
+        await browser.wait(this.EC.presenceOf($(this.selectors.documentBodyImg)));
+        return await $(this.selectors.documentBodyImg).isDisplayed();
+    }
+
+    async updateDescription(descriptionText: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
+        await $(this.selectors.description).clear();
+        await $(this.selectors.description).sendKeys(descriptionText);
+    }
+
+    async updateDocumentBody(descriptionText: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.documentBody)));
+        await $(this.selectors.documentBody).clear();
+        await $(this.selectors.documentBody).sendKeys(descriptionText);
     }
 
     async selectLabelDropDown(value: string): Promise<void> {
@@ -46,9 +64,15 @@ class EditDocumentLibraryPage {
         return await $(this.selectors.company).getAttribute('disabled') == 'true';
     }
 
+    async isTemplateNameDisabled(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
+        return await $(this.selectors.templateName).getAttribute('readonly') == 'true';
+    }
+
     async isCompanyNameDisplayed(companyName: string): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.company)));
+        await browser.wait(this.EC.visibilityOf($(this.selectors.company).$('.ui-select-match-text')));
         let getText = await $(this.selectors.company).$('.ui-select-match-text').getText();
+        console.log('This is company name: '+getText)
         return getText == companyName ? true : false
     }
 

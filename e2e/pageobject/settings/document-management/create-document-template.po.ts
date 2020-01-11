@@ -14,6 +14,11 @@ class CreateDocumentTemplate {
         cancelButton: '[rx-view-component-id="cfab43d9-cdba-4bec-99f3-6aefdf9fae9d"] button',
         pageHeader: '.modal-title',
         insertFieldLinkOnDocumentBody: '[rx-view-component-id="4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c"] .cke_button__expressioneditor_icon',
+        clickImageButton: '[rx-view-component-id="4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c"] .cke_button__image',
+    }
+    async clickOnDocumentBodyImageButton(): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.clickImageButton)));
+        await $(this.selectors.clickImageButton).click();
     }
 
     async isHeaderDisplayed(headerName: string): Promise<boolean> {

@@ -27,6 +27,13 @@ export class GridOperation {
         gridColumnHeader: '.ui-grid-header-cell-label',
         addColumnIcon: 'rx-record-grid-menu.rx-record-grid-toolbar__item_visible-columns .d-icon-ellipsis',
         gridRecordPresent: 'div.ui-grid-row'
+        
+    }
+
+    async clickOnGridRefreshButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.refreshButton)));
+        await $(this.selectors.refreshButton).click();
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async areColumnHeaderMatches(guid: string, columnHeader: string[]): Promise<boolean> {
@@ -43,7 +50,8 @@ export class GridOperation {
         );
     }
 
-    async isGridRecordPresent(): Promise<boolean> {
+    async isGridRecordPresent(searchRecord:string): Promise<boolean> {
+        await this.searchOnGridConsole(searchRecord);        
          browser.sleep(5000);
         return await $(this.selectors.gridRecordPresent).isPresent();
     }

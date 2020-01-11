@@ -7,7 +7,6 @@ class DocumentTemplateConsolePage {
     selectors = {
             gridGuid: '9a22b025-c87e-4ddb-b8ce-472ccbf39a63',
             pageHeader: '.rx-theme-main-text-color h2',
-            refreshButton: '.d-icon-refresh',
             deleteButton: '[rx-view-component-id="93f7643a-ab88-41be-9ff4-7a9130dbbff0"] .d-button_small span',
     }
 
@@ -22,9 +21,7 @@ class DocumentTemplateConsolePage {
     }
 
     async clickOnGridRefreshButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.refreshButton)));
-        await $(this.selectors.refreshButton).click();
-        await utilCommon.waitUntilSpinnerToHide();
+        await utilGrid.clickOnGridRefreshButton();
     }
 
     async isHeaderDisplayed(headerName:string): Promise<boolean> {
@@ -33,8 +30,7 @@ class DocumentTemplateConsolePage {
     }
 
     async isGridRecordPresent(searchRecord:string): Promise<boolean> {
-        await utilGrid.searchOnGridConsole(searchRecord);
-        return await utilGrid.isGridRecordPresent();
+        return await utilGrid.isGridRecordPresent(searchRecord);
     }
 
     async searchOnGridConsole(value: string): Promise<void> {
