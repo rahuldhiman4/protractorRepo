@@ -91,7 +91,7 @@ describe('Document Template', () => {
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
             expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal1)).toBeTruthy('Template Name is missing');
             expect(await editDocumentTemplatePo.isCompanyNameDisplayed('Petramco')).toBeTruthy('Petramco Company Name is missing');
-            // expect(await editDocumentTemplatePo.isLabelValueDisplayed(labelRandVal)).toBeTruthy('label is missing');
+            expect(await editDocumentTemplatePo.isLabelValueDisplayed(labelRandVal)).toBeTruthy('label is missing');
             expect(await editDocumentTemplatePo.isDescriptionValueDisplayed(description)).toBeTruthy('Description Name is missing');
             expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody)).toBeTruthy('Document body text is missing');
             expect(await editDocumentTemplatePo.isDocumentBodyImgDisplay()).toBeTruthy('Document body Img text is missing');
@@ -100,7 +100,7 @@ describe('Document Template', () => {
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal2);
             expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal2)).toBeTruthy('Template Name is missing for Global company');
             expect(await editDocumentTemplatePo.isCompanyNameDisplayed('- Global -')).toBeTruthy('Global Company Name is missing ');
-            // expect(await editDocumentTemplatePo.isLabelValueDisplayed(labelRandVal)).toBeTruthy('label is missing of Global company');
+            expect(await editDocumentTemplatePo.isLabelValueDisplayed(labelRandVal)).toBeTruthy('label is missing of Global company');
             expect(await editDocumentTemplatePo.isDescriptionValueDisplayed(description)).toBeTruthy('Description Name is missing of Global company ');
             expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody)).toBeTruthy('Document body text is missing of Global company');
             expect(await editDocumentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('company drop down is enabled of Global company');
@@ -118,7 +118,7 @@ describe('Document Template', () => {
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
             expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal1)).toBeTruthy('Template Name is missing');
             expect(await editDocumentTemplatePo.isCompanyNameDisplayed('Petramco')).toBeTruthy('Petramco 2 Company Name is missing');
-            // expect(await editDocumentTemplatePo.isLabelValueDisplayed(labelRandVal2)).toBeTruthy('label2 is missing');
+            expect(await editDocumentTemplatePo.isLabelValueDisplayed(labelRandVal2)).toBeTruthy('label2 is missing');
             expect(await editDocumentTemplatePo.isDescriptionValueDisplayed(description2)).toBeTruthy('Description2 Name is missing');
             expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody2)).toBeTruthy('Document body2 text is missing');
             await editDocumentTemplatePo.clickOnCancelButton();

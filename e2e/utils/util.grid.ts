@@ -30,7 +30,6 @@ export class GridOperation {
         filterIcon: '.rx-search-filter button',
         filterItems: '.search-filter-dropdown .d-accordion__item',
         applyButton: '.rx-search-filter-heading__apply',
-        
     }
 
     async clickOnGridRefreshButton(): Promise<void> {
@@ -55,7 +54,7 @@ export class GridOperation {
 
     async isGridRecordPresent(searchRecord:string): Promise<boolean> {
         await this.searchOnGridConsole(searchRecord);        
-         browser.sleep(5000);
+        await browser.sleep(5000);
         return await $(this.selectors.gridRecordPresent).isPresent();
     }
 

@@ -14,7 +14,7 @@ class ImagePropertiesPopUp {
     }
 
     async addImg(menuName: string,fileToUpload:string): Promise<void> {
-        await this.clickOnMenu(menuName);
+        await this.clickOnTab(menuName);
         await this.addAttachment(fileToUpload);
         await this.clickOnSendItToServerButton();
         await this.clickOnOkButton();
@@ -32,7 +32,7 @@ class ImagePropertiesPopUp {
 
     }
 
-    async clickOnMenu(menuName: string): Promise<void> {
+    async clickOnTab(menuName: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.tabs)));
         await element(by.cssContainingText(this.selectors.tabs,menuName)).click();
     }
