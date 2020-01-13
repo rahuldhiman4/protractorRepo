@@ -21,7 +21,7 @@ class CreateCaseTemplate {
         caseStatus: '6b1d1112-129e-4c27-82b2-2248f12dc09a',
         statusReason: 'b6a6fc24-c3e7-4565-b2d2-848dd4a6747b',
         label: '7ea99756-16a7-4aae-a8a0-8e5e11acfb77',
-        caseCategoryTier1: '57b0a78a-b91a-46c3-8800-04acc0d81108',
+        caseCategoryTier1: '[rx-view-component-id="57b0a78a-b91a-46c3-8800-04acc0d81108"], [rx-view-component-id="c8ce4fd2-d864-4544-baf7-4b27b59c12c3"]',
         caseCategoryTier2: '42e3edda-f057-41e2-8160-7a9482e847dc',
         caseCategoryTier3: 'bb675d8f-82bc-497b-8b99-dfc1baa1dd41',
         caseCategoryTier4: 'ec532c69-dbc8-4473-b76d-ad90bec193d2',
@@ -60,7 +60,7 @@ class CreateCaseTemplate {
     }
 
     async setCategoryTier1(tier1Value: string): Promise<void> {
-        await commonUtils.selectDropDown(this.selectors.caseCategoryTier1, tier1Value);
+        await commonUtils.selectDropDown2($(this.selectors.caseCategoryTier1), tier1Value);
     }
 
     async setCategoryTier2(tier2Value: string): Promise<void> {
