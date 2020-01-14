@@ -18,8 +18,6 @@ import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '..
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
-const globalGuid = '5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330';
-const globalCompanyStr = '- Global -';
 const commandeUri = 'api/rx/application/command';
 
 export interface IIDs {
@@ -111,11 +109,8 @@ class ApiHelper {
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[7].value = CaseTemplate[data.templateStatus];
-        if (data.company == '- Global -') {
-            templateData.fieldInstances[301566300].value = globalGuid;
-            templateData.fieldInstances[1000000001].value = globalCompanyStr;
-        }
-        //templateData.fieldInstances[301566300].value = this.getCompanyGuid(data.company);
+        templateData.fieldInstances[301566300].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
+        templateData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[1000000001].value;
         var newCaseTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
         console.log('Create Case Template API Status =============>', newCaseTemplate.status);
         const caseTemplateDetails = await axios.get(
@@ -136,10 +131,8 @@ class ApiHelper {
         templateData.fieldInstances[7].value = TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
-        if (data.company == '- Global -') {
-            templateData.fieldInstances[301566300].value = globalGuid;
-            templateData.fieldInstances[1000000001].value = globalCompanyStr;
-        }
+        templateData.fieldInstances[301566300].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
+        templateData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[1000000001].value;
         //data.company ? templateData.fieldInstances[301566300].value = data.templateSummary;
         var newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
         console.log('Create Manual Task Template API Status =============>', newTaskTemplate.status);
@@ -554,12 +547,7 @@ class ApiHelper {
         let flowsetFile = await require('../data/api/case/flowset.api.json');
         let flowsetData = await flowsetFile.FlowsetData;
         let companyGuid = await coreApi.getOrganizationGuid(data.company);
-        if (data.company == '- Global -') {
-            flowsetData.fieldInstances[1000000001].value = '5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330';
-        }
-        else {
-            flowsetData.fieldInstances[1000000001].value = companyGuid;
-        }
+        flowsetData.fieldInstances[1000000001].value = companyGuid;
         flowsetData.fieldInstances[450000002].value = data.flowsetName;
         flowsetData.fieldInstances[8].value = data.description;
         flowsetData.fieldInstances[7].value = data.flowsetStatus;
