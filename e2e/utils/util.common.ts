@@ -233,7 +233,7 @@ export class Util {
     async isFieldLabelDisplayed(guid: string, fieldName: string): Promise<boolean> {
         let fieldLabel = `[rx-view-component-id='${guid}'] .d-textfield__item`;
         await browser.wait(this.EC.visibilityOf($(fieldLabel)));
-        return await element(by.cssContainingText(fieldLabel, fieldName)).isEnabled();
+        return await element(by.cssContainingText(fieldLabel, fieldName)).isDisplayed();
     }
 }
 
