@@ -30,7 +30,7 @@ class AddRelationshipPage {
     async clickSaveButton() {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-        utilCommon.waitUntilSpinnerToHide();
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async addPerson(name: string, relation: string) {
