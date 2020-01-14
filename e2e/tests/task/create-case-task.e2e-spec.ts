@@ -32,7 +32,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    fit('DRDMV-7165,DRDMV-7147: Update Task Type field for any task	', async () => {
+    it('DRDMV-7165,DRDMV-7147: Update Task Type field for any task	', async () => {
         let manualTaskTemplate = 'Manual task' + Math.floor(Math.random() * 1000000);
         let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
         let automationTaskTemplate = 'Automation task' + Math.floor(Math.random() * 1000000);
