@@ -85,7 +85,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    fit('DRDMV-16248: Related Persons tab is available on Person Profile check UI', async () => {
+    it('DRDMV-16248: Related Persons tab is available on Person Profile check UI', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("Allen");
         await createCasePage.setSummary("DRDMV-16248");
