@@ -683,16 +683,15 @@ class ApiHelper {
         notificationEmailList["id"] = supportGroupGuid;
         notificationEmailList.fieldInstances[303500800]["value"] = notificationList;
         let uri: string = "api/rx/application/record/recordinstance/com.bmc.arsys.rx.foundation%3ASupport%20Group/" + supportGroupGuid;
-        console.log(notificationEmailList);
         const notificationSetting = await axios.put(
             uri,
             notificationEmailList
         );
         console.log("Set Notification Email List status ==>>> " + notificationSetting.status);
     }
-
-
-    async updateCaseAccess(caseGuid: string, data: any): Promise<number> {
+    
+    
+	async updateCaseAccess(caseGuid:string , data:any): Promise<number>{
         let accessFile = await require('../data/api/case/case.access.api.json');
         let caseAccessData = await accessFile.CaseAccess;
         caseAccessData.processInputValues['Record Instance ID'] = caseGuid;
@@ -700,13 +699,12 @@ class ApiHelper {
         caseAccessData.processInputValues['Operation'] = data.operation;
         caseAccessData.processInputValues['Security Type'] = data.security;
         caseAccessData.processInputValues['Value'] = data.username;
-
         const updateCaseAccess = await axios.post(
             commandeUri,
             caseAccessData
         );
 
-        console.log('Create Email Template API Status =============>', updateCaseAccess.status);
+        console.log('Update Case Access API Status =============>', updateCaseAccess.status);
         return updateCaseAccess.status;
     }
 }

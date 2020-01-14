@@ -275,6 +275,7 @@ class ActivityTabPage {
     }
 
     async isTextPresentInActivityLog(caseActivityLogText: string): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
         try {
             return await element(by.cssContainingText(this.selectors.activityLog, caseActivityLogText)).isDisplayed();
         }
