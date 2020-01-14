@@ -43,6 +43,7 @@ class CreateCasePage {
         clearTemplateButton: '[rx-view-component-id="d996182c-0930-40ed-987f-43e6da0a8d8a"] button',
         contact: '[rx-view-component-id="e1f5a770-e416-4ed1-bfea-eefeed86544b"] input',
         drpDownValue:'.ui-select-choices-row-inner',
+        company: '[rx-view-component-id="a7cfc996-f8c8-4ef0-afe4-18ca7e1fef88"] .ui-select-toggle',
     }
 
     async getCreateCaseTitle(): Promise<string> {
@@ -50,12 +51,17 @@ class CreateCasePage {
         return await $(this.selectors.createCaseTitle).getText();
     }
 
+    async getCompany(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.company)));
+        return await $(this.selectors.company).getText();
+    }
+
     async clickChangeAssignmentButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignment)));
         await $(this.selectors.changeAssignment).click();
     }
 
-    async isAssigneToMeDisabled(): Promise<boolean> {
+    async isAssigneToMeEnabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeButton)));
         return await $(this.selectors.assignToMeButton).isEnabled();
     }
@@ -70,7 +76,7 @@ class CreateCasePage {
         return await $(this.selectors.assignToMeButton).isDisplayed();
     }
 
-    async isChangeAssignmentButtonDisabled(): Promise<boolean> {
+    async isChangeAssignmentButtonEnabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.changeAssignment)));
         return await $(this.selectors.changeAssignment).isEnabled();
     }

@@ -60,6 +60,10 @@ class ManageTaskBlade {
         await $(this.selectors.searchTextbox).sendKeys(input, Key.ENTER);
     }
 
+    async searchTaskAndClickOnLink(input: string): Promise<void> {
+        await utilGrid.searchAndOpenHyperlink(input);
+    }
+
     async clickOnRefreshButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.refreshButton)));
         await $(this.selectors.refreshButton).click();
@@ -104,11 +108,11 @@ class ManageTaskBlade {
         return await element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary)).isDisplayed();
     }
 
-    async addTaskFromTaskTemplate(templateSummary: string): Promise<boolean> {
+    async addTaskFromTaskTemplate(templateSummary: string): Promise<void> {
         await this.clickAddTaskFromTemplateButton();
         await utilGrid.searchAndSelectGridRecord(templateSummary);
         await this.clickOnTaskGridSaveButton();
-        return await this.isTaskLinkOnManageTask(templateSummary);
+       
     }
 }
 

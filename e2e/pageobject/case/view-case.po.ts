@@ -11,6 +11,7 @@ class ViewCasePage {
         categoryTier1Value: '[rx-view-component-id="593784cc-6bce-4bfd-82e1-7ca55aa28517"] p',
         categoryTier2Value: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] p',
         categoryTier3Value: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] p',
+        categoryTier4Value: '[rx-view-component-id="aa75da42-eeb4-4a6f-946b-74d5316b7641"] p',
         reOpenCase: '[rx-view-component-id="2d51cf41-f176-4e20-bc48-f2741bcbbcb0"] button',
         saveUpdateStatus: '[rx-view-component-id="ee5dd503-a10e-4d22-9ac5-99c400892bb7"] button',
         cancelUpdateStatus: '[rx-view-component-id="7cffd3f8-5b84-4e7f-a4b3-6c0a3dd27855"] button',
@@ -125,6 +126,11 @@ class ViewCasePage {
         return await $(this.selectors.categoryTier3Value).getText();
     }
 
+    async getCategoryTier4Value(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier4Value)));
+        return await $(this.selectors.categoryTier4Value).getText();
+    }
+
     async getTextOfStatus(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.editLink)));
         await browser.wait(this.EC.visibilityOf($(this.selectors.statusChange)));
@@ -152,6 +158,7 @@ class ViewCasePage {
         if (expectedStatus) {
             await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.statusChange, expectedStatus))));
         }
+        utilCommon.waitUntilPopUpDisappear();
     }
 
     async isEditLinkDisplay(): Promise<boolean> {
