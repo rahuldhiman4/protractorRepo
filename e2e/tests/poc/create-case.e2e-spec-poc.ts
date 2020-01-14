@@ -1,5 +1,5 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import createQuickCasePage from '../../pageobject/case/create-case-quick.po';
+import createQuickCasePage from '../../pageobject/case/quick-case.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -28,13 +28,6 @@ describe('create case', () => {
         await browser.actions().sendKeys(protractor.Key.ESCAPE);
         await browser.wait(EC.invisibilityOf($(createCasePage.selectors.gotoCaseButton__preview)));
     }, 120 * 1000)
-
-    xit('should create quick case', async () => {
-        await navigationPage.gotoQuickCase();
-        await createQuickCasePage.selectRequester();
-        await createQuickCasePage.enterSummary();
-        await createQuickCasePage.saveCase();
-    });
 
     it('should create case without template', async () => {
         await navigationPage.gotCreateCase();

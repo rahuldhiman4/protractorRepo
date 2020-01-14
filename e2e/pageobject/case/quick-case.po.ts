@@ -1,4 +1,4 @@
-import { $, $$,by,browser, protractor, ProtractorExpectedConditions, element } from "protractor";
+import { $, $$, browser, by, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 class QuickCasePage {
@@ -71,13 +71,13 @@ class QuickCasePage {
 
     async createCaseButton(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseButton)));
-        await $(this.selectors.createCaseButton).click();        
+        await $(this.selectors.createCaseButton).click();
     }
 
     async gotoCaseButton(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton)));
         await $(this.selectors.gotoCaseButton).click();
-        await utilCommon.waitUntilSpinnerToHide();        
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async getPopUpMessage() {
@@ -97,6 +97,14 @@ class QuickCasePage {
             return count >= 1;
         }));
         await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).click();
+    }
+
+    async validatePin(): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.validateButton)));
+        await $(this.selectors.validateButton).click();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.pinValidateInput)));
+        await $(this.selectors.pinValidateInput).sendKeys("1234");
+        await $(this.selectors.pinOk).click();
     }
 }
 
