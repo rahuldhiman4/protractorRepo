@@ -21,7 +21,7 @@ class AcknowledgmentTemplateConsolePage {
     }
 
     async searchAndSelectGridRecord(value:string): Promise<void> {
-        await utilGrid.searchAndSelectFirstCheckBoxWOGrid(value);
+        await utilGrid.searchAndSelectGridRecord(value);
     }
 
     async clickOnGridRefreshButton(): Promise<void> {
