@@ -4,7 +4,6 @@ import utilCommon from '../../../utils/util.common';
 class CreateAcknowledgmentTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        addAckTemplates: '.d-icon-left-plus span',
         templateName: '[rx-view-component-id="310bbc87-54ee-4994-9a1e-93b1982155f2"] input',
         companyGuid: 'd240380a-1de2-4b28-9082-81e96fc21415',
         statusGuid: '3cfbfd34-19ff-4ddb-818b-23b19c859dbe',
@@ -14,11 +13,6 @@ class CreateAcknowledgmentTemplateBlade {
         body: '.cke_wysiwyg_div',
         saveButton: '[rx-view-component-id="093a0eeb-c1e0-4ed8-945f-da46d9bbde88"] button',
         cancelButton: '[rx-view-component-id="9aeef4d7-1a10-4ffd-aa3a-22665c32883c"] button',
-    }
-
-    async ClickOnAddAcknowlegeTemplateButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addAckTemplates)));
-        await element(by.cssContainingText(this.selectors.addAckTemplates, 'Acknowledgment Template')).click();
     }
 
     async setTemplateName(templateName: string): Promise<void> {

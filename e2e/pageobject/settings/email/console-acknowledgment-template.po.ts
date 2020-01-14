@@ -7,6 +7,12 @@ class AcknowledgmentTemplateConsolePage {
     selectors = {
             gridGuid: 'deb7a0eb-56a9-432d-9c4a-912cf4644086',
             delete: '[rx-view-component-id="b21478a3-5ca4-4d00-85d3-da3a5bc4ea96"] button',
+            addAckTemplates: '.d-icon-left-plus span',
+    }
+
+    async clickOnAddAcknowlegeTemplateButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addAckTemplates)));
+        await element(by.cssContainingText(this.selectors.addAckTemplates, 'Acknowledgment Template')).click();
     }
 
     async clickOnDeleteButton(): Promise<void> {
@@ -14,7 +20,7 @@ class AcknowledgmentTemplateConsolePage {
         await $(this.selectors.delete).click();
     }
 
-    async searchAndSelectFirstCheckBoxWOGrid(value:string): Promise<void> {
+    async searchAndSelectGridRecord(value:string): Promise<void> {
         await utilGrid.searchAndSelectFirstCheckBoxWOGrid(value);
     }
 

@@ -6,6 +6,7 @@ import createMenuItemsBladePo from '../../pageobject/settings/application-config
 import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
 import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
 import utilCommon from '../../utils/util.common';
+import apiHelper from '../../api/api.helper';
 describe('AcknowledgmentTemplate', () => {
 
     beforeAll(async () => {
@@ -24,32 +25,22 @@ describe('AcknowledgmentTemplate', () => {
 
     //kgaikwad
     it('DRDMV-10896,DRDMV-10901,DRDMV-10922,DRDMV-10895 : Acknowledgment Template : Acknowledgment Template creation', async () => {
-        // try {
-        let label = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName2 = 'Public' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let subject = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let body = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
-        await createMenuItemsBladePo.clickOnMenuOptionLink();
-        await createMenuItemsBladePo.selectMenuNameDropDown('Label');
-        await createMenuItemsBladePo.clickOnLocalizeLink();
-        await utilCommon.waitUntilSpinnerToHide();
-        await localizeValuePopPo.setLocalizeValue(label);
-        await localizeValuePopPo.clickOnSaveButton();
-        await utilCommon.waitUntilSpinnerToHide();
-        await createMenuItemsBladePo.selectStatusDropDown('Active');
-        await createMenuItemsBladePo.selectAvailableOnUiToggleButton(true);
-        await createMenuItemsBladePo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await apiHelper.apiLogin('qkatawazi');
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
+        let label: string = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
+        menuItemDataFile['sampleMenuItem'].menuItemName = label;
+        await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
 
-        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
-        await createAcknowledgmentTemplatesPo.ClickOnAddAcknowlegeTemplateButton();
+        await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
         await createAcknowledgmentTemplatesPo.setTemplateName(templateName);
         await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
         await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
@@ -72,7 +63,7 @@ describe('AcknowledgmentTemplate', () => {
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Status')).toBe('Active', 'Private template status is missing');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Label')).toBe(label, 'Private template label is missing');
 
-        await createAcknowledgmentTemplatesPo.ClickOnAddAcknowlegeTemplateButton();
+        await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
         await createAcknowledgmentTemplatesPo.setTemplateName(templateName2);
         await createAcknowledgmentTemplatesPo.selectCompanyDropDown('- Global -');
         await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
@@ -92,15 +83,15 @@ describe('AcknowledgmentTemplate', () => {
         await consoleAcknowledgmentTemplatePo.removeColumnOnGrid(arr);
 
         await consoleAcknowledgmentTemplatePo.clearGridSearchBox();
-        await consoleAcknowledgmentTemplatePo.searchAndSelectFirstCheckBoxWOGrid(templateName);
+        await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord(templateName);
         await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
         await utilCommon.waitUntilSpinnerToHide();
         expect(await consoleAcknowledgmentTemplatePo.isGridRecordPresent(templateName)).toBeFalsy('Public template name is preset on grid')
 
         await consoleAcknowledgmentTemplatePo.clearGridSearchBox();
-        await consoleAcknowledgmentTemplatePo.searchAndSelectFirstCheckBoxWOGrid(templateName2);
+        await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord(templateName2);
         await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
         await utilCommon.waitUntilSpinnerToHide();
         expect(await consoleAcknowledgmentTemplatePo.isGridRecordPresent(templateName2)).toBeFalsy('Public template name is preset on grid')
-    }, 210 * 1000)
+    }, 180 * 1000)
 })
