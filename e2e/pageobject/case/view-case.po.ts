@@ -52,7 +52,8 @@ class ViewCasePage {
         resolutionDescriptionTextBoxId: '[rx-view-component-id="d98df37c-7a96-43c3-bf69-2e6e735031ae"]',
         emptyResolutionDescriptionTextBox: '.d-textfield__label .ng-empty',
         priority: '.selection-field',
-        emailLink:'[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button'
+        emailLink:'[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
+        addedTaskFromCaseTemplate:'.task-list__task-card a'
     }    
     
     async clickOnEmailLink(): Promise<void> {
@@ -158,7 +159,7 @@ class ViewCasePage {
         if (expectedStatus) {
             await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.statusChange, expectedStatus))));
         }
-        utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async isEditLinkDisplay(): Promise<boolean> {
@@ -313,6 +314,19 @@ class ViewCasePage {
         return await $(this.selectors.assignedCompanyText).getText();
     }
 
+    async isCoreTaskPresent(taskSummary:string):Promise<boolean>{
+        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.addedTaskFromCaseTemplate, taskSummary))));
+        return await element(by.cssContainingText(this.selectors.addedTaskFromCaseTemplate, taskSummary)).isDisplayed();
+    }
+
+    async clickOnTaskLink(taskSummary:string):Promise<void>{
+        await element(by.cssContainingText(this.selectors.addedTaskFromCaseTemplate, taskSummary)).click();  
+    }
+
+    async getCaseStatusValue():Promise<string>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
+        return await $(this.selectors.statusChange).getText();
+    }
 }
 
 export default new ViewCasePage();

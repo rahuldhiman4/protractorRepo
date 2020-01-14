@@ -98,5 +98,41 @@
         "Summary": "Testing Realated Persons",
         "Support Group": "Compensation and Benefits",
         "Assignee": "qkatawazi"
-    }
+    },
+    "bulkCaseAssignee":{
+          "Description": "My Bulk Case Assignee",
+          "Requester": "qtao",
+          "Priority": "4000",
+          "Summary": "Bulk Case Assignee",
+          "Support Group": "Compensation and Benefits",
+          "Assignee": "qkatawazi",
+          "Status": "1000"
+        },
+        "bulkCaseAssignee_Assigned":{
+            "Description": "My Bulk Case Assignee",
+            "Requester": "qtao",
+            "Priority": "4000",
+            "Summary": "Bulk Case Assignee",
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi",
+            "Status": "2000"
+          },
+          "bulkCaseAssignee_InProgress":{
+            "Description": "My Bulk Case Assignee",
+            "Requester": "qtao",
+            "Priority": "4000",
+            "Summary": "Bulk Case Assignee",
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi",
+            "Status": "3000"
+          },
+          "bulkCaseAssignee_Resolved":{
+            "Description": "My Bulk Case Assignee",
+            "Requester": "qtao",
+            "Priority": "4000",
+            "Summary": "Bulk Case Assignee",
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi",
+            "Status": "5000"
+          }
 }

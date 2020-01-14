@@ -787,7 +787,7 @@ describe('Knowledge Articles Tests', () => {
 
     it('DRDMV-19572:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
         await navigationPage.gotoQuickCase();
-        await quickCase.setAndSelectRequesterName(caseAgentUser);
+        await quickCase.selectRequesterName(caseAgentUser);
         await quickCase.setCaseSummary(articleInDraftStatus);
         //Search with knowledge article with draft status
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
@@ -982,7 +982,7 @@ describe('Knowledge Articles Tests', () => {
         //Login with Case Manager
         await loginPage.login(caseManagerUser);
         await navigationPage.gotoQuickCase();
-        await quickCase.setAndSelectRequesterName(caseAgentUser);
+        await quickCase.selectRequesterName(caseAgentUser);
         await quickCase.setCaseSummary(articleInDraftStatus);
         //Search with knowledge article with draft status
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
@@ -1172,7 +1172,7 @@ describe('Knowledge Articles Tests', () => {
         //Login as Case Agent
         await loginPage.login(caseManagerUser);
         await navigationPage.gotoQuickCase();
-        await quickCase.setAndSelectRequesterName(caseAgentUser);
+        await quickCase.selectRequesterName(caseAgentUser);
         await quickCase.setCaseSummary(articleInDraftStatus);
         //Search with knowledge article with draft status
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
