@@ -66,7 +66,6 @@ class ViewTask {
         await utilCommon.selectDropDown2($(this.selectors.statusDropDown), statusValue);
     }
 
-
     async getUpdateTaskStatusDrpdownValue(no: number): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.allStatus)));
         return await $$(this.selectors.allStatus).get(no).getText();

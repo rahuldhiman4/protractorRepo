@@ -5,4 +5,6 @@ export interface ITaskTemplate {
     company?: string;
     processBundle?: string;
     processName?: string;
+    supportGroup?:string;
+    assignee?:string;
 }

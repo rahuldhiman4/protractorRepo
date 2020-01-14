@@ -35,6 +35,7 @@ class CreateCaseTemplate {
         resolutionDescription: '8f8159e2-d647-4c46-ae71-ff56f1a81a0b',
         businessUnitDropdown: 'f5c9ce38-b11a-4c5a-b952-16903c1c383d',
         departmentDropdown: '70778256-c238-4a16-a24f-86b71cc3da87',
+        resolveCaseOnLastTaskCompletion: '0ecdd658-0479-4cb3-a103-31f0a3238c29',
         ownerGroupDropdown: 'b3ebc604-b7dc-4090-90a5-9515d1ea7f3e',
         selectOptions: '[rx-view-component-id="5a23952e-aac4-4e00-af6c-b93a214e26a9"] span',
         changeAssignmentButton: '[rx-view-component-id="5a23952e-aac4-4e00-af6c-b93a214e26a9"] button',
@@ -61,6 +62,10 @@ class CreateCaseTemplate {
 
     async setCategoryTier1(tier1Value: string): Promise<void> {
         await commonUtils.selectDropDown2($(this.selectors.caseCategoryTier1), tier1Value);
+    }
+
+    async isResolveCaseOnLastTaskCompletion(value: boolean): Promise<void> {
+        await commonUtils.selectToggleButton(this.selectors.resolveCaseOnLastTaskCompletion, value);
     }
 
     async setCategoryTier2(tier2Value: string): Promise<void> {
