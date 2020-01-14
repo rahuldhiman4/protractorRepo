@@ -26,7 +26,6 @@ export interface IIDs {
 }
 
 class ApiHelper {
-
     async apiLogin(user: string): Promise<void> {
         var loginJson = await require('../data/userdata.json');
         var username: string = await loginJson[user].userName;
@@ -111,6 +110,39 @@ class ApiHelper {
         templateData.fieldInstances[7].value = CaseTemplate[data.templateStatus];
         templateData.fieldInstances[301566300].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
         templateData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[1000000001].value;
+        if(data.ownerGroup){
+            let ownerSupportGroup = await coreApi.getSupportGroupGuid(data.ownerGroup);
+            templateData.fieldInstances[300287900].value = ownerSupportGroup;
+        }
+        if (data.assignee) {
+            let assignee = await coreApi.getPersonGuid(data.assignee);
+            var caseTemplateDataAssignee = {
+                "id": 450000152,
+                "value": `${assignee}`
+            }
+            templateData.fieldInstances["450000152"] = caseTemplateDataAssignee;
+        }
+        if (data.supportGroup) {
+            let companyGuid = await coreApi.getOrganizationGuid(data.company);
+            var caseTemplateDataSupportCompany = {
+                "id": 450000154,
+                "value": `${companyGuid}`
+            }
+            templateData.fieldInstances["450000154"] = caseTemplateDataSupportCompany;
+            let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.supportGroup);
+            var caseTemplateDataSupportAssignee = {
+                "id": 1000000217,
+                "value": `${assigneeSupportGroup}`
+            }
+            templateData.fieldInstances["1000000217"] = caseTemplateDataSupportAssignee;
+        }
+        if (data.resolveCaseonLastTaskCompletion) {
+            var caseTemplateDataresolveCaseonLastTaskCompletion = {
+                "id": 450000166,
+                "value": `${data.resolveCaseonLastTaskCompletion}`
+            }
+            templateData.fieldInstances["450000166"] = caseTemplateDataresolveCaseonLastTaskCompletion;
+        }
         var newCaseTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
         console.log('Create Case Template API Status =============>', newCaseTemplate.status);
         const caseTemplateDetails = await axios.get(
@@ -134,6 +166,28 @@ class ApiHelper {
         templateData.fieldInstances[301566300].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
         templateData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[1000000001].value;
         //data.company ? templateData.fieldInstances[301566300].value = data.templateSummary;
+        if (data.assignee) {
+            let assignee = await coreApi.getPersonGuid(data.assignee);
+            var caseTemplateDataAssignee = {
+                "id": 450000152,
+                "value": `${assignee}`
+            }
+            templateData.fieldInstances["450000152"] = caseTemplateDataAssignee;
+        }
+        if (data.supportGroup) {
+            let companyGuid = await coreApi.getOrganizationGuid(data.company);
+            var caseTemplateDataSupportCompany = {
+                "id": 450000154,
+                "value": `${companyGuid}`
+            }
+            templateData.fieldInstances["450000154"] =caseTemplateDataSupportCompany;
+            let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.supportGroup);
+            var caseTemplateDataSupportAssignee = {
+                "id": 1000000217,
+                "value": `${assigneeSupportGroup}`
+            }
+            templateData.fieldInstances["1000000217"] =caseTemplateDataSupportAssignee;
+        }
         var newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
         console.log('Create Manual Task Template API Status =============>', newTaskTemplate.status);
         const taskTemplateDetails = await axios.get(
@@ -403,7 +457,7 @@ class ApiHelper {
         let taskTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid);
         let taskSummary = taskTemplateJsonData.fieldInstances[8].value;
 
-        oneTaskFlowProcess.flowElements[2].inputMap[2].expression = `"${taskSummary}"`;
+        oneTaskFlowProcess.flowElements[2].inputMap[0].expression = `"${taskSummary}"`;
         oneTaskFlowProcess.flowElements[2].inputMap[3].expression = `"${taskTemplateGuid}"`;
 
         let processGuid = await coreApi.createProcess(oneTaskFlowProcess);
@@ -428,7 +482,14 @@ class ApiHelper {
         let taskTemplateGuid2 = await coreApi.getTaskTemplateGuid(taskTemplateId2);
         let randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         twoTaskFlowProcess.name = await twoTaskFlowProcess.name + "_" + randomString;
+       
+        let taskTemplateJsonData1 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid1);
+        let taskSummary1 = taskTemplateJsonData1.fieldInstances[8].value;
+        let taskTemplateJsonData2 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid2);
+        let taskSummary2 = taskTemplateJsonData2.fieldInstances[8].value;
 
+        twoTaskFlowProcess.flowElements[2].inputMap[1].expression = `"${taskSummary1}"`;
+        twoTaskFlowProcess.flowElements[3].inputMap[1].expression = `"${taskSummary2}"`;
         twoTaskFlowProcess.flowElements[2].inputMap[2].expression = `"${taskTemplateGuid1}"`;
         twoTaskFlowProcess.flowElements[3].inputMap[2].expression = `"${taskTemplateGuid2}"`;
 

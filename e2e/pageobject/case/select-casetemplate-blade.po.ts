@@ -52,7 +52,7 @@ class SelectCaseTemplateBlade {
         await this.clickOnAllTemplateTab();
         await utilGrid.searchAndSelectGridRecord(templateName);
         await this.clickOnApplyButton();
-        await browser.wait(this.EC.elementToBeClickable($(createCasePage.selectors.selectCaseTemplateButton)));
+        await browser.wait(this.EC.invisibilityOf($('.modal-content')));
     }
 
     async clickOnApplyButton(): Promise<void> {

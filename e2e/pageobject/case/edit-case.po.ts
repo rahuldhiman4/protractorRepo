@@ -499,6 +499,10 @@ class CaseEditPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeCaseTemplate)));
         await $(this.selectors.changeCaseTemplate).click();
     }
+
+    async isChangeCaseTemplateButtonDisplayed(): Promise<boolean> {
+        return $(this.selectors.changeCaseTemplate).isDisplayed();
+    }
 }
 
 export default new CaseEditPage();
