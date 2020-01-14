@@ -17,6 +17,11 @@ class CaseConsolePage {
         addToWatchlist: '[rx-view-component-id="10a1551f-f216-4af7-8d62-cc79ad19f8c3"] button',
         watchlistIcon: '[rx-view-component-id="deafbff6-199a-46f5-b7bf-642cda73c5f1"] button',
         caseTitle: '[rx-view-component-id="72f24e08-7a88-4479-8eb1-d254dde49c6c"] span',
+        changeAssignment: '[rx-view-component-id="da845b85-4dba-4fb2-90b1-93d6f6d94058"] button',
+        allCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] .ui-grid-selection-row-header-buttons',
+        selectAllrows: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] div[aria-label="Select all rows"]',
+        selectedCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] div[aria-checked="true"]',
+        unselectedCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] div[aria-checked="false"]'
     }
 
     async setCaseSearchBoxValue(input: string): Promise<void> {
@@ -100,6 +105,32 @@ class CaseConsolePage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.watchlistIcon)));
         return await $(this.selectors.watchlistIcon).getText();
     }
+
+    async clickOnChangeAssignmentButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignment)));
+        await $(this.selectors.changeAssignment).click();
+    }
+
+    async selectAllCases(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectAllrows)));
+        await $(this.selectors.selectAllrows).click();
+    }
+
+    async isAllCasesSelected(): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
+        let allCheckboxCount: number = await $$(this.selectors.allCheckboxes).count();
+        let selectedCheckboxCount: number = await $$(this.selectors.selectedCheckboxes).count();
+        return selectedCheckboxCount == allCheckboxCount;
+    }
+
+    async isAllCasesUnSelected(): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
+        let allCheckboxCount: number = await $$(this.selectors.allCheckboxes).count();
+        let unSelectedCheckboxCount: number = await $$(this.selectors.unselectedCheckboxes).count();
+        return unSelectedCheckboxCount == allCheckboxCount;
+    }
+
+
 }
 
 export default new CaseConsolePage();

@@ -268,7 +268,7 @@ describe('Document Library', () => {
         await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoQuickCase();
-        await quickCasePo.setAndSelectRequesterName('Angelina Jolie');
+        await quickCasePo.selectRequesterName('Angelina Jolie');
         await quickCasePo.setCaseSummary(titleRandVal);
         let column:string=await resources.getCountOfHeading('Recommended Knowledge ')
         expect (await resources.getCountOfHeading('Recommended Knowledge ')).toBe('0','heading Count is not correct');

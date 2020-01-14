@@ -58,6 +58,11 @@ class ChangeAssignmentBlade {
         return await $(this.selectors.assignee).isDisplayed();
     }
 
+    async getAssigneeName(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assignee)));
+        return await $(this.selectors.assignee).getText();
+    }
+
     async clickOnAssignButton(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.assignButton)));
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignButton)));
@@ -71,7 +76,7 @@ class ChangeAssignmentBlade {
     }
 
     async clickOnAssignToMeCheckBox(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeCheckBox)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMeCheckBox)));
         await $(this.selectors.assignToMeCheckBox).click();
     }
 
@@ -177,6 +182,16 @@ class ChangeAssignmentBlade {
         await browser.wait(this.EC.elementToBeClickable(option));
         await element(by.cssContainingText(this.selectors.assignee, name)).click();
         await this.clickOnAssignButton();
+    }
+
+    async selectAssigneeAsSupportGroup(name: string): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.searchAsignee)));
+        await $(this.selectors.searchAsignee).sendKeys(name);
+        await browser.actions().sendKeys(protractor.Key.ENTER).perform();
+        var option = await element(by.cssContainingText(this.selectors.assignee, 'Assign to Support Group'));
+        await browser.wait(this.EC.visibilityOf(option));
+        await browser.wait(this.EC.elementToBeClickable(option));
+        await option.click();
     }
 }
 

@@ -30,7 +30,18 @@ class ComposeMail {
         toEmailgetText: 'rx-person-group-drop-down-list-multi-select[ng-model="toList"]  .personContainer .padTop3',
         ccEmailgetText: 'rx-person-group-drop-down-list-multi-select[ng-model="ccList"]  .personContainer .padTop3',
         subjectInput:'.subject-name input',
-        templateNameHeader:'.template-seperator'
+        templateNameHeader:'.template-seperator',
+        popupTemplate: '.popup-template'
+    }
+
+    async isUserPopulatedInToOrCc(value:string,emailToOrCCValue):Promise<boolean>{
+        let element = await $(`input[aria-label="${value}"]`);
+        await browser.wait(this.EC.elementToBeClickable(element));
+        await element.click();
+        await element.clear();
+        await element.sendKeys(emailToOrCCValue);
+        await browser.sleep(2000);
+        return await $(this.selectors.templateNameHeader).isPresent();
     }
 
     async clickOnSelectEmailTemplateLink(): Promise<void> {

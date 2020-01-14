@@ -16,6 +16,7 @@ class ViewTaskTemplate {
         categoryTier1Value: '[rx-view-component-id="d64a99a4-e878-47b7-86f2-b6dfb7cd4652"] p',
         categoryTier2Value: '[rx-view-component-id="c427cb37-5018-4bc6-b951-46f31a679d93"] p',
         categoryTier3Value: '[rx-view-component-id="118170eb-e94d-4056-9d0b-cb944ff96ebb"] p',
+        categoryTier4Value: '[rx-view-component-id="d88c4135-b283-4b9a-9909-80f1e83e6087"] p',
         editProcessLink: '[rx-view-component-id="bb9a3cc7-a8e9-4291-a447-f3a5c33afd1e"] button',
         ownerCompanyValue: '[rx-view-component-id="37dd629c-6d13-4e6d-b70e-90b91dd5b484"] p',
         ownerGroupValue: '[rx-view-component-id="f02e4c7b-93f9-4b35-af23-f522d56daa4b"] p',
@@ -112,6 +113,11 @@ class ViewTaskTemplate {
     async getCategoryTier3Value(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3Value)));
         return await $(this.selectors.categoryTier3Value).getText();
+    }
+
+    async getCategoryTier4Value(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier4Value)));
+        return await $(this.selectors.categoryTier4Value).getText();
     }
 }
 

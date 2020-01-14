@@ -391,7 +391,7 @@ describe('Knowledge Articles Tests', () => {
         try {
             //* Check the Availability of Category Tiers with Case BA
             await navigationPage.gotoQuickCase();
-            await quickCase.setAndSelectRequesterName(caseAgentUser);
+            await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
             //Search with knowledge article with draft status
             await resources.clickOnAdvancedSearchOptions(recommendedKnowledgeStr);
@@ -504,7 +504,7 @@ describe('Knowledge Articles Tests', () => {
             //Login with Case Manager
             await loginPage.login(caseManagerUser);
             await navigationPage.gotoQuickCase();
-            await quickCase.setAndSelectRequesterName(caseAgentUser);
+            await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
             //Search with knowledge article with draft status
             await resources.clickOnAdvancedSearchOptions(recommendedKnowledgeStr);
@@ -617,7 +617,7 @@ describe('Knowledge Articles Tests', () => {
             //Login with Case Agent
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoQuickCase();
-            await quickCase.setAndSelectRequesterName(caseManagerUser);
+            await quickCase.selectRequesterName(caseManagerUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
             //Search with knowledge article with draft status
             await resources.clickOnAdvancedSearchOptions(recommendedKnowledgeStr);

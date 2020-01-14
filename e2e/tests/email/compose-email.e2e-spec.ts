@@ -61,7 +61,7 @@ describe("compose email", () => {
         await viewCasePo.isEmailLinkPresent();
 
         await navigationPage.gotoQuickCase();
-        await quickCase.setAndSelectRequesterName('adam');
+        await quickCase.selectRequesterName('adam');
         await quickCase.setCaseSummary('new case');
         await quickCase.createCaseButton();
         await utilCommon.closePopUpMessage();
@@ -167,7 +167,7 @@ describe("compose email", () => {
         expect(selectEmailTemplateBladePo.isApplyButtonEnabled()).toBeFalsy('Apply button is clickable');
     })
    
-    it('DRDMV-10394: Apply Email Template', async () => {
+    it('DRDMV-10394,DRDMV-10397: Apply Email Template', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
@@ -198,12 +198,13 @@ describe("compose email", () => {
         expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
         await composeMail.clickOnSendButton();
         expect(await activityTabPo.getemailContent()).toContain('Qianru Tao sent an email');
+        expect(await activityTabPo.getemailContent()).toContain(emailTemplateName);
         expect(await activityTabPo.getemailContent()).toContain('To: Fritz Schulz');
         expect(await activityTabPo.getemailContent()).toContain(caseId+ ':'+'Leave summary');
         expect(await activityTabPo.getemailContent()).toContain('I am taking leave today.');
     }),
     
-    it('DRDMV-10401: Email Body override with template details', async () => {
+    it('DRDMV-10401,DRDMV-10393: Email Body override with template details', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
@@ -224,7 +225,7 @@ describe("compose email", () => {
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
-        expect(await composeMail.getSubject()).toContain(caseId);
+        expect(await composeMail.getSubject()).toContain(caseId);//part of DRDMV-10393
         await expect(await composeMail.getEmailBody()).toContain('Regards');
         await expect(await composeMail.getEmailBody()).toContain('Qianru Tao');
         await expect(await composeMail.getEmailBody()).toContain('qtao@petramco.com');
@@ -234,7 +235,7 @@ describe("compose email", () => {
         await emailTemplateBladePo.clickOnApplyButton();
         await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
         expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
-        expect(await composeMail.getSubject()).toContain(caseId);
+        expect(await composeMail.getSubject()).toContain(caseId); ////part of DRDMV-10393
         expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
         expect((await composeMail.isTextPresentInEmailBody('qtao@petramco.com'))).toBeFalsy();
         expect((await composeMail.isTextPresentInEmailBody('Qianru Tao'))).toBeFalsy();
@@ -315,5 +316,35 @@ describe("compose email", () => {
         expect(await composeMail.getSubjectInputValue()).toContain('Salary summary');
         expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate1);        
         await composeMail.clickOnSendButton();
+    }),
+
+    it('DRDMV-8392,DRDMV-10384: Negative: In Email "To" and "cc" should be user from Foundation data ', async () => {
+        await navigationPage.gotoCaseConsole();
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseData =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-8392 RandVal" + summary,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin('qtao');
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
+        await utilGrid.clearFilter();
+        await caseConsole.searchAndOpenCase(caseId);
+        expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
+        await viewCasePo.clickOnEmailLink();
+        await composeMail.isSelectEmailTemplateButtonPresent();
+        await utilCommon.waitUntilSpinnerToHide();
+        expect(await composeMail.isUserPopulatedInToOrCc('To','xyxd')).toBeFalsy();
+        await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+        expect(await composeMail.getToEmailPerson()).toContain('Fritz Schulz');
+        expect(await composeMail.isUserPopulatedInToOrCc('Cc','xyxd')).toBeFalsy();
+        await composeMail.setToOrCCInputTetxbox('Cc', 'fritz.schulz@petramco.com');
+        expect(await composeMail.getCcEmailPerson()).toContain('Fritz Schulz');
+        await composeMail.clickOnDiscardButton();
+        expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?'), 'Warning Email message is missing';
+        await utilCommon.clickOnWarningOk();
     })
 })
