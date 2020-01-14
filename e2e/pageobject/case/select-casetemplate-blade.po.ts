@@ -1,6 +1,7 @@
-import { $, browser, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import { $,$$, browser, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import createCasePage from '../../pageobject/case/create-case.po';
 import utilGrid from '../../utils/util.grid';
+import utilCommon from '../../utils/util.common';
 
 
 class SelectCaseTemplateBlade {
@@ -13,7 +14,8 @@ class SelectCaseTemplateBlade {
         checkBox: 'ui-grid-icon-ok',
         applyButton: '[rx-view-component-id="f348e681-ac02-452c-b37f-009ac4434053"] button',
         caseTemplateCheckBox: '.ui-grid-icon-ok',
-        caseTemplateLink: 'ui-grid__link',
+        caseTemplateLink: '.ui-grid__link',
+        cancelButton: '[rx-view-component-id="161ed2e2-ea43-4db5-9f9c-149f82a74db2"] button',
     }
 
     async clickOnRecommendedTemplateTab(): Promise<void> {
@@ -37,10 +39,8 @@ class SelectCaseTemplateBlade {
         await $(this.selectors.allTemplates).click();
     }
 
-    async setSearchBoxValue(input: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTextbox)));
-        await $(this.selectors.searchTextbox).clear();
-        await $(this.selectors.searchTextbox).sendKeys(input, Key.ENTER);
+    async searchAndClickOnLink(input: string): Promise<void> {
+        await utilGrid.searchAndOpenHyperlink(input);
     }
 
     async clickOnRefreshButton(): Promise<void> {
@@ -58,6 +58,11 @@ class SelectCaseTemplateBlade {
     async clickOnApplyButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyButton)));
         await $(this.selectors.applyButton).click();
+    }
+
+    async clickOnCancelButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        await $(this.selectors.cancelButton).click();
     }
 }
 
