@@ -3,6 +3,7 @@ import apiHelper from '../../api/api.helper';
 import caseConsolePage from '../../pageobject/case/case-console.po';
 import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
 import createCasePage from "../../pageobject/case/create-case.po";
+import viewCaseTemplate from '../../pageobject/settings/case-management/view-casetemplate.po';
 import editCasePage from '../../pageobject/case/edit-case.po';
 import selectCaseTemplateBlade from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
@@ -24,6 +25,10 @@ import manageTask from "../../pageobject/task/manage-task-blade.po";
 import caseTemplatePreview from '../../pageobject/settings/case-management/preview-case-template-cases.po';
 import taskTemplatePreview from '../../pageobject/settings/task-management/preview-task-template-cases.po';
 import createTaskTemplate from '../../pageobject/settings/task-management/create-tasktemplate.po';
+import editCaseTemplate from '../../pageobject/settings/case-management/edit-casetemplate.po';
+import consoleReadAcess from '../../pageobject/settings/case-management/read-access-console.po';
+import addReadAccess from '../../pageobject/settings/case-management/add-read-access-configuration.po';
+import selectCaseTemplate from '../../pageobject/case/select-casetemplate-blade.po';
 
 describe("Create Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -810,4 +815,99 @@ describe("Create Case", () => {
             await loginPage.login('qkatawazi');
         }
     })
+ 
+    //ankagraw
+    it('DRDMV-11987: [Case Creation] Verify able to create case with Global case template having flowset', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplate1 = 'Case Template 1' + randomStr;
+        let globalCategName = 'DemoCateg1';
+        let categName2 = 'DemoCateg2';
+        let categName3 = 'DemoCateg3';
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.createOperationalCategory(globalCategName, true);
+        await apiHelper.createOperationalCategory(categName2);
+        await apiHelper.createOperationalCategory(categName3);
+        await apiHelper.associateCategoryToCategory(globalCategName, categName2);
+        await apiHelper.associateCategoryToCategory(categName2, categName3);
+        let caseTemplateSummary1 = 'Summary 1' + randomStr;
+       
+
+        await apiHelper.apiLogin('qkatawazi');
+        let flowsetData = require('../../data/ui/case/flowset.ui.json');
+        let flowsetName: string = await flowsetData['flowsetGlobalFields'].flowsetName + randomStr;
+        flowsetData['flowsetGlobalFields'].flowsetName = flowsetName;
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createNewFlowset(flowsetData['flowsetGlobalFields']);
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+        await createCaseTemplate.setTemplateName(caseTemplate1);
+        await createCaseTemplate.setCompanyName('Global');
+        await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
+        await createCaseTemplate.setCategoryTier1(globalCategName);
+        await createCaseTemplate.setCategoryTier2(categName2);
+        await createCaseTemplate.setCategoryTier3(categName3);
+        
+        await createCaseTemplate.setFlowsetValue(flowsetName);
+        await createCaseTemplate.setPriorityValue('Low');
+        await createCaseTemplate.setTemplateStatusDropdownValue('Active')
+        await createCaseTemplate.clickSaveCaseTemplate();
+        await utilCommon.waitUntilPopUpDisappear();
+
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester('adam');
+        await createCasePage.setSummary(caseTemplate1);
+        await createCasePage.clickSelectCaseTemplateButton();
+        await selectCaseTemplate.selectCaseTemplate(caseTemplate1);
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await viewCasePage.getCaseSummary();
+        await viewCasePage.getPriorityValue();
+     }, 180 * 1000);
+
+    it('DRDMV-11818: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplate1 = 'Case Template 1' + randomStr;
+
+        let caseTemplateSummary1 = 'Summary 1' + randomStr;
+        let flowsetData = require('../../data/ui/case/flowset.ui.json');
+        let flowsetName: string = await flowsetData['flowsetGlobalFields'].flowsetName + randomStr;
+        flowsetData['flowsetGlobalFields'].flowsetName = flowsetName;
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createNewFlowset(flowsetData['flowsetGlobalFields']);
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+        await createCaseTemplate.setTemplateName(caseTemplate1);
+        await createCaseTemplate.setCompanyName('Global');
+        await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
+        await createCaseTemplate.setFlowsetValue(flowsetName);
+        await createCaseTemplate.setTemplateStatusDropdownValue('Active')
+        await createCaseTemplate.clickSaveCaseTemplate();
+        await expect(utilCommon.isErrorMsgPresent()).toBeTruthy();
+        await utilCommon.waitUntilPopUpDisappear();
+        await expect(viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
+        await expect(viewCaseTemplate.getFlowsetValue()).toBe(flowsetName);
+        await viewCaseTemplate.clickOnEditCaseTemplateButton();
+        await expect(editCaseTemplate.isCaseCompanyDisabled()).toBeTruthy();
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+        await consoleReadAcess.clickOnReadAccessConfiguration();
+        await addReadAccess.setReadAccessConfigurationName("test");
+        await addReadAccess.selectCompany('Global');
+        await addReadAccess.selectFlowset(flowsetName);
+        await addReadAccess.selectSupportCompany('Petramco');
+        await addReadAccess.selectSupportGroup('AU Support 2');
+        await addReadAccess.clickOnSave();
+
+        await navigationPage.signOut();
+        await loginPage.login('gwixillian');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplate1);
+        await expect(viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
+    },180*1000);
 });

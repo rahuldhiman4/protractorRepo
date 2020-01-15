@@ -10,7 +10,7 @@ export class Util {
         warningOk: '.d-modal__footer button[class*="d-button d-button_primary d-button_small"]',
         warningCancel: '.d-modal__footer button[class*="d-button d-button_secondary d-button_small"]',
         closeTipMsg: '.close.rx-growl-close',
-        errorMsg: '.rx-growl-item__message',
+        errorMsg: '.rx-alert-error [ng-bind="message.text"]',
         advancedSearchInput: 'input.rx-adv-search-textField',
         advancedSearchSettingsBtn: 'button.d-icon-adjust_settings',
         advancedSearchSettingsBtnClose: 'button[ng-hide="showAdvOptions"]',
@@ -105,6 +105,15 @@ export class Util {
     async getPopUpMessage(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
         return await $(this.selectors.popUpMsgLocator).getText();
+    }
+
+    async isErrorMsgPresent(): Promise<boolean> {
+       let count= await $$(this.selectors.errorMsg).count();
+        if(count>0){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     async isPopUpMessagePresent(value: string): Promise<boolean> {
@@ -234,6 +243,11 @@ export class Util {
         let fieldLabel = `[rx-view-component-id='${guid}'] .d-textfield__item`;
         await browser.wait(this.EC.visibilityOf($(fieldLabel)));
         return await element(by.cssContainingText(fieldLabel, fieldName)).isDisplayed();
+    }
+
+    async isRequiredAttributePresent(locator: any): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(locator)));
+        return (await $(locator).getAttribute("required")) == 'required' ;
     }
 }
 
