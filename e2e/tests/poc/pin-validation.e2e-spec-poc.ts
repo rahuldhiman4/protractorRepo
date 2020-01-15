@@ -1,8 +1,9 @@
 import { browser, protractor, ProtractorExpectedConditions } from "protractor";
 import apiHelper from "../../api/api.helper";
-import createQuickCasePage from '../../pageobject/case/create-case-quick.po';
+import createQuickCasePage from '../../pageobject/case/quick-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import utilCommon from '../../utils/util.common';
 
 describe('Pin Validation testing', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -30,11 +31,11 @@ describe('Pin Validation testing', () => {
 
     it('should create quick case using case template', async () => {
         await navigationPage.gotoQuickCase();
-        await createQuickCasePage.selectRequester();
+        await createQuickCasePage.selectRequesterName('Allen');
         await createQuickCasePage.selectCaseTemplate(templateName);
         await createQuickCasePage.validatePin();
         expect(createQuickCasePage.getPopUpMessage()).toContain('WARNING (232053)');
-        await createQuickCasePage.waitUntilPopUpDisappear();
+        await utilCommon.waitUntilPopUpDisappear();
         await createQuickCasePage.saveCase();
     })
 })

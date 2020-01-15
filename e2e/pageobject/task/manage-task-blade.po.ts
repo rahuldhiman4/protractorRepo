@@ -112,7 +112,6 @@ class ManageTaskBlade {
         await this.clickAddTaskFromTemplateButton();
         await utilGrid.searchAndSelectGridRecord(templateSummary);
         await this.clickOnTaskGridSaveButton();
-       
     }
 }
 

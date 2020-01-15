@@ -1,5 +1,5 @@
 import { browser } from "protractor";
-import createQuickCasePage from '../../pageobject/case/create-case-quick.po';
+import createQuickCasePage from '../../pageobject/case/quick-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import utilCommon from '../../utils/util.common';
@@ -20,15 +20,4 @@ describe('Parallel task execution', () => {
         await loginPage.login('qkatawazi');
     });
 
-    it('should create quick case', async () => {
-        await navigationPage.gotoQuickCase();
-        await createQuickCasePage.createQuickCase();
-        await createQuickCasePage.gotoCase();
-    });
-
-    it('should create task using template', async () => {
-        await navigationPage.gotoQuickCase();
-        await createQuickCasePage.createQuickCase();
-        await createQuickCasePage.gotoCase();
-    })
 })
