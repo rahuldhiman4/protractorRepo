@@ -98,5 +98,5 @@ describe('EmailTemplate', () => {
         expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message Type')).toBe('body','Body is missing from Grid');
         await editEmailTemplatePo.searchOnGridConsole('subject');
         expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message Type')).toBe('subject','subject is missing from Grid');
-    }, 240 * 1000)
+    }, 160 * 1000)
 })
