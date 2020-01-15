@@ -8,7 +8,7 @@
     "flowsetGlobalFields" : {
         "flowsetName": "Test Flowset Global name",
         "flowsetStatus": 10,
-        "company": "- Global -",
+        "company": "- Global -",
         "description": "test description"
     }
 }

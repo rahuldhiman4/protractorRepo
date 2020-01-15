@@ -1,5 +1,6 @@
 import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import util from "../../../utils/util.common";
+import utilCommon from '../../../utils/util.common';
 
 class CreateTaskTemplatePage {
 
@@ -9,7 +10,7 @@ class CreateTaskTemplatePage {
         taskSummary: '[rx-view-component-id="c19d336e-7339-4970-b69a-100108d672fd"] input',
         taskCompny: 'f62bd26b-c464-4dff-ab7b-e4446d1cbf99',
         taskPriority: '1b9c265f-e618-4f0a-9b21-55dbb78e0cd1',
-        label: '3fc875fc-5677-497f-bf30-5e3e3068b826',
+        label: 'df2fba00-56d2-412c-ac22-b2990fcd4337',
         taskCategoryDrpDown1: 'b4b55a43-81bc-43aa-877b-32e71babf229',
         taskCategoryDrpDown2: '1fa4a29b-2234-4b17-8f2e-0649d1df860e',
         taskCategoryDrpDown3: '09e9fc7b-03ab-45ec-83b2-7dbb42e64f23',
@@ -30,6 +31,11 @@ class CreateTaskTemplatePage {
         searchProcess: '.d-icon-search',
         setInputdataInProcess: '[rx-view-component-id="71e09acc-0077-4e55-9c24-7f6bdc90ce5d"] input',
         selectNameInProcess: '.rx-definition-picker__instance-name mark',
+        taskPriorityRequiredText: '[rx-view-component-id="1b9c265f-e618-4f0a-9b21-55dbb78e0cd1"] .ui-select-container',
+        templateStatusRequiredText: '[rx-view-component-id="09db292a-212a-433e-8c20-a92f8c4e5168"] .ui-select-container',
+        ownerCompanyRequiredText: '[rx-view-component-id="87ec3995-3350-4e3f-ab19-0f1e7846fbd7"] .ui-select-container',
+        ownerGroupRequiredText: '[rx-view-component-id="61278673-8106-419c-83e4-a9e00f12f835"] .ui-select-container',
+        taskDescriptionGuid: '8dab5855-547b-449d-a010-3f1bd09fd7f5',
     }
 
     async setTemplateName(inputValue: string): Promise<void> {
@@ -133,6 +139,50 @@ class CreateTaskTemplatePage {
         var option = await element(by.cssContainingText(this.selectors.selectNameInProcess, processName));
         await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
+    }
+
+    async isTemplateNameRequiredText(): Promise<boolean> {
+        return await utilCommon.isRequiredAttributePresent(this.selectors.templateName);
+    }
+
+    async isTaskSummaryRequiredText(): Promise<boolean> {
+        return await utilCommon.isRequiredAttributePresent(this.selectors.taskSummary);
+    }
+
+    async isTaskPriorityRequiredText(): Promise<boolean> {
+        return await utilCommon.isRequiredAttributePresent(this.selectors.taskPriorityRequiredText);
+    }
+
+    async isTemplateStatusRequiredText(): Promise<boolean> {
+        return await utilCommon.isRequiredAttributePresent(this.selectors.templateStatusRequiredText);
+    }
+
+    async isOwnerComapnyRequiredText(): Promise<boolean> {
+        return await utilCommon.isRequiredAttributePresent(this.selectors.ownerCompanyRequiredText);
+    }
+
+    async isOwnerGroupRequiredText(): Promise<boolean> {
+        return await utilCommon.isRequiredAttributePresent(this.selectors.ownerGroupRequiredText);
+    }
+
+    async isTaskDescriptionTitlePresent(value: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskDescriptionGuid, value);
+    }
+
+    async isTaskCategoryTier1TitlePresent(value: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryDrpDown1, value);
+    }
+
+    async isTaskCategoryTier2TitlePresent(value: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryDrpDown2, value);
+    }
+
+    async isTaskCategoryTier3TitlePresent(value: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryDrpDown3, value);
+    }
+
+    async isTaskCategoryTier4TitlePresent(value: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryDrpDown4, value);
     }
 }
 
