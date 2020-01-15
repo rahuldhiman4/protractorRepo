@@ -30,8 +30,7 @@ class ConsoleKnowledge {
     }
 
     async isGridRecordPresent(searchRecord: string): Promise<boolean> {
-        await utilGrid.searchOnGridConsole(searchRecord);
-        return await utilGrid.isGridRecordPresent();
+        return await utilGrid.isGridRecordPresent(searchRecord);
     }
 
     async getKnowledgeArticleTitle(): Promise<string> {

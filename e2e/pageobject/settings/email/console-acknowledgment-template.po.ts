@@ -1,12 +1,31 @@
-import { protractor, ProtractorExpectedConditions, browser } from "protractor";
+import { element, by, $, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilCommon from '../../../utils/util.common';
 import utilGrid from '../../../utils/util.grid';
 
-class DocumentLibraryPage {
+class AcknowledgmentTemplateConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        addDocumentButton: '[rx-view-component-id="c2df3218-8ef7-402c-bdc2-721e891346bb"] button',
-        gridGuid: '5d1f94a9-693e-4dbf-896f-3b9689f95a42',   
+            gridGuid: 'deb7a0eb-56a9-432d-9c4a-912cf4644086',
+            delete: '[rx-view-component-id="b21478a3-5ca4-4d00-85d3-da3a5bc4ea96"] button',
+            addAckTemplates: '.d-icon-left-plus span',
+    }
+
+    async clickOnAddAcknowlegeTemplateButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addAckTemplates)));
+        await element(by.cssContainingText(this.selectors.addAckTemplates, 'Acknowledgment Template')).click();
+    }
+
+    async clickOnDeleteButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.delete)));
+        await $(this.selectors.delete).click();
+    }
+
+    async searchAndSelectGridRecord(value:string): Promise<void> {
+        await utilGrid.searchAndSelectGridRecord(value);
+    }
+
+    async clickOnGridRefreshButton(): Promise<void> {
+        await utilGrid.clickOnGridRefreshButton();
     }
 
     async isGridRecordPresent(searchRecord:string): Promise<boolean> {
@@ -45,12 +64,10 @@ class DocumentLibraryPage {
         return await utilGrid.areColumnHeaderMatches(this.selectors.gridGuid, columnHeader);
     }
 
-    async searchAndOpenDocumentLibrary(value: string): Promise<void> {
+    async searchAndOpenAcknowledgmentTemplate(value: string): Promise<void> {
         await utilGrid.searchAndOpenHyperlink(value);
         await utilCommon.waitUntilSpinnerToHide();
     }
-
-
 }
 
-export default new DocumentLibraryPage();
+export default new AcknowledgmentTemplateConsolePage();

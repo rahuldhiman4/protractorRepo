@@ -13,8 +13,10 @@ class EditCaseTemplate {
         caseDescription: '[rx-view-component-id="3b3506af-b9a2-47bd-88f7-032092bc1264"] textarea',
         saveButton: '[rx-view-component-id="60fae5e7-7bf2-477f-9e60-8be66292e6b5"] button',
         cancelButton: '[rx-view-component-id="a68b0e71-032d-4ecf-9d12-e0cd49f4b652"] button',
+        templateStatusReadOnly:'[rx-view-component-id="88cf66ca-8be6-46b2-93e0-52890187dffb"] .ui-select-match',
         companyDropDown: '127214a1-bfc0-4a8c-acb7-cd2be137fa3c',
         flowset: '2fe19a48-630b-4380-8b17-cbff70023a89',
+        resolveCaseOnLastTaskCompletion:'e4956197-0230-4272-8fc4-87358bd084bf',
         casePriority: '98327bc1-9ada-48f9-ab88-9787ddecd409',
         caseStatus: '5289a531-7138-4e4f-afdc-ee3f67a2aa64',
         statusReason: 'cfde7589-436d-4835-aab8-f5d71e04f91a',
@@ -247,6 +249,23 @@ class EditCaseTemplate {
         await browser.wait(this.EC.visibilityOf($(this.selectors.editCaseCompany)));
         return await $(this.selectors.editCaseCompany).getAttribute('disabled');
     }
+
+    async isCaseSummaryReadOnly(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
+        let value= await $(this.selectors.caseSummary).getAttribute('readonly');
+        return value=='true'? true:false;        
+    }
+
+    async isSaveButtonOnMetaDataIsDisabled(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.saveTemplateMetaData)));
+        let value= await $(this.selectors.saveTemplateMetaData).getAttribute('disabled');
+        return value=='true'? true:false;        
+    }
+
+    async isResolveCaseOnLastTaskCompletion(value: boolean): Promise<void> {
+        await commonUtils.selectToggleButton(this.selectors.resolveCaseOnLastTaskCompletion, value);
+    }
+
 }
 
 export default new EditCaseTemplate();

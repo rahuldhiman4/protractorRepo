@@ -275,6 +275,7 @@ class ActivityTabPage {
     }
 
     async isTextPresentInActivityLog(caseActivityLogText: string): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
         try {
             return await element(by.cssContainingText(this.selectors.activityLog, caseActivityLogText)).isDisplayed();
         }
@@ -423,6 +424,12 @@ class ActivityTabPage {
     async isOnlySurveyRecordFiltered(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.logItems)));
         return await $$(this.selectors.logItems).count() === 1;
+    }
+
+    async isComplexSurveyOrderIsThird(): Promise<boolean> {
+        await utilCommon.waitUntilSpinnerToHide();
+        await browser.wait(this.EC.visibilityOf(element(by.xpath("(//div[@class='log-item__content'])[3]//div[text()='View Survey Information']"))));
+        return await element(by.xpath("(//div[@class='log-item__content'])[3]//div[text()='View Survey Information']")).isPresent();
     }
 
 }
