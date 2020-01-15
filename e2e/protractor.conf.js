@@ -4,7 +4,30 @@
 
 const { SpecReporter } = require('jasmine-spec-reporter');
 var HtmlReporter = require('protractor-beautiful-reporter');
+const specJsonReporter = require('./jasmine-spec-json-reporter');
+const fs = require('fs');
 
+function resetJasminSpecJsonReport() {
+  const jsonReportPath = 'e2e/reports/spec-json-report.json';
+  const csvReportPath = 'e2e/reports/spec-csv-report.csv';
+  if (fs.existsSync(jsonReportPath)) {
+    fs.unlinkSync(jsonReportPath);
+  }
+
+  if (fs.existsSync(csvReportPath)) {
+    fs.unlinkSync(csvReportPath);
+  }
+
+  if (!fs.existsSync('e2e/reports')) {
+    fs.mkdirSync('e2e/reports');
+  }
+
+  try {
+    fs.writeFileSync(jsonReportPath, JSON.stringify([]));
+  } catch (error) {
+    console.log(error);
+  }
+}
 /**
  * @type { import("protractor").Config }
  */
@@ -81,5 +104,8 @@ exports.config = {
     jasmine.getEnv().addReporter(new HtmlReporter({
       baseDirectory: 'reports/screenshots'
     }).getJasmine2Reporter());
+
+    jasmine.getEnv().addReporter(specJsonReporter);
+    resetJasminSpecJsonReport();
   }
 };
