@@ -24,7 +24,7 @@ describe('EmailTemplate', () => {
     });
 
     //kgaikwad
-    fit('DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789 : Email Template : User Is Not able to Create Duplicate Email Template', async () => {
+    it('DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789 : Email Template : User Is Not able to Create Duplicate Email Template', async () => {
         let templateName = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
