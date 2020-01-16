@@ -103,8 +103,8 @@ class CaseWatchlistBlade {
         await utilGrid.removeGridColumn(this.selectors.guid, columnNames);
     }
 
-    async addFilter(fieldName: string, textValue: string): Promise<void> {
-        await utilGrid.addFilter(fieldName, textValue, this.selectors.guid);
+    async addFilter(fieldName: string, textValue: string,type: string): Promise<void> {
+        await utilGrid.addFilter(fieldName, textValue, type, this.selectors.guid);
     }
 
     async isEntireColumnContainsValue(columnName: string, value: string): Promise<boolean> {

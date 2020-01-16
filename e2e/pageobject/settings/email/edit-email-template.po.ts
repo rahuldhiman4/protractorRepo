@@ -14,15 +14,40 @@ class CreateEmailTemplateBlade {
         localeGuid: '71db023a-4979-4f58-a026-6aeda2edd96b',
         localizeMessage: '[rx-view-component-id="88ea24dd-ddad-489f-904a-89e43f80f5e6"] button',
         searchButtonClick: '.rx-toggle-search-button',
-        editButton: '[rx-view-component-id="08ce786a-01bb-410a-9ce2-7d10dccc28e2"] button',
-        editMessageTextBladeSaveButton: '[rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button',
-        editMessageTextBladeCancelButton: '[rx-view-component-id="780514cc-7344-44a5-88af-5af509619ab0"] button',
-        editMessageTextBladeBody: '.cke_wysiwyg_div',
-        saveButton: '[rx-view-component-id="2a376fd7-bf9c-459b-bdf1-52456c5f972c"] button',
-        cancelButton: '[rx-view-component-id="8fe0e727-14ac-4773-ba4d-03835070e907"] button',
+        editButton: '.rx-button-bar-action-buttons__inner .rx-action-button_clear button',
+        // editMessageTextBladeCancelButton: '.rx-button-bar-action-buttons__inner .d-button_secondary',
+        body: '.cke_wysiwyg_div',
+        editMessageTextBladeSubjectMessage: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
+        newLocalizeMessageEmailMessageSubject: '[rx-view-component-id="31bcbb1a-0420-481c-8233-d9d9e117b230"] input',
+        newLocalizeMessageEmailMessageLocalizeGuid: '1389f79d-65df-4090-9bd5-76bd2981a775',
+        saveButton: '.rx-action-button_primary .d-button_primary',
+        cancelButton: '.rx-button-bar-action-buttons__inner .d-button_secondary',
         gridGuid: '8b59641c-2fca-4d96-8395-03e232cf05de',
     }
 
+    async clickOnLocalizeMessageButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.localizeMessage)));
+        await $(this.selectors.localizeMessage).click();
+    }
+
+    async selectLocalizeDropDownOfNewLocalizedEmailMessage(value: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.newLocalizeMessageEmailMessageLocalizeGuid, value);
+    }
+
+    async setSubjectOfNewLocalizedEmailMessage(subject: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.newLocalizeMessageEmailMessageSubject)));
+        await $(this.selectors.newLocalizeMessageEmailMessageSubject).sendKeys(subject);
+    }
+
+    async setBody(body: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.body)));
+        await $(this.selectors.body).sendKeys(body);
+    }
+
+    async clickOnGridEditButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editButton)));
+        await $(this.selectors.editButton).click();
+    } 
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
@@ -82,16 +107,26 @@ class CreateEmailTemplateBlade {
     }
 
     async updateEditMessageTextBladeBody(body: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editMessageTextBladeBody)));
-        await $(this.selectors.editMessageTextBladeBody).clear();
-        await $(this.selectors.editMessageTextBladeBody).sendKeys(body);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.body)));
+        await $(this.selectors.body).clear();
+        await $(this.selectors.body).sendKeys(body);
     }
 
-    async clickOnEditMessageTextBladeCancelButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editMessageTextBladeCancelButton)));
-        await $(this.selectors.editMessageTextBladeCancelButton).click();
+    async updateEditMessageTextBladeSubject(subject: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editMessageTextBladeSubjectMessage)));
+        await $(this.selectors.editMessageTextBladeSubjectMessage).clear();
+        await $(this.selectors.editMessageTextBladeSubjectMessage).sendKeys(subject);
     }
-
+// 
+    async clickOnEditMessageTextBladeCancelButtonForBody(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        await $(this.selectors.cancelButton).click();
+    }
+// 
+    async clickOnEditMessageTextBladeSaveButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+        await $(this.selectors.saveButton).click();
+    }
 
     async clickOnSaveButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
@@ -101,6 +136,11 @@ class CreateEmailTemplateBlade {
     async clickOnCancelButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
+    }
+
+    async clearGridSearchBox(): Promise<void> {
+        await utilGrid.clearGridSearchBox();
+        await utilCommon.waitUntilSpinnerToHide();
     }
 }
 

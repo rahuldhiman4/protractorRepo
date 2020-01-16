@@ -42,9 +42,18 @@ class AcknowledgmentTemplateConsolePage {
         await utilCommon.waitUntilSpinnerToHide();
     }
 
+    async addFilter(fieldName: string, textValue: string,type:string): Promise<void> {
+        await utilGrid.addFilter(fieldName,textValue,type);
+        await utilCommon.waitUntilSpinnerToHide();
+    }
+
     async clearGridSearchBox(): Promise<void> {
         await utilGrid.clearGridSearchBox();
         await utilCommon.waitUntilSpinnerToHide();
+    }
+
+    async clearGridFilter(): Promise<void> {
+        await utilGrid.clearFilter();
     }
 
     async removeColumnOnGrid(columnHeader: string[]): Promise<void> {

@@ -155,7 +155,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
         await caseConsole.clickOnWatchlistIcon();
-        await caseWatchlist.addFilter("Status", "Resolved");
+        await caseWatchlist.addFilter("Status", "Resolved",'searchbox');
         expect(await caseWatchlist.isEntireColumnContainsValue("Status", "Resolved")).toBeTruthy("Records are not filtered"); //Need to fix common method written by Ankush
     });
 

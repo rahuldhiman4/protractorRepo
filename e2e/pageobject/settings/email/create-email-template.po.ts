@@ -18,7 +18,7 @@ class CreateEmailTemplateBlade {
     async setTemplateName(templateName: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
         await $(this.selectors.templateName).sendKeys(templateName);
-    }
+    } 
 
     async selectCompanyDropDown(value: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.companyGuid, value);
