@@ -15,11 +15,10 @@ class CreateEmailTemplateBlade {
         localizeMessage: '[rx-view-component-id="88ea24dd-ddad-489f-904a-89e43f80f5e6"] button',
         searchButtonClick: '.rx-toggle-search-button',
         editButton: '.rx-button-bar-action-buttons__inner .rx-action-button_clear button',
-        // editMessageTextBladeCancelButton: '.rx-button-bar-action-buttons__inner .d-button_secondary',
         body: '.cke_wysiwyg_div',
         editMessageTextBladeSubjectMessage: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
         newLocalizeMessageEmailMessageSubject: '[rx-view-component-id="31bcbb1a-0420-481c-8233-d9d9e117b230"] input',
-        newLocalizeMessageEmailMessageLocalizeGuid: '1389f79d-65df-4090-9bd5-76bd2981a775',
+        newLocalizeMessageEmailMessageLocalizeDropDownGuid: '1389f79d-65df-4090-9bd5-76bd2981a775',
         saveButton: '.rx-action-button_primary .d-button_primary',
         cancelButton: '.rx-button-bar-action-buttons__inner .d-button_secondary',
         gridGuid: '8b59641c-2fca-4d96-8395-03e232cf05de',
@@ -31,7 +30,7 @@ class CreateEmailTemplateBlade {
     }
 
     async selectLocalizeDropDownOfNewLocalizedEmailMessage(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.newLocalizeMessageEmailMessageLocalizeGuid, value);
+        await utilCommon.selectDropDown(this.selectors.newLocalizeMessageEmailMessageLocalizeDropDownGuid, value);
     }
 
     async setSubjectOfNewLocalizedEmailMessage(subject: string): Promise<void> {
@@ -136,6 +135,11 @@ class CreateEmailTemplateBlade {
     async clickOnCancelButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
+    }
+
+    async isSaveButtonEnabled(): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        return await $(this.selectors.saveButton).isEnabled();
     }
 
     async clearGridSearchBox(): Promise<void> {

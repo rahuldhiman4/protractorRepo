@@ -99,7 +99,7 @@ describe('EmailTemplate', () => {
         expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message Type')).toBe('subject', 'subject is missing from Grid');
     }, 160 * 1000)
 
-    it('DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093 : Email Template : User Is able to delete Email Template', async () => {
+    it('DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798 : Email Template : User Is able to delete Email Template', async () => {
         let templateName = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let subject = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -134,19 +134,27 @@ describe('EmailTemplate', () => {
         expect(consoleEmailTemplatePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label column is not sorted correctly with descending order')
 
         await consoleEmailTemplatePo.addFilter('Template Name', templateName, 'text');
-        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName, 'Template Name is missing in column');
+        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName, 'Filter Template Name is missing in column');
         await consoleEmailTemplatePo.addFilter('Label', label, 'text');
-        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Label')).toBe(label, 'Label is missing in column');
+        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Label')).toBe(label, ' Filter Label is missing in column');
         await consoleEmailTemplatePo.addFilter('Status', 'Active', 'checkbox');
-        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Status')).toBe('Active', 'Label is missing in column');
+        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Status')).toBe('Active', 'Filter Label is missing in column');
         await consoleEmailTemplatePo.addFilter('Company', 'Petramco', 'text');
-        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Company is missing in column');
+        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Filter Company is missing in column');
         await consoleEmailTemplatePo.addFilter('Subject', subject, 'text');
-        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Subject is missing in column');
+        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Filter Subject is missing in column');
         await consoleEmailTemplatePo.removeColumnOnGrid(arr);
         await consoleEmailTemplatePo.clearGridFilter();
 
+        await consoleEmailTemplatePo.searchOnGridConsole(templateName);
+        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName, 'Search Template Name is missing in column');
+        await consoleEmailTemplatePo.searchOnGridConsole(subject);
+        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Search Subject is missing in column');
+        await consoleEmailTemplatePo.searchOnGridConsole('Petramco');
+        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Search Company is missing in column');
+
         await consoleEmailTemplatePo.searchAndOpenEmailTemplate(templateName);
+        expect(await editEmailTemplatePo.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
         expect(await editEmailTemplatePo.isModuleNameDisabled()).toBeTruthy('Module Name is enabled');
         expect(await editEmailTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company drop down is enabled');
         await editEmailTemplatePo.updateDescription(description);
