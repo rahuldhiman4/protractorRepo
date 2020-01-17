@@ -1,6 +1,6 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
-import utilGrid from '../../..//utils/util.grid';
+import utilGrid from '../../../utils/util.grid';
 
 class CreateEmailTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

@@ -68,6 +68,15 @@ class AcknowledgmentTemplateConsolePage {
         await utilGrid.searchAndOpenHyperlink(value);
         await utilCommon.waitUntilSpinnerToHide();
     }
+
+    async addFilter(fieldName: string, textValue: string,type:string): Promise<void> {
+        await utilGrid.addFilter(fieldName,textValue,type);
+        await utilCommon.waitUntilSpinnerToHide();
+    }
+
+    async clearGridFilter(): Promise<void> {
+        await utilGrid.clearFilter();
+    }
 }
 
 export default new AcknowledgmentTemplateConsolePage();
