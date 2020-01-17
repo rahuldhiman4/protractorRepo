@@ -41,7 +41,7 @@ describe('EmailTemplate', () => {
         await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
         await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
         await createEmailTemplatePo.setTemplateName(templateName);
-        await createEmailTemplatePo.selectCompanyDropDown('Petramco');
+        await createEmailTemplatePo.selectCompany('Petramco');
         await createEmailTemplatePo.selectStatusDropDown('Active');
         await createEmailTemplatePo.selectLabelDropDown(label);
         await createEmailTemplatePo.setDescription(description);
@@ -51,7 +51,7 @@ describe('EmailTemplate', () => {
 
         await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
         await createEmailTemplatePo.setTemplateName(templateName2);
-        await createEmailTemplatePo.selectCompanyDropDown('- Global -');
+        await createEmailTemplatePo.selectCompany('- Global -');
         await createEmailTemplatePo.selectStatusDropDown('Active');
         await createEmailTemplatePo.selectLabelDropDown(label);
         await createEmailTemplatePo.setDescription(description);
@@ -72,7 +72,7 @@ describe('EmailTemplate', () => {
         expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Status')).toBe('Active', 'Active for Petramco compnay is missing')
         await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
         await createEmailTemplatePo.setTemplateName(templateName);
-        await createEmailTemplatePo.selectCompanyDropDown('Petramco');
+        await createEmailTemplatePo.selectCompany('Petramco');
         await createEmailTemplatePo.selectStatusDropDown('Active');
         await createEmailTemplatePo.selectLabelDropDown(label);
         await createEmailTemplatePo.setDescription(description);
@@ -118,7 +118,7 @@ describe('EmailTemplate', () => {
         await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
         await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
         await createEmailTemplatePo.setTemplateName(templateName);
-        await createEmailTemplatePo.selectCompanyDropDown('Petramco');
+        await createEmailTemplatePo.selectCompany('Petramco');
         await createEmailTemplatePo.selectStatusDropDown('Active');
         await createEmailTemplatePo.selectLabelDropDown(label);
         await createEmailTemplatePo.setDescription(description);

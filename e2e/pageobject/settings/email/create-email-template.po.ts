@@ -1,26 +1,29 @@
 import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
-class CreateEmailTemplateBlade {
+class CreateEmailTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         templateName: '[rx-view-component-id="310bbc87-54ee-4994-9a1e-93b1982155f2"] input',
         companyGuid: 'd240380a-1de2-4b28-9082-81e96fc21415',
         statusGuid: '3cfbfd34-19ff-4ddb-818b-23b19c859dbe',
         labelGuid: 'a0774e28-42c2-4132-9da4-0063545e791f',
-        description: '[rx-view-component-id="13cf801e-fc2f-4d74-a57b-77e4ebf2bde6"] input',
+        description: '[rx-view-component-id="0fab6085-678b-442a-851d-25085b0bde8c"] input',
         subject: '[rx-view-component-id="187510cc-9804-46e2-bbda-0cdba1d6c83c"] textarea',
-        body: '.cke_wysiwyg_div',
-        saveButton: '[rx-view-component-id="093a0eeb-c1e0-4ed8-945f-da46d9bbde88"] button',
+        body: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_editable',
+        insertField:'[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_button__expressioneditor_icon',
+        fieldValueInBody:'[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_wysiwyg_div span',
+        saveButton:'[rx-view-component-id="093a0eeb-c1e0-4ed8-945f-da46d9bbde88"] button',
         cancelButton: '[rx-view-component-id="9aeef4d7-1a10-4ffd-aa3a-22665c32883c"] button',
+
     }
 
-    async setTemplateName(templateName: string): Promise<void> {
+    async setTemplateName(value: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
-        await $(this.selectors.templateName).sendKeys(templateName);
-    } 
+        await $(this.selectors.templateName).sendKeys(value);
+    }
 
-    async selectCompanyDropDown(value: string): Promise<void> {
+    async selectCompany(value: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.companyGuid, value);
     }
 
@@ -32,30 +35,38 @@ class CreateEmailTemplateBlade {
         await utilCommon.selectDropDown(this.selectors.labelGuid, value);
     }
 
-    async setDescription(descriptionText: string): Promise<void> {
+    async setDescription(value: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
-        await $(this.selectors.description).sendKeys(descriptionText);
+        await $(this.selectors.description).sendKeys(value);
     }
 
-    async setSubject(subject: string): Promise<void> {
+    async setSubject(value: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.subject)));
-        await $(this.selectors.subject).sendKeys(subject);
+        await $(this.selectors.subject).sendKeys(value);
     }
 
-    async setBody(body: string): Promise<void> {
+    async setBody(value: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.body)));
-        await $(this.selectors.body).sendKeys(body);
+        await $(this.selectors.body).sendKeys(value);
+    }
+
+    async clickOnInsertField(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.insertField)));
+        await $(this.selectors.insertField).click();
     }
 
     async clickOnSaveButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
-
+    
     async clickOnCancelButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
-}
 
-export default new CreateEmailTemplateBlade();
+    async isDynamicFieldDisplayedInBody(value:string):Promise<boolean>{
+        return await element(by.cssContainingText(this.selectors.fieldValueInBody, value)).isDisplayed();
+    }
+}
+export default new CreateEmailTemplate();

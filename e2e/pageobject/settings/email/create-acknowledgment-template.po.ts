@@ -51,6 +51,11 @@ class CreateAcknowledgmentTemplateBlade {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
+
+    async clickOnCancelButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        await $(this.selectors.cancelButton).click();
+    }
 }
 
 export default new CreateAcknowledgmentTemplateBlade();

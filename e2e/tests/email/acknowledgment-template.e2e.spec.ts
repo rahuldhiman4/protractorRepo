@@ -1,12 +1,10 @@
 import { browser } from "protractor";
-import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
+import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import createMenuItemsBladePo from '../../pageobject/settings/application-config/create-menu-items-blade.po';
 import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
 import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
 import utilCommon from '../../utils/util.common';
-import apiHelper from '../../api/api.helper';
 describe('AcknowledgmentTemplate', () => {
 
     beforeAll(async () => {

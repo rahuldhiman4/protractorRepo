@@ -9,7 +9,7 @@ import composeMail from '../../pageobject/email/compose-mail.po';
 import selectEmailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
 import utilCommon from "../../utils/util.common";
 import utilGrid from '../../utils/util.grid';
-import emailTemplateBladePo from '../../pageobject/email/email-template-blade.po';
+import emailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 
 var emailTemplateData = require('../../data/ui/email/email.template.api.json');
