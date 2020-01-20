@@ -1,5 +1,4 @@
 const fs = require('fs');
-const {Parser} = require('json2csv');
 
 var specResult = [];
 var jiraRegx = /\[(\s*DRDMV-\d+\s*,?)+\]/g;
@@ -22,14 +21,10 @@ var specJsonReporter = {
         });
     },
     jasmineDone: function (result) {
-        var rawFileString = fs.readFileSync('e2e/reports/spec-json-report.json');
+        var rawFileString = fs.readFileSync('e2e/reports/spec-json-report/spec-json-report.json');
         var data = JSON.parse(rawFileString);
         data = data.concat(specResult);
-        fs.writeFileSync('e2e/reports/spec-json-report.json', JSON.stringify(data, null, '\t'));
-          
-        const fields = ['jiraId', 'description', 'status'];
-        const json2csvParser = new Parser({fields});
-        fs.writeFileSync('e2e/reports/spec-csv-report.csv', json2csvParser.parse(data));
+        fs.writeFileSync('e2e/reports/spec-json-report/spec-json-report.json', JSON.stringify(data, null, '\t'));
     }
 };
 module.exports = specJsonReporter;

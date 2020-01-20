@@ -4,22 +4,22 @@
 
 const { SpecReporter } = require('jasmine-spec-reporter');
 var HtmlReporter = require('protractor-beautiful-reporter');
-const specJsonReporter = require('./jasmine-spec-json-reporter');
+const specJsonReporter = require('./reporters/spec-json-reporter/jasmine-spec-json-reporter');
+
 const fs = require('fs');
 
 function resetJasminSpecJsonReport() {
-  const jsonReportPath = 'e2e/reports/spec-json-report.json';
-  const csvReportPath = 'e2e/reports/spec-csv-report.csv';
+  const jsonReportPath = 'e2e/reports/spec-json-report/spec-json-report.json';
   if (fs.existsSync(jsonReportPath)) {
     fs.unlinkSync(jsonReportPath);
   }
 
-  if (fs.existsSync(csvReportPath)) {
-    fs.unlinkSync(csvReportPath);
-  }
-
   if (!fs.existsSync('e2e/reports')) {
     fs.mkdirSync('e2e/reports');
+  }
+
+  if (!fs.existsSync('e2e/reports/spec-json-report')) {
+    fs.mkdirSync('e2e/reports/spec-json-report');
   }
 
   try {
@@ -60,7 +60,6 @@ exports.config = {
   async onPrepare() {
     let globals = require('protractor/built');
     let browser = globals.browser;
-    browser.ignoreSynchronization = true;
     await browser.waitForAngularEnabled(false);
 
     //Implicitly wait
@@ -102,10 +101,14 @@ exports.config = {
     }));
 
     jasmine.getEnv().addReporter(new HtmlReporter({
-      baseDirectory: 'reports/screenshots'
+      baseDirectory: 'e2e/reports/screenshots'
     }).getJasmine2Reporter());
 
     jasmine.getEnv().addReporter(specJsonReporter);
     resetJasminSpecJsonReport();
+  },
+
+  async onComplete() {
+
   }
 };
