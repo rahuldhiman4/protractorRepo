@@ -815,7 +815,7 @@ describe("Create Case", () => {
             await loginPage.login('qkatawazi');
         }
     })
- 
+
     //ankagraw
     it('DRDMV-11987: [Case Creation] Verify able to create case with Global case template having flowset', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -830,7 +830,7 @@ describe("Create Case", () => {
         await apiHelper.associateCategoryToCategory(globalCategName, categName2);
         await apiHelper.associateCategoryToCategory(categName2, categName3);
         let caseTemplateSummary1 = 'Summary 1' + randomStr;
-       
+
 
         await apiHelper.apiLogin('qkatawazi');
         let flowsetData = require('../../data/ui/case/flowset.ui.json');
@@ -848,7 +848,7 @@ describe("Create Case", () => {
         await createCaseTemplate.setCategoryTier1(globalCategName);
         await createCaseTemplate.setCategoryTier2(categName2);
         await createCaseTemplate.setCategoryTier3(categName3);
-        
+
         await createCaseTemplate.setFlowsetValue(flowsetName);
         await createCaseTemplate.setPriorityValue('Low');
         await createCaseTemplate.setTemplateStatusDropdownValue('Active')
@@ -864,7 +864,7 @@ describe("Create Case", () => {
         await createCasePage.clickGoToCaseButton();
         await viewCasePage.getCaseSummary();
         await viewCasePage.getPriorityValue();
-     }, 180 * 1000);
+    }, 180 * 1000);
 
     it('DRDMV-11818: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -909,5 +909,46 @@ describe("Create Case", () => {
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplate1);
         await expect(viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
-    },180*1000);
+    }, 180 * 1000);
+
+    it('DRDMV-1614: [Case] Fields validation for case in New status ', async () => {
+        try {
+            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let caseSummary = 'Case Summary ' + randomStr;
+
+            await navigationPage.signOut();
+            await loginPage.login("qtao");
+            await navigationPage.gotCreateCase();
+            await expect(createCasePage.isRequesterRequiredTextPresent()).toBeTruthy("Requester Reqired text not present");
+            await expect(createCasePage.isSummaryRequiredTextPresent()).toBeTruthy("Summary Reqired text not present");
+            await expect(createCasePage.isSourceRequiredTextPresent()).toBeTruthy("Source Reqired text not present");
+            await expect(createCasePage.isPriorityRequiredTextPresent()).toBeTruthy("Priority Reqired text not present");
+            await expect(createCasePage.isAssignedCompanyRequiredTextPresent()).toBeTruthy("Assigned Company Reqired text not present");
+            await expect((await createCasePage.getCreateCaseTitle()).trim()).toBe('Create Case', "Create Case title is not displayed in Create Case Page");
+            await expect(createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
+            await createCasePage.selectRequester('adam');
+            await createCasePage.clickSaveCaseButtonWithoutMessageDisappear();
+            await expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
+            await utilCommon.closePopUpMessage();
+            await utilCommon.waitUntilPopUpDisappear();
+            await createCasePage.setSummary(caseSummary);
+            await createCasePage.clickSaveCaseButton();
+            await createCasePage.clickGoToCaseButton();
+            await expect(viewCasePage.getCaseStatusValue()).toBe('New');
+            await viewCasePage.clickEditCaseButton();
+            await expect(editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
+            await expect(editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
+            await expect(editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
+            await expect(editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
+            await editCasePage.clearCaseSummary();
+            await editCasePage.clickSaveCase();
+            await expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
+        } catch (error) {
+            console.log(error);
+            await expect(true).toBeFalsy();
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        }
+    });
 });

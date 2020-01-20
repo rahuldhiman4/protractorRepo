@@ -51,6 +51,11 @@ class ViewTaskTemplate {
         await $(this.selectors.manageDynamicField).click();
     }
 
+    async isManageDynamicFieldLinkDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.manageDynamicField)));
+        return await $(this.selectors.manageDynamicField).isDisplayed();
+    }
+
     async getOwnerCompanyValue(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.ownerCompanyValue)));
         return await $(this.selectors.ownerCompanyValue).getText();
@@ -84,6 +89,10 @@ class ViewTaskTemplate {
     async clickOnEditProcessLink(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.editProcessLink)));
         await $(this.selectors.editProcessLink).click();
+    }
+
+    async isEditProcessLinkDisplayed(): Promise<boolean> {
+        return await $(this.selectors.editProcessLink).isDisplayed();
     }
 
     async clickOnEditLink(): Promise<void> {
