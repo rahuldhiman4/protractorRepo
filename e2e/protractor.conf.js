@@ -108,7 +108,4 @@ exports.config = {
     resetJasminSpecJsonReport();
   },
 
-  async onComplete() {
-
-  }
 };
