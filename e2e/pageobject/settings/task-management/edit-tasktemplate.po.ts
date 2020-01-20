@@ -4,6 +4,7 @@ import utilCommon from '../../../utils/util.common';
 class EditTaskTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        manageProcessLink: '[rx-view-component-id="60aedaf2-92a3-433f-8024-34e26e71350c"] button',
         taskCompany: '3d1b6f6b-3dfa-4ff7-80f1-cef32c2c93e0',
         editMetadataLink: '[rx-view-component-id="8b8bfec6-0ee2-42a3-be4b-ac4f37d060f1"] .edit-link',
         ownerCompany: 'fa0f139c-5998-4544-9a3e-6dcac497611c',
@@ -102,6 +103,11 @@ class EditTaskTemplate {
     async isProcessNamePresentInTask(): Promise<boolean> {
         await browser.wait(this.EC.presenceOf($(this.selectors.processNameValue)));
         return await $(this.selectors.processNameValue).isDisplayed();
+    }
+
+    async isManageProcessLinkDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.presenceOf($(this.selectors.manageProcessLink)));
+        return await $(this.selectors.manageProcessLink).isDisplayed();
     }
 
     async isTemplateStatusDisabled(): Promise<boolean> {
