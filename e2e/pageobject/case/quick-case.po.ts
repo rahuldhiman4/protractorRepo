@@ -1,4 +1,4 @@
-import { $, $$, browser, by, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 class QuickCasePage {
@@ -19,6 +19,7 @@ class QuickCasePage {
         gotoCaseButton__preview: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
         createCaseButton: '.smart-recorder__footer button.d-button_primary',
         requesters: '.smart-recorder__popup-item',
+        pinFirstRecommendedCase: '(//*[contains(text(), "Recommended Cases")]/..//i)[1]'
     }
 
     async selectRequesterName(name: string): Promise<void> {
@@ -83,6 +84,11 @@ class QuickCasePage {
     async getPopUpMessage() {
         await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
         return await $(this.selectors.popUpMsgLocator).getText();
+    }
+
+    async pinFirstRecommendedCase(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
+        await element(by.xpath(this.selectors.pinFirstRecommendedCase)).click();
     }
 
     async saveCase(): Promise<void> {

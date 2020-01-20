@@ -7,7 +7,7 @@ import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.ap
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
 import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
-import { CaseTemplate, MenuItemStatus, NotificationType, TaskTemplate } from "../api/constant.api";
+import { CaseTemplate, MenuItemStatus, NotificationType, TaskTemplate, CaseStatus } from "../api/constant.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
 import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
@@ -18,7 +18,7 @@ import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '..
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
-const commandeUri = 'api/rx/application/command';
+const commandUri = 'api/rx/application/command';
 
 export interface IIDs {
     id: string;
@@ -514,7 +514,7 @@ class ApiHelper {
         templateData.processInputValues["Module"] = "Cases";
         templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.case-lib:Case";
         const emailTemplateResponse = await axios.post(
-            commandeUri,
+            commandUri,
             templateData
         );
 
@@ -563,7 +563,7 @@ class ApiHelper {
             }
         }
         const notesTemplateResponse = await axios.post(
-            commandeUri,
+            commandUri,
             templateData
         );
 
@@ -761,12 +761,25 @@ class ApiHelper {
         caseAccessData.processInputValues['Security Type'] = data.security;
         caseAccessData.processInputValues['Value'] = data.username;
         const updateCaseAccess = await axios.post(
-            commandeUri,
+            commandUri,
             caseAccessData
         );
 
         console.log('Update Case Access API Status =============>', updateCaseAccess.status);
         return updateCaseAccess.status;
+    }
+
+    async updateCaseStatus(caseGuid: string, status: string, statusReason?: string): Promise<number> {
+        let updateStatusFile = await require('../data/api/case/update.case.status.api.json');
+        let statusData = await updateStatusFile.CaseStatusChange;
+        statusData["id"] = caseGuid;
+        statusData.fieldInstances[450000021]["value"] = CaseStatus[status];
+        if (statusReason) {
+            statusData.fieldInstances[1000000881]["value"] = await apiCoreUtil.getStatusChangeReasonGuid(statusReason);
+        }
+
+        let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib Case", caseGuid, statusData);
+        return updateCaseStatus.status;
     }
 }
 

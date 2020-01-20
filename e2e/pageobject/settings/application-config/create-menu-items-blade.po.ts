@@ -83,6 +83,7 @@ class CreateNewMenuOptionPage {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuOptionLink)));
         await $(this.selectors.menuOptionLink).click();
     }
+
 }
 
 export default new CreateNewMenuOptionPage();
