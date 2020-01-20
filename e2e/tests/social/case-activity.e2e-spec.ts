@@ -31,7 +31,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    it('DRDMV-16767: KA Activity Filter UI validation', async () => {
+    it('[DRDMV-16767]: KA Activity Filter UI validation', async () => {
         try {
             // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
             await navigationPage.gotoCreateKnowledge();
@@ -112,7 +112,7 @@ describe('Case Activity', () => {
     }, 90 * 1000);
 
     //kgaikwad
-    it('DRDMV-18141: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
+    it('[DRDMV-18141]: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
         let caseBodyText = `CaseBody${randomStr}`;
         // 2nd Step :Open Case from pre condition and inspect its activities
         await navigationPage.gotCreateCase();
@@ -129,7 +129,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    it('DRDMV-16768: From KA Activity Filters > Person search behavior in Author field', async () => {
+    it('[DRDMV-16768]: From KA Activity Filters > Person search behavior in Author field', async () => {
         try {
             // 1st step: Logged in successfully and Task profile gets opened
             await navigationPage.gotoCreateKnowledge();
@@ -195,7 +195,7 @@ describe('Case Activity', () => {
     }, 90 * 1000);
 
     //kgaikwad
-    it('DRDMV-16773: [-ve] - Person details displayed in Activity who have long name', async () => {
+    it('[DRDMV-16773]: [-ve] - Person details displayed in Activity who have long name', async () => {
         try {
             let caseBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let taskBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -242,7 +242,7 @@ describe('Case Activity', () => {
     }, 110 * 1000);
 
     //kgaikwad
-    it('DRDMV-16733: Case Activity Filter UI validation', async () => {
+    it('[DRDMV-16733]: Case Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -318,7 +318,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    it('DRDMV-16760: From Task Activity Filters > Person search behavior in Author field', async () => {
+    it('[DRDMV-16760]: From Task Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Logged in successfully and Task profile gets opened
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -376,7 +376,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    it('DRDMV-16734: From Case Activity Filters > Person search behavior in Author field', async () => {
+    it('[DRDMV-16734]: From Case Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Login to BWF with Case agent and open case from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -418,7 +418,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    it('DRDMV-16759: Task Activity Filter UI validation', async () => {
+    it('[DRDMV-16759]: Task Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -712,7 +712,7 @@ describe('Case Activity', () => {
     }, 220 * 1000);
 
     //kgaikwad
-    it('DRDMV-18048: While adding a note on Case one or more agent can be tagged in Comment', async () => {
+    it('[DRDMV-18048]: While adding a note on Case one or more agent can be tagged in Comment', async () => {
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.selectContact('Angelina Jolie');
@@ -733,7 +733,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    it('DRDMV-16754: Drill Down to different screens from Activities', async () => {
+    it('[DRDMV-16754]: Drill Down to different screens from Activities', async () => {
         try {
             let caseBodyText = "This is unique caseActivity text " + Math.floor(Math.random() * 1000000);
             let taskBodyText = "This is unique TaskActivity text " + Math.floor(Math.random() * 1000000);

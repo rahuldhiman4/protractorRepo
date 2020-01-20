@@ -23,7 +23,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('DRDMV-3817,DRDMV-3819: [Task Template] Task Template Create view (UI verification)', async () => {
+    it('[DRDMV-3817,DRDMV-3819]: [Task Template] Task Template Create view (UI verification)', async () => {
         try {
             let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
             let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
@@ -76,7 +76,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('DRDMV-12087: [Global Task Template] Update Task company to Global', async () => {
+    it('[DRDMV-12087]: [Global Task Template] Update Task company to Global', async () => {
         try {
             let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
             let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
@@ -106,7 +106,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('DRDMV-12086: [Global Task Template] Update Task company from Global to Any', async () => {
+    it('[DRDMV-12086]: [Global Task Template] Update Task company from Global to Any', async () => {
         try {
             let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
             let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
@@ -137,7 +137,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('DRDMV-12577: Case BA other than task template owner group can NOT update the template', async () => {
+    it('[DRDMV-12577]: Case BA other than task template owner group can NOT update the template', async () => {
         try {
             let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
             let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
@@ -175,7 +175,7 @@ describe('Create Case Task', () => {
     }, 150 * 100);
 
     //ankagraw
-    it('DRDMV-12567: Case BA from task template owner group can update the template', async () => {
+    it('[DRDMV-12567]: Case BA from task template owner group can update the template', async () => {
         try {
             let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
             let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
@@ -226,7 +226,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('DRDMV-12555: Task template submitter from same company of owner group can edit the task template', async () => {
+    it('[DRDMV-12555]: Task template submitter from same company of owner group can edit the task template', async () => {
         try {
             let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
             let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
@@ -269,5 +269,5 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    },180*1000);
+    }, 180 * 1000);
 });

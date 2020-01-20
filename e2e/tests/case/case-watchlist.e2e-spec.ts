@@ -1,17 +1,16 @@
 import { browser } from "protractor";
-import loginPage from '../../pageobject/common/login.po';
-import navigationPage from '../../pageobject/common/navigation.po';
 import apiHelper from '../../api/api.helper';
-import gridUtil from '../../utils/util.grid';
 import caseConsole from '../../pageobject/case/case-console.po';
 import caseWatchlist from '../../pageobject/case/case-watchlist-blade.po';
-import utilGrid from '../../utils/util.grid';
-import { security, operation, type } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
+import editCase from '../../pageobject/case/edit-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import changeAssignment from "../../pageobject/common/change-assignment-blade.po";
-import editCase from '../../pageobject/case/edit-case.po';
+import loginPage from '../../pageobject/common/login.po';
+import navigationPage from '../../pageobject/common/navigation.po';
 import notificationAlerts from '../../pageobject/notification/notification.po';
+import { operation, security, type } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
+import { default as gridUtil, default as utilGrid } from '../../utils/util.grid';
 
 describe('Case Watchlist', () => {
 
@@ -57,7 +56,7 @@ describe('Case Watchlist', () => {
         await navigationPage.gotoCaseConsole();
     });
 
-    it('DRDMV-15985: Verify that all the selected Cases are available in Watchlist modal', async () => {
+    it('[DRDMV-15985]: Verify that all the selected Cases are available in Watchlist modal', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
@@ -80,7 +79,7 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('DRDMV-16015: Verify that Case Agent can select, un-select and sort the cases in Watchlist modal', async () => {
+    it('[DRDMV-16015]: Verify that Case Agent can select, un-select and sort the cases in Watchlist modal', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
@@ -105,7 +104,7 @@ describe('Case Watchlist', () => {
         expect(await caseWatchlist.isColumnSorted("Case ID")).toBeTruthy("Columns are not sorted");
     });
 
-    it('DRDMV-16017: Verify that Case Agent can search the cases in modal', async () => {
+    it('[DRDMV-16017]: Verify that Case Agent can search the cases in modal', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
@@ -126,7 +125,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.isCaseSearchGiveCorrectResult(caseId[0]);
     });
 
-    it('DRDMV-16018: Verify the default columns and total columns available in Watchlist modal', async () => {
+    it('[DRDMV-16018]: Verify the default columns and total columns available in Watchlist modal', async () => {
         await caseConsole.clickOnWatchlistIcon();
         let defaultAssignedCaseColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee"];
         expect(await caseWatchlist.areWatchlistColumnMatches(defaultAssignedCaseColumns)).toBeTruthy("Default columns are not matching");
@@ -137,7 +136,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.removeWatchlistGridColumn(remainingColumns);
     });
 
-    it('DRDMV-16019: Verify that Case Agent can filter the cases in Watchlist modal', async () => {
+    it('[DRDMV-16019]: Verify that Case Agent can filter the cases in Watchlist modal', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
@@ -159,7 +158,7 @@ describe('Case Watchlist', () => {
         expect(await caseWatchlist.isEntireColumnContainsValue("Status", "Resolved")).toBeTruthy("Records are not filtered"); //Need to fix common method written by Ankush
     });
 
-    it('DRDMV-16043: Verify that Case Agent can remove the cases from Watchlist', async () => {
+    it('[DRDMV-16043]: Verify that Case Agent can remove the cases from Watchlist', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
@@ -185,7 +184,7 @@ describe('Case Watchlist', () => {
         expect(await caseWatchlist.isCasePresent(caseId[1])).toBeFalsy(caseId[1] + ": Case is not removed");
     });
 
-    it('DRDMV-16020: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
+    it('[DRDMV-16020]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
         await apiHelper.apiLogin(qtaoStr);
 
         //Create case
@@ -284,7 +283,7 @@ describe('Case Watchlist', () => {
         }
     }, 140 * 1000);
 
-    it('DRDMV-16033: Verify that Case Agent is notified for OOB status changes in Case life cycle once Case Agent follow the case status change', async () => {
+    it('[DRDMV-16033]: Verify that Case Agent is notified for OOB status changes in Case life cycle once Case Agent follow the case status change', async () => {
         await apiHelper.apiLogin(qtaoStr);
 
         //Create case
@@ -329,7 +328,7 @@ describe('Case Watchlist', () => {
         await notificationAlerts.clickOnNotificationIcon();
     });
 
-    it('DRDMV-16029: Verify that all the Case Agents having write access can follow/unfollow the cases', async () => {
+    it('[DRDMV-16029]: Verify that all the Case Agents having write access can follow/unfollow the cases', async () => {
         await apiHelper.apiLogin(qyuanStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
@@ -382,7 +381,7 @@ describe('Case Watchlist', () => {
         await notificationAlerts.clickOnNotificationIcon();
     });
 
-    it('DRDMV-16044,DRDMV-16060: Verify the position, Labels and * icon on Case console, Case and Watchlist modal', async () => {
+    it('[DRDMV-16044,DRDMV-16060]: Verify the position, Labels and * icon on Case console, Case and Watchlist modal', async () => {
         await apiHelper.apiLogin(qyuanStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
@@ -412,7 +411,7 @@ describe('Case Watchlist', () => {
         expect(await viewCasePage.getAddToWatchlistLinkText()).toBe("Add to Watchlist", "Label is not matching");
     });
 
-    it('DRDMV-16554: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Edit', async () => {
+    it('[DRDMV-16554]: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Edit', async () => {
         await apiHelper.apiLogin(qyuanStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
@@ -445,7 +444,7 @@ describe('Case Watchlist', () => {
         await notificationAlerts.clickOnNotificationIcon();
     });
 
-    it('DRDMV-16555: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Console', async () => {
+    it('[DRDMV-16555]: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Console', async () => {
         await apiHelper.apiLogin(qyuanStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
@@ -487,7 +486,7 @@ describe('Case Watchlist', () => {
         await notificationAlerts.clickOnNotificationIcon();
     });
 
-    it('DRDMV-16556: Verify that Agent remove the Case Group Assignment and Status from Watchlist update event then only Assignment change notifications will be shown', async () => {
+    it('[DRDMV-16556]: Verify that Agent remove the Case Group Assignment and Status from Watchlist update event then only Assignment change notifications will be shown', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist_2']);
@@ -557,7 +556,7 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('DRDMV-16557: Verify that Agent can update(add) Case group Assignment for any of the existing Watched case', async () => {
+    it('[DRDMV-16557]: Verify that Agent can update(add) Case group Assignment for any of the existing Watched case', async () => {
         await apiHelper.apiLogin(qyuanStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist_1']);
@@ -632,7 +631,7 @@ describe('Case Watchlist', () => {
         }
     }, 180 * 1000);
 
-    it('DRDMV-16062: Verify that user add the watch from Case Console and remove the watch from Case then it should reflect', async () => {
+    it('[DRDMV-16062]: Verify that user add the watch from Case Console and remove the watch from Case then it should reflect', async () => {
         await apiHelper.apiLogin(qyuanStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
@@ -681,7 +680,7 @@ describe('Case Watchlist', () => {
         await notificationAlerts.clickOnNotificationIcon();
     });
 
-    it('DRDMV-16061: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
+    it('[DRDMV-16061]: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
@@ -712,7 +711,7 @@ describe('Case Watchlist', () => {
         expect(await utilCommon.getPopUpMessage()).toBe("INFO (222157): Added 3 selected case(s) to the watchlist.");
     });
 
-    it('DRDMV-16059: Verify that Save and Close buttons on Event Add are working correctly', async () => {
+    it('[DRDMV-16059]: Verify that Save and Close buttons on Event Add are working correctly', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
@@ -736,7 +735,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.clickOnCloseButton();
     });
 
-    it('DRDMV-16058: Verify if Agent is added to Watchlist and later his read access is removed', async () => {
+    it('[DRDMV-16058]: Verify if Agent is added to Watchlist and later his read access is removed', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
@@ -827,7 +826,7 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('DRDMV-16055: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
+    it('[DRDMV-16055]: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
@@ -912,7 +911,7 @@ describe('Case Watchlist', () => {
         await notificationAlerts.clickOnNotificationIcon();
     });
 
-    it('DRDMV-16052: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
+    it('[DRDMV-16052]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
@@ -994,7 +993,7 @@ describe('Case Watchlist', () => {
         await notificationAlerts.clickOnNotificationIcon();
     });
 
-    it('DRDMV-16050: Verify that write access Agent can add the case to watchlist from Case', async () => {
+    it('[DRDMV-16050]: Verify that write access Agent can add the case to watchlist from Case', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
@@ -1050,7 +1049,7 @@ describe('Case Watchlist', () => {
         }
     }, 120 * 1000);
 
-    it('DRDMV-16041: Verify that Case Agent can follow/unfollow the cases from case itself - Read only user', async () => {
+    it('[DRDMV-16041]: Verify that Case Agent can follow/unfollow the cases from case itself - Read only user', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
@@ -1143,6 +1142,5 @@ describe('Case Watchlist', () => {
             await loginPage.login(qyuanStr);
         }
     }, 160 * 1000);
-
 
 })

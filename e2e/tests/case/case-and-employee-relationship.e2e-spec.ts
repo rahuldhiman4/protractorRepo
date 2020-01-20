@@ -1,21 +1,19 @@
 import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
 import addRelatedCasespopup from '../../pageobject/case/add-related-cases-pop.po';
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import createCasePage from '../../pageobject/case/create-case.po';
-import caseEditPage from '../../pageobject/case/edit-case.po';
+import { default as caseEditPage, default as editCasePo } from '../../pageobject/case/edit-case.po';
+import quickCase from '../../pageobject/case/quick-case.po';
 import caseViewPage from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfilePage from '../../pageobject/common/person-profile.po';
 import relatedCasePage from '../../pageobject/common/related-case-tab.po';
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
+import { operation, security, type } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import gridUtil from '../../utils/util.grid';
-import apiHelper from '../../api/api.helper';
-import utilGrid from '../../utils/util.grid';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import { security, operation, type } from '../../utils/constants';
-import quickCase from '../../pageobject/case/quick-case.po';
+import { default as gridUtil, default as utilGrid } from '../../utils/util.grid';
 
 describe('Case And Employee Relationship', () => {
     beforeAll(async () => {
@@ -33,7 +31,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('DRDMV-16241,DRDMV-16242,DRDMV-16240: Add person with different relations', async () => {
+    it('[DRDMV-16241,DRDMV-16242,DRDMV-16240]: Add person with different relations', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("Allen");
         await createCasePage.setSummary("DRDMV-16241");
@@ -65,7 +63,7 @@ describe('Case And Employee Relationship', () => {
     })
 
     //asahitya
-    it('DRDMV-16896: Multiple people can be added by same Relationship', async () => {
+    it('[DRDMV-16896]: Multiple people can be added by same Relationship', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("Allen");
         await createCasePage.setSummary("DRDMV-16896");
@@ -88,7 +86,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('DRDMV-16248: Related Persons tab is available on Person Profile check UI', async () => {
+    it('[DRDMV-16248]: Related Persons tab is available on Person Profile check UI', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("Allen");
         await createCasePage.setSummary("DRDMV-16248");
@@ -112,7 +110,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('DRDMV-17037: Related Case tab is available on Person Profile', async () => {
+    it('[DRDMV-17037]: Related Case tab is available on Person Profile', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("Allen");
         await createCasePage.setSummary("DRDMV-17037");
@@ -135,7 +133,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('DRDMV-17035: Remove Related Case from Case', async () => {
+    it('[DRDMV-17035]: Remove Related Case from Case', async () => {
         //create case 1
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("Allen");
@@ -195,7 +193,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('DRDMV-16243: Check details shown for Employees on Related People tab', async () => {
+    it('[DRDMV-16243]: Check details shown for Employees on Related People tab', async () => {
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseData_DRDMV16243']);
@@ -214,7 +212,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('DRDMV-17036: Check details shown for Employees on Related People tab', async () => {
+    it('[DRDMV-17036]: Check details shown for Employees on Related People tab', async () => {
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
         let response1 = await apiHelper.createCase(caseData['caseData_DRDMV16243']);
@@ -236,7 +234,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('DRDMV-16245: Remove the Person from Case Related People tab and Person Profile Related People tab', async () => {
+    it('[DRDMV-16245]: Remove the Person from Case Related People tab and Person Profile Related People tab', async () => {
         await navigationPage.goToPersonProfile();
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Brain Adams', 'Parent');
@@ -281,7 +279,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('DRDMV-17029: Check Related Cases Tab on Case Bottom section', async () => {
+    it('[DRDMV-17029]: Check Related Cases Tab on Case Bottom section', async () => {
         //Create case 1 to pin with quick case
         let randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData2 =

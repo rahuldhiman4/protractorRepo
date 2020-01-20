@@ -1,12 +1,11 @@
 import { browser } from "protractor";
-import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
+import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import createMenuItemsBladePo from '../../pageobject/settings/application-config/create-menu-items-blade.po';
 import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
 import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
 import utilCommon from '../../utils/util.common';
-import apiHelper from '../../api/api.helper';
+
 describe('AcknowledgmentTemplate', () => {
 
     beforeAll(async () => {
@@ -24,7 +23,7 @@ describe('AcknowledgmentTemplate', () => {
     });
 
     //kgaikwad
-    it('DRDMV-10896,DRDMV-10901,DRDMV-10922,DRDMV-10895 : Acknowledgment Template : Acknowledgment Template creation', async () => {
+    it('[DRDMV-10896,DRDMV-10901,DRDMV-10922,DRDMV-10895]: Acknowledgment Template : Acknowledgment Template creation', async () => {
         let templateName = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName2 = 'Public' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

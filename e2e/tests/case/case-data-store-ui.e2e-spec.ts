@@ -1,5 +1,4 @@
 import { browser } from "protractor";
-import apiHelper from "../../api/api.helper";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
@@ -7,10 +6,6 @@ import createTaskTemplate from "../../pageobject/settings/task-management/create
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import utilCommon from '../../utils/util.common';
-import dynamicFieldsPage from '../../pageobject/common/dynamic-fields.po';
-import createCasePage from '../../pageobject/case/create-case.po';
-import viewCasePage from "../../pageobject/case/view-case.po";
-import manageTask from "../../pageobject/task/manage-task-blade.po";
 
 describe('Create Case Task', () => {
     beforeAll(async () => {
@@ -28,7 +23,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('DRDMV-13168: [Dynamic Data] [UI] - Automated Task Template UI on create and on Edit', async () => {
+    it('[DRDMV-13168]: [Dynamic Data] [UI] - Automated Task Template UI on create and on Edit', async () => {
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
