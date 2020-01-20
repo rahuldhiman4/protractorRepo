@@ -9,12 +9,13 @@ import selectTaskTemplate from "../../pageobject/settings/task-management/consol
 import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
-import consoleTask from "../../pageobject/task/console-task.po";
 import editTask from "../../pageobject/task/edit-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import consoleTask from "../../pageobject/task/console-task.po";
+let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
 
 describe('Create Case Task', () => {
     beforeAll(async () => {
@@ -104,7 +105,14 @@ describe('Create Case Task', () => {
     });//, 140 * 1000);
 
     //ankagraw
-    it('DRDMV-7148,DRDMV-7140: Automatic Task data validation once Task is created	', async () => {
+    it('DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793: Automatic Task data validation once Task is created	', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let menuItemName: string = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
+        menuItemDataFile['sampleMenuItem'].menuItemName = menuItemName;
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.associateCategoryToCategory('Chatter', 'Failure');
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
         let autmationTaskTemplateWithRequiredData = 'Automatic task With Required Field' + Math.floor(Math.random() * 1000000);
         let autmationTaskSummaryWithRequiredData = 'Automatic task Summary With Required Field' + Math.floor(Math.random() * 1000000);
         let automationTaskTemplateWithallField = 'Automation task with All field' + Math.floor(Math.random() * 1000000);
@@ -131,7 +139,7 @@ describe('Create Case Task', () => {
         await taskTemplate.setTaskDescription('All field get added in this task template');
         await taskTemplate.selectCompanyByName('Petramco');
         await taskTemplate.setNewProcessName('Approval', 'Get Request Status Data Store');
-        await taskTemplate.selectLabel('test');
+        await taskTemplate.selectLabel(menuItemName);
         await taskTemplate.selectTaskCategoryTier1('Applications');
         await taskTemplate.selectTaskCategoryTier2('Social');
         await taskTemplate.selectTaskCategoryTier3('Chatter');
@@ -311,7 +319,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('DRDMV-12039,DRDMV-12040,DRDMV-12009: [ Task ] - Verify Associated menu for Task will show global configuration values as well	 ', async () => {
+    it('DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084: [ Task ] - Verify Associated menu for Task will show global configuration values as well	 ', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let globalCategName = 'DemoCateg1';
         let categName2 = 'DemoCateg2';
@@ -468,11 +476,11 @@ describe('Create Case Task', () => {
             await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus('Draft');
-            await editTaskTemplate.clickOnSaveMetadataLink();
+            await editTaskTemplate.clickOnSaveMetadata();
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectOwnerCompany('Psilon');
             await editTaskTemplate.selectOwnerGroup('Psilon Support Group2');
-            await editTaskTemplate.clickOnSaveMetadataLink();
+            await editTaskTemplate.clickOnSaveMetadata();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.setTaskSearchBoxValue(TaskTemplate);
