@@ -95,7 +95,7 @@ describe('AcknowledgmentTemplate', () => {
     }, 180 * 1000)
 
     //kgaikwad
-    fit('DRDMV-10902 : Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
+    it('DRDMV-10902,DRDMV-10900,DRDMV-10924,DRDMV-10923 : Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
         let templateName = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName2 = 'Public' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
