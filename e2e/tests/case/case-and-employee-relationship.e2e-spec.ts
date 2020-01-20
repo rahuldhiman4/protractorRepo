@@ -14,6 +14,8 @@ import gridUtil from '../../utils/util.grid';
 import apiHelper from '../../api/api.helper';
 import utilGrid from '../../utils/util.grid';
 import editCasePo from '../../pageobject/case/edit-case.po';
+import { security, operation, type } from '../../utils/constants';
+import quickCase from '../../pageobject/case/quick-case.po';
 
 describe('Case And Employee Relationship', () => {
     beforeAll(async () => {
@@ -31,13 +33,14 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('DRDMV-16241,DRDMV-16242: Add person with different relations', async () => {
+    it('DRDMV-16241,DRDMV-16242,DRDMV-16240: Add person with different relations', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("Allen");
         await createCasePage.setSummary("DRDMV-16241");
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
+        expect(await caseEditPage.getRelatedPersonTabText()).toBe("Related Persons");
         await caseEditPage.navigateToRelatedPersonsTab();
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Qianru Tao', 'Inspector');
@@ -231,4 +234,95 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedCasePage.getRelatedCaseStatus(caseDisplayId2)).toBe("Assigned");
         expect(await relatedCasePage.getRelatedCaseSummary(caseDisplayId2)).toBe("Testing Realated Persons");
     });
+
+    //asahitya
+    it('DRDMV-16245: Remove the Person from Case Related People tab and Person Profile Related People tab', async () => {
+        await navigationPage.goToPersonProfile();
+        await relatedTabPage.addRelatedPerson();
+        await addRelatedPopupPage.addPerson('Brain Adams', 'Parent');
+        await relatedTabPage.waitUntilNewRelatedPersonAdded(2);
+        await relatedTabPage.removeRelatedPerson("Brain Adams");
+        await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
+
+        await apiHelper.apiLogin("qyuan");
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['simpleCase']);
+        let caseId = await response.displayId;
+        let caseGuid = await response.id;
+
+        //Write access to qtao
+        let caseAccessDataQtao = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['witeAccess'],
+            "username": 'qtao'
+        }
+        await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
+
+        await navigationPage.gotoCaseConsole();
+        await utilGrid.searchAndOpenHyperlink(caseId);
+        await caseEditPage.navigateToRelatedPersonsTab();
+        await relatedTabPage.addRelatedPerson();
+        await addRelatedPopupPage.addPerson('Harry Potter', 'Related to');
+        await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
+
+        await navigationPage.gotoCaseConsole();
+        await utilGrid.searchAndOpenHyperlink(caseId);
+        await caseEditPage.navigateToRelatedPersonsTab();
+        await relatedTabPage.removeRelatedPerson("Harry Potter");
+        await utilCommon.waitUntilSpinnerToHide();
+        await caseEditPage.navigateToCaseAccessTab();
+        await caseEditPage.navigateToRelatedPersonsTab();
+        expect(await relatedTabPage.isRelatedPersonPresent("Harry Potter")).toBeFalsy("Harry Potter is still related to Case: " + caseId);
+
+        await navigationPage.goToPersonProfile();
+        expect(await relatedTabPage.isRelatedPersonPresent("Brain Adams")).toBeFalsy("Brain Adams is still related to Person Profile");
+        expect(await relatedTabPage.isRemoveRelatedPersonIconPresent("Qiang Du")).toBeFalsy("Cross icon is available");
+    });
+
+    //asahitya
+    it('DRDMV-17029: Check Related Cases Tab on Case Bottom section', async () => {
+        //Create case 1 to pin with quick case
+        let randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseData2 =
+        {
+            "Requester": "qtao",
+            "Summary": randomStr
+        }
+        await apiHelper.apiLogin('qtao');
+        let caseId2 = (await apiHelper.createCase(caseData2)).displayId;
+
+        //Create case 2
+        await apiHelper.apiLogin("qyuan");
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let response = await apiHelper.createCase(caseData['simpleCase']);
+        let caseId = await response.displayId;
+        let caseGuid = await response.id;
+
+        //Write access to qtao
+        let caseAccessDataQtao = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['witeAccess'],
+            "username": 'qtao'
+        }
+        await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
+
+        await navigationPage.gotoCaseConsole();
+        await utilGrid.searchAndOpenHyperlink(caseId);
+        expect(await caseEditPage.getRelatedCasesTabText()).toBe("Related Cases");
+
+        await navigationPage.gotoQuickCase();
+        await quickCase.selectRequesterName('adam');
+        await quickCase.setCaseSummary(randomStr);
+        await utilCommon.waitUntilSpinnerToHide();
+        await quickCase.pinFirstRecommendedCase();
+        await quickCase.createCaseButton();
+        await utilCommon.closePopUpMessage();
+        await quickCase.gotoCaseButton();
+
+        await caseEditPage.navigateToRelatedCasesTab();
+        await relatedCasePage.isCasePresent(caseId2);
+    });
+
 })

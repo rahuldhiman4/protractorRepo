@@ -11,5 +11,10 @@
         "orgName": "UI-Department-19082",
         "relatedOrgId": null,
         "domainTag":"FacilityDomain"
+    },
+    "DepartmentData_BulkOperation": {
+        "orgName": "BulkOperationDepartment",
+        "relatedOrgId": null
     }
+
 }

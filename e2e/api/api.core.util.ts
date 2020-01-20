@@ -45,6 +45,7 @@ class ApiCoreUtil {
             + "&pageSize=-1&recorddefinition="
             + recordName
             + "&startIndex=0";
+            
         let allRecords = await axios.get(
             dataPageUri
         );
@@ -134,6 +135,14 @@ class ApiCoreUtil {
         let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Operational Category");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[304405421] === category;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getStatusChangeReasonGuid(reason: string): Promise<string>{
+        let allRecords = await this.getGuid("com.bmc.dsm.shared-services-lib:Status Reason");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[302307031] === reason;
         });
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }

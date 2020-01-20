@@ -500,6 +500,16 @@ class CaseEditPage {
         await $(this.selectors.changeCaseTemplate).click();
     }
 
+    async getRelatedPersonTabText(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.relatedPersonTab)));
+        return await $(this.selectors.relatedPersonTab).getText();
+    }
+
+    async getRelatedCasesTabText(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.relatedCasesTab)));
+        return await $(this.selectors.relatedCasesTab).getText();
+    }
+
     async isChangeCaseTemplateButtonDisplayed(): Promise<boolean> {
         return $(this.selectors.changeCaseTemplate).isDisplayed();
     }
