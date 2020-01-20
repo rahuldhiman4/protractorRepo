@@ -32,3 +32,11 @@ export enum NotificationType {
     Email = 2,
     AlertAndEmail = 3,
 }
+
+export enum CaseStatus {
+    New = 1000,
+    Assigned = 2000,
+    InProgress = 3000,
+    Resolved = 5000,
+    Closed = 7000
+}
