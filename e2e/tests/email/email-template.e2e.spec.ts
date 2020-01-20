@@ -99,6 +99,7 @@ describe('EmailTemplate', () => {
         expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message Type')).toBe('subject', 'subject is missing from Grid');
     }, 160 * 1000)
 
+    //kgaikwad
     it('DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798 : Email Template : User Is able to delete Email Template', async () => {
         let templateName = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
