@@ -2,8 +2,8 @@ import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import utilGrid from "../../utils/util.grid";
 import activityTabPage from '../../pageobject/social/activity-tab.po';
+import utilGrid from "../../utils/util.grid";
 
 describe('Complex Surveys', () => {
     beforeAll(async () => {
@@ -20,8 +20,7 @@ describe('Complex Surveys', () => {
         await utilGrid.clearFilter();
     });
 
-
-    it('DRDMV-18118: [Complex Survey] - Survey Details in Case having Stars', async () => {
+    it('[DRDMV-18118]: [Complex Survey] - Survey Details in Case having Stars', async () => {
         await apiHelper.apiLogin("qkatawazi");
 
         //Testing the UI with Date Time at top
@@ -207,9 +206,9 @@ describe('Complex Surveys', () => {
         expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(6)).toBe("By what time did you expect resolution for this service ? (This is Date Time type question, Please select date and time)");
         expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(9)).toBe("Sat Dec 14 2019 2:50:00 PM");
         await activityTabPage.closeSurveyInformation();
-    })
+    });
 
-    it('DRDMV-18117: [Simple Survey] - Survey Details in Case which is submitted from DWP with different options', async () => {
+    it('[DRDMV-18117]: [Simple Survey] - Survey Details in Case which is submitted from DWP with different options', async () => {
         await apiHelper.apiLogin("qkatawazi");
 
         //Create and check the Simple Survey with Long feedback
@@ -256,9 +255,9 @@ describe('Complex Surveys', () => {
         await utilGrid.searchAndOpenHyperlink(caseDisplayId2);
         expect(await activityTabPage.getRatingTextOnActivityTab()).toBe("Rating: 2 (out of 5)", "Rating does not match");
         expect(await activityTabPage.isViewSurveyInformationLinkPresent()).toBeFalsy("Link is present");
-    })
+    });
 
-    it('DRDMV-19366: [Complex Survey] - Survey Details in Case having Emoji', async () => {
+    it('[DRDMV-19366]: [Complex Survey] - Survey Details in Case having Emoji', async () => {
         await apiHelper.apiLogin("qkatawazi");
         let serviceReqId: string = "sid" + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = require('../../data/ui/case/case.ui.json');
@@ -289,9 +288,9 @@ describe('Complex Surveys', () => {
         expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(8)).toBe("Good Value for Money");
         expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(9)).toBe("Unique");
         await activityTabPage.closeSurveyInformation();
-    })
+    });
 
-    it('DRDMV-18123: [Complex Survey] - Survey Details Order in Case Activity', async () => {
+    it('[DRDMV-18123]: [Complex Survey] - Survey Details Order in Case Activity', async () => {
         await apiHelper.apiLogin("qkatawazi");
         let serviceReqId: string = "sid" + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = require('../../data/ui/case/case.ui.json');
@@ -306,9 +305,9 @@ describe('Complex Surveys', () => {
         await activityTabPage.addActivityNote("hello");
         await activityTabPage.clickOnPostButton();
         expect(await activityTabPage.isComplexSurveyOrderIsThird()).toBeTruthy();
-    })
+    });
 
-    it('DRDMV-18125: [Complex Survey] - Filter survey details in Case Activity', async () => {
+    it('[DRDMV-18125]: [Complex Survey] - Filter survey details in Case Activity', async () => {
         await apiHelper.apiLogin("qkatawazi");
         let serviceReqId: string = "sid" + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = require('../../data/ui/case/case.ui.json');
@@ -325,6 +324,6 @@ describe('Complex Surveys', () => {
         await activityTabPage.selectFilterCheckBox('DWP Survey');
         await activityTabPage.clickOnFilterApplyButton();
         expect(await activityTabPage.isOnlySurveyRecordFiltered()).toBeTruthy("Multiple records are present");
-    })
+    });
 
 })

@@ -1,23 +1,23 @@
-import { browser, protractor } from "protractor";
-import loginPage from "../../pageobject/common/login.po";
-import navigationPage from "../../pageobject/common/navigation.po";
-import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
-import resources from '../../pageobject/common/resources-tab.po';
-import utilCommon from '../../utils/util.common';
+import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import quickCase from '../../pageobject/case/quick-case.po';
+import { Knowledge } from '../../api/constant.api';
 import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePage from '../../pageobject/case/edit-case.po';
-import documentLibraryPage from '../../pageobject/settings/document-management/document-library-console.po';
-import createDocumentLibraryPage from '../../pageobject/settings/document-management/create-document-library.po';
-import utilGrid from "../../utils/util.grid";
+import quickCase from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
-import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
-import { Knowledge } from '../../api/constant.api';
-import activityTabPo from '../../pageobject/social/activity-tab.po';
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
+import resources from '../../pageobject/common/resources-tab.po';
 import composeMailPo from '../../pageobject/email/compose-mail.po';
+import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
+import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
+import createDocumentLibraryPage from '../../pageobject/settings/document-management/create-document-library.po';
+import documentLibraryPage from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
+import utilCommon from '../../utils/util.common';
+import utilGrid from "../../utils/util.grid";
 
 var caseBAUser = 'qkatawazi';
 var caseAgentUser = 'qtao';
@@ -157,11 +157,11 @@ describe('Knowledge Articles Tests', () => {
         await navigationPage.signOut();
     });
 
-    it('DRDMV-19569,DRDMV-19570,DRDMV-19571:Verify the search functionality of knowledge articles console for Region', async () => {
-        let regionFieldColumn:string[] = ["Region"];
-        let knowledgeGridColumnFields:string[] = ["Article ID","Title","Knowledge Set","Status","Assignee","Company","Template Name","Reviewer","Modified By","Created Date","Modified Date","Flagged","Region"];
-        let knowledgeGridColumnFieldsWithoutRegion:string[] = ["Article ID","Title","Knowledge Set","Status","Assignee","Company","Template Name","Reviewer","Modified By","Created Date","Modified Date","Flagged"];
-        
+    it('[DRDMV-19569,DRDMV-19570,DRDMV-19571]:Verify the search functionality of knowledge articles console for Region', async () => {
+        let regionFieldColumn: string[] = ["Region"];
+        let knowledgeGridColumnFields: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged", "Region"];
+        let knowledgeGridColumnFieldsWithoutRegion: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged"];
+
         await navigationPage.gotoKnowledgeConsole();
         await utilGrid.clearFilter();
         await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
@@ -275,207 +275,207 @@ describe('Knowledge Articles Tests', () => {
         expect(regionVal).toEqual(emptyStr);
         await utilCommon.switchToDefaultWindowClosingOtherTabs();
         await navigationPage.signOut();
-    }, 400 * 1000),
+    }, 400 * 1000);
 
-    it('DRDMV-19565,DRDMV-19567,DRDMV-19568:Verify the Save functionality of Region and Site fields on Knowledge Articles Create / Edit screen', async () => {
-            let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json");
-            let knowledgeData = knowledgeDataFile['DRDMV-19020'];
-            try {
-                //* Check the Availability of Region with Case Business Analyst
-                await navigationPage.gotoKnowledgeConsole();
-                await utilCommon.waitUntilSpinnerToHide();
-                await navigationPage.gotoCreateKnowledge();
-                await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
-                await createKnowledgePage.clickOnUseSelectedTemplateButton();
-                await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-                await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
-                await createKnowledgePage.clickAssignToMeButton();
-                await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
-                await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
-                await createKnowledgePage.clickOnSaveKnowledgeButton();
-                await createKnowledgePage.clickOnviewArticleLinkButton();
-                await utilCommon.switchToNewWidnow(1);
-                await editKnowledgePo.editKnowledgeMedataData();
-                expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-                expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
-                await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
-                await createKnowledgePage.selectSiteDropDownOption(siteFieldVal1);
-                await editKnowledgePo.saveKnowledgeMedataDataChanges();
-                await utilCommon.switchToDefaultWindowClosingOtherTabs();
-                await navigationPage.signOut();
+    it('[DRDMV-19565,DRDMV-19567,DRDMV-19568]:Verify the Save functionality of Region and Site fields on Knowledge Articles Create / Edit screen', async () => {
+        let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json");
+        let knowledgeData = knowledgeDataFile['DRDMV-19020'];
+        try {
+            //* Check the Availability of Region with Case Business Analyst
+            await navigationPage.gotoKnowledgeConsole();
+            await utilCommon.waitUntilSpinnerToHide();
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.clickAssignToMeButton();
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
+            await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await utilCommon.switchToNewWidnow(1);
+            await editKnowledgePo.editKnowledgeMedataData();
+            expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
+            await createKnowledgePage.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.saveKnowledgeMedataDataChanges();
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
 
-                //Create Knowledge article by Case Manager
-                await loginPage.login(caseManagerUser);
-                await navigationPage.gotoKnowledgeConsole();
-                await utilCommon.waitUntilSpinnerToHide();
-                await navigationPage.gotoCreateKnowledge();
-                await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
-                await createKnowledgePage.clickOnUseSelectedTemplateButton();
-                await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-                await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
-                await createKnowledgePage.clickAssignToMeButton();
-                await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
-                await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
-                await createKnowledgePage.clickOnSaveKnowledgeButton();
-                await createKnowledgePage.clickOnviewArticleLinkButton();
-                await utilCommon.switchToNewWidnow(1);
-                await editKnowledgePo.editKnowledgeMedataData();
-                expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-                expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
-                await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
-                await createKnowledgePage.selectSiteDropDownOption(siteFieldVal1);
-                await editKnowledgePo.saveKnowledgeMedataDataChanges();
-                await utilCommon.switchToDefaultWindowClosingOtherTabs();
-                await navigationPage.signOut();
+            //Create Knowledge article by Case Manager
+            await loginPage.login(caseManagerUser);
+            await navigationPage.gotoKnowledgeConsole();
+            await utilCommon.waitUntilSpinnerToHide();
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.clickAssignToMeButton();
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
+            await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await utilCommon.switchToNewWidnow(1);
+            await editKnowledgePo.editKnowledgeMedataData();
+            expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
+            await createKnowledgePage.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.saveKnowledgeMedataDataChanges();
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
 
-                //Create Knowledge article by Case Agent
-                await loginPage.login(caseAgentUser);
-                await navigationPage.gotoKnowledgeConsole();
-                await utilCommon.waitUntilSpinnerToHide();
-                await navigationPage.gotoCreateKnowledge();
-                await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
-                await createKnowledgePage.clickOnUseSelectedTemplateButton();
-                await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-                await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
-                await createKnowledgePage.clickAssignToMeButton();
-                await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
-                await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
-                await createKnowledgePage.clickOnSaveKnowledgeButton();
-                await createKnowledgePage.clickOnviewArticleLinkButton();
-                await utilCommon.switchToNewWidnow(1);
-                await editKnowledgePo.editKnowledgeMedataData();
-                expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-                expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
-                await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
-                await createKnowledgePage.selectSiteDropDownOption(siteFieldVal1);
-                await editKnowledgePo.saveKnowledgeMedataDataChanges();
-                await utilCommon.switchToDefaultWindowClosingOtherTabs();
-                await navigationPage.signOut();
+            //Create Knowledge article by Case Agent
+            await loginPage.login(caseAgentUser);
+            await navigationPage.gotoKnowledgeConsole();
+            await utilCommon.waitUntilSpinnerToHide();
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.clickAssignToMeButton();
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
+            await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await utilCommon.switchToNewWidnow(1);
+            await editKnowledgePo.editKnowledgeMedataData();
+            expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
+            await createKnowledgePage.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.saveKnowledgeMedataDataChanges();
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
 
-                //Login with Knowledge Candidate
-                await loginPage.login(knowledgeCandidateUser);
-                await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-                await utilCommon.switchToNewWidnow(1);
-                await utilCommon.waitUntilSpinnerToHide();
-                await navigationPage.gotoCreateKnowledge();
-                await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
-                await createKnowledgePage.clickOnUseSelectedTemplateButton();
-                await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-                await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
-                await createKnowledgePage.clickAssignToMeButton();
-                await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
-                await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
-                await createKnowledgePage.clickOnSaveKnowledgeButton();
-                await createKnowledgePage.clickOnviewArticleLinkButton();
-                await utilCommon.switchToNewWidnow(2);
-                await editKnowledgePo.editKnowledgeMedataData();
-                expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-                expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
-                await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
-                await createKnowledgePage.selectSiteDropDownOption(siteFieldVal1);
-                await editKnowledgePo.saveKnowledgeMedataDataChanges();
-                await utilCommon.switchToDefaultWindowClosingOtherTabs();
-                await navigationPage.signOut();
+            //Login with Knowledge Candidate
+            await loginPage.login(knowledgeCandidateUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            await utilCommon.waitUntilSpinnerToHide();
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.clickAssignToMeButton();
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
+            await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await utilCommon.switchToNewWidnow(2);
+            await editKnowledgePo.editKnowledgeMedataData();
+            expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
+            await createKnowledgePage.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.saveKnowledgeMedataDataChanges();
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
 
-                //Login with Knowledge Candidate
-                await loginPage.login(knowledgeContributorUser);
-                await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-                await utilCommon.switchToNewWidnow(1);
-                await utilCommon.waitUntilSpinnerToHide();
-                await navigationPage.gotoCreateKnowledge();
-                await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
-                await createKnowledgePage.clickOnUseSelectedTemplateButton();
-                await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-                await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
-                await createKnowledgePage.clickAssignToMeButton();
-                await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
-                await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
-                await createKnowledgePage.clickOnSaveKnowledgeButton();
-                await createKnowledgePage.clickOnviewArticleLinkButton();
-                await utilCommon.switchToNewWidnow(2);
-                await editKnowledgePo.editKnowledgeMedataData();
-                expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-                expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
-                await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
-                await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
-                await editKnowledgePo.saveKnowledgeMedataDataChanges();
-                await utilCommon.switchToDefaultWindowClosingOtherTabs();
-                await navigationPage.signOut();
+            //Login with Knowledge Candidate
+            await loginPage.login(knowledgeContributorUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            await utilCommon.waitUntilSpinnerToHide();
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.clickAssignToMeButton();
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
+            await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await utilCommon.switchToNewWidnow(2);
+            await editKnowledgePo.editKnowledgeMedataData();
+            expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
+            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.saveKnowledgeMedataDataChanges();
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
 
-                //Login with Knowledge Publisher
-                await loginPage.login(knowledgePublisherUser);
-                await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-                await utilCommon.switchToNewWidnow(1);
-                await utilCommon.waitUntilSpinnerToHide();
-                await navigationPage.gotoCreateKnowledge();
-                await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
-                await createKnowledgePage.clickOnUseSelectedTemplateButton();
-                await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-                await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
-                await createKnowledgePage.clickAssignToMeButton();
-                await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
-                await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
-                await createKnowledgePage.clickOnSaveKnowledgeButton();
-                await createKnowledgePage.clickOnviewArticleLinkButton();
-                await utilCommon.switchToNewWidnow(2);
-                await editKnowledgePo.editKnowledgeMedataData();
-                expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-                expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
-                await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
-                await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
-                await editKnowledgePo.saveKnowledgeMedataDataChanges();
-                await utilCommon.switchToDefaultWindowClosingOtherTabs();
-                await navigationPage.signOut();
+            //Login with Knowledge Publisher
+            await loginPage.login(knowledgePublisherUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            await utilCommon.waitUntilSpinnerToHide();
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.clickAssignToMeButton();
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
+            await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await utilCommon.switchToNewWidnow(2);
+            await editKnowledgePo.editKnowledgeMedataData();
+            expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
+            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.saveKnowledgeMedataDataChanges();
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
 
-                //Login with Knowledge Candidate
-                await loginPage.login(knowledgeCoachUser);
-                await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-                await utilCommon.switchToNewWidnow(1);
-                await utilCommon.waitUntilSpinnerToHide();
-                await navigationPage.gotoCreateKnowledge();
-                await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
-                await createKnowledgePage.clickOnUseSelectedTemplateButton();
-                await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-                await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
-                await createKnowledgePage.clickAssignToMeButton();
-                await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
-                await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
-                await createKnowledgePage.clickOnSaveKnowledgeButton();
-                await createKnowledgePage.clickOnviewArticleLinkButton();
-                await utilCommon.switchToNewWidnow(2);
-                await editKnowledgePo.editKnowledgeMedataData();
-                expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-                expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
-                await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
-                await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
-                await editKnowledgePo.saveKnowledgeMedataDataChanges();
-                await utilCommon.switchToDefaultWindowClosingOtherTabs();
-                await navigationPage.signOut();
-            }
-            catch (Error) {
-                expect(fail);
-            }
-            finally {
-                await utilCommon.switchToDefaultWindowClosingOtherTabs();
-                await browser.refresh();
-                await utilCommon.waitUntilSpinnerToHide();
-                await navigationPage.signOut();
-            }
-    }, 400 * 1000)
+            //Login with Knowledge Candidate
+            await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            await utilCommon.waitUntilSpinnerToHide();
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.clickAssignToMeButton();
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
+            await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await utilCommon.switchToNewWidnow(2);
+            await editKnowledgePo.editKnowledgeMedataData();
+            expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
+            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.saveKnowledgeMedataDataChanges();
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+        }
+        catch (Error) {
+            expect(fail);
+        }
+        finally {
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await browser.refresh();
+            await utilCommon.waitUntilSpinnerToHide();
+            await navigationPage.signOut();
+        }
+    }, 400 * 1000);
 
-    it('DRDMV-19574:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
+    it('[DRDMV-19574]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
         await apiHelper.apiLogin('tadmin');
         var caseAgentuserData = {
             "firstName": "caseAgent",
             "lastName": "user",
             "userId": "caseAgent",
-            "userPermission" : "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+            "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
         }
         var caseManageruserData = {
             "firstName": "caseManager",
             "lastName": "user",
             "userId": "caseManager",
-            "userPermission" : "AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+            "userPermission": "AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
         }
         await apiHelper.createNewUser(caseAgentuserData);
         await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
@@ -555,24 +555,24 @@ describe('Knowledge Articles Tests', () => {
         await createDocumentLibraryPage.selectStatus(documentLibraryStatus);
         await createDocumentLibraryPage.saveUpdatedDocument();
         await navigationPage.signOut();
-    }, 400 * 1000)
+    }, 400 * 1000);
 
-    it('DRDMV-19575:Verify the search functionality of Document library console for Region', async () => {
+    it('[DRDMV-19575]:Verify the search functionality of Document library console for Region', async () => {
         await apiHelper.apiLogin('tadmin');
-        var regionFields:string[] = ["Region"];
-        var siteFields:string[] = ["Site"];
+        var regionFields: string[] = ["Region"];
+        var siteFields: string[] = ["Site"];
 
         var caseAgentuserData = {
             "firstName": "caseAgent",
             "lastName": "user",
             "userId": "caseAgent",
-            "userPermission" : "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+            "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
         }
         var caseManageruserData = {
             "firstName": "caseManager",
             "lastName": "user",
             "userId": "caseManager",
-            "userPermission" : "AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+            "userPermission": "AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
         }
         await apiHelper.createNewUser(caseAgentuserData);
         await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
@@ -590,7 +590,7 @@ describe('Knowledge Articles Tests', () => {
         await createDocumentLibraryPage.setTitle(title);
         await createDocumentLibraryPage.selectCompany(companyStr);
         await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
-        await createDocumentLibraryPage.selectRegion( regionFieldVal);
+        await createDocumentLibraryPage.selectRegion(regionFieldVal);
         await createDocumentLibraryPage.selectSite(siteFieldVal);
         await createDocumentLibraryPage.saveNewDocument();
 
@@ -613,7 +613,7 @@ describe('Knowledge Articles Tests', () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows'))
             .toEqual('Document Library Console - Business Workflows');
-            await documentLibraryPage.addColumnOnGrid(regionFields);
+        await documentLibraryPage.addColumnOnGrid(regionFields);
         await utilGrid.searchOnGridConsole(regionFieldVal);
         regionVal = await documentLibraryPage.getSelectedGridRecordValue(regionField);
         expect(regionVal).toEqual(regionFieldVal);
@@ -629,7 +629,7 @@ describe('Knowledge Articles Tests', () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows'))
             .toEqual('Document Library Console - Business Workflows');
-            await documentLibraryPage.addColumnOnGrid(regionFields);
+        await documentLibraryPage.addColumnOnGrid(regionFields);
         await utilGrid.searchOnGridConsole(regionFieldVal);
         regionVal = await documentLibraryPage.getSelectedGridRecordValue(regionField);
         expect(regionVal).toEqual(regionFieldVal);
@@ -639,9 +639,9 @@ describe('Knowledge Articles Tests', () => {
         regionVal = await documentLibraryPage.getSelectedGridRecordValue(regionField);
         expect(regionVal).toEqual(emptyStr);
         await navigationPage.signOut();
-    }, 400 * 1000)
+    }, 400 * 1000);
 
-    it('DRDMV-19573:Verify the document search based on Region and Site from attachments', async () => {
+    it('[DRDMV-19573]:Verify the document search based on Region and Site from attachments', async () => {
         let caseSummary = `Case for Document Search-${new Date().valueOf()}`;
 
         //Create a document library
@@ -783,9 +783,9 @@ describe('Knowledge Articles Tests', () => {
         await resources.clickOnAdvancedSearchSettingsIconToClose();
         await expect(await resources.getAdvancedSearchResult()).toEqual(title);
         await navigationPage.signOut();
-    }, 400 * 1000)
+    }, 400 * 1000);
 
-    it('DRDMV-19572:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
+    it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName(caseAgentUser);
         await quickCase.setCaseSummary(articleInDraftStatus);
@@ -1357,7 +1357,7 @@ describe('Knowledge Articles Tests', () => {
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
         await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
-        await navigationPage.signOut();    }, 400 * 1000)
-
+        await navigationPage.signOut();
+    }, 400 * 1000);
 
 })

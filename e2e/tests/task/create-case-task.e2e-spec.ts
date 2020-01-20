@@ -9,12 +9,12 @@ import selectTaskTemplate from "../../pageobject/settings/task-management/consol
 import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
+import consoleTask from "../../pageobject/task/console-task.po";
 import editTask from "../../pageobject/task/edit-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import consoleTask from "../../pageobject/task/console-task.po";
 let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
 
 describe('Create Case Task', () => {
@@ -33,7 +33,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('DRDMV-7165,DRDMV-7147: Update Task Type field for any task	', async () => {
+    it('[DRDMV-7165,DRDMV-7147]: Update Task Type field for any task	', async () => {
         let manualTaskTemplate = 'Manual task' + Math.floor(Math.random() * 1000000);
         let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
         let automationTaskTemplate = 'Automation task' + Math.floor(Math.random() * 1000000);
@@ -105,7 +105,7 @@ describe('Create Case Task', () => {
     });//, 140 * 1000);
 
     //ankagraw
-    it('DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793: Automatic Task data validation once Task is created	', async () => {
+    it('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Automatic Task data validation once Task is created	', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let menuItemName: string = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
         menuItemDataFile['sampleMenuItem'].menuItemName = menuItemName;
@@ -197,7 +197,7 @@ describe('Create Case Task', () => {
     }, 360 * 1000);
 
     //ankagraw
-    it('DRDMV-7124: [Automatic Task] - Task Template UI in Edit mode: New fields validations ', async () => {
+    it('[DRDMV-7124]: [Automatic Task] - Task Template UI in Edit mode: New fields validations ', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
         let templateData = {
@@ -319,7 +319,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084: [ Task ] - Verify Associated menu for Task will show global configuration values as well	 ', async () => {
+    it('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: [ Task ] - Verify Associated menu for Task will show global configuration values as well	 ', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let globalCategName = 'DemoCateg1';
         let categName2 = 'DemoCateg2';
@@ -384,7 +384,7 @@ describe('Create Case Task', () => {
     }, 180 * 1000);
 
     //ankagraw
-    it('DRDMV-12558: Task Template submitter from different company of owner group can edit the template', async () => {
+    it('[DRDMV-12558]: Task Template submitter from different company of owner group can edit the template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
@@ -436,7 +436,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('DRDMV-12582: Task Template access when owner group from different company is applied', async () => {
+    it('[DRDMV-12582]: Task Template access when owner group from different company is applied', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
@@ -498,7 +498,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('DRDMV-7149: [Automatic Task] - Automated Task Status transition validation', async () => {
+    it('[DRDMV-7149]: [Automatic Task] - Automated Task Status transition validation', async () => {
 
         let automationTaskTemplate = 'Automatic task' + Math.floor(Math.random() * 1000000);
         let automationTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
@@ -557,7 +557,7 @@ describe('Create Case Task', () => {
     }, 120 * 1000);
 
     //ankagraw
-    it('DRDMV-7121: [Automatic Task] - Task Template Console: Verify Task Type column, filter ', async () => {
+    it('[DRDMV-7121]: [Automatic Task] - Task Template Console: Verify Task Type column, filter ', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData = {
             "templateName": `manualTaskTemplateActive ${randomStr}`,
@@ -589,7 +589,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('DRDMV-3766: [Task Template Console] Task Template Console verification', async () => {
+    it('[DRDMV-3766]: [Task Template Console] Task Template Console verification', async () => {
         await apiHelper.apiLogin('qkatawazi');
         let addColoumn: string[] = ['Label'];
         let allColoumn: string[] = ['Template Name', 'Template Status', 'Task Type', 'Task Category Tier 1', 'Task Category Tier 2', 'Assignee', 'Support Group', 'Modified Date', 'Task Company'];
@@ -604,7 +604,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('DRDMV-7201: [Automatic Task] - Task Console: Task Type column and filter validation', async () => {
+    it('[DRDMV-7201]: [Automatic Task] - Task Console: Task Type column and filter validation', async () => {
 
         await navigationPage.gotoTaskConsole();
         await utilGrid.clearFilter();
@@ -621,7 +621,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('DRDMV-7141: [Automatic Task] - Task template selection Console: Verify Task Type column, filter', async () => {
+    it('[DRDMV-7141]: [Automatic Task] - Task template selection Console: Verify Task Type column, filter', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData = {
             "templateName": `manualTaskTemplateActive ${randomStr}`,
@@ -662,7 +662,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('DRDMV-2475: [Permissions] Settings menu for Case Functional Roles', async () => {
+    it('[DRDMV-2475]: [Permissions] Settings menu for Case Functional Roles', async () => {
         await loginPage.login('qkatawazi');
         let caseManagementList: string[] = ['', 'Case Management', 'Approvals', 'Assignment', 'Automated Status Transition', 'Notes Template', 'Read Access', 'Status Configuration', 'Templates'];
         let manageFlowsetList: string[] = ['', 'Manage Flowsets', 'Define Flowsets', 'Process Library'];

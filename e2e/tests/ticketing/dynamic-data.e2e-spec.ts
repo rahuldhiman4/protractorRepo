@@ -1,18 +1,18 @@
 
 import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
+import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import utilCommon from '../../utils/util.common';
-import apiHelper from '../../api/api.helper';
-import consoleNotificationTemplatePo from '../../pageobject/notification/console-notificationTemplate.po';
-import createNotificationTemplatePo from '../../pageobject/notification/create-notificationTemplate.po';
-import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
-import consoleDocumentTemplatePo from '../../pageobject/settings/document-management/console-document-template.po';
-import createDocumentTemplatePo from '../../pageobject/settings/document-management/create-document-template.po';
 import consoleEmailTemplatePo from '../../pageobject/email/console-email-template.po';
 import createEmailTemplatePo from '../../pageobject/email/create-email-template.po';
+import consoleNotificationTemplatePo from '../../pageobject/notification/console-notificationTemplate.po';
+import createNotificationTemplatePo from '../../pageobject/notification/create-notificationTemplate.po';
 import consoleNotestemplatePo from '../../pageobject/settings/common/console-notestemplate.po';
 import createNotestemplatePo from '../../pageobject/settings/common/create-notestemplate.po';
+import consoleDocumentTemplatePo from '../../pageobject/settings/document-management/console-document-template.po';
+import createDocumentTemplatePo from '../../pageobject/settings/document-management/create-document-template.po';
+import utilCommon from '../../utils/util.common';
 
 describe('Dynamic data', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -32,8 +32,7 @@ describe('Dynamic data', () => {
         await utilCommon.waitUntilSpinnerToHide();
     });
 
-
-    it('DRDMV-19353: Accessibility of Dynamic Fields in Notification and Dynamic Templates', async () => {
+    it('[DRDMV-19353]: Accessibility of Dynamic Fields in Notification and Dynamic Templates', async () => {
         let caseTemplateName = 'caseTemplate' + randomStr;
         let caseTemaplateSummary = 'caseTemplate' + randomStr;
         var casetemplateData = {
@@ -147,7 +146,7 @@ describe('Dynamic data', () => {
         await browser.refresh();
     }, 200 * 1000)
 
-    it('DRDMV-19270: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
+    it('[DRDMV-19270]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
         let caseTemplateName = 'caseTempRDMV-192700lp3ir' + randomStr;
         let caseTemaplateSummary = 'caseTempRDMV-19270Template' + randomStr;
         var casetemplateData = {
