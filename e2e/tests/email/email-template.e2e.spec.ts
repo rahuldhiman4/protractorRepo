@@ -122,7 +122,7 @@ describe('EmailTemplate', () => {
         await createEmailTemplatePo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await consoleEmailTemplatePo.clearGridFilter();
-
+        // DRDMV-10786
         let arr: string[] = ["Label"];
         await consoleEmailTemplatePo.addColumnOnGrid(arr);
         let arr2: string[] = ['Template Name', 'Subject', "Company", "Status", "Label"];
@@ -151,6 +151,7 @@ describe('EmailTemplate', () => {
 
         // DRDMV-10805
         await consoleEmailTemplatePo.searchAndOpenEmailTemplate(templateName);
+        // DRDMV-10798
         expect(await editEmailTemplatePo.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
         await editEmailTemplatePo.updateTemplateName(templateName2);
         expect(await editEmailTemplatePo.isModuleNameDisabled()).toBeTruthy('Module Name is enabled');
@@ -164,8 +165,6 @@ describe('EmailTemplate', () => {
         await editEmailTemplatePo.clickOnGridSearchIcon();
         await editEmailTemplatePo.searchAndSelectGridRecord('body');
         await editEmailTemplatePo.clickOnGridEditButton();
-        let kk1=await editEmailTemplatePo.updateEditMessageTextBladeBody(body2);
-        console.log('This is first body'+kk1);
         await editEmailTemplatePo.updateEditMessageTextBladeBody(body2);
         await editEmailTemplatePo.clickOnEditMessageTextBladeSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
@@ -178,13 +177,11 @@ describe('EmailTemplate', () => {
 
         
         await consoleEmailTemplatePo.searchOnGridConsole('body');
-        let kk2=await editEmailTemplatePo.getSelectedGridRecordValue('Message');
-        console.log('This is second body'+kk2);
         expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toBe('<p>'+body2+'</p>','body not updated correctly');
         await consoleEmailTemplatePo.searchOnGridConsole('subject');
         expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2,'subject not updated correctly');
 
-
+        // DRDMV-11093
         await editEmailTemplatePo.clickOnLocalizeMessageButton();
         await editEmailTemplatePo.setSubjectOfNewLocalizedEmailMessage(subject);
         await editEmailTemplatePo.setBody(body);
@@ -195,7 +192,7 @@ describe('EmailTemplate', () => {
         await utilCommon.waitUntilSpinnerToHide();
         await editEmailTemplatePo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
-
+        // DRDMV-11091
         await consoleEmailTemplatePo.searchOnGridConsole(templateName2);
         expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Search Template Name is missing in column');
         expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject2, 'Search Subject is missing in column');
