@@ -6,7 +6,7 @@ export const BASE_URI = "http://jiraapi.bmc.com:8080/";
 export const PROJECT_ID = "11900";
 export const VERSION_ID = "39130";
 export const INPUT_FILE = "../../reports/spec-json-report/spec-json-report.json";
-export const GENERATE_STATS = "false";
+export const GENERATE_STATS: boolean = false;
 export const USERNAME = "bwfjira";
 export const PASSWORD = "bwfjira";
 
