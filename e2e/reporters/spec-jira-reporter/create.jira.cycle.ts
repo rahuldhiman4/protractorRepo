@@ -62,9 +62,12 @@ export class CreateJiraCycle {
         this.filterInputFile();
         let isCycleAndFolderCreated: boolean = await this.createCycleAndFolder();
         if (isCycleAndFolderCreated) {
-            await this.addExecutionToCycle(this.skipJiraTest);
-            await this.addExecutionToCycle(this.passJiraTest);
-            await this.addExecutionToCycle(this.failJiraTest);
+            if (this.skipJiraTest.length)
+                await this.addExecutionToCycle(this.skipJiraTest);
+            if (this.passJiraTest.length)
+                await this.addExecutionToCycle(this.passJiraTest);
+            if (this.failJiraTest.length)
+                await this.addExecutionToCycle(this.failJiraTest);
             this.generateOutputFile();
             this.writeExecutionSummary();
         } else {
