@@ -16,12 +16,12 @@ class SelectEmailTemplateBlad {
 
     async clickOnApplyButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyButton)));
-        $(this.selectors.applyButton).click();
+        await $(this.selectors.applyButton).click();
     }
 
     async clickOnCancelButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
-        $(this.selectors.cancelButton).click();
+        await $(this.selectors.cancelButton).click();
     }
 
     async isEmailTemplateGridEmpty():Promise<boolean>{

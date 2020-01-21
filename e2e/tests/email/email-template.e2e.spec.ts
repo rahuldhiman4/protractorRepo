@@ -7,10 +7,18 @@ import createEmailTemplatePo from '../../pageobject/settings/email/create-email-
 import editEmailTemplatePo from '../../pageobject/settings/email/edit-email-template.po';
 import utilCommon from '../../utils/util.common';
 describe('EmailTemplate', () => {
-
+    var label:string
+    var menuItemDataFile =  require('../../data/ui/ticketing/menuItem.ui.json');
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qkatawazi');
+
+        await apiHelper.apiLogin('qkatawazi');
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+       
+        label = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
+        menuItemDataFile['sampleMenuItem'].menuItemName = label;
+        await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
     });
 
     afterAll(async () => {
@@ -23,19 +31,12 @@ describe('EmailTemplate', () => {
     });
 
     //kgaikwad
-    it('DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789 : Email Template : User Is Not able to Create Duplicate Email Template', async () => {
+    it('DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789: Email Template : User Is Not able to Create Duplicate Email Template', async () => {
         let templateName = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let subject = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let body = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
-        await apiHelper.apiLogin('qkatawazi');
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
-        let label: string = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
-        menuItemDataFile['sampleMenuItem'].menuItemName = label;
-        await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
@@ -100,20 +101,15 @@ describe('EmailTemplate', () => {
     }, 160 * 1000)
 
     //kgaikwad
-    it('DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798 : Email Template : User Is able to delete Email Template', async () => {
+    it('DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798: Email Template : User Is able to delete Email Template', async () => {
         let templateName = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateName2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let description2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let subject = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let subject2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let body = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let body2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
-        await apiHelper.apiLogin('qkatawazi');
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
-        let label: string = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
-        menuItemDataFile['sampleMenuItem'].menuItemName = label;
-        await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
@@ -126,6 +122,7 @@ describe('EmailTemplate', () => {
         await createEmailTemplatePo.setSubject(subject);
         await createEmailTemplatePo.setBody(body);
         await createEmailTemplatePo.clickOnSaveButton();
+        await utilCommon.waitUntilSpinnerToHide();
         await consoleEmailTemplatePo.clearGridFilter();
 
         let arr: string[] = ["Label"];
@@ -134,6 +131,7 @@ describe('EmailTemplate', () => {
         expect(await consoleEmailTemplatePo.areGridColumnHeaderMatches(arr2)).toBeTruthy('Column header not matches');
         expect(consoleEmailTemplatePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label column is not sorted correctly with descending order')
 
+        // DRDMV-11092
         await consoleEmailTemplatePo.addFilter('Template Name', templateName, 'text');
         expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName, 'Filter Template Name is missing in column');
         await consoleEmailTemplatePo.addFilter('Label', label, 'text');
@@ -144,9 +142,8 @@ describe('EmailTemplate', () => {
         expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Filter Company is missing in column');
         await consoleEmailTemplatePo.addFilter('Subject', subject, 'text');
         expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Filter Subject is missing in column');
-        await consoleEmailTemplatePo.removeColumnOnGrid(arr);
-        await consoleEmailTemplatePo.clearGridFilter();
 
+        await consoleEmailTemplatePo.clearGridFilter();
         await consoleEmailTemplatePo.searchOnGridConsole(templateName);
         expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName, 'Search Template Name is missing in column');
         await consoleEmailTemplatePo.searchOnGridConsole(subject);
@@ -154,11 +151,13 @@ describe('EmailTemplate', () => {
         await consoleEmailTemplatePo.searchOnGridConsole('Petramco');
         expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Search Company is missing in column');
 
+        // DRDMV-10805
         await consoleEmailTemplatePo.searchAndOpenEmailTemplate(templateName);
         expect(await editEmailTemplatePo.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
+        await editEmailTemplatePo.updateTemplateName(templateName2);
         expect(await editEmailTemplatePo.isModuleNameDisabled()).toBeTruthy('Module Name is enabled');
         expect(await editEmailTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company drop down is enabled');
-        await editEmailTemplatePo.updateDescription(description);
+        await editEmailTemplatePo.updateDescription(description2);
         await editEmailTemplatePo.selectStatusDropDown('Active');
         await editEmailTemplatePo.selectLabelDropDown(label);
         expect(await editEmailTemplatePo.isLocalizedMessageButtonDisplayed()).toBeTruthy('Localize Message button is missing');
@@ -167,6 +166,8 @@ describe('EmailTemplate', () => {
         await editEmailTemplatePo.clickOnGridSearchIcon();
         await editEmailTemplatePo.searchAndSelectGridRecord('body');
         await editEmailTemplatePo.clickOnGridEditButton();
+        let kk1=await editEmailTemplatePo.updateEditMessageTextBladeBody(body2);
+        console.log('This is first body'+kk1);
         await editEmailTemplatePo.updateEditMessageTextBladeBody(body2);
         await editEmailTemplatePo.clickOnEditMessageTextBladeSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
@@ -177,6 +178,15 @@ describe('EmailTemplate', () => {
         await editEmailTemplatePo.clickOnEditMessageTextBladeSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
 
+        
+        await consoleEmailTemplatePo.searchOnGridConsole('body');
+        let kk2=await editEmailTemplatePo.getSelectedGridRecordValue('Message');
+        console.log('This is second body'+kk2);
+        expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toBe('<p>'+body2+'</p>','body not updated correctly');
+        await consoleEmailTemplatePo.searchOnGridConsole('subject');
+        expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2,'subject not updated correctly');
+
+
         await editEmailTemplatePo.clickOnLocalizeMessageButton();
         await editEmailTemplatePo.setSubjectOfNewLocalizedEmailMessage(subject);
         await editEmailTemplatePo.setBody(body);
@@ -184,12 +194,21 @@ describe('EmailTemplate', () => {
         expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Message already exists with given locale.', 'Localize already exist error message missing');
         await utilCommon.closePopUpMessage();
         await editEmailTemplatePo.clickOnCancelButton();
-
         await utilCommon.waitUntilSpinnerToHide();
         await editEmailTemplatePo.clickOnSaveButton();
-        await consoleEmailTemplatePo.searchAndSelectGridRecord(templateName);
+        await utilCommon.waitUntilPopUpDisappear();
+
+        await consoleEmailTemplatePo.searchOnGridConsole(templateName2);
+        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Search Template Name is missing in column');
+        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject2, 'Search Subject is missing in column');
+        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Status')).toBe('Active', 'Search Active2 is missing in column');
+        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Label')).toBe(label, 'Label is missing in column');
+        await consoleEmailTemplatePo.removeColumnOnGrid(arr);
+
+        //DRDMV-10801
+        await consoleEmailTemplatePo.searchAndSelectGridRecord(templateName2);
         await consoleEmailTemplatePo.clickOnDeleteButton();
         await utilCommon.waitUntilSpinnerToHide();
-        expect(await consoleEmailTemplatePo.isGridRecordPresent(templateName)).toBeFalsy('Public template name is preset on grid')
-    }, 170 * 1000)
+        expect(await consoleEmailTemplatePo.isGridRecordPresent(templateName2)).toBeFalsy('Public template name is preset on grid')
+    }, 200 * 1000)
 })
