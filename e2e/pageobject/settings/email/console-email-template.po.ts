@@ -13,7 +13,7 @@ class ConsoleEmailTemplate {
 
     async clickOnAddEmailTemplateButton():Promise<void>{
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailTemplate)));
-        $(this.selectors.emailTemplate).click();
+        await $(this.selectors.emailTemplate).click();
     }   
 
     async clickOnDeleteButton(): Promise<void> {

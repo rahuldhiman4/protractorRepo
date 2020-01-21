@@ -12,7 +12,6 @@ describe('EmailTemplate', () => {
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qkatawazi');
-
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         label = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;

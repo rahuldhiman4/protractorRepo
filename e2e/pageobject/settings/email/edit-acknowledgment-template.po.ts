@@ -29,7 +29,7 @@ class EditAcknowledgementTemplate {
     async getTemplateName(): Promise<string> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
         var newInput = $(this.selectors.templateName);
-        $(this.selectors.templateName).click();
+        await $(this.selectors.templateName).click();
         let templateName = await newInput.getAttribute('value');
         return templateName;
     }
@@ -37,7 +37,7 @@ class EditAcknowledgementTemplate {
     async getDescription(): Promise<string> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
         var newInput = $(this.selectors.description);
-        $(this.selectors.description).click();
+        await $(this.selectors.description).click();
         let templateName = await newInput.getAttribute('value');
         return templateName;
     }
@@ -59,7 +59,7 @@ class EditAcknowledgementTemplate {
 
     async getSubjectMessageValue(): Promise<string> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton)));
-        $(this.selectors.searchButton).click();
+       await  $(this.selectors.searchButton).click();
         await utilsGrid.searchAndSelectFirstCheckBox('8b59641c-2fca-4d96-8395-03e232cf05de', 'subject')
         return await utilsGrid.getSelectedGridRecordValue('8b59641c-2fca-4d96-8395-03e232cf05de', 'Message');
     }
@@ -74,7 +74,7 @@ class EditAcknowledgementTemplate {
 
     async searchAndSelectBody(value: string): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton)));
-        $(this.selectors.searchButton).click();
+        await $(this.selectors.searchButton).click();
         await utilsGrid.searchAndSelectGridRecord(value, '8b59641c-2fca-4d96-8395-03e232cf05de');
     }
 
@@ -170,12 +170,12 @@ class EditAcknowledgementTemplate {
         await $(this.selectors.editMessageTextBladeSubjectMessage).clear();
         await $(this.selectors.editMessageTextBladeSubjectMessage).sendKeys(subject);
     }
-    // 
+
     async clickOnEditMessageTextBladeCancelButtonForBody(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
-    // 
+    
     async clickOnEditMessageTextBladeSaveButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();

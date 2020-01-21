@@ -139,7 +139,7 @@ describe('AcknowledgmentTemplate', () => {
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
-
+        // DRDMV-10900
         await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate(templateName);
         await utilCommon.waitUntilSpinnerToHide();
         await editAcknowledgmentTemplatePo.updateTemplateName(templateName3);
@@ -172,6 +172,7 @@ describe('AcknowledgmentTemplate', () => {
         expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2,'subject not updated correctly');
         await editAcknowledgmentTemplatePo.clickOnSaveButton();
 
+        // DRDMV-10924
         await consoleAcknowledgmentTemplatePo.clearGridFilter();
         await consoleAcknowledgmentTemplatePo.clearGridSearchBox();
         let arr2: string[] = ["Label"];
@@ -189,6 +190,7 @@ describe('AcknowledgmentTemplate', () => {
         await consoleAcknowledgmentTemplatePo.removeColumnOnGrid(arr2);
         await consoleAcknowledgmentTemplatePo.clearGridFilter();
 
+        // DRDMV-10923
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole(templateName3);
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName3, 'Search Template Name is missing in column');
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole(subject);
@@ -196,6 +198,7 @@ describe('AcknowledgmentTemplate', () => {
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('Petramco');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Search Company is missing in column');
 
+        // DRDMV-10902
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
         await createAcknowledgmentTemplatesPo.setTemplateName(templateName3);
         await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');

@@ -116,12 +116,12 @@ class CreateEmailTemplateBlade {
         await $(this.selectors.editMessageTextBladeSubjectMessage).clear();
         await $(this.selectors.editMessageTextBladeSubjectMessage).sendKeys(subject);
     }
-// 
+    
     async clickOnEditMessageTextBladeCancelButtonForBody(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
-// 
+
     async clickOnEditMessageTextBladeSaveButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
