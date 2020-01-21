@@ -1,4 +1,5 @@
-import { $, $$, browser, by, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, protractor, ProtractorExpectedConditions, by } from "protractor";
+import utilCommon from '../../utils/util.common'
 
 class RelatedPersonPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -10,12 +11,13 @@ class RelatedPersonPage {
         relatedPersonsName: ' .person-name a',
         relatedPersonRelationship: '.person-relationship p',
         allRelatedPersons: '.person-info-card.person-list',
-        relatedPersonNames: '.person-name a',
+        relatedPersonNames: ' .person-name a',
         relations: ' .person-relationship p',
         personOrganization: ' .person-organization',
         emailLink: ' .list-email',
         site: ' .ac-text-site-value',
-        phoneNumber: ' .ac-link-person-phone'
+        phoneNumber: ' .ac-link-person-phone',
+        removePersonCrossIcon: ' .close.close-button',
     }
 
     async addRelatedPerson(): Promise<void> {
@@ -158,6 +160,53 @@ class RelatedPersonPage {
         }
         return stat;
     }
+
+    async removeRelatedPerson(personName: string): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
+        let allCasesNum: number = await $$(this.selectors.allRelatedPersons).count();
+        for (let i = 0; i < allCasesNum; i++) {
+            let person = await $$(this.selectors.allRelatedPersons).get(i);
+            let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
+            if (nm == personName) {
+                await person.$(this.selectors.removePersonCrossIcon).click();
+                break;
+            }
+        }
+        await utilCommon.clickOnWarningOk();
+    }
+
+    async isRelatedPersonPresent(personName: string): Promise<boolean> {
+        let status: boolean = false;
+        await browser.wait(this.EC.visibilityOf($(this.selectors.addRelatedPerson)));
+        if (await $(this.selectors.allRelatedPersons).isPresent) {
+            let allCasesNum: number = await $$(this.selectors.allRelatedPersons).count();
+            for (let i = 0; i < allCasesNum; i++) {
+                //let person = await $$(this.selectors.allRelatedPersons).get(i);
+                let nm: string = await $$(this.selectors.allRelatedPersons).get(i).$(this.selectors.relatedPersonNames).getText();
+                if (nm == personName) {
+                    status = true;
+                    break;
+                }
+            }
+        }
+        return status;
+    }
+
+    async isRemoveRelatedPersonIconPresent(personName: string): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
+        let allCasesNum: number = await $$(this.selectors.allRelatedPersons).count();
+        let status: boolean;
+        for (let i = 0; i < allCasesNum; i++) {
+            let person = await $$(this.selectors.allRelatedPersons).get(i);
+            let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
+            if (nm == personName) {
+                status = await person.$(this.selectors.removePersonCrossIcon).isPresent();
+                break;
+            }
+        }
+        return status;
+    }
+
 }
 
 export default new RelatedPersonPage();

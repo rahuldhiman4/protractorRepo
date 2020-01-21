@@ -314,6 +314,11 @@ class ViewCasePage {
         return await $(this.selectors.assignedCompanyText).getText();
     }
 
+    async isTextPresent(text:string): Promise<boolean>{
+        let textLocator = `(//p[contains(@title,'${text}')])`;
+        return await element(by.xpath(textLocator)).isPresent();
+    }
+
     async isCoreTaskPresent(taskSummary:string):Promise<boolean>{
         await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.addedTaskFromCaseTemplate, taskSummary))));
         return await element(by.cssContainingText(this.selectors.addedTaskFromCaseTemplate, taskSummary)).isDisplayed();

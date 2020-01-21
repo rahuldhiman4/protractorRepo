@@ -11,5 +11,9 @@
         "orgName": "UI-BusinessUnit-19082",
         "relatedOrgId": null,
         "domainTag":"FacilityDomain"
+    },
+    "BusinessUnitData_BulkOperation": {
+        "orgName": "BulkOperationBusinessUnit",
+        "relatedOrgId": null
     }
 }

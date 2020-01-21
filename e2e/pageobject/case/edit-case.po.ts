@@ -352,6 +352,16 @@ class CaseEditPage {
         return await $(this.selectors.priorityRequiredText).getAttribute('required');
     }
 
+    async isAssignedCompanyRequiredText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeCompany)));
+        return await $(this.selectors.assigneeCompany).getAttribute('required');
+    }
+
+    async isAssignedGroupRequiredText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroup)));
+        return await $(this.selectors.assignedGroup).getAttribute('required');
+    }
+
     async  isClearContactButtonEnable(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.clearContactButton)));
         return await $(this.selectors.clearContactButton).isEnabled();
@@ -498,6 +508,16 @@ class CaseEditPage {
     async clickOnChangeCaseTemplate(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeCaseTemplate)));
         await $(this.selectors.changeCaseTemplate).click();
+    }
+
+    async getRelatedPersonTabText(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.relatedPersonTab)));
+        return await $(this.selectors.relatedPersonTab).getText();
+    }
+
+    async getRelatedCasesTabText(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.relatedCasesTab)));
+        return await $(this.selectors.relatedCasesTab).getText();
     }
 
     async isChangeCaseTemplateButtonDisplayed(): Promise<boolean> {

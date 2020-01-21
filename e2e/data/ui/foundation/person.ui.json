@@ -13,5 +13,10 @@
         "firstName": "fnPerson19082",
         "lastName": "lnPerson19082",
         "userId": "idPerson19082"
+    },
+    "PersonData_BulkOperation": {
+        "firstName": "BOPerson",
+        "lastName": "lnPerson",
+        "userId": "idPersonBO"
     }
 }
