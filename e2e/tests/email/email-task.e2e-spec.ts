@@ -29,7 +29,7 @@ describe('Email', () => {
         await utilCommon.waitUntilSpinnerToHide();
     });
 
-    it('DRDMV-19011: Automated task should not have email options but other type of task should have email option	', async () => {
+    it('[DRDMV-19011]: Automated task should not have email options but other type of task should have email option	', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual task ' + randomStr;
         let manualTaskSummary = 'ManualSummary ' + randomStr;
@@ -106,9 +106,9 @@ describe('Email', () => {
         await emailPo.clickOnDiscardButton();
         await utilCommon.clickOnWarningOk();
 
-    }, 120 * 1000)
+    }, 120 * 1000);
 
-    it('DRDMV-19008: Email icon and Requester email link should open compose email dialog in Task', async () => {
+    it('[DRDMV-19008]: Email icon and Requester email link should open compose email dialog in Task', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual  task' + randomStr;
         let manualTaskSummary = 'ManualSummary' + randomStr;
@@ -192,9 +192,9 @@ describe('Email', () => {
         //verify activity email post
         await emailPo.clickOnSendButton();
         expect(await activityTabPo.getemailContent()).toContain('Fritz Schulz sent an email');
-    })
+    });
 
-    it('DRDMV-19009: Verify Subject of Email from Task Compose email', async () => {
+    it('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         try {
             await navigationPage.signOut();
@@ -285,9 +285,9 @@ describe('Email', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         }
-    }, 120 * 1000)
+    }, 120 * 1000);
 
-    it('DRDMV-19558: Verify social notes other than email should not have reply and reply all options', async () => {
+    it('[DRDMV-19558]: Verify social notes other than email should not have reply and reply all options', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual  task' + randomStr;
         let manualTaskSummary = 'ManualSummary' + randomStr;
@@ -321,9 +321,9 @@ describe('Email', () => {
         await socialActivity.clickOnPostButton();
         await expect(socialActivity.getActivityNotesText('Reply')).toBeFalsy();
         await expect(socialActivity.getActivityNotesText('Reply all')).toBeFalsy();
-    })
+    });
 
-    it('DRDMV-19556: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
+    it('[DRDMV-19556]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual  task' + randomStr;
         let manualTaskSummary = 'ManualSummary' + randomStr;
@@ -413,9 +413,9 @@ describe('Email', () => {
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
         expect(await activityTabPo.getemailContent()).toContain('this is third reply');
-    }, 200 * 1000)
+    }, 200 * 1000);
 
-    it('DRDMV-19557: For Reply / Reply All earlier email context should be copied as part of email composition on Case', async () => {
+    it('[DRDMV-19557]: For Reply / Reply All earlier email context should be copied as part of email composition on Case', async () => {
         var caseData = {
             "Requester": "qtao",
             "Company": "Petramco",
@@ -452,10 +452,9 @@ describe('Email', () => {
         expect(await activityTabPo.getemailContent()).toContain('this is second reply to all');
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
-    }, 200 * 1000)
+    }, 200 * 1000);
 
-
-    it('DRDMV-19555: In Case of Reply/Reply All  if we select new Email template then previous contents should not be erased.', async () => {
+    it('[DRDMV-19555]: In Case of Reply/Reply All  if we select new Email template then previous contents should not be erased.', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         let emailTemplateData = require('../../data/ui/email/email.template.api.json');
@@ -548,9 +547,9 @@ describe('Email', () => {
         // defect -Bug DRDMV-19619
         //expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\n\n\nI am taking leave today.\n\n\n\nThanks.');
         await emailPo.clickOnSendButton();
-    }, 200 * 1000)
+    }, 200 * 1000);
 
-    it('DRDMV-19552: Verify task acknowledgement template are listed in Email Acknowledgement template and In Email Configuration', async () => {
+    it('[DRDMV-19552]: Verify task acknowledgement template are listed in Email Acknowledgement template and In Email Configuration', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows')).toEqual('Email Ack Template Console - Business Workflows');
         await utilGrid.searchAndOpenHyperlink('Task Update Ack Template');
@@ -561,9 +560,9 @@ describe('Email', () => {
         expect(await editAcknowledgmentTemplatePo.getDescription()).toContain('Task Update Acknowledgement Template when task got updated via email');
         expect(await editAcknowledgmentTemplatePo.getBodyMessageValue()).toContain('<p>This is to acknowledge that the information provided by you for Task $1$ has been updated successfully.</p><p>HR Department</p>');
         expect(await editAcknowledgmentTemplatePo.getSubjectMessageValue()).toContain('Task $1$ :$450000029$ Successfully updated');
-    })
+    });
 
-    it('DRDMV-19550: Email Templates option driven by Task assignee permission for case', async () => {
+    it('[DRDMV-19550]: Email Templates option driven by Task assignee permission for case', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         try {
             await navigationPage.signOut();
@@ -639,6 +638,6 @@ describe('Email', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         }
-    }, 200 * 1000)
+    }, 200 * 1000);
 
 })

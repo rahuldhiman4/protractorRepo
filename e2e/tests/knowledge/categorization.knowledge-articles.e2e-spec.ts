@@ -1,19 +1,19 @@
-import { browser, protractor } from "protractor";
-import loginPage from "../../pageobject/common/login.po";
-import navigationPage from "../../pageobject/common/navigation.po";
-import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
-import resources from '../../pageobject/common/resources-tab.po';
-import utilCommon from '../../utils/util.common';
+import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import quickCase from '../../pageobject/case/quick-case.po';
+import { Knowledge } from '../../api/constant.api';
 import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePage from '../../pageobject/case/edit-case.po';
-import createDocumentLibraryPage from '../../pageobject/settings/document-management/create-document-library.po';
-import utilGrid from "../../utils/util.grid";
+import quickCase from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
+import resources from '../../pageobject/common/resources-tab.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePage from '../../pageobject/knowledge/edit-knowledge.po';
-import { Knowledge } from '../../api/constant.api';
+import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
+import createDocumentLibraryPage from '../../pageobject/settings/document-management/create-document-library.po';
+import utilCommon from '../../utils/util.common';
+import utilGrid from "../../utils/util.grid";
 var caseBAUser = 'qkatawazi';
 var caseAgentUser = 'qtao';
 var caseManagerUser = 'qdu';
@@ -51,8 +51,8 @@ var documentLibraryColumnHeader = "Title";
 var documentLibraryStr = "Document Library ";
 var successMsg = "Saved successfully.";
 var documentLibraryStatus = "Published";
-var draftStatus="Draft";
-var inProgressStatus="In Progress";
+var draftStatus = "Draft";
+var inProgressStatus = "In Progress";
 var smeReviewStatus = "SME Review";
 var publishedStatus = "Published";
 var retiredStatus = "Retired";
@@ -162,9 +162,9 @@ describe('Knowledge Articles Tests', () => {
         await navigationPage.signOut();
     });
 
-    it('DRDMV-18999,DRDMV-19000,DRDMV-19002:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
-        let categoryTierFieldColumns:string[] = ["Category Tier 1","Category Tier 2","Category Tier 3"];
-        let knowledgeGridColumnFields:string[] = ["Article ID","Title","Knowledge Set","Status","Assignee","Company","Template Name","Reviewer","Modified By","Created Date","Modified Date","Flagged","Category Tier 1","Category Tier 2","Category Tier 3"];
+    it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
+        let categoryTierFieldColumns: string[] = ["Category Tier 1", "Category Tier 2", "Category Tier 3"];
+        let knowledgeGridColumnFields: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged", "Category Tier 1", "Category Tier 2", "Category Tier 3"];
 
         try {
             //* Login with Case BA
@@ -189,7 +189,7 @@ describe('Knowledge Articles Tests', () => {
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
             categoryTier2Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier2);
             await knowledgeConsole.searchOnGridConsole(categoryTier3FieldVal);
-            categoryTier3Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier3);            expect(categoryTier1Val).toEqual(emptyStr);
+            categoryTier3Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier3); expect(categoryTier1Val).toEqual(emptyStr);
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
             await navigationPage.signOut();
@@ -294,7 +294,7 @@ describe('Knowledge Articles Tests', () => {
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
             categoryTier2Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier2);
             await knowledgeConsole.searchOnGridConsole(categoryTier3FieldVal);
-            categoryTier3Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier3);  
+            categoryTier3Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier3);
             expect(categoryTier1Val).toEqual(categoryTier1FieldVal);
             expect(categoryTier2Val).toEqual(categoryTier2FieldVal);
             expect(categoryTier3Val).toEqual(categoryTier3FieldVal);
@@ -367,7 +367,7 @@ describe('Knowledge Articles Tests', () => {
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
             categoryTier2Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier2);
             await knowledgeConsole.searchOnGridConsole(categoryTier3FieldVal);
-            categoryTier3Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier3); 
+            categoryTier3Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier3);
             expect(categoryTier1Val).toEqual(emptyStr);
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
@@ -385,9 +385,9 @@ describe('Knowledge Articles Tests', () => {
             await loginPage.login(caseBAUser);
         }
 
-    },500 * 1000);
+    }, 500 * 1000);
 
-    it('DRDMV-19004:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
+    it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
         try {
             //* Check the Availability of Category Tiers with Case BA
             await navigationPage.gotoQuickCase();
@@ -738,9 +738,9 @@ describe('Knowledge Articles Tests', () => {
             await loginPage.login(caseBAUser);
         }
 
-    },300 * 1000);
+    }, 300 * 1000);
 
-    it('DRDMV-19005:Verify the document search based on category tier from attachments', async () => {
+    it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
         //Create a document library
         try {
             await navigationPage.gotoSettingsPage();
@@ -830,9 +830,9 @@ describe('Knowledge Articles Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    },300 * 1000);
+    }, 300 * 1000);
 
-    it('DRDMV-19356:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
+    it('[DRDMV-19356]:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
         var domainTagData = {
             domainTagName: 'HR'
         }

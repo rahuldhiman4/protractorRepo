@@ -15,7 +15,6 @@ describe('EmailTemplate', () => {
 
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-       
         label = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
         menuItemDataFile['sampleMenuItem'].menuItemName = label;
         await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
@@ -31,7 +30,7 @@ describe('EmailTemplate', () => {
     });
 
     //kgaikwad
-    it('DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789: Email Template : User Is Not able to Create Duplicate Email Template', async () => {
+    it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Email Template : User Is Not able to Create Duplicate Email Template', async () => {
         let templateName = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -101,7 +100,7 @@ describe('EmailTemplate', () => {
     }, 160 * 1000)
 
     //kgaikwad
-    it('DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798: Email Template : User Is able to delete Email Template', async () => {
+    it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Email Template : User Is able to delete Email Template', async () => {
         let templateName = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

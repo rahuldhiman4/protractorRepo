@@ -1,4 +1,4 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { browser, protractor, ProtractorExpectedConditions } from "protractor";
 import createCasePage from "../../pageobject/case/create-case.po";
 import viewCasePage from "../../pageobject/case/view-case.po";
 import loginPage from "../../pageobject/common/login.po";
@@ -22,7 +22,7 @@ describe("Create Case", () => {
         await utilCommon.waitUntilSpinnerToHide();
     });
 
-    it('DRDMV-15014: Verify Case agent can change the Site field once it is populated according to requesters primary location on create case view', async () => {
+    it('[DRDMV-15014]: Verify Case agent can change the Site field once it is populated according to requesters primary location on create case view', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester('qtao');
         await createCasePage.selectSite('Berlin');
@@ -30,8 +30,7 @@ describe("Create Case", () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
-        expect (await viewCasePage.getCaseSite()).toBe('Berlin');
+        expect(await viewCasePage.getCaseSite()).toBe('Berlin');
     })
 
-    
 });

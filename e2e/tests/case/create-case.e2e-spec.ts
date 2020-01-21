@@ -1,34 +1,33 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import apiHelper from '../../api/api.helper';
 import caseConsolePage from '../../pageobject/case/case-console.po';
-import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
 import createCasePage from "../../pageobject/case/create-case.po";
-import viewCaseTemplate from '../../pageobject/settings/case-management/view-casetemplate.po';
 import editCasePage from '../../pageobject/case/edit-case.po';
-import selectCaseTemplateBlade from '../../pageobject/case/select-casetemplate-blade.po';
+import { default as selectCaseTemplate, default as selectCaseTemplateBlade } from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
+import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
 import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
+import KnowledgeConsolePage from "../../pageobject/knowledge/console-knowledge.po";
+import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import createMenuItems from '../../pageobject/settings/application-config/create-menu-items-blade.po';
 import editMenuItemsConfigPo from '../../pageobject/settings/application-config/edit-menu-items-config.po';
 import menuItemConsole from '../../pageobject/settings/application-config/menu-items-config-console.po';
+import addReadAccess from '../../pageobject/settings/case-management/add-read-access-configuration.po';
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import createCaseTemplate from '../../pageobject/settings/case-management/create-casetemplate.po';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
-import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
-import KnowledgeConsolePage from "../../pageobject/knowledge/console-knowledge.po";
+import editCaseTemplate from '../../pageobject/settings/case-management/edit-casetemplate.po';
+import caseTemplatePreview from '../../pageobject/settings/case-management/preview-case-template-cases.po';
+import consoleReadAcess from '../../pageobject/settings/case-management/read-access-console.po';
+import viewCaseTemplate from '../../pageobject/settings/case-management/view-casetemplate.po';
+import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
+import createTaskTemplate from '../../pageobject/settings/task-management/create-tasktemplate.po';
+import taskTemplatePreview from '../../pageobject/settings/task-management/preview-task-template-cases.po';
 import taskConsolepage from "../../pageobject/task/console-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
-import caseTemplatePreview from '../../pageobject/settings/case-management/preview-case-template-cases.po';
-import taskTemplatePreview from '../../pageobject/settings/task-management/preview-task-template-cases.po';
-import createTaskTemplate from '../../pageobject/settings/task-management/create-tasktemplate.po';
-import editCaseTemplate from '../../pageobject/settings/case-management/edit-casetemplate.po';
-import consoleReadAcess from '../../pageobject/settings/case-management/read-access-console.po';
-import addReadAccess from '../../pageobject/settings/case-management/add-read-access-configuration.po';
-import selectCaseTemplate from '../../pageobject/case/select-casetemplate-blade.po';
+import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 
 describe("Create Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -49,7 +48,7 @@ describe("Create Case", () => {
         await utilCommon.waitUntilSpinnerToHide();
     });
 
-    it('DRDMV-15253: Verify Category Tier 4 Can be Populated After Tier 3 selection', async () => {
+    it('[DRDMV-15253]: Verify Category Tier 4 Can be Populated After Tier 3 selection', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('qtao')
@@ -69,7 +68,7 @@ describe("Create Case", () => {
         }
     })
 
-    it('DRDMV-17653: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {
+    it('[DRDMV-17653]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {
 
         try {
             let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -125,7 +124,7 @@ describe("Create Case", () => {
         }
     }, 130 * 1000);
 
-    it('DRDMV-18031: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
+    it('[DRDMV-18031]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
         try {
             let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             await navigationPage.gotoSettingsPage();
@@ -197,7 +196,7 @@ describe("Create Case", () => {
         }
     }, 180 * 1000);
 
-    it('DRDMV-16081: Verify allow case reopen tag in case template', async () => {
+    it('[DRDMV-16081]: Verify allow case reopen tag in case template', async () => {
         try {
             await browser.refresh();
             await navigationPage.signOut();
@@ -274,7 +273,7 @@ describe("Create Case", () => {
         }
     })
 
-    it('DRDMV-1191,DRDMV-1198: [Case Creation] Case creation with/without mandatory fields populated ', async () => {
+    it('[DRDMV-1191,DRDMV-1198]: [Case Creation] Case creation with/without mandatory fields populated ', async () => {
         try {
             let prioirtyValue: string[] = ["Critical", "High", "Medium", "Low"];
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -305,7 +304,7 @@ describe("Create Case", () => {
         }
     });
 
-    it('DRDMV-1193,DRDMV-1190: [Case Creation] Case Create view (UI verification) ', async () => {
+    it('[DRDMV-1193,DRDMV-1190]: [Case Creation] Case Create view (UI verification) ', async () => {
         try {
             await browser.refresh();
             await navigationPage.signOut();
@@ -355,7 +354,7 @@ describe("Create Case", () => {
 
     });
 
-    it('DRDMV-11856: [Case Creation] create case with Global case template without flowset ', async () => {
+    it('[DRDMV-11856]: [Case Creation] create case with Global case template without flowset ', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplate1 = 'Case Template 1' + randomStr;
         let caseTemplateSummary1 = 'Summary' + randomStr;
@@ -393,7 +392,7 @@ describe("Create Case", () => {
         }
     });
 
-    it('DRDMV-16076: Reopen configurations available on Case Template Create screen ', async () => {
+    it('[DRDMV-16076]: Reopen configurations available on Case Template Create screen ', async () => {
 
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplate1 = 'Case Template 1' + randomStr;
@@ -474,7 +473,7 @@ describe("Create Case", () => {
         }
     }, 240 * 1000);
 
-    it('DRDMV-1237: [Global navigation] Navigation to Workspaces and Create subitems in the Shell ', async () => {
+    it('[DRDMV-1237]: [Global navigation] Navigation to Workspaces and Create subitems in the Shell ', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -498,7 +497,7 @@ describe("Create Case", () => {
         }
     });
 
-    it('DRDMV-7027: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
+    it('[DRDMV-7027]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -544,7 +543,7 @@ describe("Create Case", () => {
         }
     });
 
-    it('DRDMV-8868: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', async () => {
+    it('[DRDMV-8868]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         var templateData = {
             "templateName": `manualTaskTemplateActive ${randomStr}`,
@@ -623,7 +622,7 @@ describe("Create Case", () => {
         }
     });
 
-    it('DRDMV-12061: [ Task ] - Verify create case with Global task template having assignment', async () => {
+    it('[DRDMV-12061]: [ Task ] - Verify create case with Global task template having assignment', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let globalCategName = 'DemoCateg1';
         let categName2 = 'DemoCateg2';
@@ -701,7 +700,7 @@ describe("Create Case", () => {
         }
     });
 
-    it('DRDMV-15974: Verify the status transition Closed->New is available only when Closed case is Reopened', async () => {
+    it('[DRDMV-15974]: Verify the status transition Closed->New is available only when Closed case is Reopened', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('fritz');
@@ -778,7 +777,7 @@ describe("Create Case", () => {
         }
     });
 
-    it('DRDMV-5479,DRDMV-1192: verifyCaseAssignmentOnCreateCaseView    ', async () => {
+    it('[DRDMV-5479,DRDMV-1192]: verifyCaseAssignmentOnCreateCaseView    ', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -814,10 +813,10 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    })
+    });
 
     //ankagraw
-    it('DRDMV-11987: [Case Creation] Verify able to create case with Global case template having flowset', async () => {
+    it('[DRDMV-11987]: [Case Creation] Verify able to create case with Global case template having flowset', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplate1 = 'Case Template 1' + randomStr;
         let globalCategName = 'DemoCateg1';
@@ -866,7 +865,7 @@ describe("Create Case", () => {
         await viewCasePage.getPriorityValue();
     }, 180 * 1000);
 
-    it('DRDMV-11818: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
+    it('[DRDMV-11818]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplate1 = 'Case Template 1' + randomStr;
 
@@ -911,7 +910,7 @@ describe("Create Case", () => {
         await expect(viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
     }, 180 * 1000);
 
-    it('DRDMV-1614: [Case] Fields validation for case in New status ', async () => {
+    it('[DRDMV-1614]: [Case] Fields validation for case in New status ', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseSummary = 'Case Summary ' + randomStr;

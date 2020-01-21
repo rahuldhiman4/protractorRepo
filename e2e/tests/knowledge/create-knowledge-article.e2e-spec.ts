@@ -52,7 +52,7 @@ describe('Knowledge Article', () => {
         await apiHelper.associatePersonToCompany(personData.userId, company)
     }
 
-    it('DRDMV-19020: On Create KA, Assign to me button should process properly on KA', async () => {
+    it('[DRDMV-19020]: On Create KA, Assign to me button should process properly on KA', async () => {
         try {
             let suppGrpData = supportGrpDataFile['SuppGrpData'];
             let personData = personDataFile['PersonData'];
@@ -85,7 +85,7 @@ describe('Knowledge Article', () => {
         }
     });
 
-    it('DRDMV-19079: Change Reviewer blade should process properly on KA', async () => {
+    it('[DRDMV-19079]: Change Reviewer blade should process properly on KA', async () => {
         try {
             let businessData = businessDataFile['BusinessUnitData'];
             let departmentData = departmentDataFile['DepartmentData'];
@@ -131,7 +131,7 @@ describe('Knowledge Article', () => {
         }
     });
 
-    it('DRDMV-19080: On Edit KA, Change Assignment blade should process properly ', async () => {
+    it('[DRDMV-19080]: On Edit KA, Change Assignment blade should process properly ', async () => {
         try {
             let businessData = businessDataFile['BusinessUnitData'];
             let departmentData = departmentDataFile['DepartmentData'];
@@ -173,7 +173,7 @@ describe('Knowledge Article', () => {
         }
     });
 
-    it('DRDMV-19081: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
+    it('[DRDMV-19081]: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
         try {
             let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
             let knowledgeData = knowledgeDataFile['DRDMV-19081'];
@@ -198,7 +198,7 @@ describe('Knowledge Article', () => {
         }
     });
 
-    it('DRDMV-19508: On Create KA, Change Assignment blade should process properly', async () => {
+    it('[DRDMV-19508]: On Create KA, Change Assignment blade should process properly', async () => {
         let businessData = businessDataFile['BusinessUnitData'];
         let departmentData = departmentDataFile['DepartmentData'];
         let suppGrpData = supportGrpDataFile['SuppGrpData'];
@@ -239,7 +239,7 @@ describe('Knowledge Article', () => {
         await apiHelper.associatePersonToCompany(personData.userId, company)
     }
 
-    it('DRDMV-19501: On Create KA, Agent having access to multiple support groups on "Assign to me" click should process properly on KA', async () => {
+    it('[DRDMV-19501]: On Create KA, Agent having access to multiple support groups on "Assign to me" click should process properly on KA', async () => {
         try {
             let businessData2 = businessDataFile['BusinessUnitData19501'];
             let departmentData2 = departmentDataFile['DepartmentData19501'];
@@ -297,7 +297,7 @@ describe('Knowledge Article', () => {
         await apiHelper.associatePersonToCompany(personData.userId, company)
     }
 
-    it('DRDMV-19082: Domain config should be honored while Assigning Assignee and Reviewer', async () => {
+    it('[DRDMV-19082]: Domain config should be honored while Assigning Assignee and Reviewer', async () => {
         //All below BU, Dep and Supp grps are tagged to DomainName
         let businessData = businessDataFile['BusinessUnitData19082'];
         let departmentData = departmentDataFile['DepartmentData19082'];
@@ -320,7 +320,7 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.clickOnSaveKnowledgeButton();
     });
 
-    it('DRDMV-799,DRDMV-788: [KM-BWF integration] [Knowledge Article] Mandatory fields of the Create Knowledge Article view', async () => {
+    it('[DRDMV-799,DRDMV-788]: [KM-BWF integration] [Knowledge Article] Mandatory fields of the Create Knowledge Article view', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let knowledgeTitle: string = 'Knowledge Template' + randomStr;

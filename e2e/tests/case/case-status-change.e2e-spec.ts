@@ -35,7 +35,7 @@ describe('Case Status Change', () => {
     });
 
     //kgaikwad
-    it('DRDMV-2530: [Case Status] Case status change from New', async () => {
+    it('[DRDMV-2530]: [Case Status] Case status change from New', async () => {
         var priority: string = "Medium";
         var summary: string = "Test case for DRDMV-2530";
         var caseData =
@@ -131,7 +131,7 @@ describe('Case Status Change', () => {
     }, 330 * 1000);
 
     //kgaikwad
-    it('DRDMV-1618: [Case] Fields validation for case in Resolved status', async () => {
+    it('[DRDMV-1618]: [Case] Fields validation for case in Resolved status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
@@ -168,7 +168,7 @@ describe('Case Status Change', () => {
     }, 180 * 1000);
 
     //kgaikwad
-    it('DRDMV-1197: [Case Status] Case status change from Closed', async () => {
+    it('[DRDMV-1197]: [Case Status] Case status change from Closed', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
@@ -190,7 +190,7 @@ describe('Case Status Change', () => {
     });
 
     //kgaikwad
-    it('DRDMV-1233: [Case Status Reason] Status Reason change without status transition', async () => {
+    it('[DRDMV-1233]: [Case Status Reason] Status Reason change without status transition', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
@@ -226,7 +226,7 @@ describe('Case Status Change', () => {
     });
 
     //kgaikwad
-    it('DRDMV-1616: [Case] Fields validation for case In Progress status', async () => {
+    it('[DRDMV-1616]: [Case] Fields validation for case In Progress status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
@@ -301,7 +301,7 @@ describe('Case Status Change', () => {
     }, 140 * 1000);
 
     //kgaikwad
-    it('DRDMV-1227: [Case Status] Case status change from Canceled', async () => {
+    it('[DRDMV-1227]: [Case Status] Case status change from Canceled', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
@@ -320,7 +320,7 @@ describe('Case Status Change', () => {
     });
 
     //kgaikwad
-    it('DRDMV-1615: [Case] Fields validation for case in Assigned status', async () => {
+    it('[DRDMV-1615]: [Case] Fields validation for case in Assigned status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
@@ -353,7 +353,7 @@ describe('Case Status Change', () => {
     });
 
     //kgaikwad
-    it('DRDMV-1617: [Case] Fields validation for case in Pending status', async () => {
+    it('[DRDMV-1617]: [Case] Fields validation for case in Pending status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
@@ -389,7 +389,7 @@ describe('Case Status Change', () => {
     });
 
     //ankagraw
-    it('DRDMV-1199: [Case Status] Case status change from In Progress', async () => {
+    it('[DRDMV-1199]: [Case Status] Case status change from In Progress', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
         let summary2: string = randomStr + "Summary 2";

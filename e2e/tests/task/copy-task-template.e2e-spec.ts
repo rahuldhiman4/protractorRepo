@@ -28,7 +28,7 @@ describe('Copy Task Template', () => {
         await utilCommon.waitUntilSpinnerToHide();
     });
 
-    it('DRDMV-14214: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {
+    it('[DRDMV-14214]: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let automatedTaskTemplate1 = 'Automation Task1 ' + randomStr;
         let automatedTaskSummary1 = 'Automation Summary1 ' + randomStr;
@@ -88,7 +88,7 @@ describe('Copy Task Template', () => {
         }
     }, 120 * 1000);
 
-    it('DRDMV-13548: Create a Copy of Task template where Submitter do not belong to any Support Groups', async () => {
+    it('[DRDMV-13548]: Create a Copy of Task template where Submitter do not belong to any Support Groups', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTaskTemplate = 'Manual task1' + randomStr;
         let manualTaskSummary = 'Summary' + randomStr;
@@ -138,7 +138,7 @@ describe('Copy Task Template', () => {
         }
     }, 120 * 1000);
 
-    it('DRDMV-14218: The copy of Automated Task template is created across company and check the way to Edit the existing linked Process.', async () => {
+    it('[DRDMV-14218]: The copy of Automated Task template is created across company and check the way to Edit the existing linked Process.', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         var userData = {
@@ -218,7 +218,7 @@ describe('Copy Task Template', () => {
         }
     }, 240 * 1000);
 
-    it('DRDMV-14217: Copy of Automated task template created across company and no new Process is created', async () => {
+    it('[DRDMV-14217]: Copy of Automated task template created across company and no new Process is created', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         var userData = {
@@ -280,7 +280,7 @@ describe('Copy Task Template', () => {
         }
     }, 180 * 1000);
 
-    it('DRDMV-13540, DRDMV-13556: Case Business Analyst can create a copy of Task Template type= Manual, New template created is in draft status', async () => {
+    it('[DRDMV-13540,DRDMV-13556]: Case Business Analyst can create a copy of Task Template type= Manual, New template created is in draft status', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTaskTemplate = 'Manual task' + randomStr;
         let manualTaskSummary = 'Summary' + randomStr;
@@ -318,7 +318,7 @@ describe('Copy Task Template', () => {
         await expect(viewTaskTemplate.getTemplateName()).toBe(newManualTaskTemplate);
     });
 
-    it('DRDMV-13573: Fields copied while creating copy of Automated Task template', async () => {
+    it('[DRDMV-13573]: Fields copied while creating copy of Automated Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTaskTemplate = 'manual task' + randomStr;
         let manualTaskSummary = 'manual Summary' + randomStr;
@@ -367,7 +367,7 @@ describe('Copy Task Template', () => {
 
     });
 
-    it('DRDMV-14215: Create a Copy of an automated Task Template where New Process is created and check its execution', async () => {
+    it('[DRDMV-14215]: Create a Copy of an automated Task Template where New Process is created and check its execution', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = 'Automation task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
@@ -439,7 +439,7 @@ describe('Copy Task Template', () => {
         }
     }, 240 * 1000);
 
-    it('DRDMV-13737: [Negative] Try to copy Automated template with same process Name and different field data', async () => {
+    it('[DRDMV-13737]: [Negative] Try to copy Automated template with same process Name and different field data', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplate = ' task' + randomStr;
         let taskSummary = 'Summary' + randomStr;
@@ -475,7 +475,7 @@ describe('Copy Task Template', () => {
 
     });
 
-    it('DRDMV-14221: Check Error Message when trying to edit a process, where process is linked to Active Automated Task template', async () => {
+    it('[DRDMV-14221]: Check Error Message when trying to edit a process, where process is linked to Active Automated Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplate = 'Automation task' + randomStr;
         let taskSummary = 'Summary' + randomStr;
@@ -515,7 +515,7 @@ describe('Copy Task Template', () => {
         await expect(utilCommon.getPopUpMessage()).toBe('WARNING (222062): Updates to dynamic fields or process affect the templates using the selected process :' + taskTemplate);
     });
 
-    it('DRDMV-13574,DRDMV-13553: Fields copied while creating copy of External Task template', async () => {
+    it('[DRDMV-13574,DRDMV-13553]: Fields copied while creating copy of External Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplate = 'External task' + randomStr;
         let taskSummary = 'Summary' + randomStr;
@@ -558,7 +558,7 @@ describe('Copy Task Template', () => {
         await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
     });
 
-    it('DRDMV-13547: Create a Copy of Task template by Case Business Analyst that belongs to Support Group', async () => {
+    it('[DRDMV-13547]: Create a Copy of Task template by Case Business Analyst that belongs to Support Group', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplate = 'External task' + randomStr;
         let taskSummary = 'Summary' + randomStr;
@@ -603,7 +603,7 @@ describe('Copy Task Template', () => {
         }
     });
 
-    it('DRDMV-13572: Fields copied while creating copy of Manual Task template', async () => {
+    it('[DRDMV-13572]: Fields copied while creating copy of Manual Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplate = 'Manual task' + randomStr;
         let taskSummary = 'Summary' + randomStr;
@@ -646,7 +646,7 @@ describe('Copy Task Template', () => {
         await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
     });
 
-    it('DRDMV-13569: Dynamic Field get copied upon creating copy of Task Template', async () => {
+    it('[DRDMV-13569]: Dynamic Field get copied upon creating copy of Task Template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let automationTaskTemplate = 'Automation task' + randomStr;
         let automationTaskSummary = 'Summary' + randomStr;
@@ -691,7 +691,7 @@ describe('Copy Task Template', () => {
 
     });
 
-    it('DRDMV-14220: Verify Warning message when Dynamic fields are added to a Automated Task template', async () => {
+    it('[DRDMV-14220]: Verify Warning message when Dynamic fields are added to a Automated Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let automationTaskTemplate = 'Automation task' + randomStr;
         let automationTaskSummary = 'Summary' + randomStr;

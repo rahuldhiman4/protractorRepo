@@ -1,6 +1,8 @@
 import { browser } from "protractor";
+import quickCasePo from '../../pageobject/case/quick-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import resources from '../../pageobject/common/resources-tab.po';
 import consoleKnowledgePo from '../../pageobject/knowledge/console-knowledge.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
 import informationTabPo from '../../pageobject/knowledge/information-tab.po';
@@ -9,8 +11,6 @@ import documentLibraryConsolePo from '../../pageobject/settings/document-managem
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import resources from '../../pageobject/common/resources-tab.po'
-import quickCasePo from '../../pageobject/case/quick-case.po';
 
 
 describe('Document Library', () => {
@@ -29,7 +29,7 @@ describe('Document Library', () => {
     });
 
     //kgaikwad
-    it('DRDMV-13039,DRDMV-13073: Verify document can be Deleted And Verify OOB document manager role is added to BA', async () => {
+    it('[DRDMV-13039,DRDMV-13073]: Verify document can be Deleted And Verify OOB document manager role is added to BA', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
@@ -59,10 +59,10 @@ describe('Document Library', () => {
         expect(await utilCommon.getPopUpMessage()).toBe('Document deleted successfully.');
         await utilCommon.waitUntilPopUpDisappear();
         expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Grid Record displayed which should not be');
-    }, 120 * 1000)
+    }, 120 * 1000);
 
     //kgaikwad
-    it('DRDMV-13045: Verify Delete button on document', async () => {
+    it('[DRDMV-13045]: Verify Delete button on document', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
@@ -86,10 +86,10 @@ describe('Document Library', () => {
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'status is not in Published status';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is enabled');
-    })
+    });
 
     //kgaikwad
-    it('DRDMV-13074: Verify Document Managment Grid Console', async () => {
+    it('[DRDMV-13074]: Verify Document Managment Grid Console', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
         await utilCommon.waitUntilSpinnerToHide();
@@ -99,10 +99,10 @@ describe('Document Library', () => {
         await documentLibraryConsolePo.addColumnOnGrid(columns2);
         expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns2)).toBeTruthy('column headers does not match');
         await documentLibraryConsolePo.removeColumnOnGrid(columns2);
-    })
+    });
 
     //kgaikwad
-    it('DRDMV-13075,DRDMV-13038 : Verify document can be publish And Verify Search on Document Managment Console ', async () => {
+    it('[DRDMV-13075,DRDMV-13038]: Verify document can be publish And Verify Search on Document Managment Console ', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
@@ -155,10 +155,10 @@ describe('Document Library', () => {
         expect(await editDocumentLibraryPo.isAddSupportDepartmentAddButtonDisabled()).toBeTruthy('Add Support Department Add Button is enabled');
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete button is enabled');
         expect(await editDocumentLibraryPo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
-    }, 120 * 1000)
+    }, 120 * 1000);
 
     //kgaikwad
-    it('DRDMV-13021: Verify edit document UI', async () => {
+    it('[DRDMV-13021]: Verify edit document UI', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
@@ -213,10 +213,10 @@ describe('Document Library', () => {
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Author')).toBe('Qadim Katawazi', 'Author is not displayed');
         await documentLibraryConsolePo.removeColumnOnGrid(column);
-    })
+    });
 
     //kgaikwad
-    it('DRDMV-13085: Verify document created will not listed in Knowledge articles grid', async () => {
+    it('[DRDMV-13085]: Verify document created will not listed in Knowledge articles grid', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
@@ -232,10 +232,10 @@ describe('Document Library', () => {
         await navigationPage.gotoKnowledgeConsole();
         await utilGrid.clearFilter();
         expect(await consoleKnowledgePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Record is present on knowledge article grid');
-    })
+    });
 
     //kgaikwad
-    it('DRDMV-13083: Verify Knowledge Users will not be able to view document Managment link', async () => {
+    it('[DRDMV-13083]: Verify Knowledge Users will not be able to view document Managment link', async () => {
         try {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
@@ -250,10 +250,10 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    })
+    });
 
     //kgaikwad
-    it('DRDMV-13079: Verify document will not appear in knowledge article searches	', async () => {
+    it('[DRDMV-13079]: Verify document will not appear in knowledge article searches	', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
@@ -270,8 +270,8 @@ describe('Document Library', () => {
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName('Angelina Jolie');
         await quickCasePo.setCaseSummary(titleRandVal);
-        let column:string=await resources.getCountOfHeading('Recommended Knowledge ')
-        expect (await resources.getCountOfHeading('Recommended Knowledge ')).toBe('0','heading Count is not correct');
+        let column: string = await resources.getCountOfHeading('Recommended Knowledge ')
+        expect(await resources.getCountOfHeading('Recommended Knowledge ')).toBe('0', 'heading Count is not correct');
 
         await navigationPage.gotoCreateKnowledge();
         await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
@@ -287,10 +287,10 @@ describe('Document Library', () => {
         await informationTabPo.clickOnEditButton();
         expect(await informationTabPo.isAttachDocumentBladeDisplayed()).toBeFalsy('Attach Document Blade is displayed');
 
-    })
+    });
 
     //kgaikwad
-    it('DRDMV-13041: Verify Support Group Level Read access of Document	', async () => {
+    it('[DRDMV-13041]: Verify Support Group Level Read access of Document	', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
@@ -388,10 +388,10 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    },150*1000)
+    }, 150 * 1000);
 
     //kgaikwad
-    it('DRDMV-13072: Verify error should be thrown when write access SG is added in read access', async () => {
+    it('[DRDMV-13072]: Verify error should be thrown when write access SG is added in read access', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
@@ -415,9 +415,9 @@ describe('Document Library', () => {
         await editDocumentLibraryPo.selectReadAccessDropDown('Add Support Group', 'Compensation and Benefits');
         await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
         expect(await editDocumentLibraryPo.sameSupportGroupErrorMessageDisplayed(' This group has been added with the another access. Please contact the administrator to replace the settings')).toBeTruthy('Same Support Group select error message displayed ');
-    })
+    });
 
-    it('DRDMV-13077: Verify Sort on Document Managment Console', async () => {
+    it('[DRDMV-13077]: Verify Sort on Document Managment Console', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
@@ -430,17 +430,16 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
-        expect(await documentLibraryConsolePo.isGridColumnSorted('Title','descending')).toBeTruthy('Title column not sorted');
-        await documentLibraryConsolePo.isGridColumnSorted('Status','descending');
-        await documentLibraryConsolePo.isGridColumnSorted('Owner Group','descending');
-        await documentLibraryConsolePo.isGridColumnSorted('Company','descending');
+        expect(await documentLibraryConsolePo.isGridColumnSorted('Title', 'descending')).toBeTruthy('Title column not sorted');
+        await documentLibraryConsolePo.isGridColumnSorted('Status', 'descending');
+        await documentLibraryConsolePo.isGridColumnSorted('Owner Group', 'descending');
+        await documentLibraryConsolePo.isGridColumnSorted('Company', 'descending');
 
-    })
+    });
 
-    it('DRDMV-13081: Verify OOB Document template will not appear in knowledge console', async () => {
+    it('[DRDMV-13081]: Verify OOB Document template will not appear in knowledge console', async () => {
         await navigationPage.gotoCreateKnowledge();
-            expect(await createKnowlegePo.isDocumentTemplatePresent('Document')).toBeFalsy('Document heading is not displayed');
-    })
-
+        expect(await createKnowlegePo.isDocumentTemplatePresent('Document')).toBeFalsy('Document heading is not displayed');
+    });
 
 })

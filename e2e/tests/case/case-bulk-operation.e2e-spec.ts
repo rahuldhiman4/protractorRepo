@@ -1,17 +1,16 @@
 import { browser } from "protractor";
-import loginPage from '../../pageobject/common/login.po';
-import navigationPage from '../../pageobject/common/navigation.po';
+import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import caseConsolePage from '../../pageobject/case/case-console.po';
-import utilGrid from '../../utils/util.grid';
-import changeAssignment from '../../pageobject/common/change-assignment-blade.po';
-import utilCommon from '../../utils/util.common';
 import viewCasePage from '../../pageobject/case/view-case.po';
+import { default as changeAssignment, default as changeAssignmentBladePo } from '../../pageobject/common/change-assignment-blade.po';
+import loginPage from '../../pageobject/common/login.po';
+import navigationPage from '../../pageobject/common/navigation.po';
 import notificationPo from '../../pageobject/notification/notification.po';
-import { security, operation, type } from '../../utils/constants';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import activityPo from '../../pageobject/social/activity-tab.po';
-import apiCoreUtil from '../../api/api.core.util';
+import { operation, security, type } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 
 describe('Case Watchlist', () => {
 
@@ -62,7 +61,7 @@ describe('Case Watchlist', () => {
         await navigationPage.gotoCaseConsole();
     });
 
-    it('DRDMV-15953: Verify if Case Agent can select and change the assignee of multiple cases', async () => {
+    it('[DRDMV-15953]: Verify if Case Agent can select and change the assignee of multiple cases', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
@@ -85,14 +84,14 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('DRDMV-15954: Verify if Case Agent can select and un-select all the Cases using checkbox beside Case column', async () => {
+    it('[DRDMV-15954]: Verify if Case Agent can select and un-select all the Cases using checkbox beside Case column', async () => {
         await caseConsolePage.selectAllCases();
         expect(await caseConsolePage.isAllCasesSelected()).toBeTruthy("All cases are not selected");
         await caseConsolePage.selectAllCases();
         expect(await caseConsolePage.isAllCasesUnSelected()).toBeTruthy("All cases are selected");
     });
 
-    it('DRDMV-15984: Verify that once Assignee is changed from Bulk operation then respective support groups get the notification', async () => {
+    it('[DRDMV-15984]: Verify that once Assignee is changed from Bulk operation then respective support groups get the notification', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
@@ -129,7 +128,7 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('DRDMV-15978: Verify user having case read access cannot change assignee of the case using bulk assignment', async () => {
+    it('[DRDMV-15978]: Verify user having case read access cannot change assignee of the case using bulk assignment', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response1 = await apiHelper.createCase(caseData['bulkCaseAssignee_New']);
@@ -147,7 +146,7 @@ describe('Case Watchlist', () => {
             "username": 'qstrong'
         }
         await apiHelper.updateCaseAccess(caseGuid1, caseReadAccessDataQstrong);
-        
+
         //Providing Write access of Case 2 to qstrong
         let caseWriteAccessDataQstrong = {
             "operation": operation['addAccess'],
@@ -157,7 +156,7 @@ describe('Case Watchlist', () => {
         }
         await apiHelper.updateCaseAccess(caseGuid2, caseWriteAccessDataQstrong);
 
-        try{
+        try {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await utilGrid.clearFilter();
@@ -176,7 +175,7 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('DRDMV-15980: Verify that Assignment change information is visible in Actvity section', async () => {
+    it('[DRDMV-15980]: Verify that Assignment change information is visible in Actvity section', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
@@ -204,7 +203,7 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('DRDMV-15981: Verify that Agent is able to change the Assignee if status is Assigned or In Progress or Resolved', async () => {
+    it('[DRDMV-15981]: Verify that Agent is able to change the Assignee if status is Assigned or In Progress or Resolved', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
@@ -227,7 +226,7 @@ describe('Case Watchlist', () => {
 
     });
 
-    it('DRDMV-16109: Verify that Agent creates the Case with BU, Org, Support Group, Department and while Bulk Assignment select only Org and Support Group', async () => {
+    it('[DRDMV-16109]: Verify that Agent creates the Case with BU, Org, Support Group, Department and while Bulk Assignment select only Org and Support Group', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
@@ -260,7 +259,7 @@ describe('Case Watchlist', () => {
         }
     });
 
-    it('DRDMV-16110: Verify that Agent creates the Case with Org, Support Group and while Bulk Assignment select BU, Org, Support Group, Department', async () => {
+    it('[DRDMV-16110]: Verify that Agent creates the Case with Org, Support Group and while Bulk Assignment select BU, Org, Support Group, Department', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
@@ -274,7 +273,7 @@ describe('Case Watchlist', () => {
         }
 
         await caseConsolePage.clickOnChangeAssignmentButton();
-        await changeAssignmentBladePo.setAssignee(petramcoStr,compensationAndBenefitsStr, 'Qadim Katawazi');
+        await changeAssignmentBladePo.setAssignee(petramcoStr, compensationAndBenefitsStr, 'Qadim Katawazi');
         expect(await utilCommon.getPopUpMessage()).toBe("INFO (222156): The selected case(s) have been successfully assigned.");
 
         for (let i: number = 0; i < 3; i++) {
@@ -289,28 +288,28 @@ describe('Case Watchlist', () => {
 
     });
 
-    it('DRDMV-16107: Verify if Agent Bulk Assign the cases with at least one closed status then Agent should get the error', async () => {
+    it('[DRDMV-16107]: Verify if Agent Bulk Assign the cases with at least one closed status then Agent should get the error', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = []
-        for(let i=0; i<2; i++){
-            let response = await apiHelper.createCase(caseData['bulkCaseAssignee_New']);    
+        for (let i = 0; i < 2; i++) {
+            let response = await apiHelper.createCase(caseData['bulkCaseAssignee_New']);
             caseId[i] = response.displayId;
         }
         let response1 = await apiHelper.createCase(caseData['bulkCaseAssignee_New']);
         let caseGuid = response1.id;
         caseId[2] = response1.displayId;
-        
+
         await apiHelper.updateCaseStatus(caseGuid, "Resolved", "Customer Follow-Up Required");
         await apiHelper.updateCaseStatus(caseGuid, "Closed");
-        
+
         await browser.refresh();
         for (let i: number = 0; i < 3; i++) {
             await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
 
         await caseConsolePage.clickOnChangeAssignmentButton();
-        await changeAssignmentBladePo.setAssignee(petramcoStr,compensationAndBenefitsStr, 'Qadim Katawazi');
+        await changeAssignmentBladePo.setAssignee(petramcoStr, compensationAndBenefitsStr, 'Qadim Katawazi');
         expect(await utilCommon.getPopUpMessage()).toBe("ERROR (222158): Cases in closed or canceled status cannot be modified. Please update the selected cases.");
         await utilCommon.closePopUpMessage();
     });

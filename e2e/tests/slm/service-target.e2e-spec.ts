@@ -26,7 +26,7 @@ describe('Service Taret Tests', () => {
         await utilCommon.waitUntilSpinnerToHide();
     });
 
-    it('DRDMV-17016:Check if expression is build by using all available field with different relation', async () => {
+    it('[DRDMV-17016]:Check if expression is build by using all available field with different relation', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
             .toEqual('Service Target - Administration - Business Workflows');
@@ -63,7 +63,7 @@ describe('Service Taret Tests', () => {
         expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     });
 
-    it('DRDMV-11913:[Global] Create a Case with global SVT', async () => {
+    it('[DRDMV-11913]:[Global] Create a Case with global SVT', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
             .toEqual('Service Target - Administration - Business Workflows');
@@ -101,7 +101,7 @@ describe('Service Taret Tests', () => {
         expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     }, 300 * 1000);
 
-    it('DRDMV-2027:Icons representing measurement status on SLA Progress Bar', async () => {
+    it('[DRDMV-2027]:Icons representing measurement status on SLA Progress Bar', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
             .toEqual('Service Target - Administration - Business Workflows');
@@ -168,7 +168,7 @@ describe('Service Taret Tests', () => {
         expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
     }, 400 * 1000);
 
-    it('DRDMV-11914:[Global] Both svt gets attached if we have Global and company specific SVTs', async () => {
+    it('[DRDMV-11914]:[Global] Both svt gets attached if we have Global and company specific SVTs', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
             .toEqual('Service Target - Administration - Business Workflows');
@@ -225,7 +225,7 @@ describe('Service Taret Tests', () => {
         expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     }, 300 * 1000);
 
-    it('DRDMV-8365:Verify the SLA Progress Bar change in color when single SVT attached', async () => {
+    it('[DRDMV-8365]:Verify the SLA Progress Bar change in color when single SVT attached', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
             .toEqual('Service Target - Administration - Business Workflows');
@@ -298,7 +298,7 @@ describe('Service Taret Tests', () => {
         expect(await SlmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true);
     }, 400 * 1000);
 
-    it('DRDMV-2022:Verify SLA Progress Bar timeline properties', async () => {
+    it('[DRDMV-2022]:Verify SLA Progress Bar timeline properties', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
             .toEqual('Service Target - Administration - Business Workflows');
