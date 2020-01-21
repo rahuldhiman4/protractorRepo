@@ -4,14 +4,14 @@ import apiHelper from '../../api/api.helper';
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import consoleEmailTemplatePo from '../../pageobject/email/console-email-template.po';
-import createEmailTemplatePo from '../../pageobject/email/create-email-template.po';
 import consoleNotificationTemplatePo from '../../pageobject/notification/console-notificationTemplate.po';
 import createNotificationTemplatePo from '../../pageobject/notification/create-notificationTemplate.po';
 import consoleNotestemplatePo from '../../pageobject/settings/common/console-notestemplate.po';
 import createNotestemplatePo from '../../pageobject/settings/common/create-notestemplate.po';
 import consoleDocumentTemplatePo from '../../pageobject/settings/document-management/console-document-template.po';
 import createDocumentTemplatePo from '../../pageobject/settings/document-management/create-document-template.po';
+import consoleEmailTemplatePo from '../../pageobject/settings/email/console-email-template.po';
+import createEmailTemplatePo from '../../pageobject/settings/email/create-email-template.po';
 import utilCommon from '../../utils/util.common';
 
 describe('Dynamic data', () => {
@@ -271,7 +271,7 @@ describe('Dynamic data', () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-        await consoleEmailTemplatePo.createEmailTemplate();
+        await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
         await createEmailTemplatePo.selectCompany('Petramco');
         await createEmailTemplatePo.setTemplateName('emailTemp' + randomStr);
         await createEmailTemplatePo.setDescription('Email Description' + randomStr);
