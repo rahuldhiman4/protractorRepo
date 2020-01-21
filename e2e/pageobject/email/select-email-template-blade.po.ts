@@ -4,6 +4,7 @@ import utilGrid from '../../utils/util.grid';
 class SelectEmailTemplateBlad {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        emptyGridNoCheckBox: '.ui-grid-icon-ok',
         title: '.modal-title',
         gridId: '[rx-view-component-id="092ad269-6be6-4240-a867-8af4c8c6e2c9"]',
         gridGuid: '092ad269-6be6-4240-a867-8af4c8c6e2c9',
@@ -11,6 +12,20 @@ class SelectEmailTemplateBlad {
         cancelButton: '[rx-view-component-id="84e2938d-2e78-4b3a-bbe5-7ffba7e7ebfb"] button',
         gridColumnHeaders: ' .ui-grid-header-cell-label',
         addColumnIcon: 'rx-record-grid-menu.rx-record-grid-toolbar__item_visible-columns .d-icon-ellipsis',
+    }
+
+    async clickOnApplyButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyButton)));
+        await $(this.selectors.applyButton).click();
+    }
+
+    async clickOnCancelButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        await $(this.selectors.cancelButton).click();
+    }
+
+    async isEmailTemplateGridEmpty():Promise<boolean>{
+        return $(this.selectors.applyButton).isPresent();
     }
 
     async isApplyButtonEnabled(): Promise<boolean> {

@@ -5,8 +5,8 @@ import changeAssignmentBladePo from '../../pageobject/common/change-assignment-b
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import emailPo from '../../pageobject/email/compose-mail.po';
-import editAcknowledgmentTemplatePo from '../../pageobject/email/edit-acknowledgment-template.po';
-import emailTemplateBladePo from '../../pageobject/email/email-template-blade.po';
+import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
+import emailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
 import { default as activityTabPo, default as socialActivity } from '../../pageobject/social/activity-tab.po';
 import editTask from "../../pageobject/task/edit-task.po";
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';

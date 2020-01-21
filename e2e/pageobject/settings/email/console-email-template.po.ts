@@ -1,19 +1,20 @@
-import { element, by, $, protractor, ProtractorExpectedConditions, browser } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 import utilGrid from '../../../utils/util.grid';
 
-class AcknowledgmentTemplateConsolePage {
+class ConsoleEmailTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-            gridGuid: 'deb7a0eb-56a9-432d-9c4a-912cf4644086',
-            delete: '[rx-view-component-id="b21478a3-5ca4-4d00-85d3-da3a5bc4ea96"] button',
-            addAckTemplates: '.d-icon-left-plus span',
+        emailTemplate:'[rx-view-component-id="c293ce64-f48e-42cd-ab05-cf5f36d70a91"] button',
+        gridGuid: '67dc7c19-05bd-4c7b-8aaf-812a97783d77',
+        delete: '[rx-view-component-id="a5e75632-1fa2-4432-9903-8521a89cfdc2"] button',
+        addEmailTemplate: '[rx-view-component-id="c293ce64-f48e-42cd-ab05-cf5f36d70a91"] button',
     }
 
-    async clickOnAddAcknowlegeTemplateButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addAckTemplates)));
-        await element(by.cssContainingText(this.selectors.addAckTemplates, 'Acknowledgment Template')).click();
-    }
+    async clickOnAddEmailTemplateButton():Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailTemplate)));
+        await $(this.selectors.emailTemplate).click();
+    }   
 
     async clickOnDeleteButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.delete)));
@@ -42,9 +43,18 @@ class AcknowledgmentTemplateConsolePage {
         await utilCommon.waitUntilSpinnerToHide();
     }
 
+    async addFilter(fieldName: string, textValue: string,type:string): Promise<void> {
+        await utilGrid.addFilter(fieldName,textValue,type);
+        await utilCommon.waitUntilSpinnerToHide();
+    }
+
     async clearGridSearchBox(): Promise<void> {
         await utilGrid.clearGridSearchBox();
         await utilCommon.waitUntilSpinnerToHide();
+    }
+
+    async clearGridFilter(): Promise<void> {
+        await utilGrid.clearFilter();
     }
 
     async removeColumnOnGrid(columnHeader: string[]): Promise<void> {
@@ -64,19 +74,9 @@ class AcknowledgmentTemplateConsolePage {
         return await utilGrid.areColumnHeaderMatches(this.selectors.gridGuid, columnHeader);
     }
 
-    async searchAndOpenAcknowledgmentTemplate(value: string): Promise<void> {
+    async searchAndOpenEmailTemplate(value: string): Promise<void> {
         await utilGrid.searchAndOpenHyperlink(value);
         await utilCommon.waitUntilSpinnerToHide();
     }
-
-    async addFilter(fieldName: string, textValue: string,type:string): Promise<void> {
-        await utilGrid.addFilter(fieldName,textValue,type);
-        await utilCommon.waitUntilSpinnerToHide();
-    }
-
-    async clearGridFilter(): Promise<void> {
-        await utilGrid.clearFilter();
-    }
 }
-
-export default new AcknowledgmentTemplateConsolePage();
+export default new ConsoleEmailTemplate();

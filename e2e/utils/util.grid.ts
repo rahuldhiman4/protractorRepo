@@ -1,4 +1,4 @@
-import { $, browser, by, By, element, protractor, ProtractorExpectedConditions, until, Key } from 'protractor';
+import { $, browser, by, By, element, Key, protractor, ProtractorExpectedConditions, until } from 'protractor';
 import utilCommon, { Util } from './util.common';
 
 export class GridOperation {
@@ -52,8 +52,8 @@ export class GridOperation {
         );
     }
 
-    async isGridRecordPresent(searchRecord:string): Promise<boolean> {
-        await this.searchOnGridConsole(searchRecord);        
+    async isGridRecordPresent(searchRecord: string): Promise<boolean> {
+        await this.searchOnGridConsole(searchRecord);
         await browser.sleep(5000);
         return await $(this.selectors.gridRecordPresent).isPresent();
     }
@@ -196,11 +196,11 @@ export class GridOperation {
         guid = "'" + guid + "'";
         var gridColumnHeaderPosition = `//*[@rx-view-component-id=${guid}]//span[@class="ui-grid-header-cell-label"][text()=${columnHeader}]/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
         var gridRecords = '//div[@class="ui-grid-canvas"]/div';
-        try{
-        var columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
-         }catch(Ex){
-            columnPosition = 0;  
-         }
+        try {
+            var columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
+        } catch (Ex) {
+            columnPosition = 0;
+        }
         columnPosition = columnPosition + 1;
         var gridRows: number = await element.all(by.xpath(gridRecords)).count();
         if (gridRows > 0) {
@@ -232,8 +232,10 @@ export class GridOperation {
             gridRecord = await element(by.xpath(gridRecordCellValue)).getText();
         } else {
             console.log("No Records Found.");
-            gridRecord="";
+            gridRecord = "";
         }
+        console.log(gridRecord);
+
         return gridRecord;
     }
 
@@ -351,9 +353,9 @@ export class GridOperation {
         );
     }
 
-    async clickCheckBoxOfValueInGrid(value: string, guid?:string): Promise<void> {
-        let guidId:string = "";
-        if(guid){
+    async clickCheckBoxOfValueInGrid(value: string, guid?: string): Promise<void> {
+        let guidId: string = "";
+        if (guid) {
             guidId = `//*[@rx-view-component-id="${guid}"]`
         }
         await utilCommon.waitUntilSpinnerToHide();
@@ -366,7 +368,7 @@ export class GridOperation {
             await browser.wait(this.EC.presenceOf(element(by.xpath(locator))));
             if (await element(by.xpath(locator)).getText() == value) break;
         }
-        let checkbox:string = `(${guidId}//div[@aria-label='Select row'])[${cnt}]`;
+        let checkbox: string = `(${guidId}//div[@aria-label='Select row'])[${cnt}]`;
         await browser.wait(this.EC.elementToBeClickable(element(by.xpath(checkbox))));
         await element(by.xpath(checkbox)).click();
     }
@@ -376,23 +378,28 @@ export class GridOperation {
         await $(this.selectors.searchGridRefreshIcon).click();
     }
 
-    async addFilter(fieldName: string, textValue: string, guid?:string): Promise<void> {
-        let guidId:string = "";
-        if(guid){
-            guidId = `//*[@rx-view-component-id="${guid}"]`
+    async addFilter(fieldName: string, textValue: string, type: string, guid?: string): Promise<void> {
+        let guidId: string = "";
+        if (guid) {
+            guidId = `[rx-view-component-id="${guid}"] `
         }
-        await browser.wait(this.EC.elementToBeClickable($(guidId).$(this.selectors.filterIcon)));
-        await $(guidId).$(this.selectors.filterIcon).click();
-        let fldLocator = await element(by.cssContainingText(guidId+' '+this.selectors.filterItems, fieldName));
+        await browser.wait(this.EC.elementToBeClickable($(guidId + this.selectors.filterIcon)));
+        await $(guidId + this.selectors.filterIcon).click();
+        let fldLocator = await element(by.cssContainingText(guidId + this.selectors.filterItems, fieldName));
         await browser.wait(this.EC.elementToBeClickable(fldLocator));
         await fldLocator.click();
-        let txtFieldLocator = fldLocator.$('label.d-textfield__label');
-        await browser.wait(this.EC.elementToBeClickable(txtFieldLocator));
-        await txtFieldLocator.sendKeys(textValue + Key.ENTER);
-        await browser.wait(this.EC.elementToBeClickable($(guidId).$(this.selectors.applyButton)));
-        await $(guidId).$(this.selectors.applyButton).click();
+        if (type == 'checkbox') {
+            let cbox = `.rx-search-filter-option[title='${textValue}']`
+            await browser.wait(this.EC.elementToBeClickable($(cbox)));
+            await $(cbox).click();
+        } else {
+            let txtFieldLocator = fldLocator.$('label.d-textfield__label');
+            await browser.wait(this.EC.elementToBeClickable(txtFieldLocator));
+            await txtFieldLocator.sendKeys(textValue + Key.ENTER);
+        }
+        await browser.wait(this.EC.elementToBeClickable($(guidId + this.selectors.applyButton)));
+        await $(guidId + this.selectors.applyButton).click();
         await utilCommon.waitUntilSpinnerToHide();
     }
 }
-
 export default new GridOperation();
