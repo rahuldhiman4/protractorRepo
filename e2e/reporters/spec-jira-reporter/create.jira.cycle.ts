@@ -1,5 +1,5 @@
 import axios from "axios";
-import { find } from 'lodash';
+import { filter, find } from 'lodash';
 import * as config from './jira.util.config';
 
 const minimist = require("minimist");
@@ -38,7 +38,6 @@ export interface JiraTestDetails {
 }
 
 export class CreateJiraCycle {
-    time = new Date();
     testCycleName: string;
     testCycleId: string;
     folderName: string;
@@ -49,7 +48,7 @@ export class CreateJiraCycle {
     projectId: string;
     versionId: string;
     inputFile: string;
-    generateStats: string;
+    generateStats: boolean;
     userName: string;
     password: string;
     passJiraTest = [];
@@ -66,8 +65,13 @@ export class CreateJiraCycle {
             await this.addExecutionToCycle(this.skipJiraTest);
             await this.addExecutionToCycle(this.passJiraTest);
             await this.addExecutionToCycle(this.failJiraTest);
+            this.generateOutputFile();
+            this.writeExecutionSummary();
+        } else {
+            console.log('Jira report failure!!! Test cycle and or folder is not created');
+            console.log(`###### Test Cycle details ###### \n Test cycle Name >> ${this.testCycleName} \n Test cycle Id >> ${this.testCycleId}`);
+            console.log(`Folder Name >> ${this.folderName} \n Folder Id >> ${this.folderId}`);
         }
-        this.generateOutputFile(isCycleAndFolderCreated);
     }
 
     loadConfig() {
@@ -155,7 +159,7 @@ export class CreateJiraCycle {
         } else console.log("Cycle already present...", this.testCycleName);
 
         // create folder inside cycle
-        let timestamp = `${this.time.getFullYear()}-${this.time.getMonth()}-${this.time.getDate()} ${this.time.getHours()}:${this.time.getMinutes()}`;
+        let timestamp = this.getTimeStamp();
         this.folderName = `${this.folderName} ${timestamp}`;
 
         let folderPayload = {
@@ -250,7 +254,7 @@ export class CreateJiraCycle {
             let totalExe = 0;
 
             // calculate pass percentage
-            if (this.generateStats == 'true') {
+            if (this.generateStats) {
                 let passPercent = await this.getTotalExecutionAndPassPercent(issueId);
                 passDetails = passPercent.passPercentage;
                 totalExe = passPercent.totalExecution;
@@ -291,24 +295,16 @@ export class CreateJiraCycle {
         };
     }
 
-    generateOutputFile(isCycleAndFolder: boolean) {
+    generateOutputFile() {
 
         console.log("************OUTPUT**************");
 
         if (!fs.existsSync('e2e/reports/spec-jira-report')) {
             fs.mkdirSync('e2e/reports/spec-jira-report');
         }
-        if (isCycleAndFolder) {
-            const fields = ['JiraId', 'Description', 'ExecutionStatus', 'TotalExecution', 'PassPercent', 'Version', 'Priority', 'JiraStatus'];
-            const json2csvParser = new Parser({ fields });
-            fs.writeFileSync('e2e/reports/spec-jira-report/jira-report.csv', json2csvParser.parse(this.jiraReport.concat(this.invalidJiraTest)));
-        }
-        else {
-            fs.writeFileSync('e2e/reports/spec-jira-report/jira-report.csv', 'Jira report failure!!! Test cycle and or folder is not created');
-            console.log('Jira report failure!!! Test cycle and or folder is not created');
-            console.log(`###### Test Cycle details ###### \n Test cycle Name >> ${this.testCycleName} \n Test cycle Id >> ${this.testCycleId}`);
-            console.log(`Folder Name >> ${this.folderName} \n Folder Id >> ${this.folderId}`);
-        }
+        const fields = ['JiraId', 'Description', 'ExecutionStatus', 'TotalExecution', 'PassPercent', 'Version', 'Priority', 'JiraStatus'];
+        const json2csvParser = new Parser({ fields });
+        fs.writeFileSync('e2e/reports/spec-jira-report/jira-report.csv', json2csvParser.parse(this.jiraReport.concat(this.invalidJiraTest)));
     }
 
     async writeExecutionSummary() {
@@ -316,6 +312,42 @@ export class CreateJiraCycle {
             "rest/zapi/latest/cycle/" + this.testCycleId + "/folders?projectId=" + this.projectId + "&versionId=" + this.versionId
         );
         console.log('Test Cycle Summary API Status =============>', cycleExecutionSummary.status);
+
+        if (cycleExecutionSummary.status == 200) {
+
+            let folderExecutionInfo = filter(cycleExecutionSummary.data, (folder) => {
+                return folder.folderName === this.folderName;
+            });
+            let totalExecution: number = folderExecutionInfo[0].totalExecutions;
+
+            let passCount: number = find(folderExecutionInfo[0].executionSummaries.executionSummary, (status) => {
+                return status.statusName === "PASS";
+            }).count;
+
+            let failCount: number = find(folderExecutionInfo[0].executionSummaries.executionSummary, (status) => {
+                return status.statusName === "FAIL";
+            }).count;
+
+            let skipCount: number = totalExecution - passCount - failCount;
+
+            console.log("Cycle name ==> " + this.testCycleName);
+            console.log("Folder name ==> " + this.folderName);
+            console.log("Passed tests ==> " + passCount);
+            console.log("Failed tests ==> " + failCount);
+            console.log("Skipped tests ==> " + skipCount);
+            console.log("Total Executed tests ==> " + totalExecution);
+
+        } else console.log("************FAILED to get Test Execution Summary**************");
+    }
+
+    getTimeStamp(): string {
+        let now = new Date();
+        let year = "" + now.getFullYear();
+        let month = "" + (now.getMonth() + 1); if (month.length == 1) { month = "0" + month; }
+        let day = "" + now.getDate(); if (day.length == 1) { day = "0" + day; }
+        let hour = "" + now.getHours(); if (hour.length == 1) { hour = "0" + hour; }
+        let minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
+        return year + "-" + month + "-" + day + " " + hour + ":" + minute;
     }
 }
 
