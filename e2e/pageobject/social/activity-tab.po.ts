@@ -46,7 +46,8 @@ class ActivityTabPage {
         closeButton: '.modal-dialog button',
         dwpIcon: '.dwp_survey .log-item__icon',
         dwpFeedback: '.rx-content.dwp-comment',
-        logItems: '.log-item__body'
+        logItems: '.log-item__body',
+        body:'.log-item__body .body'
     }
 
     async clickOnReply(): Promise<void> {
@@ -58,6 +59,11 @@ class ActivityTabPage {
         utilCommon.waitUntilSpinnerToHide();
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailReplyAll)));
         await $(this.selectors.emailReplyAll).click();
+    }
+
+    async getUnFlagContent():Promise<string>{
+        await utilCommon.waitUntilSpinnerToHide();
+        return await $$(this.selectors.body).first().getText();
     }
 
     async getemailContent(): Promise<string> {

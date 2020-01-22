@@ -35,6 +35,14 @@ class CreateKnowledgePage {
         categoryTier2Guid: '6f480482-c224-4742-b941-bce655d40fde',
         categoryTier3Guid: '2774b518-00ab-4e02-bb23-95bdb0285840',
         categoryTier4Guid: 'd0bd4f0d-a53e-4c67-8419-016a926a7651',
+        createKAHeading:'[rx-view-component-id="cebb7cbd-0e7b-48a2-9944-c11d3ba255d0"] p',
+        reference:'.doc-editor__section .cke_editable',
+        templateName:'.templateName'
+    }
+
+    async isTemplatePresent(value:string):Promise<boolean>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createKAHeading)));
+        return await element(by.cssContainingText(this.selectors.templateName, value)).isPresent();
     }
 
     async isAttachDocumentBladeDisplayed(): Promise<boolean> {
@@ -57,6 +65,11 @@ class CreateKnowledgePage {
         await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Use selected Template'))));
         await element(by.buttonText('Use selected Template')).click();
         await browser.wait(this.EC.visibilityOf($(this.selectors.docEditorSection)));
+    }
+
+    async setReferenceValue(value:string):Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.reference)));
+        await $(this.selectors.reference).sendKeys(value);
     }
 
     async selectKnowledgeSet(knowledgeSet: string): Promise<void> {

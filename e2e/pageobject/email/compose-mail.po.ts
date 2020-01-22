@@ -96,8 +96,8 @@ class ComposeMail {
     }
 
     async isSendButtonPresent(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.sendButton)));
-        return await $(this.selectors.sendButton).isPresent();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.sendButton)));
+        return await $(this.selectors.sendButton).isDisplayed();
     }
 
     async isDiscardButtonPresent(): Promise<boolean> {

@@ -13,6 +13,7 @@ class ConsoleKnowledge {
         applyFilter: '.rx-search-filter-heading__apply',
         removeFilter: '..d-tag-remove-button',
         tableValue: '.ui-grid-cell-contents',
+        gridGuid: '0df18e99-4315-457c-aef0-3abc96fb08ee',
         knowledgeArticleTitle: '[rx-view-component-id="11f37569-5ecd-4239-aaa7-075d1874b1d1"] span',
         searchFilterOptions: '.search-filter__option-item_search',
     }
@@ -22,6 +23,14 @@ class ConsoleKnowledge {
         await $(this.selectors.searchTemplate).clear();
         await $(this.selectors.searchTemplate).sendKeys(input, Key.ENTER);
         await utilCommon.waitUntilSpinnerToHide();
+    }
+
+    async addAllcolumnOnKnowledgeConsole(knowledgeGridColumnFields: string[]): Promise<void> {
+        await utilGrid.addGridColumn(this.selectors.gridGuid, knowledgeGridColumnFields);
+    }
+
+    async removeAddedColumns(knowledgeGridColumnFields: string[]):Promise<void>{
+        await utilGrid.removeGridColumn(this.selectors.gridGuid, knowledgeGridColumnFields);
     }
 
     async isArticleIdDisplayed(input: string): Promise<boolean> {
@@ -36,6 +45,10 @@ class ConsoleKnowledge {
     async getKnowledgeArticleTitle(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeArticleTitle)));
         return await $(this.selectors.knowledgeArticleTitle).getText();
+    }
+
+    async isValueDisplayedInGrid(columnName: string): Promise<string> {
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnName);
     }
 }
 export default new ConsoleKnowledge();
