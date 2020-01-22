@@ -1,5 +1,6 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../utils/util.grid';
+import utilCommon from 'e2e/utils/util.common';
 
 class SelectEmailTemplateBlad {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -24,8 +25,9 @@ class SelectEmailTemplateBlad {
         await $(this.selectors.cancelButton).click();
     }
 
-    async isEmailTemplateGridEmpty():Promise<boolean>{
-        return $(this.selectors.applyButton).isPresent();
+    async isEmailTemplateGridEmpty(templateName:string):Promise<boolean>{
+        let value= await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid,'Title');
+        return value==templateName ? true : false;
     }
 
     async isApplyButtonEnabled(): Promise<boolean> {

@@ -20,6 +20,7 @@ class NavigationPage {
         helpIcon: '//*[@class="d-n-menu__link d-icon-left-question_circle"]',
         switchToApplicationDropDown: 'button.d-icon-right-angle_down',
         selectApplication: '.d-n-dropdown__link',
+        knowledgeConsoleFromKM:'[rx-view-component-id="3313266f-6ed4-47ee-ab90-54aab5bf3e99"] a'
     }
 
     verticalSelectors = {
@@ -42,6 +43,11 @@ class NavigationPage {
         }));
         let hamburgerHideAttribute = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
         return hamburgerHideAttribute == 'true' ? false : true;
+    }
+
+    async gotoKnoweldgeConsoleFromKM():Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeConsoleFromKM)));
+        await $(this.selectors.knowledgeConsoleFromKM).click();
     }
 
     async gotCreateCase(): Promise<void> {
@@ -352,7 +358,9 @@ class NavigationPage {
         await browser.actions().mouseMove($(this.selectors.profileMenu)).perform();
         await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.signOutMenuItem, 'Sign Out'))));
         await element(by.cssContainingText(this.selectors.signOutMenuItem, 'Sign Out')).click();
-        await browser.wait(this.EC.titleContains('Login - Business Workflows'));
+        let noAccess = this.EC.titleContains('No Access');
+        let bwfLogin = this.EC.titleContains('Login - Business Workflows');
+        await browser.wait(this.EC.or(noAccess,bwfLogin));
     }
 
     async switchToAnotherApplication(applicationName: string): Promise<void> {

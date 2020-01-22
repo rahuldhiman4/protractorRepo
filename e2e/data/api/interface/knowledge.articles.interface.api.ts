@@ -9,4 +9,7 @@ export interface IKnowledgeArticles{
     site?:string;
     articleId?:string;
     status?:string;
+    assignee?:string;
+    assigneeSupportGroup?:string;
+    company?:string;
 }
