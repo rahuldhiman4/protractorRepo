@@ -343,7 +343,6 @@ export class CreateJiraCycle {
             console.log("Total Executed tests ==> " + totalExecution);
 
             let exeSummary = {
-                time: this.getTimeStamp,
                 cycle: this.testCycleName,
                 folder: this.folderName,
                 pass: passCount,
@@ -368,7 +367,7 @@ export class CreateJiraCycle {
 
     createHtmlReport(summary) {
         let html = pug.renderFile('e2e/reporters/spec-jira-reporter/email-report.pug', summary);
-        fs.writeFileSync('e2e/reports/spec-jira-report/ProtractorHtmlReport.template', juice(html));
+        fs.writeFileSync('e2e/reports/spec-jira-report/CycleReport.html', juice(html));
     }
 }
 
