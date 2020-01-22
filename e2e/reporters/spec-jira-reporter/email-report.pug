@@ -1,0 +1,59 @@
+head
+  title Build report
+  style.
+    body {
+      margin: 0px;
+      padding: 15px;
+      font-family: "Lucida Sans Unicode";
+      font-size: 10pt;
+    }
+    h3 {
+      width: 50%;
+      background: #50EBEC;
+      padding: 10px;
+      border: 1px solid #333;
+    }
+    table {
+      width: 50%;
+    }
+    td.bold {
+      width: 40%;
+      font-weight:bold;
+    }
+    table, tr, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 5px;
+    }
+  body
+    h3 BWF UI - Protractor Automation Report
+    table
+      tr
+        td.bold  Build URL:
+        td
+          a(href="${rooturl}${build.url}") View Jenkins
+      tr
+        td.bold  Environment Name:
+        td  ${build.environment['BaseUrl']}
+      tr
+        td.bold  Jira Cycle:
+        td  #{cycle}
+      tr
+        td.bold  Jira Folder:
+        td  #{folder}
+      tr
+        td.bold  Passed:
+        td  #{pass}
+      tr
+        td.bold  Failed:
+        td  #{fail}
+      tr
+        td.bold  Skipped:
+        td  #{skip}
+      tr
+        td.bold  Total:
+        td  #{total}
+      tr
+        td.bold Build Artefact:
+        td
+          a(href="ftp://vl-pun-rem-qa4n/punebuild/bwf_automation/UI_AutomationReport/ProtractorRun/UIAutoRun_Build${build.environment['BUILD_NUMBER']}") FTP Link

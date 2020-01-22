@@ -5,6 +5,8 @@ import * as config from './jira.util.config';
 const minimist = require("minimist");
 const fs = require("fs");
 const { Parser } = require('json2csv');
+const pug = require('pug');
+const juice = require('juice');
 
 export interface InputType {
     jiraId: string;
@@ -340,6 +342,17 @@ export class CreateJiraCycle {
             console.log("Skipped tests ==> " + skipCount);
             console.log("Total Executed tests ==> " + totalExecution);
 
+            let exeSummary = {
+                time: this.getTimeStamp,
+                cycle: this.testCycleName,
+                folder: this.folderName,
+                pass: passCount,
+                fail: failCount,
+                skip: skipCount,
+                total: totalExecution,
+            }
+            this.createHtmlReport(exeSummary);
+
         } else console.log("************FAILED to get Test Execution Summary**************");
     }
 
@@ -351,6 +364,11 @@ export class CreateJiraCycle {
         let hour = "" + now.getHours(); if (hour.length == 1) { hour = "0" + hour; }
         let minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
         return year + "-" + month + "-" + day + " " + hour + ":" + minute;
+    }
+
+    createHtmlReport(summary) {
+        let html = pug.renderFile('e2e/reporters/spec-jira-reporter/email-report.pug', summary);
+        fs.writeFileSync('e2e/reports/spec-jira-report/ProtractorHtmlReport.template', juice(html));
     }
 }
 
