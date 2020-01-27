@@ -1,5 +1,5 @@
 import axios from "axios";
-import { filter, find } from 'lodash';
+import { filter, find, get, isArray } from 'lodash';
 import * as config from './jira.util.config';
 
 const minimist = require("minimist");
@@ -251,7 +251,7 @@ export class CreateJiraCycle {
         let issueDetails = await axios.get(
             "/rest/api/latest/issue/" + issueKey
         );
-        console.log('IssueKey Details API Status =============>', issueDetails.status);
+        console.log('IssueKey Details API Status =============>', issueDetails.status, issueKey);
 
         if (issueDetails.status == 200) {
             let issueId = issueDetails.data.id;
@@ -264,11 +264,12 @@ export class CreateJiraCycle {
                 passDetails = passPercent.passPercentage;
                 totalExe = passPercent.totalExecution;
             }
+            const { fixVersions } = issueDetails.data.fields;
             return {
                 issueKey: issueKey,
                 issueId: issueId,
-                version: issueDetails.data.fields.fixVersions[0].name,
-                priority: issueDetails.data.fields.priority.name,
+                version: fixVersions && isArray(fixVersions) ? get(fixVersions[0], 'name') : null,
+                priority: issueDetails.data.fields.priority.name ? issueDetails.data.fields.priority.name : 'NA',
                 totalExecution: totalExe,
                 passPercent: passDetails,
             }
