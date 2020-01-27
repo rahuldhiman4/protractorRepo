@@ -36,7 +36,7 @@ describe('Knowledge Article', () => {
     });
 
     //ptidke
-    it('DRDMV-2604: [Flag an Article] Unflag a published artilcles by Asignee_Knowledge publisher', async () => {
+    it('[DRDMV-2604]: [Flag an Article] Unflag a published artilcles by Asignee_Knowledge publisher', async () => {
         try {
             let knowledgeTitile = 'knowledge2604' + randomStr;
             await apiHelper.apiLogin('peter');
@@ -79,7 +79,7 @@ describe('Knowledge Article', () => {
     },130*1000);
 
     //ptidke
-    it('DRDMV-13646,DRDMV-13681: Create a Knowledge article and check Knowledge Preview', async () => {
+    it('[DRDMV-13646,DRDMV-13681]: Create a Knowledge article and check Knowledge Preview', async () => {
         try {
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
@@ -106,7 +106,7 @@ describe('Knowledge Article', () => {
     });
 
     //ptidke
-    it('DRDMV-1164: PermissionModel_Knowledge Coach permission create knowledge articles', async () => {
+    it('[DRDMV-1164]: PermissionModel_Knowledge Coach permission create knowledge articles', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
@@ -138,7 +138,7 @@ describe('Knowledge Article', () => {
     },90*1000);
 
     //ptidke
-    it('DRDMV-2374: [Edit Knowledge Article] Article creation not possible by selecting disabled templates', async () => {
+    it('[DRDMV-2374]: [Edit Knowledge Article] Article creation not possible by selecting disabled templates', async () => {
         try {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates - Business Workflows');
@@ -163,7 +163,7 @@ describe('Knowledge Article', () => {
     });
 
     //ptidke
-    it('DRDMV-774,DRDMV-2447: [Knowledge Article] [SearchArticle] Knowledge article search with article ID and title', async () => {
+    it('[DRDMV-774,DRDMV-2447]: [Knowledge Article] [SearchArticle] Knowledge article search with article ID and title', async () => {
             let knowledgeGridColumnFields: string[] = ["Assigned Group", "Assignee Login Name", "Author", "GUID", "Region", "Review Status", "Category Tier 1", "Category Tier 2", "Category Tier 3"];
             let knowledgeTitle = 'knowledge774' + randomStr;
             await apiHelper.apiLogin('peter');
@@ -186,7 +186,7 @@ describe('Knowledge Article', () => {
     });
 
     //ptidke
-    it('DRDMV-3095: Submitter can cancel the article from Draft status_Submitter is assignee', async () => {
+    it('[DRDMV-3095]: Submitter can cancel the article from Draft status_Submitter is assignee', async () => {
         try {
             let knowledgeTitile = 'knowledge3095' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);
@@ -296,7 +296,7 @@ describe('Knowledge Article', () => {
     }, 450 * 1000);
 
     //ptidke
-    it('DRDMV-792: [KM-BWF integration] [Knowledge Article] Edit the knowledge article from the Knowledge Workspace', async () => {
+    it('[DRDMV-792]: [KM-BWF integration] [Knowledge Article] Edit the knowledge article from the Knowledge Workspace', async () => {
             let knowledgeTitile = 'knowledge792' + randomStr;
             await apiHelper.apiLogin('peter');
             let articleData = {
@@ -321,7 +321,7 @@ describe('Knowledge Article', () => {
     });
 
     //ptidke
-    it('DRDMV-3093: Submitter can cancel the article from In Progress status_Submitter is assignee', async () => {
+    it('[DRDMV-3093]: Submitter can cancel the article from In Progress status_Submitter is assignee', async () => {
         try {
             let knowledgeTitile = 'knowledge3093' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);
@@ -421,7 +421,7 @@ describe('Knowledge Article', () => {
     }, 380 * 1000);
 
     //ptidke
-    it('DRDMV-2586: [Flag an Article] Flag an article and post a comment', async () => {
+    it('[DRDMV-2586]: [Flag an Article] Flag an article and post a comment', async () => {
         try {
             let knowledgeTitile = 'knowledge2586' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);

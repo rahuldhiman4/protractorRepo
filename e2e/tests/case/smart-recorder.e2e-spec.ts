@@ -22,7 +22,7 @@ describe("Quick Case", () => {
         await navigationPage.signOut();
     })
 
-    it('DRDMV-8387: UI validation Email Option via Quick case', async () => {
+    it('[DRDMV-8387]: UI validation Email Option via Quick case', async () => {
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
         await quickCase.setCaseSummary('new case');
