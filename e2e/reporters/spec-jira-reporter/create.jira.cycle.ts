@@ -335,9 +335,11 @@ export class CreateJiraCycle {
             }).count;
 
             let skipCount: number = totalExecution - passCount - failCount;
+            let cyclePassPercent: number = Math.round(passCount * 100 / totalExecution);
 
             console.log("Cycle name ==> " + this.testCycleName);
             console.log("Folder name ==> " + this.folderName);
+            console.log("Test Cycle Pass % ==> " + cyclePassPercent);
             console.log("Passed tests ==> " + passCount);
             console.log("Failed tests ==> " + failCount);
             console.log("Skipped tests ==> " + skipCount);
@@ -346,6 +348,7 @@ export class CreateJiraCycle {
             let exeSummary = {
                 cycle: this.testCycleName,
                 folder: this.folderName,
+                cyclePassPercent,
                 pass: passCount,
                 fail: failCount,
                 skip: skipCount,
