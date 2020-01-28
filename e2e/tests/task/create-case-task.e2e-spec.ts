@@ -38,32 +38,23 @@ describe('Create Case Task', () => {
         let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
         let automationTaskTemplate = 'Automation task' + Math.floor(Math.random() * 1000000);
         let automationTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData2 = {
+            "templateName": `manualTaskTemplateDraft ${randomStr}`,
+            "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
+            "templateStatus": "Active",
+        }
 
-        //Manual task Template
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await selectTaskTemplate.clickOnManualTaskTemplateButton();
-        await taskTemplate.setTemplateName(manualTaskTemplate);
-        await taskTemplate.setTaskSummary(manualTaskSummary);
-        await taskTemplate.setTaskDescription('Description in manual task');
-        await taskTemplate.selectCompanyByName('Petramco');
-        await taskTemplate.selectTemplateStatus('Active');
-        await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
-
-        //Automation Task template
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
-        await taskTemplate.setTemplateName(automationTaskTemplate);
-        await taskTemplate.setTaskSummary(automationTaskSummary);
-        await taskTemplate.setTaskDescription('Description in manual task');
-        await taskTemplate.selectCompanyByName('Petramco');
-        await taskTemplate.setNewProcessName('Approval', 'Get Request Status Data 123');
-        await taskTemplate.selectTemplateStatus('Active');
-        await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
-
+        let templateData4 = {
+            "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": `Case Process 1 ${randomStr}`,
+        }
+		
+		 await apiHelper.createAutomatedTaskTemplate(templateData4);
+        await apiHelper.createManualTaskTemplate(templateData2);
         try {
             //case create
             await navigationPage.signOut();
@@ -77,6 +68,8 @@ describe('Create Case Task', () => {
             await viewCasePage.clickAddTaskButton();
 
             //Add Manual task and Automation Task in Case
+            await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTask.addTaskFromTaskTemplate(`manualTaskTemplateDraft ${randomStr}`)
             expect(await manageTask.isTaskLinkOnManageTask(manualTaskSummary)).toBeTruthy(manualTaskTemplate + ' Task is not added to case');
             expect(await manageTask.isTaskLinkOnManageTask(automationTaskSummary)).toBeTruthy(automationTaskTemplate + ' Task is not added to case');
 

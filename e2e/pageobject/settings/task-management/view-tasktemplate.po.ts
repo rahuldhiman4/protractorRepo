@@ -1,5 +1,5 @@
 import utilCommon from '../../../utils/util.common';
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions, element,by } from "protractor";
 
 class ViewTaskTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -38,12 +38,18 @@ class ViewTaskTemplate {
         taskDescriptonGuid:'cce67ce7-e6a5-4ed6-aa50-c57ea75d2854',
         supportGroupGuid: '244607b3-1fd7-490c-975b-7640a6b2c615',
         assigneeGuid: 'bb18eb5c-ba9c-47e1-8593-cd79aefac190',
+        dynamicField: '[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] .d-textfield__item'
     }
 
 
     async getDynamicFieldTitle(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.dynamicFieldTitle)));
         return await $(this.selectors.dynamicFieldTitle).getText();
+    }
+
+    async getDynamicField(dynamic:string): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.dynamicField)));
+        return await element(by.cssContainingText(this.selectors.dynamicField, dynamic))
     }
 
     async clickOnManageDynamicFieldLink(): Promise<void> {
