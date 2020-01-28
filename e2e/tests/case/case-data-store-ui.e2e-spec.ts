@@ -1,4 +1,5 @@
 import { browser } from "protractor";
+import apiHelper from "../../api/api.helper";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
@@ -6,6 +7,10 @@ import createTaskTemplate from "../../pageobject/settings/task-management/create
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import utilCommon from '../../utils/util.common';
+import dynamicFieldsPage from '../../pageobject/common/dynamic-fields.po';
+import createCasePage from '../../pageobject/case/create-case.po';
+import viewCasePage from "../../pageobject/case/view-case.po";
+import manageTask from "../../pageobject/task/manage-task-blade.po";
 
 describe('Create Case Task', () => {
     beforeAll(async () => {
@@ -70,6 +75,60 @@ describe('Create Case Task', () => {
         await expect(viewTaskTemplate.isEditProcessLinkDisplayed()).toBeFalsy();
         await expect(editTaskTemplate.getTaskTypeValueAttribute('disabled')).toBeTruthy();
         await expect(editTaskTemplate.isManageProcessLinkDisplayed()).toBeTruthy();
+    });
+
+    
+    //ankagraw
+    it('DRDMV-13169: [Dynamic Data] [UI] - Automated Task UI on Edit view', async () => {
+        try {
+            let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
+            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let templateData4 = {
+                "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateStatus": "Draft",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": `Case Process 1 ${randomStr}`,
+            }
+
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createAutomatedTaskTemplate(templateData4);
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.setTaskSearchBoxValue(`AutomatedTaskTemplateActive ${randomStr}`);
+            await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+            await viewTaskTemplate.clickOnManageDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field Name');
+            await dynamicFieldsPage.setDescriptionName('Field Description');
+            await dynamicFieldsPage.clickSaveButton();
+            await editTaskTemplate.clickOnEditMetadataLink();
+            await editTaskTemplate.selectTemplateStatus("Active");
+            await editTaskTemplate.clickOnSaveMetadata();
+
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await navigationPage.gotCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary('Summary ' + manualTaskSummary);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await createCasePage.clickGoToCaseButton();
+            await viewCasePage.clickAddTaskButton();
+
+            //Add Manual task and Automation Task in Case
+            await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`)
+            await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateActive ${randomStr}`);
+            await expect(viewTaskTemplate.getDynamicField('Field Description')).toBe('Field Description');
+
+        } catch (error) {
+            console.log(error);
+            await expect(true).toBeFalsy();
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        }
     });
 
 });
