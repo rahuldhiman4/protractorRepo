@@ -19,7 +19,7 @@ class AddRelationshipPage {
     }
 
     async clickNextButton() {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nextButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nextButton)));
         await $(this.selectors.nextButton).click();
     }
 
@@ -28,9 +28,9 @@ class AddRelationshipPage {
     }
 
     async clickSaveButton() {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async addPerson(name: string, relation: string) {
