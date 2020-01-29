@@ -25,25 +25,25 @@ export class Resources {
 
     async clickOnAdvancedSearchOptions(searchArea: string): Promise<void> {
         let advancedSearchButton = await element(by.xpath(`//*[@id='km-group__knowledge-header'][text()='${searchArea}']/following-sibling::div/button`));
-        await browser.wait(this.EC.elementToBeClickable(advancedSearchButton));
+//        await browser.wait(this.EC.elementToBeClickable(advancedSearchButton));
         await advancedSearchButton.click();
     }
 
     async enterAdvancedSearchText(searchText: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchInput)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchInput)));
         await $(this.selectors.advancedSearchInput).clear();
         await $(this.selectors.advancedSearchInput).sendKeys(searchText);
     }
 
     async clickOnAdvancedSearchSettingsIconToOpen(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchSettingsBtn)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchSettingsBtn)));
         await $(this.selectors.advancedSearchSettingsBtn).click();
     }
 
     async clickOnAdvancedSearchSettingsIconToClose(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchSettingsBtnClose)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchSettingsBtnClose)));
         await $(this.selectors.advancedSearchSettingsBtnClose).click();
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
     }
 
 
@@ -51,27 +51,27 @@ export class Resources {
         const advancedSearchFilterDropDown = await element(by.xpath(`//div[@aria-label='${searchFilter}']`));
         const advancedSearchFilterInput = await element(by.xpath(`//input[@placeholder='${searchFilter}']`));
         const advancedSearchFilterOption = await $('.ui-select-choices-row-inner');
-        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterDropDown));
+//        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterDropDown));
         await advancedSearchFilterDropDown.click();
-        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterInput));
+//        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterInput));
         await advancedSearchFilterInput.sendKeys(searchFilterOption);
-        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterOption));
+//        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterOption));
         await advancedSearchFilterOption.click();
     }
 
     async clickOnAdvancedSearchFiltersButton(buttonText: string): Promise<void> {
         const advancedSearchFilterBtn = await element(by.xpath(`//button[text()="${buttonText}"]/preceding-sibling::button`));
-        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterBtn));
+//        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterBtn));
         await advancedSearchFilterBtn.click();
     }
 
     async getAdvancedSearchResult(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
         return await $(this.selectors.advancedSearchResult).getText();
     }
 
     async getCountOfHeading(headerName:string): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.headingName)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.headingName)));
         let count:string= await element(by.xpath(`//h3[@class="km-group__header" and contains(text(),'${headerName}')]//span`)).getText();
         return await count.substring(1,count.length-1);
     }
