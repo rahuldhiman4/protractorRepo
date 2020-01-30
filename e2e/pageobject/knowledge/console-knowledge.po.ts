@@ -19,10 +19,10 @@ class ConsoleKnowledge {
     }
 
     async searchKnowledgeArticle(input: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTemplate)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTemplate)));
         await $(this.selectors.searchTemplate).clear();
         await $(this.selectors.searchTemplate).sendKeys(input, Key.ENTER);
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async addAllcolumnOnKnowledgeConsole(knowledgeGridColumnFields: string[]): Promise<void> {
@@ -34,7 +34,7 @@ class ConsoleKnowledge {
     }
 
     async isArticleIdDisplayed(input: string): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.recommendedArticleLink)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.recommendedArticleLink)));
         return await element(by.cssContainingText(this.selectors.recommendedArticleLink, input)).isDisplayed();
     }
 
@@ -43,7 +43,7 @@ class ConsoleKnowledge {
     }
 
     async getKnowledgeArticleTitle(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeArticleTitle)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeArticleTitle)));
         return await $(this.selectors.knowledgeArticleTitle).getText();
     }
 

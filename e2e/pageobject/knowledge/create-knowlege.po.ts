@@ -41,34 +41,34 @@ class CreateKnowledgePage {
     }
 
     async isTemplatePresent(value:string):Promise<boolean>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createKAHeading)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createKAHeading)));
         return await element(by.cssContainingText(this.selectors.templateName, value)).isPresent();
     }
 
     async isAttachDocumentBladeDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentField)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentField)));
         let attribute = await $(this.selectors.attachmentField).getAttribute('ng-click');
         return attribute == 'openDocumentLibrary()' ? true : false
     }
 
     async isDocumentTemplatePresent(documentheading: string): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.clickOnReferenceTemplate)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.clickOnReferenceTemplate)));
         return await element(by.cssContainingText(this.selectors.templateHeading, documentheading)).isPresent();
     }
 
     async clickOnTemplate(TemplateName: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.clickOnReferenceTemplate)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.clickOnReferenceTemplate)));
         await element(by.cssContainingText(this.selectors.clickOnReferenceTemplate, TemplateName)).click();
     }
 
     async clickOnUseSelectedTemplateButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Use selected Template'))));
+//        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Use selected Template'))));
         await element(by.buttonText('Use selected Template')).click();
         await browser.wait(this.EC.visibilityOf($(this.selectors.docEditorSection)));
     }
 
     async setReferenceValue(value:string):Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.reference)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.reference)));
         await $(this.selectors.reference).sendKeys(value);
     }
 
@@ -77,18 +77,18 @@ class CreateKnowledgePage {
     }
 
     async addTextInKnowlegeTitleField(addTextKnowlegeTitleField: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeTitleEditBox)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeTitleEditBox)));
         await $(this.selectors.knowledgeTitleEditBox).sendKeys(addTextKnowlegeTitleField);
     }
 
     async clickOnSaveKnowledgeButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveKnowlegeButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveKnowlegeButton)));
         await $(this.selectors.saveKnowlegeButton).click();
-        await utilCommon.waitUntilPopUpDisappear();
+//        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async verifyAssignmentFieldsPresentAndDisabled(fldName: String): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeMetadataSection)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeMetadataSection)));
         let fldsCount = await $$(this.selectors.knowledgeMetadataSection).count();
         for (let i = 0; i < fldsCount; i++) {
             let elem = await $$(this.selectors.knowledgeMetadataSection).get(i);
@@ -100,7 +100,7 @@ class CreateKnowledgePage {
     }
 
     async clickOnviewArticleLinkButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewArticleLink)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewArticleLink)));
         await $(this.selectors.viewArticleLink).click();
         await browser.wait(this.EC.or(async () => {
             let count = await browser.getAllWindowHandles().then(async function (handles) {
@@ -111,37 +111,37 @@ class CreateKnowledgePage {
     }
 
     async clickOnActivityTab(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.activityTab).last()));
+//        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.activityTab).last()));
         await $$(this.selectors.activityTab).last().click();
     }
 
     async isKnowledgeTitleRequired(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeTitleEditBox)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeTitleEditBox)));
         return await $(this.selectors.knowledgeTitleEditBox).getAttribute("required") == "true";
     }
 
     async isKnowledgeSetRequired(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeSetRequiedtext)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeSetRequiedtext)));
         return await $(this.selectors.knowledgeSetRequiedtext).getAttribute("required") == "true";
     }
 
     async isAuthorRequired(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.authorRequiredText).last()));
+//        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.authorRequiredText).last()));
         return await $(this.selectors.knowledgeSetRequiedtext).getAttribute("is-required") == "true";
     }
 
     async isSaveButtonEnabled(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveKnowlegeButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveKnowlegeButton)));
         return await $(this.selectors.saveKnowlegeButton).isEnabled();
     }
 
     async clickChangeAssignmentButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Change Assignment'))));
+//        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Change Assignment'))));
         await element(by.buttonText('Change Assignment')).click();
     }
 
     async clickAssignToMeButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMeBtn)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMeBtn)));
         await $(this.selectors.assignToMeBtn).click();
     }
 
@@ -193,23 +193,23 @@ class CreateKnowledgePage {
 
     async selectKnowledgeTemplate(fieldName: string): Promise<void> {
         let templateName = `[rx-view-component-id='6e402c66-fcdc-464b-b6e7-7e963d9c3a17'] [title='${fieldName}']`;
-        await browser.wait(this.EC.elementToBeClickable($(templateName)));
+//        await browser.wait(this.EC.elementToBeClickable($(templateName)));
         await $(templateName).click();
     }
 
     async clickBackButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         await $(this.selectors.backButton).click();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.saveKnowlegeButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveKnowlegeButton)));
     }
 
     async getKnowledgeId(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeId)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeId)));
         return await $(this.selectors.knowledgeId).getText();
     }
 
     async getCreateKnowledgeTitle(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.createKnowledgeTitle)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.createKnowledgeTitle)));
         return await $(this.selectors.createKnowledgeTitle).getText();
     }
 }
