@@ -8,12 +8,12 @@ class InformationTabPage {
     }
 
     async clickOnEditButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editKnowledgeMetadata)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editKnowledgeMetadata)));
         await $(this.selectors.editKnowledgeMetadata).click();
     }
 
     async isAttachDocumentBladeDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentField)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentField)));
         let attribute= await $(this.selectors.attachmentField).getAttribute('ng-click');
         return attribute =='openDocumentLibrary()' ? true : false
     }
