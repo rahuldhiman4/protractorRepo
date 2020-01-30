@@ -36,8 +36,8 @@ class NavigationPage {
     }
 
     async isHambergerIconPresent(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.settingsButton)));
-        await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.settingsButton)));
+//        await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
         await browser.wait(this.EC.or(async () => {
             await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
         }));
@@ -46,18 +46,18 @@ class NavigationPage {
     }
 
     async gotoKnoweldgeConsoleFromKM():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeConsoleFromKM)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeConsoleFromKM)));
         await $(this.selectors.knowledgeConsoleFromKM).click();
     }
 
     async gotCreateCase(): Promise<void> {
         if (await this.isHambergerIconPresent()) {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createCaseMenuItem))));
+//            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createCaseMenuItem))));
             await element(by.xpath(this.verticalSelectors.createCaseMenuItem)).click();
         } else {
-            await browser.wait(this.EC.visibilityOf(element(by.xpath(this.selectors.createMenu))));
+//            await browser.wait(this.EC.visibilityOf(element(by.xpath(this.selectors.createMenu))));
             await element(by.xpath(this.selectors.createMenu)).click();
             await element(by.xpath(this.selectors.createCaseMenuItem)).click();
         }
@@ -68,8 +68,8 @@ class NavigationPage {
 
         if (await this.isHambergerIconPresent()) {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createCaseMenuItem))));
+//            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createCaseMenuItem))));
             let createCase: boolean = await element(by.xpath(this.verticalSelectors.createCaseMenuItem)).isDisplayed();
             let closedHamberger: boolean = await $(this.verticalSelectors.closeHambergerMenu).isDisplayed();
             if (closedHamberger == true) {
@@ -79,7 +79,7 @@ class NavigationPage {
         } else {
             let displayedValue: boolean = await element(by.xpath(this.selectors.createCaseMenuItem)).isDisplayed();
             if (displayedValue == false) {
-                await browser.wait(this.EC.visibilityOf(element(by.xpath(this.selectors.createMenu))));
+//                await browser.wait(this.EC.visibilityOf(element(by.xpath(this.selectors.createMenu))));
                 await element(by.xpath(this.selectors.createMenu)).click();
             } return await element(by.xpath(this.selectors.createCaseMenuItem)).isDisplayed();
         }
@@ -89,8 +89,8 @@ class NavigationPage {
 
         if (await this.isHambergerIconPresent()) {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.createQuickCaseMenu)));
+//            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+//            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.createQuickCaseMenu)));
             let quickCase: boolean = await $(this.verticalSelectors.createQuickCaseMenu).isDisplayed();
             let closedHamberger: boolean = await $(this.verticalSelectors.closeHambergerMenu).isDisplayed();
             if (closedHamberger == true) {
@@ -105,8 +105,8 @@ class NavigationPage {
     async isCreateKnowledge(): Promise<boolean> {
         if (await this.isHambergerIconPresent()) {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createKnowlegeMenuItem))));
+//            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createKnowlegeMenuItem))));
             let createKnowledge: boolean = await element(by.xpath(this.verticalSelectors.createKnowlegeMenuItem)).isDisplayed();
             let closedHamberger: boolean = await $(this.verticalSelectors.closeHambergerMenu).isDisplayed();
             if (closedHamberger == true) {
@@ -116,19 +116,19 @@ class NavigationPage {
         } else {
             let displayedValue: boolean = await element(by.xpath(this.selectors.createKnowledgeMenu)).isDisplayed();
             if (displayedValue == false) {
-                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createMenu))));
+//                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createMenu))));
                 await element(by.xpath(this.selectors.createMenu)).click();
-                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createKnowledgeMenu))));
+//                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createKnowledgeMenu))));
             } return await element(by.xpath(this.selectors.createKnowledgeMenu)).isDisplayed();
         }
     }
 
     async isCaseConsoleDisplayed(): Promise<boolean> {
         if (await this.isHambergerIconPresent()) {
-            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.hamburgerIcon).$('button')));
+//            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.hamburgerIcon).$('button')));
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.caseConsoleMenuItem))));
+//            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.caseConsoleMenuItem))));
             let caseConsole: boolean = await element(by.xpath(this.verticalSelectors.caseConsoleMenuItem)).isDisplayed();
             let closedHamberger: boolean = await $(this.verticalSelectors.closeHambergerMenu).isDisplayed();
             if (closedHamberger == true) {
@@ -138,9 +138,9 @@ class NavigationPage {
         } else {
             let displayedValue: boolean = await element(by.xpath(this.selectors.caseConsoleMenuItem)).isDisplayed();
             if (displayedValue == false) {
-                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
+//                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
                 await element(by.xpath(this.selectors.workspaceMenu)).click();
-                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.caseConsoleMenuItem))));
+//                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.caseConsoleMenuItem))));
             } return await element(by.xpath(this.selectors.caseConsoleMenuItem)).isDisplayed();
         }
     }
@@ -148,8 +148,8 @@ class NavigationPage {
     async isKnowledgeConsoleDisplayed(): Promise<boolean> {
         if (await this.isHambergerIconPresent()) {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.knowledgeConsoleMenuItem))));
+//            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.knowledgeConsoleMenuItem))));
             let KnowledgeConsole = await element(by.xpath(this.verticalSelectors.knowledgeConsoleMenuItem)).isDisplayed();
             let closedHamberger: boolean = await $(this.verticalSelectors.closeHambergerMenu).isDisplayed();
             if (closedHamberger == true) {
@@ -159,9 +159,9 @@ class NavigationPage {
         } else {
             let displayedValue: boolean = await element(by.xpath(this.selectors.knowledgeConsoleMenuItem)).isDisplayed();
             if (displayedValue = false) {
-                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
+//                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
                 await element(by.xpath(this.selectors.workspaceMenu)).click();
-                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.knowledgeConsoleMenuItem))));
+//                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.knowledgeConsoleMenuItem))));
             } return await element(by.xpath(this.selectors.knowledgeConsoleMenuItem)).isDisplayed();
         }
     }
@@ -169,8 +169,8 @@ class NavigationPage {
     async isHelpIconDisplayed(): Promise<boolean> {
         if (await this.isHambergerIconPresent()) {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.createQuickCaseMenu)));
+//            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+//            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.createQuickCaseMenu)));
             let helpIcon: boolean = await $(this.verticalSelectors.helpIcon).isDisplayed();
             let closedHamberger: boolean = await $(this.verticalSelectors.closeHambergerMenu).isDisplayed();
             if (closedHamberger == true) {
@@ -184,8 +184,8 @@ class NavigationPage {
     async isTaskConsoleDisplayed(): Promise<boolean> {
         if (await this.isHambergerIconPresent()) {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.taskConsoleMenuItem))));
+//            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.taskConsoleMenuItem))));
             let taskConsole: boolean = await element(by.xpath(this.verticalSelectors.taskConsoleMenuItem)).isDisplayed();
             let closedHamberger: boolean = await $(this.verticalSelectors.closeHambergerMenu).isDisplayed();
             if (closedHamberger == true) {
@@ -194,9 +194,9 @@ class NavigationPage {
         } else {
             let displayedvalue: boolean = await element(by.xpath(this.selectors.taskConsoleMenuItem)).isDisplayed();
             if (displayedvalue == false) {
-                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
+//                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
                 await element(by.xpath(this.selectors.workspaceMenu)).click();
-                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.taskConsoleMenuItem))));
+//                await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.taskConsoleMenuItem))));
             }
             return await element(by.xpath(this.selectors.taskConsoleMenuItem)).isDisplayed();
         }
@@ -205,8 +205,8 @@ class NavigationPage {
     async gotoQuickCase(): Promise<void> {
         if (await this.isHambergerIconPresent()) {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.createQuickCaseMenu)));
+//            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+//            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.createQuickCaseMenu)));
             await $(this.verticalSelectors.createQuickCaseMenu).click();
         } else {
             await element(by.xpath(this.selectors.createQuickCaseMenu)).click();
@@ -216,31 +216,31 @@ class NavigationPage {
 
     async gotoCaseConsole(): Promise<void> {
         if (await this.isHambergerIconPresent()) {
-            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.hamburgerIcon).$('button')));
+//            await browser.wait(this.EC.elementToBeClickable($(this.verticalSelectors.hamburgerIcon).$('button')));
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.caseConsoleMenuItem))));
+//            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.caseConsoleMenuItem))));
             await element(by.xpath(this.verticalSelectors.caseConsoleMenuItem)).click();
         } else {
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
+//           await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
             await element(by.xpath(this.selectors.workspaceMenu)).click();
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.caseConsoleMenuItem))));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.caseConsoleMenuItem))));
             await element(by.xpath(this.selectors.caseConsoleMenuItem)).click();
         }
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
         await browser.wait(this.EC.titleContains('Cases - Business Workflows'), 30000);
     }
 
     async gotoKnowledgeConsole(): Promise<void> {
         if (await this.isHambergerIconPresent()) {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.knowledgeConsoleMenuItem))));
+//            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.knowledgeConsoleMenuItem))));
             await element(by.xpath(this.verticalSelectors.knowledgeConsoleMenuItem)).click();
         } else {
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
             await element(by.xpath(this.selectors.workspaceMenu)).click();
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.knowledgeConsoleMenuItem))));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.knowledgeConsoleMenuItem))));
             await element(by.xpath(this.selectors.knowledgeConsoleMenuItem)).click();
         }
         await browser.wait(this.EC.titleContains('Knowledge Articles - Business Workflows'));
@@ -249,13 +249,13 @@ class NavigationPage {
     async gotoTaskConsole(): Promise<void> {
         if (await this.isHambergerIconPresent()) {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.taskConsoleMenuItem))));
+//            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.taskConsoleMenuItem))));
             await element(by.xpath(this.verticalSelectors.taskConsoleMenuItem)).click();
         } else {
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.workspaceMenu))));
             await element(by.xpath(this.selectors.workspaceMenu)).click();
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.taskConsoleMenuItem))));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.taskConsoleMenuItem))));
             await element(by.xpath(this.selectors.taskConsoleMenuItem)).click();
         }
         await browser.wait(this.EC.titleContains('Tasks - Business Workflows'), 30000);
@@ -264,24 +264,24 @@ class NavigationPage {
     async gotoCreateKnowledge(): Promise<void> {
         if (await this.isHambergerIconPresent()) {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
-            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createKnowlegeMenuItem))));
+//            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.verticalSelectors.createKnowlegeMenuItem))));
             await element(by.xpath(this.verticalSelectors.createKnowlegeMenuItem)).click();
         } else {
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createMenu))));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createMenu))));
             await element(by.xpath(this.selectors.createMenu)).click();
-            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createKnowledgeMenu))));
+//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.createKnowledgeMenu))));
             await element(by.xpath(this.selectors.createKnowledgeMenu)).click();
         }
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
         await browser.wait(this.EC.titleContains('Knowledge Article Templates Preview'), 30000);
     }
 
     async gotoSettingsPage(): Promise<void> {
-        await browser.wait(this.EC.invisibilityOf($(this.selectors.modalOpen)), 2000);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
+//        await browser.wait(this.EC.invisibilityOf($(this.selectors.modalOpen)), 2000);
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
         await $(this.selectors.settingsButton).click();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.settingsMenuItemContainer)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.settingsMenuItemContainer)));
     }
 
     async gotoSettingsMenuItem(pathStr: string, expectedTitle: string): Promise<string> {
@@ -307,13 +307,13 @@ class NavigationPage {
                 await element(by.xpath(`//rx-administration-settings//*[text()="${menuItems[i]}"]`)).click();
             }
         }}
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
         await browser.wait(this.EC.titleContains(expectedTitle));
         return await browser.getTitle();
     }
 
     async isSettingsSubMenu(pathStr: string, listOfSubItems: string[]): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($('treecontrol')));
+//        await browser.wait(this.EC.visibilityOf($('treecontrol')));
         await element(by.xpath(`//rx-administration-settings//*[text()="${pathStr}"]/../*[@class="tree-branch-head"]`)).click();
         let loc: string = `//*[text()="${pathStr}"]/ancestor::li[@class="tree-expanded"]//*[@class="tree-label "]`;
         let list: string[] = [];
@@ -343,20 +343,20 @@ class NavigationPage {
 
     async goToPersonProfile(): Promise<void> {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.profileMenu)));
+//        await utilCommon.waitUntilSpinnerToHide();
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.profileMenu)));
         await browser.actions().mouseMove($(this.selectors.profileMenu)).perform();
-        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.signOutMenuItem, 'My Profile'))));
+//        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.signOutMenuItem, 'My Profile'))));
         await element(by.cssContainingText(this.selectors.signOutMenuItem, 'My Profile')).click();
         await browser.wait(this.EC.titleContains('Person Profile - Business Workflows'));
     }
 
     async signOut(): Promise<void> {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.profileMenu)));
+//        await utilCommon.waitUntilSpinnerToHide();
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.profileMenu)));
         await browser.actions().mouseMove($(this.selectors.profileMenu)).perform();
-        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.signOutMenuItem, 'Sign Out'))));
+//        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.signOutMenuItem, 'Sign Out'))));
         await element(by.cssContainingText(this.selectors.signOutMenuItem, 'Sign Out')).click();
         let noAccess = this.EC.titleContains('No Access');
         let bwfLogin = this.EC.titleContains('Login - Business Workflows');
@@ -364,11 +364,11 @@ class NavigationPage {
     }
 
     async switchToAnotherApplication(applicationName: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.switchToApplicationDropDown)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.switchToApplicationDropDown)));
         await $(this.selectors.switchToApplicationDropDown).click();
-        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.selectApplication, applicationName))));
-        element(by.cssContainingText(this.selectors.selectApplication, applicationName)).click();
-        browser.sleep(2000);
+//        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.selectApplication, applicationName))));
+        await element(by.cssContainingText(this.selectors.selectApplication, applicationName)).click();
+//        browser.sleep(2000);
     }
 
 }

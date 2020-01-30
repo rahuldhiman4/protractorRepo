@@ -21,22 +21,22 @@ class RelatedPersonPage {
     }
 
     async addRelatedPerson(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addRelatedPerson)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addRelatedPerson)));
         await $(this.selectors.addRelatedPerson).click();
     }
 
     async getPersonName(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.relatedPersonName)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.relatedPersonName)));
         return await $(this.selectors.relatedPersonName).getText();
     }
 
     async getPersonRelationshipName(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personRelationship)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personRelationship)));
         return await $(this.selectors.personRelationship).getText();
     }
 
     async isPersonRelatedHasCorrectRelation(relatedName: string, relation: string): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
         let status: boolean = false;
         let allPersonNum: number = await $$(this.selectors.allRelatedPersons).count();
         for (let i = 0; i < allPersonNum; i++) {
@@ -59,7 +59,7 @@ class RelatedPersonPage {
     }
 
     async clickRelatedPersonName(personName: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
         let option = await $(this.selectors.allRelatedPersons).element(by.linkText(personName));
         await browser.wait(this.EC.elementToBeClickable(option)).then(async function () {
             await option.click();
@@ -67,7 +67,7 @@ class RelatedPersonPage {
     }
 
     async getRelatedPersonCompanyName(personName: string): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
         let allPersonNum: number = await $$(this.selectors.allRelatedPersons).count();
         let companyName: string;
         for (let i = 0; i < allPersonNum; i++) {
@@ -83,7 +83,7 @@ class RelatedPersonPage {
     }
 
     async getRelatedPersonRelationship(personName: string): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
         let allPersonNum: number = await $$(this.selectors.allRelatedPersons).count();
         let relationships: string;
         for (let i = 0; i < allPersonNum; i++) {
@@ -99,7 +99,7 @@ class RelatedPersonPage {
     }
 
     async getRelatedPersonPhoneNumber(personName: string): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
         let allPersonNum: number = await $$(this.selectors.allRelatedPersons).count();
         let phone: string;
         for (let i = 0; i < allPersonNum; i++) {
@@ -130,7 +130,7 @@ class RelatedPersonPage {
     }
 
     async getRelatedPersonSite(personName: string): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
         let allPersonNum: number = await $$(this.selectors.allRelatedPersons).count();
         let site: string;
         for (let i = 0; i < allPersonNum; i++) {
@@ -146,7 +146,7 @@ class RelatedPersonPage {
     }
 
     async isEmailLinkNotPresent(personName: string): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
         let allPersonNum: number = await $$(this.selectors.allRelatedPersons).count();
         let stat: boolean = false;
         for (let i = 0; i < allPersonNum; i++) {
@@ -162,7 +162,7 @@ class RelatedPersonPage {
     }
 
     async removeRelatedPerson(personName: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
         let allCasesNum: number = await $$(this.selectors.allRelatedPersons).count();
         for (let i = 0; i < allCasesNum; i++) {
             let person = await $$(this.selectors.allRelatedPersons).get(i);
@@ -177,7 +177,7 @@ class RelatedPersonPage {
 
     async isRelatedPersonPresent(personName: string): Promise<boolean> {
         let status: boolean = false;
-        await browser.wait(this.EC.visibilityOf($(this.selectors.addRelatedPerson)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.addRelatedPerson)));
         if (await $(this.selectors.allRelatedPersons).isPresent) {
             let allCasesNum: number = await $$(this.selectors.allRelatedPersons).count();
             for (let i = 0; i < allCasesNum; i++) {
@@ -193,7 +193,7 @@ class RelatedPersonPage {
     }
 
     async isRemoveRelatedPersonIconPresent(personName: string): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
         let allCasesNum: number = await $$(this.selectors.allRelatedPersons).count();
         let status: boolean;
         for (let i = 0; i < allCasesNum; i++) {
