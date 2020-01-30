@@ -10,12 +10,12 @@ class ConsoleFlowset {
     }
 
     async isAddFlowsetButtonDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.addFlowsetButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.addFlowsetButton)));
         return await $(this.selectors.addFlowsetButton).getAttribute("disabled") == "true";
     }
 
     async clickOnAddFlowset(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addFlowsetButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addFlowsetButton)));
         await $(this.selectors.addFlowsetButton).click();
     }
 
