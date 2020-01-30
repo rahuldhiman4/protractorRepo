@@ -21,7 +21,7 @@ class CreateCaseTemplate {
         caseStatus: '6b1d1112-129e-4c27-82b2-2248f12dc09a',
         statusReason: 'b6a6fc24-c3e7-4565-b2d2-848dd4a6747b',
         label: '7ea99756-16a7-4aae-a8a0-8e5e11acfb77',
-        caseCategoryTier1: '57b0a78a-b91a-46c3-8800-04acc0d81108',
+        caseCategoryTier1: '[rx-view-component-id="57b0a78a-b91a-46c3-8800-04acc0d81108"], [rx-view-component-id="c8ce4fd2-d864-4544-baf7-4b27b59c12c3"]',
         caseCategoryTier2: '42e3edda-f057-41e2-8160-7a9482e847dc',
         caseCategoryTier3: 'bb675d8f-82bc-497b-8b99-dfc1baa1dd41',
         caseCategoryTier4: 'ec532c69-dbc8-4473-b76d-ad90bec193d2',
@@ -35,6 +35,7 @@ class CreateCaseTemplate {
         resolutionDescription: '8f8159e2-d647-4c46-ae71-ff56f1a81a0b',
         businessUnitDropdown: 'f5c9ce38-b11a-4c5a-b952-16903c1c383d',
         departmentDropdown: '70778256-c238-4a16-a24f-86b71cc3da87',
+        resolveCaseOnLastTaskCompletion: '0ecdd658-0479-4cb3-a103-31f0a3238c29',
         ownerGroupDropdown: 'b3ebc604-b7dc-4090-90a5-9515d1ea7f3e',
         selectOptions: '[rx-view-component-id="5a23952e-aac4-4e00-af6c-b93a214e26a9"] span',
         changeAssignmentButton: '[rx-view-component-id="5a23952e-aac4-4e00-af6c-b93a214e26a9"] button',
@@ -60,7 +61,11 @@ class CreateCaseTemplate {
     }
 
     async setCategoryTier1(tier1Value: string): Promise<void> {
-        await commonUtils.selectDropDown(this.selectors.caseCategoryTier1, tier1Value);
+        await commonUtils.selectDropDown2($(this.selectors.caseCategoryTier1), tier1Value);
+    }
+
+    async isResolveCaseOnLastTaskCompletion(value: boolean): Promise<void> {
+        await commonUtils.selectToggleButton(this.selectors.resolveCaseOnLastTaskCompletion, value);
     }
 
     async setCategoryTier2(tier2Value: string): Promise<void> {

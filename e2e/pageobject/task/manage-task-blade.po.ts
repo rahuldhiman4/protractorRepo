@@ -60,18 +60,22 @@ class ManageTaskBlade {
         await $(this.selectors.searchTextbox).sendKeys(input, Key.ENTER);
     }
 
+    async searchTaskAndClickOnLink(input: string): Promise<void> {
+        await utilGrid.searchAndOpenHyperlink(input);
+    }
+
     async clickOnRefreshButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.refreshButton)));
         await $(this.selectors.refreshButton).click();
     }
 
-    async clickTaskLinkOnManageTask(taskName: string): Promise<void> {
+    async clickTaskLinkOnManageTask(taskSummary: string): Promise<void> {
         await browser.wait(this.EC.or(async () => {
             let count = await $$(this.selectors.taskFromManageTasks).count();
             return count >= 1;
         }));
-        await browser.wait(this.EC.elementToBeClickable(element(by.linkText(taskName))));
-        await element(by.linkText(taskName)).click();
+        await browser.wait(this.EC.elementToBeClickable(element(by.linkText(taskSummary))));
+        await element(by.linkText(taskSummary)).click();
         await utilCommon.waitUntilSpinnerToHide();
     }
 
@@ -104,11 +108,10 @@ class ManageTaskBlade {
         return await element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary)).isDisplayed();
     }
 
-    async addTaskFromTaskTemplate(templateSummary: string): Promise<boolean> {
+    async addTaskFromTaskTemplate(templateSummary: string): Promise<void> {
         await this.clickAddTaskFromTemplateButton();
         await utilGrid.searchAndSelectGridRecord(templateSummary);
         await this.clickOnTaskGridSaveButton();
-        return await this.isTaskLinkOnManageTask(templateSummary);
     }
 }
 

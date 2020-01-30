@@ -4,6 +4,7 @@ import utilCommon from '../../../utils/util.common';
 class EditTaskTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        manageProcessLink: '[rx-view-component-id="60aedaf2-92a3-433f-8024-34e26e71350c"] button',
         taskCompany: '3d1b6f6b-3dfa-4ff7-80f1-cef32c2c93e0',
         editMetadataLink: '[rx-view-component-id="8b8bfec6-0ee2-42a3-be4b-ac4f37d060f1"] .edit-link',
         ownerCompany: 'fa0f139c-5998-4544-9a3e-6dcac497611c',
@@ -18,7 +19,9 @@ class EditTaskTemplate {
         taskCategoryDrpDown1: 'cab2e62d-090e-4281-985d-2f021bb01a9f',
         taskCategoryDrpDown2: '27a4fb75-0d9c-417b-9638-698f371ec4ec',
         taskCategoryDrpDown3: '414723be-a5c7-4271-b9b0-d76f07023682',
-        saveMetadataLink: '[rx-view-component-id="39f08c8c-48ad-450e-b5f2-f379a4432666"] button',
+        saveMetadata: '[rx-view-component-id="39f08c8c-48ad-450e-b5f2-f379a4432666"] button',
+        cancelMetadata: '[rx-view-component-id="209049eb-ef6d-4ddd-8ee4-257ff7a878e5"] button',
+        templateStatusAttribute: '[rx-view-component-id="279fd957-576d-4428-b503-a1330cbd9498"] .btn-default',
     }
 
     async selectTaskCategoryTier1(category1: string): Promise<void> {
@@ -55,9 +58,14 @@ class EditTaskTemplate {
         await utilCommon.waitUntilPopUpDisappear();
     }
 
-    async clickOnSaveMetadataLink() {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveMetadataLink)));
-        await $(this.selectors.saveMetadataLink).click();
+    async clickOnSaveButtonWithoutWait() {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+        await $(this.selectors.saveButton).click();
+    }
+
+    async clickOnSaveMetadata() {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveMetadata)));
+        await $(this.selectors.saveMetadata).click();
     }
 
     async clickOnEditMetadataLink() {
@@ -95,6 +103,22 @@ class EditTaskTemplate {
     async isProcessNamePresentInTask(): Promise<boolean> {
         await browser.wait(this.EC.presenceOf($(this.selectors.processNameValue)));
         return await $(this.selectors.processNameValue).isDisplayed();
+    }
+
+    async isManageProcessLinkDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.presenceOf($(this.selectors.manageProcessLink)));
+        return await $(this.selectors.manageProcessLink).isDisplayed();
+    }
+
+    async isTemplateStatusDisabled(): Promise<boolean> {
+        await browser.wait(this.EC.presenceOf($(this.selectors.templateStatusAttribute)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelMetadata)));
+        return (await $(this.selectors.templateStatusAttribute).getAttribute("disabled")) =='true';
+    }
+
+    async clickOnCancelMetadataButton() {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelMetadata)));
+        await $(this.selectors.cancelMetadata).click();
     }
 }
 

@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from 'protractor';
+import { browser, until, ExpectedConditions, element, by, $, $$, ProtractorExpectedConditions, protractor, ElementFinder } from 'protractor';
 
 export class Util {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -9,7 +9,12 @@ export class Util {
         popUpMsgLocator: '.rx-growl-item__message',
         warningOk: '.d-modal__footer button[class*="d-button d-button_primary d-button_small"]',
         warningCancel: '.d-modal__footer button[class*="d-button d-button_secondary d-button_small"]',
-        closeTipMsg: '.rx-growl-close',
+        closeTipMsg: '.close.rx-growl-close',
+        errorMsg: '.rx-alert-error [ng-bind="message.text"]',
+        advancedSearchInput: 'input.rx-adv-search-textField',
+        advancedSearchSettingsBtn: 'button.d-icon-adjust_settings',
+        advancedSearchSettingsBtnClose: 'button[ng-hide="showAdvOptions"]',
+        advancedSearchResult: '.km-group-list-item__description',
         dropDownChoice: '.ui-select__rx-choice',
         warningMsgText: '.d-modal__content-item',
         configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
@@ -102,6 +107,15 @@ export class Util {
         return await $(this.selectors.popUpMsgLocator).getText();
     }
 
+    async isErrorMsgPresent(): Promise<boolean> {
+       let count= await $$(this.selectors.errorMsg).count();
+        if(count>0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     async isPopUpMessagePresent(value: string): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
         await browser.wait(this.EC.or(async () => {
@@ -176,6 +190,7 @@ export class Util {
         await browser.getAllWindowHandles().then(async function (handles) {
             await browser.switchTo().window(handles[windowNum]);
         });
+        await browser.sleep(2000);
     }
 
     async switchToDefaultWindowClosingOtherTabs(): Promise<void> {
@@ -187,6 +202,7 @@ export class Util {
             }
             await browser.switchTo().window(handles[0]);
         });
+        await browser.sleep(2000);
     }
 
     async waitUntilSpinnerToHide(): Promise<void> {
@@ -200,6 +216,38 @@ export class Util {
         } catch (error) {
             console.log('Spinner not present on the page');
         }
+    }
+
+    /*Work as same as String.format i.e. first parameter is a string with multiple variables embedded and other parameters will replace the embedded variables of first string
+    Example: 
+    let str1 = "This is {0} best {1}.";
+    let str2 = "the";
+    let str3 = "example";
+    console.log(formatString(str1, str2, str3)); Output ==>  "This is the best example."
+    */
+    formatString(str: string, ...val: string[]) {
+        for (let index = 0; index < val.length; index++) {
+            str = str.replace(`{${index}}`, val[index]);
+        }
+        return str;
+    }
+
+    async getSelectedFieldValue(fieldName: string): Promise<string> {
+        let metadataField = `//span[@class='d-textfield__item'][text()='${fieldName}']/following-sibling::*//span[contains(@class,'ui-select-match-text')]`;
+        await browser.wait(this.EC.visibilityOf(element(by.xpath(metadataField))));
+        let actualFieldVal: string = await element(by.xpath(metadataField)).getText();
+        return actualFieldVal;
+    }
+
+    async isFieldLabelDisplayed(guid: string, fieldName: string): Promise<boolean> {
+        let fieldLabel = `[rx-view-component-id='${guid}'] .d-textfield__item`;
+        await browser.wait(this.EC.visibilityOf($(fieldLabel)));
+        return await element(by.cssContainingText(fieldLabel, fieldName)).isDisplayed();
+    }
+
+    async isRequiredAttributePresent(locator: any): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(locator)));
+        return (await $(locator).getAttribute("required")) == 'required' ;
     }
 }
 

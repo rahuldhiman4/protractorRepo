@@ -23,7 +23,7 @@ describe("Notification Template", () => {
         await utilCommon.waitUntilSpinnerToHide();
     });
 
-    it('DRDMV-19109: [Copy Notification] - UI behavior when copying a notification template', async () => {
+    it('[DRDMV-19109]: [Copy Notification] - UI behavior when copying a notification template', async () => {
         let notificationData = require('../../data/ui/notification/notificationTemplate.ui.json');
         let expectedJsonName = 'notificationData_DRDMV19109';
         await navigationPage.gotoSettingsPage();
@@ -52,6 +52,6 @@ describe("Notification Template", () => {
         //Validate if the new copied template is created
         await notificationTempGridPage.searchTemplate(notificationData[expectedJsonName].CopiedTemplateName);
         await notificationTempGridPage.clickAndOpenTemplate(notificationData[expectedJsonName].CopiedTemplateName);
-    })
+    });
 
 })

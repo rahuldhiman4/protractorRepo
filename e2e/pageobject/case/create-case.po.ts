@@ -43,6 +43,11 @@ class CreateCasePage {
         clearTemplateButton: '[rx-view-component-id="d996182c-0930-40ed-987f-43e6da0a8d8a"] button',
         contact: '[rx-view-component-id="e1f5a770-e416-4ed1-bfea-eefeed86544b"] input',
         drpDownValue:'.ui-select-choices-row-inner',
+        company: '[rx-view-component-id="a7cfc996-f8c8-4ef0-afe4-18ca7e1fef88"] .ui-select-toggle',
+        contactGuid: 'e1f5a770-e416-4ed1-bfea-eefeed86544b',
+        descriptionGuid: 'e494b462-7749-44aa-922e-fc5d9b3dd5cb',
+        assigneGuid: '43c3e9ee-dde2-4e10-94e9-c6ee68217cda',
+        assignedGroupGuid: '79750d81-d8e5-447e-b923-94c54f2d3310',
     }
 
     async getCreateCaseTitle(): Promise<string> {
@@ -50,12 +55,17 @@ class CreateCasePage {
         return await $(this.selectors.createCaseTitle).getText();
     }
 
+    async getCompany(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.company)));
+        return await $(this.selectors.company).getText();
+    }
+
     async clickChangeAssignmentButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignment)));
         await $(this.selectors.changeAssignment).click();
     }
 
-    async isAssigneToMeDisabled(): Promise<boolean> {
+    async isAssigneToMeEnabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeButton)));
         return await $(this.selectors.assignToMeButton).isEnabled();
     }
@@ -70,7 +80,7 @@ class CreateCasePage {
         return await $(this.selectors.assignToMeButton).isDisplayed();
     }
 
-    async isChangeAssignmentButtonDisabled(): Promise<boolean> {
+    async isChangeAssignmentButtonEnabled(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.changeAssignment)));
         return await $(this.selectors.changeAssignment).isEnabled();
     }
@@ -248,6 +258,33 @@ class CreateCasePage {
         await $$(this.selectors.contacts).first().click();
     }
 
+    async getCategoryTier1Title(categoryTier1: string): Promise<void> {
+        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier1Guid,categoryTier1);
+    }
+
+    async getCategoryTier2Title(categoryTier2: string): Promise<void> {
+        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier2Guid,categoryTier2);
+    }
+
+    async getCategoryTier3Title(categoryTier3: string): Promise<void> {
+        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier3Guid,categoryTier3);
+    }
+
+    async getCategoryTier4Title(categoryTier4: string): Promise<void> {
+        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier4Guid,categoryTier4);
+    }
+
+    async getContactTitle(contact: string): Promise<void> {
+        await utilCommon.isFieldLabelDisplayed(this.selectors.contactGuid,contact);
+    }
+
+    async getDescriptionTitle(description: string): Promise<void> {
+        await utilCommon.isFieldLabelDisplayed(this.selectors.descriptionGuid,description);
+    }
+
+    async getAssigneeTitle(assignee: string): Promise<void> {
+        await utilCommon.isFieldLabelDisplayed(this.selectors.assigneGuid,assignee);
+    }
 }
 
 export default new CreateCasePage();

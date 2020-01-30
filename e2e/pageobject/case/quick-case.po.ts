@@ -1,4 +1,4 @@
-import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 class QuickCasePage {
@@ -8,22 +8,26 @@ class QuickCasePage {
         smartSearchTextBox: '.smart-recorder-textarea',
         confirmedItemSelection: '.smart-recorder-confirmedItem_header',
         searchResult: '.smart-recorder__popup-item-email',
-        caseTemplate: '.smart-recorder__popup-item-highlight',
-        createCaseButton: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .smart-recorder__footer button.d-button_primary',
+        caseTemplate: '.smart-recorder__popup-item-col .smart-recorder__popup-item-highlight',
         gotoCaseButton: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
         validateButton: '[rx-view-component-id="390a77cd-518e-4d67-abb4-bc4d410ce3df"] button',
         pinValidateInput: '[rx-view-component-id="bfe9a8e0-26e7-43a5-9561-1c92539bdda3"] input',
         pinOk: '[rx-view-component-id="ea1b7291-a0de-47d6-9239-cccf6b850a86"] button',
         popUpMsgLocator: '.rx-growl-item__message',
-        smartSearchText: '.smart-recorder-highlightPerfectMatch'
+        inputBox: '.smart-recorder-textarea',
+        smartSearchText: '.smart-recorder-highlightPerfectMatch',
+        gotoCaseButton__preview: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
+        createCaseButton: '.smart-recorder__footer button.d-button_primary',
+        requesters: '.smart-recorder__popup-item',
+        pinFirstRecommendedCase: '(//*[contains(text(), "Recommended Cases")]/..//i)[1]'
     }
 
-    async setAndSelectRequesterName(name: string): Promise<void> {
-        name = "@" + name;
-        await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
-        await $(this.selectors.smartSearchTextBox).sendKeys(name);
-        await browser.wait(this.EC.visibilityOf($$(this.selectors.searchResult).first()));
-        await $$(this.selectors.searchResult).first().click();
+    async selectRequesterName(name: string): Promise<void> {
+        let namenew = "@" + name;
+        await browser.wait(this.EC.visibilityOf($(this.selectors.inputBox)));
+        await $(this.selectors.inputBox).sendKeys(namenew);
+        await browser.wait(this.EC.visibilityOf($(this.selectors.requesters)));
+        await $$(this.selectors.requesters).first().click();
     }
 
     async setCaseSummary(summary: string): Promise<void> {
@@ -68,18 +72,45 @@ class QuickCasePage {
 
     async createCaseButton(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseButton)));
-        await $(this.selectors.createCaseButton).click();        
+        await $(this.selectors.createCaseButton).click();
     }
 
     async gotoCaseButton(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton)));
         await $(this.selectors.gotoCaseButton).click();
-        await utilCommon.waitUntilSpinnerToHide();        
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async getPopUpMessage() {
         await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
         return await $(this.selectors.popUpMsgLocator).getText();
+    }
+
+    async pinFirstRecommendedCase(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
+        await element(by.xpath(this.selectors.pinFirstRecommendedCase)).click();
+    }
+
+    async saveCase(): Promise<void> {
+        await $(this.selectors.createCaseButton).click();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton__preview)));
+    }
+
+    async selectCaseTemplate(templateName: string): Promise<void> {
+        await $(this.selectors.inputBox).sendKeys(`!${templateName}`);
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.caseTemplate).count();
+            return count >= 1;
+        }));
+        await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).click();
+    }
+
+    async validatePin(): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.validateButton)));
+        await $(this.selectors.validateButton).click();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.pinValidateInput)));
+        await $(this.selectors.pinValidateInput).sendKeys("1234");
+        await $(this.selectors.pinOk).click();
     }
 }
 

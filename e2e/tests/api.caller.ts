@@ -1,5 +1,6 @@
 import { ProtractorExpectedConditions, protractor } from "protractor";
 import apiHelper from "../api/api.helper";
+import apiCoreUtil from '../api/api.core.util';
 
 describe('Login and create case from API', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -18,9 +19,10 @@ describe('Login and create case from API', () => {
 
     it('create case template', async () => {
         var templateData = {
-            "templateName": "case template 2",
-            "templateSummary": "case template summary 2",
+            "templateName": "global case template 1",
+            "templateSummary": "global case template summary 1",
             "templateStatus": "Active",
+            "company": '- Global -'
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -34,6 +36,7 @@ describe('Login and create case from API', () => {
             "templateName": "task template 1",
             "templateSummary": "task template summary 1",
             "templateStatus": "Active",
+            "company": '- Global -'
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -159,5 +162,23 @@ describe('Login and create case from API', () => {
         let menuItemName: string = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
         menuItemDataFile['sampleMenuItem'].menuItemName = menuItemName;
         await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+    });
+
+    it('delete all', async() => {
+        await apiHelper.apiLogin('tadmin');
+        var recDeleted = await apiHelper.deleteDynamicFieldAndGroup('FG2');
+        console.log("Record deleted...", recDeleted);
+        var deleted = await apiHelper.deleteDynamicFieldAndGroup();
+        console.log("Records deleted...", deleted);
+    });
+
+    it('Get organization guid', async() => {
+        await apiHelper.apiLogin('qkatawazi');
+        let org1 = 'Petramco';
+        let org2 = '- Global -';
+        let orgGuid1  = await apiCoreUtil.getOrganizationGuid(org1);
+        console.log("Org1 GUID...", org1, " ", orgGuid1);
+        let orgGuid2  = await apiCoreUtil.getOrganizationGuid(org2);
+        console.log("Org2 GUID...", org2, " ", orgGuid2);
     });
 })

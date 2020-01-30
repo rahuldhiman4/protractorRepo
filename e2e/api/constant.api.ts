@@ -14,6 +14,14 @@ export enum Case {
     New = 1000,
 }
 
+export enum Knowledge {
+    Draft = 2000,
+    SMEReview = 3000,
+    Published = 5000,
+    Retired = 6000,
+    Closed = 9000,
+    Canceled = 7000,
+}
 export enum MenuItemStatus {
     Active = 0,
     Inactive = 5,
@@ -23,4 +31,12 @@ export enum NotificationType {
     Alert = 1,
     Email = 2,
     AlertAndEmail = 3,
+}
+
+export enum CaseStatus {
+    New = 1000,
+    Assigned = 2000,
+    InProgress = 3000,
+    Resolved = 5000,
+    Closed = 7000
 }

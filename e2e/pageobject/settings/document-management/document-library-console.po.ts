@@ -6,12 +6,11 @@ class DocumentLibraryPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         addDocumentButton: '[rx-view-component-id="c2df3218-8ef7-402c-bdc2-721e891346bb"] button',
-        gridGuid: '5d1f94a9-693e-4dbf-896f-3b9689f95a42',
+        gridGuid: '5d1f94a9-693e-4dbf-896f-3b9689f95a42',   
     }
 
     async isGridRecordPresent(searchRecord:string): Promise<boolean> {
-        await utilGrid.searchOnGridConsole(searchRecord);
-        return await utilGrid.isGridRecordPresent();
+        return await utilGrid.isGridRecordPresent(searchRecord);
     }
 
     async searchOnGridConsole(value: string): Promise<void> {

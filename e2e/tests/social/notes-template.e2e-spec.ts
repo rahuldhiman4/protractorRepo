@@ -32,7 +32,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    it('DRDMV-16026: [Design Time] Verify case Business analyst is able create ,edit and delete Knowledge Notes template', async () => {
+    it('[DRDMV-16026]: [Design Time] Verify case Business analyst is able create ,edit and delete Knowledge Notes template', async () => {
         await navigationPage.gotoSettingsPage();
         var templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
@@ -63,7 +63,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    it('DRDMV-16010: [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {
+    it('[DRDMV-16010]: [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
@@ -95,7 +95,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    it('DRDMV-16028: [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
+    it('[DRDMV-16028]: [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
@@ -127,7 +127,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    it('DRDMV-16027: [Design Time] Verify case Business analyst is able create ,edit and delete Task Notes template', async () => {
+    it('[DRDMV-16027]: [Design Time] Verify case Business analyst is able create ,edit and delete Task Notes template', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
@@ -159,7 +159,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    it('DRDMV-16181: [Design Time] Knowledge user is able to create,edit(update), Delete Knowledge Notes Template', async () => {
+    it('[DRDMV-16181]: [Design Time] Knowledge user is able to create,edit(update), Delete Knowledge Notes Template', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login("khardison");
@@ -202,7 +202,7 @@ describe('Notes template', () => {
     }, 120 * 1000);
 
     //ptidke
-    it('DRDMV-15999: [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
+    it('[DRDMV-15999]: [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
         await expect(await consoleNotesTemplate.isNotesTemplateUIConsolePresent()).toBeTruthy();
@@ -237,7 +237,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    it('DRDMV-16111: [Design Time] Verify warning Message for locale values if template message is not configured against that locale value', async () => {
+    it('[DRDMV-16111]: [Design Time] Verify warning Message for locale values if template message is not configured against that locale value', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
         var caseNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
@@ -280,7 +280,7 @@ describe('Notes template', () => {
     }, 110 * 1000);
 
     //ptidke
-    it('DRDMV-16040: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
+    it('[DRDMV-16040]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
         await navigationPage.gotoSettingsPage();
         //task template 1
         await apiHelper.apiLogin('tadmin');
@@ -337,7 +337,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    it('DRDMV-16578: Case Agent/Case Manger Should be able to consume People Notes Template in People profile', async () => {
+    it('[DRDMV-16578]: Case Agent/Case Manger Should be able to consume People Notes Template in People profile', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('franz');
@@ -390,7 +390,7 @@ describe('Notes template', () => {
     }, 120 * 1000);
 
     //ptidke
-    it('DRDMV-16045: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual', async () => {
+    it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('fritz');
@@ -445,7 +445,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    it('DRDMV-16047: [Run Time] Validate that case BA is able to select and utilize Active Knowledge notes templates in Knowledge Article ', async () => {
+    it('[DRDMV-16047]: [Run Time] Validate that case BA is able to select and utilize Active Knowledge notes templates in Knowledge Article ', async () => {
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');

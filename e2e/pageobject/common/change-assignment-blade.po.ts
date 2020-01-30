@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 
 class ChangeAssignmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -58,6 +58,11 @@ class ChangeAssignmentBlade {
         return await $(this.selectors.assignee).isDisplayed();
     }
 
+    async getAssigneeName(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assignee)));
+        return await $(this.selectors.assignee).getText();
+    }
+
     async clickOnAssignButton(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.assignButton)));
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignButton)));
@@ -71,7 +76,7 @@ class ChangeAssignmentBlade {
     }
 
     async clickOnAssignToMeCheckBox(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeCheckBox)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMeCheckBox)));
         await $(this.selectors.assignToMeCheckBox).click();
     }
 
@@ -80,9 +85,9 @@ class ChangeAssignmentBlade {
         await $(this.selectors.cancelButton).click();
     }
 
-    async verifyMultipleSupportGrpMessageDisplayed():Promise<void>{
+    async verifyMultipleSupportGrpMessageDisplayed(): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.multipleSuppGrpMsg)));
-        expect (await $(this.selectors.multipleSuppGrpMsg).getText()).toBe('You belong to multiple support groups. Select a specific support group to continue.');
+        expect(await $(this.selectors.multipleSuppGrpMsg).getText()).toBe('You belong to multiple support groups. Select a specific support group to continue.');
     }
 
     async selectCompany(companyValue: string): Promise<void> {
@@ -147,13 +152,43 @@ class ChangeAssignmentBlade {
 
     async selectAssignee(name: string): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.searchAsignee)));
-        await $(this.selectors.searchAsignee).sendKeys(name);
-        await browser.actions().sendKeys(protractor.Key.ENTER).perform();
+        await $(this.selectors.searchAsignee).sendKeys(name + Key.ENTER);
         await browser.wait(this.EC.or(async () => {
             let count = await $$(this.selectors.assignee).count();
             return count >= 2;
-        }))
+        }));
         var option = await element(by.cssContainingText(this.selectors.assignee, name));
+        await browser.wait(this.EC.elementToBeClickable(option)).then(async function () {
+            await option.click();
+        });
+    }
+
+    async setAssignee(company: string, group: string, assignee: string): Promise<void> {
+        await this.selectCompany(company);
+        await this.selectSupportGroup(group);
+        await this.selectAssignee(assignee);
+        await this.clickOnAssignButton();
+    }
+
+    async setAssigneeGroup(group: string): Promise<void> {
+        await this.selectSupportGroup(group);
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.assignee).count();
+            return count >= 1;
+        }))
+        let name = "Assign to Support Group";
+        var option = await element(by.cssContainingText(this.selectors.assignee, name));
+        await browser.wait(this.EC.visibilityOf(option));
+        await browser.wait(this.EC.elementToBeClickable(option));
+        await element(by.cssContainingText(this.selectors.assignee, name)).click();
+        await this.clickOnAssignButton();
+    }
+
+    async selectAssigneeAsSupportGroup(name: string): Promise<void> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.searchAsignee)));
+        await $(this.selectors.searchAsignee).sendKeys(name);
+        await browser.actions().sendKeys(protractor.Key.ENTER).perform();
+        var option = await element(by.cssContainingText(this.selectors.assignee, 'Assign to Support Group'));
         await browser.wait(this.EC.visibilityOf(option));
         await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();

@@ -4,6 +4,7 @@
 
 const { SpecReporter } = require('jasmine-spec-reporter');
 var HtmlReporter = require('protractor-beautiful-reporter');
+const specJsonReporter = require('./reporters/spec-json-reporter/jasmine-spec-json-reporter');
 
 /**
  * @type { import("protractor").Config }
@@ -37,7 +38,6 @@ exports.config = {
   async onPrepare() {
     let globals = require('protractor/built');
     let browser = globals.browser;
-    browser.ignoreSynchronization = true;
     await browser.waitForAngularEnabled(false);
 
     //Implicitly wait
@@ -79,7 +79,10 @@ exports.config = {
     }));
 
     jasmine.getEnv().addReporter(new HtmlReporter({
-      baseDirectory: 'reports/screenshots'
+      baseDirectory: 'e2e/reports/screenshots'
     }).getJasmine2Reporter());
-  }
+
+    jasmine.getEnv().addReporter(specJsonReporter);
+  },
+
 };

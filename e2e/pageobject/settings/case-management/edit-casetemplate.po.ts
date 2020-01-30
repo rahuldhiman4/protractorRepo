@@ -1,6 +1,7 @@
 import { ICaseTemplate } from 'e2e/data/ui/interface/caseTemplate.interface';
 import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import commonUtils from "../../../utils/util.common";
+import utilCommon from '../../../utils/util.common';
 
 class EditCaseTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -12,8 +13,10 @@ class EditCaseTemplate {
         caseDescription: '[rx-view-component-id="3b3506af-b9a2-47bd-88f7-032092bc1264"] textarea',
         saveButton: '[rx-view-component-id="60fae5e7-7bf2-477f-9e60-8be66292e6b5"] button',
         cancelButton: '[rx-view-component-id="a68b0e71-032d-4ecf-9d12-e0cd49f4b652"] button',
+        templateStatusReadOnly:'[rx-view-component-id="88cf66ca-8be6-46b2-93e0-52890187dffb"] .ui-select-match',
         companyDropDown: '127214a1-bfc0-4a8c-acb7-cd2be137fa3c',
         flowset: '2fe19a48-630b-4380-8b17-cbff70023a89',
+        resolveCaseOnLastTaskCompletion:'e4956197-0230-4272-8fc4-87358bd084bf',
         casePriority: '98327bc1-9ada-48f9-ab88-9787ddecd409',
         caseStatus: '5289a531-7138-4e4f-afdc-ee3f67a2aa64',
         statusReason: 'cfde7589-436d-4835-aab8-f5d71e04f91a',
@@ -43,6 +46,7 @@ class EditCaseTemplate {
         copyTemplate: '[rx-view-component-id="0bb1dd3b-639f-4019-adbd-96faae6920ef"] button',
         accessTab: '[rx-view-component-id="f76e9987-cfa0-4742-b92f-087bd38c59df"] [ng-repeat="tab in tabs track by $index"]',
         taskFlow: '[rx-view-component-id="f76e9987-cfa0-4742-b92f-087bd38c59df"] .d-icon-left-pencil',
+        assignmentMethodValue: '[rx-view-component-id="9183824b-61c4-4a00-bcfa-7f4e7461e10c"] .ui-select-match-text',
         tier1ValueOnCaseTemplate: '[rx-view-component-id="241f0e58-3106-4f8a-a1cc-43554414bb7c"] .d-textfield__rx-value',
         tier2ValueOnCaseTemplate: '[rx-view-component-id="4f950be7-d968-41a4-8bb9-018674e53f88"] .d-textfield__rx-value',
         tier3ValueOnCaseTemplate: '[rx-view-component-id="a7fbc4bc-23c6-4f92-818a-5554107d04c0"] .d-textfield__rx-value',
@@ -215,6 +219,15 @@ class EditCaseTemplate {
         await commonUtils.selectToggleButton(this.selectors.resolutionDescription, value)
     }
 
+    async clearCaseSummary():Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummary)));
+        await $(this.selectors.caseSummary).clear();
+    }
+
+    async getErrorMessage():Promise<string>{
+        return await utilCommon.getPopUpMessage();
+    }
+
     async changeCaseSummary(caseSummaryValue: string): Promise<void> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
         await $(this.selectors.caseSummary).clear();
@@ -227,10 +240,32 @@ class EditCaseTemplate {
         await $(this.selectors.caseDescription).sendKeys(caseDescription);
     }
 
-    async isCaseCompanyDisabled(): Promise<string> {
+    async getValueOfAssignmentMethod(): Promise<string> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignmentMethodValue)));
+        return await $(this.selectors.assignmentMethodValue).getText(); 
+     }
+
+     async isCaseCompanyDisabled(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.editCaseCompany)));
         return await $(this.selectors.editCaseCompany).getAttribute('disabled');
     }
+
+    async isCaseSummaryReadOnly(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
+        let value= await $(this.selectors.caseSummary).getAttribute('readonly');
+        return value=='true'? true:false;        
+    }
+
+    async isSaveButtonOnMetaDataIsDisabled(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.saveTemplateMetaData)));
+        let value= await $(this.selectors.saveTemplateMetaData).getAttribute('disabled');
+        return value=='true'? true:false;        
+    }
+
+    async isResolveCaseOnLastTaskCompletion(value: boolean): Promise<void> {
+        await commonUtils.selectToggleButton(this.selectors.resolveCaseOnLastTaskCompletion, value);
+    }
+
 }
 
 export default new EditCaseTemplate();

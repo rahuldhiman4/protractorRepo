@@ -34,6 +34,7 @@ class ActivityTabPage {
         emailPersonProfilePopUp: '.popup-info .popup-email',
         phoneNumberPersonProfilePopUp: '.popup-info .popup-phone-number',
         authorFieldEmpty: '.d-textfield__label .ng-not-empty',
+        attachmentLink: '.ac-attachment-button',
         emailContent: '.log-item__content email',
         emailAttachmentFileName: '.log-item__content email .rx-attachment-view-name',
         emailReply: '.log-item__content email .d-icon-reply',
@@ -45,7 +46,8 @@ class ActivityTabPage {
         closeButton: '.modal-dialog button',
         dwpIcon: '.dwp_survey .log-item__icon',
         dwpFeedback: '.rx-content.dwp-comment',
-        logItems: '.log-item__body'
+        logItems: '.log-item__body',
+        body:'.log-item__body .body'
     }
 
     async clickOnReply(): Promise<void> {
@@ -57,6 +59,11 @@ class ActivityTabPage {
         utilCommon.waitUntilSpinnerToHide();
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailReplyAll)));
         await $(this.selectors.emailReplyAll).click();
+    }
+
+    async getUnFlagContent():Promise<string>{
+        await utilCommon.waitUntilSpinnerToHide();
+        return await $$(this.selectors.body).first().getText();
     }
 
     async getemailContent(): Promise<string> {
@@ -274,6 +281,7 @@ class ActivityTabPage {
     }
 
     async isTextPresentInActivityLog(caseActivityLogText: string): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
         try {
             return await element(by.cssContainingText(this.selectors.activityLog, caseActivityLogText)).isDisplayed();
         }
@@ -307,6 +315,11 @@ class ActivityTabPage {
         var customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='log-item__body']//a[text()="${authorText}"]`;
         await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customXpath))));
         return await element(by.xpath(customXpath)).isDisplayed();
+    }
+
+    async clickOnAttachLink(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentLink)));
+        await $(this.selectors.attachmentLink).click();
     }
 
     async isPersonLinkPresent(): Promise<boolean> {
@@ -417,6 +430,12 @@ class ActivityTabPage {
     async isOnlySurveyRecordFiltered(): Promise<boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.logItems)));
         return await $$(this.selectors.logItems).count() === 1;
+    }
+
+    async isComplexSurveyOrderIsThird(): Promise<boolean> {
+        await utilCommon.waitUntilSpinnerToHide();
+        await browser.wait(this.EC.visibilityOf(element(by.xpath("(//div[@class='log-item__content'])[3]//div[text()='View Survey Information']"))));
+        return await element(by.xpath("(//div[@class='log-item__content'])[3]//div[text()='View Survey Information']")).isPresent();
     }
 
 }

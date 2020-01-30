@@ -1,4 +1,5 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../utils/util.common';
 
 
 class DynamicField {
@@ -30,6 +31,7 @@ class DynamicField {
     async clickSaveButton(): Promise<void> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
+        await utilCommon.waitUntilPopUpDisappear();
     }
 }
 

@@ -23,10 +23,10 @@ describe('Copy Case Template', () => {
         await utilCommon.waitUntilSpinnerToHide();
     });
 
-    it('DRDMV-13551,DRDMV-13529: Create a Copy of Case template where Company is copied properly', async () => {
+    it('[DRDMV-13551,DRDMV-13529]: Create a Copy of Case template where Company is copied properly', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
-        var caseTemplate = require('../../data/ui/casetemplate.ui.json');
+        var caseTemplate = require('../../data/ui/case/casetemplate.ui.json');
         var caseTemplateName: string = await caseTemplate['caseTemplateWitAllFields'].templateName + Math.floor(Math.random() * 100000);
         caseTemplate['caseTemplateWitAllFields'].templateName = caseTemplateName;
         await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplate['caseTemplateWitAllFields']);
@@ -65,7 +65,7 @@ describe('Copy Case Template', () => {
         //await expect(editCaseTemplate.getValueOfResolutionDescription()).toBe(caseTemplate['caseTemplateWitAllFields'].resolutionDescription);
     }, 80 * 1000);
 
-    it('DRDMV-13543,DRDMV-13555: Create a Copy of Case template by Case Business Analyst that belongs to Support Group,Case Template console grid should show Newly created copied template', async () => {
+    it('[DRDMV-13543,DRDMV-13555]: Create a Copy of Case template by Case Business Analyst that belongs to Support Group,Case Template console grid should show Newly created copied template', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login("fritz");
@@ -115,7 +115,7 @@ describe('Copy Case Template', () => {
         }
     }, 200 * 1000);
 
-    it('DRDMV-13550: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
+    it('[DRDMV-13550]: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
         try {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
@@ -165,24 +165,25 @@ describe('Copy Case Template', () => {
         }
     }, 200 * 1000);
 
-    it('DRDMV-13815: Instruction come Warning Message is displayed on Create Copy Case Template Page', async () => {
+    it('[DRDMV-13815]: Instruction come Warning Message is displayed on Create Copy Case Template Page', async () => {
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
-        var caseTemplate = await require('../../data/ui/casetemplate.ui.json');
-        var caseTemplatePayload = await caseTemplate['caseTemplateWithMandatoryField'];
-        var caseTemplateName: string = await caseTemplatePayload.templateName + Math.floor(Math.random() * 100000);
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        let caseTemplate = await require('../../data/ui/case/casetemplate.ui.json');
+        let caseTemplatePayload = await caseTemplate['caseTemplateWitAllFields'];
+        let caseTemplateName: string = await caseTemplatePayload.templateName + Math.floor(Math.random() * 100000);
         caseTemplatePayload.templateName = caseTemplateName;
         await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplatePayload);
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
+
         await consoleCasetemplatePo.clickOnCopyCaseTemplate();
-        var copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
+        let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
         await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
         expect(await copyCaseTemplate.getCopyCaseTemplateInstruction()).toContain('Task templates associated with this case template are copied and assigned the case assignee. Please make sure you specify assignment.');
         expect(await copyCaseTemplate.getCopyCaseTemplateInstruction()).toContain('If you have changed the company:');
         expect(await copyCaseTemplate.getCopyCaseTemplateInstruction()).toContain('Task templates similar to the associated task templates are added.');
         expect(await copyCaseTemplate.getCopyCaseTemplateInstruction()).toContain('If no similar task templates are available, new task templates are automatically created.');
         expect(await copyCaseTemplate.getCopyCaseTemplateInstruction()).toContain('Assignment and ownership for new task templates are copied from new case template.');
-    }, 200 * 1000);
+    }, 120 * 1000);
 });

@@ -26,7 +26,7 @@ describe('Edit Case', () => {
     });
 
     //ankagraw
-    it('DRDMV-3765: [Case] [Edit Case] Edit Case view (UI verification)', async () => {
+    it('[DRDMV-3765]: [Case] [Edit Case] Edit Case view (UI verification)', async () => {
         let Summary = 'Summary' + Math.floor(Math.random() * 1000000);
 
         await navigationPage.signOut();

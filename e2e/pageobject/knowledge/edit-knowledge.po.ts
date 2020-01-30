@@ -16,7 +16,19 @@ class EditKnowledgePage {
         reviewPendingBtn: '[rx-view-component-id="f0cf7f67-da22-4149-a54d-ec3b95fe05e6"] .d-button',
         editLinkKnowledgeMetadata: '[rx-view-component-id="56cc9627-6ef9-46f8-9b76-728349193ed2"] .btn-link',
         saveBtnEditMetadata: '[rx-view-component-id="7f856f67-5b84-47e0-b175-76a281e8a4fb"] .d-button_primary',
-        knowledgeMetadataSection: '[rx-view-component-id="6cdbaf54-4c29-4ca0-ab73-aa165234f9ed"] .d-textfield'
+        knowledgeMetadataSection: '[rx-view-component-id="6cdbaf54-4c29-4ca0-ab73-aa165234f9ed"] .d-textfield',
+        editLinkOnKA:'[rx-view-component-id="ee521675-2407-4b2a-9470-013bfb328b30"] .rx-record-editor-edit',
+        saveButtonONKA:'[rx-view-component-id="813f61fe-28db-4d22-bfa5-4055e8a583fc"] button',
+        unflagButton:'[rx-view-component-id="b54365bf-0ead-4c54-8c8b-42aced61690e"] button',
+        falgButton:'[rx-view-component-id="89dd2264-1895-4a7b-a0a4-01a4834a403b"] button',
+        unflagButtonOnBlade:'[rx-view-component-id="5707f17e-63f2-41f7-ac55-13a6937c83b9"] button',
+        flagButtonOnBlade:'[rx-view-component-id="bd9d6e7a-1875-4299-9b63-5dc89eb2bfe9"] button',
+        flagComment:'[rx-view-component-id="2b192056-a661-49b7-948f-4c75dbc4ffea"] textarea',
+        flagBlade:'.modal-content',
+        editRegionGuid : 'd5c6cfef-2d53-48df-a03a-1a3e8381eef5',
+        editSiteGuid : 'aa218b2b-4fa3-4525-82f3-3e0f9bfc4193',
+        knowledgeTitle:'[rx-view-component-id="cd9b041b-6a82-4322-8a07-165a370ad0dd"] input',
+
     }
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
@@ -25,6 +37,12 @@ class EditKnowledgePage {
         await utilCommon.selectDropDownWithName('Status', newStatus);
         await $(this.selectors.statusSaveBtn).click();
         await utilCommon.waitUntilPopUpDisappear();
+    }
+
+    async getStatusValue():Promise<string>{
+        await utilCommon.waitUntilPopUpDisappear();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
+        return await $(this.selectors.statusChange).getText();
     }
 
     async setKnowledgeStatusAndVerifyAssignmentNotAppear(newStatus: string): Promise<void> {
@@ -78,6 +96,22 @@ class EditKnowledgePage {
         }
     }
 
+    async selectRegionDropDownOption(fieldOption: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.editRegionGuid,fieldOption);
+        }
+
+    async selectSiteDropDownOption(fieldOption: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.editSiteGuid,fieldOption);
+    }
+
+    async updateRegionDropDownOption(guid: string, fieldOption: string): Promise<void> {
+       await utilCommon.selectDropDown(this.selectors.editRegionGuid,fieldOption);
+    }
+
+    async updateSiteDropDownOption(guid: string, fieldOption: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.editSiteGuid,fieldOption);
+    }
+
     async isChangeReviewerButtonPresent(): Promise<Boolean> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.changeReviewerBtn)));
         return await $(this.selectors.changeReviewerBtn).isDisplayed();
@@ -122,6 +156,71 @@ class EditKnowledgePage {
         await browser.wait(this.EC.visibilityOf($(this.selectors.reviewPendingBtn)));
         return await $(this.selectors.reviewPendingBtn).isDisplayed();
     }
+
+    async getCategoryTier1SelectedValue(fieldName:string):Promise<string>{
+        return await utilCommon.getSelectedFieldValue(fieldName);
+     }   
+
+    async getRegionSelectedValue(fieldName:string):Promise<string>{
+        return await utilCommon.getSelectedFieldValue(fieldName);
+     }   
+
+     async getSiteSelectedValue(fieldName:string):Promise<string>{
+        return await utilCommon.getSelectedFieldValue(fieldName);
+     }   
+
+     async clickOnEditLink():Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLinkOnKA)));
+        await $(this.selectors.editLinkOnKA).click();
+     }
+
+     async isEditLinkDisplayedOnKA():Promise<boolean>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLinkOnKA)));
+        return await $(this.selectors.editLinkOnKA).isDisplayed();
+     }
+
+     async clickOnSaveButtonOfKA():Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButtonONKA)));
+        await $(this.selectors.saveButtonONKA).click();
+     }
+
+     async changeKnowledgeTitle(value:string):Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeTitle)));
+        await $(this.selectors.knowledgeTitle).click();
+        await $(this.selectors.knowledgeTitle).clear();
+        await $(this.selectors.knowledgeTitle).sendKeys(value);
+     }
+
+     async clickOnUnFlagButton():Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.unflagButton)));
+        await $(this.selectors.unflagButton).click();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.flagBlade)));
+     }
+
+     async clickOnFlagButton():Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.falgButton)));
+        await $(this.selectors.falgButton).click();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.flagBlade)));
+     }
+
+     async setTextInTellUsMore(value:string):Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.flagComment)));
+        await $(this.selectors.flagComment).clear();
+        await $(this.selectors.flagComment).sendKeys(value);
+     }
+
+     async clickOnUnFlageButtonOnBlade():Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.unflagButtonOnBlade)));
+        await $(this.selectors.unflagButtonOnBlade).click();
+        await browser.wait(this.EC.invisibilityOf($(this.selectors.flagBlade)));
+        await utilCommon.waitUntilPopUpDisappear();
+     }
+
+     async clickOnFlageButtonOnBlade():Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.flagButtonOnBlade)));
+        await $(this.selectors.flagButtonOnBlade).click();
+        await browser.wait(this.EC.invisibilityOf($(this.selectors.flagBlade)));
+     }
 
 }
 

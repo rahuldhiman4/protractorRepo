@@ -3,6 +3,7 @@ import * as uuid from 'uuid';
 
 const recordInstanceUri = "api/rx/application/record/recordinstance";
 const templateUri = "api/rx/application/command";
+const dynamicDataUri = "api/com.bmc.dsm.ticketing-lib/dynamicdata/definition";
 
 class ApiCoreUtil {
     async createRecordInstance(jsonBody: string): Promise<AxiosResponse> {
@@ -23,6 +24,14 @@ class ApiCoreUtil {
         return newRecord;
     }
 
+    async deleteRecordInstance(recordName: string, recordGUID: string): Promise<boolean> {
+        const deleteRecord = await axios.delete(
+            recordInstanceUri + "/" + recordName + "/" + recordGUID
+        );
+        console.log('Delete RecordInstance API Status =============>', deleteRecord.status);
+       return deleteRecord.status == 204;
+    }
+
     async getRecordInstanceDetails(recordName: string, recordGUID: string): Promise<any> {
         let uri = `api/rx/application/record/recordinstance/${recordName}/${recordGUID}`;
         const recorInstanceDetails = await axios.get(
@@ -36,11 +45,36 @@ class ApiCoreUtil {
             + "&pageSize=-1&recorddefinition="
             + recordName
             + "&startIndex=0";
+            
         let allRecords = await axios.get(
             dataPageUri
         );
         console.log('Get GUID API Status =============>', allRecords.status);
         return allRecords;
+    }
+
+    async getEmailTemplateGuid(emailTemplateName:string):Promise<string>{
+        let allRecords = await this.getGuid("com.bmc.dsm.notification-lib:NotificationTemplate");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[304412071] === emailTemplateName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getDynamicFieldGuid(dynamicFieldName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.ticketing-lib:AttributeDefinition");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[8] === dynamicFieldName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getDynamicGroupGuid(dynamicFieldName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.ticketing-lib:AttributeGroupDefinition");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[8] === dynamicFieldName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
     async getDomainTagGuid(domainTagName: string): Promise<string> {
@@ -75,6 +109,20 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getFunctionalRoleGuid(functionalRole: string): Promise<string> {
+        let dataPageUri = "rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.functionalrole.datapage.FunctionalRoleDataPageQuery"
+            + "&pageSize=50&startIndex=0"
+        let allRecords = await axios.get(
+            dataPageUri
+        );
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            obj[0] === functionalRole;
+        });
+        console.log('Get Functional Role GUID API Status =============>', entityObj);
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+
     async getBusinessUnitGuid(orgName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Business Unit");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
@@ -95,6 +143,14 @@ class ApiCoreUtil {
         let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Operational Category");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[304405421] === category;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getStatusChangeReasonGuid(reason: string): Promise<string>{
+        let allRecords = await this.getGuid("com.bmc.dsm.shared-services-lib:Status Reason");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[302307031] === reason;
         });
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
@@ -139,16 +195,14 @@ class ApiCoreUtil {
         return newGuid;
     }
 
-    
- async createEmailOrNotesTemplate(jsonBody: string): Promise<AxiosResponse> {
-    const notesTemplate = await axios.post(
-        templateUri,
-        jsonBody
-    );
-    console.log('Create Email/Notes Template API Status =============>', notesTemplate.status);
-    return notesTemplate;
+    async createDyanmicData(jsonBody: string): Promise<AxiosResponse> {
+        const newRecord = await axios.post(
+            dynamicDataUri,
+            jsonBody
+        );
+        console.log('Dyanmic data added API Status =============>', newRecord.status);
+        return newRecord;
+    }
 }
-}
-
 
 export default new ApiCoreUtil();

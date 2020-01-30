@@ -11,5 +11,9 @@
         "orgName": "UI-SupportGroup-19082",
         "relatedOrgId": null,
         "domainTag":"FacilityDomain"
+    },
+    "SuppGrpData_BulkOperation": {
+        "orgName": "BulkOperationSupportGroup",
+        "relatedOrgId": null
     }
 }
