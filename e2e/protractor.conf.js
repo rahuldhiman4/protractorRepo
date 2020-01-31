@@ -38,7 +38,7 @@ exports.config = {
   async onPrepare() {
     let globals = require('protractor/built');
     let browser = globals.browser;
-    await browser.waitForAngularEnabled(false);
+//    await browser.waitForAngularEnabled(false);
 
     //Implicitly wait
     await browser.manage().timeouts().implicitlyWait(5000);
