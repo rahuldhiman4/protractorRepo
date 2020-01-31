@@ -26,22 +26,22 @@ class CreateNewMenuOptionPage {
     }
 
     async isCreateNewMenuOptionBladeDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createNewMenuOptionDialogueBox)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createNewMenuOptionDialogueBox)));
         return await $(this.selectors.createNewMenuOptionDialogueBox).isEnabled();
     }
     
     async clickOnSaveButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async clickOnCancelButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
     async clickOnLocalizeLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.localizeLink)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.localizeLink)));
         await $(this.selectors.localizeLink).click();
     }
 
@@ -54,7 +54,7 @@ class CreateNewMenuOptionPage {
     }
 
     async isToggleButtonPresent(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.toggleButtonId)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.toggleButtonId)));
         let statusstr = $(this.selectors.toggleButtonId);
         return await (statusstr.$(this.selectors.toggleButtonCheckIcon)).isDisplayed();
     }
@@ -64,23 +64,23 @@ class CreateNewMenuOptionPage {
     }
 
     async isStatusDropDownPresent(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusDropDown)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusDropDown)));
         return await $(this.selectors.statusDropDown).isDisplayed();
     }
 
     async isMenuNameDropDownPresent(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuNameDropDown)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuNameDropDown)));
         return await $(this.selectors.menuNameDropDown).isDisplayed();
     }
 
     async isMenuOptionTextBoxPresent(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuOptionId)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuOptionId)));
         let menuOptionstr = $(this.selectors.menuOptionId);
         return await (menuOptionstr.$(this.selectors.menuOption)).isDisplayed();
     }
 
     async clickOnMenuOptionLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuOptionLink)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuOptionLink)));
         await $(this.selectors.menuOptionLink).click();
     }
 

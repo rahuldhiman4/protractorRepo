@@ -13,13 +13,13 @@ class AddReadAccessConfigurationPage {
     }
 
     async setReadAccessConfigurationName(accessmapping:string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.accessMappingName)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.accessMappingName)));
         await $(this.selectors.accessMappingName).clear();
         await $(this.selectors.accessMappingName).sendKeys(accessmapping);
     }
 
     async clickOnSave(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 

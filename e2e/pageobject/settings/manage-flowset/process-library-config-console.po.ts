@@ -8,7 +8,7 @@ class ProcessLibraryConsolePage {
     }
 
     async isRegisterProcessBtnDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.addRegisterProcessBtn)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.addRegisterProcessBtn)));
         return await $(this.selectors.addRegisterProcessBtn).getAttribute("disabled") == "true";
     }
 }

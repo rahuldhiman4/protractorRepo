@@ -12,24 +12,24 @@ class AutomatedStatusTransitionConfigConsolePage {
 
     async isAddAutomatedStatusTransitionBtnEnabled(): Promise<boolean> {
         let buttonElement = await $(this.selectors.addAutomatedTransitionButton);
-        await browser.wait(this.EC.visibilityOf(buttonElement));
-        browser.sleep(1000);
+//        await browser.wait(this.EC.visibilityOf(buttonElement));
+//        browser.sleep(1000);
         return await buttonElement.isEnabled();
     }
 
     async isDeleteAutomatedStatusTransitionBtnEnabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
         return await $(this.selectors.deleteButton).isEnabled();
     }
 
     async clickAddAutomatedStatusTransitionBtn(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.addAutomatedTransitionButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.addAutomatedTransitionButton)));
         await $(this.selectors.addAutomatedTransitionButton).click();
     }
 
     async openAutomatedTransitionConfig(configName: string): Promise<void> {
         await utilGrid.searchAndOpenHyperlink(configName);
-        await browser.wait(this.EC.visibilityOf($(this.selectors.editAutomatedStatusConfigBlade)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.editAutomatedStatusConfigBlade)));
     }
 }
 

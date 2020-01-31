@@ -16,7 +16,7 @@ class CreateAcknowledgmentTemplateBlade {
     }
 
     async setTemplateName(templateName: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
         await $(this.selectors.templateName).sendKeys(templateName);
     }
 
@@ -33,27 +33,27 @@ class CreateAcknowledgmentTemplateBlade {
     }
 
     async setDescription(descriptionText: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
         await $(this.selectors.description).sendKeys(descriptionText);
     }
 
     async setSubject(subject: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.subject)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.subject)));
         await $(this.selectors.subject).sendKeys(subject);
     }
 
     async setBody(body: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.body)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.body)));
         await $(this.selectors.body).sendKeys(body);
     }
 
     async clickOnSaveButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async clickOnCancelButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 }

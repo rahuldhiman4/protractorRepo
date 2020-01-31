@@ -16,22 +16,22 @@ class MenuItemsConfigEditPage {
     }
 
     async isMenuNameDropDownEnabled(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuNameDropDown)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuNameDropDown)));
         return await $(this.selectors.menuNameDropDown).isEnabled();
     }
 
     async clickOnSaveButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async clickOnCancelButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
     async clickOnLocalizeLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.localizeLink)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.localizeLink)));
         await $(this.selectors.localizeLink).click();
     }
 
@@ -48,17 +48,17 @@ class MenuItemsConfigEditPage {
     }
 
     async isMenuItemsStatusDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         return await $(this.selectors.status).getAttribute("readonly") == "true";
     }
 
     async isSaveButtonDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         return await $(this.selectors.saveButton).getAttribute("disabled") == "true";
     }
 
     async isDefaultToggleBtnDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.cancelButton)));
         let readProperty1: string = await $$(this.selectors.defaultToggle).get(0).getAttribute("disabled");
         let readProperty2: string = await $$(this.selectors.defaultToggle).get(1).getAttribute("disabled");
         return (readProperty1 == "true" && readProperty2 == "true");

@@ -51,45 +51,45 @@ class ActivityTabPage {
     }
 
     async clickOnReply(): Promise<void> {
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
         await element(by.xpath("(//div[contains(@class,'d-icon-reply')])[1]")).click();
     }
 
     async clickOnReplyAll(): Promise<void> {
-        utilCommon.waitUntilSpinnerToHide();
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailReplyAll)));
+//        await utilCommon.waitUntilSpinnerToHide();
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailReplyAll)));
         await $(this.selectors.emailReplyAll).click();
     }
 
     async getUnFlagContent():Promise<string>{
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
         return await $$(this.selectors.body).first().getText();
     }
 
     async getemailContent(): Promise<string> {
-        await browser.sleep(2000);
-        await utilCommon.waitUntilSpinnerToHide();
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailContent)), 5000);
+//        await browser.sleep(2000);
+//        await utilCommon.waitUntilSpinnerToHide();
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailContent)), 5000);
         let emailBody = await element(by.xpath('(//div[@class="log-item__content"]/email)[1]')).getText();
         return emailBody;
     }
 
     async getemailAttachmentFileName(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailAttachmentFileName)), 5000);
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailAttachmentFileName)), 5000);
         let fileName = await $(this.selectors.emailAttachmentFileName).getText();
         return fileName;
     }
 
     async getActivityNotesText(textToMatch: string): Promise<boolean> {
         var elem = element(by.xpath("//div[contains(@class,'d-icon-note_pencil')]/following-sibling::div"));
-        browser.wait(this.EC.elementToBeClickable(elem));
+//        browser.wait(this.EC.elementToBeClickable(elem));
         var value = await elem.getText();
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
         return value.includes(textToMatch) ? true : false;
     }
 
     async removeFilterList(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.removeIconFilterList)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.removeIconFilterList)));
         await $(this.selectors.removeIconFilterList).click();
     }
 
@@ -98,29 +98,29 @@ class ActivityTabPage {
     }
 
     async isfilterListDisplayed(filterList: string): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterLists)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterLists)));
         return await element(by.cssContainingText(this.selectors.filterLists, filterList)).isPresent();
     }
 
     async getTextFromFilterList(filterList: string): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterLists)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterLists)));
         return await element(by.cssContainingText(this.selectors.filterLists, filterList)).getText();
     }
 
     async clickOnNmoreLink(): Promise<void> {
-        await browser.sleep(1000);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nMoreButton)));
+//        await browser.sleep(1000);
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nMoreButton)));
         await $(this.selectors.nMoreButton).click();
     }
 
     async closeNmoreLink(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.activityTab)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.activityTab)));
         await element(by.cssContainingText(this.selectors.activityTab, 'Activity')).click();
-        utilCommon.waitUntilSpinnerToHide();
+//        utilCommon.waitUntilSpinnerToHide();
     }
 
     async getTextOfNmoreLink(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nMoreButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nMoreButton)));
         return await $(this.selectors.nMoreButton).getText();
     }
 
@@ -129,63 +129,63 @@ class ActivityTabPage {
     }
 
     async clickActivityNoteTextBox(): Promise<void> {
-        browser.sleep(3000);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBox)));
+//        browser.sleep(3000);
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBox)));
         await $(this.selectors.addNoteBox).click();
     }
 
     async addActivityNote(addNoteText: string): Promise<void> {
         await this.clickActivityNoteTextBox();
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBoxEdit)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBoxEdit)));
         await $(this.selectors.addNoteBoxEdit).sendKeys(addNoteText);
     }
 
     async addPersonInActivityNote(tagPerson: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBoxEdit)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBoxEdit)));
         await $(this.selectors.addNoteBoxEdit).sendKeys(`@${tagPerson}`);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)));
         await $(this.selectors.personPopup).click();
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clearActivityNote(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBoxEdit)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBoxEdit)));
         await $(this.selectors.addNoteBoxEdit).clear();
-        await browser.wait(this.EC.visibilityOf($(`${this.selectors.addNotePostButton}[disabled]`)));
+//        await browser.wait(this.EC.visibilityOf($(`${this.selectors.addNotePostButton}[disabled]`)));
     }
 
     async getPersonCount(tagPerson: string): Promise<number> {
         await this.clickActivityNoteTextBox();
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBoxEdit)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBoxEdit)));
         await $(this.selectors.addNoteBoxEdit).sendKeys(tagPerson);
-        await browser.wait(this.EC.visibilityOf($(this.selectors.personPopup)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.personPopup)));
         return await $$(this.selectors.personPopup).count();
     }
 
     async clickOnPostButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNotePostButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNotePostButton)));
         await $(this.selectors.addNotePostButton).click();
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickOnCancelButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteCancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteCancelButton)));
         await $(this.selectors.addNoteCancelButton).click();
     }
 
     async clickOneAttachLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteAttachLink)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteAttachLink)));
         await $(this.selectors.addNoteAttachLink).click();
     }
 
     async clickOnNotesTemplate(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteNotesTemplate)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteNotesTemplate)));
         await $(this.selectors.addNoteNotesTemplate).click();
     }
 
     async clickOnFilterButton(): Promise<void> {
-        await browser.sleep(5000);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
+//        await browser.sleep(5000);
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
         await $(this.selectors.filterButton).click();
     }
 
@@ -194,94 +194,95 @@ class ActivityTabPage {
     }
 
     async getTextTaskFilterOption(filterCheckBox: string): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
         return await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBox)).getText();
     }
 
     async isAuthorSearchBoxVisible(): Promise<boolean> {
-        return await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
+        return $(this.selectors.filterAuthor).isDisplayed();
     }
 
     async getTextOfFilterTaskOptions(filterCheckBoxText: string): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.filterCheckbox)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.filterCheckbox)));
         return await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBoxText)).getText();
     }
 
     async selectFilterCheckBox(filterCheckBoxText: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
         await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBoxText)).click();
     }
 
     async addAuthorOnFilter(AuthorName: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).click();
         await $(this.selectors.filterAuthor).sendKeys(AuthorName);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)));
         await $(this.selectors.personPopup).click();
     }
 
     async removeAuthorFromFilter(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.authorCloseButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.authorCloseButton)));
         await $(this.selectors.authorCloseButton).click();
     }
 
     async isAuthorBoxEmpty(): Promise<boolean> {
-        browser.sleep(2000);
+//        browser.sleep(2000);
         return await $(this.selectors.authorFieldEmpty).isPresent();
     }
 
     async searchAuthorOnFilter(AuthorName: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).click();
         await $(this.selectors.filterAuthor).sendKeys(AuthorName);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)));
     }
 
     async isImgPresentOnUserPopUp(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.imgPersonProfilePopUp)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.imgPersonProfilePopUp)));
         return await $(this.selectors.imgPersonProfilePopUp).isPresent();
     }
     async isPersonNamePresentOnUserPopUp(personName: string): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.namePersonProfilePopUp)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.namePersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.namePersonProfilePopUp, personName)).isPresent();
     }
 
     async isEmailPresentOnUserPopUp(email: string): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailPersonProfilePopUp)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailPersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.emailPersonProfilePopUp, email)).isPresent();
     }
 
     async isCompanyPresentOnUserPopUp(company: string): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.companyPersonProfilePopUp)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.companyPersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.companyPersonProfilePopUp, company)).isPresent();
     }
 
     async isPhoneNumberPresentOnUserPopUp(phoneNumber: string): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phoneNumberPersonProfilePopUp)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phoneNumberPersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.phoneNumberPersonProfilePopUp, phoneNumber)).isPresent();
     }
 
     async clickOnFilterApplyButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPopupApplyOrClearButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPopupApplyOrClearButton)));
         await element(by.cssContainingText(this.selectors.filterPopupApplyOrClearButton, 'Apply')).click();
-        utilCommon.waitUntilSpinnerToHide();
+//        utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickOnFilterClearButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPopupApplyOrClearButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPopupApplyOrClearButton)));
         await element(by.cssContainingText(this.selectors.filterPopupApplyOrClearButton, 'Clear')).click();
-        await browser.wait(this.EC.or(async () => {
-            await $$(this.selectors.appliedActivityFilter).count() == 0;
-        }));
+//        await browser.wait(this.EC.or(async () => {
+//            await $$(this.selectors.appliedActivityFilter).count() == 0;
+//        }));
     }
 
     async getTextOfFilterTask(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.FilterTask)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.FilterTask)));
         return await $(this.selectors.filterAuthor).getText();
     }
 
     async isTextPresentInActivityLog(caseActivityLogText: string): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
         try {
             return await element(by.cssContainingText(this.selectors.activityLog, caseActivityLogText)).isDisplayed();
         }
@@ -291,7 +292,7 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        browser.sleep(3000);
+//        browser.sleep(3000);
         try {
             await element(by.cssContainingText('.activity-general-note', bodyText)).isDisplayed();
             return true;
@@ -302,23 +303,23 @@ class ActivityTabPage {
     }
 
     async clickOnHyperlinkFromActivity(bodyText: string, authorText: string): Promise<void> {
-        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.personLink)));
-        browser.sleep(3000);
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personLink)));
+//        browser.sleep(3000);
         var customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='log-item__body']//a[text()="${authorText}"]`;
-        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customXpath))));
+//        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customXpath))));
         await element(by.xpath(customXpath)).click();
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isHyperlinkOfActivityDisplay(bodyText: string, authorText: string): Promise<boolean> {
-        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.personLink)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personLink)));
         var customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='log-item__body']//a[text()="${authorText}"]`;
-        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customXpath))));
+//        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customXpath))));
         return await element(by.xpath(customXpath)).isDisplayed();
     }
 
     async clickOnAttachLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentLink)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentLink)));
         await $(this.selectors.attachmentLink).click();
     }
 
@@ -331,39 +332,39 @@ class ActivityTabPage {
     }
 
     async getIconOfActivity(caseActivityLogText: string): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .log-item__icon')));
+//        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .log-item__icon')));
         return $('.activity_logs [role="listitem"] .log-item__icon').getAttribute('class');
     }
 
     async getAuthorOfActivity(caseActivityLogText: string): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .title a')));
+//        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .title a')));
         return $('.activity_logs [role="listitem"] .title a').getText();
     }
 
     async getTitleTextOfActivity(caseActivityLogText: string): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .title')));
+//        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .title')));
         return $('.activity_logs [role="listitem"] .title').getText();
     }
 
     async getLinkedTextFromBodyOfActivity(caseActivityLogText: string): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .body')));
+//        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .body')));
         return $('.activity_logs [role="listitem"] .body a[title]').getText();
     }
 
     async getTimeOfActivity(caseActivityLogText: string): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .time-ago')));
+//        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .time-ago')));
         return $('.activity_logs [role="listitem"] .time-ago').getAttribute('title');
     }
 
     async isLinkedTextPresentInBodyOfFirstActivity(value: string): Promise<boolean> {
         var firstActivity = await $$('.activity_logs [role="listitem"]').first();
-        await browser.wait(this.EC.visibilityOf(firstActivity));
-        await browser.wait(this.EC.elementToBeClickable(firstActivity.$('.body a[title]')));
+//        await browser.wait(this.EC.visibilityOf(firstActivity));
+//        await browser.wait(this.EC.elementToBeClickable(firstActivity.$('.body a[title]')));
         return await element(by.cssContainingText('.activity_logs [role="listitem"] .body a[title]', value)).isDisplayed();
     }
 
     async openSurveyReport(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewSurveyBtn)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewSurveyBtn)));
         await $(this.selectors.viewSurveyBtn).click();
     }
 
@@ -372,7 +373,7 @@ class ActivityTabPage {
     }
 
     async getAllSurveyTextOnActivityTab(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.dwpSurveyText)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.dwpSurveyText)));
         let allText: number = await $$(this.selectors.dwpSurveyText).count();
         let dwpActivityText = "";
         for (let i: number = 0; i < allText; i++) {
@@ -384,57 +385,57 @@ class ActivityTabPage {
 
     async getRatingTextOnActivityTab(): Promise<string> {
         let surveyXpath = await $$(this.selectors.dwpSurveyText).get(0);
-        await browser.wait(this.EC.visibilityOf(surveyXpath));
+//        await browser.wait(this.EC.visibilityOf(surveyXpath));
         return surveyXpath.getText();
     }
 
 
     async getSurveyQuestionTextOnSurveyInfo(index: number): Promise<string> {
         let question = $$(this.selectors.dwpQuestions).get(index - 1);
-        await browser.wait(this.EC.visibilityOf(question));
+//        await browser.wait(this.EC.visibilityOf(question));
         return await question.getText();
     }
 
     async getSurveyAnswerTextOnSurveyInfo(index: number): Promise<string> {
         let answer = $$(this.selectors.dwpAnswers).get(index - 1);
-        await browser.wait(this.EC.visibilityOf(answer));
+//        await browser.wait(this.EC.visibilityOf(answer));
         return await answer.getText();
     }
 
     async closeSurveyInformation(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         await $(this.selectors.closeButton).click();
-        await browser.wait(this.EC.invisibilityOf($('.modal-dialog')));
+//        await browser.wait(this.EC.invisibilityOf($('.modal-dialog')));
     }
 
     async getComplexSurveyModalTitle(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($('.modal-title')));
+//        await browser.wait(this.EC.elementToBeClickable($('.modal-title')));
         return await $('.modal-title').getText();
     }
 
     async getRatingText(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($('.rating')));
+//        await browser.wait(this.EC.elementToBeClickable($('.rating')));
         return await $('.rating').getText();
     }
 
     async getDWPIconClassAttribute(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.dwpIcon)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.dwpIcon)));
         return await $(this.selectors.dwpIcon).getAttribute("class");
     }
 
     async getDWPFeedback(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.dwpFeedback)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.dwpFeedback)));
         return await $(this.selectors.dwpFeedback).getText();
     }
 
     async isOnlySurveyRecordFiltered(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.logItems)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.logItems)));
         return await $$(this.selectors.logItems).count() === 1;
     }
 
     async isComplexSurveyOrderIsThird(): Promise<boolean> {
-        await utilCommon.waitUntilSpinnerToHide();
-        await browser.wait(this.EC.visibilityOf(element(by.xpath("(//div[@class='log-item__content'])[3]//div[text()='View Survey Information']"))));
+//        await utilCommon.waitUntilSpinnerToHide();
+//        await browser.wait(this.EC.visibilityOf(element(by.xpath("(//div[@class='log-item__content'])[3]//div[text()='View Survey Information']"))));
         return await element(by.xpath("(//div[@class='log-item__content'])[3]//div[text()='View Survey Information']")).isPresent();
     }
 

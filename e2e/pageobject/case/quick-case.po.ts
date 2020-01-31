@@ -24,19 +24,19 @@ class QuickCasePage {
 
     async selectRequesterName(name: string): Promise<void> {
         let namenew = "@" + name;
-        await browser.wait(this.EC.visibilityOf($(this.selectors.inputBox)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.inputBox)));
         await $(this.selectors.inputBox).sendKeys(namenew);
-        await browser.wait(this.EC.visibilityOf($(this.selectors.requesters)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.requesters)));
         await $$(this.selectors.requesters).first().click();
     }
 
     async setCaseSummary(summary: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
         await $(this.selectors.smartSearchTextBox).sendKeys(summary);
     }
 
     async getRequester(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($$(this.selectors.smartSearchText).first()));
+//        await browser.wait(this.EC.visibilityOf($$(this.selectors.smartSearchText).first()));
         return await $$(this.selectors.smartSearchText).first().getText();
     }
 
@@ -54,61 +54,61 @@ class QuickCasePage {
     }
 
     async isSummOrDescPopulatedAtSmartTextArea(text: string): Promise<number> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
         let flag: number = (await $(this.selectors.smartSearchTextBox).getText()).search(text);
         //-1 is returned as a flag, if text fetched through the locator doesn't consist of the 'text' passed
         return flag;
     }
 
     async verifyQuickCasePageAsEmpty(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
         await expect($(this.selectors.smartSearchTextBox).getText()).toEqual("");
     }
 
     async isCreateButtonDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseButton)));
         return await $(this.selectors.createCaseButton).getAttribute("disabled") == "true";
     }
 
     async createCaseButton(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseButton)));
         await $(this.selectors.createCaseButton).click();
     }
 
     async gotoCaseButton(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton)));
         await $(this.selectors.gotoCaseButton).click();
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async getPopUpMessage() {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
         return await $(this.selectors.popUpMsgLocator).getText();
     }
 
     async pinFirstRecommendedCase(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
+//        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
         await element(by.xpath(this.selectors.pinFirstRecommendedCase)).click();
     }
 
     async saveCase(): Promise<void> {
         await $(this.selectors.createCaseButton).click();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton__preview)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton__preview)));
     }
 
     async selectCaseTemplate(templateName: string): Promise<void> {
         await $(this.selectors.inputBox).sendKeys(`!${templateName}`);
-        await browser.wait(this.EC.or(async () => {
-            let count = await $$(this.selectors.caseTemplate).count();
-            return count >= 1;
-        }));
+//        await browser.wait(this.EC.or(async () => {
+//            let count = await $$(this.selectors.caseTemplate).count();
+//            return count >= 1;
+//        }));
         await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).click();
     }
 
     async validatePin(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.validateButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.validateButton)));
         await $(this.selectors.validateButton).click();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.pinValidateInput)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.pinValidateInput)));
         await $(this.selectors.pinValidateInput).sendKeys("1234");
         await $(this.selectors.pinOk).click();
     }

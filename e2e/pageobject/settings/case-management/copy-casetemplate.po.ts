@@ -36,14 +36,14 @@ class CopyCaseTemplate {
 
     async setTemplateName(templateNameValue: string): Promise<void> {
         let element = $(this.selectors.templateName);
-        await browser.wait(this.EC.visibilityOf(element));
+//        await browser.wait(this.EC.visibilityOf(element));
         await element.clear();
         await element.sendKeys(templateNameValue);
     }
 
     async getCopyCaseTemplateInstruction(): Promise<string> {
         var textInstruction;
-        await browser.wait(this.EC.visibilityOf($(this.selectors.copyInstruction)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.copyInstruction)));
         var alltext: number = await $$(this.selectors.copyInstruction).count();
         for (var i = 0; i < alltext; i++) {
             var textInst = await $$(this.selectors.copyInstruction).get(i);
@@ -58,47 +58,47 @@ class CopyCaseTemplate {
     }
 
     async clickSaveCaseTemplate(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async getValueOfCaseSummary(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummaryValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummaryValueOnCopy)));
         return await $(this.selectors.caseSummaryValueOnCopy).getText();
     }
 
     async getValueOfCaseCompany(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCompanyValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCompanyValueOnCopy)));
         return await $(this.selectors.caseCompanyValueOnCopy).getText();
     }
 
     async getValueOfSupportCompany(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.supportCompanyValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.supportCompanyValueOnCopy)));
         return await $(this.selectors.supportCompanyValueOnCopy).getText();
     }
 
     async getValueOfSupportGroup(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupValueOnCopy)));
         return await $(this.selectors.supportGroupValueOnCopy).getText();
     }
 
     async getValueOfAssignee(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeValueOnCopy)));
         return await $(this.selectors.assigneeValueOnCopy).getText();
     }
 
     async getValueOfFlowset(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.FlowsetValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.FlowsetValueOnCopy)));
         return await $(this.selectors.FlowsetValueOnCopy).getText();
     }
 
     async getValueOfStatusReason(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.statusReasonValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.statusReasonValueOnCopy)));
         return await $(this.selectors.statusReasonValueOnCopy).getText();
     }
 
     async getValueOfTemplateStatus(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.templateStatusValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.templateStatusValueOnCopy)));
         return await $(this.selectors.templateStatusValueOnCopy).getText();
     }
 
@@ -111,7 +111,7 @@ class CopyCaseTemplate {
     }
 
     async getValueOfOwnerGroup(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerGroupValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerGroupValueOnCopy)));
         return await $(this.selectors.ownerGroupValueOnCopy).getText();
     }
 
@@ -124,67 +124,67 @@ class CopyCaseTemplate {
     }
 
     async getValueOfOwnerCompany(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.OwnerCompanyValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.OwnerCompanyValueOnCopy)));
         return await $(this.selectors.OwnerCompanyValueOnCopy).getText();
     }
 
     async getValueOfIdentityValidation(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.identityValidationValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.identityValidationValueOnCopy)));
         return await $(this.selectors.identityValidationValueOnCopy).getText();
     }
 
     async getValueOfAssignementMethod(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.assignmentMethodValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.assignmentMethodValueOnCopy)));
         return await $(this.selectors.assignmentMethodValueOnCopy).getText();
     }
 
     async getValueOfTaskFailureConfiguration(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskFailureConfigurationValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskFailureConfigurationValueOnCopy)));
         return await $(this.selectors.taskFailureConfigurationValueOnCopy).getText();
     }
 
     async getValueOfAllowReopen(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.allowCaseReopenValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.allowCaseReopenValueOnCopy)));
         return await $(this.selectors.allowCaseReopenValueOnCopy).getText();
     }
 
     async getValueOfResolutionCode(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.resolutionCodeValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.resolutionCodeValueOnCopy)));
         return await $(this.selectors.resolutionCodeValueOnCopy).getText();
     }
 
     async getValueOfResolutionDescription(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.resoltuionDescriptionValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.resoltuionDescriptionValueOnCopy)));
         return await $(this.selectors.resoltuionDescriptionValueOnCopy).getText();
     }
 
     async getValueOfcaseStatus(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.caseStatusValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseStatusValueOnCopy)));
         return await $(this.selectors.caseStatusValueOnCopy).getText();
     }
 
     async isValueOfCasePriorityPresent(priorityValue: string): Promise<boolean> {
-        return await browser.wait(this.EC.or(async () => {
-            let value: boolean = await $(this.selectors.casePriorityValueOnCopy).getAttribute('aria-label') == priorityValue;
-            return value;
-        }), 3000);
+//        return await browser.wait(this.EC.or(async () => {
+            return await $(this.selectors.casePriorityValueOnCopy).getAttribute('aria-label') == priorityValue;
+//            return value;
+//        }), 3000);
     }
 
     async getValueOfCaseDescription(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseDescriptionValueOnCopy)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseDescriptionValueOnCopy)));
         return await $(this.selectors.caseDescriptionValueOnCopy).getText();
     }
 
     async getValueofCaseCategoryTier1(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCategoryTier1ValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCategoryTier1ValueOnCopy)));
         return await $(this.selectors.caseCategoryTier1ValueOnCopy).getText();
     }
     async getValueofCaseCategoryTier2(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCategoryTier2ValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCategoryTier2ValueOnCopy)));
         return await $(this.selectors.caseCategoryTier2ValueOnCopy).getText();
     }
     async getValueofCaseCategoryTier3(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCategoryTier3ValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCategoryTier3ValueOnCopy)));
         return await $(this.selectors.caseCategoryTier3ValueOnCopy).getText();
     }
 }

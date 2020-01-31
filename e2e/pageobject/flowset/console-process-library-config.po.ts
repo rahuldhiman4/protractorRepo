@@ -10,12 +10,12 @@ class ConsoleProcessLibrary {
     }
 
     async clickOnRegisterProcess(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addRegisterProcessButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addRegisterProcessButton)));
         await $(this.selectors.addRegisterProcessButton).click();
     }
 
     async isRegisterProcessEnable(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.addRegisterProcessButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.addRegisterProcessButton)));
         await $(this.selectors.addRegisterProcessButton).isEnabled;
     }
 

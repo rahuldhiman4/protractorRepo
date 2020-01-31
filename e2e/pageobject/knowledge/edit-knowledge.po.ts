@@ -32,60 +32,60 @@ class EditKnowledgePage {
     }
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
         await utilCommon.selectDropDownWithName('Status', newStatus);
         await $(this.selectors.statusSaveBtn).click();
-        await utilCommon.waitUntilPopUpDisappear();
+//        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async getStatusValue():Promise<string>{
-        await utilCommon.waitUntilPopUpDisappear();
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
+//        await utilCommon.waitUntilPopUpDisappear();
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         return await $(this.selectors.statusChange).getText();
     }
 
     async setKnowledgeStatusAndVerifyAssignmentNotAppear(newStatus: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
         await utilCommon.selectDropDownWithName('Status', newStatus);
         expect(await $(this.selectors.assigneToMeReviewerAssign).isDisplayed()).toBeFalsy();
         await $(this.selectors.statusSaveBtn).click();
-        await utilCommon.waitUntilPopUpDisappear();
+//        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async setKnowledgeStatusWithoutSave(newStatus: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
         await utilCommon.selectDropDownWithName('Status', newStatus);
     }
 
     async clickSaveStatusBtn(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.statusSaveBtn)));
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusSaveBtn)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.statusSaveBtn)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusSaveBtn)));
         await $(this.selectors.statusSaveBtn).click();
     }
 
     async clickChangeAssignmentButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Change Assignment'))));
+//        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Change Assignment'))));
         await element(by.buttonText('Change Assignment')).click();
     }
 
     async editKnowledgeMedataData(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.editLinkKnowledgeMetadata)));
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLinkKnowledgeMetadata)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.editLinkKnowledgeMetadata)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLinkKnowledgeMetadata)));
         await $(this.selectors.editLinkKnowledgeMetadata).click();
     }
 
     async saveKnowledgeMedataDataChanges(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.saveBtnEditMetadata)));
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveBtnEditMetadata)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveBtnEditMetadata)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveBtnEditMetadata)));
         await $(this.selectors.saveBtnEditMetadata).click();
-        await utilCommon.waitUntilPopUpDisappear();
+//        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async verifyKnowledgeMetadata(fldName: String, fldVal: String): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeMetadataSection)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeMetadataSection)));
         let fldsCount = await $$(this.selectors.knowledgeMetadataSection).count();
         for (let i = 0; i < fldsCount; i++) {
             let elem = await $$(this.selectors.knowledgeMetadataSection).get(i);
@@ -113,47 +113,47 @@ class EditKnowledgePage {
     }
 
     async isChangeReviewerButtonPresent(): Promise<Boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.changeReviewerBtn)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.changeReviewerBtn)));
         return await $(this.selectors.changeReviewerBtn).isDisplayed();
     }
 
     async clickChangeReviewerBtn(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.changeReviewerBtn)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.changeReviewerBtn)));
         await $(this.selectors.changeReviewerBtn).click();
     }
 
     async isAssignToMeButtonPresent(): Promise<Boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneToMeReviewerAssign)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneToMeReviewerAssign)));
         return await $(this.selectors.assigneToMeReviewerAssign).isDisplayed();
     }
 
     async isReviewerCompanyFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerCompanyfldStatusBlade)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerCompanyfldStatusBlade)));
         return await $(this.selectors.reviewerCompanyfldStatusBlade).getAttribute("disabled") == "true";
     }
 
     async isReviewerBusinessUnitFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerBUfldStatusBlade)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerBUfldStatusBlade)));
         return await $(this.selectors.reviewerBUfldStatusBlade).getAttribute("disabled") == "true";
     }
 
     async isReviewerDepartmentfieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerDepfldStatusBlade)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerDepfldStatusBlade)));
         return await $(this.selectors.reviewerDepfldStatusBlade).getAttribute("disabled") == "true";
     }
 
     async isReviewerGrpFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerGrpfldStatusBlade)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerGrpfldStatusBlade)));
         return await $(this.selectors.reviewerGrpfldStatusBlade).getAttribute("disabled") == "true";
     }
 
     async isReviewerFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerfldStatusBlade)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerfldStatusBlade)));
         return await $(this.selectors.reviewerfldStatusBlade).getAttribute("disabled") == "true";
     }
 
     async isReviewPendingButtonDisplayed(): Promise<Boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewPendingBtn)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewPendingBtn)));
         return await $(this.selectors.reviewPendingBtn).isDisplayed();
     }
 
@@ -170,56 +170,56 @@ class EditKnowledgePage {
      }   
 
      async clickOnEditLink():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLinkOnKA)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLinkOnKA)));
         await $(this.selectors.editLinkOnKA).click();
      }
 
      async isEditLinkDisplayedOnKA():Promise<boolean>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLinkOnKA)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLinkOnKA)));
         return await $(this.selectors.editLinkOnKA).isDisplayed();
      }
 
      async clickOnSaveButtonOfKA():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButtonONKA)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButtonONKA)));
         await $(this.selectors.saveButtonONKA).click();
      }
 
      async changeKnowledgeTitle(value:string):Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeTitle)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeTitle)));
         await $(this.selectors.knowledgeTitle).click();
         await $(this.selectors.knowledgeTitle).clear();
         await $(this.selectors.knowledgeTitle).sendKeys(value);
      }
 
      async clickOnUnFlagButton():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.unflagButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.unflagButton)));
         await $(this.selectors.unflagButton).click();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.flagBlade)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.flagBlade)));
      }
 
      async clickOnFlagButton():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.falgButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.falgButton)));
         await $(this.selectors.falgButton).click();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.flagBlade)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.flagBlade)));
      }
 
      async setTextInTellUsMore(value:string):Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.flagComment)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.flagComment)));
         await $(this.selectors.flagComment).clear();
         await $(this.selectors.flagComment).sendKeys(value);
      }
 
      async clickOnUnFlageButtonOnBlade():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.unflagButtonOnBlade)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.unflagButtonOnBlade)));
         await $(this.selectors.unflagButtonOnBlade).click();
-        await browser.wait(this.EC.invisibilityOf($(this.selectors.flagBlade)));
-        await utilCommon.waitUntilPopUpDisappear();
+//        await browser.wait(this.EC.invisibilityOf($(this.selectors.flagBlade)));
+//        await utilCommon.waitUntilPopUpDisappear();
      }
 
      async clickOnFlageButtonOnBlade():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.flagButtonOnBlade)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.flagButtonOnBlade)));
         await $(this.selectors.flagButtonOnBlade).click();
-        await browser.wait(this.EC.invisibilityOf($(this.selectors.flagBlade)));
+//        await browser.wait(this.EC.invisibilityOf($(this.selectors.flagBlade)));
      }
 
 }

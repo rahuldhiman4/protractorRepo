@@ -21,22 +21,22 @@ class CreateFlowset {
     }
 
     async isCompanyRequiredTextDisplayed(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.company)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.company)));
         return await ($(this.selectors.company)).getAttribute("required");
     }
 
     async isFlowsetRequiredTextDisplayed(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.flowset)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.flowset)));
         return await ($(this.selectors.flowset)).getAttribute("required");
     }
 
     async isDescriptionRequiredTextDisplayed(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.description)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.description)));
         return await ($(this.selectors.description)).getAttribute("required");
     }
 
     async isStatusRequiredTextDisplayed(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.statusGuid)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.statusGuid)));
         return await ($(this.selectors.statusGuid)).getAttribute("required");
     }
 
@@ -57,12 +57,12 @@ class CreateFlowset {
     }
 
     async setFlowsetname(flowset: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.flowset)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.flowset)));
         await ($(this.selectors.flowset)).sendKeys(flowset);
     }
 
     async setDescription(description: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.description)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.description)));
         await ($(this.selectors.description)).sendKeys(description);
     }
 
@@ -71,17 +71,17 @@ class CreateFlowset {
     }
 
     async clickOnStatus(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.status)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.status)));
         await ($(this.selectors.status)).click;
     }
     async clickSaveButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.savebutton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.savebutton)));
         await ($(this.selectors.savebutton)).click();
-        await utilCommon.waitUntilPopUpDisappear();
+//        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async clickCancelButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await ($(this.selectors.cancelButton)).click();
     }
 

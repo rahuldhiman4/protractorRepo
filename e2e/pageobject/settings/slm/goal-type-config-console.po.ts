@@ -8,7 +8,7 @@ class GoalTypeConfigConsolePage {
     }
 
     async isAddGoalTypeBtnDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.addGoalType)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.addGoalType)));
         return await $(this.selectors.addGoalType).getAttribute("disabled") == "true";
     }
 }

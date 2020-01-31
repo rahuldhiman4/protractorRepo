@@ -13,37 +13,37 @@ class PreviewKnowledge {
        
     }
     async getKnowledgeArticleTitle():Promise<string>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeTitle)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeTitle)));
         return await $(this.selectors.knowledgeTitle).getText();
     }
 
     async isViewArticleLInkDisplay():Promise<boolean>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewArticle)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewArticle)));
         return await $(this.selectors.viewArticle).isDisplayed();
     }
 
     async isStatusOfKADisplay():Promise<boolean>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusOfKA)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusOfKA)));
         return await  $(this.selectors.statusOfKA).isDisplayed();
     }
 
     async isBackButtonDisplay():Promise<boolean>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         return await  $(this.selectors.backButton).isDisplayed();
     }
 
     async clickOnBackButton():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         await await $(this.selectors.backButton).click();
     }
 
     async getKnowledgeArticleSection():Promise<string>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeSection)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeSection)));
         return await $(this.selectors.knowledgeSection).getText();
     }
 
     async getKnowledgeArticleID():Promise<string>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeArticleID)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeArticleID)));
         return await $(this.selectors.knowledgeArticleID).getText();
     }
 }

@@ -22,7 +22,7 @@ class PersonProfilePage {
 
     async navigateToTab(tabName: string): Promise<void> {
         let tabLocator = await element(by.cssContainingText(this.selectors.tabs, tabName));
-        await browser.wait(this.EC.elementToBeClickable(tabLocator));
+//        await browser.wait(this.EC.elementToBeClickable(tabLocator));
         await tabLocator.click();
     }
 
@@ -31,54 +31,54 @@ class PersonProfilePage {
     }
 
     async getPersonName(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.personName)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.personName)));
         return await $(this.selectors.personName).getText();
     }
 
     async isPersonProfileImageDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personImage)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personImage)));
         let len: string = await $(this.selectors.personImage).getAttribute("src");
         return len.length - 34 > 0;
     }
 
     async isPersonManagerImageDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.managerImage)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.managerImage)));
         let len: string = await $(this.selectors.managerImage).getAttribute("src");
         return len.length - 34 > 0;
     }
 
     async getCompany(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
         return await $(this.selectors.companyName).getText();
     }
 
     async getContactNumber(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
         return await $(this.selectors.phone).getText();
     }
 
     async getEmail(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
         return await $(this.selectors.email).getText();
     }
 
     async getManagerName(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.managerName)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.managerName)));
         return await $(this.selectors.managerName).getText();
     }
 
     async getSite(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
         return await $(this.selectors.site).getText();
     }
 
     async clickOnManagerLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.managerName)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.managerName)));
         await $(this.selectors.managerName).click();
     }
 
     async isActivityNotesDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
         return await $(this.selectors.activityNotes).isPresent();
     }
 
