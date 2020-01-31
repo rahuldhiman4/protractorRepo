@@ -150,7 +150,7 @@ class CaseWatchlistBlade {
     async clickOnBackBtn(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         await $(this.selectors.backButton).click();
-        await browser.wait(this.EC.invisibilityOf($(this.selectors.watchListModal)));
+//        await browser.wait(this.EC.invisibilityOf($(this.selectors.watchListModal)));
     }
 
     async getCaseAssignmentChangesLabel(): Promise<string> {

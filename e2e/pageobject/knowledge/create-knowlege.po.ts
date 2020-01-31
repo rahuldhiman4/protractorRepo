@@ -64,7 +64,7 @@ class CreateKnowledgePage {
     async clickOnUseSelectedTemplateButton(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Use selected Template'))));
         await element(by.buttonText('Use selected Template')).click();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.docEditorSection)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.docEditorSection)));
     }
 
     async setReferenceValue(value:string):Promise<void>{
@@ -102,12 +102,12 @@ class CreateKnowledgePage {
     async clickOnviewArticleLinkButton(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewArticleLink)));
         await $(this.selectors.viewArticleLink).click();
-        await browser.wait(this.EC.or(async () => {
-            let count = await browser.getAllWindowHandles().then(async function (handles) {
-                return handles.length;
-            });
-            return count >= 2;
-        }));
+//        await browser.wait(this.EC.or(async () => {
+//            let count = await browser.getAllWindowHandles().then(async function (handles) {
+//                return handles.length;
+//            });
+//            return count >= 2;
+//        }));
     }
 
     async clickOnActivityTab(): Promise<void> {

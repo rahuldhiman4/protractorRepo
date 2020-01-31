@@ -169,10 +169,10 @@ class ComposeMail {
     async isEmailIconLinkPresent(): Promise<boolean> {
 //        await browser.wait(this.EC.presenceOf($('[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"]')));
         let presentInDom: boolean = await element(by.css('[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button')).isPresent();
-        if (presentInDom) {
-            await browser.wait(this.EC.visibilityOf($('[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button')), 5000);
-        }
-        return presentInDom;
+//        if (presentInDom) {
+            return await $('[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button').isDisplayed();
+//        }
+//        return presentInDom;
     }
 
     async isSelectEmailTemplateButtonPresent(): Promise<boolean> {

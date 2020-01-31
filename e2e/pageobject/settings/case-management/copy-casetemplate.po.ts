@@ -164,10 +164,10 @@ class CopyCaseTemplate {
     }
 
     async isValueOfCasePriorityPresent(priorityValue: string): Promise<boolean> {
-        return await browser.wait(this.EC.or(async () => {
-            let value: boolean = await $(this.selectors.casePriorityValueOnCopy).getAttribute('aria-label') == priorityValue;
-            return value;
-        }), 3000);
+//        return await browser.wait(this.EC.or(async () => {
+            return await $(this.selectors.casePriorityValueOnCopy).getAttribute('aria-label') == priorityValue;
+//            return value;
+//        }), 3000);
     }
 
     async getValueOfCaseDescription(): Promise<string> {

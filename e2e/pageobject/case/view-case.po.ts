@@ -83,7 +83,7 @@ class ViewCasePage {
     }
 
     async isCaseReopenLinkPresent(): Promise<boolean> {
-        await browser.wait(this.EC.presenceOf($('[rx-view-component-id="2d51cf41-f176-4e20-bc48-f2741bcbbcb0"]')));
+//        await browser.wait(this.EC.presenceOf($('[rx-view-component-id="2d51cf41-f176-4e20-bc48-f2741bcbbcb0"]')));
         let presentInDom: boolean = await $(this.selectors.reOpenCase).isPresent();
         if (presentInDom) {
             await browser.wait(this.EC.visibilityOf($(this.selectors.reOpenCase)), 5000);
@@ -156,10 +156,10 @@ class ViewCasePage {
     async clickSaveStatus(expectedStatus?: string): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveUpdateStatus)));
         await $(this.selectors.saveUpdateStatus).click();
-        if (expectedStatus) {
-            await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.statusChange, expectedStatus))));
-        }
-        await utilCommon.waitUntilPopUpDisappear();
+//        if (expectedStatus) {
+//            await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.statusChange, expectedStatus))));
+//        }
+//        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async isEditLinkDisplay(): Promise<boolean> {

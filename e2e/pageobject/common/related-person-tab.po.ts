@@ -55,15 +55,15 @@ class RelatedPersonPage {
         await browser.wait(this.EC.or(async () => {
             let count = await $$(this.selectors.allRelatedPersons).count();
             return count >= expectedCount;
-        }));
+        }), 3000);
     }
 
     async clickRelatedPersonName(personName: string): Promise<void> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
         let option = await $(this.selectors.allRelatedPersons).element(by.linkText(personName));
-        await browser.wait(this.EC.elementToBeClickable(option)).then(async function () {
+//        await browser.wait(this.EC.elementToBeClickable(option)).then(async function () {
             await option.click();
-        });
+//        });
     }
 
     async getRelatedPersonCompanyName(personName: string): Promise<string> {

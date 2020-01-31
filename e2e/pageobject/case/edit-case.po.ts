@@ -83,7 +83,7 @@ class CaseEditPage {
 
     async waitForEditCasePageToBeDisplayed(): Promise<void> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.cancelBtn)));
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelBtn)));
+        await $(this.selectors.cancelBtn).isEnabled();
     }
 
     async clickOnAssignToMe(): Promise<void> {
@@ -102,10 +102,10 @@ class CaseEditPage {
         await lastDropDown.$('button').click();
 //        await browser.wait(this.EC.visibilityOf(lastDropDown.$('input')));
         await lastDropDown.$('input').sendKeys(supportGroup);
-        await browser.wait(this.EC.or(async () => {
-            let count = await lastDropDown.$$(this.selectors.selectOptions).count();
-            return count == 1;
-        }))
+//        await browser.wait(this.EC.or(async () => {
+//            let count = await lastDropDown.$$(this.selectors.selectOptions).count();
+//            return count == 1;
+//        }));
         await expect(await lastDropDown.$$(this.selectors.selectOptions).first().getText()).toBe(supportGroup);
         await lastDropDown.$$(this.selectors.selectOptions).first().click();
     }
@@ -114,10 +114,10 @@ class CaseEditPage {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchAsignee)));
         await $(this.selectors.searchAsignee).sendKeys(name);
         await browser.actions().sendKeys(protractor.Key.ENTER).perform();
-        await browser.wait(this.EC.or(async () => {
-            let count = await $$(this.selectors.assignee).count();
-            return count >= 2;
-        }))
+//        await browser.wait(this.EC.or(async () => {
+//            let count = await $$(this.selectors.assignee).count();
+//            return count >= 2;
+//        }));
         await element(by.cssContainingText(this.selectors.assignee, name)).click();
     }
 
@@ -134,10 +134,6 @@ class CaseEditPage {
     async clickOnCancelCaseButton(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelBtn)));
         await $(this.selectors.cancelBtn).click();
-    }
-
-    async verifyCaseAssignee(name: string): Promise<void> {
-        expect(await browser.wait(this.EC.visibilityOf($(`a[title="${name}"]`))));
     }
 
     async setStatusReason(statusValue: string): Promise<void> {
@@ -369,8 +365,7 @@ class CaseEditPage {
 
     async isClearSiteButtonClickable(): Promise<boolean> {
         try {
-            await browser.wait(this.EC.elementToBeClickable($(this.selectors.clearSiteField)));
-            return true;
+            return await $(this.selectors.clearSiteField).isEnabled();
         } catch (error) {
             return false;
         }
@@ -378,8 +373,7 @@ class CaseEditPage {
 
     async isDescriptionClickable(): Promise<boolean> {
         try {
-            await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseDescription)));
-            return true;
+            return await $(this.selectors.caseDescription).isEnabled();
         } catch (error) {
             return false;
         }
@@ -387,8 +381,7 @@ class CaseEditPage {
 
     async isAttachmentLinkClickable(): Promise<boolean> {
         try {
-            await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachLink)));
-            return true;
+            return $(this.selectors.attachLink).isEnabled();
         } catch (error) {
             return false;
         }
@@ -521,7 +514,7 @@ class CaseEditPage {
     }
 
     async isChangeCaseTemplateButtonDisplayed(): Promise<boolean> {
-        return $(this.selectors.changeCaseTemplate).isDisplayed();
+        return await $(this.selectors.changeCaseTemplate).isDisplayed();
     }
 }
 

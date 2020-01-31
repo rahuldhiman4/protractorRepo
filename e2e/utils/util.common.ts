@@ -46,9 +46,9 @@ export class Util {
         var optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
 //        await browser.sleep(1000);
         var option = await element(by.cssContainingText(optionCss, value));
-        await browser.wait(this.EC.elementToBeClickable(option), 2000).then(async function () {
+//        await browser.wait(this.EC.elementToBeClickable(option), 2000).then(async function () {
             await option.click();
-        });
+//        });
     }
 
     async selectDropDown2(dropDownElementFinder: ElementFinder, value: string): Promise<void> {
@@ -61,9 +61,9 @@ export class Util {
 //        }));
         let option = await element(by.cssContainingText(this.selectors.dropDownChoice, value));
 //        await browser.sleep(1000);
-        await browser.wait(this.EC.elementToBeClickable(option), 2000).then(async function () {
+//        await browser.wait(this.EC.elementToBeClickable(option), 2000).then(async function () {
             await option.click();
-        });
+//        });
     }
 
     async isValuePresentInDropDown(guid: string, value: string): Promise<boolean> {
@@ -85,11 +85,11 @@ export class Util {
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
 //        await browser.wait(this.EC.elementToBeClickable(dropDownBoxElement));
         await dropDownBoxElement.click();
-        await browser.wait(this.EC.or(async () => {
-            await browser.wait(this.EC.invisibilityOf(element(by.cssContainingText(this.selectors.dropDownOption, 'Loading data...'))), 2000);
-            let count = await dropDown.$$(this.selectors.dropDownOption).count();
-            return count >= 1;
-        }),3000);
+//        await browser.wait(this.EC.or(async () => {
+//            await browser.wait(this.EC.invisibilityOf(element(by.cssContainingText(this.selectors.dropDownOption, 'Loading data...'))), 2000);
+//            let count = await dropDown.$$(this.selectors.dropDownOption).count();
+//            return count >= 1;
+//        }),3000);
         let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
         for (var i = 0; i < drpDwnvalue; i++) {
             var ab: string = await $$(this.selectors.dropDownOption).get(i).getText();

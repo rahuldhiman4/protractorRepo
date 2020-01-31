@@ -64,7 +64,7 @@ class editNotesTemplate {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
 //        await utilCommon.waitUntilPopUpDisappear();
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
     }
 
     async clickOnCancelButton(): Promise<void> {
