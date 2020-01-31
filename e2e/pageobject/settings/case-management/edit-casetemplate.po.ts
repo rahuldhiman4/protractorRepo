@@ -53,52 +53,52 @@ class EditCaseTemplate {
     }
 
     async clickOnCopyCaseTemplate(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyTemplate)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyTemplate)));
         await $(this.selectors.copyTemplate).click();
     }
 
     async clickSaveCaseTemplate(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async clickOnTaskFlowButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskFlow)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskFlow)));
         await $(this.selectors.taskFlow).click();
     }
 
     async clickOnCancelButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
     async clickOnMangeDyanmicLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.manageDynamicFieldsLink)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.manageDynamicFieldsLink)));
         await $(this.selectors.manageDynamicFieldsLink).click();
     }
 
     async clickOnCancelTemplateMetaData(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelTemplateMetaData)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelTemplateMetaData)));
         await $(this.selectors.cancelTemplateMetaData).click();
     }
 
     async getCaseTemplateID(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.caseTemplateId)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseTemplateId)));
         return await $(this.selectors.caseTemplateId).getText();
     }
 
     async clickOnSaveCaseTemplateMetadata(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveTemplateMetaData)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveTemplateMetaData)));
         await $(this.selectors.saveTemplateMetaData).click();
     }
 
     async clickOnEditCaseTemplateMetadata(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editTemplateMetaData)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editTemplateMetaData)));
         await $(this.selectors.editTemplateMetaData).click();
     }
 
     async clickEditCaseTemplate(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editcaseTemplate)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editcaseTemplate)));
         await $(this.selectors.editcaseTemplate).click();
     }
 
@@ -108,7 +108,7 @@ class EditCaseTemplate {
     }
 
     async clickOnClearButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.clearButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.clearButton)));
         await $(this.selectors.clearButton).click();
     }
 
@@ -119,17 +119,17 @@ class EditCaseTemplate {
     }
 
     async getValueOfTier1(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.tier1ValueOnCaseTemplate)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.tier1ValueOnCaseTemplate)));
         return await $(this.selectors.tier1ValueOnCaseTemplate).getText();
     }
 
     async getValueOfTier2(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.tier2ValueOnCaseTemplate)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.tier2ValueOnCaseTemplate)));
         return await $(this.selectors.tier2ValueOnCaseTemplate).getText();
     }
 
     async getValueOfTier3(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.tier3ValueOnCaseTemplate)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.tier3ValueOnCaseTemplate)));
         return await $(this.selectors.tier3ValueOnCaseTemplate).getText();
     }
 
@@ -162,7 +162,7 @@ class EditCaseTemplate {
     }
 
     async changeReopenTimelineDays(reopenDaysValues: string) {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.reopentimelineDays)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.reopentimelineDays)));
         await $(this.selectors.reopentimelineDays).sendKeys(reopenDaysValues);
     }
 
@@ -207,7 +207,7 @@ class EditCaseTemplate {
     }
 
     async clickOnChangeAssignmentButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
         await $(this.selectors.changeAssignmentButton).click();
     }
 
@@ -220,7 +220,7 @@ class EditCaseTemplate {
     }
 
     async clearCaseSummary():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummary)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummary)));
         await $(this.selectors.caseSummary).clear();
     }
 
@@ -229,35 +229,35 @@ class EditCaseTemplate {
     }
 
     async changeCaseSummary(caseSummaryValue: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
         await $(this.selectors.caseSummary).clear();
         await $(this.selectors.caseSummary).sendKeys(caseSummaryValue);
     }
 
     async changeCaseDescription(caseDescription: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.caseDescription)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseDescription)));
         await $(this.selectors.caseDescription).clear();
         await $(this.selectors.caseDescription).sendKeys(caseDescription);
     }
 
     async getValueOfAssignmentMethod(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignmentMethodValue)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignmentMethodValue)));
         return await $(this.selectors.assignmentMethodValue).getText(); 
      }
 
      async isCaseCompanyDisabled(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.editCaseCompany)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.editCaseCompany)));
         return await $(this.selectors.editCaseCompany).getAttribute('disabled');
     }
 
     async isCaseSummaryReadOnly(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
         let value= await $(this.selectors.caseSummary).getAttribute('readonly');
         return value=='true'? true:false;        
     }
 
     async isSaveButtonOnMetaDataIsDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.saveTemplateMetaData)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveTemplateMetaData)));
         let value= await $(this.selectors.saveTemplateMetaData).getAttribute('disabled');
         return value=='true'? true:false;        
     }
