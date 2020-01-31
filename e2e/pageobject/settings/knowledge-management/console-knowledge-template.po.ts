@@ -11,9 +11,9 @@ class ConsoleKnowledgeArticleTemplate {
     }
 
     async clickCreateNewKATemplate(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.newKATemplateButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.newKATemplateButton)));
         await $(this.selectors.newKATemplateButton).click();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.blade)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.blade)));
     }
 }
 export default new ConsoleKnowledgeArticleTemplate();

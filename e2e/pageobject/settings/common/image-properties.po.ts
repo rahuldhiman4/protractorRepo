@@ -21,19 +21,19 @@ class ImagePropertiesPopUp {
     }
 
     async clickOnOkButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.oKButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.oKButton)));
         await $(this.selectors.oKButton).click();
     }
 
     async clickOnSendItToServerButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.sendItToServerButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.sendItToServerButton)));
         await $(this.selectors.sendItToServerButton).click();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.preViewBoxImg)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.preViewBoxImg)));
 
     }
 
     async clickOnTab(menuName: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.tabs)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.tabs)));
         await element(by.cssContainingText(this.selectors.tabs,menuName)).click();
     }
 

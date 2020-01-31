@@ -9,17 +9,17 @@ class ReadAccessConsolePage {
     }
 
     async isAddButtonDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.addReadAccessBtn)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.addReadAccessBtn)));
         return await $(this.selectors.addReadAccessBtn).getAttribute("disabled") == "true";
     }
 
     async isDeleteButtonDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
         return await $(this.selectors.deleteButton).getAttribute("disabled") == "true";
     }
 
     async clickOnReadAccessConfiguration(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.addReadAccessBtn)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.addReadAccessBtn)));
         await $(this.selectors.addReadAccessBtn).click();
     }
 

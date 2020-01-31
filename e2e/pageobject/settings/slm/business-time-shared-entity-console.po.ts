@@ -8,7 +8,7 @@ class BusinessTimeSharedEntityConfigConsolePage {
     }
 
     async isAddBtnDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.addBusinessTimeSharedEntity)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.addBusinessTimeSharedEntity)));
         return await $(this.selectors.addBusinessTimeSharedEntity).getAttribute("disabled") == "true";
     }
 

@@ -11,17 +11,17 @@ class ProcessLibraryConfigEditPage {
     }
 
     async isDescriptionDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         return await $(this.selectors.editDescription).getAttribute("readonly") == "true";
     }
 
     async isStatusDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         return await $(this.selectors.status).getAttribute("readonly") == "true";
     }
 
     async isSaveButtonDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         return await $(this.selectors.saveButton).getAttribute("disabled") == "true";
     }
 

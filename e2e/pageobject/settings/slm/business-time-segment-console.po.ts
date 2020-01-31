@@ -8,7 +8,7 @@ class BusinessSegmentConsolePage {
     }
 
     async isAddBusinessSegmentBtnDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.addBusinessSegment)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.addBusinessSegment)));
         return await $(this.selectors.addBusinessSegment).getAttribute("disabled") == "true";
     }
 

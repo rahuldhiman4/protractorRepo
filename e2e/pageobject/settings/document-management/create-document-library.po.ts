@@ -40,9 +40,9 @@ class DocumentLibraryPage {
     }
 
     async openAddNewDocumentBlade(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addDocumentButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addDocumentButton)));
         await $(this.selectors.addDocumentButton).click();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.titleField)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.titleField)));
     }
 
     async setTitle(title: string): Promise<void> {
@@ -58,7 +58,7 @@ class DocumentLibraryPage {
     }
 
     async clickOnSaveButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
@@ -87,12 +87,12 @@ class DocumentLibraryPage {
     }
 
     async saveNewDocument(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
 	}
 
     async saveUpdatedDocument(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editSaveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editSaveButton)));
         await $(this.selectors.editSaveButton).click();
     }
 

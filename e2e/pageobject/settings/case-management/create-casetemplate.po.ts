@@ -49,14 +49,14 @@ class CreateCaseTemplate {
     }
 
     async clickSaveCaseTemplate(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-        await browser.wait(this.EC.elementToBeClickable($(viewCaseTemplate.selectors.identityValidationValue)));
+//        await browser.wait(this.EC.elementToBeClickable($(viewCaseTemplate.selectors.identityValidationValue)));
     }
 
     async clickOnCancelButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
@@ -97,7 +97,7 @@ class CreateCaseTemplate {
     }
 
     async setReopenTimelineDays(reopenDaysValues: string) {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.reopentimelineDays)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.reopentimelineDays)));
         await $(this.selectors.reopentimelineDays).sendKeys(reopenDaysValues);
     }
 
@@ -142,7 +142,7 @@ class CreateCaseTemplate {
     }
 
     async clickOnChangeAssignmentButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
         await $(this.selectors.changeAssignmentButton).click();
     }
 
@@ -159,25 +159,25 @@ class CreateCaseTemplate {
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
         await $(this.selectors.templateName).clear();
         await $(this.selectors.templateName).sendKeys(templateNameValue);
     }
 
     async setCaseSummary(caseSummaryValue: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
         await $(this.selectors.caseSummary).clear();
         await $(this.selectors.caseSummary).sendKeys(caseSummaryValue);
     }
 
     async setCaseDescription(caseDescription: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.caseDescription)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseDescription)));
         await $(this.selectors.caseDescription).clear();
         await $(this.selectors.caseDescription).sendKeys(caseDescription);
     }
 
     async getPanelHeading(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.panelHeadingOfSetting)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.panelHeadingOfSetting)));
         return await $(this.selectors.panelHeadingOfSetting).getText();
     }
 
@@ -197,7 +197,7 @@ class CreateCaseTemplate {
         await changeAssignemetBlade.selectSupportGroup(caseTemplate.supportGroup);
         await changeAssignemetBlade.selectAssignee(caseTemplate.assignee);
         await changeAssignemetBlade.clickOnAssignButton();
-        await browser.sleep(2000);
+//        await browser.sleep(2000);
         // expect(await copyCasetemplatePo.getValueOfAssignee()).toBe(caseTemplate.assignee);
         await this.clickSaveCaseTemplate();
     }

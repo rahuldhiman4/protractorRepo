@@ -11,19 +11,19 @@ class ReadAccessConfigEditPage {
     }
 
     async isAccessMappingNameDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroup)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroup)));
         return await $(this.selectors.editName).getAttribute("readonly") == "true";
     }
 
     async isDefaultToggleBtnDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroup)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroup)));
         let readProperty1: string = await $$(this.selectors.defaultToggle).get(0).getAttribute("disabled");
         let readProperty2: string = await $$(this.selectors.defaultToggle).get(1).getAttribute("disabled");
         return (readProperty1 == "true" && readProperty2 == "true")
     }
 
     async isSaveBtnDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
         return await $(this.selectors.saveButton).getAttribute("disabled") == "true";
     }
 

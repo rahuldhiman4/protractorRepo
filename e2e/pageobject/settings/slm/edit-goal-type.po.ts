@@ -10,12 +10,12 @@ class GoalTypeConfigEditPage {
     }
 
     async isStatusFieldDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         return await $(this.selectors.status).getAttribute("disabled") == "true";
     }
 
     async isSaveButtonDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         return await $(this.selectors.status).getAttribute("disabled") == "true";
     }
 }

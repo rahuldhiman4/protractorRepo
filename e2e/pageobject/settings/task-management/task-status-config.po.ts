@@ -12,12 +12,12 @@ class TaskStatusConfigPage {
     }
 
     async setCompanyDropdown(company: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.companyDropdown)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.companyDropdown)));
         await utilCommon.selectDropDown(this.selectors.companyGrid, company);
     }
 
     async isEditLifrCycleBtnDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.editLifeCycleButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.editLifeCycleButton)));
         return await $(this.selectors.editLifeCycleButton).getAttribute("disabled") == "true";
     }
 
