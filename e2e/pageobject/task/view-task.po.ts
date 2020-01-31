@@ -39,7 +39,7 @@ class ViewTask {
     }
 
     async clickOnRequesterEmail(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesterEmailLink)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesterEmailLink)));
         await $(this.selectors.requesterEmailLink).click();
     }
 
@@ -48,17 +48,17 @@ class ViewTask {
     }
 
     async clickOnChangeStatus(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeStatusButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeStatusButton)));
         await $(this.selectors.changeStatusButton).click();
     }
 
     async clickOnSaveStatus(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveStatus)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveStatus)));
         await $(this.selectors.saveStatus).click();
     }
 
     async clickOnCancelStatus(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancleStatus)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancleStatus)));
         await $(this.selectors.cancleStatus).click();
     }
 
@@ -67,183 +67,181 @@ class ViewTask {
     }
 
     async getUpdateTaskStatusDrpdownValue(no: number): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.allStatus)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.allStatus)));
         return await $$(this.selectors.allStatus).get(no).getText();
     }
 
 
     async clickOnUpdateStatusDrpdown(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.updateStatusDropDown)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.updateStatusDropDown)));
         await $(this.selectors.updateStatusDropDown).click();
     }
 
     async clickOnEditTask(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editButton)),3000);
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editButton)),3000);
         await $(this.selectors.editButton).click();
     }
 
     async isTaskIdTextDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskIdText)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskIdText)));
         return await $(this.selectors.taskIdText).isDisplayed();
     }
 
     async isTaskIconDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskIcon)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskIcon)));
         return await $(this.selectors.taskIcon).isDisplayed();
     }
 
     async isTaskPriorityDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskPriority)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskPriority)));
         return await $(this.selectors.taskPriority).isDisplayed();
     }
 
     async isTaskTimeDetailsDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTimeDetails)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTimeDetails)));
         return await $(this.selectors.taskTimeDetails).isDisplayed();
     }
 
     async isTaskSummaryDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummary)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummary)));
         return await $(this.selectors.taskSummary).isDisplayed();
     }
 
     async isCaseSummaryDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
         return await $(this.selectors.caseSummary).isDisplayed();
     }
 
     async isCaseViewLinkDisplayed(): Promise<boolean> {
         try {
-            await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewCaseLink)));
-            return true;
+            return await $(this.selectors.viewCaseLink).isEnabled();
         } catch (error) {
             return false;
         }
     }
 
     async istaskStatusDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)));
         return await $(this.selectors.taskStatus).isDisplayed();
     }
 
     async getTaskStatusValue(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)));
         return await $(this.selectors.taskStatus).getText();
     }
 
     async isEditLinkDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.editButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.editButton)));
         return await $(this.selectors.editButton).isDisplayed();
     }
 
     async isViewCaseLinkDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.viewCaseLink)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.viewCaseLink)));
         return await $(this.selectors.viewCaseLink).isDisplayed();
     }
 
     async isRequesterNameDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterName)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterName)));
         return await $(this.selectors.requesterName).isDisplayed();
     }
 
     async isRequesterContactDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterContact)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterContact)));
         return await $(this.selectors.requesterContact).isDisplayed();
     }
 
     async isRequesterMailDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterMail)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterMail)));
         return await $(this.selectors.requesterMail).isDisplayed();
     }
 
     async isCategoryTier1ValueDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier1Value)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier1Value)));
         return await $(this.selectors.categoryTier1Value).isDisplayed();
     }
 
     async isCategoryTier2ValueDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier2Value)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier2Value)));
         return await $(this.selectors.categoryTier2Value).isDisplayed();
     }
 
     async isCategoryTier3ValueDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3Value)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3Value)));
         return await $(this.selectors.categoryTier3Value).isDisplayed();
     }
 
     async isAssigneeNameDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeName)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeName)));
         return await $(this.selectors.assigneeName).isDisplayed();
     }
 
     async isAssignCompanyDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.assignCompany)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.assignCompany)));
         return await $(this.selectors.assignCompany).isDisplayed();
     }
 
     async isAssignGroupTextDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.assignGroupText)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.assignGroupText)));
         return await $(this.selectors.assignGroupText).isDisplayed();
     }
 
     async clickOnViewCase(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewCaseLink)),2000);
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewCaseLink)),2000);
         await $(this.selectors.viewCaseLink).click();
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
 
     async getCategoryTier1Value(): Promise<string> {
-        await browser.wait(this.EC.presenceOf($(this.selectors.categoryTier1Value)));
+//        await browser.wait(this.EC.presenceOf($(this.selectors.categoryTier1Value)));
         return await $(this.selectors.categoryTier1Value).getText();
     }
 
     async getCategoryTier2Value(): Promise<string> {
-        await browser.wait(this.EC.presenceOf($(this.selectors.categoryTier2Value)));
+//        await browser.wait(this.EC.presenceOf($(this.selectors.categoryTier2Value)));
         return await $(this.selectors.categoryTier2Value).getText();
     }
 
     async getCategoryTier3Value(): Promise<string> {
-        await browser.wait(this.EC.presenceOf($(this.selectors.categoryTier3Value)));
+//        await browser.wait(this.EC.presenceOf($(this.selectors.categoryTier3Value)));
         return await $(this.selectors.categoryTier3Value).getText();
     }
 
     async getCategoryTier4Value(): Promise<string> {
-        await browser.wait(this.EC.presenceOf($(this.selectors.categoryTier4Value)));
+//        await browser.wait(this.EC.presenceOf($(this.selectors.categoryTier4Value)));
         return await $(this.selectors.categoryTier4Value).getText();
     }
 
     async getLabelValue(): Promise<string> {
-        await browser.wait(this.EC.presenceOf($(this.selectors.labelValue)));
+//        await browser.wait(this.EC.presenceOf($(this.selectors.labelValue)));
         return await $(this.selectors.labelValue).getText();
     }
 
     async getDescriptionValue(): Promise<string> {
-        await browser.wait(this.EC.presenceOf($(this.selectors.descriptionValue)));
+//        await browser.wait(this.EC.presenceOf($(this.selectors.descriptionValue)));
         return await $(this.selectors.descriptionValue).getText();
     }
 
     async getTaskTypeValue(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTypeValue)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTypeValue)));
         return await $(this.selectors.taskTypeValue).getText();
     }
 
     async getProcessNameValue(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.processnameValue)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.processnameValue)));
         return await $(this.selectors.processnameValue).getText();
     }
 
     async isProcessNameValue(): Promise<boolean> {
         try {
-            await browser.wait(this.EC.invisibilityOf($(this.selectors.processnameValue)));
-            return true;
+            return await $(this.selectors.processnameValue).isDisplayed();
         } catch (error) {
             return false;
         }
     }
 
     async getTaskID(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskIdText)),2000);
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskIdText)),2000);
         return await $(this.selectors.taskIdText).getText();
     }
 } 

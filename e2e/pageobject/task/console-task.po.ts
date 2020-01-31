@@ -38,15 +38,15 @@ class TaskGridPage {
     }
 
       async clickonColumnHeader(value:string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.columnHeaders)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.columnHeaders)));
         await element(by.cssContainingText(this.selectors.columnHeaders,value)).click();
     }
 
     async getFilterValue(copy: string): Promise<boolean> {
         let arr: string[] = await this.getAllValuesFromColumn();
         return arr.length === copy.length && arr.every(
-                        (value, index) => (value === copy[index])
-                    );
+            (value, index) => (value === copy[index])
+        );
     }
 
     async getAllValuesFromColumn(): Promise<string[]> {
@@ -63,41 +63,41 @@ class TaskGridPage {
             gridRecord[columnPosition]= await browser.element(by.xpath("(//*[@class='ui-grid-cell-contents'])"+"["+columnPosition+"]")).getText()
         }
         let returnedvalue =gridRecord.filter(function (el) {
-                        return el != null;
-                      });
+            return el != null;
+        });
         return returnedvalue ;
     }
 
     async setTaskSearchBoxValue(input: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTemplate)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTemplate)));
         await $(this.selectors.searchTemplate).clear();
         await $(this.selectors.searchTemplate).sendKeys(input, Key.ENTER);
     }
 
     async getTaskTitle(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTitle)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTitle)));
         return await $(this.selectors.taskTitle).getText();
     }
 
     async clickFirstLinkInTaskTemplateSearchGrid(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateLink)));
-        await browser.sleep(3000);
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateLink)));
+//        await browser.sleep(3000);
         await $$(this.selectors.recommendedTemplateLink).first().click();
     }
 
     async isCaseIdLinkIsPresent(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf(element(by.xpath("(//*[@role='gridcell'])[2]//a"))));
+//        await browser.wait(this.EC.visibilityOf(element(by.xpath("(//*[@role='gridcell'])[2]//a"))));
         var caseId: string = await element(by.xpath("(//*[@role='gridcell'])[2]//a")).getText();
         return caseId.includes('CASE');
     }
     async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateCheckBox)));
-        await browser.sleep(3000);
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateCheckBox)));
+//        await browser.sleep(3000);
         await $(this.selectors.recommendedTemplateCheckBox).click();
     }
     async getFilteredValue(filterName: string): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.tableValue)));
-        await browser.sleep(3000);
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.tableValue)));
+//        await browser.sleep(3000);
         return await element(by.cssContainingText(this.selectors.tableValue, filterName)).getText();
     }
 
