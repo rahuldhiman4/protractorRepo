@@ -96,12 +96,12 @@ class ChangeAssignmentBlade {
         await companyDropDown.$('button').click();
 //        await browser.wait(this.EC.visibilityOf(companyDropDown.$('input')));
         await companyDropDown.$('input').sendKeys(companyValue);
-        await browser.wait(this.EC.or(async () => {
-            let count = await companyDropDown.$$(this.selectors.selectOptions).count();
-            return count >= 1;
-        }));
+//        await browser.wait(this.EC.or(async () => {
+//            let count = await companyDropDown.$$(this.selectors.selectOptions).count();
+//            return count >= 1;
+//        }));
         var option = await element(by.cssContainingText(this.selectors.selectOptions, companyValue));
-        await browser.wait(this.EC.elementToBeClickable(option));
+//        await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
     }
 
@@ -111,10 +111,10 @@ class ChangeAssignmentBlade {
         await businessUnitDropDown.$('button').click();
 //        await browser.wait(this.EC.visibilityOf(businessUnitDropDown.$('input')));
         await businessUnitDropDown.$('input').sendKeys(businessUnit);
-        await browser.wait(this.EC.or(async () => {
-            let count = await businessUnitDropDown.$$(this.selectors.selectOptions).count();
-            return count >= 1;
-        }));
+//        await browser.wait(this.EC.or(async () => {
+//            let count = await businessUnitDropDown.$$(this.selectors.selectOptions).count();
+//            return count >= 1;
+//        }));
         var option = await element(by.cssContainingText(this.selectors.selectOptions, businessUnit));
 //        await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
@@ -126,10 +126,10 @@ class ChangeAssignmentBlade {
         await departmentDropdown.$('button').click();
 //        await browser.wait(this.EC.visibilityOf(departmentDropdown.$('input')));
         await departmentDropdown.$('input').sendKeys(department);
-        await browser.wait(this.EC.or(async () => {
-            let count = await departmentDropdown.$$(this.selectors.selectOptions).count();
-            return count >= 1;
-        }));
+//        await browser.wait(this.EC.or(async () => {
+//            let count = await departmentDropdown.$$(this.selectors.selectOptions).count();
+//            return count >= 1;
+//        }));
         var option = await element(by.cssContainingText(this.selectors.selectOptions, department));
 //        await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
@@ -141,10 +141,10 @@ class ChangeAssignmentBlade {
         await supportGroupDropDown.$('button').click();
 //        await browser.wait(this.EC.visibilityOf(supportGroupDropDown.$('input')));
         await supportGroupDropDown.$('input').sendKeys(supportGroup);
-        await browser.wait(this.EC.or(async () => {
-            let count = await supportGroupDropDown.$$(this.selectors.selectOptions).count();
-            return count >= 1;
-        }))
+//        await browser.wait(this.EC.or(async () => {
+//            let count = await supportGroupDropDown.$$(this.selectors.selectOptions).count();
+//            return count >= 1;
+//        }));
         var option = await element(by.cssContainingText(this.selectors.selectOptions, supportGroup));
 //        await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
@@ -153,14 +153,14 @@ class ChangeAssignmentBlade {
     async selectAssignee(name: string): Promise<void> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchAsignee)));
         await $(this.selectors.searchAsignee).sendKeys(name + Key.ENTER);
-        await browser.wait(this.EC.or(async () => {
-            let count = await $$(this.selectors.assignee).count();
-            return count >= 2;
-        }));
+//        await browser.wait(this.EC.or(async () => {
+//            let count = await $$(this.selectors.assignee).count();
+//            return count >= 2;
+//        }));
         var option = await element(by.cssContainingText(this.selectors.assignee, name));
-        await browser.wait(this.EC.elementToBeClickable(option)).then(async function () {
-            await option.click();
-        });
+//        await browser.wait(this.EC.elementToBeClickable(option)).then(async function () {
+        await option.click();
+//        });
     }
 
     async setAssignee(company: string, group: string, assignee: string): Promise<void> {
@@ -172,10 +172,10 @@ class ChangeAssignmentBlade {
 
     async setAssigneeGroup(group: string): Promise<void> {
         await this.selectSupportGroup(group);
-        await browser.wait(this.EC.or(async () => {
-            let count = await $$(this.selectors.assignee).count();
-            return count >= 1;
-        }))
+//        await browser.wait(this.EC.or(async () => {
+//            let count = await $$(this.selectors.assignee).count();
+//            return count >= 1;
+//        }));
         let name = "Assign to Support Group";
         var option = await element(by.cssContainingText(this.selectors.assignee, name));
 //        await browser.wait(this.EC.visibilityOf(option));

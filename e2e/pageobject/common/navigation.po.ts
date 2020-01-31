@@ -38,9 +38,9 @@ class NavigationPage {
     async isHambergerIconPresent(): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.settingsButton)));
 //        await browser.wait(this.EC.presenceOf($(this.verticalSelectors.hamburgerIcon)), 60000);
-        await browser.wait(this.EC.or(async () => {
-            await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
-        }));
+//        await browser.wait(this.EC.or(async () => {
+//            await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
+//        }));
         let hamburgerHideAttribute = await $(this.verticalSelectors.hamburgerIcon).getAttribute('aria-hidden');
         return hamburgerHideAttribute == 'true' ? false : true;
     }
@@ -61,7 +61,7 @@ class NavigationPage {
             await element(by.xpath(this.selectors.createMenu)).click();
             await element(by.xpath(this.selectors.createCaseMenuItem)).click();
         }
-        await browser.wait(this.EC.titleContains('Case Create - Business Workflows'), 30000);
+        await browser.wait(this.EC.titleContains('Case Create - Business Workflows'), 5000);
     }
 
     async isCreateCaseDisplayed(): Promise<boolean> {
@@ -211,7 +211,7 @@ class NavigationPage {
         } else {
             await element(by.xpath(this.selectors.createQuickCaseMenu)).click();
         }
-        await browser.wait(this.EC.titleContains('Case Create - Quick Case - Business Workflows'), 30000);
+        await browser.wait(this.EC.titleContains('Case Create - Quick Case - Business Workflows'), 5000);
     }
 
     async gotoCaseConsole(): Promise<void> {
@@ -228,7 +228,7 @@ class NavigationPage {
             await element(by.xpath(this.selectors.caseConsoleMenuItem)).click();
         }
 //        await utilCommon.waitUntilSpinnerToHide();
-        await browser.wait(this.EC.titleContains('Cases - Business Workflows'), 30000);
+        await browser.wait(this.EC.titleContains('Cases - Business Workflows'), 5000);
     }
 
     async gotoKnowledgeConsole(): Promise<void> {
@@ -243,7 +243,7 @@ class NavigationPage {
 //            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.knowledgeConsoleMenuItem))));
             await element(by.xpath(this.selectors.knowledgeConsoleMenuItem)).click();
         }
-        await browser.wait(this.EC.titleContains('Knowledge Articles - Business Workflows'));
+        await browser.wait(this.EC.titleContains('Knowledge Articles - Business Workflows'), 5000);
     }
 
     async gotoTaskConsole(): Promise<void> {
@@ -258,7 +258,7 @@ class NavigationPage {
 //            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.taskConsoleMenuItem))));
             await element(by.xpath(this.selectors.taskConsoleMenuItem)).click();
         }
-        await browser.wait(this.EC.titleContains('Tasks - Business Workflows'), 30000);
+        await browser.wait(this.EC.titleContains('Tasks - Business Workflows'), 5000);
     }
 
     async gotoCreateKnowledge(): Promise<void> {
@@ -274,7 +274,7 @@ class NavigationPage {
             await element(by.xpath(this.selectors.createKnowledgeMenu)).click();
         }
 //        await utilCommon.waitUntilSpinnerToHide();
-        await browser.wait(this.EC.titleContains('Knowledge Article Templates Preview'), 30000);
+        await browser.wait(this.EC.titleContains('Knowledge Article Templates Preview'), 5000);
     }
 
     async gotoSettingsPage(): Promise<void> {
@@ -286,7 +286,7 @@ class NavigationPage {
 
     async gotoSettingsMenuItem(pathStr: string, expectedTitle: string): Promise<string> {
         const menuItems: Array<string> = pathStr.split('--');
-        await browser.wait(this.EC.visibilityOf($('treecontrol')));
+//        await browser.wait(this.EC.visibilityOf($('treecontrol')));
         let menuItemStr = '//div[contains(@class,"tree-selected")]';
         let ismenuItemSelected:boolean = false;
         try{
@@ -308,7 +308,7 @@ class NavigationPage {
             }
         }}
 //        await utilCommon.waitUntilSpinnerToHide();
-        await browser.wait(this.EC.titleContains(expectedTitle));
+        await browser.wait(this.EC.titleContains(expectedTitle), 5000);
         return await browser.getTitle();
     }
 
@@ -348,7 +348,7 @@ class NavigationPage {
         await browser.actions().mouseMove($(this.selectors.profileMenu)).perform();
 //        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.signOutMenuItem, 'My Profile'))));
         await element(by.cssContainingText(this.selectors.signOutMenuItem, 'My Profile')).click();
-        await browser.wait(this.EC.titleContains('Person Profile - Business Workflows'));
+        await browser.wait(this.EC.titleContains('Person Profile - Business Workflows'), 5000);
     }
 
     async signOut(): Promise<void> {
@@ -360,7 +360,7 @@ class NavigationPage {
         await element(by.cssContainingText(this.selectors.signOutMenuItem, 'Sign Out')).click();
         let noAccess = this.EC.titleContains('No Access');
         let bwfLogin = this.EC.titleContains('Login - Business Workflows');
-        await browser.wait(this.EC.or(noAccess,bwfLogin));
+        await browser.wait(this.EC.or(noAccess,bwfLogin), 5000);
     }
 
     async switchToAnotherApplication(applicationName: string): Promise<void> {

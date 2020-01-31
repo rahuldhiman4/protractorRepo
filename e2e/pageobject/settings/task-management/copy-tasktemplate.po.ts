@@ -67,7 +67,7 @@ class Copytaskpage {
 
     async clickSaveCopytemplate(): Promise<void> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveCopyTemplate)));
-        $(this.selectors.saveCopyTemplate).click();
+        await $(this.selectors.saveCopyTemplate).click();
     }
 
     async selectTemplateStatus(status: string): Promise<void> {

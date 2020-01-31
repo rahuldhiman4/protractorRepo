@@ -271,9 +271,9 @@ class ActivityTabPage {
     async clickOnFilterClearButton(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPopupApplyOrClearButton)));
         await element(by.cssContainingText(this.selectors.filterPopupApplyOrClearButton, 'Clear')).click();
-        await browser.wait(this.EC.or(async () => {
-            await $$(this.selectors.appliedActivityFilter).count() == 0;
-        }));
+//        await browser.wait(this.EC.or(async () => {
+//            await $$(this.selectors.appliedActivityFilter).count() == 0;
+//        }));
     }
 
     async getTextOfFilterTask(): Promise<string> {

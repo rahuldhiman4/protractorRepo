@@ -70,10 +70,10 @@ class ManageTaskBlade {
     }
 
     async clickTaskLinkOnManageTask(taskSummary: string): Promise<void> {
-        await browser.wait(this.EC.or(async () => {
-            let count = await $$(this.selectors.taskFromManageTasks).count();
-            return count >= 1;
-        }));
+//        await browser.wait(this.EC.or(async () => {
+//            let count = await $$(this.selectors.taskFromManageTasks).count();
+//            return count >= 1;
+//        }));
 //        await browser.wait(this.EC.elementToBeClickable(element(by.linkText(taskSummary))));
         await element(by.linkText(taskSummary)).click();
 //        await utilCommon.waitUntilSpinnerToHide();

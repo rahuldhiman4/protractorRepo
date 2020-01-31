@@ -55,9 +55,9 @@ class RelatedCasePage {
             let cases = await $$(this.selectors.allRelatedCases).get(i);
             let nm: string = await cases.$(this.selectors.caseId).getText();
             if (nm == caseId) {
-                await browser.wait(this.EC.or(async () => {
-                    await cases.$(this.selectors.relationship).getAttribute('title');
-                }), 3000);
+//                await browser.wait(this.EC.or(async () => {
+//                    await cases.$(this.selectors.relationship).getAttribute('title');
+//                }), 3000);
                 relation = await cases.$(this.selectors.relationship).getAttribute('title');
                 break;
             }
@@ -162,7 +162,7 @@ class RelatedCasePage {
         await browser.wait(this.EC.or(async () => {
             let count = await $$(this.selectors.allRelatedCases).count();
             return count >= expectedCount;
-        }));
+        }), 3000);
     }
 }
 
