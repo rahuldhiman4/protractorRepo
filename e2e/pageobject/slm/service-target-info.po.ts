@@ -17,41 +17,41 @@ class ServiceTargetInfo {
     }
 
     async isServiceTargetInformationBladeDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationBlade)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationBlade)));
         return await $(this.selectors.serviceTargetInformationBlade).isDisplayed();
     }
 
     async getServiceTargetInformationBladeHeader(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.serviceTargetInformationHeader)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.serviceTargetInformationHeader)));
         return await $(this.selectors.serviceTargetInformationHeader).getText();
     }
 
     async getServiceTargetInformationDetails() {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.serviceTargetInformationCloseButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.serviceTargetInformationCloseButton)));
     }
 
     async isServiceTargetInformationInProcessIconDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationInProceessIcon)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationInProceessIcon)));
         return await $(this.selectors.serviceTargetInformationInProceessIcon).isDisplayed();
     }
 
     async isServiceTargetInformationWarningIconDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationWarningIcon)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationWarningIcon)));
         return await $(this.selectors.serviceTargetInformationWarningIcon).isDisplayed();
     }
 
     async isServiceTargetInformationPausedIconDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationPausedIcon)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationPausedIcon)));
         return await $(this.selectors.serviceTargetInformationPausedIcon).isDisplayed();
     }
 
     async isServiceTargetInformationDualSVTIconDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationDualSVTIcon)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationDualSVTIcon)));
         return await $(this.selectors.serviceTargetInformationDualSVTIcon).isDisplayed();
     }
 
     async isServiceTargetInformationMissedGoalIconDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationMissedGoalIcon)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationMissedGoalIcon)));
         return await $(this.selectors.serviceTargetInformationMissedGoalIcon).isDisplayed();
     }
 }

@@ -15,77 +15,77 @@ class SlmProgressBar {
     }
 
     async isSLAProgressBarDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.slaProgressBar)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.slaProgressBar)));
         return await $(this.selectors.slaProgressBar).isDisplayed();
     }
 
     async isSLAProgressBarInProcessIconDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarInProceess)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarInProceess)));
         return await $(this.selectors.slaProgressBarInProceess).isDisplayed();
     }
 
     async clickOnSLAProgressBarInProcessIcon() {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarInProceess)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarInProceess)));
         await $(this.selectors.slaProgressBarInProceess).click();
     }
 
     async isSLAProgressBarWarningIconDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarWarning)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarWarning)));
         return await $(this.selectors.slaProgressBarWarning).isDisplayed();
     }
 
     async clickOnSLAProgressBarWarningIcon() {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarWarning)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarWarning)));
         await $(this.selectors.slaProgressBarWarning).click();
     }
 
     async isSLAProgressBarMissedGoalIconDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarMissedGoal)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarMissedGoal)));
         return await $(this.selectors.slaProgressBarMissedGoal).isDisplayed();
     }
 
     async clickOnSLAProgressBarMissedGoalIcon() {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarMissedGoal)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarMissedGoal)));
         await $(this.selectors.slaProgressBarMissedGoal).click();
     }
 
     async isSLAProgressBarPausedIconDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarPaused)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarPaused)));
         return await $(this.selectors.slaProgressBarPaused).isDisplayed();
     }
 
     async clickOnSLAProgressBarPausedIcon() {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarPaused)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarPaused)));
         await $(this.selectors.slaProgressBarPaused).click();
     }
 
     async isSLAProgressBarDualSVTIconDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarDualSVT)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarDualSVT)));
         return await $(this.selectors.slaProgressBarDualSVT).isDisplayed();
     }
 
     async clickOnSLAProgressBarDualSVTIcon() {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarDualSVT)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarDualSVT)));
         await $(this.selectors.slaProgressBarDualSVT).click();
     }
 
     async isDueInTimeDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaDueTime)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaDueTime)));
         return await $(this.selectors.slaDueTime).isDisplayed();
     }
 
     async getDueInTime(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaDueTime)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaDueTime)));
         return await $(this.selectors.slaDueTime).getText();
     }
 
     async getServiceTargetToolTipText(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.svtToolTipText)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.svtToolTipText)));
         return await $(this.selectors.svtToolTipText).getText();
     }
 
     async isMultipleSVTAttached(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarInProceess)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarInProceess)));
         var svtRecords: number = await $$(this.selectors.slaProgressBarInProceess).count();
         var isMultiple: boolean = false;
         if (svtRecords > 1) {
@@ -97,7 +97,7 @@ class SlmProgressBar {
     }
 
     async getSVTToolTipText() {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarInProceess)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarInProceess)));
         await browser.actions().mouseMove($$(this.selectors.slaProgressBarInProceess).first()).perform();
     }
 
