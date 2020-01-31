@@ -1,4 +1,4 @@
-import { $, browser, by, By, element, Key, protractor, ProtractorExpectedConditions, until } from 'protractor';
+import { $, browser, by, By, element, Key, protractor, ProtractorExpectedConditions, until, ElementFinder, $$ } from 'protractor';
 import utilCommon, { Util } from './util.common';
 
 export class GridOperation {
@@ -285,19 +285,13 @@ export class GridOperation {
 
     async searchAndSelectGridRecord(searchValue: string, guid?: string): Promise<void> {
         await this.searchOnGridConsole(searchValue);
-        let gridRecordCheckbox: string;
+        let checkboxRows: ElementFinder[];
         if (guid) {
-            gridRecordCheckbox = `//*[@rx-view-component-id="${guid}"]//div[@class="ui-grid-cell-contents"]/ancestor::div[@role='presentation'][contains(@class,'left')]//div[@class='ui-grid-row']`;
+            checkboxRows = await $$(`*[rx-view-component-id="${guid}"] .ui-grid .ui-grid-pinned-container .ui-grid-viewport .ui-grid-row`);
         } else {
-            gridRecordCheckbox = `//div[@class="ui-grid-cell-contents"]/ancestor::div[@role='presentation'][contains(@class,'left')]//div[@class='ui-grid-row']`;
+            checkboxRows = await $$('.ui-grid .ui-grid-pinned-container .ui-grid-viewport .ui-grid-row');
         }
-//        browser.sleep(2000);
-//        await browser.wait(this.EC.or(async () => {
-//            let count = await element.all(by.xpath(gridRecordCheckbox)).count();
-//            return count >= 1;
-//        }), 5000);
-        await element.all(by.xpath(gridRecordCheckbox)).first().click();
-//        browser.sleep(1000);
+        await checkboxRows[0].$('.ui-grid-selection-row-header-buttons').click();
     }
 
     async isGridColumnSorted(columnHeader: string, sortType: string, guid?: string): Promise<boolean> {
