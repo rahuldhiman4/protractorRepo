@@ -59,9 +59,8 @@ describe('Case Manager Read-only Config', () => {
             await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(automatedStatusTransitionData);
         }
-        catch (Ex) {
-            console.log("Issue while creating the Automated status transition");
-            expect(true).toBeFalsy();
+        catch (ex) {
+            throw ex;
         }
         finally {
             await navigationPage.signOut();

@@ -374,8 +374,8 @@ describe('Knowledge Articles Tests', () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
         }
-        catch (Error) {
-            expect(fail);
+        catch (error) {
+            throw error;
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
@@ -727,8 +727,8 @@ describe('Knowledge Articles Tests', () => {
             await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
             await navigationPage.signOut();
         }
-        catch (Error) {
-            expect(fail);
+        catch (error) {
+            throw error;
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
@@ -820,8 +820,8 @@ describe('Knowledge Articles Tests', () => {
             await expect(await resources.getAdvancedSearchResult()).toEqual(title);
             await navigationPage.signOut();
         }
-        catch (Error) {
-            expect(fail);
+        catch (error) {
+            throw error;
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
@@ -865,8 +865,8 @@ describe('Knowledge Articles Tests', () => {
             await editKnowledgePage.editKnowledgeMedataData();
             expect(await editKnowledgePage.getCategoryTier1SelectedValue(categoryTier1)).toBe(categoryTier1FieldVal);
         }
-        catch (Error) {
-            expect(fail);
+        catch (error) {
+            throw error;
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();

@@ -60,8 +60,7 @@ describe("Create Case", () => {
             await createCasePage.selectCategoryTier3('Chatter');
             await createCasePage.selectCategoryTier4('Failure');
         } catch (error) {
-            console.log(error);
-            await expect(true).toBeFalsy();
+            throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
@@ -116,8 +115,7 @@ describe("Create Case", () => {
             await utilCommon.waitUntilPopUpDisappear();
             expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
         } catch (error) {
-            console.log(error);
-            await expect(true).toBeFalsy();
+            throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
@@ -188,8 +186,7 @@ describe("Create Case", () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
         } catch (error) {
-            console.log(error);
-            await expect(true).toBeFalsy();
+            throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
@@ -265,8 +262,7 @@ describe("Create Case", () => {
             await viewCasePage.clickSaveStatus();
             await expect(viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
         } catch (error) {
-            console.log(error);
-            await expect(true).toBeFalsy();
+            throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
@@ -296,8 +292,7 @@ describe("Create Case", () => {
             await caseConsolePage.setCaseSearchBoxValue(caseSummary);
             await expect(caseConsolePage.isCaseIdHyperlinked()).toBeTruthy('Unable to find the created case');
         } catch (error) {
-            console.log(error);
-            await expect(true).toBeFalsy();
+            throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
@@ -345,8 +340,7 @@ describe("Create Case", () => {
             await caseConsolePage.setCaseSearchBoxValue(caseSummary);
             await expect(caseConsolePage.isCaseIdHyperlinked()).toBeTruthy('Unable to find the created case');
         } catch (error) {
-            console.log(error);
-            await expect(true).toBeFalsy();
+            throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
@@ -384,8 +378,7 @@ describe("Create Case", () => {
             await createCasePage.clickGoToCaseButton();
             await expect(viewCasePage.getCaseSummary()).toBe(caseTemplate1);
         } catch (e) {
-            console.log(e);
-            expect(false).toBeTruthy("Failed in try catch block");
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -465,8 +458,7 @@ describe("Create Case", () => {
             await viewCasePage.clickSaveStatus();
             await expect(viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
         } catch (e) {
-            console.log(e);
-            expect(false).toBeTruthy("Failed in try catch block");
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -489,8 +481,7 @@ describe("Create Case", () => {
             await navigationPage.gotoCreateKnowledge();
             await expect((await createKnowledgePage.getCreateKnowledgeTitle()).trim()).toBe('Create Knowledge', "Create Knowledge title is not displayed in Create knowledge Page");
         } catch (e) {
-            console.log(e);
-            expect(false).toBeTruthy("Failed in try catch block");
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -535,8 +526,7 @@ describe("Create Case", () => {
             await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
             await navigationPage.gotoSettingsPage();
         } catch (e) {
-            console.log(e);
-            expect(false).toBeTruthy("Failed in try catch block");
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -614,8 +604,7 @@ describe("Create Case", () => {
             await expect(taskTemplatePreview.getTaskType()).toBe('Manual');
             await taskTemplatePreview.clickOnBackButton();
         } catch (e) {
-            console.log(e);
-            expect(false).toBeTruthy("Failed in try catch block");
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -693,7 +682,7 @@ describe("Create Case", () => {
             await manageTask.clickOnTaskGridSaveButton();
             await manageTask.clickOnCloseButton();
         } catch (e) {
-            console.log(e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -769,8 +758,7 @@ describe("Create Case", () => {
             await viewCasePage.clickOnReopenCaseLink();
             await expect(viewCasePage.getTextOfStatus()).toBe('New');
         } catch (e) {
-            console.log(e);
-            expect(false).toBeTruthy("Failed in try catch block");
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -807,8 +795,7 @@ describe("Create Case", () => {
             await expect(viewCasePage.getAssignedGroupText()).toBe('Compensation and Benefits');
             await expect(viewCasePage.getAssigneeText()).toBe('Qianru Tao');
         } catch (e) {
-            console.log(e);
-            expect(false).toBeTruthy("Failed in try catch block");
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -943,8 +930,7 @@ describe("Create Case", () => {
             await editCasePage.clickSaveCase();
             await expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
         } catch (error) {
-            console.log(error);
-            await expect(true).toBeFalsy();
+            throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");

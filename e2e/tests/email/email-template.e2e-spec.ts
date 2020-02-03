@@ -7,8 +7,8 @@ import createEmailTemplatePo from '../../pageobject/settings/email/create-email-
 import editEmailTemplatePo from '../../pageobject/settings/email/edit-email-template.po';
 import utilCommon from '../../utils/util.common';
 describe('EmailTemplate', () => {
-    let label:string
-    let menuItemDataFile =  require('../../data/ui/ticketing/menuItem.ui.json');
+    let label: string
+    let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qkatawazi');
@@ -175,11 +175,11 @@ describe('EmailTemplate', () => {
         await editEmailTemplatePo.clickOnEditMessageTextBladeSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
 
-        
+
         await consoleEmailTemplatePo.searchOnGridConsole('body');
-        expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toBe('<p>'+body2+'</p>','body not updated correctly');
+        expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toBe('<p>' + body2 + '</p>', 'body not updated correctly');
         await consoleEmailTemplatePo.searchOnGridConsole('subject');
-        expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2,'subject not updated correctly');
+        expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2, 'subject not updated correctly');
 
         // DRDMV-11093
         await editEmailTemplatePo.clickOnLocalizeMessageButton();

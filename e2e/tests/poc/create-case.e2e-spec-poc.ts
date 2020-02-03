@@ -1,5 +1,4 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import createQuickCasePage from '../../pageobject/case/quick-case.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";

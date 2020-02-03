@@ -139,8 +139,7 @@ describe('Document Template', () => {
 
             expect(await documentTemplateConsolePo.isGridRecordPresent(templateRandVal2)).toBeFalsy('template name is preset on grid')
         } catch (e) {
-            console.log(e);
-            await expect(true).toBeFalsy();
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');

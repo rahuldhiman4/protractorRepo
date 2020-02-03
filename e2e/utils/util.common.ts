@@ -1,4 +1,4 @@
-import { browser, until, ExpectedConditions, element, by, $, $$, ProtractorExpectedConditions, protractor, ElementFinder } from 'protractor';
+import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
 
 export class Util {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

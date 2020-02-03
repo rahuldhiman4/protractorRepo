@@ -73,8 +73,8 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.verifyKnowledgeMetadata('Assignee', assigneeFullName);
             await editKnowledgePage.verifyKnowledgeMetadata('Assigned Group', suppGrpData.orgName);
         }
-        catch (Error) {
-            console.log(Error);
+        catch (error) {
+            throw error;
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
@@ -123,8 +123,8 @@ describe('Knowledge Article', () => {
             await utilCommon.waitUntilPopUpDisappear();
             await editKnowledgePage.isReviewPendingButtonDisplayed();
         }
-        catch (Error) {
-            console.log(Error);
+        catch (error) {
+            throw error;
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
@@ -165,8 +165,8 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.verifyKnowledgeMetadata('Assignee', assigneeFullName);
             await editKnowledgePage.verifyKnowledgeMetadata('Assigned Group', suppGrpData.orgName);
         }
-        catch (Error) {
-            console.log(Error);
+        catch (error) {
+            throw error;
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
@@ -190,8 +190,8 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.RetiredStatus);
             await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.ClosedStatus);
         }
-        catch (Error) {
-            console.log(Error);
+        catch (error) {
+            throw error;
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
@@ -268,8 +268,8 @@ describe('Knowledge Article', () => {
             await changeAssignmentBlade.clickOnAssignButton();
             await createKnowledgePage.clickOnSaveKnowledgeButton();
         }
-        catch (Error) {
-            console.log(Error);
+        catch (error) {
+            throw error;
         }
         finally {
             await navigationPage.signOut();
@@ -341,9 +341,8 @@ describe('Knowledge Article', () => {
             await navigationPage.gotoKnowledgeConsole();
             await KnowledgeConsolePage.searchKnowledgeArticle(knowledgeTitle);
             await expect(KnowledgeConsolePage.isArticleIdDisplayed(knowledgeIdValue)).toBeTruthy("Knowledge Article is not displayed");
-
-        } catch (Error) {
-            console.log(Error);
+        } catch (error) {
+            throw error;
         }
         finally {
             await navigationPage.signOut();

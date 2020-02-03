@@ -52,8 +52,8 @@ describe('Create Case Task', () => {
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `Case Process 1 ${randomStr}`,
         }
-		
-		 await apiHelper.createAutomatedTaskTemplate(templateData4);
+
+        await apiHelper.createAutomatedTaskTemplate(templateData4);
         await apiHelper.createManualTaskTemplate(templateData2);
         try {
             //case create
@@ -90,7 +90,7 @@ describe('Create Case Task', () => {
             await expect(await editTask.getTaskTypeValueAttribute('disabled')).toBeTruthy();
             await expect(await editTask.waitProcessNamePresentInTask()).toBeTruthy();
         } catch (e) {
-            expect(false).toBeTruthy('Failed in try catch ' + e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -181,7 +181,7 @@ describe('Create Case Task', () => {
             await expect(await viewTask.getCategoryTier3Value()).toBe('');
             await expect(await viewTask.getCategoryTier4Value()).toBe('');
         } catch (e) {
-            expect(false).toBeTruthy('Failed in try catch ' + e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -369,7 +369,7 @@ describe('Create Case Task', () => {
             await createCasePage.clickGoToCaseButton();
             await expect(viewCasePage.getCategoryTier1Value()).toBe('Applications', "Applications Category Not Present");
         } catch (e) {
-            expect(false).toBeTruthy('Failed in try catch ' + e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -421,7 +421,7 @@ describe('Create Case Task', () => {
             await expect(viewTaskTemplate.getCategoryTier2Value()).toBe('Social', 'Social is not present');
             await expect(viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter', 'Chatter is not present');
         } catch (e) {
-            expect(false).toBeTruthy('Failed in try catch ' + e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -483,7 +483,7 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnSaveButton();
             await expect(viewTaskTemplate.getTaskDescriptionNameValue()).toBe(description, "Unable to find the description");
         } catch (e) {
-            expect(false).toBeTruthy('Failed in try catch ' + e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -542,7 +542,7 @@ describe('Create Case Task', () => {
             await expect(viewTask.allTaskOptionsPresent(status)).toBeTruthy("Staus Not Found");
             await viewTask.clickOnCancelStatus();
         } catch (e) {
-            expect(false).toBeTruthy('Failed in try catch ' + e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -686,7 +686,7 @@ describe('Create Case Task', () => {
             await navigationPage.gotoSettingsPage();
             await expect(navigationPage.isSettingMenuPresent('Case Management')).toBeFalsy();
         } catch (e) {
-            expect(false).toBeTruthy('Failed in try catch ' + e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');

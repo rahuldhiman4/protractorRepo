@@ -240,7 +240,7 @@ describe("compose email", () => {
         expect((await composeMail.isTextPresentInEmailBody('Qianru Tao'))).toBeFalsy();
         await composeMail.clickOnSendButton();
     });
-    
+
     //ptidke
     it('[DRDMV-10398,DRDMV-10396,DRDMV-10402]:Email Template List Update in case compose email', async () => {
         await navigationPage.gotoCaseConsole();

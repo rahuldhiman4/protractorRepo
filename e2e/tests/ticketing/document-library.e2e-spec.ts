@@ -244,8 +244,7 @@ describe('Document Library', () => {
             await navigationPage.gotoSettingsPage();
             expect(await utilCommon.isConfigurationOptionMessageDisplayed('Configuration options not created for these settings.')).toBeTruthy('Document Management Link text is not displayed setting page');
         } catch (e) {
-            console.log(e);
-            await expect(true).toBeFalsy();
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -382,8 +381,7 @@ describe('Document Library', () => {
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal)
 
         } catch (e) {
-            console.log(e);
-            await expect(true).toBeFalsy();
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
