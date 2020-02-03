@@ -69,88 +69,64 @@ describe('Knowledge Articles Tests', () => {
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login(caseBAUser);
-        await apiHelper.apiLogin(caseBAUser);
+        await apiHelper.apiLogin(knowledgePublisherUser);
         var articleData = {
             "knowledgeSet": "HR",
             "title": "DRDMV18670KnowledgeArticle",
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "categoryTier1": "cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c",
-            "categoryTier2": "a1390bbfc100bd7ad0fbe10210092865d8d968ff75c6fc7c68cc9b3cb727b6b9d0fff90f7a2f85aeb5d0d7903ac2b08002e172bfec02e807e4a863dce4716dea",
-            "categoryTier3": "a30287ce17b81c1cc85a1ee1fba666cc810274ce2f5e3817057a9d1ec85a459802cd2c5240376d2e85cd6914115b1696badd1db19604cf840ab0c6d084cf5a80",
-            "region": "56628a427b547dbcfacb771aa3bdafba4a35e453a860d1e2ec96193f347c6de11c10cb3ed7ac44797862c6e30d233f3bf8b2514717b7bc70d134b9b9a8d17099",
-            "site": "0e3cfe8c958e46bd54722d6cc274399504633acb02011b950228abcf10d02cb59145466d4ac3512155204ac6849562c049c9a719e1f961c4a010eb62dc983a8c"
+            "categoryTier1": "Applications",
+            "categoryTier2": "Help Desk",
+            "categoryTier3": "Incident",
+            "region": "Australia",
+            "site": "Canberra",
+            "assignee":"KMills",
+            "assigneeSupportGroup":"GB Support 2"
         }
-        //Create article in draft status
-        let knowledgeArticleTitle: string = articleData.title + "_" + inProgressStatus;
-        articleData.title = knowledgeArticleTitle;
+        //Create article in in progress status
+        articleData.title = articleData.title + "_" + inProgressStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
 
         //Create article in draft status
-        knowledgeArticleTitle = articleData.title + "_" + draftStatus;
-        articleData.title = knowledgeArticleTitle;
+        articleData.title = articleData.title + "_" + draftStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
-        var updateArticle: boolean = await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draft);
-        expect(updateArticle).toBe(true);
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
 
         //Create article in SMEReview status
-        knowledgeArticleTitle = articleData.title + "_" + smeReviewStatus;
-        articleData.title = knowledgeArticleTitle;
+        articleData.title = articleData.title + "_" + smeReviewStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
-        var updateArticle: boolean = await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draft);
-        expect(updateArticle).toBe(true);
-        var updateArticle: boolean = await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, smeReview);
-        expect(updateArticle).toBe(true);
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, smeReviewStatus,knowledgePublisherUser,'GB Support 2','Petramco')).toBeTruthy("Article with SME Review status not updated.");
 
         //Create article in Published status
-        knowledgeArticleTitle = articleData.title + "_" + publishedStatus;
-        articleData.title = knowledgeArticleTitle;
+        articleData.title = articleData.title + "_" + publishedStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
-        var updateArticle: boolean = await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draft);
-        expect(updateArticle).toBe(true);
-        var updateArticle: boolean = await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draft);
-        expect(updateArticle).toBe(true);
-        var updateArticle: boolean = await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, published);
-        expect(updateArticle).toBe(true);
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
 
         //Create article in Retired status
-        knowledgeArticleTitle = articleData.title + "_" + retiredStatus;
-        articleData.title = knowledgeArticleTitle;
+        articleData.title = articleData.title + "_" + retiredStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
-        var updateArticle: boolean = await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draft);
-        expect(updateArticle).toBe(true);
-        var updateArticle: boolean = await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draft);
-        expect(updateArticle).toBe(true);
-        var updateArticle: boolean = await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, published);
-        expect(updateArticle).toBe(true);
-        var updateArticle: boolean = await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, retired);
-        expect(updateArticle).toBe(true);
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, retiredStatus)).toBeTruthy("Article with Retired status not updated.");
 
         //Create article in Closed status
-        knowledgeArticleTitle = articleData.title + "_" + closedStatus;
-        articleData.title = knowledgeArticleTitle;
+        articleData.title = articleData.title + "_" + closedStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
-        var updateArticle: boolean = await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draft);
-        expect(updateArticle).toBe(true);
-        var updateArticle: boolean = await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draft);
-        expect(updateArticle).toBe(true);
-        var updateArticle: boolean = await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, published);
-        expect(updateArticle).toBe(true);
-        var updateArticle: boolean = await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, closed);
-        expect(updateArticle).toBe(true);
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, closedStatus)).toBeTruthy("Article with Closed status not updated.");
 
         //Create article in Canceled status
-        knowledgeArticleTitle = articleData.title + "_" + canceledStatus;
-        articleData.title = knowledgeArticleTitle;
+        articleData.title = articleData.title + "_" + canceledStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
-        var updateArticle: boolean = await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, canceledStatus);
-        expect(updateArticle).toBe(true);
-
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, canceledStatus)).toBeTruthy("Article with Canceled status not updated.");
     });
 
     afterAll(async () => {

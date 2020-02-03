@@ -23,6 +23,7 @@ class ServiceTargetConfig {
         valueDD: 'optionLoader.selectedOption',
         valueSearch: ' input[type="search"]',
         addButton: '.d-textfield__label .margin-top-10 button',
+        expressionBuilderBtn: 'button.d-textfield__item',
     }
 
     async createServiceTargetConfig(svtTitleStr: string, company: string, dataSource: string): Promise<void> {
@@ -35,6 +36,11 @@ class ServiceTargetConfig {
         await $(this.selectors.selectDataSourceDD).click();
         await element(by.cssContainingText(this.selectors.dropDownOption, dataSource)).click();
         await $$(this.selectors.buildExpressionLink).first().click();
+    }
+
+    async clickOnBuildExpression():Promise<void>{
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.expressionBuilderBtn)));
+        await $$(this.selectors.expressionBuilderBtn).first().click();
     }
 
     async selectGoal(goalTime: string) {

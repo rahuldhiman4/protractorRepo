@@ -10,6 +10,6 @@ export interface IKnowledgeArticles{
     articleId?:string;
     status?:string;
     assignee?:string;
-    assigneeSupportGroup?:string;
     company?:string;
+    assigneeSupportGroup?:string;
 }

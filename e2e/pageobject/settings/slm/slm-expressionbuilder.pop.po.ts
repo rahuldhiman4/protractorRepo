@@ -19,6 +19,7 @@ class SlmExpressionBuilder {
         expandExpressionField: '.d-icon-triangle_right',
         selectFirstLevelExpressionField: '.expanded_field',
         selectSecondLevelExpressionField: '.expanded_field .child_field',
+        clearExpression: '.ux-qualification-editor',
     }
 
     async getExpressionFieldAvailable(expressionField: string): Promise<string> {
@@ -70,6 +71,7 @@ class SlmExpressionBuilder {
         let expandExpressionBtn = `//div[@class='expanded_field'][text()='${firstLevelExpression}']/preceding-sibling::div[contains(@class,'d-icon-triangle_right')]`;
         let secondLevelExpressionFields = `//div[@class='expanded_field'][text()='${firstLevelExpression}']//*[@class='child_field']`;
         let secondLevelExpressionFieldVals = `//div[@class='expanded_field'][text()='${firstLevelExpression}']//*[@class='child_field'][text()='${secondLevelExpression}']`
+        browser.sleep(2000);
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).clear();
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).sendKeys(firstLevelExpression);
 //        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(expandExpressionBtn))));
@@ -144,20 +146,17 @@ class SlmExpressionBuilder {
                 await option.click();
                 let addButton = `[${attributeName}] button`;
 //                await browser.wait(this.EC.elementToBeClickable(element(by.css(addButton))));
-                element(by.cssContainingText(addButton, addBtn)).click();
+                await element(by.cssContainingText(addButton, addBtn)).click();
                 break;
             case "STATUS":
 //                await browser.wait(this.EC.elementToBeClickable($('[aria-hidden="false"] select[ng-model="selectedValue"]')));
                 await $('[aria-hidden="false"] select[ng-model="selectedValue"]').click();
-                element(by.cssContainingText('option', fieldOptionValue)).click();
-                browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
+                await element(by.cssContainingText('option', fieldOptionValue)).click();
                 break;
             case "SELECTION":
 //                await browser.wait(this.EC.elementToBeClickable($('[aria-hidden="false"] select[ng-model="selectedValue"]')));
                 await $('[aria-hidden="false"] select[ng-model="selectedValue"]').click();
-                element(by.cssContainingText('option', fieldOptionValue)).click();
-                browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
-                break;
+                await element(by.cssContainingText('option', fieldOptionValue)).click();                break;
             case "DATE_TIME":
 //                await browser.wait(this.EC.elementToBeClickable($("input[ng-model='date']")));
                 await element(by.css("input[ng-model='date']")).sendKeys(fieldOptionValue);
@@ -165,7 +164,7 @@ class SlmExpressionBuilder {
             case "ASSOCIATION":
 //                await browser.wait(this.EC.elementToBeClickable(clickOnOptionFieldDropDown));
                 await clickOnOptionFieldDropDown.click();
-                option = element(by.cssContainingText(selectFieldOptionFromDropDown, fieldOptionValue));
+                option = await element(by.cssContainingText(selectFieldOptionFromDropDown, fieldOptionValue));
 //                await browser.wait(this.EC.elementToBeClickable(option));
                 await option.click();
                 break;
@@ -177,7 +176,7 @@ class SlmExpressionBuilder {
                 await element(by.className('uib-typeahead-match active')).click();
                 addButton = `${attributeRef} button`;
 //                await browser.wait(this.EC.elementToBeClickable(element(by.css(addButton))));
-                element(by.cssContainingText(addButton, addBtn)).click();
+                await element(by.cssContainingText(addButton, addBtn)).click();
                 break;
             default:
 //                await browser.wait(this.EC.elementToBeClickable(attributeReference.$(textField)));
@@ -186,7 +185,7 @@ class SlmExpressionBuilder {
                 await attributeReference.$(textField).sendKeys(fieldOptionValue);
                 addButton = `${attributeRef} button`;
 //                await browser.wait(this.EC.elementToBeClickable(element(by.css(addButton))));
-                element(by.cssContainingText(addButton, addBtn)).click();
+await element(by.cssContainingText(addButton, addBtn)).click();
         }
     }
 
@@ -238,6 +237,13 @@ class SlmExpressionBuilder {
 //        await browser.wait(this.EC.visibilityOf(element(this.expressionBuilderSelectors.isPartialExpression)));
         return await $(this.expressionBuilderSelectors.isPartialExpression).isDisplayed();
     }
+
+    async clearSelectedExpression() {
+        // await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.clearExpression)));
+        await $(this.expressionBuilderSelectors.clearExpression).click();
+        await $(this.expressionBuilderSelectors.clearExpression).clear();
+    }
+
 }
 
 export default new SlmExpressionBuilder();
