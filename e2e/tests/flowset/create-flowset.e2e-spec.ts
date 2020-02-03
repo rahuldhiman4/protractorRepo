@@ -1,11 +1,11 @@
 import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import utilCommon from '../../utils/util.common';
 import consoleFlowset from '../../pageobject/flowset/console-flowset-config.po';
 import createFlowset from '../../pageobject/flowset/create-flowset-config.po';
 import editFlowset from '../../pageobject/flowset/edit-flowset-config.po';
-import apiHelper from '../../api/api.helper';
+import utilCommon from '../../utils/util.common';
 
 describe('Create Flow Set', () => {
     beforeAll(async () => {
@@ -19,7 +19,6 @@ describe('Create Flow Set', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //ankagraw

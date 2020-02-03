@@ -20,7 +20,6 @@ describe("Notification Template", () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-19109]: [Copy Notification] - UI behavior when copying a notification template', async () => {

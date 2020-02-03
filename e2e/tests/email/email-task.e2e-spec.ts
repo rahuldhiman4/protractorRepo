@@ -5,8 +5,8 @@ import changeAssignmentBladePo from '../../pageobject/common/change-assignment-b
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import emailPo from '../../pageobject/email/compose-mail.po';
-import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
 import emailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
+import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
 import { default as activityTabPo, default as socialActivity } from '../../pageobject/social/activity-tab.po';
 import editTask from "../../pageobject/task/edit-task.po";
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
@@ -26,7 +26,6 @@ describe('Email', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-19011]: Automated task should not have email options but other type of task should have email option	', async () => {
@@ -278,8 +277,7 @@ describe('Email', () => {
             await emailPo.clickOnDiscardButton();
             await utilCommon.clickOnWarningOk();
         } catch (e) {
-            expect(true).toBeFalsy();
-            console.log(e);
+            throw e;
         }
         finally {
             await navigationPage.signOut();
@@ -631,8 +629,7 @@ describe('Email', () => {
             await emailPo.clickOnDiscardButton();
             await utilCommon.clickOnWarningOk();
         } catch (e) {
-            expect(true).toBeFalsy();
-            console.log(e);
+            throw e;
         }
         finally {
             await navigationPage.signOut();

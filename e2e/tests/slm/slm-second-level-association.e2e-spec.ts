@@ -22,7 +22,6 @@ describe('Service Taret Tests', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-19665]:UI Validation to check how associations are displayed on build expression blade', async () => {

@@ -20,7 +20,6 @@ describe('Copy Case Template', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-13551,DRDMV-13529]: Create a Copy of Case template where Company is copied properly', async () => {
@@ -108,7 +107,7 @@ describe('Copy Case Template', () => {
             await consoleCasetemplatePo.searchAndselectCaseTemplate(copyCaseTemplateName);
             await expect(consoleCasetemplatePo.getCaseTemplateNamePresentOnGrid(copyCaseTemplateName)).toBe(copyCaseTemplateName);
         } catch (e) {
-            console.log(e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
@@ -158,7 +157,7 @@ describe('Copy Case Template', () => {
             await expect(copyCaseTemplate.isOwnerGroupEmpty()).toBeTruthy();
             await expect(copyCaseTemplate.isOwnerCompanyEmpty()).toBeTruthy();
         } catch (e) {
-            console.log(e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");

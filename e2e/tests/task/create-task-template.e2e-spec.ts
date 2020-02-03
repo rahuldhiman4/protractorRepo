@@ -19,7 +19,6 @@ describe('Create Case Task', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //ankagraw
@@ -67,8 +66,7 @@ describe('Create Case Task', () => {
             await expect(viewTaskTemplate.isSupportGuidTitlePresent('Support Group')).toBeTruthy();
             await expect(viewTaskTemplate.isEditButtonPresent()).toBeTruthy();
         } catch (error) {
-            console.log(error);
-            await expect(true).toBeFalsy();
+            throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
@@ -97,8 +95,7 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnSaveButton();
             await expect(viewTaskTemplate.getTaskCompanyNameValue()).toBe('- Global -');
         } catch (error) {
-            console.log(error);
-            await expect(true).toBeFalsy();
+            throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
@@ -128,8 +125,7 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnSaveButtonWithoutWait();
             await expect(utilCommon.getPopUpMessage()).toBe('ERROR (222121): Company marked for Global usage cannot be modified.')
         } catch (error) {
-            console.log(error);
-            await expect(true).toBeFalsy();
+            throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
@@ -166,8 +162,7 @@ describe('Create Case Task', () => {
             await expect(editTaskTemplate.isTemplateStatusDisabled()).toBeTruthy("Template status is enabled");
             await editTaskTemplate.clickOnCancelMetadataButton();
         } catch (error) {
-            console.log(error);
-            await expect(true).toBeFalsy();
+            throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
@@ -217,8 +212,7 @@ describe('Create Case Task', () => {
             await expect(viewTaskTemplate.getCategoryTier1Value()).toBe("Applications");
             await expect(viewTaskTemplate.getCategoryTier2Value()).toBe("Social");
         } catch (error) {
-            console.log(error);
-            await expect(true).toBeFalsy();
+            throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");

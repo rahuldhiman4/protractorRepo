@@ -4,12 +4,12 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
 import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
-import utilCommon from '../../utils/util.common';
 import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
+import utilCommon from '../../utils/util.common';
 
 describe('AcknowledgmentTemplate', () => {
-    let label:string;
-    let menuItemDataFile =  require('../../data/ui/ticketing/menuItem.ui.json');
+    let label: string;
+    let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qkatawazi');
@@ -29,7 +29,6 @@ describe('AcknowledgmentTemplate', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //kgaikwad
@@ -149,7 +148,7 @@ describe('AcknowledgmentTemplate', () => {
         await editAcknowledgmentTemplatePo.selectStatusDropDown('Active');
         expect(await editAcknowledgmentTemplatePo.isLocalizedMessageButtonDisplayed()).toBeTruthy('Localize message button is missing');
         await editAcknowledgmentTemplatePo.selectlocaleDropDown('English (United States)');
-        let arr:string[]=["Dutch (Netherlands)","English (United States)","French (France)","German (Germany)","Italian (Italy)","Portuguese (Brazil)","Spanish (International Sort)","Swedish (Sweden)"]
+        let arr: string[] = ["Dutch (Netherlands)", "English (United States)", "French (France)", "German (Germany)", "Italian (Italy)", "Portuguese (Brazil)", "Spanish (International Sort)", "Swedish (Sweden)"]
         expect(await editAcknowledgmentTemplatePo.isLocaleDropDownValueDisplayed(arr)).toBeTruthy('Values not displayed in locale drop down');
 
 
@@ -167,9 +166,9 @@ describe('AcknowledgmentTemplate', () => {
         await utilCommon.waitUntilPopUpDisappear();
 
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('body');
-        expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toBe('<p>'+body2+'</p>','body not updated correctly');
+        expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toBe('<p>' + body2 + '</p>', 'body not updated correctly');
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('subject');
-        expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2,'subject not updated correctly');
+        expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2, 'subject not updated correctly');
         await editAcknowledgmentTemplatePo.clickOnSaveButton();
 
         // DRDMV-10924
@@ -208,7 +207,7 @@ describe('AcknowledgmentTemplate', () => {
         await createAcknowledgmentTemplatesPo.setSubject(subject);
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:'+templateName3,'Duplicate private template name error message is missing');
+        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:' + templateName3, 'Duplicate private template name error message is missing');
         await utilCommon.closePopUpMessage();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
@@ -222,7 +221,7 @@ describe('AcknowledgmentTemplate', () => {
         await createAcknowledgmentTemplatesPo.setSubject(subject);
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:'+templateName2,'Duplicate private template name error message is missing');
+        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:' + templateName2, 'Duplicate private template name error message is missing');
         await utilCommon.closePopUpMessage();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
