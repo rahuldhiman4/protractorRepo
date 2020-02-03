@@ -79,6 +79,7 @@ class CaseEditPage {
         assignedGroup: '[rx-view-component-id="116edc77-c040-42db-8a32-dc836e4cb254"] .ui-select-container',
         activityFeed: '[author="feedItem.author"]',
         activityChangeFile: '.d-icon-files_change_o',
+        getCaseDisplayId:'span.text-field',
     }
 
     async waitForEditCasePageToBeDisplayed(): Promise<void> {

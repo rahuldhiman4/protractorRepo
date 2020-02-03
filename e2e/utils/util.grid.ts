@@ -183,7 +183,7 @@ export class GridOperation {
     async searchAndClickOnHyperLink(gridId: string, value: string) {
         await browser.wait(until.elementLocated(By.css(this.getGridLocator('summaryField', gridId))), 10000).sendKeys(value);
         await browser.wait(until.elementLocated(By.css(this.getGridLocator('searchButton', gridId))), 10000).click();
-        let gridvalueLink = element(by.cssContainingText((this.getGridLocator('gridLink', gridId)), value));
+        let gridvalueLink = await element(by.cssContainingText((this.getGridLocator('gridLink', gridId)), value));
         console.log(gridvalueLink);
 //        await browser.wait(this.EC.elementToBeClickable(gridvalueLink));
 //        await browser.sleep(3000);
@@ -191,10 +191,7 @@ export class GridOperation {
     }
 
     async clickOnSelectedGridRecord(guid: string, columnHeader: string): Promise<void> {
-        let gridRecord: string;
-        columnHeader = "'" + columnHeader + "'";
-        guid = "'" + guid + "'";
-        var gridColumnHeaderPosition = `//*[@rx-view-component-id=${guid}]//span[@class="ui-grid-header-cell-label"][text()=${columnHeader}]/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
+        var gridColumnHeaderPosition = `//*[@rx-view-component-id='${guid}']//span[@class="ui-grid-header-cell-label"][text()='${columnHeader}']/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
         var gridRecords = '//div[@class="ui-grid-canvas"]/div';
         try {
             var columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
