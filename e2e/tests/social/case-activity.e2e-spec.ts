@@ -708,7 +708,7 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.clickOnFilterClearButton();
         await expect(await activityTabPage.isfilterPresent()).not.toBeTruthy('filter displayed');
-    }, 220 * 1000);
+    }, 210 * 1000);
 
     //kgaikwad
     it('[DRDMV-18048]: While adding a note on Case one or more agent can be tagged in Comment', async () => {

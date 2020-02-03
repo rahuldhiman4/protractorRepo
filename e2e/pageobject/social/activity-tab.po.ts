@@ -19,7 +19,7 @@ class ActivityTabPage {
         filterPopupApplyOrClearButton: '.filter-options .d-button',
         activityText: '[rx-view-component-id="34167059-11d4-4e85-8a58-e501544e2461"] [title="Activity"]',
         FilterTask: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .d-tag-label',
-        FilterPopUp: '.activity-log-filter-trigger',
+        FilterPopUp: '.filter-button button',
         filterApplyButtonEnableDisabled: '.filter-options button[disabled="disabled"]',
         filterLists: '.d-tag-label',
         nMoreButton: '.show__more-toggle',
@@ -217,13 +217,16 @@ class ActivityTabPage {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).click();
         await $(this.selectors.filterAuthor).sendKeys(AuthorName);
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)), 2000);
         await $(this.selectors.personPopup).click();
     }
 
     async removeAuthorFromFilter(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.authorCloseButton)));
-        await $(this.selectors.authorCloseButton).click();
+        await $(this.selectors.authorCloseButton).click().then(async () => {
+            let classValue: string = await $(this.selectors.filterAuthor).getAttribute('class');
+            return classValue.includes('ng-empty');
+        });
     }
 
     async isAuthorBoxEmpty(): Promise<boolean> {
