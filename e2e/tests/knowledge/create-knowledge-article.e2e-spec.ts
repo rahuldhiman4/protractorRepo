@@ -31,7 +31,6 @@ describe('Knowledge Article', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     async function foundationData(company: string) {

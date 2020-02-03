@@ -20,7 +20,6 @@ describe('Copy Case Template', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-13551,DRDMV-13529]: Create a Copy of Case template where Company is copied properly', async () => {

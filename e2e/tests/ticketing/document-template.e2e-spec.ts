@@ -21,7 +21,6 @@ describe('Document Template', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //kgaikwad

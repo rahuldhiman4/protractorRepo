@@ -19,7 +19,6 @@ describe('Person Profile test', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //asahitya

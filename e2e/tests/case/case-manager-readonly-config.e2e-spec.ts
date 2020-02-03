@@ -42,7 +42,6 @@ describe('Case Manager Read-only Config', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     // asahitya

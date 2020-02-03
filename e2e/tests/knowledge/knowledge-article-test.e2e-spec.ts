@@ -32,7 +32,6 @@ describe('Knowledge Article', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //ptidke

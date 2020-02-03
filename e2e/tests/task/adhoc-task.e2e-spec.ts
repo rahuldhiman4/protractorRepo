@@ -25,7 +25,6 @@ describe('Create Adhoc task', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-3820,DRDMV-1239]: Adhoc Task Create view (UI verification)', async () => {

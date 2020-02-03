@@ -28,7 +28,6 @@ describe('Notes template', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //ptidke

@@ -25,7 +25,6 @@ describe('Copy Task Template', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-14214]: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {

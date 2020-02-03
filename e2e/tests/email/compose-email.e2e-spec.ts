@@ -27,7 +27,6 @@ describe("compose email", () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-8377]: UI validation Email Option via Create New Case', async () => {

@@ -26,7 +26,6 @@ describe('Email', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-19011]: Automated task should not have email options but other type of task should have email option	', async () => {

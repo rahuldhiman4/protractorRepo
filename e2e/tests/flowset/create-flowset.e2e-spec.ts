@@ -19,7 +19,6 @@ describe('Create Flow Set', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //ankagraw

@@ -23,7 +23,6 @@ describe('Service Taret Tests', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-17016]:Check if expression is build by using all available field with different relation', async () => {
