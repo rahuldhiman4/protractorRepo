@@ -31,7 +31,7 @@ class notesTemplateUsage {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notesTemplateButton)));
         await $(this.selectors.notesTemplateButton).click();
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchTextBox)));
-        await utilGrid.searchAndSelectFirstCheckBox(this.selectors.searchGuid, notesTemplate);
+        await utilGrid.searchAndSelectGridRecord(notesTemplate, this.selectors.searchGuid);
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyButton)));
         await $(this.selectors.applyButton).click();
 //        await utilCommon.waitUntilSpinnerToHide();

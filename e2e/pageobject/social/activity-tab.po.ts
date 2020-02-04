@@ -223,15 +223,11 @@ class ActivityTabPage {
 
     async removeAuthorFromFilter(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.authorCloseButton)));
-        await $(this.selectors.authorCloseButton).click().then(async () => {
-            let classValue: string = await $(this.selectors.filterAuthor).getAttribute('class');
-            return classValue.includes('ng-empty');
-        });
+        await $(this.selectors.authorCloseButton).click();
     }
 
     async isAuthorBoxEmpty(): Promise<boolean> {
-//        browser.sleep(2000);
-        return await $(this.selectors.authorFieldEmpty).isPresent();
+        return await $(this.selectors.filterAuthor).getAttribute('value') == "" ? true : false;
     }
 
     async searchAuthorOnFilter(AuthorName: string): Promise<void> {
