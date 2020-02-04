@@ -6,33 +6,11 @@ const { SpecReporter } = require('jasmine-spec-reporter');
 var HtmlReporter = require('protractor-beautiful-reporter');
 const specJsonReporter = require('./reporters/spec-json-reporter/jasmine-spec-json-reporter');
 
-const fs = require('fs');
-
-function resetJasminSpecJsonReport() {
-  const jsonReportPath = 'e2e/reports/spec-json-report/spec-json-report.json';
-  if (fs.existsSync(jsonReportPath)) {
-    fs.unlinkSync(jsonReportPath);
-  }
-
-  if (!fs.existsSync('e2e/reports')) {
-    fs.mkdirSync('e2e/reports');
-  }
-
-  if (!fs.existsSync('e2e/reports/spec-json-report')) {
-    fs.mkdirSync('e2e/reports/spec-json-report');
-  }
-
-  try {
-    fs.writeFileSync(jsonReportPath, JSON.stringify([]));
-  } catch (error) {
-    console.log(error);
-  }
-}
 /**
  * @type { import("protractor").Config }
  */
 exports.config = {
-  allScriptsTimeout: 5000,
+  allScriptsTimeout: 10000,
   getPageTimeout: 20000,
 
   capabilities: {
@@ -49,7 +27,8 @@ exports.config = {
   },
 
   directConnect: false,
-  baseUrl: 'http://clm-pun-t3erts.bmc.com:8008',
+//  baseUrl: 'http://clm-pun-t3erts.bmc.com:8008',
+  baseUrl: 'http://clm-aus-t5jj96.bmc.com:8008',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
@@ -60,7 +39,7 @@ exports.config = {
   async onPrepare() {
     let globals = require('protractor/built');
     let browser = globals.browser;
-    await browser.waitForAngularEnabled(false);
+//    await browser.waitForAngularEnabled(false);
 
     //Implicitly wait
     await browser.manage().timeouts().implicitlyWait(5000);
@@ -105,7 +84,6 @@ exports.config = {
     }).getJasmine2Reporter());
 
     jasmine.getEnv().addReporter(specJsonReporter);
-    resetJasminSpecJsonReport();
   },
 
 };

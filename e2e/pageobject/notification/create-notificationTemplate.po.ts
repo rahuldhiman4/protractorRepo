@@ -27,37 +27,37 @@ class createNotificationTemplate {
     }
 
     async setTemplateName(value: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
         await $(this.selectors.templateName).sendKeys(value);
     }
 
     async setSubject(value: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.subject)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.subject)));
         await $(this.selectors.subject).sendKeys(value);
     }
 
     async setDescription(value: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
         await $(this.selectors.description).sendKeys(value);
     }
 
     async clickOnInsertFieldOfAlert(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.alertInsertField)),2000);
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.alertInsertField)),2000);
         await $(this.selectors.alertInsertField).click();
     }
 
     async clickOnInsetFieldOfEmail(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailInsertField)),2000);
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailInsertField)),2000);
         await $(this.selectors.emailInsertField).click();
     }
 
     async clickOnTab(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.clickOnEmailTab)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.clickOnEmailTab)));
         await $(this.selectors.clickOnEmailTab).click();
     }
 
     async clickOnCancelButton():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
         await utilCommon.clickOnWarningOk();
     }
@@ -71,7 +71,7 @@ class createNotificationTemplate {
     }
 
     async clickOnSaveButton():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 

@@ -17,7 +17,6 @@ describe("Quick Case", () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     afterAll(async () => {

@@ -154,7 +154,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
         await caseConsole.clickOnWatchlistIcon();
-        await caseWatchlist.addFilter("Status", "Resolved",'searchbox');
+        await caseWatchlist.addFilter("Status", "Resolved", 'searchbox');
         expect(await caseWatchlist.isEntireColumnContainsValue("Status", "Resolved")).toBeTruthy("Records are not filtered"); //Need to fix common method written by Ankush
     });
 
@@ -274,8 +274,7 @@ describe('Case Watchlist', () => {
             await notificationAlerts.clickOnNotificationIcon();
         }
         catch (ex) {
-            expect(false).toBeTruthy("Failed in try catch block");
-            console.log(ex);
+            throw ex;
         }
         finally {
             await navigationPage.signOut();
@@ -546,8 +545,7 @@ describe('Case Watchlist', () => {
             await notificationAlerts.clickOnNotificationIcon();
         }
         catch (ex) {
-            await expect(false).toBeTruthy("Failed in try catch block");
-            console.log(ex);
+            throw ex;
         }
         finally {
             //Reset login
@@ -621,8 +619,7 @@ describe('Case Watchlist', () => {
             await notificationAlerts.clickOnNotificationIcon();
         }
         catch (ex) {
-            expect(false).toBeTruthy("Failed in try block");
-            console.log(ex);
+            throw ex;
         }
         finally {
             //Reset login
@@ -817,8 +814,7 @@ describe('Case Watchlist', () => {
             await notificationAlerts.clickOnNotificationIcon();
         }
         catch (ex) {
-            expect(false).toBeTruthy("Failed in try catch block");
-            console.log(ex);
+            throw ex;
         }
         finally {
             await navigationPage.signOut();
@@ -1040,8 +1036,7 @@ describe('Case Watchlist', () => {
             await notificationAlerts.clickOnNotificationIcon();
         }
         catch (ex) {
-            expect(false).toBeTruthy("Failed in try catch block");
-            console.log(ex);
+            throw ex;
         }
         finally {
             await navigationPage.signOut();
@@ -1134,8 +1129,7 @@ describe('Case Watchlist', () => {
             await notificationAlerts.clickOnNotificationIcon();
         }
         catch (ex) {
-            expect(false).toBeTruthy("Failed in try catch block");
-            console.log(ex);
+            throw ex;
         }
         finally {
             await navigationPage.signOut();

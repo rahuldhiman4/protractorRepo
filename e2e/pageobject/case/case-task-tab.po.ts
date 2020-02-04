@@ -7,7 +7,7 @@ class CaseTaskTab {
     }
 
     async clickoncasetaskArrowtab(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.arrowTask)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.arrowTask)));
         await $(this.selectors.arrowTask).click();
     }
 }

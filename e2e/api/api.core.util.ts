@@ -53,6 +53,14 @@ class ApiCoreUtil {
         return allRecords;
     }
 
+    async getEmailTemplateGuid(emailTemplateName:string):Promise<string>{
+        let allRecords = await this.getGuid("com.bmc.dsm.notification-lib:NotificationTemplate");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[304412071] === emailTemplateName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
     async getDynamicFieldGuid(dynamicFieldName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.ticketing-lib:AttributeDefinition");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
@@ -135,6 +143,22 @@ class ApiCoreUtil {
         let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Operational Category");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[304405421] === category;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getRegionGuid(region: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Region");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[260000001] === region;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getSiteGuid(site: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Site");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[260000001] === site;
         });
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }

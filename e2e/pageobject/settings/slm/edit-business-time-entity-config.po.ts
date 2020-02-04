@@ -14,27 +14,27 @@ class BusinessTimeEntityConfigEditPage {
     }
 
     async updateStatus(status: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await utilCommon.selectDropDown(this.selectors.statusGuid, status);
     }
 
     async isSaveBtnDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         return await $(this.selectors.saveButton).getAttribute("disabled") == "true";
     }
 
     async isAddBusinessSegmentBtnDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         return await $(this.selectors.addBusinessSegmentButton).getAttribute("disabled") == "true";
     }
 
     async selectAllShortDescription(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.shortDescriptionSelectAll).click();
     }
 
     async isRemoveBtnDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.removeShortDecriptionButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.removeShortDecriptionButton)));
         return await $(this.selectors.removeShortDecriptionButton).getAttribute("disabled") == "true";
     }
 

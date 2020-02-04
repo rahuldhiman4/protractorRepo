@@ -29,7 +29,6 @@ describe('Create Case Task', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //ankagraw
@@ -38,32 +37,23 @@ describe('Create Case Task', () => {
         let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
         let automationTaskTemplate = 'Automation task' + Math.floor(Math.random() * 1000000);
         let automationTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData2 = {
+            "templateName": `manualTaskTemplateDraft ${randomStr}`,
+            "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
+            "templateStatus": "Active",
+        }
 
-        //Manual task Template
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await selectTaskTemplate.clickOnManualTaskTemplateButton();
-        await taskTemplate.setTemplateName(manualTaskTemplate);
-        await taskTemplate.setTaskSummary(manualTaskSummary);
-        await taskTemplate.setTaskDescription('Description in manual task');
-        await taskTemplate.selectCompanyByName('Petramco');
-        await taskTemplate.selectTemplateStatus('Active');
-        await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        let templateData4 = {
+            "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": `Case Process 1 ${randomStr}`,
+        }
 
-        //Automation Task template
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
-        await taskTemplate.setTemplateName(automationTaskTemplate);
-        await taskTemplate.setTaskSummary(automationTaskSummary);
-        await taskTemplate.setTaskDescription('Description in manual task');
-        await taskTemplate.selectCompanyByName('Petramco');
-        await taskTemplate.setNewProcessName('Approval', 'Get Request Status Data 123');
-        await taskTemplate.selectTemplateStatus('Active');
-        await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
-
+        await apiHelper.createAutomatedTaskTemplate(templateData4);
+        await apiHelper.createManualTaskTemplate(templateData2);
         try {
             //case create
             await navigationPage.signOut();
@@ -77,6 +67,8 @@ describe('Create Case Task', () => {
             await viewCasePage.clickAddTaskButton();
 
             //Add Manual task and Automation Task in Case
+            await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTask.addTaskFromTaskTemplate(`manualTaskTemplateDraft ${randomStr}`)
             expect(await manageTask.isTaskLinkOnManageTask(manualTaskSummary)).toBeTruthy(manualTaskTemplate + ' Task is not added to case');
             expect(await manageTask.isTaskLinkOnManageTask(automationTaskSummary)).toBeTruthy(automationTaskTemplate + ' Task is not added to case');
 
@@ -97,7 +89,7 @@ describe('Create Case Task', () => {
             await expect(await editTask.getTaskTypeValueAttribute('disabled')).toBeTruthy();
             await expect(await editTask.waitProcessNamePresentInTask()).toBeTruthy();
         } catch (e) {
-            expect(false).toBeTruthy('Failed in try catch ' + e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -188,7 +180,7 @@ describe('Create Case Task', () => {
             await expect(await viewTask.getCategoryTier3Value()).toBe('');
             await expect(await viewTask.getCategoryTier4Value()).toBe('');
         } catch (e) {
-            expect(false).toBeTruthy('Failed in try catch ' + e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -376,7 +368,7 @@ describe('Create Case Task', () => {
             await createCasePage.clickGoToCaseButton();
             await expect(viewCasePage.getCategoryTier1Value()).toBe('Applications', "Applications Category Not Present");
         } catch (e) {
-            expect(false).toBeTruthy('Failed in try catch ' + e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -428,7 +420,7 @@ describe('Create Case Task', () => {
             await expect(viewTaskTemplate.getCategoryTier2Value()).toBe('Social', 'Social is not present');
             await expect(viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter', 'Chatter is not present');
         } catch (e) {
-            expect(false).toBeTruthy('Failed in try catch ' + e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -490,7 +482,7 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnSaveButton();
             await expect(viewTaskTemplate.getTaskDescriptionNameValue()).toBe(description, "Unable to find the description");
         } catch (e) {
-            expect(false).toBeTruthy('Failed in try catch ' + e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -549,7 +541,7 @@ describe('Create Case Task', () => {
             await expect(viewTask.allTaskOptionsPresent(status)).toBeTruthy("Staus Not Found");
             await viewTask.clickOnCancelStatus();
         } catch (e) {
-            expect(false).toBeTruthy('Failed in try catch ' + e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -693,7 +685,7 @@ describe('Create Case Task', () => {
             await navigationPage.gotoSettingsPage();
             await expect(navigationPage.isSettingMenuPresent('Case Management')).toBeFalsy();
         } catch (e) {
-            expect(false).toBeTruthy('Failed in try catch ' + e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');

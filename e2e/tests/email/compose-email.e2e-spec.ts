@@ -27,7 +27,6 @@ describe("compose email", () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-8377]: UI validation Email Option via Create New Case', async () => {
@@ -241,7 +240,8 @@ describe("compose email", () => {
         await composeMail.clickOnSendButton();
     });
 
-    it('[DRDMV-10398,DRDMV-10396]: Email Template List Update in case compose email', async () => {
+    //ptidke
+    it('[DRDMV-10398,DRDMV-10396,DRDMV-10402]:Email Template List Update in case compose email', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
@@ -271,6 +271,13 @@ describe("compose email", () => {
         expect(await composeMail.getSubject()).toContain(caseId);
         expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
         expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplateName);
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteEmailTemplate(emailTemplateName);
+        await composeMail.clickOnSelectEmailTemplateLink();
+        await utilCommon.waitUntilSpinnerToHide();
+        await utilGrid.searchRecord(emailTemplateName);
+        expect(await emailTemplateBladePo.isEmailTemplateGridEmpty(emailTemplateName)).toBeFalsy('Email template grid is not empty');
+        await emailTemplateBladePo.clickOnCancelButton();
         await composeMail.clickOnSendButton();
     });
 

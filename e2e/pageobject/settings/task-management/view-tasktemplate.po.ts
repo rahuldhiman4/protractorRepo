@@ -1,5 +1,5 @@
 import utilCommon from '../../../utils/util.common';
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions, element,by } from "protractor";
 
 class ViewTaskTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -38,56 +38,62 @@ class ViewTaskTemplate {
         taskDescriptonGuid:'cce67ce7-e6a5-4ed6-aa50-c57ea75d2854',
         supportGroupGuid: '244607b3-1fd7-490c-975b-7640a6b2c615',
         assigneeGuid: 'bb18eb5c-ba9c-47e1-8593-cd79aefac190',
+        dynamicField: '[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] .d-textfield__item'
     }
 
 
     async getDynamicFieldTitle(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.dynamicFieldTitle)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.dynamicFieldTitle)));
         return await $(this.selectors.dynamicFieldTitle).getText();
     }
 
+    async getDynamicField(dynamic:string): Promise<string> {
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.dynamicField)));
+        return await element(by.cssContainingText(this.selectors.dynamicField, dynamic))
+    }
+
     async clickOnManageDynamicFieldLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.manageDynamicField)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.manageDynamicField)));
         await $(this.selectors.manageDynamicField).click();
     }
 
     async isManageDynamicFieldLinkDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.manageDynamicField)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.manageDynamicField)));
         return await $(this.selectors.manageDynamicField).isDisplayed();
     }
 
     async getOwnerCompanyValue(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerCompanyValue)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerCompanyValue)));
         return await $(this.selectors.ownerCompanyValue).getText();
     }
 
     async getOwnerGroupValue(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerGroupValue)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerGroupValue)));
         return await $(this.selectors.ownerGroupValue).getText();
     }
 
     async getProcessNameValue(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.processnameValue)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.processnameValue)));
         return await $(this.selectors.processnameValue).getText();
     }
 
     async getTemplateName(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
         return await $(this.selectors.templateName).getText();
     }
 
     async getTemplateStatus(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.templateStatus)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.templateStatus)));
         return await $(this.selectors.templateStatus).getText();
     }
 
     async clickOnCopyTemplate(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyTaskButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyTaskButton)));
         await $(this.selectors.copyTaskButton).click();
     }
 
     async clickOnEditProcessLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editProcessLink)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editProcessLink)));
         await $(this.selectors.editProcessLink).click();
     }
 
@@ -96,52 +102,52 @@ class ViewTaskTemplate {
     }
 
     async clickOnEditLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
         await $(this.selectors.editLink).click();
     }
 
     async getSummaryValue(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.summaryValue)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.summaryValue)));
         return await $(this.selectors.summaryValue).getText();
     }
 
     async getTaskTypeValue(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTypeValue)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTypeValue)));
         return await $(this.selectors.taskTypeValue).getText();
     }
 
     async getTaskDescriptionNameValue(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskDescriptionValue)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskDescriptionValue)));
         return await $(this.selectors.taskDescriptionValue).getText();
     }
 
     async getTaskCompanyNameValue(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskCompanyValue)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskCompanyValue)));
         return await $(this.selectors.taskCompanyValue).getText();
     }
 
     async getTaskTemplateId(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskTemplateId)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskTemplateId)));
         return await $(this.selectors.taskTemplateId).getText();
     }
 
     async getCategoryTier1Value(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier1Value)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier1Value)));
         return await $(this.selectors.categoryTier1Value).getText();
     }
 
     async getCategoryTier2Value(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier2Value)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier2Value)));
         return await $(this.selectors.categoryTier2Value).getText();
     }
 
     async getCategoryTier3Value(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3Value)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3Value)));
         return await $(this.selectors.categoryTier3Value).getText();
     }
 
     async getCategoryTier4Value(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier4Value)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier4Value)));
         return await $(this.selectors.categoryTier4Value).getText();
     }
 
@@ -206,7 +212,7 @@ class ViewTaskTemplate {
     }
 
     async isEditButtonPresent(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
         return await $(this.selectors.editLink).isDisplayed();
     }
 }

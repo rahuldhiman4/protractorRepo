@@ -27,7 +27,6 @@ describe('Case And Employee Relationship', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //asahitya

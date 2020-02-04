@@ -23,7 +23,6 @@ describe('Service Taret Tests', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-17016]:Check if expression is build by using all available field with different relation', async () => {
@@ -31,10 +30,10 @@ describe('Service Taret Tests', () => {
         expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
             .toEqual('Service Target - Administration - Business Workflows');
         await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
-        await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'ASSOCIATION', 'Employee Relations');
+        await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'ASSOCIATION', 'Applications');
         await SlmExpressionBuilder.clickOnAddExpressionButton('ASSOCIATION');
         var selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
-        var expectedSelectedExp = "'" + "Category Tier 1" + "'" + "=" + '"' + "Employee Relations" + '"'
+        var expectedSelectedExp = "'" + "Category Tier 1" + "'" + "=" + '"' + "Applications" + '"'
         expect(selectedExp).toEqual(expectedSelectedExp);
         await SlmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("2");
@@ -47,7 +46,7 @@ describe('Service Taret Tests', () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester('Mary');
         await createCasePage.setSummary('Case for SVT creation');
-        await createCasePage.selectCategoryTier1('Employee Relations');
+        await createCasePage.selectCategoryTier1('Applications');
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();

@@ -27,7 +27,6 @@ describe('Case Activity', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //kgaikwad
@@ -69,7 +68,7 @@ describe('Case Activity', () => {
             await activityTabPage.selectFilterCheckBox('Feedback');
             await activityTabPage.addAuthorOnFilter('Angelina Jolie');
             await activityTabPage.clickOnFilterApplyButton();
-            utilCommon.waitUntilSpinnerToHide();
+            // await utilCommon.waitUntilSpinnerToHide();
             expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
             // ii) Selected Filters are displayed in Activity with first filter and + other selected filters
             expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'), 'General Notes is missing';
@@ -87,7 +86,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
             expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 3 more');
             await activityTabPage.closeNmoreLink();
-            utilCommon.waitUntilSpinnerToHide();
+            // await utilCommon.waitUntilSpinnerToHide();
             // iv)- Click on + n more button (- Selected filter list is displayed )
             await activityTabPage.clickOnNmoreLink();
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
@@ -99,13 +98,13 @@ describe('Case Activity', () => {
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
             await activityTabPage.removeFilterList();
             expect(await activityTabPage.isfilterListDisplayed('Flag')).toBeFalsy('Flag displayed');
-            utilCommon.waitUntilSpinnerToHide();
+            // await utilCommon.waitUntilSpinnerToHide();
             // 6) All filters are removed.
             await activityTabPage.clickOnFilterButton();
             await activityTabPage.clickOnFilterClearButton();
             expect(await activityTabPage.isfilterPresent()).toBeFalsy('filter displayed');
         } catch (e) {
-            console.log(e);
+            throw e;
         } finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
@@ -188,7 +187,7 @@ describe('Case Activity', () => {
             // ii) - Select another user and click on Apply
             await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
         } catch (e) {
-            console.log(e);
+            throw e;
         } finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
@@ -235,7 +234,7 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isHyperlinkOfActivityDisplay(knowledgeBodyText, 'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
         } catch (e) {
-            console.log(e);
+            throw e;
         } finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
@@ -709,7 +708,7 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.clickOnFilterClearButton();
         await expect(await activityTabPage.isfilterPresent()).not.toBeTruthy('filter displayed');
-    }, 220 * 1000);
+    }, 210 * 1000);
 
     //kgaikwad
     it('[DRDMV-18048]: While adding a note on Case one or more agent can be tagged in Comment', async () => {
@@ -794,7 +793,7 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnPostButton();
             await activityTabPage.clickOnHyperlinkFromActivity(knowledgeBodyText, 'Qadim Katawazi');
         } catch (e) {
-            console.log(e);
+            throw e;
         } finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }

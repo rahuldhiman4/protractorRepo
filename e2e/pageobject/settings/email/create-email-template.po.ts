@@ -19,7 +19,7 @@ class CreateEmailTemplate {
     }
 
     async setTemplateName(value: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
         await $(this.selectors.templateName).sendKeys(value);
     }
 
@@ -36,32 +36,32 @@ class CreateEmailTemplate {
     }
 
     async setDescription(value: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
         await $(this.selectors.description).sendKeys(value);
     }
 
     async setSubject(value: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.subject)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.subject)));
         await $(this.selectors.subject).sendKeys(value);
     }
 
     async setBody(value: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.body)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.body)));
         await $(this.selectors.body).sendKeys(value);
     }
 
     async clickOnInsertField(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.insertField)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.insertField)));
         await $(this.selectors.insertField).click();
     }
 
     async clickOnSaveButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
     
     async clickOnCancelButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 

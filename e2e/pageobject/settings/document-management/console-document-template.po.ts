@@ -7,7 +7,7 @@ class DocumentTemplateConsole {
     }
 
     async clickOnCreateDocumentTemplate():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createDocumentTemplate)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createDocumentTemplate)));
         await $(this.selectors.createDocumentTemplate).click();
     }
 

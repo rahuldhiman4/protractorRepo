@@ -1,10 +1,12 @@
 import axios from "axios";
-import { filter, find } from 'lodash';
+import { filter, find, get, isArray } from 'lodash';
 import * as config from './jira.util.config';
 
 const minimist = require("minimist");
 const fs = require("fs");
 const { Parser } = require('json2csv');
+const pug = require('pug');
+const juice = require('juice');
 
 export interface InputType {
     jiraId: string;
@@ -62,9 +64,12 @@ export class CreateJiraCycle {
         this.filterInputFile();
         let isCycleAndFolderCreated: boolean = await this.createCycleAndFolder();
         if (isCycleAndFolderCreated) {
-            await this.addExecutionToCycle(this.skipJiraTest);
-            await this.addExecutionToCycle(this.passJiraTest);
-            await this.addExecutionToCycle(this.failJiraTest);
+            if (this.skipJiraTest.length)
+                await this.addExecutionToCycle(this.skipJiraTest);
+            if (this.passJiraTest.length)
+                await this.addExecutionToCycle(this.passJiraTest);
+            if (this.failJiraTest.length)
+                await this.addExecutionToCycle(this.failJiraTest);
             this.generateOutputFile();
             this.writeExecutionSummary();
         } else {
@@ -246,7 +251,7 @@ export class CreateJiraCycle {
         let issueDetails = await axios.get(
             "/rest/api/latest/issue/" + issueKey
         );
-        console.log('IssueKey Details API Status =============>', issueDetails.status);
+        console.log('IssueKey Details API Status =============>', issueDetails.status, issueKey);
 
         if (issueDetails.status == 200) {
             let issueId = issueDetails.data.id;
@@ -259,11 +264,12 @@ export class CreateJiraCycle {
                 passDetails = passPercent.passPercentage;
                 totalExe = passPercent.totalExecution;
             }
+            const { fixVersions } = issueDetails.data.fields;
             return {
                 issueKey: issueKey,
                 issueId: issueId,
-                version: issueDetails.data.fields.fixVersions[0].name,
-                priority: issueDetails.data.fields.priority.name,
+                version: fixVersions && isArray(fixVersions) ? get(fixVersions[0], 'name') : null,
+                priority: issueDetails.data.fields.priority.name ? issueDetails.data.fields.priority.name : 'NA',
                 totalExecution: totalExe,
                 passPercent: passDetails,
             }
@@ -329,13 +335,26 @@ export class CreateJiraCycle {
             }).count;
 
             let skipCount: number = totalExecution - passCount - failCount;
+            let cyclePassPercent: number = Math.round(passCount * 100 / totalExecution);
 
             console.log("Cycle name ==> " + this.testCycleName);
             console.log("Folder name ==> " + this.folderName);
+            console.log("Test Cycle Pass % ==> " + cyclePassPercent);
             console.log("Passed tests ==> " + passCount);
             console.log("Failed tests ==> " + failCount);
             console.log("Skipped tests ==> " + skipCount);
             console.log("Total Executed tests ==> " + totalExecution);
+
+            let exeSummary = {
+                cycle: this.testCycleName,
+                folder: this.folderName,
+                cyclePassPercent,
+                pass: passCount,
+                fail: failCount,
+                skip: skipCount,
+                total: totalExecution,
+            }
+            this.createHtmlReport(exeSummary);
 
         } else console.log("************FAILED to get Test Execution Summary**************");
     }
@@ -348,6 +367,11 @@ export class CreateJiraCycle {
         let hour = "" + now.getHours(); if (hour.length == 1) { hour = "0" + hour; }
         let minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
         return year + "-" + month + "-" + day + " " + hour + ":" + minute;
+    }
+
+    createHtmlReport(summary) {
+        let html = pug.renderFile('e2e/reporters/spec-jira-reporter/email-report.pug', summary);
+        fs.writeFileSync('e2e/reports/spec-jira-report/CycleReport.html', juice(html));
     }
 }
 

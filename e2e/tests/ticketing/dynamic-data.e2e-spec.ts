@@ -29,7 +29,6 @@ describe('Dynamic data', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-19353]: Accessibility of Dynamic Fields in Notification and Dynamic Templates', async () => {

@@ -17,26 +17,26 @@ class notesTemplateUsage {
     }
 
     async clickOnPostButton() {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.postButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.postButton)));
         await $(this.selectors.postButton).click();
     }
 
     async clickOnRequsterName() {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesterName)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesterName)));
         await $(this.selectors.requesterName).click();
     }
 
     async clickOnAddNoteAndAddNoteTemplate(notesTemplate: string) {
         await activityTab.clickActivityNoteTextBox();
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notesTemplateButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notesTemplateButton)));
         await $(this.selectors.notesTemplateButton).click();
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchTextBox)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchTextBox)));
         await utilGrid.searchAndSelectFirstCheckBox(this.selectors.searchGuid, notesTemplate);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyButton)));
         await $(this.selectors.applyButton).click();
-        await utilCommon.waitUntilSpinnerToHide();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.settingsButton)));
-        await browser.wait(this.EC.elementToBeClickable($('.activity-feed-note-buttons__right .d-button.d-button_primary')));
+//        await utilCommon.waitUntilSpinnerToHide();
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.settingsButton)));
+//        await browser.wait(this.EC.elementToBeClickable($('.activity-feed-note-buttons__right .d-button.d-button_primary')));
     }
 
 }

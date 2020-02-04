@@ -12,7 +12,7 @@ var specJsonReporter = {
             jiraIdPattern = ''
         }
         let jiraIds = jiraIdPattern.split(',');
-        jiraIds.forEach((id)=>{
+        jiraIds.forEach((id) => {
             specResult.push({
                 jiraId: id.trim(),
                 description: result.description,
@@ -21,10 +21,19 @@ var specJsonReporter = {
         });
     },
     jasmineDone: function (result) {
-        var rawFileString = fs.readFileSync('e2e/reports/spec-json-report/spec-json-report.json');
+        if (!fs.existsSync('e2e/reports/spec-json-report')) {
+            fs.mkdirSync('e2e/reports/spec-json-report', { recursive: true });
+        }
+
+        const jsonReportPath = 'e2e/reports/spec-json-report/spec-json-report.json';
+        if (!fs.existsSync(jsonReportPath)) {
+            fs.writeFileSync(jsonReportPath, JSON.stringify([]));
+        }
+
+        var rawFileString = fs.readFileSync(jsonReportPath);
         var data = JSON.parse(rawFileString);
         data = data.concat(specResult);
-        fs.writeFileSync('e2e/reports/spec-json-report/spec-json-report.json', JSON.stringify(data, null, '\t'));
+        fs.writeFileSync(jsonReportPath, JSON.stringify(data, null, '\t'));
     }
 };
 module.exports = specJsonReporter;
