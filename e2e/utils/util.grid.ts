@@ -113,16 +113,22 @@ export class GridOperation {
         } else { console.log('Grid search box is already cleared') }
     }
 
-    async searchAndOpenHyperlink(id: string) {
+    async searchAndOpenHyperlink(id: string, guid?: string) {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));
-        await $(this.selectors.summaryField1).clear();
-        await $(this.selectors.summaryField1).sendKeys(id);
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton1)));
-        await $(this.selectors.searchButton1).click();
-//        await browser.sleep(3000);
-//        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText('.ui-grid__link', id))));
-        await element(by.linkText(id)).click();
-//        await utilCommon.waitUntilSpinnerToHide();
+        if(guid){
+            await $(`[rx-view-component-id='${guid}'] input[role="search"]`).clear();
+            await $(`[rx-view-component-id='${guid}'] input[role="search"]`).sendKeys(id);
+            await $(`[rx-view-component-id='${guid}'] button[rx-id="submit-search-button"]`).click();
+        } else {
+            await $(this.selectors.summaryField1).clear();
+            await $(this.selectors.summaryField1).sendKeys(id);
+//          await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton1)));
+            await $(this.selectors.searchButton1).click();
+//          await browser.sleep(3000);
+//          await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText('.ui-grid__link', id))));
+            await element(by.linkText(id)).click();
+//          await utilCommon.waitUntilSpinnerToHide();
+        }
     }
 
     async clearFilter(): Promise<void> {

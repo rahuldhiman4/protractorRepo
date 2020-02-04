@@ -27,7 +27,7 @@ class CaseTemplateConsole {
     }
 
     async searchAndClickOnCaseTemplate(caseTemplateValue: string): Promise<void> {
-        await utilGrid.searchAndClickOnHyperLink(this.selectors.gridGUID, caseTemplateValue);
+        await utilGrid.searchAndOpenHyperlink(caseTemplateValue, this.selectors.gridGUID);
     }
 
     async searchAndselectCaseTemplate(caseTemplateValue: string): Promise<void> {

@@ -23,11 +23,11 @@ class ConsoleNotesTemplate {
     }
 
     async clickOnTemplateName(temmplateName: string): Promise<void> {
-        utilGrid.searchAndClickOnHyperLink(this.selectors.gridGuid, temmplateName);
+        utilGrid.searchAndOpenHyperlink(temmplateName, this.selectors.gridGuid);
     }
 
     async isTemplatePresentInGrid(templateNameValue: string): Promise<string> {
-        utilGrid.searchAndSelectFirstCheckBox(this.selectors.gridGuid, templateNameValue);
+        utilGrid.searchAndSelectGridRecord(templateNameValue, this.selectors.gridGuid);
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.templateNameFromGrid)));
         return await $(this.selectors.templateNameFromGrid).getText();
     }

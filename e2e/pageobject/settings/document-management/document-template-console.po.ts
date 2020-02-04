@@ -12,7 +12,7 @@ class DocumentTemplateConsolePage {
 
     async selectCheckBox(record:string): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.deleteButton)));
-        await utilGrid.searchAndSelectFirstCheckBoxWOGrid(record);
+        await utilGrid.searchAndSelectGridRecord(record);
     }
 
     async clickOnDeleteButton(): Promise<void> {

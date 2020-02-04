@@ -60,7 +60,7 @@ class EditAcknowledgementTemplate {
     async getSubjectMessageValue(): Promise<string> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton)));
        await  $(this.selectors.searchButton).click();
-        await utilsGrid.searchAndSelectFirstCheckBox('8b59641c-2fca-4d96-8395-03e232cf05de', 'subject')
+        await utilsGrid.searchAndSelectGridRecord('subject', '8b59641c-2fca-4d96-8395-03e232cf05de');
         return await utilsGrid.getSelectedGridRecordValue('8b59641c-2fca-4d96-8395-03e232cf05de', 'Message');
     }
 
@@ -69,7 +69,7 @@ class EditAcknowledgementTemplate {
     }
 
     async searchAndSelectEmailTemplate(value: string): Promise<void> {
-        await utilsGrid.searchAndSelectFirstCheckBoxWOGrid(value);
+        await utilsGrid.searchAndSelectGridRecord(value);
     }
 
     async searchAndSelectBody(value: string): Promise<void> {
