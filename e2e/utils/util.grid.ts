@@ -100,45 +100,6 @@ export class GridOperation {
         return allLocators[locatorName];
     }
 
-    async searchAndSelectFirstCheckBox(gridId: string, value: string) {
-        await browser.wait(until.elementLocated(By.css(this.getGridLocator('summaryField', gridId))), 10000).clear();
-        await browser.wait(until.elementLocated(By.css(this.getGridLocator('summaryField', gridId))), 10000).sendKeys(value);
-        await browser.wait(until.elementLocated(By.css(this.getGridLocator('searchButton', gridId))), 10000).click();
-//        await browser.wait(this.EC.elementToBeClickable($(this.getGridLocator('firstCheckBox', gridId))));
-//        await browser.sleep(5000);
-        await $(this.getGridLocator('firstCheckBox', gridId)).click();
-    }
-
-    async searchAndSelectFirstCheckBoxWOGrid(value: string) {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));
-        await $(this.selectors.summaryField1).sendKeys(value);
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton1)));
-        await $(this.selectors.searchButton1).click();
-//        await browser.sleep(5000);
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.firstGridCheckbox)));
-        await $(this.selectors.firstGridCheckbox).click();
-    }
-
-    async searchAndSelectAllCheckBox(gridId: string, value: string) {
-//        await browser.wait(this.EC.elementToBeClickable($(this.getGridLocator('summaryField', gridId))));
-        await $(this.getGridLocator('summaryField', gridId)).sendKeys(value);
-//        await browser.wait(this.EC.elementToBeClickable($(this.getGridLocator('searchButton', gridId))));
-        await $(this.getGridLocator('searchButton', gridId)).click();
-//        browser.sleep(3000);
-//        await browser.wait(this.EC.elementToBeClickable(element(by.model(this.selectors.selectAllCheckBox))));
-        await element(by.model(this.selectors.selectAllCheckBox)).click();
-    }
-
-    async searchAndSelectAllCheckBoxWOGrid(value: string) {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));
-        await $(this.selectors.summaryField1).sendKeys(value);
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton1)));
-        await $(this.selectors.searchButton1).click();
-//        await browser.sleep(5000);
-//        await browser.wait(this.EC.elementToBeClickable(element(by.model(this.selectors.selectAllCheckBox))));
-        await element(by.model(this.selectors.selectAllCheckBox)).click();
-    }
-
     async gridHyperLink(id: string) {
 //        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText('.ui-grid__link', id))));
         await element(by.cssContainingText('.ui-grid__link', id)).click();
@@ -160,34 +121,20 @@ export class GridOperation {
         await $(this.selectors.searchButton1).click();
 //        await browser.sleep(3000);
 //        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText('.ui-grid__link', id))));
-        await element(by.cssContainingText('.ui-grid__link', id)).click();
+        await element(by.linkText(id)).click();
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clearFilter(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPreset)));
-        try {
-            if (await $(this.selectors.filterClose).isDisplayed()) {
+//      await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPreset)));
+        await $(this.selectors.filterClose).isPresent().then(async (result) => {
+            if(result){
                 await $(this.selectors.filterPreset).click();
-//                await browser.wait(this.EC.elementToBeClickable($(this.selectors.clearFilterButton)));
                 await $(this.selectors.clearFilterButton).click();
-//                await browser.sleep(1000);
-//                await utilCommon.waitUntilSpinnerToHide();
+            } else {
+                console.log("Filters are already cleared");
             }
-        }
-        catch (Ex) {
-            console.log("Filters are already cleared");
-        }
-    }
-
-    async searchAndClickOnHyperLink(gridId: string, value: string) {
-        await browser.wait(until.elementLocated(By.css(this.getGridLocator('summaryField', gridId))), 10000).sendKeys(value);
-        await browser.wait(until.elementLocated(By.css(this.getGridLocator('searchButton', gridId))), 10000).click();
-        let gridvalueLink = await element(by.cssContainingText((this.getGridLocator('gridLink', gridId)), value));
-        console.log(gridvalueLink);
-//        await browser.wait(this.EC.elementToBeClickable(gridvalueLink));
-//        await browser.sleep(3000);
-        await gridvalueLink.click();
+        })
     }
 
     async clickOnSelectedGridRecord(guid: string, columnHeader: string): Promise<void> {
@@ -210,32 +157,15 @@ export class GridOperation {
     }
 
     async getSelectedGridRecordValue(guid: string, columnHeader: string): Promise<string> {
-        let gridRecord: string;
-        let gridColumnHeaderPosition = `//*[@rx-view-component-id='${guid}']//span[@class="ui-grid-header-cell-label"][text()='${columnHeader}']/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
-        let gridRecords = '//div[@class="ui-grid-canvas"]/div';
-        let columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
-        columnPosition = columnPosition + 1;
-        var gridRows: number = await element.all(by.xpath(gridRecords)).count();
-        if (gridRows > 0) {
-            let gridRecordCheckbox: string = `//div[@class="ui-grid-cell-contents"]/ancestor::div[@role='presentation'][contains(@class,'left')]//div[@class='ui-grid-row']`;
-            let count = await element.all(by.xpath(gridRecordCheckbox)).count();
-            let gridRecordCellValue = null;
-            if (count > 0) {
-                gridRecordCellValue = `(//*[@rx-view-component-id='${guid}']//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[2]/div[${columnPosition}]/div`;
-            } else {
-                gridRecordCellValue = `(//*[@rx-view-component-id='${guid}']//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[1]/div[${columnPosition}]/div`;
+        let gridColumnHeaderList = await $$(`[rx-view-component-id='${guid}'] .ui-grid-header-cell-label`);
+        for(let i:number=0; i < gridColumnHeaderList.length; i++) {
+            if(await gridColumnHeaderList[i].getText() == columnHeader) {
+                return await $$(`[rx-view-component-id='${guid}'] .ui-grid-cell[role='gridcell'] .ui-grid-cell-contents`).then(async (result: ElementFinder[])=> {
+                    return await result[i].getText();
+                });
             }
-//            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(gridRecordCellValue))));
-            gridRecord = await element(by.xpath(gridRecordCellValue)).getText();
-        } else {
-            console.log("No Records Found.");
-            gridRecord = "";
         }
-        console.log(gridRecord);
-
-        return gridRecord;
     }
-
 
     async getAllValuesFromColoumn(guid: string, columnHeader: string): Promise<string[]> {
         let gridRecord: string[] = [];
@@ -342,26 +272,6 @@ export class GridOperation {
         return arr.length === copy.length && arr.every(
             (value, index) => (value === copy[index])
         );
-    }
-
-    async clickCheckBoxOfValueInGrid(value: string, guid?: string): Promise<void> {
-        let guidId: string = "";
-        if (guid) {
-            guidId = `//*[@rx-view-component-id="${guid}"]`
-        }
-//        await utilCommon.waitUntilSpinnerToHide();
-//        await browser.wait(this.EC.visibilityOf(element(by.xpath(`${guidId}//*[text()='${value}']`))));
-        let size: number = await element.all(by.xpath(`${guidId}//*[@role='gridcell']//*[@tabindex='0']`)).count();
-        let cnt: number = 0;
-        for (let i: number = 1; i <= size; i++) {
-            cnt++;
-            let locator: string = `(${guidId}//*[@role='gridcell']//*[@tabindex='0'])[${i}]`;
-//            await browser.wait(this.EC.presenceOf(element(by.xpath(locator))));
-            if (await element(by.xpath(locator)).getText() == value) break;
-        }
-        let checkbox: string = `(${guidId}//div[@aria-label='Select row'])[${cnt}]`;
-//        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(checkbox))));
-        await element(by.xpath(checkbox)).click();
     }
 
     async clickOnSearchRefreshIcon(): Promise<void> {
