@@ -15,35 +15,35 @@ class AutomatedStatusTransitionConfigCreatePage {
     }
 
     async setName(name: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
         await $(this.selectors.name).sendKeys(name);
     }
 
     async setCompany(companyName: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
         await commonUtil.selectDropDown(this.selectors.companyGuid, companyName);
     }
 
     async setFromStatus(status: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
         await commonUtil.selectDropDown(this.selectors.fromStatusGuid, status);
     }
 
     async setToStatus(status: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
         await commonUtil.selectDropDown(this.selectors.toStatusGuid, status);
     }
 
     async setChangeStatusAfter(days: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
         await $(this.selectors.changeStatusAfter).sendKeys(days);
     }
 
     async saveConfig(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-        await commonUtil.waitUntilPopUpDisappear();
-        await commonUtil.waitUntilSpinnerToHide();
+//        await commonUtil.waitUntilPopUpDisappear();
+//        await commonUtil.waitUntilSpinnerToHide();
     }
 
     async createAutomatedStatusTransition(data: Map<string, string>): Promise<void> {

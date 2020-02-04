@@ -15,22 +15,22 @@ class DocumentLibraryPage {
 
     async searchOnGridConsole(value: string): Promise<void> {
         await utilGrid.searchOnGridConsole(value);
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async addColumnOnGrid(columnHeader: string[]): Promise<void> {
         await utilGrid.addGridColumn(this.selectors.gridGuid, columnHeader);
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clearGridSearchBox(): Promise<void> {
         await utilGrid.clearGridSearchBox();
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async removeColumnOnGrid(columnHeader: string[]): Promise<void> {
         await utilGrid.removeGridColumn(this.selectors.gridGuid, columnHeader);
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isGridColumnSorted(columnHeader: string, sortType: string): Promise<boolean> {
@@ -47,7 +47,7 @@ class DocumentLibraryPage {
 
     async searchAndOpenDocumentLibrary(value: string): Promise<void> {
         await utilGrid.searchAndOpenHyperlink(value);
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
 

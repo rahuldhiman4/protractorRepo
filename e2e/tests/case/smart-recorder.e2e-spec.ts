@@ -1,10 +1,10 @@
 import { browser } from "protractor";
 import quickCase from "../../pageobject/case/quick-case.po";
+import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import utilCommon from '../../utils/util.common';
-import viewCasePo from '../../pageobject/case/view-case.po';
 import composeMail from '../../pageobject/email/compose-mail.po';
+import utilCommon from '../../utils/util.common';
 
 describe("Quick Case", () => {
 
@@ -15,7 +15,6 @@ describe("Quick Case", () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     afterAll(async () => {

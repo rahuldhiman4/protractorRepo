@@ -147,6 +147,22 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getRegionGuid(region: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Region");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[260000001] === region;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getSiteGuid(site: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Site");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[260000001] === site;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
     async getStatusChangeReasonGuid(reason: string): Promise<string>{
         let allRecords = await this.getGuid("com.bmc.dsm.shared-services-lib:Status Reason");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {

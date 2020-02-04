@@ -19,7 +19,6 @@ describe('Person Profile test', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //asahitya
@@ -103,8 +102,7 @@ describe('Person Profile test', () => {
             expect(await activityTabPage.isTextPresentInActivityLog("DRDMV-17019")).toBeFalsy("Notes are avaialble on Hannah's Profile");
         }
         catch (e) {
-            console.log(e);
-            expect(false).toBeTruthy();
+            throw e;
         }
         finally {
             await navigationPage.signOut();

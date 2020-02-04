@@ -28,7 +28,6 @@ describe('Notes template', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //ptidke
@@ -192,8 +191,7 @@ describe('Notes template', () => {
             await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
         }
         catch (e) {
-            await expect(false).toBeTruthy();
-            console.log(e);
+            throw e;
         }
         finally {
             await navigationPage.signOut();
@@ -380,8 +378,7 @@ describe('Notes template', () => {
             await expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
         }
         catch (e) {
-            await expect(false).toBeTruthy();
-            console.log(e);
+            throw e;
         }
         finally {
             await navigationPage.signOut();
@@ -435,8 +432,7 @@ describe('Notes template', () => {
             await activityTabPo.clickOnPostButton();
             await expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
         } catch (e) {
-            await expect(false).toBeTruthy();
-            console.log(e);
+            throw e;
         }
         finally {
             await navigationPage.signOut();

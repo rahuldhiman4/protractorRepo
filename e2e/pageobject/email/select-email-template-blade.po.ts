@@ -16,12 +16,12 @@ class SelectEmailTemplateBlad {
     }
 
     async clickOnApplyButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyButton)));
         await $(this.selectors.applyButton).click();
     }
 
     async clickOnCancelButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
@@ -31,7 +31,7 @@ class SelectEmailTemplateBlad {
     }
 
     async isApplyButtonEnabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.applyButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.applyButton)));
         return await $(this.selectors.applyButton).isEnabled();
     }
 

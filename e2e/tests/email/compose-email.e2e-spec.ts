@@ -27,7 +27,6 @@ describe("compose email", () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-8377]: UI validation Email Option via Create New Case', async () => {
@@ -240,7 +239,7 @@ describe("compose email", () => {
         expect((await composeMail.isTextPresentInEmailBody('Qianru Tao'))).toBeFalsy();
         await composeMail.clickOnSendButton();
     });
-    
+
     //ptidke
     it('[DRDMV-10398,DRDMV-10396,DRDMV-10402]:Email Template List Update in case compose email', async () => {
         await navigationPage.gotoCaseConsole();

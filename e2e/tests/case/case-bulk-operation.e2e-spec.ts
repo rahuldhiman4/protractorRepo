@@ -120,7 +120,7 @@ describe('Case Watchlist', () => {
             await notificationPo.clickOnNotificationIcon();
         }
         catch (ex) {
-            expect(false).toBeTruthy("Failed in try catch block: " + ex);
+            throw ex;
         }
         finally {
             await navigationPage.signOut();
@@ -167,7 +167,7 @@ describe('Case Watchlist', () => {
             expect(await utilCommon.getPopUpMessage()).toBe("ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.");
         }
         catch (ex) {
-            expect(false).toBeTruthy("Failed in try catch block " + ex);
+            throw ex;
         }
         finally {
             await navigationPage.signOut();

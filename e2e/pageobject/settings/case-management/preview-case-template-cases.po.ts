@@ -28,37 +28,37 @@ class PreviewCaseTemplateBlade {
     }
 
     async clickOnBackButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         return await $(this.selectors.backButton).click();
     }
 
     async getCaseTemplateName(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseTemplateName)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseTemplateName)));
         return await $(this.selectors.caseTemplateName).getText();
     }
 
     async getCaseSummary(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummaryValue)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummaryValue)));
         return await $(this.selectors.caseSummaryValue).getText();
     }
 
     async getCasePriority(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.casePriorityValue)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.casePriorityValue)));
         return await $(this.selectors.casePriorityValue).getText();
     }
 
     async getCaseStatus(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseStatusValue)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseStatusValue)));
         return await $(this.selectors.caseStatusValue).getText();
     }
 
     async getCaseCompanyValue(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseCompanyValue)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseCompanyValue)));
         return await $(this.selectors.caseCompanyValue).getText();
     }
 
     async isCaseSummaryHeaderDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummary)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummary)));
         return await $(this.selectors.caseSummary).isDisplayed();
     }
 
@@ -111,7 +111,7 @@ class PreviewCaseTemplateBlade {
     }
 
     async isAssigneeTitleDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignee)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignee)));
         return await $(this.selectors.assignee).isDisplayed();
     }
 }

@@ -26,7 +26,7 @@ class createNotesTemplate {
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
         await $(this.selectors.templateName).clear();
         await $(this.selectors.templateName).sendKeys(templateNameValue);
     }
@@ -48,24 +48,24 @@ class createNotesTemplate {
     }
 
     async setBody(bodyValue: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.body)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.body)));
         await $(this.selectors.body).sendKeys(bodyValue);
     }
 
     async clickOnInsertFieldLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.insertField)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.insertField)));
         await $(this.selectors.insertField).click();
     }
 
     async clickOnSaveButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-        await utilCommon.waitUntilPopUpDisappear();
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
+//        await utilCommon.waitUntilPopUpDisappear();
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
     }
 
     async isSaveButtonDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
         return await $(this.selectors.saveButton).isEnabled();
     }
 
@@ -78,29 +78,29 @@ class createNotesTemplate {
         await this.setLanguageValue('English (United States)');
         await this.setBody("This is new notes template " + notesTemplateStr);
         await this.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
+//        await utilCommon.waitUntilPopUpDisappear();
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
         return notesTemplateStr;
     }
 
     async isCreateNotesTemplateUIPresent(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
         let a: boolean = await $(this.selectors.templateName).isDisplayed();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.insertField)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.insertField)));
         let b: boolean = await $(this.selectors.insertField).isDisplayed();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.body)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.body)));
         let c: boolean = await $(this.selectors.body).isDisplayed();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.cancelButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.cancelButton)));
         let d: boolean = await $(this.selectors.cancelButton).isDisplayed();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.statusDD)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.statusDD)));
         let e: boolean = await $(this.selectors.statusDD).isDisplayed();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.companyDD)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.companyDD)));
         let f: boolean = await $(this.selectors.companyDD).isDisplayed();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.languageDD)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.languageDD)));
         let g: boolean = await $(this.selectors.languageDD).isDisplayed();
         await $(this.selectors.cancelButton).click();
         await utilCommon.clickOnWarningOk();
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
         return (a == b == c == d == e == f == g == true);
     }
 }

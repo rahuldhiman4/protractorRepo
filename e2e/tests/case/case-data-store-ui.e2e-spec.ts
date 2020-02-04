@@ -1,16 +1,16 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
+import createCasePage from '../../pageobject/case/create-case.po';
+import viewCasePage from "../../pageobject/case/view-case.po";
+import dynamicFieldsPage from '../../pageobject/common/dynamic-fields.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import createTaskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
-import utilCommon from '../../utils/util.common';
-import dynamicFieldsPage from '../../pageobject/common/dynamic-fields.po';
-import createCasePage from '../../pageobject/case/create-case.po';
-import viewCasePage from "../../pageobject/case/view-case.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
+import utilCommon from '../../utils/util.common';
 
 describe('Create Case Task', () => {
     beforeAll(async () => {
@@ -24,7 +24,6 @@ describe('Create Case Task', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //ankagraw
@@ -77,9 +76,9 @@ describe('Create Case Task', () => {
         await expect(editTaskTemplate.isManageProcessLinkDisplayed()).toBeTruthy();
     });
 
-    
+
     //ankagraw
-    it('DRDMV-13169: [Dynamic Data] [UI] - Automated Task UI on Edit view', async () => {
+    it('[DRDMV-13169]: [Dynamic Data] [UI] - Automated Task UI on Edit view', async () => {
         try {
             let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
             let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -123,8 +122,7 @@ describe('Create Case Task', () => {
             await expect(viewTaskTemplate.getDynamicField('Field Description')).toBe('Field Description');
 
         } catch (error) {
-            console.log(error);
-            await expect(true).toBeFalsy();
+            throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");

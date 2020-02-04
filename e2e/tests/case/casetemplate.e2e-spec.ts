@@ -31,7 +31,6 @@ describe('Case Template', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-10477,DRDMV-10483]: Case Template creation with Template validation as OPTIONAL using BA login', async () => {
@@ -136,7 +135,7 @@ describe('Case Template', () => {
             expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(caseTemplateName);
             expect(await viewCaseTemplate.getIdentityValdationValue()).toContain(caseTemplate['caseTemplateWitAllFields'].identityValidation);
         } catch (e) {
-            console.log(e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -151,7 +150,7 @@ describe('Case Template', () => {
             await browser.sleep(1000);
             expect(await createCaseTemplate.getPanelHeading()).toContain('Configuration options not created for these settings.');
         } catch (e) {
-            console.log(e);
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');

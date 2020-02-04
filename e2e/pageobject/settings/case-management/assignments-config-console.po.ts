@@ -9,12 +9,12 @@ class AssignmentsConfigPage {
     }
 
     async isAddAssignmentsBtnDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.addAssignmentBtn)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.addAssignmentBtn)));
         return await $(this.selectors.addAssignmentBtn).getAttribute("disabled") == "true";
     }
 
     async isDeleteAssignmentConfigBtnDisabled(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
         return await $(this.selectors.deleteButton).getAttribute("disabled") == "true";
     }
 }

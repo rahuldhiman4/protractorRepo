@@ -20,8 +20,8 @@ class ManageTaskBlade {
     }
 
     async clickAddTaskFromTemplateButton(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.closeButton)));
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskFromTemplateButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.closeButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskFromTemplateButton)));
         await $(this.selectors.addTaskFromTemplateButton).click();
     }
 
@@ -39,23 +39,23 @@ class ManageTaskBlade {
 
     async clickonColumnHeader(value: string): Promise<void> {
         let column = await element(by.cssContainingText(this.selectors.columnHeaders, value));
-        await browser.wait(this.EC.elementToBeClickable(column));
+//        await browser.wait(this.EC.elementToBeClickable(column));
         await column.click();
     }
 
     async clickManageTaskCloseButton(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.closeButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.closeButton)));
         await $(this.selectors.closeButton).click();
     }
 
     async clickAddAdhocTaskButton(): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.closeButton)));
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addAdhocTaskButton)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.closeButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addAdhocTaskButton)));
         await $(this.selectors.addAdhocTaskButton).click();
     }
 
     async setTaskSearchBoxValue(input: string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTextbox)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTextbox)));
         await $(this.selectors.searchTextbox).clear();
         await $(this.selectors.searchTextbox).sendKeys(input, Key.ENTER);
     }
@@ -65,46 +65,46 @@ class ManageTaskBlade {
     }
 
     async clickOnRefreshButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.refreshButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.refreshButton)));
         await $(this.selectors.refreshButton).click();
     }
 
     async clickTaskLinkOnManageTask(taskSummary: string): Promise<void> {
-        await browser.wait(this.EC.or(async () => {
-            let count = await $$(this.selectors.taskFromManageTasks).count();
-            return count >= 1;
-        }));
-        await browser.wait(this.EC.elementToBeClickable(element(by.linkText(taskSummary))));
+//        await browser.wait(this.EC.or(async () => {
+//            let count = await $$(this.selectors.taskFromManageTasks).count();
+//            return count >= 1;
+//        }));
+//        await browser.wait(this.EC.elementToBeClickable(element(by.linkText(taskSummary))));
         await element(by.linkText(taskSummary)).click();
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateCheckbox)));
-        await browser.sleep(3000);
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateCheckbox)));
+//        await browser.sleep(3000);
         await $$(this.selectors.recommendedTemplateCheckbox).first().click();
     }
 
     async clickOnTaskGridSaveButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async clickOnTaskGridCancelButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.canceltaskTemplatbutton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.canceltaskTemplatbutton)));
         await $(this.selectors.canceltaskTemplatbutton).click();
     }
 
     async clickOnCloseButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         await $(this.selectors.closeButton).click();
-        await browser.wait(this.EC.invisibilityOf($('.modal-dialog')));
-        await browser.wait(this.EC.visibilityOf($(caseViewPage.selectors.editLink)));
-        await utilCommon.waitUntilSpinnerToHide();
+//        await browser.wait(this.EC.invisibilityOf($('.modal-dialog')));
+//        await browser.wait(this.EC.visibilityOf($(caseViewPage.selectors.editLink)));
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isTaskLinkOnManageTask(taskSummary: string): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary))));
+//        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary))));
         return await element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary)).isDisplayed();
     }
 

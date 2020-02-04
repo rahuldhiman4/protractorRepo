@@ -19,7 +19,6 @@ describe('Menu Item', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //kgaikwad

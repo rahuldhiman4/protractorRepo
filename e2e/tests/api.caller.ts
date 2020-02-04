@@ -1,12 +1,12 @@
-import { ProtractorExpectedConditions, protractor } from "protractor";
-import apiHelper from "../api/api.helper";
+import { protractor, ProtractorExpectedConditions } from "protractor";
 import apiCoreUtil from '../api/api.core.util';
+import apiHelper from "../api/api.helper";
 
 describe('Login and create case from API', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     it('create case', async () => {
-        var caseData = 
+        var caseData =
         {
             "Requester": "qtao",
             "Summary": "Testing case creation with minimal input data"
@@ -123,19 +123,19 @@ describe('Login and create case from API', () => {
 
     it('create Email template', async () => {
         await apiHelper.apiLogin('tadmin');
-        let randomStr = [...Array(4)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let emailTemplateData = require('../data/ui/email/email.template.ui.json');
         let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
-        emailTemplateData['notesTemplateWithMandatoryField'].templateName = emailTemplateName; 
+        emailTemplateData['notesTemplateWithMandatoryField'].templateName = emailTemplateName;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
     });
-    
+
     it('create notes template', async () => {
         await apiHelper.apiLogin('tadmin');
-        let randomStr = [...Array(4)].map(i=>(~~(Math.random()*36)).toString(36)).join('');
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let notesTemplateData = require('../data/ui/social/notesTemplate.ui.json');
         let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
-        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName; 
+        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
         await apiHelper.createNotesTemplate("People", notesTemplateData['notesTemplateWithMandatoryField']);
     });
 
@@ -164,7 +164,7 @@ describe('Login and create case from API', () => {
         await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
     });
 
-    it('delete all', async() => {
+    it('delete all', async () => {
         await apiHelper.apiLogin('tadmin');
         var recDeleted = await apiHelper.deleteDynamicFieldAndGroup('FG2');
         console.log("Record deleted...", recDeleted);
@@ -172,13 +172,13 @@ describe('Login and create case from API', () => {
         console.log("Records deleted...", deleted);
     });
 
-    it('Get organization guid', async() => {
+    it('Get organization guid', async () => {
         await apiHelper.apiLogin('qkatawazi');
         let org1 = 'Petramco';
         let org2 = '- Global -';
-        let orgGuid1  = await apiCoreUtil.getOrganizationGuid(org1);
+        let orgGuid1 = await apiCoreUtil.getOrganizationGuid(org1);
         console.log("Org1 GUID...", org1, " ", orgGuid1);
-        let orgGuid2  = await apiCoreUtil.getOrganizationGuid(org2);
+        let orgGuid2 = await apiCoreUtil.getOrganizationGuid(org2);
         console.log("Org2 GUID...", org2, " ", orgGuid2);
     });
 })

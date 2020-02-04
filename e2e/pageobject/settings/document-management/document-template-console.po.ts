@@ -11,12 +11,12 @@ class DocumentTemplateConsolePage {
     }
 
     async selectCheckBox(record:string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.deleteButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.deleteButton)));
         await utilGrid.searchAndSelectFirstCheckBoxWOGrid(record);
     }
 
     async clickOnDeleteButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.deleteButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.deleteButton)));
         await $(this.selectors.deleteButton).click();
     }
 
@@ -25,7 +25,7 @@ class DocumentTemplateConsolePage {
     }
 
     async isHeaderDisplayed(headerName:string): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.pageHeader)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.pageHeader)));
         return await element(by.cssContainingText(this.selectors.pageHeader,headerName)).isDisplayed();
     }
 
@@ -35,22 +35,22 @@ class DocumentTemplateConsolePage {
 
     async searchOnGridConsole(value: string): Promise<void> {
         await utilGrid.searchOnGridConsole(value);
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async addColumnOnGrid(columnHeader: string[]): Promise<void> {
         await utilGrid.addGridColumn(this.selectors.gridGuid, columnHeader);
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clearGridSearchBox(): Promise<void> {
         await utilGrid.clearGridSearchBox();
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async removeColumnOnGrid(columnHeader: string[]): Promise<void> {
         await utilGrid.removeGridColumn(this.selectors.gridGuid, columnHeader);
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isGridColumnSorted(columnHeader: string, sortType: string): Promise<boolean> {
@@ -67,7 +67,7 @@ class DocumentTemplateConsolePage {
 
     async searchAndOpenDocumentTemplate(value: string): Promise<void> {
         await utilGrid.searchAndOpenHyperlink(value);
-        await utilCommon.waitUntilSpinnerToHide();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
 

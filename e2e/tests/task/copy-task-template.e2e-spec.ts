@@ -25,7 +25,6 @@ describe('Copy Task Template', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     it('[DRDMV-14214]: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {
@@ -80,8 +79,7 @@ describe('Copy Task Template', () => {
             await manageTask.clickTaskLinkOnManageTask(automatedTaskSummary2);
             await expect(viewTask.getTaskStatusValue()).toBe('Completed');
         } catch (e) {
-            console.log('Exception occured', e);
-            expect(false).toBeTruthy();
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -130,8 +128,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.clickSaveCopytemplate();
             await expect(utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
         } catch (e) {
-            console.log('Exception occured', e);
-            expect(false).toBeTruthy();
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -210,8 +207,7 @@ describe('Copy Task Template', () => {
             await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
             await expect(viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
         } catch (e) {
-            console.log('Exception occured', e);
-            expect(false).toBeTruthy();
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -272,8 +268,7 @@ describe('Copy Task Template', () => {
             await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
             await expect(viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
         } catch (e) {
-            console.log('Exception occured', e);
-            expect(false).toBeTruthy();
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -431,8 +426,7 @@ describe('Copy Task Template', () => {
             await manageTask.clickTaskLinkOnManageTask(UpdatedTaskSummary);
             await expect(viewTask.getTaskStatusValue()).toBe('Completed');
         } catch (e) {
-            console.log('Exception occured', e);
-            expect(false).toBeTruthy();
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -595,8 +589,7 @@ describe('Copy Task Template', () => {
             await expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
             await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Staffing");
         } catch (e) {
-            console.log('Exception occured', e);
-            expect(false).toBeTruthy();
+            throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');

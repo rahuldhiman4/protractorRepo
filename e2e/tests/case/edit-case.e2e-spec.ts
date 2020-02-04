@@ -22,7 +22,6 @@ describe('Edit Case', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //ankagraw

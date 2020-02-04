@@ -1,14 +1,14 @@
-export enum security{
+export enum security {
     readAccess = "READ",
     witeAccess = "WRITE"
 }
 
-export enum operation{
+export enum operation {
     deleteAccess = "DELETE",
     addAccess = "ADD"
 }
 
-export enum type{
+export enum type {
     user = "USER",
     group = "GROUP"
 }
