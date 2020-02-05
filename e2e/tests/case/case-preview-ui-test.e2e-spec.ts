@@ -4,12 +4,9 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import utilCommon from '../../utils/util.common';
 
 describe("Case Preview", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    const requester = "Requester";
-    const contact = "Contact";
 
     beforeAll(async () => {
         browser.waitForAngularEnabled(false);
@@ -19,7 +16,6 @@ describe("Case Preview", () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     afterAll(async () => {
@@ -61,6 +57,7 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButton()).toBeTruthy('Create New Case button is missing');
-
     })
+
+
 })

@@ -30,13 +30,11 @@ class CasePreview {
     }
 
     async isTitleDisplayed(): Promise<boolean> {
-        let titleText = await $(this.selectors.header).getText();
-        return titleText == "Case Preview" ? true : false;
+        return await $(this.selectors.header).getText() == 'Case Preview' ? true : false;
     }
 
     async isCaseSummaryDisplayed(caseSummary: string): Promise<boolean> {
-        let caseSummaryText = await $(this.selectors.caseSummary).getText();
-        return caseSummaryText == caseSummary ? true : false;
+        return await $(this.selectors.caseSummary).getText() == caseSummary ? true : false;
     }
 
     async isCaseIdDisplayed(): Promise<boolean> {
@@ -44,38 +42,32 @@ class CasePreview {
     }
 
     async isPriorityDisplayed(priority: string): Promise<boolean> {
-        let priorityText = await $(this.selectors.priority).getText();
-        return priorityText == priority ? true : false;
+        return await $(this.selectors.priority).getText() == priority ? true : false;
+
     }
 
     async isCaseStatusDisplayed(status: string): Promise<boolean> {
-        let statusText = await $(this.selectors.caseStatus).getText();
-        return statusText == status ? true : false;
+        return await $(this.selectors.caseStatus).getText() == status ? true : false;
     }
 
     async isRequesterNameDisplayed(requesterName: string): Promise<boolean> {
-        let requesterNameText = await $(this.selectors.requesterName).getText();
-        return requesterNameText == requesterName ? true : false;
+        return await $(this.selectors.requesterName).getText() == requesterName ? true : false;
     }
 
     async isRequesterPhoneDisplayed(requestPhoneNumber: string): Promise<boolean> {
-        let requestPhoneNumberText = await $(this.selectors.requestPhoneNumber).getText();
-        return requestPhoneNumberText == requestPhoneNumber ? true : false;
+        return await $(this.selectors.requestPhoneNumber).getText() == requestPhoneNumber ? true : false;
     }
 
     async isRequesterEmailIdDisplayed(requesterEmailId: string): Promise<boolean> {
-        let requesterEmailIdText = await $(this.selectors.requesterEmailId).getText();
-        return requesterEmailIdText == requesterEmailId ? true : false;
+        return await $(this.selectors.requesterEmailId).getText() == requesterEmailId ? true : false;
     }
 
     async isRequesterSiteDisplayed(requesterSite: string): Promise<boolean> {
-        let requesterSiteText = await $(this.selectors.requesterSite).getText();
-        return requesterSiteText == requesterSite ? true : false;
+        return await $(this.selectors.requesterSite).getText() == requesterSite ? true : false;
     }
 
     async isCaseTemplateDisplayed(caseTemplate: string): Promise<boolean> {
-        let caseTemplateText = await $(this.selectors.caseTemplate).getText();
-        return caseTemplateText == caseTemplate ? true : false;
+        return await $(this.selectors.caseTemplate).getText() == caseTemplate ? true : false;
     }
 
     async isDescriptionDisplayed(description: string): Promise<boolean> {
@@ -92,42 +84,32 @@ class CasePreview {
     }
 
     async isCategoryTier1Displayed(categoryTier1: string): Promise<boolean> {
-        let categoryTier1Text = await $(this.selectors.categoryTier1).getText();
-        console.log('This is caterogry tier1=' + categoryTier1Text);
-        return categoryTier1Text == categoryTier1 ? true : false;
+        return await $(this.selectors.categoryTier1).getText() == categoryTier1 ? true : false;
     }
 
     async isCategoryTier2Displayed(categoryTier2: string): Promise<boolean> {
-        let categoryTier2Text = await $(this.selectors.categoryTier2).getText();
-        return categoryTier2Text == categoryTier2 ? true : false;
+        return await $(this.selectors.categoryTier2).getText() == categoryTier2 ? true : false;
     }
 
     async isCategoryTier3Displayed(categoryTier3: string): Promise<boolean> {
-        let categoryTier3Text = await $(this.selectors.categoryTier3).getText();
-        return categoryTier3Text == categoryTier3 ? true : false;
+        return await $(this.selectors.categoryTier3).getText() == categoryTier3 ? true : false;
     }
 
     async isAssigneeDisplayed(assignee: string): Promise<boolean> {
-        let assigneeText = await $(this.selectors.assignee).getText();
-        return assigneeText == assignee ? true : false;
+        return await $(this.selectors.assignee).getText() == assignee ? true : false;
     }
 
     async isAssignedGroupDisplayed(assignedGroup: string): Promise<boolean> {
-        let assignedGroupText = await $(this.selectors.assignedGroup).getText();
-        return assignedGroupText == assignedGroup ? true : false;
+        return await $(this.selectors.assignedGroup).getText() == assignedGroup ? true : false;
     }
 
     async isAssignedCompanyDisplayed(assignedCompany: string): Promise<boolean> {
-        let assignedCompanyText = await $(this.selectors.assignedCompany).getText();
-        return assignedCompanyText == assignedCompany ? true : false;
+        return await $(this.selectors.assignedCompany).getText() == assignedCompany ? true : false;
     }
 
     async isCreateNewCaseButton(): Promise<boolean> {
         return await $(this.selectors.viewCaseButton).isDisplayed();
     }
-
-
-
 }
 
 export default new CasePreview();
