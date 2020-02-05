@@ -203,7 +203,7 @@ describe('Copy Task Template', () => {
         }
     }, 240 * 1000);
 
-    fit('[DRDMV-14217]: Copy of Automated task template created across company and no new Process is created', async () => {
+    it('[DRDMV-14217]: Copy of Automated task template created across company and no new Process is created', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         var userData = {
