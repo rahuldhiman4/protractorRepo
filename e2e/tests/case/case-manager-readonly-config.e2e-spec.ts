@@ -83,7 +83,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
         expect(await assignmentConfigConsole.isAddAssignmentsBtnDisabled()).toBeTruthy();
-        await utilGrid.searchAndSelectGridRecord("Benefits Assignment");
+        await utilGrid.searchAndSelectAllCheckBoxWOGrid("Benefits Assignment");
         expect(await assignmentConfigConsole.isDeleteAssignmentConfigBtnDisabled()).toBeTruthy();
         await browser.refresh();
         await utilGrid.searchAndOpenHyperlink("Benefits Assignment");
@@ -99,7 +99,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
         expect(await caseReadAccessConfigConsole.isAddButtonDisabled()).toBeTruthy();
-        await utilGrid.searchAndSelectGridRecord("Relocation - Facilities Access Mapping");
+        await utilGrid.searchAndSelectAllCheckBoxWOGrid("Relocation - Facilities Access Mapping");
         expect(await caseReadAccessConfigConsole.isDeleteButtonDisabled()).toBeTruthy();
         await browser.refresh();
         await utilGrid.searchAndOpenHyperlink("Relocation - Facilities Access Mapping");
@@ -220,7 +220,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
-        await utilGrid.searchAndSelectGridRecord(notesTemplateName);
+        await utilGrid.searchAndSelectAllCheckBoxWOGrid(notesTemplateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
         await browser.refresh();
         await utilGrid.searchAndOpenHyperlink(notesTemplateName);
@@ -244,7 +244,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
-        await utilGrid.searchAndSelectGridRecord(notesTemplateName);
+        await utilGrid.searchAndSelectAllCheckBoxWOGrid(notesTemplateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
         await browser.refresh();
         await utilGrid.searchAndOpenHyperlink(notesTemplateName);
@@ -268,7 +268,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
-        await utilGrid.searchAndSelectGridRecord(notesTemplateName);
+        await utilGrid.searchAndSelectAllCheckBoxWOGrid(notesTemplateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
         await browser.refresh();
         await utilGrid.searchAndOpenHyperlink(notesTemplateName);

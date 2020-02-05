@@ -131,6 +131,46 @@ export class GridOperation {
         }
     }
 
+    async clickCheckBoxOfValueInGrid(value: string, guid?: string): Promise<void> {	
+        let guidId: string = "";	
+        if (guid) {	
+            guidId = `//*[@rx-view-component-id="${guid}"]`	
+        }	
+//        await utilCommon.waitUntilSpinnerToHide();	
+//        await browser.wait(this.EC.visibilityOf(element(by.xpath(`${guidId}//*[text()='${value}']`))));	
+        let size: number = await element.all(by.xpath(`${guidId}//*[@role='gridcell']//*[@tabindex='0']`)).count();	
+        let cnt: number = 0;	
+        for (let i: number = 1; i <= size; i++) {	
+            cnt++;	
+            let locator: string = `(${guidId}//*[@role='gridcell']//*[@tabindex='0'])[${i}]`;	
+//            await browser.wait(this.EC.presenceOf(element(by.xpath(locator))));	
+            if (await element(by.xpath(locator)).getText() == value) break;	
+        }	
+        let checkbox: string = `(${guidId}//div[@aria-label='Select row'])[${cnt}]`;	
+//        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(checkbox))));	
+        await element(by.xpath(checkbox)).click();	
+    }
+    
+    async searchAndSelectAllCheckBox(gridId: string, value: string) {	
+//        await browser.wait(this.EC.elementToBeClickable($(this.getGridLocator('summaryField', gridId))));	
+        await $(this.getGridLocator('summaryField', gridId)).sendKeys(value);	
+//        await browser.wait(this.EC.elementToBeClickable($(this.getGridLocator('searchButton', gridId))));	
+        await $(this.getGridLocator('searchButton', gridId)).click();	
+//        browser.sleep(3000);	
+//        await browser.wait(this.EC.elementToBeClickable(element(by.model(this.selectors.selectAllCheckBox))));	
+        await element(by.model(this.selectors.selectAllCheckBox)).click();	
+    }	
+
+    async searchAndSelectAllCheckBoxWOGrid(value: string) {	
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));	
+        await $(this.selectors.summaryField1).sendKeys(value);	
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton1)));	
+        await $(this.selectors.searchButton1).click();	
+//        await browser.sleep(5000);	
+//        await browser.wait(this.EC.elementToBeClickable(element(by.model(this.selectors.selectAllCheckBox))));	
+        await element(by.model(this.selectors.selectAllCheckBox)).click();	
+    }
+
     async clearFilter(): Promise<void> {
 //      await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPreset)));
         await $(this.selectors.filterClose).isPresent().then(async (result) => {
