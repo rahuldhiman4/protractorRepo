@@ -6,7 +6,7 @@ const templateUri = "api/rx/application/command";
 const dynamicDataUri = "api/com.bmc.dsm.ticketing-lib/dynamicdata/definition";
 
 class ApiCoreUtil {
-    async createRecordInstance(jsonBody: string): Promise<AxiosResponse> {
+    async createRecordInstance(jsonBody): Promise<AxiosResponse> {
         const newRecord = await axios.post(
             recordInstanceUri,
             jsonBody
