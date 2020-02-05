@@ -94,7 +94,6 @@ describe("Case Preview", () => {
         await createCasePo.clickSelectCaseTemplateButton();
         await selectCasetemplateBladePo.selectCaseTemplate('Change My Legal Name');
         await createCasePo.clickSaveCaseButton();
-        // expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');
         expect(await casePreviewPo.isCaseSummaryDisplayed(caseSummary)).toBeTruthy('Summary is missing');
         expect(await casePreviewPo.isCaseIdDisplayed()).toBeTruthy('Case ID is missing');
         expect(await casePreviewPo.isPriorityDisplayed('Medium')).toBeTruthy('Priority is missing');
