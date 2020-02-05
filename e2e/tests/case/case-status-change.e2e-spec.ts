@@ -379,7 +379,7 @@ describe('Case Status Change', () => {
     });
 
     //ankagraw
-    fit('[DRDMV-1199]: [Case Status] Case status change from In Progress', async () => {
+    it('[DRDMV-1199]: [Case Status] Case status change from In Progress', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
         let summary2: string = randomStr + "Summary 2";

@@ -29,6 +29,16 @@ class TaskTemplateGridPage {
 //        await utilCommon.waitUntilPopUpDisappear();
     }
 
+    async searchAndOpenTaskTemplate(taskName: string): Promise<void> {
+        await utilGrid.clearFilter();
+        await utilGrid.searchAndOpenHyperlink(taskName);
+    }
+
+    async searchAndSelectTaskTemplate(taskName: string): Promise<void> {
+        await utilGrid.clearFilter();
+        await utilGrid.searchAndSelectGridRecord(taskName);
+    }
+
     async addColumn(columnName: string[]): Promise<void> {
         await utilGrid.addGridColumn(this.selectors.taskTemplateGuid, columnName)
     }
@@ -37,17 +47,6 @@ class TaskTemplateGridPage {
         await utilGrid.removeGridColumn(this.selectors.taskTemplateGuid, columnName)
     }
 
-    async clickFirstLinkInTaskTemplateSearchGrid(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateLink)));
-//        await browser.sleep(3000);
-        await $(this.selectors.recommendedTemplateLink).click();
-    }
-
-    async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateCheckBox)));
-//        await browser.sleep(3000);
-        await $(this.selectors.recommendedTemplateCheckBox).click();
-    }
     async clickOnManualTaskTemplateButton(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.manualTaskTemplateButton)));
         await $(this.selectors.manualTaskTemplateButton).click();
@@ -106,7 +105,7 @@ class TaskTemplateGridPage {
         await element(by.cssContainingText(this.selectors.recommendedTemplateLink, filterName)).click();
     }
 
-    async isAllColoumnTitleDisplayed(data: string[]): Promise<boolean> {
+    async isAllColumnTitleDisplayed(data: string[]): Promise<boolean> {
         return await utilGrid.areColumnHeaderMatches(this.selectors.taskTemplateGuid, data);
     }
 }

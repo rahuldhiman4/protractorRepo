@@ -73,9 +73,9 @@ describe('Email', () => {
         await utilGrid.clearFilter();
         await utilGrid.searchAndOpenHyperlink(displayId);
         await viewCasePage.clickAddTaskButton();
-        expect(await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary)).toBeTruthy(manualTaskSummary + ' Task is not added to case');
-        expect(await manageTaskBladePo.addTaskFromTaskTemplate(automatedTaskSummary)).toBeTruthy(automatedTaskSummary + ' Task is not added to case');
-        expect(await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary)).toBeTruthy(externalTaskSummary + ' Task is not added to case');
+        await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
+        await manageTaskBladePo.addTaskFromTaskTemplate(automatedTaskSummary);
+        await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
         await manageTaskBladePo.clickTaskLinkOnManageTask(automatedTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         await emailPo.clickOnEmailIconLink();
@@ -140,8 +140,8 @@ describe('Email', () => {
         await utilGrid.clearFilter();
         await utilGrid.searchAndOpenHyperlink(displayId);
         await viewCasePage.clickAddTaskButton();
-        expect(await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary)).toBeTruthy(manualTaskSummary + ' Task is not added to case');
-        expect(await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary)).toBeTruthy(externalTaskSummary + ' Task is not added to case');
+        await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
+        await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         await browser.sleep(2000);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
@@ -229,8 +229,8 @@ describe('Email', () => {
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(displayId);
             await viewCasePage.clickAddTaskButton();
-            expect(await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary)).toBeTruthy(manualTaskSummary + ' Task is not added to case');
-            expect(await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary)).toBeTruthy(externalTaskSummary + ' Task is not added to case');
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
             await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
             await browser.sleep(2000);
             await viewTask.clickOnEditTask();
@@ -313,7 +313,7 @@ describe('Email', () => {
         await expect(socialActivity.getActivityNotesText('Reply')).toBeFalsy();
         await expect(socialActivity.getActivityNotesText('Reply all')).toBeFalsy();
         await viewCasePage.clickAddTaskButton();
-        expect(await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary)).toBeTruthy(manualTaskSummary + ' Task is not added to case');
+        await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         await socialActivity.addActivityNote('This is case notes templates');
         await socialActivity.clickOnPostButton();
@@ -353,8 +353,8 @@ describe('Email', () => {
         await utilGrid.clearFilter();
         await utilGrid.searchAndOpenHyperlink(displayId);
         await viewCasePage.clickAddTaskButton();
-        expect(await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary)).toBeTruthy(manualTaskSummary + ' Task is not added to case');
-        expect(await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary)).toBeTruthy(externalTaskSummary + ' Task is not added to case');
+        await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
+        await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         await browser.sleep(2000);
         var ManualtaskID = await viewTask.getTaskID();
@@ -493,8 +493,8 @@ describe('Email', () => {
         await utilGrid.clearFilter();
         await utilGrid.searchAndOpenHyperlink(displayId);
         await viewCasePage.clickAddTaskButton();
-        expect(await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary)).toBeTruthy(manualTaskSummary + ' Task is not added to case');
-        expect(await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary)).toBeTruthy(externalTaskSummary + ' Task is not added to case');
+        await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
+        await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         await viewTask.clickOnEditTask();
         await editTask.clickOnChangeAssignementButton();
@@ -596,8 +596,8 @@ describe('Email', () => {
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(displayId);
             await viewCasePage.clickAddTaskButton();
-            expect(await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary)).toBeTruthy(manualTaskSummary + ' Task is not added to case');
-            expect(await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary)).toBeTruthy(externalTaskSummary + ' Task is not added to case');
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
             await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();

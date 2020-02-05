@@ -71,7 +71,7 @@ describe('Case Watchlist', () => {
         }
         await browser.refresh();
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.searchAndSelectGridRecord(caseId[i]);
+            await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qing Yuan");
@@ -100,13 +100,13 @@ describe('Case Watchlist', () => {
             caseId[i] = response.displayId;
         }
         await browser.refresh();
-        await utilGrid.searchAndSelectGridRecord(caseId[0]);
-        await utilGrid.searchAndSelectGridRecord(caseId[1]);
+        await utilGrid.clickCheckBoxOfValueInGrid(caseId[0]);
+        await utilGrid.clickCheckBoxOfValueInGrid(caseId[1]);
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qiao Feng");
         expect(await utilCommon.getPopUpMessage()).toBe("INFO (222156): The selected case(s) have been successfully assigned.");
         await utilCommon.closePopUpMessage();
-        await utilGrid.searchAndSelectGridRecord(caseId[2]);
+        await utilGrid.clickCheckBoxOfValueInGrid(caseId[2]);
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qing Yuan");
         expect(await utilCommon.getPopUpMessage()).toBe("INFO (222156): The selected case(s) have been successfully assigned.");
@@ -160,8 +160,8 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await utilGrid.clearFilter();
-            await utilGrid.searchAndSelectGridRecord(caseId1);
-            await utilGrid.searchAndSelectGridRecord(caseId2);
+            await utilGrid.clickCheckBoxOfValueInGrid(caseId1);
+            await utilGrid.clickCheckBoxOfValueInGrid(caseId2);
             await caseConsolePage.clickOnChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qianru Tao");
             expect(await utilCommon.getPopUpMessage()).toBe("ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.");
@@ -185,7 +185,7 @@ describe('Case Watchlist', () => {
         }
         await browser.refresh();
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.searchAndSelectGridRecord(caseId[i]);
+            await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, "Risk Management", "Quenton Annis");
@@ -212,7 +212,7 @@ describe('Case Watchlist', () => {
         caseId[2] = (await apiHelper.createCase(caseData['bulkCaseAssignee_Resolved'])).displayId;
         await browser.refresh();
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.searchAndSelectGridRecord(caseId[i]);
+            await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qing Yuan");
@@ -236,7 +236,7 @@ describe('Case Watchlist', () => {
         }
         await browser.refresh();
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.searchAndSelectGridRecord(caseId[i]);
+            await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
 
         await caseConsolePage.clickOnChangeAssignmentButton();
@@ -269,7 +269,7 @@ describe('Case Watchlist', () => {
         }
         await browser.refresh();
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.searchAndSelectGridRecord(caseId[i]);
+            await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
 
         await caseConsolePage.clickOnChangeAssignmentButton();
@@ -305,7 +305,7 @@ describe('Case Watchlist', () => {
 
         await browser.refresh();
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.searchAndSelectGridRecord(caseId[i]);
+            await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
 
         await caseConsolePage.clickOnChangeAssignmentButton();

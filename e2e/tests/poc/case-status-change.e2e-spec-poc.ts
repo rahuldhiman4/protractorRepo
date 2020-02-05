@@ -27,7 +27,7 @@ describe('Case Status Change', () => {
         await caseViewPage.clickSaveStatus();
         expect(await $(caseEditPage.selectors.statusChange).getText()).toBe('In Progress');
         await caseViewPage.clickAddTaskButton();
-        expect(await manageTaskPage.addTaskFromTaskTemplate("Review Invoice")).toBeTruthy("Review Invoice" + ' Task is not added to case');
+        await manageTaskPage.addTaskFromTaskTemplate("Review Invoice");
         await manageTaskPage.clickTaskLinkOnManageTask("Review invoices and requisitions for payment approval.");
         await caseEditPage.changeTaskStatus('Completed');
         await caseEditPage.setTaskStatusReason('Successful');
