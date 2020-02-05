@@ -522,7 +522,6 @@ class ApiHelper {
         return emailTemplateResponse.status == 201;
     }
 
-
     async createNotesTemplate(module: string, data: INotesTemplate): Promise<boolean> {
         let notesTemplateFile = await require('../data/api/social/notes.template.api.json');
         let templateData = await notesTemplateFile.NotesTemplateData;
@@ -687,7 +686,7 @@ class ApiHelper {
         };
     }
 
-    async EnableDomainTag(category: string): Promise<boolean> {
+    async enableDomainTag(category: string): Promise<boolean> {
         let domainTagFile = await require('../data/api/foundation/domain.tag.api.json');
         let domainTagData = await domainTagFile.enableDomainTag;
         let categoryGuid = await apiCoreUtil.getCategoryGuid(category);
@@ -699,12 +698,13 @@ class ApiHelper {
         return domainTagResponse.status == 201;
     }
 
-    async DisableDomainTag(domainTagGuid: string): Promise<boolean> {
+    async disableDomainTag(domainTagGuid: string): Promise<boolean> {        
         let domainTagFile = await require('../data/api/foundation/domain.tag.api.json');
         let domainTagData = await domainTagFile.disableDomainTag;
-        domainTagData.id = domainTagGuid;
-        domainTagData.fieldInstances[450000152] = domainTagGuid;
-        var domainTagResponse: AxiosResponse = await coreApi.updateRecordInstance('com.bmc.dsm.shared-services-lib:Domain Configuration', domainTagGuid, domainTagData);
+        let domainConfigGuid = await apiCoreUtil.getDomainConfigurationGuid(domainTagGuid);
+        domainTagData.id = domainConfigGuid;
+        domainTagData.fieldInstances[450000152].value = domainTagGuid;
+        var domainTagResponse: AxiosResponse = await coreApi.updateRecordInstance('com.bmc.dsm.shared-services-lib:Domain Configuration', domainConfigGuid, domainTagData);
         console.log('Disable Domain Tag API Status =============>', domainTagResponse.status);
         return domainTagResponse.status == 204;
     }

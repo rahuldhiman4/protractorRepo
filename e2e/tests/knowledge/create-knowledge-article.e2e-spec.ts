@@ -27,6 +27,9 @@ describe('Knowledge Article', () => {
 
     afterAll(async () => {
         await navigationPage.signOut();
+        await apiHelper.apiLogin("tadmin");
+        let domainTag = await apiHelper.createDomainTag(domainTagDataFile['DomainTagData']);
+        await apiHelper.disableDomainTag(domainTag);
     });
 
     afterEach(async () => {
