@@ -117,7 +117,7 @@ class CaseWatchlistBlade {
 
     async selectCase(caseId: string): Promise<void> {
         await this.sortDescendingByCaseId();
-        await utilGrid.clickCheckBoxOfValueInGrid(caseId, this.selectors.guid);
+        await utilGrid.searchAndSelectGridRecord(caseId, this.selectors.guid);
     }
 
     async clickOnRemoveBtn(): Promise<void> {
