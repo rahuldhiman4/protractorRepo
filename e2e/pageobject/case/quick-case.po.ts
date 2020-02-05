@@ -26,7 +26,7 @@ class QuickCasePage {
         let namenew = "@" + name;
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.inputBox)));
         await $(this.selectors.inputBox).sendKeys(namenew);
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.requesters)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesters)), 3000);
         await $$(this.selectors.requesters).first().click();
     }
 
