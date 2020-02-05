@@ -1,5 +1,5 @@
 import { $, $$, browser, by, By, element, ElementFinder, Key, protractor, ProtractorExpectedConditions, until } from 'protractor';
-import { Util } from './util.common';
+import utilCommon, { Util } from './util.common';
 
 export class GridOperation {
 
@@ -218,6 +218,7 @@ export class GridOperation {
 
     async searchAndSelectGridRecord(searchValue: string, guid?: string): Promise<void> {
         await this.searchOnGridConsole(searchValue);
+        await utilCommon.waitUntilSpinnerToHide();
         let checkboxRows: ElementFinder[];
         if (guid) {
             checkboxRows = await $$(`*[rx-view-component-id="${guid}"] .ui-grid .ui-grid-pinned-container .ui-grid-viewport .ui-grid-row`);
