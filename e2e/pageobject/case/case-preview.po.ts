@@ -19,7 +19,8 @@ class CasePreview {
         categoryTier1: '[rx-view-component-id="8668462b-3aac-4f43-8793-fc49aafbd5c6"] p',
         categoryTier2: '[rx-view-component-id="1068f2e1-1d3a-48a4-a0ed-ef1a8631ddc1"] p',
         categoryTier3: '[rx-view-component-id="1f32a2f6-ed6c-4b73-be36-c2990cb5a882"] p',
-        assignee: '[rx-view-component-id="7e86cba3-c1f9-4478-bf59-ee986a3ca5dd"] a[title]',
+        // assignee: '[rx-view-component-id="7e86cba3-c1f9-4478-bf59-ee986a3ca5dd"] a[title]',
+        assignee: '[rx-view-component-id="7e86cba3-c1f9-4478-bf59-ee986a3ca5dd"]',
         assignedGroup: '[rx-view-component-id="2dfc8f80-2665-4e87-af2d-3d4d1137144d"] .d-textfield__rx-value',
         assignedCompany: '[rx-view-component-id="3c3eaad4-9b00-48f0-b1d8-f3881e21e3bc"] .d-textfield__rx-value',
         createNewCaseButton: '[rx-view-component-id="e8e6eafe-d19c-4eeb-ab37-8ff302505579"] button',
@@ -96,7 +97,9 @@ class CasePreview {
     }
 
     async isAssigneeDisplayed(assignee: string): Promise<boolean> {
-        return await $(this.selectors.assignee).getText() == assignee ? true : false;
+       let valueassignee= await $(this.selectors.assignee +' .ac-person-absent').getAttribute('aria-hidden');
+        if (valueassignee=='true'){return await $(this.selectors.assignee +' a[title]').getText() == assignee ? true : false;
+        }else{return await $(this.selectors.assignee +' .ac-person-absent').getText() == assignee ? true : false;}
     }
 
     async isAssignedGroupDisplayed(assignedGroup: string): Promise<boolean> {

@@ -59,5 +59,30 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCreateNewCaseButton()).toBeTruthy('Create New Case button is missing');
     })
 
+    it('[DRDMV-14110]: Create a Case without template via Quick Case and check Case Preview screen', async () => {
+        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoQuickCase();
+        await quickCasePo.selectRequesterName('qkatawazi');
+        await quickCasePo.setCaseSummary(caseSummary);
+        await quickCasePo.saveCase();
+        expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');
+        expect(await casePreviewPo.isCaseSummaryDisplayed(caseSummary)).toBeTruthy('Summary is missing');
+        expect(await casePreviewPo.isCaseIdDisplayed()).toBeTruthy('Case ID is missing');
+        expect(await casePreviewPo.isPriorityDisplayed('Medium')).toBeTruthy('Priority is missing');
+        expect(await casePreviewPo.isCaseStatusDisplayed('New')).toBeTruthy('Case Status is missing');
+        expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('Requester name is missing');
+        expect(await casePreviewPo.isRequesterPhoneDisplayed('+15123431923')).toBeTruthy('Requester phone number is missing');
+        expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('Requester email id is missing');
+        expect(await casePreviewPo.isCaseTemplateDisplayed('Change My Legal Name')).toBeFalsy('Case Template is displayed');
+        expect(await casePreviewPo.isDescriptionDisplayed('Qadim Katawazi ' + caseSummary)).toBeTruthy('Description is missing');
+        expect(await casePreviewPo.isCategoryTier1Displayed('')).toBeTruthy('CategoryTier1 is missing');
+        expect(await casePreviewPo.isCategoryTier2Displayed('')).toBeTruthy('CategoryTier2 is missing');
+        expect(await casePreviewPo.isCategoryTier3Displayed('')).toBeTruthy('CategoryTier3 is missing');
+        expect(await casePreviewPo.isAssigneeDisplayed('None')).toBeTruthy('Assignee name is missing');
+        expect(await casePreviewPo.isAssignedGroupDisplayed('Workforce Administration')).toBeTruthy('Assigned group name is missing');
+        expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
+        expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
+        expect(await casePreviewPo.isCreateNewCaseButton()).toBeTruthy('Create New Case button is missing');
+    })
 
 })
