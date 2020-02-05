@@ -156,8 +156,7 @@ describe('Create Case Task', () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
                 .toEqual('Task Templates - Business Workflows');
-            await selectTaskTemplate.setTaskSearchBoxValue(manualTaskTemplate);
-            await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+            await selectTaskTemplate.searchAndOpenTaskTemplate(manualTaskTemplate);
             await editTaskTemplate.clickOnEditMetadataLink();
             await expect(editTaskTemplate.isTemplateStatusDisabled()).toBeTruthy("Template status is enabled");
             await editTaskTemplate.clickOnCancelMetadataButton();
@@ -193,8 +192,7 @@ describe('Create Case Task', () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
                 .toEqual('Task Templates - Business Workflows');
-            await selectTaskTemplate.setTaskSearchBoxValue(manualTaskTemplate);
-            await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+            await selectTaskTemplate.searchAndOpenTaskTemplate(manualTaskTemplate);
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus("Draft");
             await editTaskTemplate.clickOnSaveMetadata();
@@ -243,8 +241,7 @@ describe('Create Case Task', () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
                 .toEqual('Task Templates - Business Workflows');
-            await selectTaskTemplate.setTaskSearchBoxValue(manualTaskTemplate);
-            await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+            await selectTaskTemplate.searchAndOpenTaskTemplate(manualTaskTemplate);
             await viewTaskTemplate.clickOnEditLink();
             await editTaskTemplate.setSummary(updateSummary);
             await editTaskTemplate.setDescription(Description);
