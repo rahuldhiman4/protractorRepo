@@ -37,8 +37,7 @@ describe('Copy Task Template', () => {
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
         await taskTemplatePage.setTemplateName(automatedTaskTemplate1);
         await taskTemplatePage.setTaskSummary(automatedTaskSummary1);
@@ -47,7 +46,7 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.setNewProcessName('Business Workflows', processName);
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + processName);
         await viewTaskTemplate.clickOnCopyTemplate();
@@ -71,7 +70,7 @@ describe('Copy Task Template', () => {
             await viewCasePage.clickAddTaskButton();
 
             //Add Automation Task templates in Case
-            expect(await manageTask.addTaskFromTaskTemplate(automatedTaskSummary2)).toBeTruthy(automatedTaskSummary2 + ' Task is not added to case');
+            await manageTask.addTaskFromTaskTemplate(automatedTaskSummary2);
             await manageTask.clickOnCloseButton();
             await viewCasePage.changeCaseStatus("In Progress");
             await viewCasePage.clickSaveStatus();
@@ -112,7 +111,7 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectCompanyByName('Petramco');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         try {
             await navigationPage.signOut();
@@ -167,7 +166,7 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.setNewProcessName('Business Workflows', AutomationTaskProcess);
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         //Login through both Petramco and Psilon User
         try {
@@ -183,7 +182,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(newAutomationTaskTemplate);
             await copyTemplatePage.setNewProcessName(newAutomationTaskProcess);
             await copyTemplatePage.clickSaveCopytemplate();
-            await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.waitUntilPopUpDisappear();
             await expect(viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
 
             //Login through only Petramco User
@@ -197,7 +196,7 @@ describe('Copy Task Template', () => {
             await expect(viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
 
             //Login through only Psilon User
-            await browser.sleep(2000);
+            //await browser.sleep(2000);
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -245,7 +244,7 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.setNewProcessName('Business Workflows', newAutomationTaskProcess);
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         try {
             await navigationPage.signOut();
@@ -294,7 +293,7 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectCompanyByName('Petramco');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await viewTaskTemplate.clickOnCopyTemplate();
         await copyTemplatePage.setTemplateName(newManualTaskTemplate);
@@ -338,7 +337,7 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectTaskCategoryTier2('Social');
         await taskTemplatePage.selectTaskCategoryTier3('Chatter');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
@@ -349,7 +348,7 @@ describe('Copy Task Template', () => {
         await copyTemplatePage.setTemplateName(newManualTaskTemplate);
         await copyTemplatePage.setNewProcessName(newProcessName);
         await copyTemplatePage.clickSaveCopytemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await expect(await viewTaskTemplate.getTemplateStatus()).toBe('Draft');
         await expect(await viewTaskTemplate.getSummaryValue()).toBe(manualTaskSummary);
@@ -385,7 +384,7 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectCompanyByName('Petramco');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
@@ -400,8 +399,8 @@ describe('Copy Task Template', () => {
         await copyTemplatePage.setNewProcessName(newProcessName);
         await copyTemplatePage.selectTemplateStatus('Active');
         await copyTemplatePage.clickSaveCopytemplate();
-        await browser.sleep(2000);
-        await utilCommon.waitUntilPopUpDisappear();
+        //await browser.sleep(2000);
+        //await utilCommon.waitUntilPopUpDisappear();
 
         //Create a Case
         try {
@@ -417,8 +416,8 @@ describe('Copy Task Template', () => {
             await viewCasePage.clickAddTaskButton();
 
             //Add Automation Task templates in Case
-            expect(await manageTask.addTaskFromTaskTemplate(UpdatedTaskSummary)).toBeTruthy(UpdatedTaskSummary + ' Task is not added to case');
-            await browser.sleep(2000);
+            await manageTask.addTaskFromTaskTemplate(UpdatedTaskSummary);
+            //await browser.sleep(2000);
             await manageTask.clickOnCloseButton();
             await viewCasePage.changeCaseStatus("In Progress");
             await viewCasePage.clickSaveStatus();
@@ -453,7 +452,7 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectCompanyByName('Petramco');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
@@ -489,7 +488,7 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectCompanyByName('Petramco');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
@@ -530,7 +529,7 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectTaskCategoryTier3('Chatter');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
@@ -573,7 +572,7 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectTaskCategoryTier3('Chatter');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         try {
             await navigationPage.signOut();
@@ -617,7 +616,7 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectTaskCategoryTier3('Chatter');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
@@ -667,7 +666,7 @@ describe('Copy Task Template', () => {
         await dynamicField.setFieldName('fieldname');
         await dynamicField.setDescriptionName(fieldDescription);
         await dynamicField.clickSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
@@ -679,7 +678,7 @@ describe('Copy Task Template', () => {
         await copyTemplatePage.selectBundles("Case Management Service");
         await copyTemplatePage.setNewProcessName(updateProcessName);
         await copyTemplatePage.clickSaveCopytemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
         await expect(viewTaskTemplate.getDynamicFieldTitle()).toBe(fieldDescription);
 
     });
@@ -704,7 +703,7 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectCompanyByName('Petramco');
         await taskTemplatePage.setNewProcessName('Business Workflows', processName);
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')
@@ -716,7 +715,7 @@ describe('Copy Task Template', () => {
         await copyTemplatePage.selectBundles("Case Management Service");
         await copyTemplatePage.setNewProcessName(updateProcessName);
         await copyTemplatePage.clickSaveCopytemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         //Add Dynamic Field
         await viewTaskTemplate.clickOnManageDynamicFieldLink();
@@ -724,7 +723,7 @@ describe('Copy Task Template', () => {
         await dynamicField.setFieldName('fieldname');
         await dynamicField.setDescriptionName(fieldDescription);
         await dynamicField.clickSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
         await expect(viewTaskTemplate.getDynamicFieldTitle()).toBe(fieldDescription);
     }, 120 * 1000);
 
