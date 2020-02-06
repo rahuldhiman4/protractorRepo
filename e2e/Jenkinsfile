@@ -104,9 +104,12 @@ node('Protractor'){
 
   try {
     stage('Upload Over FTP'){
+      echo "ZIP"
+      zip archive: false, dir: 'e2e/reports', zipFile: 'e2e/reports/reports.zip'
+      echo "END - ZIP"
       ftpPublisher alwaysPublishFromMaster: true, continueOnError: true, failOnError: false, publishers: [
         [configName: 'vl-pun-rem-qa4n-protractor', transfers: [
-          [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAutoRun_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'e2e/reports/']
+          [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAutoRun_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'e2e/reports/reports.zip']
         ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
       ]
     }
