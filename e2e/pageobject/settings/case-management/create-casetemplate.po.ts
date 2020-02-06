@@ -146,16 +146,16 @@ class CreateCaseTemplate {
         await $(this.selectors.changeAssignmentButton).click();
     }
 
-    async clickOnClearButton() {
+    async clickOnClearButton(): Promise<void> {
         await $(this.selectors.clearButton).click();
     }
 
     async isResolutionCodeRequired(values: boolean): Promise<void> {
-        commonUtils.selectToggleButton(this.selectors.resolutionCode, values);
+        await commonUtils.selectToggleButton(this.selectors.resolutionCode, values);
     }
 
     async isResolutionDescriptionRequired(values: boolean): Promise<void> {
-        commonUtils.selectToggleButton(this.selectors.resolutionDescription, values);
+        await commonUtils.selectToggleButton(this.selectors.resolutionDescription, values);
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
