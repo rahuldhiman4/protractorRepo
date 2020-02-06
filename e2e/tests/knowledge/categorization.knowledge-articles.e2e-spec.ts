@@ -810,7 +810,7 @@ describe('Knowledge Articles Tests', () => {
 
     it('[DRDMV-19356]:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
         var domainTagData = {
-            domainTagName: 'HR'
+            domainTagName: 'FacilityTag'
         }
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json");
         let knowledgeData = knowledgeDataFile['DRDMV-19020'];
@@ -847,7 +847,8 @@ describe('Knowledge Articles Tests', () => {
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await browser.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
+            // await utilCommon.waitUntilSpinnerToHide();
+            await apiHelper.disableDomainTag(domainTag);
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
