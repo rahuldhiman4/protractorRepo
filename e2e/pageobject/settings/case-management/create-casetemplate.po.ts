@@ -4,6 +4,7 @@ import caseTemplateGrid from "../../../pageobject/settings/case-management/conso
 import commonUtils from "../../../utils/util.common";
 import changeAssignemetBlade from '../../common/change-assignment-blade.po';
 import viewCaseTemplate from "../../../pageobject/settings/case-management/view-casetemplate.po";
+import utilCommon from '../../../utils/util.common';
 
 class CreateCaseTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

@@ -103,8 +103,7 @@ class EditCaseTemplate {
     }
 
     async clickOnTabOfCaseTemplate(value: number) {
-        let element = $$(this.selectors.accessTab).get(value);
-        element.click();
+        await $$(this.selectors.accessTab).get(value).click();
     }
 
     async clickOnClearButton(): Promise<void> {
@@ -158,7 +157,7 @@ class EditCaseTemplate {
     }
 
     async changeIdentityValidationValue(identityValidationValue: string): Promise<void> {
-        await commonUtils.selectDropDown(this.selectors.flowset, identityValidationValue);
+        await commonUtils.selectDropDown(this.selectors.identityValidation, identityValidationValue);
     }
 
     async changeReopenTimelineDays(reopenDaysValues: string) {
@@ -252,14 +251,12 @@ class EditCaseTemplate {
 
     async isCaseSummaryReadOnly(): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
-        let value= await $(this.selectors.caseSummary).getAttribute('readonly');
-        return value=='true'? true:false;        
+        return await $(this.selectors.caseSummary).getAttribute('readonly') =='true'? true:false;        
     }
 
     async isSaveButtonOnMetaDataIsDisabled(): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveTemplateMetaData)));
-        let value= await $(this.selectors.saveTemplateMetaData).getAttribute('disabled');
-        return value=='true'? true:false;        
+        return await $(this.selectors.saveTemplateMetaData).getAttribute('disabled') == 'true' ? true : false;        
     }
 
     async isResolveCaseOnLastTaskCompletion(value: boolean): Promise<void> {
