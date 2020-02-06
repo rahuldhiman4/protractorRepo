@@ -49,7 +49,7 @@ describe('Create Case Task', () => {
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.selectTemplateStatus('Active');
             await taskTemplate.clickOnSaveTaskTemplate();
-            await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.waitUntilPopUpDisappear();
             await expect(viewTaskTemplate.isTaskSummaryTitlePresent('Task Summary')).toBeTruthy();
             await expect(viewTaskTemplate.isTaskTypeTitlePresent('Task Type')).toBeTruthy();
             await expect(viewTaskTemplate.isTaskCompanyTitlePresent('Task Company')).toBeTruthy();
@@ -89,7 +89,7 @@ describe('Create Case Task', () => {
             await taskTemplate.setTaskDescription('Description in manual task');
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.clickOnSaveTaskTemplate();
-            await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.waitUntilPopUpDisappear();
             await viewTaskTemplate.clickOnEditLink();
             await editTaskTemplate.selectTaskCompany('Global');
             await editTaskTemplate.clickOnSaveButton();
@@ -118,7 +118,7 @@ describe('Create Case Task', () => {
             await taskTemplate.setTaskDescription('Description in manual task');
             await taskTemplate.selectCompanyByName('Global');
             await taskTemplate.clickOnSaveTaskTemplate();
-            await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.waitUntilPopUpDisappear();
             await expect(viewTaskTemplate.getTaskCompanyNameValue()).toBe('- Global -');
             await viewTaskTemplate.clickOnEditLink();
             await editTaskTemplate.selectTaskCompany('Petramco');
@@ -149,7 +149,7 @@ describe('Create Case Task', () => {
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.selectTemplateStatus('Active');
             await taskTemplate.clickOnSaveTaskTemplate();
-            await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.waitUntilPopUpDisappear();
 
             await navigationPage.signOut();
             await loginPage.login('fritz');
@@ -187,7 +187,7 @@ describe('Create Case Task', () => {
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.selectTemplateStatus('Active');
             await taskTemplate.clickOnSaveTaskTemplate();
-            await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.waitUntilPopUpDisappear();
 
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
@@ -236,7 +236,7 @@ describe('Create Case Task', () => {
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.selectOwnerGroup("Facilities")
             await taskTemplate.clickOnSaveTaskTemplate();
-            await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.waitUntilPopUpDisappear();
 
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
