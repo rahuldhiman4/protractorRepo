@@ -29,17 +29,17 @@
         "id": "AGGADGG8ECDC0AQC0MYCQB2UY8ECKF",
         "recordDefinitionName": "com.bmc.dsm.shared-services-lib:Domain Configuration",
         "fieldInstances": {
-            "450000152": {
+            "450000152": {                
                 "id": 450000152,
                 "value": "AGGADGG8ECDC0AQCYL1TQCAS62EXKI"
-            },
-            "450000153": {
+              },
+             "450000153": {
                 "id": 450000153,
                 "value": 10
             }
         }
     },
-    "AssociateDomainTagToCategory": {
+    "associateDomainTagToCategory": {
         "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
         "id": "cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c",
         "recordDefinitionName": "com.bmc.arsys.rx.foundation:Operational Category",

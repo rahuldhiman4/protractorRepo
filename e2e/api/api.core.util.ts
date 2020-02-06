@@ -219,6 +219,16 @@ class ApiCoreUtil {
         console.log('Dyanmic data added API Status =============>', newRecord.status);
         return newRecord;
     }
+
+    async getDomainConfigurationGuid(domainTagGuid:string):Promise<string>{
+        let allRecords = await this.getGuid("com.bmc.dsm.shared-services-lib:Domain Configuration");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[450000152] === domainTagGuid;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    
 }
 
 export default new ApiCoreUtil();

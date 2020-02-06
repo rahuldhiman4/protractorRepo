@@ -31,7 +31,7 @@ node('Protractor'){
   }
 
   stage('Build') {
-    bat "rmdir /S /Q e2e\\reports"
+    bat "IF EXIST e2e\\reports RMDIR /S /Q e2e\\reports"
     bat "npm install"
     bat "npm run webdriver-update"
   }

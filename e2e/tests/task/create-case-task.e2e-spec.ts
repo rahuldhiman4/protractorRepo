@@ -120,7 +120,7 @@ describe('Create Case Task', () => {
         await taskTemplate.setNewProcessName('Approval', 'Get Request Status Data ');;
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
@@ -138,7 +138,7 @@ describe('Create Case Task', () => {
         await taskTemplate.selectTaskCategoryTier4('Failure');
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         //case create
         try {
@@ -334,7 +334,7 @@ describe('Create Case Task', () => {
         await taskTemplate.selectTaskCategoryTier3(categName3);
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
         await expect(await viewTaskTemplate.getCategoryTier1Value()).toBe(globalCategName);
         await expect(viewTaskTemplate.getCategoryTier2Value()).toBe(categName2);
         await expect(viewTaskTemplate.getCategoryTier3Value()).toBe(categName3);
@@ -396,7 +396,7 @@ describe('Create Case Task', () => {
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.selectOwnerCompany('Psilon');
             await taskTemplate.clickOnSaveTaskTemplate();
-            await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.waitUntilPopUpDisappear();
 
             //search above template
             await navigationPage.gotoSettingsPage();
@@ -447,7 +447,7 @@ describe('Create Case Task', () => {
         await taskTemplate.selectCompanyByName('Petramco');
         await taskTemplate.selectOwnerGroup('Facilities');
         await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
 
