@@ -29,6 +29,10 @@ class CasePreview {
         await $(this.selectors.viewCaseButton).click();
     }
 
+    async clickOncreateNewCaseButton(): Promise<void> {
+        await $(this.selectors.createNewCaseButton).click();
+    }
+
     async isTitleDisplayed(): Promise<boolean> {
         return await $(this.selectors.header).getText() == 'Case Preview' ? true : false;
     }
@@ -96,9 +100,10 @@ class CasePreview {
     }
 
     async isAssigneeDisplayed(assignee: string): Promise<boolean> {
-       let valueassignee= await $(this.selectors.assignee +' .ac-person-absent').getAttribute('aria-hidden');
-        if (valueassignee=='true'){return await $(this.selectors.assignee +' a[title]').getText() == assignee ? true : false;
-        }else{return await $(this.selectors.assignee +' .ac-person-absent').getText() == assignee ? true : false;}
+        let valueassignee = await $(this.selectors.assignee + ' .ac-person-absent').getAttribute('aria-hidden');
+        if (valueassignee == 'true') {
+            return await $(this.selectors.assignee + ' a[title]').getText() == assignee ? true : false;
+        } else { return await $(this.selectors.assignee + ' .ac-person-absent').getText() == assignee ? true : false; }
     }
 
     async isAssignedGroupDisplayed(assignedGroup: string): Promise<boolean> {
