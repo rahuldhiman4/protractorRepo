@@ -181,4 +181,11 @@ describe('Login and create case from API', () => {
         let orgGuid2 = await apiCoreUtil.getOrganizationGuid(org2);
         console.log("Org2 GUID...", org2, " ", orgGuid2);
     });
+
+    it('Delete Process Lib Config', async () => {
+        await apiHelper.apiLogin('tadmin');
+        let processName = 'com.bmc.arsys.rx.approval:Approval Executor';
+        let isDeleted = await apiHelper.deleteFlowsetProcessLibConfig(processName);
+        console.log("Process Lib Config deleted?.. ", isDeleted);
+    });
 })
