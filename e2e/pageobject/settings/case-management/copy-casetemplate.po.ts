@@ -27,7 +27,7 @@ class CopyCaseTemplate {
         taskFailureConfigurationValueOnCopy: '[rx-view-component-id="317fe9a4-3ca7-4a55-a647-18163fd4a572"] .ui-select-match-text',
         allowCaseReopenValueOnCopy: '[rx-view-component-id="cd24485f-5719-48e3-8d76-4320f5d13c4c"] .ui-select-match-text',
         caseStatusValueOnCopy: '[rx-view-component-id="6b1d1112-129e-4c27-82b2-2248f12dc09a"] .ui-select-match-text',
-        resolutionCodeValueOnCopy: '[rx-view-component-id="dead2a5c-4753-40c6-9709-4b8ea9c454fd"] .d-textfield__rx-value',
+        resolutionCodeValueOnCopy: '[rx-view-component-id="c3d9b91a-0198-4b61-b13a-59d46d3b0103"] .d-textfield__rx-value',
         resoltuionDescriptionValueOnCopy: '[rx-view-component-id="b5b2d17e-e6b1-44e9-bbd5-23d74b3f1a2a"] .d-textfield__rx-value',
         caseDescriptionValueOnCopy: '.rx-description-textarea-read',
         ownerGroupDropdown: 'b3ebc604-b7dc-4090-90a5-9515d1ea7f3e',
@@ -148,14 +148,14 @@ class CopyCaseTemplate {
         return await $(this.selectors.allowCaseReopenValueOnCopy).getText();
     }
 
-    async getValueOfResolutionCode(): Promise<string> {
+    async getValueOfResolutionCode(): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.resolutionCodeValueOnCopy)));
-        return await $(this.selectors.resolutionCodeValueOnCopy).getText();
+        return await $(this.selectors.resolutionCodeValueOnCopy).getText() == "Yes" ? true : false;
     }
 
-    async getValueOfResolutionDescription(): Promise<string> {
+    async getValueOfResolutionDescription(): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.resoltuionDescriptionValueOnCopy)));
-        return await $(this.selectors.resoltuionDescriptionValueOnCopy).getText();
+        return await $(this.selectors.resoltuionDescriptionValueOnCopy).getText() == "Yes" ? true : false;
     }
 
     async getValueOfcaseStatus(): Promise<string> {
