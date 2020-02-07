@@ -111,6 +111,7 @@ class QuickCasePage {
         // await browser.wait(this.EC.visibilityOf($(this.selectors.pinValidateInput)));
         await $(this.selectors.pinValidateInput).sendKeys("1234");
         await $(this.selectors.pinOk).click();
+        
     }
 }
 
