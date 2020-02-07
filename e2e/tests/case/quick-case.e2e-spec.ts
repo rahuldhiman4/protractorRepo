@@ -74,13 +74,13 @@ describe("Quick Case", () => {
 
     it('[DRDMV-18977]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=Change my Last Name&contact=PET000000000484');
-        await quickCase.verifyQuickCasePageAsEmpty();
+        await expect(await quickCase.getTextOfSummaryTextBox()).toBe('','Quick case summary text box is not empty');
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=Change my Last Name&contact=');
-        await quickCase.verifyQuickCasePageAsEmpty();
+        await expect(await quickCase.getTextOfSummaryTextBox()).toBe('','Quick case summary text box is not empty');
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=&contact=PET000000000484');
-        await quickCase.verifyQuickCasePageAsEmpty();
+        await expect(await quickCase.getTextOfSummaryTextBox()).toBe('','Quick case summary text box is not empty');
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=&contact=');
-        await quickCase.verifyQuickCasePageAsEmpty();
+        await expect(await quickCase.getTextOfSummaryTextBox()).toBe('','Quick case serch box is not empty');
     });
 
     it('[DRDMV-18983]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
@@ -89,7 +89,7 @@ describe("Quick Case", () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=Test1&desc=Change my Last Name&contact=qliu');
         await browser.sleep(2000);
         await expect(quickCase.getPopUpMessage()).toContain(caseData[expectedJsonName].warningMsg);
-        await quickCase.verifyQuickCasePageAsEmpty();
+        await expect(await quickCase.getTextOfSummaryTextBox()).toBe('','Quick case summary text box is not empty');
         await expect(quickCase.isCreateButtonDisabled).toBeTruthy();
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu&desc=Change my Last Name&contact=test1');
         await expect(quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);

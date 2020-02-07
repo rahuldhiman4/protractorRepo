@@ -6,6 +6,10 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import createCasePo from '../../pageobject/case/create-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import utilCommon from '../../utils/util.common';
+import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
+import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
+import resources from '../../pageobject/common/resources-tab.po';
 
 describe("Case Preview", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -86,7 +90,7 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCreateNewCaseButton()).toBeTruthy('Create New Case button is missing');
     })
 
-    it('[DRDMV-13642]: Create a Case from console with Template and check Case Preview', async () => {
+    it('[DRDMV-13642,DRDMV-13641]: Create a Case from console with Template and check Case Preview', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
         await createCasePo.selectRequester('qkatawazi');
@@ -112,6 +116,18 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButton()).toBeTruthy('Create New Case button is missing');
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');
+    }, 120 * 1000)
 
+    it('[DRDMV-13666,DRDMV-13672]: Create a Quick Case and Click on Back button on Case Preview blade', async () => {
+        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoQuickCase();
+        await quickCasePo.selectRequesterName('qkatawazi');
+        await quickCasePo.setCaseSummary(caseSummary);
+        await quickCasePo.saveCase();
+        await expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully');
+        await casePreviewPo.clickOncreateNewCaseButton();
+        await expect(await quickCasePo.getTextOfSummaryTextBox()).toBe('','Quick case summary text box is not empty');
     })
+
+
 })
