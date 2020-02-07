@@ -7,7 +7,7 @@ import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.ap
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
 import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
-import { CaseTemplate, MenuItemStatus, NotificationType, TaskTemplate, CaseStatus,Knowledge } from "../api/constant.api";
+import { CaseTemplate, MenuItemStatus, NotificationType, TaskTemplate, CaseStatus, Knowledge } from "../api/constant.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
 import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
@@ -15,7 +15,7 @@ import { IFlowset } from '../data/api/interface/flowset.interface.api';
 import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
 import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
-import { FLAG_UNFLAG_KA} from '../data/api/knowledge/flag-unflag.data.api';
+import { FLAG_UNFLAG_KA } from '../data/api/knowledge/flag-unflag.data.api';
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -110,8 +110,8 @@ class ApiHelper {
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[7].value = CaseTemplate[data.templateStatus];
-        templateData.fieldInstances[301566300].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
-        templateData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[1000000001].value; 
+        templateData.fieldInstances[301566300].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
+        templateData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[1000000001].value;
         if (data.ownerGroup) {
             let ownerSupportGroup = await coreApi.getSupportGroupGuid(data.ownerGroup);
             templateData.fieldInstances[300287900].value = ownerSupportGroup;
@@ -597,17 +597,17 @@ class ApiHelper {
             const knowledgeArticleDetails = await axios.get(await knowledgeArticleResponse.headers.location);
             return {
                 id: knowledgeArticleDetails.data.id,
-                displayId:knowledgeArticleDetails.data.displayId.replace( knowledgeArticleDetails.data.displayId.substring(0, 3), "KA-"),
+                displayId: knowledgeArticleDetails.data.displayId.replace(knowledgeArticleDetails.data.displayId.substring(0, 3), "KA-"),
             };
         }
     }
 
-    async updateKnowledgeArticleStatus(articleGuid: string, articleStatus: string,reviewer?:string,reviewerGroup?:string,reviewerOrg?:string): Promise<boolean> {
+    async updateKnowledgeArticleStatus(articleGuid: string, articleStatus: string, reviewer?: string, reviewerGroup?: string, reviewerOrg?: string): Promise<boolean> {
         let knowledgeArticleFile = await require('../data/api/knowledge/knowledge.article.api.json');
         let knowledgeArticleData = await knowledgeArticleFile.UpdateKnowledgeArticleData;
         knowledgeArticleData.id = articleGuid;
         knowledgeArticleData.fieldInstances[302300500].value = Knowledge[articleStatus];
-        if(reviewer){
+        if (reviewer) {
             let reviewerSGGuid = await apiCoreUtil.getSupportGroupGuid(reviewerGroup);
             let reviewerSGPayload = {
                 "id": 301122400,
@@ -626,14 +626,14 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[301122400] = reviewerSGPayload;
             knowledgeArticleData.fieldInstances[302309801] = reviewerPayload;
             knowledgeArticleData.fieldInstances[450000300] = reviewerCompanyPayload;
-         }
+        }
         let knowledgeArticleResponse: AxiosResponse = await coreApi.updateRecordInstance("com.bmc.dsm.knowledge:Knowledge Article Template", articleGuid, knowledgeArticleData);
         console.log("Status", knowledgeArticleResponse.status);
         return knowledgeArticleResponse.status == 204;
     }
 
     async flagAndUnflagKnowledgeArticle(knowledgeGuid: string, feedbackCommnent, flagUnflag: number): Promise<boolean> {
-        let flagAndUnflagData=FLAG_UNFLAG_KA; 
+        let flagAndUnflagData = FLAG_UNFLAG_KA;
         flagAndUnflagData.processInputValues.ParentID = `${knowledgeGuid}`;
         flagAndUnflagData.processInputValues.Feedback = `${feedbackCommnent}`;
         flagAndUnflagData.processInputValues.GUID = `${knowledgeGuid}`;
@@ -642,7 +642,7 @@ class ApiHelper {
             commandUri,
             flagAndUnflagData
         );
-        console.log('Flag Unflag Status========>',flagAndUnflagResponse.status);
+        console.log('Flag Unflag Status========>', flagAndUnflagResponse.status);
         return flagAndUnflagResponse.status == 204;
     }
 
@@ -650,7 +650,7 @@ class ApiHelper {
         let emailTemplateGuid = await coreApi.getEmailTemplateGuid(emailTemplateName);
         return await coreApi.deleteRecordInstance('com.bmc.dsm.notification-lib:NotificationTemplate', emailTemplateGuid);
     }
-   
+
     async createNewFlowset(data: IFlowset): Promise<IIDs> {
         let flowsetFile = await require('../data/api/case/flowset.api.json');
         let flowsetData = await flowsetFile.FlowsetData;
@@ -698,7 +698,7 @@ class ApiHelper {
         return domainTagResponse.status == 201;
     }
 
-    async disableDomainTag(domainTagGuid: string): Promise<boolean> {        
+    async disableDomainTag(domainTagGuid: string): Promise<boolean> {
         let domainTagFile = await require('../data/api/foundation/domain.tag.api.json');
         let domainTagData = await domainTagFile.disableDomainTag;
         let domainConfigGuid = await apiCoreUtil.getDomainConfigurationGuid(domainTagGuid);
@@ -785,6 +785,15 @@ class ApiHelper {
         }
     }
 
+    async deleteFlowsetProcessLibConfig(processName: string) {
+        let allProcessLibConfig = await coreApi.getGuid('com.bmc.dsm.flowsets-lib:Process Library');
+        allProcessLibConfig.data.data.map(async (obj) => {
+            if(obj[450000002] == processName) {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.flowsets-lib:Process Library', obj[179]);
+            }
+        });
+    }
+
     async updateCompanyDetails(organizationName: string, abbreviation: string, operationalType: string): Promise<boolean> {
         let orgGuid: string = await coreApi.getOrganizationGuid(organizationName);
         let organizationDetailsFile = await require('../data/api/foundation/organization.api.json');
@@ -800,7 +809,7 @@ class ApiHelper {
         console.log("Updated Organization status ==>>> " + updatedOrgData.status);
         return updatedOrgData.status == 204;
     }
-    
+
     async updateNotificationEmailListForSupportGroup(supportGroup: string, notificationList: string): Promise<void> {
         let supportGroupGuid: string = await coreApi.getSupportGroupGuid(supportGroup);
         let notificationEmailFile = await require('../data/api/foundation/notifications.email.list.update.api.json');
