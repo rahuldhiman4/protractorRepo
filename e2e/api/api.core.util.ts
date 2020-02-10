@@ -6,7 +6,7 @@ const templateUri = "api/rx/application/command";
 const dynamicDataUri = "api/com.bmc.dsm.ticketing-lib/dynamicdata/definition";
 
 class ApiCoreUtil {
-    async createRecordInstance(jsonBody: string): Promise<AxiosResponse> {
+    async createRecordInstance(jsonBody): Promise<AxiosResponse> {
         const newRecord = await axios.post(
             recordInstanceUri,
             jsonBody
@@ -219,6 +219,24 @@ class ApiCoreUtil {
         console.log('Dyanmic data added API Status =============>', newRecord.status);
         return newRecord;
     }
+
+    async getDomainConfigurationGuid(domainTagGuid:string):Promise<string>{
+        let allRecords = await this.getGuid("com.bmc.dsm.shared-services-lib:Domain Configuration");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[450000152] === domainTagGuid;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getServiceTargetGuid(sserviecTargetTitle: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.slm-lib:Service Target");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[490000400] === sserviecTargetTitle;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    
 }
 
 export default new ApiCoreUtil();

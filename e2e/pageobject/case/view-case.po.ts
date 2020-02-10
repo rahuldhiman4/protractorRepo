@@ -53,8 +53,9 @@ class ViewCasePage {
         emptyResolutionDescriptionTextBox: '.d-textfield__label .ng-empty',
         priority: '.selection-field',
         emailLink:'[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
-        addedTaskFromCaseTemplate:'.task-list__task-card a'
-    }    
+        addedTaskFromCaseTemplate:'.task-list__task-card a',
+        taskCardArrow: '.icon-angle_right.task-list__task-card__preview-icon',
+    }
     
     async clickOnEmailLink(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
@@ -209,9 +210,13 @@ class ViewCasePage {
         await $(this.selectors.statusChangeReason + " " + this.selectors.searchInput).clear();
     }
 
-    async clickAddTaskButton() {
+    async clickAddTaskButton(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskButton)),3000);
         await $(this.selectors.addTaskButton).click();
+    }
+
+    async openTaskCard(taskCardNumber: number): Promise<void> {
+        await $$(this.selectors.taskCardArrow).get(taskCardNumber - 1).click();
     }
 
     async getCaseID(): Promise<string> {

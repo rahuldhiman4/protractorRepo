@@ -62,7 +62,7 @@ class Copytaskpage {
 
     async getSourceProcessName(): Promise<string> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.sourceProcessname)));
-        return await $(this.selectors.sourceProcessname).getText();
+        return await $(this.selectors.sourceProcessname).getAttribute('value');
     }
 
     async clickSaveCopytemplate(): Promise<void> {

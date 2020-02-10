@@ -120,7 +120,7 @@ describe('Create Case Task', () => {
         await taskTemplate.setNewProcessName('Approval', 'Get Request Status Data ');;
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
@@ -138,7 +138,7 @@ describe('Create Case Task', () => {
         await taskTemplate.selectTaskCategoryTier4('Failure');
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         //case create
         try {
@@ -251,8 +251,7 @@ describe('Create Case Task', () => {
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(`manualTaskTemplateActive ${randomStr}`);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateActive ${randomStr}`);
         await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Manual');
         await viewTaskTemplate.clickOnEditLink();
         await expect(editTaskTemplate.getTaskTypeValue()).toBe('Manual');
@@ -261,8 +260,7 @@ describe('Create Case Task', () => {
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(`manualTaskTemplateInActive ${randomStr}`);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateInActive ${randomStr}`);
         await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Manual');
         await viewTaskTemplate.clickOnEditLink();
         await expect(editTaskTemplate.getTaskTypeValue()).toBe('Manual');
@@ -271,8 +269,7 @@ describe('Create Case Task', () => {
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(`manualTaskTemplateDraft ${randomStr}`);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateDraft ${randomStr}`);
         await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Manual');
         await viewTaskTemplate.clickOnEditLink();
         await expect(editTaskTemplate.getTaskTypeValue()).toBe('Manual');
@@ -281,8 +278,7 @@ describe('Create Case Task', () => {
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(`AutomatedTaskTemplateActive ${randomStr}`);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Automated');
         await viewTask.clickOnEditTask();
         await expect(editTaskTemplate.getTaskTypeValue()).toBe('Automated');
@@ -291,8 +287,7 @@ describe('Create Case Task', () => {
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(`AutomatedTaskTemplateInActive ${randomStr}`);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateInActive ${randomStr}`);
         await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Automated');
         await viewTask.clickOnEditTask();
         await expect(editTaskTemplate.getTaskTypeValue()).toBe('Automated');
@@ -301,8 +296,7 @@ describe('Create Case Task', () => {
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(`AutomatedTaskTemplateDraft ${randomStr}`);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateDraft ${randomStr}`);
         await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Automated');
         await viewTask.clickOnEditTask();
         await expect(editTaskTemplate.getTaskTypeValue()).toBe('Automated');
@@ -340,7 +334,7 @@ describe('Create Case Task', () => {
         await taskTemplate.selectTaskCategoryTier3(categName3);
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
         await expect(await viewTaskTemplate.getCategoryTier1Value()).toBe(globalCategName);
         await expect(viewTaskTemplate.getCategoryTier2Value()).toBe(categName2);
         await expect(viewTaskTemplate.getCategoryTier3Value()).toBe(categName3);
@@ -402,13 +396,12 @@ describe('Create Case Task', () => {
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.selectOwnerCompany('Psilon');
             await taskTemplate.clickOnSaveTaskTemplate();
-            await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.waitUntilPopUpDisappear();
 
             //search above template
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.setTaskSearchBoxValue(TaskTemplate);
-            await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+            await selectTaskTemplate.searchAndOpenTaskTemplate(TaskTemplate);
             await viewTaskTemplate.clickOnEditLink();
             await editTaskTemplate.setDescription(description);
             await editTaskTemplate.selectTaskCategoryTier1('Applications');
@@ -454,7 +447,7 @@ describe('Create Case Task', () => {
         await taskTemplate.selectCompanyByName('Petramco');
         await taskTemplate.selectOwnerGroup('Facilities');
         await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
 
@@ -464,8 +457,7 @@ describe('Create Case Task', () => {
             await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.setTaskSearchBoxValue(TaskTemplate);
-            await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+            await selectTaskTemplate.searchAndOpenTaskTemplate(TaskTemplate);
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus('Draft');
             await editTaskTemplate.clickOnSaveMetadata();
@@ -475,8 +467,7 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnSaveMetadata();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.setTaskSearchBoxValue(TaskTemplate);
-            await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+            await selectTaskTemplate.searchAndOpenTaskTemplate(TaskTemplate);
             await viewTaskTemplate.clickOnEditLink();
             await editTaskTemplate.setDescription(description);
             await editTaskTemplate.clickOnSaveButton();
@@ -588,9 +579,9 @@ describe('Create Case Task', () => {
         let updateAllColoumn: string[] = ['Template Name', 'Template Status', 'Task Type', 'Task Category Tier 1', 'Task Category Tier 2', 'Assignee', 'Support Group', 'Modified Date', 'Task Company', 'Label'];
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await expect(selectTaskTemplate.isAllColoumnTitleDisplayed(allColoumn)).toBeTruthy("All Coloumn is not present");
+        await expect(selectTaskTemplate.isAllColumnTitleDisplayed(allColoumn)).toBeTruthy("All Coloumn is not present");
         await selectTaskTemplate.addColumn(addColoumn);
-        await expect(selectTaskTemplate.isAllColoumnTitleDisplayed(updateAllColoumn)).toBeTruthy("Updated All Coloumn is not present");
+        await expect(selectTaskTemplate.isAllColumnTitleDisplayed(updateAllColoumn)).toBeTruthy("Updated All Coloumn is not present");
         await selectTaskTemplate.removeColumn(addColoumn);
 
     });

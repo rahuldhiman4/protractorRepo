@@ -178,12 +178,12 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isPhoneNumberPresentOnUserPopUp('+12124021501')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
             await expect(await activityTabPage.isCompanyPresentOnUserPopUp('Petramco')).toBeTruthy('Company is Not Present On Author List PopUp');
             await activityTabPage.removeAuthorFromFilter();
-            // 5th Step: User is selected and Author field gets disabled.       
+            // 5th Step: User is selected and Author field gets disabled.
             await activityTabPage.addAuthorOnFilter('Angelina Jolie');
-            await expect(await activityTabPage.isAuthorBoxEmpty()).toBeTruthy('Author field is editable');
+            await expect(await activityTabPage.isAuthorBoxEmpty()).toBeFalsy('Author field is empty');
             // i)- Click on x button from author field (- Field gets cleared and enabled to search another user)
             await activityTabPage.removeAuthorFromFilter();
-            await expect(await activityTabPage.isAuthorBoxEmpty()).toBeFalsy('Author field is not editable');
+            await expect(await activityTabPage.isAuthorBoxEmpty()).toBeTruthy('Author field is not empty');
             // ii) - Select another user and click on Apply
             await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
         } catch (e) {
@@ -366,10 +366,10 @@ describe('Case Activity', () => {
         await activityTabPage.removeAuthorFromFilter();
         // 5th Step: User is selected and Author field gets disabled.       
         await activityTabPage.addAuthorOnFilter('Angelina Jolie');
-        await expect(await activityTabPage.isAuthorBoxEmpty()).toBeTruthy('Author field is editable');
+        await expect(await activityTabPage.isAuthorBoxEmpty()).toBeFalsy('Author field is empty');
         // i)- Click on x button from author field (- Field gets cleared and enabled to search another user)
         await activityTabPage.removeAuthorFromFilter();
-        await expect(await activityTabPage.isAuthorBoxEmpty()).not.toBeTruthy('Author field is not editable');
+        await expect(await activityTabPage.isAuthorBoxEmpty()).toBeTruthy('Author field is not empty');
         // ii) - Select another user and click on Apply
         await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
     });
@@ -407,13 +407,12 @@ describe('Case Activity', () => {
         // 5th Step: User is selected and Author field gets disabled 
         // i) User is selected and Author field gets disabled 
         await activityTabPage.addAuthorOnFilter('Angelina Jolie');
-        await expect(await activityTabPage.isAuthorBoxEmpty()).toBeTruthy('Author field is editable');
+        await expect(await activityTabPage.isAuthorBoxEmpty()).toBeFalsy('Author field is empty');
         // ii)- Click on x button from author field (- Field gets cleared and enabled to search another user)
         await activityTabPage.removeAuthorFromFilter();
-        browser.sleep(2000);
-        await expect(await activityTabPage.isAuthorBoxEmpty()).not.toBeTruthy('Author field is not editable');
+        await expect(await activityTabPage.isAuthorBoxEmpty()).toBeTruthy('Author field is not empty');
         // iii) - Select another user and click on Apply
-        await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries')
+        await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
     });
 
     //kgaikwad

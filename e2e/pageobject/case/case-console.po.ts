@@ -82,7 +82,7 @@ class CaseConsolePage {
     }
 
     async selectCase(caseID: string): Promise<void> {
-        await gridUtil.clickCheckBoxOfValueInGrid(caseID);
+        await gridUtil.searchAndSelectGridRecord(caseID);
     }
 
     async clickOnAddToWatchlist(): Promise<void> {

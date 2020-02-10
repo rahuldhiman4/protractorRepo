@@ -1,5 +1,4 @@
 import { $, browser } from "protractor";
-import { protractor } from 'protractor/built/ptor';
 import apiHelper from '../../api/api.helper';
 import caseConsole from '../../pageobject/case/case-console.po';
 import createCasePage from '../../pageobject/case/create-case.po';
@@ -87,7 +86,6 @@ describe('Case Status Change', () => {
         await viewCasePage.changeCaseStatus(statusCanceled);
         let cancelStatusReasons: string[] = [' ', 'Approval Rejected', 'Customer Canceled'];
         expect(await viewCasePage.allStatusReasonOptionsPresent(cancelStatusReasons)).toBeTruthy('Cancel status reason options mismatch');
-        await browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
         await viewCasePage.setStatusReason('Customer Canceled');
         await viewCasePage.clickSaveStatus(statusCanceled);
         expect(await viewCasePage.getTextOfStatus()).toBe(statusCanceled), 'Status should be New to Cancelled';
@@ -112,7 +110,6 @@ describe('Case Status Change', () => {
         await viewCasePage.changeCaseStatus(statusPending);
         let pendingStatusReasons: string[] = [' ', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
         expect(await viewCasePage.allStatusReasonOptionsPresent(pendingStatusReasons)).toBeTruthy('Pending status reason options mismatch');
-        await browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
         await viewCasePage.setStatusReason('Approval');
         await viewCasePage.clickSaveStatus();
         expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Case status updated to Pending for Approval only when approval is initiated. You cannot manually select this status.');
@@ -126,8 +123,7 @@ describe('Case Status Change', () => {
         expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
         expect(await caseConsole.isCaseStatusPresent(statusPending)).toBeTruthy("Status Pending not matching");
         expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
-        console.log('Pending status success');
-    }, 330 * 1000);
+    }, 200 * 1000);
 
     //kgaikwad
     it('[DRDMV-1618]: [Case] Fields validation for case in Resolved status', async () => {
@@ -160,7 +156,6 @@ describe('Case Status Change', () => {
         var str: string = await utilCommon.getPopUpMessage();
         await expect(str).toBe('Resolve the field validation errors and then try again.');
         await utilCommon.closePopUpMessage();
-        await utilCommon.waitUntilSpinnerToHide();
         await editCasePage.updateCaseSummary('Pending AC');
         await editCasePage.clickSaveCase();
         await expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
@@ -201,7 +196,6 @@ describe('Case Status Change', () => {
         await viewCasePage.changeCaseStatus(statusPending);
         let pendingStatusReasons: string[] = [' ', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
         expect(await viewCasePage.allStatusReasonOptionsPresent(pendingStatusReasons)).toBeTruthy('Pending status reason options mismatch');
-        await browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
         await viewCasePage.setStatusReason('Approval');
         await viewCasePage.clickSaveStatus();
         expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Case status updated to Pending for Approval only when approval is initiated. You cannot manually select this status.');
@@ -219,7 +213,6 @@ describe('Case Status Change', () => {
         await viewCasePage.changeCaseStatus(statusResolved);
         let resolvedStatusReasons: string[] = [' ', 'Auto Resolved', 'Customer Follow-Up Required', 'No Further Action Required'];
         expect(await viewCasePage.allStatusReasonOptionsPresent(resolvedStatusReasons)).toBeTruthy('Resolved status reason options mismatch');
-        await browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
         await viewCasePage.setStatusReason('Auto Resolved');
         await viewCasePage.clickSaveStatus(statusResolved);
     });
@@ -246,7 +239,6 @@ describe('Case Status Change', () => {
         expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
         expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
         expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Assignee not present');
-        await utilCommon.waitUntilPopUpDisappear();
         await editCasePage.clearCaseSummary();
         await editCasePage.clickSaveCase();
         var str: string = await utilCommon.getPopUpMessage();
@@ -256,7 +248,6 @@ describe('Case Status Change', () => {
         await editCasePage.clickSaveCase();
         var str: string = await utilCommon.getPopUpMessage();
         await expect(str).toBe('Saved successfully.');
-        await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
@@ -465,8 +456,8 @@ describe('Case Status Change', () => {
         await viewCasePage.changeCaseStatus('Canceled');
         await viewCasePage.setStatusReason('Approval Rejected');
         await viewCasePage.clickSaveStatus();
-        await viewCasePage.clickAddTaskButton();
+        await viewCasePage.openTaskCard(1);
         await manageTask.clickTaskLinkOnManageTask(manualSummary);
         await expect(viewTask.getTaskStatusValue()).toBe('Canceled', 'canceled status not found');
-    });
+    }, 120 * 1000);
 })

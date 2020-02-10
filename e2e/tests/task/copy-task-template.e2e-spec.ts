@@ -29,16 +29,15 @@ describe('Copy Task Template', () => {
 
     it('[DRDMV-14214]: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let automatedTaskTemplate1 = 'Automation Task1 ' + randomStr;
-        let automatedTaskSummary1 = 'Automation Summary1 ' + randomStr;
-        let automatedTaskTemplate2 = 'Automation Task2 ' + randomStr;
-        let automatedTaskSummary2 = 'Automation Summary2 ' + randomStr;
-        let processName = 'Process Name ' + randomStr;
+        let automatedTaskTemplate1 = 'DRDMV14214AutomationTask' + randomStr;
+        let automatedTaskSummary1 = 'DRDMV14214AutomationSummary1' + randomStr;
+        let automatedTaskTemplate2 = 'DRDMV14214AutomationTask2' + randomStr;
+        let automatedTaskSummary2 = 'DRDMV14214AutomationSummary2' + randomStr;
+        let processName = 'DRDMV14214ProcessName' + randomStr;
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
         await taskTemplatePage.setTemplateName(automatedTaskTemplate1);
         await taskTemplatePage.setTaskSummary(automatedTaskSummary1);
@@ -47,37 +46,38 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.setNewProcessName('Business Workflows', processName);
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + processName);
         await viewTaskTemplate.clickOnCopyTemplate();
-        await expect(copyTemplatePage.unSelectCopyExistingProcess()).toBeTruthy();
-        await expect(copyTemplatePage.getProcessName()).toBe(processName);
+        await expect(await copyTemplatePage.unSelectCopyExistingProcess()).toBeTruthy();
+        await expect(await copyTemplatePage.getProcessName()).toBe(processName);
         await copyTemplatePage.setTemplateName(automatedTaskSummary2);
         await copyTemplatePage.selectTemplateStatus('Active');
         await copyTemplatePage.setTaskSummary(automatedTaskSummary2)
         await copyTemplatePage.clickSaveCopytemplate();
         await utilCommon.clickOnWarningOk();
+        await utilCommon.waitUntilPopUpDisappear();
 
         try {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotCreateCase();
             await createCasePage.selectRequester("adam");
-            await createCasePage.setSummary('Summary ' + automatedTaskTemplate2);
+            await createCasePage.setSummary('Summary' + automatedTaskTemplate2);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await createCasePage.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
 
             //Add Automation Task templates in Case
-            expect(await manageTask.addTaskFromTaskTemplate(automatedTaskSummary2)).toBeTruthy(automatedTaskSummary2 + ' Task is not added to case');
+            await manageTask.addTaskFromTaskTemplate(automatedTaskSummary2);
             await manageTask.clickOnCloseButton();
             await viewCasePage.changeCaseStatus("In Progress");
             await viewCasePage.clickSaveStatus();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLinkOnManageTask(automatedTaskSummary2);
-            await expect(viewTask.getTaskStatusValue()).toBe('Completed');
+            await expect(await viewTask.getTaskStatusValue()).toBe('Completed');
         } catch (e) {
             throw e;
         } finally {
@@ -88,12 +88,12 @@ describe('Copy Task Template', () => {
 
     it('[DRDMV-13548]: Create a Copy of Task template where Submitter do not belong to any Support Groups', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let manualTaskTemplate = 'Manual task1' + randomStr;
-        let manualTaskSummary = 'Summary' + randomStr;
-        let newManualTaskTemplate = 'New Manual task' + randomStr;
+        let manualTaskTemplate = 'DRDMV13548ManualTask1' + randomStr;
+        let manualTaskSummary = 'DRDMV13548Summary' + randomStr;
+        let newManualTaskTemplate = 'NewManualtaskDRDMV13548' + randomStr;
 
         await apiHelper.apiLogin('tadmin');
-        var userData = {
+        let userData = {
             "firstName": "Petramco",
             "lastName": "Psilon",
             "userId": "DRDMV-13548",
@@ -103,8 +103,7 @@ describe('Copy Task Template', () => {
 
         //Manual Task template
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await selectTaskTemplate.clickOnManualTaskTemplateButton();
         await taskTemplatePage.setTemplateName(manualTaskTemplate);
         await taskTemplatePage.setTaskSummary(manualTaskSummary);
@@ -112,21 +111,19 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectCompanyByName('Petramco');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         try {
             await navigationPage.signOut();
             await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-                .toEqual('Task Templates - Business Workflows');
-            await selectTaskTemplate.setTaskSearchBoxValue(manualTaskTemplate);
-            await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.searchAndOpenTaskTemplate(manualTaskTemplate);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(newManualTaskTemplate);
-            await expect(copyTemplatePage.isOwnerGroupEmpty()).toBeTruthy();
+            await expect(await copyTemplatePage.isOwnerGroupEmpty()).toBeTruthy();
             await copyTemplatePage.clickSaveCopytemplate();
-            await expect(utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
+            await expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
         } catch (e) {
             throw e;
         } finally {
@@ -138,7 +135,7 @@ describe('Copy Task Template', () => {
     it('[DRDMV-14218]: The copy of Automated Task template is created across company and check the way to Edit the existing linked Process.', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
-        var userData = {
+        let userData = {
             "firstName": "Petramco",
             "lastName": "Psilon",
             "userId": "DRDMV-14218",
@@ -148,17 +145,16 @@ describe('Copy Task Template', () => {
         await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
         await apiHelper.associatePersonToSupportGroup(userData.userId, "Compensation and Benefits");
 
-        let automationTaskTemplate = 'Automation template' + randomStr;
-        let automationTaskSummary = 'Summary' + randomStr;
-        let AutomationTaskProcess = 'Process' + randomStr;
+        let automationTaskTemplate = 'DRDMV14218AutomationTemplate' + randomStr;
+        let automationTaskSummary = 'DRDMV14218Summary' + randomStr;
+        let AutomationTaskProcess = 'DRDMV14218Process' + randomStr;
 
-        let newAutomationTaskTemplate = 'new Automation template' + randomStr;
-        let newAutomationTaskProcess = 'New Process' + randomStr;
+        let newAutomationTaskTemplate = 'NewAutomationTemplateDRDMV14218' + randomStr;
+        let newAutomationTaskProcess = 'NewProcessDRDMV14218' + randomStr;
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
         await taskTemplatePage.setTemplateName(automationTaskTemplate);
         await taskTemplatePage.setTaskSummary(automationTaskSummary);
@@ -167,45 +163,39 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.setNewProcessName('Business Workflows', AutomationTaskProcess);
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         //Login through both Petramco and Psilon User
         try {
             await navigationPage.signOut();
             await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-                .toEqual('Task Templates - Business Workflows');
-            await selectTaskTemplate.setTaskSearchBoxValue(automationTaskTemplate);
-            await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.searchAndOpenTaskTemplate(automationTaskTemplate);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.selectTaskCompany('Psilon')
             await copyTemplatePage.setTemplateName(newAutomationTaskTemplate);
             await copyTemplatePage.setNewProcessName(newAutomationTaskProcess);
             await copyTemplatePage.clickSaveCopytemplate();
             await utilCommon.waitUntilPopUpDisappear();
-            await expect(viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
+            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
 
             //Login through only Petramco User
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-                .toEqual('Task Templates - Business Workflows');
-            await selectTaskTemplate.setTaskSearchBoxValue(newAutomationTaskTemplate);
-            await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
-            await expect(viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.searchAndOpenTaskTemplate(newAutomationTaskTemplate);
+            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
 
             //Login through only Psilon User
-            await browser.sleep(2000);
+            //await browser.sleep(2000);
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-                .toEqual('Task Templates - Business Workflows');
-            await selectTaskTemplate.setTaskSearchBoxValue(newAutomationTaskTemplate);
-            await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
-            await expect(viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.searchAndOpenTaskTemplate(newAutomationTaskTemplate);
+            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
         } catch (e) {
             throw e;
         } finally {
@@ -217,7 +207,7 @@ describe('Copy Task Template', () => {
     it('[DRDMV-14217]: Copy of Automated task template created across company and no new Process is created', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
-        var userData = {
+        let userData = {
             "firstName": "Petramco",
             "lastName": "Psilon",
             "userId": "DRDMV-14217",
@@ -227,16 +217,15 @@ describe('Copy Task Template', () => {
         await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
         await apiHelper.associatePersonToSupportGroup(userData.userId, "Compensation and Benefits");
 
-        let automationTaskTemplate = 'Automation task' + randomStr;
-        let automationTaskSummary = 'Summary' + randomStr;
+        let automationTaskTemplate = 'DRDMV14217Automationtask' + randomStr;
+        let automationTaskSummary = 'DRDMV14217Summary' + randomStr;
 
-        let newAutomationTaskTemplate = 'New Automation task' + randomStr;
-        let newAutomationTaskProcess = 'New Process' + randomStr;
+        let newAutomationTaskTemplate = 'NewAutomationtaskDRDMV14217' + randomStr;
+        let newAutomationTaskProcess = 'NewProcessDRDMV14217' + randomStr;
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
         await taskTemplatePage.setTemplateName(automationTaskTemplate);
         await taskTemplatePage.setTaskSummary(automationTaskSummary);
@@ -245,28 +234,24 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.setNewProcessName('Business Workflows', newAutomationTaskProcess);
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         try {
             await navigationPage.signOut();
             await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-                .toEqual('Task Templates - Business Workflows');
-            await selectTaskTemplate.setTaskSearchBoxValue(automationTaskTemplate);
-            await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.searchAndOpenTaskTemplate(automationTaskTemplate);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.selectTaskCompany('Psilon')
             await copyTemplatePage.setTemplateName(newAutomationTaskTemplate);
             await copyTemplatePage.setNewProcessName(newAutomationTaskProcess);
             await copyTemplatePage.clickSaveCopytemplate();
-            await browser.refresh();
+            await expect(await utilCommon.isErrorMsgPresent()).toBeTruthy(); // ERROR (902): Duplicate process name 
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-                .toEqual('Task Templates - Business Workflows');
-            await selectTaskTemplate.setTaskSearchBoxValue(automationTaskTemplate);
-            await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
-            await expect(viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.searchAndOpenTaskTemplate(automationTaskTemplate);
+            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
         } catch (e) {
             throw e;
         } finally {
@@ -277,16 +262,15 @@ describe('Copy Task Template', () => {
 
     it('[DRDMV-13540,DRDMV-13556]: Case Business Analyst can create a copy of Task Template type= Manual, New template created is in draft status', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let manualTaskTemplate = 'Manual task' + randomStr;
-        let manualTaskSummary = 'Summary' + randomStr;
+        let manualTaskTemplate = 'DRDMV13540ManualTask' + randomStr;
+        let manualTaskSummary = 'DRDMV13540Summary' + randomStr;
 
-        let newManualTaskTemplate = 'New manual task' + randomStr;
-        let newmanualTaskSummary = 'New Summary' + randomStr;
+        let newManualTaskTemplate = 'NewManualTaskDRDMV13540' + randomStr;
+        let newmanualTaskSummary = 'NewSummaryDRDMV13540' + randomStr;
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await selectTaskTemplate.clickOnManualTaskTemplateButton();
         await taskTemplatePage.setTemplateName(manualTaskTemplate);
         await taskTemplatePage.setTaskSummary(manualTaskSummary);
@@ -294,39 +278,37 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectCompanyByName('Petramco');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await viewTaskTemplate.clickOnCopyTemplate();
         await copyTemplatePage.setTemplateName(newManualTaskTemplate);
         await copyTemplatePage.setTaskSummary(newmanualTaskSummary);
 
         await copyTemplatePage.clickSaveCopytemplate();
-        await expect(viewTaskTemplate.getTemplateStatus()).toBe("Draft");
-        await expect(viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
-        await expect(viewTaskTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
+        await utilCommon.waitUntilPopUpDisappear();
+        await expect(await viewTaskTemplate.getTemplateStatus()).toBe("Draft");
+        await expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
+        await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
 
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(newManualTaskTemplate);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
-        await expect(viewTaskTemplate.getTemplateName()).toBe(newManualTaskTemplate);
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.searchAndOpenTaskTemplate(newManualTaskTemplate);
+        await expect(await viewTaskTemplate.getTemplateName()).toBe(newManualTaskTemplate);
     });
 
     it('[DRDMV-13573]: Fields copied while creating copy of Automated Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let manualTaskTemplate = 'manual task' + randomStr;
-        let manualTaskSummary = 'manual Summary' + randomStr;
-        let processName = 'Process ' + randomStr;
-        let newProcessName = 'new Process ' + randomStr;
+        let manualTaskTemplate = 'ManualTaskDRDMV13573' + randomStr;
+        let manualTaskSummary = 'ManualSummaryDRDMV13573' + randomStr;
+        let processName = 'ProcessDRDMV13573' + randomStr;
+        let newProcessName = 'NewProcessDRDMV13573' + randomStr;
 
-        let newManualTaskTemplate = 'new manual task' + randomStr;
-        let Description = 'Description' + randomStr;
+        let newManualTaskTemplate = 'NewManualTaskDRDMV13573' + randomStr;
+        let Description = 'DescriptionDRDMV13573' + randomStr;
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
         await taskTemplatePage.setTemplateName(manualTaskTemplate);
         await taskTemplatePage.setTaskSummary(manualTaskSummary);
@@ -338,13 +320,11 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectTaskCategoryTier2('Social');
         await taskTemplatePage.selectTaskCategoryTier3('Chatter');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(manualTaskTemplate);
-        await selectTaskTemplate.clickFirstCheckBoxInTaskTemplateSearchGrid();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.searchAndSelectTaskTemplate(manualTaskTemplate);
         await selectTaskTemplate.clickOnCopyTaskTemplateButton();
         await copyTemplatePage.setTemplateName(newManualTaskTemplate);
         await copyTemplatePage.setNewProcessName(newProcessName);
@@ -364,43 +344,40 @@ describe('Copy Task Template', () => {
 
     it('[DRDMV-14215]: Create a Copy of an automated Task Template where New Process is created and check its execution', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let TaskTemplate = 'Automation task' + randomStr;
-        let TaskSummary = 'Summary' + randomStr;
-        let processName = 'Process ' + randomStr;
-        let newProcessName = 'New Process ' + randomStr;
+        let taskTemplate = 'DRDMV14215AutomationTask' + randomStr;
+        let taskSummary = 'DRDMV14215Summary' + randomStr;
+        let processName = 'DRDMV14215Process' + randomStr;
+        let newProcessName = 'NewProcessDRDMV14215' + randomStr;
 
-        let UpdatedTaskTemplate = 'Updated task' + randomStr;
-        let UpdatedTaskSummary = 'New Summary' + randomStr;
-        let Description = 'Description' + randomStr;
+        let updatedTaskTemplate = 'UpdatedTaskDRDMV14215' + randomStr;
+        let updatedTaskSummary = 'NewSummaryDRDMV14215' + randomStr;
+        let description = 'DescriptionDRDMV14215' + randomStr;
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
-        await taskTemplatePage.setTemplateName(TaskTemplate);
-        await taskTemplatePage.setTaskSummary(TaskSummary);
-        await taskTemplatePage.setTaskDescription(Description);
+        await taskTemplatePage.setTemplateName(taskTemplate);
+        await taskTemplatePage.setTaskSummary(taskSummary);
+        await taskTemplatePage.setTaskDescription(description);
         await taskTemplatePage.setNewProcessName('Business Workflows', processName);
         await taskTemplatePage.selectCompanyByName('Petramco');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(TaskTemplate);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
         await viewTaskTemplate.clickOnCopyTemplate();
-        await expect(copyTemplatePage.getSourceProcessName()).toBe('com.bmc.dsm.bwfa:' + processName);
-        await copyTemplatePage.setTemplateName(UpdatedTaskTemplate);
-        await copyTemplatePage.setTaskSummary(UpdatedTaskSummary);
+        await expect(await copyTemplatePage.getSourceProcessName()).toBe('com.bmc.dsm.bwfa:' + processName);
+        await copyTemplatePage.setTemplateName(updatedTaskTemplate);
+        await copyTemplatePage.setTaskSummary(updatedTaskSummary);
         await copyTemplatePage.selectBundles("Case Management Service");
         await copyTemplatePage.setNewProcessName(newProcessName);
         await copyTemplatePage.selectTemplateStatus('Active');
         await copyTemplatePage.clickSaveCopytemplate();
-        await browser.sleep(2000);
+        //await browser.sleep(2000);
         await utilCommon.waitUntilPopUpDisappear();
 
         //Create a Case
@@ -410,21 +387,21 @@ describe('Copy Task Template', () => {
 
             await navigationPage.gotCreateCase();
             await createCasePage.selectRequester("adam");
-            await createCasePage.setSummary('Summary ' + TaskTemplate);
+            await createCasePage.setSummary('Summary ' + taskTemplate);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await createCasePage.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
 
             //Add Automation Task templates in Case
-            expect(await manageTask.addTaskFromTaskTemplate(UpdatedTaskSummary)).toBeTruthy(UpdatedTaskSummary + ' Task is not added to case');
-            await browser.sleep(2000);
+            await manageTask.addTaskFromTaskTemplate(updatedTaskTemplate);
+            //await browser.sleep(2000);
             await manageTask.clickOnCloseButton();
             await viewCasePage.changeCaseStatus("In Progress");
             await viewCasePage.clickSaveStatus();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLinkOnManageTask(UpdatedTaskSummary);
-            await expect(viewTask.getTaskStatusValue()).toBe('Completed');
+            await manageTask.clickTaskLinkOnManageTask(updatedTaskSummary);
+            await expect(await viewTask.getTaskStatusValue()).toBe('Completed');
         } catch (e) {
             throw e;
         } finally {
@@ -435,16 +412,15 @@ describe('Copy Task Template', () => {
 
     it('[DRDMV-13737]: [Negative] Try to copy Automated template with same process Name and different field data', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let taskTemplate = ' task' + randomStr;
-        let taskSummary = 'Summary' + randomStr;
-        let processName = 'Process ' + randomStr;
-        let updatedTaskTemplate = 'Updated task' + randomStr;
-        let description = 'Description' + randomStr;
+        let taskTemplate = 'DRDMV13737Task' + randomStr;
+        let taskSummary = 'DRDMV13737Summary' + randomStr;
+        let processName = 'DRDMV13737Process' + randomStr;
+        let updatedTaskTemplate = 'DRDMV13737UpdatedTask' + randomStr;
+        let description = 'DRDMV13737Description' + randomStr;
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
         await taskTemplatePage.setTemplateName(taskTemplate);
         await taskTemplatePage.setTaskSummary(taskSummary);
@@ -453,34 +429,30 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectCompanyByName('Petramco');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(taskTemplate);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
         await viewTaskTemplate.clickOnCopyTemplate();
         await copyTemplatePage.setTemplateName(updatedTaskTemplate);
         await copyTemplatePage.setNewProcessName(processName);
         await copyTemplatePage.clickSaveCopytemplate();
-        await expect(utilCommon.getPopUpMessage()).toBe('Saved successfully.');
-        //  await expect(utilCommon.getPopUpMessages(1)).toBe('ERROR (902): Duplicate process name com.bmc.dsm.bwfa:'+processName); 
-
+        await expect(await utilCommon.isPopUpMessagePresent('ERROR (902): Duplicate process name com.bmc.dsm.bwfa:' + processName)).toBeTruthy();
+        await expect(await utilCommon.isPopUpMessagePresent("Saved successfully.")).toBeTruthy();
     });
 
     it('[DRDMV-14221]: Check Error Message when trying to edit a process, where process is linked to Active Automated Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let taskTemplate = 'Automation task' + randomStr;
-        let taskSummary = 'Summary' + randomStr;
-        let processName = 'Process ' + randomStr;
-        let updatedTaskTemplate = 'Updated task' + randomStr;
-        let description = 'Description' + randomStr;
+        let taskTemplate = 'DRDMV14221AutomationTask' + randomStr;
+        let taskSummary = 'DRDMV14221Summary' + randomStr;
+        let processName = 'DRDMV14221Process' + randomStr;
+        let updatedTaskTemplate = 'DRDMV14221UpdatedTask' + randomStr;
+        let description = 'DRDMV14221Description' + randomStr;
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
         await taskTemplatePage.setTemplateName(taskTemplate);
         await taskTemplatePage.setTaskSummary(taskSummary);
@@ -489,37 +461,33 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectCompanyByName('Petramco');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(taskTemplate);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
         await viewTaskTemplate.clickOnCopyTemplate();
         await copyTemplatePage.setTemplateName(updatedTaskTemplate);
         await copyTemplatePage.setNewProcessName(processName);
         await copyTemplatePage.clickSaveCopytemplate();
+        await utilCommon.waitUntilPopUpDisappear();
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(updatedTaskTemplate);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.searchAndOpenTaskTemplate(updatedTaskTemplate);
         await viewTaskTemplate.clickOnEditProcessLink();
-        await expect(utilCommon.getPopUpMessage()).toBe('WARNING (222062): Updates to dynamic fields or process affect the templates using the selected process :' + taskTemplate);
-    });
+        await expect(await utilCommon.getPopUpMessage()).toBe('WARNING (222062): Updates to dynamic fields or process affect the templates using the selected process :' + taskTemplate);
+    }, 90 * 1000);
 
     it('[DRDMV-13574,DRDMV-13553]: Fields copied while creating copy of External Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let taskTemplate = 'External task' + randomStr;
-        let taskSummary = 'Summary' + randomStr;
-        let updatedTaskTemplate = 'Updated task' + randomStr;
-        let description = 'Description' + randomStr;
+        let taskTemplate = 'DRDMV13574External task' + randomStr;
+        let taskSummary = 'DRDMV13574Summary' + randomStr;
+        let updatedTaskTemplate = 'DRDMV13574UpdatedTask' + randomStr;
+        let description = 'DRDMV13574Description' + randomStr;
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await selectTaskTemplate.clickOnExtrnalTaskTemplateButton();
         await taskTemplatePage.setTemplateName(taskTemplate);
         await taskTemplatePage.setTaskSummary(taskSummary);
@@ -530,16 +498,15 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectTaskCategoryTier3('Chatter');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(taskTemplate);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
         await viewTaskTemplate.clickOnCopyTemplate();
         await copyTemplatePage.setTemplateName(updatedTaskTemplate);
         await copyTemplatePage.clickSaveCopytemplate();
+        await utilCommon.waitUntilPopUpDisappear();
         await expect(await viewTaskTemplate.getTemplateStatus()).toBe('Draft');
         await expect(await viewTaskTemplate.getSummaryValue()).toBe(taskSummary);
         await expect(await viewTaskTemplate.getTaskTypeValue()).toBe('External');
@@ -554,15 +521,14 @@ describe('Copy Task Template', () => {
 
     it('[DRDMV-13547]: Create a Copy of Task template by Case Business Analyst that belongs to Support Group', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let taskTemplate = 'External task' + randomStr;
-        let taskSummary = 'Summary' + randomStr;
-        let updatedTaskTemplate = 'Updated task' + randomStr;
-        let description = 'Description' + randomStr;
+        let taskTemplate = 'DRDMV13547ExternalTask' + randomStr;
+        let taskSummary = 'DRDMV13547Summary' + randomStr;
+        let updatedTaskTemplate = 'DRDMV13547UpdatedTask' + randomStr;
+        let description = 'DRDMV13547Description' + randomStr;
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await selectTaskTemplate.clickOnExtrnalTaskTemplateButton();
         await taskTemplatePage.setTemplateName(taskTemplate);
         await taskTemplatePage.setTaskSummary(taskSummary);
@@ -573,19 +539,18 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectTaskCategoryTier3('Chatter');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         try {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-                .toEqual('Task Templates - Business Workflows');
-            await selectTaskTemplate.setTaskSearchBoxValue(taskTemplate);
-            await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.clickSaveCopytemplate();
+            await utilCommon.waitUntilPopUpDisappear();
             await expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
             await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Staffing");
         } catch (e) {
@@ -598,15 +563,14 @@ describe('Copy Task Template', () => {
 
     it('[DRDMV-13572]: Fields copied while creating copy of Manual Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let taskTemplate = 'Manual task' + randomStr;
-        let taskSummary = 'Summary' + randomStr;
-        let updatedTaskTemplate = 'Updated task' + randomStr;
-        let description = 'Description' + randomStr;
+        let taskTemplate = 'DRDMV13572ManualTask' + randomStr;
+        let taskSummary = 'DRDMV13572Summary' + randomStr;
+        let updatedTaskTemplate = 'DRDMV13572UpdatedTask' + randomStr;
+        let description = 'DRDMV13572Description' + randomStr;
 
         //manual Task template
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await selectTaskTemplate.clickOnManualTaskTemplateButton();
         await taskTemplatePage.setTemplateName(taskTemplate);
         await taskTemplatePage.setTaskSummary(taskSummary);
@@ -617,16 +581,15 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectTaskCategoryTier3('Chatter');
         await taskTemplatePage.selectTemplateStatus('Active');
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(taskTemplate);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
         await viewTaskTemplate.clickOnCopyTemplate();
         await copyTemplatePage.setTemplateName(updatedTaskTemplate);
         await copyTemplatePage.clickSaveCopytemplate();
+        await utilCommon.waitUntilPopUpDisappear();
         await expect(await viewTaskTemplate.getTemplateStatus()).toBe('Draft');
         await expect(await viewTaskTemplate.getSummaryValue()).toBe(taskSummary);
         await expect(await viewTaskTemplate.getTaskTypeValue()).toBe('Manual');
@@ -641,14 +604,14 @@ describe('Copy Task Template', () => {
 
     it('[DRDMV-13569]: Dynamic Field get copied upon creating copy of Task Template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let automationTaskTemplate = 'Automation task' + randomStr;
-        let automationTaskSummary = 'Summary' + randomStr;
-        let fieldDescription = 'Field Description' + randomStr;
-        let processName = 'process' + randomStr;
+        let automationTaskTemplate = 'DRDMV13569AutomationTask' + randomStr;
+        let automationTaskSummary = 'DRDMV13569Summary' + randomStr;
+        let fieldDescription = 'DRDMV13569FieldDescription' + randomStr;
+        let processName = 'DRDMV13569Process' + randomStr;
 
-        let updatedTaskTemplate = 'Updated task' + randomStr;
-        let updatedTaskSummary = 'Updated Summary' + randomStr;
-        let updateProcessName = 'Updated process' + randomStr;
+        let updatedTaskTemplate = 'UpdatedTaskDRDMV13569' + randomStr;
+        let updatedTaskSummary = 'UpdatedSummaryDRDMV13569' + randomStr;
+        let updateProcessName = 'UpdatedProcessDRDMV13569' + randomStr;
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
@@ -664,15 +627,14 @@ describe('Copy Task Template', () => {
         //Add Dynamic Field
         await viewTaskTemplate.clickOnManageDynamicFieldLink();
         await dynamicField.clickOnDynamicField();
-        await dynamicField.setFieldName('fieldname');
+        await dynamicField.setFieldName(randomStr);
         await dynamicField.setDescriptionName(fieldDescription);
         await dynamicField.clickSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(automationTaskTemplate);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await selectTaskTemplate.searchAndOpenTaskTemplate(automationTaskTemplate);
         await viewTaskTemplate.clickOnCopyTemplate();
         await copyTemplatePage.setTemplateName(updatedTaskTemplate);
         await copyTemplatePage.setTaskSummary(updatedTaskSummary);
@@ -680,20 +642,19 @@ describe('Copy Task Template', () => {
         await copyTemplatePage.setNewProcessName(updateProcessName);
         await copyTemplatePage.clickSaveCopytemplate();
         await utilCommon.waitUntilPopUpDisappear();
-        await expect(viewTaskTemplate.getDynamicFieldTitle()).toBe(fieldDescription);
-
+        await expect(await viewTaskTemplate.getDynamicFieldTitle()).toBe(fieldDescription);
     });
 
     it('[DRDMV-14220]: Verify Warning message when Dynamic fields are added to a Automated Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let automationTaskTemplate = 'Automation task' + randomStr;
-        let automationTaskSummary = 'Summary' + randomStr;
-        let fieldDescription = 'Field' + randomStr;
-        let processName = 'process' + randomStr;
+        let automationTaskTemplate = 'DRDMV14220AutomationTask' + randomStr;
+        let automationTaskSummary = 'DRDMV14220Summary' + randomStr;
+        let fieldDescription = 'DRDMV14220Field' + randomStr;
+        let processName = 'DRDMV14220Process' + randomStr;
 
-        let updatedTaskTemplate = 'Manual task' + randomStr;
-        let updatedTaskSummary = 'Summary' + randomStr;
-        let updateProcessName = 'process' + randomStr;
+        let updatedTaskTemplate = 'DRDMV14220ManualTask' + randomStr;
+        let updatedTaskSummary = 'DRDMV14220Summary' + randomStr;
+        let updateProcessName = 'DRDMV14220Process' + randomStr;
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
@@ -704,12 +665,11 @@ describe('Copy Task Template', () => {
         await taskTemplatePage.selectCompanyByName('Petramco');
         await taskTemplatePage.setNewProcessName('Business Workflows', processName);
         await taskTemplatePage.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')
-        await selectTaskTemplate.setTaskSearchBoxValue(automationTaskTemplate);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await selectTaskTemplate.searchAndOpenTaskTemplate(automationTaskTemplate);
         await viewTaskTemplate.clickOnCopyTemplate();
         await copyTemplatePage.setTemplateName(updatedTaskTemplate);
         await copyTemplatePage.setTaskSummary(updatedTaskSummary);
@@ -721,11 +681,10 @@ describe('Copy Task Template', () => {
         //Add Dynamic Field
         await viewTaskTemplate.clickOnManageDynamicFieldLink();
         await dynamicField.clickOnDynamicField();
-        await dynamicField.setFieldName('fieldname');
+        await dynamicField.setFieldName(randomStr);
         await dynamicField.setDescriptionName(fieldDescription);
         await dynamicField.clickSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
-        await expect(viewTaskTemplate.getDynamicFieldTitle()).toBe(fieldDescription);
+        //await utilCommon.waitUntilPopUpDisappear();
+        await expect(await viewTaskTemplate.getDynamicFieldTitle()).toBe(fieldDescription);
     }, 120 * 1000);
-
 });

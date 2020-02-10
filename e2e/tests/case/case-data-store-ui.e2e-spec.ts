@@ -66,8 +66,7 @@ describe('Create Case Task', () => {
         await utilCommon.waitUntilPopUpDisappear();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await selectTaskTemplate.setTaskSearchBoxValue(`AutomatedTaskTemplateActive ${randomStr}`);
-        await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+        await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTaskTemplate.isEditProcessLinkDisplayed()).toBeTruthy();
         await expect(viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeTruthy();
         await viewTaskTemplate.clickOnEditLink();
@@ -95,8 +94,7 @@ describe('Create Case Task', () => {
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.setTaskSearchBoxValue(`AutomatedTaskTemplateActive ${randomStr}`);
-            await selectTaskTemplate.clickFirstLinkInTaskTemplateSearchGrid();
+            await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
             await viewTaskTemplate.clickOnManageDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
             await dynamicFieldsPage.setFieldName('Field Name');
