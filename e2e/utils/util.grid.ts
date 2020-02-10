@@ -40,10 +40,10 @@ export class GridOperation {
 
     async areColumnHeaderMatches(guid: string, columnHeader: string[]): Promise<boolean> {
         let arr: string[] = [];
-        for (let i: number = 0; i < columnHeader.length; i++) {
-            var customxpath = `(//*[@rx-view-component-id="${guid}"]//span[@class="ui-grid-header-cell-label"])[${i + 1}]`;
-            let columns = await element(by.xpath(customxpath)).getAttribute("innerText");
-            arr[i] = columns;
+
+        let gridColumnHeaderList = await $$(`[rx-view-component-id='${guid}'] .ui-grid-header-cell-label`);
+        for(let i:number=0; i < gridColumnHeaderList.length; i++) {
+            arr.push(await gridColumnHeaderList[i].getText());
         }
         arr.sort();
         columnHeader.sort();

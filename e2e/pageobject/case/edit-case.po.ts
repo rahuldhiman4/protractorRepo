@@ -27,7 +27,7 @@ class CaseEditPage {
         taskStatusDropDown: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"]',
         taskStatusChangeReason: '[rx-view-component-id="baf69b56-c37b-4a0b-9e68-f18558738ebb"]',
         saveUpdateTaskStatus: '[rx-view-component-id="6759ba60-df0d-4d5e-8eb9-5101490fd4d4"] button',
-        slaProgressBar: '[rx-view-component-id="55cb7986-e724-40f3-9f92-5744c6c9514d"] .d-progress__bar',
+        slaProgressBar: '.d-progress__bar',
         summary: '[rx-view-component-id="244ffab2-bf04-4769-a5ac-c2a1f430e393"] .d-textfield__input',
         caseDescription: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .rx-description-textarea-edit',
         priorityGuid: 'add23d12-52e7-4c43-aa78-2aa0c6125bb5',

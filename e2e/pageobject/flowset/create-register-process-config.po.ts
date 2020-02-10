@@ -1,10 +1,12 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 class CreateFlowset {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         companyGuid: '838b3d55-e82c-4d5e-859b-4144ad048254',
+        selectProcess: '[rx-view-component-id="7fc0ca1d-6fa7-418c-826a-4a09c9dccf87"] .rx-definition-picker__instance-name',
+        processName: '[rx-view-component-id="7fc0ca1d-6fa7-418c-826a-4a09c9dccf87"] .rx-definition-picker__fake-input',
         company: '[rx-view-component-id="838b3d55-e82c-4d5e-859b-4144ad048254"] .ui-select-toggle',
         ProcessNameGuid: '7fc0ca1d-6fa7-418c-826a-4a09c9dccf87',
         ApplicationServiceGuid: 'ec882563-a0bc-446a-ba86-12723ab22d2e',
@@ -20,32 +22,32 @@ class CreateFlowset {
     }
 
     async isCompanyRequiredTextDisplayed(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.company)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.company)));
         return await ($(this.selectors.company)).getAttribute("required");
     }
 
     async isProcessRequiredTextDisplayed(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.ProcessNameGuid)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ProcessNameGuid)));
         return await ($(this.selectors.ProcessNameGuid)).getAttribute("required");
     }
 
     async isApplicationServiceRequiredTextDisplayed(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.ApplicationService)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ApplicationService)));
         return await ($(this.selectors.ApplicationService)).getAttribute("required");
     }
 
     async isStatusRequiredTextDisplayed(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.statusGuid)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.statusGuid)));
         return await ($(this.selectors.statusGuid)).getAttribute("required");
     }
 
     async isProcessAliasRequiredTextDisplayed(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.processAliasname)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.processAliasname)));
         return await ($(this.selectors.processAliasname)).getAttribute("required");
     }
 
     async isDescriptionRequiredTextDisplayed(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.description)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.description)));
         return await ($(this.selectors.description)).getAttribute("required");
     }
 
@@ -78,11 +80,12 @@ class CreateFlowset {
     }
 
     async selectProcessName(process: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.ProcessNameGuid,process);
+        await $(this.selectors.processName).click();
+        await element(by.cssContainingText(this.selectors.selectProcess, process)).click();
     }
 
     async selectApplicationService(application: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.ApplicationServiceGuid,application);
+        await utilCommon.selectDropDown(this.selectors.ApplicationServiceGuid, application);
     }
 
     async selectStatus(status: string): Promise<void> {
@@ -90,17 +93,29 @@ class CreateFlowset {
     }
 
     async clickOnStatus(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.status)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.status)));
         await ($(this.selectors.status)).click;
     }
     async clickSaveButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.savebutton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.savebutton)));
         await ($(this.selectors.savebutton)).click();
-//        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.waitUntilPopUpDisappear();
+    }
+
+    async isSaveButtonEnabled(): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.savebutton)));
+        return await $(this.selectors.savebutton).isEnabled();
+        //        await utilCommon.waitUntilPopUpDisappear();
+    }
+
+    async isErrorMsgPresent(): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.savebutton)));
+        return await utilCommon.isErrorMsgPresent();
+        //        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async clickCancelButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await ($(this.selectors.cancelButton)).click();
     }
 
@@ -108,19 +123,19 @@ class CreateFlowset {
         return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusGuid, statusValues);
     }
 
-    async setDescription(description:string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
+    async setDescription(description: string): Promise<void> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
         await ($(this.selectors.description)).clear();
         await ($(this.selectors.description)).sendKeys(description);
     }
 
-    async setAliasName(alias:string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.processAliasname)));
+    async setAliasName(alias: string): Promise<void> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.processAliasname)));
         await ($(this.selectors.processAliasname)).clear();
         await ($(this.selectors.processAliasname)).sendKeys(alias);
     }
 
-       
+
 
 
 }

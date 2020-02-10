@@ -15,6 +15,7 @@ import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 
 describe('Notes template', () => {
     beforeAll(async () => {
@@ -461,7 +462,7 @@ describe('Notes template', () => {
         await createKnowlegePo.clickOnviewArticleLinkButton();
         // View Knowledege Page
         await utilCommon.switchToNewWidnow(1);
-        await createKnowlegePo.clickOnActivityTab();
+        await viewKnowledgeArticlePo.clickOnActivityTab();
         await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
         await activityTabPo.clickOnPostButton();
         await expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
