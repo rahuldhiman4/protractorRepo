@@ -78,5 +78,14 @@
 	"qstrong": {
 		"userName": "qstrong@petramco.com",
 		"userPassword": "Password_1234"
+	},
+	"gderuno": {
+		"userName": "gderuno@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"werusha": {
+		"userName": "werusha@petramco.com",
+		"userPassword": "Password_1234"
 	}
+
 }

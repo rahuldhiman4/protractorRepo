@@ -18,6 +18,7 @@ import editDocumentLibraryPo from '../../pageobject/settings/document-management
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 
 var caseBAUser = 'qkatawazi';
 var caseAgentUser = 'qtao';
@@ -271,7 +272,7 @@ describe('Knowledge Articles Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await createKnowledgePage.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
-            await editKnowledgePo.editKnowledgeMedataData();
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
@@ -295,7 +296,7 @@ describe('Knowledge Articles Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await createKnowledgePage.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
-            await editKnowledgePo.editKnowledgeMedataData();
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
@@ -319,7 +320,7 @@ describe('Knowledge Articles Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await createKnowledgePage.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
-            await editKnowledgePo.editKnowledgeMedataData();
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
@@ -344,7 +345,7 @@ describe('Knowledge Articles Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await createKnowledgePage.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(2);
-            await editKnowledgePo.editKnowledgeMedataData();
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
@@ -369,7 +370,7 @@ describe('Knowledge Articles Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await createKnowledgePage.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(2);
-            await editKnowledgePo.editKnowledgeMedataData();
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
@@ -394,7 +395,7 @@ describe('Knowledge Articles Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await createKnowledgePage.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(2);
-            await editKnowledgePo.editKnowledgeMedataData();
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
@@ -419,7 +420,7 @@ describe('Knowledge Articles Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await createKnowledgePage.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(2);
-            await editKnowledgePo.editKnowledgeMedataData();
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);

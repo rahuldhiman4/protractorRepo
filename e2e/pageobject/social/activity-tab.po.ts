@@ -47,7 +47,8 @@ class ActivityTabPage {
         dwpIcon: '.dwp_survey .log-item__icon',
         dwpFeedback: '.rx-content.dwp-comment',
         logItems: '.log-item__body',
-        body:'.log-item__body .body'
+        body:'.log-item__body .body',
+        refreshButton:'.d-icon-left-refresh'
     }
 
     async clickOnReply(): Promise<void> {
@@ -61,10 +62,14 @@ class ActivityTabPage {
         await $(this.selectors.emailReplyAll).click();
     }
 
-    async getUnFlagContent():Promise<string>{
-//        await utilCommon.waitUntilSpinnerToHide();
-        return await $$(this.selectors.body).first().getText();
-    }
+    async getFirstPostContent():Promise<string>{
+        //        await utilCommon.waitUntilSpinnerToHide();
+                return await $$(this.selectors.logItems).first().getText();
+            }
+        
+            async clickOnRefreshButton():Promise<void>{
+                await $(this.selectors.refreshButton).click();
+            }
 
     async getemailContent(): Promise<string> {
 //        await browser.sleep(2000);

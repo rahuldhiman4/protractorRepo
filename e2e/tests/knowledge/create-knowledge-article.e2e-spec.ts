@@ -8,6 +8,7 @@ import KnowledgeConsolePage from "../../pageobject/knowledge/console-knowledge.p
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePage from "../../pageobject/knowledge/edit-knowledge.po";
 import utilCommon from '../../utils/util.common';
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 
 describe('Knowledge Article', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -149,7 +150,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await createKnowledgePage.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
-            await editKnowledgePage.editKnowledgeMedataData();
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.clickChangeAssignmentButton();
             await changeAssignmentBlade.isAssignToMeCheckBoxPresent();
             await changeAssignmentBlade.isCompanyDrpDwnDisplayed();
@@ -256,17 +257,14 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
-            await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Assigned Company');
-            await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Business Unit');
-            await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Department');
-            await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Assigned Group');
-            await createKnowledgePage.verifyAssignmentFieldsPresentAndDisabled('Assigned To');
+            expect(await createKnowledgePage.isAssignmentFieldDisabled('Assigned Company')).toBeTruthy('Assign Field is enabled');
+            expect(await createKnowledgePage.isAssignmentFieldDisabled('Business Unit')).toBeTruthy('Assign Field is enabled');
+            expect(await createKnowledgePage.isAssignmentFieldDisabled('Department')).toBeTruthy('Assign Field is enabled');
+            expect(await createKnowledgePage.isAssignmentFieldDisabled('Assigned Group')).toBeTruthy('Assign Field is enabled');
+            expect(await createKnowledgePage.isAssignmentFieldDisabled('Assigned To')).toBeTruthy('Assign Field is enabled');
             await createKnowledgePage.clickAssignToMeButton();
-            await changeAssignmentBlade.verifyMultipleSupportGrpMessageDisplayed();
-            await changeAssignmentBlade.selectCompany(knowledgeData.Company);
-            await changeAssignmentBlade.selectBusinessUnit(businessData2.orgName);
-            await changeAssignmentBlade.selectDepartment(departmentData2.orgName);
-            await changeAssignmentBlade.selectSupportGroup(suppGrpData2.orgName);
+            expect(await changeAssignmentBlade.getCountOfSupportGroup()).toBeGreaterThanOrEqual(2);
+            await changeAssignmentBlade.clickOnSupportGroup('UI-SupportGroup-19501');
             await changeAssignmentBlade.clickOnAssignButton();
             await createKnowledgePage.clickOnSaveKnowledgeButton();
         }

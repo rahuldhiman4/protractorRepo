@@ -20,7 +20,8 @@ class NavigationPage {
         helpIcon: '//*[@class="d-n-menu__link d-icon-left-question_circle"]',
         switchToApplicationDropDown: 'button.d-icon-right-angle_down',
         selectApplication: '.d-n-dropdown__link',
-        knowledgeConsoleFromKM:'[rx-view-component-id="3313266f-6ed4-47ee-ab90-54aab5bf3e99"] a'
+        knowledgeConsoleFromKM:'[rx-view-component-id="3313266f-6ed4-47ee-ab90-54aab5bf3e99"] a',
+        knowledgeConsoleTitle:'[rx-view-component-id="11f37569-5ecd-4239-aaa7-075d1874b1d1"] span',
     }
 
     verticalSelectors = {
@@ -33,6 +34,11 @@ class NavigationPage {
         taskConsoleMenuItem: '(//a[@title="Task"])[1]',
         helpIcon: '[class="d-n-hamburger__nav-link d-icon-left-question_circle"]',
         closeHambergerMenu: '.d-n-hamburger__close',
+    }
+
+    async isKnowledgeConsoleTitleDisplayed():Promise<boolean>{
+       let value:string = await $(this.selectors.knowledgeConsoleTitle).getText();
+       return value=='Knowledge Articles' ? true : false;
     }
 
     async isHambergerIconPresent(): Promise<boolean> {

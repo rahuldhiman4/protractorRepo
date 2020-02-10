@@ -8,7 +8,7 @@ class CreateKnowledgePage {
         knowledgeId: '.d-icon-lightbulb_o',
         backButton: '[rx-view-component-id="88ec72f0-2c65-4640-9455-54b6db3517f2"] button',
         clickOnReferenceTemplate: '[rx-view-component-id="6e402c66-fcdc-464b-b6e7-7e963d9c3a17"] .sectionsName',
-        knowledgeTitleEditBox: '[rx-view-component-id="291bf2bb-1eac-404e-94ba-762a50da5ac9"] .ng-pristine',
+        knowledgeTitleEditBox: '[rx-view-component-id="291bf2bb-1eac-404e-94ba-762a50da5ac9"] input',
         saveKnowlegeButton: '[rx-view-component-id="2fdb0ffb-560d-46b4-b7af-379d90bcb0a8"] .d-button',
         viewArticleLink: '[rx-view-component-id="57f95ac6-4144-400f-a591-657ea98316dd"] span',
         activityTab: '[rx-view-component-id="3982f4ea-16a0-41aa-982e-879143a19b00"] .rx-tab a',
@@ -35,40 +35,59 @@ class CreateKnowledgePage {
         categoryTier2Guid: '6f480482-c224-4742-b941-bce655d40fde',
         categoryTier3Guid: '2774b518-00ab-4e02-bb23-95bdb0285840',
         categoryTier4Guid: 'd0bd4f0d-a53e-4c67-8419-016a926a7651',
-        createKAHeading:'[rx-view-component-id="cebb7cbd-0e7b-48a2-9944-c11d3ba255d0"] p',
-        reference:'.doc-editor__section .cke_editable',
-        templateName:'.templateName'
+        createKAHeading: '[rx-view-component-id="cebb7cbd-0e7b-48a2-9944-c11d3ba255d0"] p',
+        reference: '.doc-editor__section .cke_editable',
+        templateName: '.templateName',
+        discardButton: '[rx-view-component-id="0b2d73c8-de57-460b-909c-17e2ae50ea5b"] button',
+        knowledgeSetValue: '[rx-view-component-id="7f2de840-20ec-47e8-805f-4db8edc1b5f4"] .ui-select-match-text',
+        knowledgeTemplateStyle:'.create-ka-template__style-label',
     }
 
-    async isTemplatePresent(value:string):Promise<boolean>{
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createKAHeading)));
+    async isTemplatePresent(value: string): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createKAHeading)));
         return await element(by.cssContainingText(this.selectors.templateName, value)).isPresent();
     }
 
+    async clickOnDiscardButton(): Promise<void> {
+        await $(this.selectors.discardButton).click();
+    }
+
+    async isKnoledgeSetTemplateIsDisplayed(): Promise<boolean> {
+        return await $(this.selectors.knowledgeTemplateStyle).isDisplayed();
+    }
+
+    async getKnowledgeSetValue(): Promise<string> {
+        return await $(this.selectors.knowledgeSetValue).getText();
+    }
+
+    async getKnowledgeArticleTitleValue(): Promise<string> {
+        return await $(this.selectors.knowledgeTitleEditBox).getAttribute('value');
+    }
+
     async isAttachDocumentBladeDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentField)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentField)));
         let attribute = await $(this.selectors.attachmentField).getAttribute('ng-click');
         return attribute == 'openDocumentLibrary()' ? true : false
     }
 
     async isDocumentTemplatePresent(documentheading: string): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.clickOnReferenceTemplate)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.clickOnReferenceTemplate)));
         return await element(by.cssContainingText(this.selectors.templateHeading, documentheading)).isPresent();
     }
 
     async clickOnTemplate(TemplateName: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.clickOnReferenceTemplate)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.clickOnReferenceTemplate)));
         await element(by.cssContainingText(this.selectors.clickOnReferenceTemplate, TemplateName)).click();
     }
 
-    async clickOnUseSelectedTemplateButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Use selected Template'))));
+    async   clickOnUseSelectedTemplateButton(): Promise<void> {
+        //        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Use selected Template'))));
         await element(by.buttonText('Use selected Template')).click();
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.docEditorSection)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.docEditorSection)));
     }
 
-    async setReferenceValue(value:string):Promise<void>{
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.reference)));
+    async setReferenceValue(value: string): Promise<void> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.reference)));
         await $(this.selectors.reference).sendKeys(value);
     }
 
@@ -77,71 +96,65 @@ class CreateKnowledgePage {
     }
 
     async addTextInKnowlegeTitleField(addTextKnowlegeTitleField: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeTitleEditBox)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeTitleEditBox)));
         await $(this.selectors.knowledgeTitleEditBox).sendKeys(addTextKnowlegeTitleField);
     }
 
     async clickOnSaveKnowledgeButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveKnowlegeButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveKnowlegeButton)));
         await $(this.selectors.saveKnowlegeButton).click();
-//        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.waitUntilPopUpDisappear();
     }
 
-    async verifyAssignmentFieldsPresentAndDisabled(fldName: String): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeMetadataSection)));
+    async isAssignmentFieldDisabled(fldName: String): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeMetadataSection)));
         let fldsCount = await $$(this.selectors.knowledgeMetadataSection).count();
         for (let i = 0; i < fldsCount; i++) {
             let elem = await $$(this.selectors.knowledgeMetadataSection).get(i);
             if (await elem.$('.d-textfield__item').getText() == fldName) {
-                expect(await elem.$('.btn-default').getAttribute("disabled") == "true").toBeTruthy();
-                break;
+                return await elem.$('.btn-default').getAttribute("disabled")=="true"? true: false;
             }
         }
     }
 
     async clickOnviewArticleLinkButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewArticleLink)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewArticleLink)));
         await $(this.selectors.viewArticleLink).click();
-//        await browser.wait(this.EC.or(async () => {
-//            let count = await browser.getAllWindowHandles().then(async function (handles) {
-//                return handles.length;
-//            });
-//            return count >= 2;
-//        }));
-    }
-
-    async clickOnActivityTab(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.activityTab).last()));
-        await $$(this.selectors.activityTab).last().click();
+        //        await browser.wait(this.EC.or(async () => {
+        //            let count = await browser.getAllWindowHandles().then(async function (handles) {
+        //                return handles.length;
+        //            });
+        //            return count >= 2;
+        //        }));
     }
 
     async isKnowledgeTitleRequired(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeTitleEditBox)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeTitleEditBox)));
         return await $(this.selectors.knowledgeTitleEditBox).getAttribute("required") == "true";
     }
 
     async isKnowledgeSetRequired(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeSetRequiedtext)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeSetRequiedtext)));
         return await $(this.selectors.knowledgeSetRequiedtext).getAttribute("required") == "true";
     }
 
     async isAuthorRequired(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.authorRequiredText).last()));
+        //        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.authorRequiredText).last()));
         return await $(this.selectors.knowledgeSetRequiedtext).getAttribute("is-required") == "true";
     }
 
     async isSaveButtonEnabled(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveKnowlegeButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveKnowlegeButton)));
         return await $(this.selectors.saveKnowlegeButton).isEnabled();
     }
 
     async clickChangeAssignmentButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Change Assignment'))));
+        //        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Change Assignment'))));
         await element(by.buttonText('Change Assignment')).click();
     }
 
     async clickAssignToMeButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMeBtn)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMeBtn)));
         await $(this.selectors.assignToMeBtn).click();
     }
 
@@ -193,23 +206,23 @@ class CreateKnowledgePage {
 
     async selectKnowledgeTemplate(fieldName: string): Promise<void> {
         let templateName = `[rx-view-component-id='6e402c66-fcdc-464b-b6e7-7e963d9c3a17'] [title='${fieldName}']`;
-//        await browser.wait(this.EC.elementToBeClickable($(templateName)));
+        //        await browser.wait(this.EC.elementToBeClickable($(templateName)));
         await $(templateName).click();
     }
 
     async clickBackButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         await $(this.selectors.backButton).click();
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveKnowlegeButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveKnowlegeButton)));
     }
 
     async getKnowledgeId(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeId)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeId)));
         return await $(this.selectors.knowledgeId).getText();
     }
 
     async getCreateKnowledgeTitle(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.createKnowledgeTitle)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.createKnowledgeTitle)));
         return await $(this.selectors.createKnowledgeTitle).getText();
     }
 }
