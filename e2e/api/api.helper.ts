@@ -854,6 +854,27 @@ class ApiHelper {
         let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib Case", caseGuid, statusData);
         return updateCaseStatus.status;
     }
+
+    async deleteServiceTargets(serviceTargetTitle?: string): Promise<boolean> {
+        if (serviceTargetTitle) {
+            let serviceTargetGuid = await coreApi.getServiceTargetGuid(serviceTargetTitle);
+            if (serviceTargetGuid) {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.slm-lib:Service Target', serviceTargetGuid);
+            }
+        }
+        else {
+            let allSVTRecords = await coreApi.getGuid('com.bmc.dsm.slm-lib:Service Target');
+            let svtArrayMap = allSVTRecords.data.data.map(async (obj: string) => {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.slm-lib:Service Target', obj[179]);
+            });
+            let isAllSVTDeleted: boolean = await Promise.all(svtArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
+            return isAllSVTDeleted === true;
+        }
+    }
 }
+
+
 
 export default new ApiHelper();

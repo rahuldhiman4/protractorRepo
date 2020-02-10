@@ -228,6 +228,14 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getServiceTargetGuid(sserviecTargetTitle: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.slm-lib:Service Target");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[490000400] === sserviecTargetTitle;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
     
 }
 
