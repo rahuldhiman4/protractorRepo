@@ -14,6 +14,7 @@ class SlmExpressionBuilder {
         getExpressionOperator: 'span[type="OPERATOR"]',
         getExpressionFieldValue: 'span[type="VALUE"]',
         saveSVTExpressionButton: '[rx-view-component-id="46c33f50-2695-45c7-8a11-db8d7fccd581"] button',
+        saveTaskSVTExpressionButton: '[rx-view-component-id="377c4912-0248-4099-bb96-30a94b3abf1b"] button',
         popUpMsgLocator: '.rx-growl-item__message',
         isPartialExpression: 'div[class*="invalid_expression"]',
         expandExpressionField: '.d-icon-triangle_right',
@@ -28,23 +29,57 @@ class SlmExpressionBuilder {
         return await element(by.xpath(expressionFields)).getText();
     }
 
+    async getExpressionFieldAvailableAll(data: string[]): Promise<boolean> {
+        // var expressionFields: string = `//div[@class="record_field"][text()="${expressionField}"]`;
+        let arr: string[] = [];
+        //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
+        let expressionFields: string = `div.record_field`;
+        let drpDwnvalue: number = await $$(expressionFields).count();
+        for (var i = 0; i < drpDwnvalue; i++) {
+            var ab: string = await $$(expressionFields).get(i).getText();
+            arr[i] = ab;
+        }
+        arr = arr.sort();
+        data = data.sort();
+        return arr.length === data.length && arr.every(
+            (value, index) => (value === data[index])
+        );
+    }
+
     async getFirstLevelExpressionField(firstLevelExpression: string): Promise<string> {
-        let expressionFields: string = `//div[@class="expanded_field"][text()='${firstLevelExpression}']`;
+        let expressionFields: string = `div.expanded_field`;
         //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
         let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).clear();
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).sendKeys(firstLevelExpression);
         //        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(expressionFields))));
-        return await element(by.xpath(expressionFields)).getText();
+        return await $(expressionFields).getText();
     }
+
+    async getFirstLevelExpressionFieldAll(data: string[]): Promise<boolean> {
+        let arr: string[] = [];
+        //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
+        let expressionFields: string = `div.expanded_field`;
+        let drpDwnvalue: number = await $$(expressionFields).count();
+        for (var i = 0; i < drpDwnvalue; i++) {
+            var ab: string = await $$(expressionFields).get(i).getText();
+            arr[i] = ab;
+        }
+        arr = arr.sort();
+        data = data.sort();
+        return arr.length === data.length && arr.every(
+            (value, index) => (value === data[index])
+        );
+    }   
+
 
     async getSecondLevelExpressionField(firstLevelExpression: string, data: string[]): Promise<boolean> {
         let arr: string[] = [];
         //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
-        let expressionFields: string = `//div[@class="expanded_field"][text()='${firstLevelExpression}']//*[@class='child_field']`;
-        let drpDwnvalue: number = await element.all(by.xpath(expressionFields)).count();
+        let expressionFields: string = `div.expanded_field .child_field`;
+        let drpDwnvalue: number = await $(expressionFields).count();
         for (var i = 0; i < drpDwnvalue; i++) {
-            var ab: string = await element.all(by.xpath(expressionFields)).get(i).getText();
+            var ab: string = await $(expressionFields).get(i).getText();
             arr[i] = ab;
         }
         arr = arr.sort();
@@ -87,7 +122,8 @@ class SlmExpressionBuilder {
         browser.sleep(2000);
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).clear();
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).sendKeys(firstLevelExpression);
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(expandExpressionBtn))));
+        browser.sleep(2000);
+        // await browser.wait(this.EC.elementToBeClickable(element(by.xpath(expandExpressionBtn))),2000);
         await element(by.xpath(expandExpressionBtn)).click();
         //        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(secondLevelExpressionFields))));
         await element(by.xpath(secondLevelExpressionFieldVals)).click();
@@ -95,10 +131,27 @@ class SlmExpressionBuilder {
 
     async getExpressionFieldOperatorAvailable(operator: string): Promise<string> {
         let expressionOperatorVal = `operator ux-expression-editor-button-${operator}`;
-        console.log(expressionOperatorVal);
         //        await browser.wait(this.EC.elementToBeClickable($(expressionOperatorVal)));
         return await element(by.class(expressionOperatorVal)).getText();
     }
+
+    async getExpressionFieldOperatorAvailableAll(data: string[]): Promise<boolean> {
+        // let expressionOperator = `operator ux-expression-editor-button-`;
+        let arr: string[] = [];
+        //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
+        let expressionOperator: string = `div[ng-repeat='operator in operatorRow'] button`;
+        let drpDwnvalue: number = await $$(expressionOperator).count();
+        for (var i = 0; i < drpDwnvalue; i++) {
+            var ab: string = await $$(expressionOperator).get(i).getText();
+            arr[i] = ab;
+        }
+        arr = arr.sort();
+        data = data.sort();
+        return arr.length === data.length && arr.every(
+            (value, index) => (value === data[index])
+        );
+    }
+
 
     async selectFields(field: string): Promise<void> {
         //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
@@ -244,6 +297,12 @@ class SlmExpressionBuilder {
         //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
         await $(this.expressionBuilderSelectors.saveSVTExpressionButton).click();
     }
+
+    async clickOnSaveExpressionButtonForTask() {
+        //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveTaskSVTExpressionButton)));
+        await $(this.expressionBuilderSelectors.saveTaskSVTExpressionButton).click();
+    }
+
 
     async isInvalidExpression(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf(element(this.expressionBuilderSelectors.isPartialExpression)));
