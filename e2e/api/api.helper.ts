@@ -5,7 +5,7 @@ import { IKnowledgeArticles } from 'e2e/data/api/interface/knowledge.articles.in
 import { IPerson } from 'e2e/data/api/interface/person.interface.api';
 import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.api';
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
-import { browser } from 'protractor';
+import { browser, element } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
 import { CaseTemplate, MenuItemStatus, NotificationType, TaskTemplate, CaseStatus, Knowledge } from "../api/constant.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
@@ -788,7 +788,7 @@ class ApiHelper {
     async deleteFlowsetProcessLibConfig(processName: string) {
         let allProcessLibConfig = await coreApi.getGuid('com.bmc.dsm.flowsets-lib:Process Library');
         allProcessLibConfig.data.data.map(async (obj) => {
-            if(obj[450000002] == processName) {
+            if (obj[450000002] == processName) {
                 return await coreApi.deleteRecordInstance('com.bmc.dsm.flowsets-lib:Process Library', obj[179]);
             }
         });
@@ -871,6 +871,27 @@ class ApiHelper {
                 return !result.includes(false);
             });
             return isAllSVTDeleted === true;
+        }
+    }
+
+    async deleteApprovalMapping(approvalMappingName?: string): Promise<boolean> {
+        if (approvalMappingName) {
+            let allRecords = await coreApi.getGuid("com.bmc.dsm.case-lib:Case Approval Mapping");
+            let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+                return obj[1000001437] === approvalMappingName;
+            });
+            let approvalMapGuid = entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
+            if (approvalMapGuid) {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.case-lib:Case Approval Mapping', approvalMapGuid);
+            }
+        } else {
+            let allApprovalMapRecords = await coreApi.getGuid("com.bmc.dsm.case-lib:Case Approval Mapping");
+            let allApprovalMapArrayMap = allApprovalMapRecords.data.data.map(async (obj: string) => {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.case-lib:Case Approval Mapping', obj[379]);
+            });
+            return await Promise.all(allApprovalMapArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
         }
     }
 }
