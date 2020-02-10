@@ -23,6 +23,9 @@ class CasePreview {
         assignedGroup: '[rx-view-component-id="2dfc8f80-2665-4e87-af2d-3d4d1137144d"] .d-textfield__rx-value',
         assignedCompany: '[rx-view-component-id="3c3eaad4-9b00-48f0-b1d8-f3881e21e3bc"] .d-textfield__rx-value',
         createNewCaseButton: '[rx-view-component-id="e8e6eafe-d19c-4eeb-ab37-8ff302505579"] button',
+        source: '[rx-view-component-id="669b71fd-6e23-4625-91f6-139208e47538"] .d-textfield__rx-value',
+        label: '[rx-view-component-id="ab146574-d991-43bd-8a7b-0be34019164c"] .d-textfield__rx-value',
+        caseSite: '[rx-view-component-id="974e5fdd-5992-4f87-a640-267c4cc3daae"] .d-textfield__rx-value',
     }
 
     async clickOnViewCaseButton(): Promise<void> {
@@ -31,6 +34,18 @@ class CasePreview {
 
     async clickOncreateNewCaseButton(): Promise<void> {
         await $(this.selectors.createNewCaseButton).click();
+    }
+
+    async isSourceDisplayed(source: string): Promise<boolean> {
+        return await $(this.selectors.source).getText() == source ? true : false;
+    }
+
+    async isLabelDisplayed(label: string): Promise<boolean> {
+        return await $(this.selectors.label).getText() == label ? true : false;
+    }
+
+    async isCaseSiteDisplayed(caseSite: string): Promise<boolean> {
+        return await $(this.selectors.caseSite).getText() == caseSite ? true : false;
     }
 
     async isTitleDisplayed(): Promise<boolean> {
