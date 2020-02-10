@@ -248,7 +248,7 @@ describe('Case Status Change', () => {
         await editCasePage.clickSaveCase();
         var str: string = await utilCommon.getPopUpMessage();
         await expect(str).toBe('Saved successfully.');
-
+        
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + summary);
