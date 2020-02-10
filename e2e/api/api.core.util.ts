@@ -29,7 +29,7 @@ class ApiCoreUtil {
             recordInstanceUri + "/" + recordName + "/" + recordGUID
         );
         console.log('Delete RecordInstance API Status =============>', deleteRecord.status);
-       return deleteRecord.status == 204;
+        return deleteRecord.status == 204;
     }
 
     async getRecordInstanceDetails(recordName: string, recordGUID: string): Promise<any> {
@@ -45,7 +45,7 @@ class ApiCoreUtil {
             + "&pageSize=-1&recorddefinition="
             + recordName
             + "&startIndex=0";
-            
+
         let allRecords = await axios.get(
             dataPageUri
         );
@@ -53,7 +53,7 @@ class ApiCoreUtil {
         return allRecords;
     }
 
-    async getEmailTemplateGuid(emailTemplateName:string):Promise<string>{
+    async getEmailTemplateGuid(emailTemplateName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.notification-lib:NotificationTemplate");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[304412071] === emailTemplateName;
@@ -163,7 +163,7 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
-    async getStatusChangeReasonGuid(reason: string): Promise<string>{
+    async getStatusChangeReasonGuid(reason: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.shared-services-lib:Status Reason");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[302307031] === reason;
@@ -220,7 +220,7 @@ class ApiCoreUtil {
         return newRecord;
     }
 
-    async getDomainConfigurationGuid(domainTagGuid:string):Promise<string>{
+    async getDomainConfigurationGuid(domainTagGuid: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.shared-services-lib:Domain Configuration");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[450000152] === domainTagGuid;
@@ -236,7 +236,7 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
-    
+
 }
 
 export default new ApiCoreUtil();
