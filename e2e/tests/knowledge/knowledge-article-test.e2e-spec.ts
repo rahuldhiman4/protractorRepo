@@ -12,7 +12,13 @@ import createKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledg
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-
+import editKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledge-management/edit-knowledge-article-template.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
+import feedbackBladeKnowledgeArticlePo from '../../pageobject/knowledge/feedback-blade-Knowledge-article.po';
+import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
+import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
 describe('Knowledge Article', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     var knowledgeCandidateUser = 'kayo';
@@ -60,11 +66,11 @@ describe('Knowledge Article', () => {
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(knowledgeDisplayID);
-            await editKnowledgePage.clickOnUnFlagButton();
-            await editKnowledgePage.setTextInTellUsMore(knowledgeArticlesTitleStr + randomStr);
-            await editKnowledgePage.clickOnUnFlageButtonOnBlade();
-            await createKnowlegePo.clickOnActivityTab();
-            expect(await activityTabPo.getUnFlagContent()).toContain(knowledgeArticlesTitleStr + randomStr, 'content not displaying on Activity'), 'content not displaying on Activity';
+            await viewKnowledgeArticlePo.clickOnUnFlagButton();
+            await flagUnflagKnowledgePo.setTextInTellUsMore(knowledgeArticlesTitleStr + randomStr);
+            await flagUnflagKnowledgePo.clickOnUnFlageButtonOnBlade();
+            await viewKnowledgeArticlePo.clickOnActivityTab();
+            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeArticlesTitleStr + randomStr, 'content not displaying on Activity'), 'content not displaying on Activity';
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
         catch (e) {
@@ -140,7 +146,6 @@ describe('Knowledge Article', () => {
     it('[DRDMV-2374]: [Edit Knowledge Article] Article creation not possible by selecting disabled templates', async () => {
         try {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates - Business Workflows');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName(randomStr);
             await createKnowledgeArticleTemplatePo.clickOnDisableEnableCheckBox();
@@ -307,12 +312,12 @@ describe('Knowledge Article', () => {
         await navigationPage.gotoKnowledgeConsole();
         await utilGrid.clearFilter();
         await utilGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
-        await editKnowledgePage.clickOnEditLink();
+        await viewKnowledgeArticlePo.clickOnEditLink();
         let updatedName = 'updatedName' + randomStr;
         await editKnowledgePage.changeKnowledgeTitle(updatedName);
         await editKnowledgePage.clickOnSaveButtonOfKA();
         await utilCommon.waitUntilPopUpDisappear();
-        expect(await editKnowledgePage.isEditLinkDisplayedOnKA()).toBeTruthy('edit link is not present');
+        expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('edit link is not present');
         await navigationPage.gotoKnowledgeConsole();
         await utilGrid.clearFilter();
         await utilGrid.searchRecord(knowledgeArticleData.displayId);
@@ -440,9 +445,9 @@ describe('Knowledge Article', () => {
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
-            await editKnowledgePage.clickOnFlagButton();
-            await editKnowledgePage.setTextInTellUsMore(KADetails.displayId);
-            await editKnowledgePage.clickOnFlageButtonOnBlade();
+            await viewKnowledgeArticlePo.clickOnFlagButton();
+            await flagUnflagKnowledgePo.setTextInTellUsMore(KADetails.displayId);
+            await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
             expect(await utilCommon.getPopUpMessage()).toContain('You have successfully flagged the article.', 'Article Not Flagged');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
@@ -464,9 +469,9 @@ describe('Knowledge Article', () => {
             let kkohriId = await apiHelper.createKnowledgeArticle(articleData1);
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(kkohriId.displayId);
-            await editKnowledgePage.clickOnFlagButton();
-            await editKnowledgePage.setTextInTellUsMore(kkohriId.displayId);
-            await editKnowledgePage.clickOnFlageButtonOnBlade();
+            await viewKnowledgeArticlePo.clickOnFlagButton();
+            await flagUnflagKnowledgePo.setTextInTellUsMore(kkohriId.displayId);
+            await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
             expect(await utilCommon.getPopUpMessage()).toContain('You have successfully flagged the article.', 'Article Not Flagged');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
@@ -488,9 +493,9 @@ describe('Knowledge Article', () => {
             let kmillsId = await apiHelper.createKnowledgeArticle(articleData2);
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(kmillsId.displayId);
-            await editKnowledgePage.clickOnFlagButton();
-            await editKnowledgePage.setTextInTellUsMore(kmillsId.displayId);
-            await editKnowledgePage.clickOnFlageButtonOnBlade();
+            await viewKnowledgeArticlePo.clickOnFlagButton();
+            await flagUnflagKnowledgePo.setTextInTellUsMore(kmillsId.displayId);
+            await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
             expect(await utilCommon.getPopUpMessage()).toContain('You have successfully flagged the article.', 'Article Not Flagged');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
@@ -512,9 +517,9 @@ describe('Knowledge Article', () => {
             let kWilliamsonId = await apiHelper.createKnowledgeArticle(articleData3);
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(kWilliamsonId.displayId);
-            await editKnowledgePage.clickOnFlagButton();
-            await editKnowledgePage.setTextInTellUsMore(kWilliamsonId.displayId);
-            await editKnowledgePage.clickOnFlageButtonOnBlade();
+            await viewKnowledgeArticlePo.clickOnFlagButton();
+            await flagUnflagKnowledgePo.setTextInTellUsMore(kWilliamsonId.displayId);
+            await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
             expect(await utilCommon.getPopUpMessage()).toContain('You have successfully flagged the article.', 'Article Not Flagged');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
@@ -526,4 +531,434 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     }, 300 * 1000);
+
+    it('[DRDMV-1064]:[Create Mode] Removing sections with the Remove button', async () => {
+        await navigationPage.gotoSettingsPage();
+        await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
+        await createKnowledgeArticleTemplatePo.setTemplateName('template1064' + randomStr);
+        await createKnowledgeArticleTemplatePo.clickOnAddSection();
+        await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
+        await createKnowledgeArticleTemplatePo.setSectionTitle('First' + randomStr);
+        await createKnowledgeArticleTemplatePo.clickRemoveSection();
+        expect(await utilCommon.getWarningMessagegText()).toContain('You have unsaved data. Do you want to continue?', 'warning message not visiable');
+        await utilCommon.clickOnWarningOk();
+        await createKnowledgeArticleTemplatePo.clickOnAddSection();
+        await createKnowledgeArticleTemplatePo.setDescription('DescriptionOFKA');
+        await createKnowledgeArticleTemplatePo.setSectionTitle('Second' + randomStr);
+        await createKnowledgeArticleTemplatePo.clickOnSaveButton();
+        await utilGrid.searchAndOpenHyperlink('template1064' + randomStr);
+        expect(await editKnowledgeArticleTemplatePo.getSectionTitleValue('First' + randomStr)).toBeFalsy('removed section is Present');
+        await editKnowledgeArticleTemplatePo.clickOnCancelButton();
+    });
+
+    it('[DRDMV-2444]: KA Console - Article Navigation', async () => {
+        let knowledgeTitile = 'knowledge2444' + randomStr;
+        await apiHelper.apiLogin('peter');
+        let articleData = {
+            "knowledgeSet": "HR",
+            "title": `${knowledgeTitile}`,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+        }
+        let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        let knowledgeDisplayID = knowledgeArticleData.displayId;
+        await navigationPage.gotoKnowledgeConsole();
+        await utilGrid.clearFilter();
+        expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+        await utilGrid.clearFilter();
+        await utilGrid.searchAndOpenHyperlink(knowledgeDisplayID);
+        expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
+        await navigationPage.gotoKnowledgeConsole();
+        await utilGrid.clearFilter();
+        await utilGrid.searchAndOpenHyperlink(knowledgeDisplayID);
+        expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit link is not displaying');
+    });
+
+    it('[DRDMV-5193]: [Knowledge]-Assigning current user as the Assignee of an article', async () => {
+        let knowledgeTitile = 'knowledge5193' + randomStr;
+        await apiHelper.apiLogin('peter');
+        let articleData = {
+            "knowledgeSet": "HR",
+            "title": `${knowledgeTitile}`,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "categoryTier1": "Applications",
+            "categoryTier2": "Help Desk",
+            "categoryTier3": "Incident",
+            "region": "Australia",
+            "site": "Canberra",
+            "assignee": "KMills",
+            "assigneeSupportGroup": "GB Support 2"
+        }
+        let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        await navigationPage.gotoKnowledgeConsole();
+        await utilGrid.clearFilter();
+        await utilGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.clickChangeAssignmentButton();
+        await changeAssignmentBladePo.clickOnAssignToMeCheckBox();
+        expect(await changeAssignmentBladePo.getCountOfSupportGroup()).toBeGreaterThan(2);
+        expect(await changeAssignmentBladePo.getTextOfSupportGroup('Compensation and Benefits')).toContain('Peter Kahn');
+        expect(await changeAssignmentBladePo.getTextOfSupportGroup('Compensation and Benefits')).toContain('Petramco');
+        await changeAssignmentBladePo.clickOnSupportGroup('Compensation and Benefits');
+        await changeAssignmentBladePo.clickOnAssignButton();
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
+    });
+
+    it('[DRDMV-5195]: [Knowledge]-Assigning the article using Assignment component', async () => {
+        let knowledgeTitile = 'knowledge5195' + randomStr;
+        await apiHelper.apiLogin('peter');
+        let articleData = {
+            "knowledgeSet": "HR",
+            "title": `${knowledgeTitile}`,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "categoryTier1": "Applications",
+            "categoryTier2": "Help Desk",
+            "categoryTier3": "Incident",
+            "region": "Australia",
+            "site": "Canberra",
+            "assignee": "KMills",
+            "assigneeSupportGroup": "GB Support 2"
+        }
+        let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        await navigationPage.gotoKnowledgeConsole();
+        await utilGrid.clearFilter();
+        await utilGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.clickChangeAssignmentButton();
+        expect(await changeAssignmentBladePo.isCompanyDrpDwnDisplayed()).toBeTruthy();
+        expect(await changeAssignmentBladePo.isAssignToMeCheckBoxPresent()).toBeTruthy();
+        expect(await changeAssignmentBladePo.isSupportGroupDrpDwnDisplayed()).toBeTruthy();
+        expect(await changeAssignmentBladePo.isSearchInputBoxPresent()).toBeTruthy();
+        await changeAssignmentBladePo.selectCompany('Petramco');
+        await changeAssignmentBladePo.selectSupportGroup('Compensation and Benefits');
+        await changeAssignmentBladePo.selectAssignee('Peter Kahn');
+        await changeAssignmentBladePo.clickOnAssignButton();
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
+    });
+
+    it('[DRDMV-1186,DRDMV-768]: [Knowledge Article] [ArticleCreation] Closing the article without saving it', async () => {
+        let knowledgeTitile = 'knowledge1186' + randomStr;
+        await navigationPage.gotoCreateKnowledge();
+        expect(await createKnowledgePage.isTemplatePresent('KCS')).toBeTruthy('Template is not present');
+        expect(await createKnowledgePage.isTemplatePresent('How To')).toBeTruthy('Template is not present');
+        await createKnowledgePage.clickOnTemplate('Reference');
+        expect(createKnowledgePage.isKnoledgeSetTemplateIsDisplayed()).toBeTruthy('style is not present');
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.selectKnowledgeSet('HR');
+        expect(await createKnowledgePage.isSaveButtonEnabled()).toBeFalsy('save button not disabled');
+        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitile);
+        await createKnowledgePage.setReferenceValue('Refrence values');
+        await createKnowledgePage.clickOnDiscardButton();
+        await utilCommon.clickOnWarningCancel();
+        expect(await createKnowledgePage.getKnowledgeSetValue()).toContain('HR', 'expected Value not present');
+        expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitile, 'expected Value not present');
+        await createKnowledgePage.clickOnDiscardButton();
+        await utilCommon.clickOnWarningOk();
+        expect(await navigationPage.isKnowledgeConsoleTitleDisplayed()).toBeTruthy('Knowledge Console not present');
+        await utilGrid.clearFilter();
+        await utilGrid.searchRecord(knowledgeTitile);
+        expect(await KnowledgeConsolePage.isValueDisplayedInGrid('Title') == knowledgeTitile).toBeFalsy('KA is present');
+    });
+
+    it('[DRDMV-5158]: Click on thumbs up and thumbs down', async () => {
+        let knowledgeTitile = 'knowledge5158' + randomStr;
+        await apiHelper.apiLogin('peter');
+        let articleData = {
+            "knowledgeSet": "HR",
+            "title": `${knowledgeTitile}`,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "categoryTier1": "Applications",
+            "categoryTier2": "Help Desk",
+            "categoryTier3": "Incident",
+            "region": "Australia",
+            "site": "Canberra",
+            "assignee": "KMills",
+            "assigneeSupportGroup": "GB Support 2"
+        }
+        let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        await navigationPage.gotoKnowledgeConsole();
+        await utilGrid.clearFilter();
+        await utilGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+        await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+        await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
+        await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
+        let percentage: string = await viewKnowledgeArticlePo.getPercentageValue();
+        await viewKnowledgeArticlePo.clickOnActivityTab();
+        await activityTabPo.clickOnRefreshButton();
+        expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
+        await viewKnowledgeArticlePo.clickOnInformationTab();
+        await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
+        expect(await viewKnowledgeArticlePo.getPercentageValue() == percentage).toBeFalsy('Percentage are equal to previous');
+    });
+
+    it('[DRDMV-5162]: [Knowledge]- Click on thumps down and enable the flag option.', async () => {
+        let knowledgeTitile = 'knowledge5162' + randomStr;
+        await apiHelper.apiLogin('peter');
+        let articleData = {
+            "knowledgeSet": "HR",
+            "title": `${knowledgeTitile}`,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "categoryTier1": "Applications",
+            "categoryTier2": "Help Desk",
+            "categoryTier3": "Incident",
+            "region": "Australia",
+            "site": "Canberra",
+            "assignee": "KMills",
+            "assigneeSupportGroup": "GB Support 2"
+        }
+        let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        await navigationPage.gotoKnowledgeConsole();
+        await utilGrid.clearFilter();
+        await utilGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+        await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+        await feedbackBladeKnowledgeArticlePo.selectFlag(true);
+        await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
+        await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
+        expect(await viewKnowledgeArticlePo.isUnFlagButtonDisplayed()).toBeTruthy('Unflag Button is not present');
+        await viewKnowledgeArticlePo.clickOnActivityTab();
+        await activityTabPo.clickOnRefreshButton();
+        expect(await activityTabPo.getFirstPostContent()).toContain('Peter Kahn flagged the article', 'content not displaying on Activity');
+        expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
+    });
+
+    it('[DRDMV-13707]: Navigate an Article from Knowledge Create->Preview Knowledge Article->Article Full view', async () => {
+        try {
+            await navigationPage.signOut();
+            await loginPage.login('franz');
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
+            await createKnowledgePage.setReferenceValue('KnowledgeReference' + randomStr)
+            await createKnowledgePage.selectKnowledgeSet('HR');
+            await createKnowledgePage.clickAssignToMeButton();
+            await createKnowledgePage.selectCategoryTier1Option('Accounts Payable');
+            await createKnowledgePage.selectCategoryTier2Option('Invoices');
+            await createKnowledgePage.selectCategoryTier3Option('Payment');
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await previewKnowledgePo.clickOnViewArticleLink();
+            await utilCommon.switchToNewWidnow(1);
+            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('full view of article is not displayed');
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        }
+    })
+
+    it('[DRDMV-5192]: Unflag the article', async () => {
+        try {
+            let knowledgeTitile = 'knowledge5192' + randomStr;
+            let knowledgeTitileSecond = 'knowledgeNewUnflag' + randomStr;
+            await apiHelper.apiLogin('peter');
+            let articleDataFirst = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitile}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "categoryTier1": "Applications",
+                "categoryTier2": "Help Desk",
+                "categoryTier3": "Incident",
+                "region": "Australia",
+                "site": "Canberra",
+                "assignee": "KMills",
+                "assigneeSupportGroup": "GB Support 2"
+            }
+            let articleDataSecond = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitileSecond}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "categoryTier1": "Applications",
+                "categoryTier2": "Help Desk",
+                "categoryTier3": "Incident",
+                "region": "Australia",
+                "site": "Canberra",
+                "assignee": "KMills",
+                "assigneeSupportGroup": "GB Support 2"
+            }
+
+            let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleDataFirst);
+            let knowledgeArticleDataSecond = await apiHelper.createKnowledgeArticle(articleDataSecond);
+            await navigationPage.gotoKnowledgeConsole()
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            await feedbackBladeKnowledgeArticlePo.selectFlag(true);
+            await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
+            await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
+            expect(await viewKnowledgeArticlePo.isUnFlagButtonDisplayed()).toBeTruthy('Unflag Button is not present');
+            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await activityTabPo.clickOnRefreshButton();
+            expect(await activityTabPo.getFirstPostContent()).toContain('Peter Kahn flagged the article', 'content not displaying on Activity');
+            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
+            await navigationPage.gotoKnowledgeConsole();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(knowledgeArticleDataSecond.displayId);
+            await viewKnowledgeArticlePo.clickOnFlagButton();
+            await flagUnflagKnowledgePo.setTextInTellUsMore(knowledgeTitileSecond);
+            await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
+            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await activityTabPo.clickOnRefreshButton();
+            expect(activityTabPo.getFirstPostContent()).toContain(knowledgeTitileSecond, 'Post not present on activity');
+            await navigationPage.signOut();
+            await loginPage.login(knowledgePublisherUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(knowledgeArticleDataSecond.displayId);
+            await viewKnowledgeArticlePo.clickOnUnFlagButton();
+            await flagUnflagKnowledgePo.setTextInTellUsMore(knowledgeTitileSecond);
+            await flagUnflagKnowledgePo.clickOnUnFlageButtonOnBlade();
+            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await activityTabPo.clickOnRefreshButton();
+            expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills unflagged the article', 'content not displaying on Activity');
+            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitileSecond, 'content not displaying on Activity');
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+            await viewKnowledgeArticlePo.clickOnUnFlagButton();
+            await flagUnflagKnowledgePo.setTextInTellUsMore(knowledgeTitile);
+            await flagUnflagKnowledgePo.clickOnUnFlageButtonOnBlade();
+            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await activityTabPo.clickOnRefreshButton();
+            expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills unflagged the article', 'content not displaying on Activity');
+            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+        } catch (e) {
+            throw e;
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        }
+    }, 160 * 1000);
+
+     //ptidke
+     it('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {
+        try {
+            let knowledgeTitile = 'knowledge2746' + randomStr;
+            await apiHelper.apiLogin(knowledgePublisherUser);
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitile}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignee": "kayo",
+                "assigneeSupportGroup": "US Support 1",
+                "company": "Petramco"
+            }
+            let KADetails = await apiHelper.createKnowledgeArticle(articleData);
+            await navigationPage.signOut();
+            await loginPage.login(knowledgePublisherUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            await editKnowledgePage.setKnowledgeStatus('Draft');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+            await editKnowledgePage.setKnowledgeStatus('Published');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
+            await editKnowledgePage.setKnowledgeStatus('Closed');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
+            expect(await viewKnowledgeArticlePo.isStatusChangeBladePresent()).toBeFalsy('status changes blade is peresent');
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            //login with coach
+            let knowledgeTitilecoach = 'knowledge2746' + randomStr;
+            await apiHelper.apiLogin(knowledgeCoachUser);
+            let articleDataCoach = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitile}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignee": "kayo",
+                "assigneeSupportGroup": "US Support 1",
+                "company": "Petramco"
+            }
+            let KACoachDetails = await apiHelper.createKnowledgeArticle(articleDataCoach);
+            await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            await editKnowledgePage.setKnowledgeStatus('Draft');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+
+            await editKnowledgePage.setKnowledgeStatus('Published');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
+
+            await editKnowledgePage.setKnowledgeStatus('Closed');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
+            expect(await viewKnowledgeArticlePo.isStatusChangeBladePresent()).toBeFalsy('status changes blade is peresent');
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        }
+    }, 380 * 1000);
+    
+    it('[DRDMV-1784]: [Knowledge Article] Changing the template for the article', async () => {
+        let knowledgeTitile = 'knowledgeCoachUser1784' + randomStr;
+         await navigationPage.gotoKnowledgeConsole();       
+        await navigationPage.gotoCreateKnowledge();
+        expect(await createKnowledgePage.isTemplatePresent('KCS')).toBeTruthy('Template is not present');
+        expect(await createKnowledgePage.isTemplatePresent('Reference')).toBeTruthy('Template is not present');
+        expect(await createKnowledgePage.isTemplatePresent('How To')).toBeTruthy('Template is not present');
+        await createKnowledgePage.clickOnTemplate('Environment');
+        expect(createKnowledgePage.getTemplatePreviewText()).toContain('Environment','Preview is not present');
+        expect(createKnowledgePage.isKnoledgeSetTemplateIsDisplayed()).toBeTruthy('style is not present');
+        await createKnowledgePage.clickOnSelectDifferentTemplate();
+        await createKnowledgePage.clickOnTemplate('Reference');
+        expect(createKnowledgePage.getTemplatePreviewText()).toContain('Reference','Preview is not present');
+        expect(createKnowledgePage.isKnoledgeSetTemplateIsDisplayed()).toBeTruthy('style is not present');
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.setReferenceValue('reference values are as follows');
+        await createKnowledgePage.clickChangeTemplateButton();
+        await utilCommon.clickOnWarningOk();
+        await createKnowledgePage.clickOnTemplate('Question');
+        expect(createKnowledgePage.getTemplatePreviewText()).toContain('Question','Preview is not present');
+        expect(createKnowledgePage.isKnoledgeSetTemplateIsDisplayed()).toBeTruthy('style is not present');
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.setValueInRTF('Question','frist values are as follows');
+        await createKnowledgePage.clickChangeTemplateButton();
+        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitile);
+        await utilCommon.clickOnWarningCancel();
+        expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitile, 'expected Value not present');
+        await createKnowledgePage.selectKnowledgeSet('HR');
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+    });
 })

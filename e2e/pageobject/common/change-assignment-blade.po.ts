@@ -14,8 +14,10 @@ class ChangeAssignmentBlade {
         assignee: '.rx-assignment-person-fullName',
         company: 'selectedOrganizationId',
         businessUnit: 'selectedBusinessUnitId',
+        supportGroupName:'.rx-assignment-person-info',
         department: 'selectedDepartmentId',
         supportGroup: 'selectedSupportGroupId',
+        search:'.d-icon-search input'
     }
 
     async isAssignToMeCheckBoxSelected(): Promise<boolean> {
@@ -31,6 +33,11 @@ class ChangeAssignmentBlade {
     async isAssignToMeCheckBoxPresent(): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeCheckBox)));
         return await $(this.selectors.assignToMeCheckBox).isDisplayed();
+    }
+
+    async isSearchInputBoxPresent(): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeCheckBox)));
+         return await $(this.selectors.search).isDisplayed();
     }
 
     async isCompanyDrpDwnDisplayed(): Promise<boolean> {
@@ -68,6 +75,18 @@ class ChangeAssignmentBlade {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignButton)));
         await $(this.selectors.assignButton).click();
 //        await browser.wait(this.EC.invisibilityOf($(this.selectors.assignToMeCheckBox)));
+    }
+
+    async getCountOfSupportGroup():Promise<number>{
+        return await $$(this.selectors.supportGroupName).count();
+    }
+
+    async clickOnSupportGroup(name:string):Promise<void>{
+        await element(by.cssContainingText(this.selectors.supportGroupName, name)).click();
+    }
+
+    async getTextOfSupportGroup(name:string):Promise<string>{
+        return await element(by.cssContainingText(this.selectors.supportGroupName, name)).getText();
     }
 
     async isAssignButtonDisabled(): Promise<Boolean> {

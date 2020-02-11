@@ -6,13 +6,13 @@ class CreateKATemplate {
 
     selectors = {
         templateName: '[name="templateName"]',
-        knowledgeSet: '[ng-model="knowledgeSetTitle"]',
+        knowledgeSet: '[name="knowledgeSet"]',
         disabledEnabledCheck: '.d-checkbox__label .d-checkbox__item',
         addsection:'.d-icon-left-plus_circle',
         sectionTitle:'.rx-template-editor-text-fields input',
         templateDescription:'.d-textfield textarea',
-        saveButton: 'button[type="submit"]'
-
+        saveButton: 'button[type="submit"]',
+        removeSection:'.remove-button'
     }
 
     async setTemplateName(value:string): Promise<void> {
@@ -28,7 +28,7 @@ class CreateKATemplate {
     async setKnowledgeSetValue(value:string): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeSet)));
         await $(this.selectors.knowledgeSet).click();
-        let customXpath=`option[title='${value}']`;
+        let customXpath=`[title='${value}']`;
 //        await browser.wait(this.EC.elementToBeClickable($(customXpath)));
         await $(customXpath).click();
     }
@@ -54,5 +54,9 @@ class CreateKATemplate {
 //        await utilCommon.waitUntilPopUpDisappear();
     }
 
+    async clickRemoveSection(): Promise<void> {
+     //   await browser.wait(this.EC.elementToBeClickable($(this.selectors.removeSection)));
+        await $(this.selectors.removeSection).click();
+    }
 }
 export default new CreateKATemplate();

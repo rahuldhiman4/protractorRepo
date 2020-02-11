@@ -476,7 +476,7 @@ describe('Copy Task Template', () => {
         await selectTaskTemplate.searchAndOpenTaskTemplate(updatedTaskTemplate);
         await viewTaskTemplate.clickOnEditProcessLink();
         await expect(await utilCommon.getPopUpMessage()).toBe('WARNING (222062): Updates to dynamic fields or process affect the templates using the selected process :' + taskTemplate);
-    }, 90 * 1000);
+    }, 110 * 1000);
 
     it('[DRDMV-13574,DRDMV-13553]: Fields copied while creating copy of External Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -559,7 +559,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    }, 130 * 1000);
 
     it('[DRDMV-13572]: Fields copied while creating copy of Manual Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
