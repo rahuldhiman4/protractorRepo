@@ -1,4 +1,4 @@
-import { $, $$, browser, by, By, element, ElementFinder, Key, protractor, ProtractorExpectedConditions, until } from 'protractor';
+import { $, $$, browser, by, By, element, ElementFinder, Key, protractor, ProtractorExpectedConditions, until, ElementHelper } from 'protractor';
 import utilCommon, { Util } from './util.common';
 
 export class GridOperation {
@@ -214,20 +214,25 @@ export class GridOperation {
     }
 
     async getAllValuesFromColoumn(guid: string, columnHeader: string): Promise<string[]> {
+        let gridColumnHeaderList = await $$(`[rx-view-component-id='${guid}'] .ui-grid-header-cell-label`);
+        let columnPosition = 0;
+        for (let i: number = 0; i < gridColumnHeaderList.length; i++) {
+            if (await gridColumnHeaderList[i].getText() == columnHeader) {
+                columnPosition = i;
+            }
+        }
+        
         let gridRecord: string[] = [];
-        columnHeader = "'" + columnHeader + "'";
-        guid = "'" + guid + "'";
-        let gridColumnHeaderPosition = `//*[@rx-view-component-id=${guid}]//span[@class="ui-grid-header-cell-label"][text()=${columnHeader}]/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
-        let gridAllColumnHeaderPosition = `//*[@rx-view-component-id=${guid}]//span[@class="ui-grid-header-cell-label"]/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
-        let allElement = `[rx-view-component-id=${guid}] [role='gridcell']`;
+        let allElement = `[rx-view-component-id='${guid}'] [role='gridcell']`;
         let allElementSize: number = await element.all(by.css(allElement)).count();
-        let columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
-        let coloumnSize: number = await element.all(by.xpath(gridAllColumnHeaderPosition)).count() + 1;
-        columnPosition = columnPosition + 2;
+        let coloumnSize: number = gridColumnHeaderList.length;
+
         console.log('Count:' + allElementSize + "," + columnPosition + ',' + coloumnSize);
+
         for (columnPosition; columnPosition < allElementSize; columnPosition = columnPosition + coloumnSize) {
-            let locator = `(//*[@rx-view-component-id=${guid}]//*[@class='ui-grid-cell-contents'])` + "[" + columnPosition + "]";
-            gridRecord[columnPosition] = await browser.element(by.xpath(locator)).getText();
+            let locator = `[rx-view-component-id='${guid}'] .ui-grid-render-container-body .ui-grid-canvas .ui-grid-cell-contents`;
+            let allGrid:ElementFinder[] = await $$(locator);
+            gridRecord[columnPosition] = await allGrid[columnPosition].getText();
         }
         let returnedvalue = gridRecord.filter(function (el) {
             return el != null;
