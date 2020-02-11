@@ -280,7 +280,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
         }
-    }, 140 * 1000);
+    }, 160 * 1000);
 
     it('[DRDMV-16033]: Verify that Case Agent is notified for OOB status changes in Case life cycle once Case Agent follow the case status change', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -552,7 +552,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
         }
-    });
+    }, 130 * 1000);
 
     it('[DRDMV-16557]: Verify that Agent can update(add) Case group Assignment for any of the existing Watched case', async () => {
         await apiHelper.apiLogin(qyuanStr);

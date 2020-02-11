@@ -189,7 +189,7 @@ describe('Case And Employee Relationship', () => {
         await gridUtil.searchAndOpenHyperlink(caseId2);
         await caseEditPage.navigateToRelatedCasesTab();
         expect(await relatedCasePage.isCasePresent(caseId3)).toBeTruthy();
-    });
+    }, 100 * 1000);
 
     //asahitya
     it('[DRDMV-16243]: Check details shown for Employees on Related People tab', async () => {
@@ -275,7 +275,7 @@ describe('Case And Employee Relationship', () => {
         await navigationPage.goToPersonProfile();
         expect(await relatedTabPage.isRelatedPersonPresent("Brain Adams")).toBeFalsy("Brain Adams is still related to Person Profile");
         expect(await relatedTabPage.isRemoveRelatedPersonIconPresent("Qiang Du")).toBeFalsy("Cross icon is available");
-    });
+    }, 100 * 1000);
 
     //asahitya
     it('[DRDMV-17029]: Check Related Cases Tab on Case Bottom section', async () => {

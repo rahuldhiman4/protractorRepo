@@ -143,7 +143,7 @@ describe('Dynamic data', () => {
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField2')).toBeTruthy();
         await addFieldsPopPo.clickOnOkButtonOfEditor();
         await browser.refresh();
-    }, 200 * 1000)
+    }, 230 * 1000)
 
     it('[DRDMV-19270]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
         let caseTemplateName = 'caseTempRDMV-192700lp3ir' + randomStr;

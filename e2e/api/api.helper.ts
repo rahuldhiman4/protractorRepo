@@ -730,7 +730,6 @@ class ApiHelper {
         menuItemData.fieldInstances[450000152].value = data.menuItemName;
         menuItemData.fieldInstances[7].value = MenuItemStatus[data.menuItemStatus];
         menuItemData.fieldInstances[450000154].value = randomStr;
-        console.log('New Menu Item Data =============>' + menuItemData);
         const menuItem = await coreApi.createRecordInstance(menuItemData);
         const menuItemDetails = await axios.get(
             menuItem.headers.location
