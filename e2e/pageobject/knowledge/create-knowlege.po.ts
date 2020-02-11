@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 class CreateKnowledgePage {
@@ -40,7 +40,22 @@ class CreateKnowledgePage {
         templateName: '.templateName',
         discardButton: '[rx-view-component-id="0b2d73c8-de57-460b-909c-17e2ae50ea5b"] button',
         knowledgeSetValue: '[rx-view-component-id="7f2de840-20ec-47e8-805f-4db8edc1b5f4"] .ui-select-match-text',
-        knowledgeTemplateStyle:'.create-ka-template__style-label',
+        knowledgeTemplateStyle: '.create-ka-template__style-label',
+        knowledgePreview: '.create-ka-template__preview',
+        selectDifferentTemplate: '.create-ka-template__back-button',
+        changeTemplate: '[rx-view-component-id="64e29650-ca7f-4b3d-a2af-826be22f8e0f"] button'
+    }
+
+    async clickChangeTemplateButton(): Promise<void> {
+        await $(this.selectors.changeTemplate).click();
+    }
+
+    async clickOnSelectDifferentTemplate(): Promise<void> {
+        await $(this.selectors.selectDifferentTemplate).click();
+    }
+
+    async getTemplatePreviewText(): Promise<string> {
+        return await $(this.selectors.knowledgePreview).getText();
     }
 
     async isTemplatePresent(value: string): Promise<boolean> {
@@ -112,7 +127,7 @@ class CreateKnowledgePage {
         for (let i = 0; i < fldsCount; i++) {
             let elem = await $$(this.selectors.knowledgeMetadataSection).get(i);
             if (await elem.$('.d-textfield__item').getText() == fldName) {
-                return await elem.$('.btn-default').getAttribute("disabled")=="true"? true: false;
+                return await elem.$('.btn-default').getAttribute("disabled") == "true" ? true : false;
             }
         }
     }
@@ -224,6 +239,10 @@ class CreateKnowledgePage {
     async getCreateKnowledgeTitle(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.createKnowledgeTitle)));
         return await $(this.selectors.createKnowledgeTitle).getText();
+    }
+
+    async setValueInRTF(fieldName: string, value: string): Promise<void> {
+        await $(`[aria-label=${fieldName}] div`).sendKeys(value);
     }
 }
 

@@ -17,6 +17,8 @@ import changeAssignmentBladePo from '../../pageobject/common/change-assignment-b
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
 import feedbackBladeKnowledgeArticlePo from '../../pageobject/knowledge/feedback-blade-Knowledge-article.po';
+import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
+import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
 describe('Knowledge Article', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     var knowledgeCandidateUser = 'kayo';
@@ -836,4 +838,127 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     }, 160 * 1000);
+
+     //ptidke
+     it('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {
+        try {
+            let knowledgeTitile = 'knowledge2746' + randomStr;
+            await apiHelper.apiLogin(knowledgePublisherUser);
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitile}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignee": "kayo",
+                "assigneeSupportGroup": "US Support 1",
+                "company": "Petramco"
+            }
+            let KADetails = await apiHelper.createKnowledgeArticle(articleData);
+            await navigationPage.signOut();
+            await loginPage.login(knowledgePublisherUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            await editKnowledgePage.setKnowledgeStatus('Draft');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+            await editKnowledgePage.setKnowledgeStatus('Published');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
+            await editKnowledgePage.setKnowledgeStatus('Closed');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
+            expect(await viewKnowledgeArticlePo.isStatusChangeBladePresent()).toBeFalsy('status changes blade is peresent');
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            //login with coach
+            let knowledgeTitilecoach = 'knowledge2746' + randomStr;
+            await apiHelper.apiLogin(knowledgeCoachUser);
+            let articleDataCoach = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitile}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignee": "kayo",
+                "assigneeSupportGroup": "US Support 1",
+                "company": "Petramco"
+            }
+            let KACoachDetails = await apiHelper.createKnowledgeArticle(articleDataCoach);
+            await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            await editKnowledgePage.setKnowledgeStatus('Draft');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+
+            await editKnowledgePage.setKnowledgeStatus('Published');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
+
+            await editKnowledgePage.setKnowledgeStatus('Closed');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
+            expect(await viewKnowledgeArticlePo.isStatusChangeBladePresent()).toBeFalsy('status changes blade is peresent');
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        }
+    }, 380 * 1000);
+    
+    it('[DRDMV-1784]: [Knowledge Article] Changing the template for the article', async () => {
+        let knowledgeTitile = 'knowledgeCoachUser1784' + randomStr;
+         await navigationPage.gotoKnowledgeConsole();       
+        await navigationPage.gotoCreateKnowledge();
+        expect(await createKnowledgePage.isTemplatePresent('KCS')).toBeTruthy('Template is not present');
+        expect(await createKnowledgePage.isTemplatePresent('Reference')).toBeTruthy('Template is not present');
+        expect(await createKnowledgePage.isTemplatePresent('How To')).toBeTruthy('Template is not present');
+        await createKnowledgePage.clickOnTemplate('Environment');
+        expect(createKnowledgePage.getTemplatePreviewText()).toContain('Environment','Preview is not present');
+        expect(createKnowledgePage.isKnoledgeSetTemplateIsDisplayed()).toBeTruthy('style is not present');
+        await createKnowledgePage.clickOnSelectDifferentTemplate();
+        await createKnowledgePage.clickOnTemplate('Reference');
+        expect(createKnowledgePage.getTemplatePreviewText()).toContain('Reference','Preview is not present');
+        expect(createKnowledgePage.isKnoledgeSetTemplateIsDisplayed()).toBeTruthy('style is not present');
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.setReferenceValue('reference values are as follows');
+        await createKnowledgePage.clickChangeTemplateButton();
+        await utilCommon.clickOnWarningOk();
+        await createKnowledgePage.clickOnTemplate('Question');
+        expect(createKnowledgePage.getTemplatePreviewText()).toContain('Question','Preview is not present');
+        expect(createKnowledgePage.isKnoledgeSetTemplateIsDisplayed()).toBeTruthy('style is not present');
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.setValueInRTF('Question','frist values are as follows');
+        await createKnowledgePage.clickChangeTemplateButton();
+        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitile);
+        await utilCommon.clickOnWarningCancel();
+        expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitile, 'expected Value not present');
+        await createKnowledgePage.selectKnowledgeSet('HR');
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+    });
 })

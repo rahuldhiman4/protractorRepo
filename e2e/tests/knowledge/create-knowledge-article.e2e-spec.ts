@@ -9,6 +9,12 @@ import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePage from "../../pageobject/knowledge/edit-knowledge.po";
 import utilCommon from '../../utils/util.common';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import feedbackBladeKnowledgeArticlePo from '../../pageobject/knowledge/feedback-blade-Knowledge-article.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
+import utilGrid from '../../utils/util.grid';
+import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
+import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
+import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
 
 describe('Knowledge Article', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -17,6 +23,13 @@ describe('Knowledge Article', () => {
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
     const domainTagDataFile = require('../../data/ui/foundation/domainTag.ui.json');
+    const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    var knowledgeCandidateUser = 'kayo';
+    var knowledgeContributorUser = 'kkohri';
+    var knowledgePublisherUser = 'kmills';
+    var knowledgeCoachUser = 'kWilliamson';
+    var knowledgeManagementApp = "Knowledge Management";
+    var knowledgeArticlesTitleStr = "Knowledge Articles";
 
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
@@ -349,4 +362,343 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
+
+    it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
+        try {
+            let knowledgeTitile = 'knowledge2985' + randomStr;
+            await apiHelper.apiLogin(knowledgePublisherUser);
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitile}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignee": "KWilliamson",
+                "assigneeSupportGroup": "AU Support 3",
+                "company": "Petramco"
+            }
+            let KADetails = await apiHelper.createKnowledgeArticle(articleData);
+            await navigationPage.signOut();
+            await loginPage.login(knowledgePublisherUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            await editKnowledgePage.setKnowledgeStatus('Draft');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusAsSMEReview('Petramco', 'AU Support 3', 'Kane Williamson')
+            expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
+            await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
+            await viewKnowledgeArticlePo.clickReviewPendingLink();
+            await reviewCommentsPo.setTextInTellUsMore(KADetails.displayId);
+            await reviewCommentsPo.clickApprovedButton();
+            await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
+            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
+            await editKnowledgePage.setKnowledgeStatus('Retired');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
+            await editKnowledgePage.setKnowledgeStatus('Closed');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            //login with coachlet
+            let knowledgeTitileCoach = 'knowledgeCoach2985' + randomStr;
+            await apiHelper.apiLogin(knowledgeCoachUser);
+            let articleDataCoach = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitileCoach}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignee": "peter",
+                "assigneeSupportGroup": "Compensation and Benefits",
+                "company": "Petramco"
+            }
+            let KACoachDetails = await apiHelper.createKnowledgeArticle(articleDataCoach);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            await editKnowledgePage.setKnowledgeStatus('Draft');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusAsSMEReview('Petramco', 'Compensation and Benefits', 'Peter Kahn')
+            expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
+            await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+            await navigationPage.gotoKnowledgeConsole();
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            await viewKnowledgeArticlePo.clickReviewPendingLink();
+            await reviewCommentsPo.setTextInTellUsMore(KACoachDetails.displayId);
+            await reviewCommentsPo.clickApprovedButton();
+            await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
+            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
+            await editKnowledgePage.setKnowledgeStatus('Retired');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
+            await editKnowledgePage.setKnowledgeStatus('Closed');
+            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        }
+    }, 300 * 1000);
+
+    it('[DRDMV-3542]: [Post Comments] Post Feedback on knowledge article', async () => {
+        try {
+            let knowledgeTitile = 'knowledge3542' + randomStr;
+            await apiHelper.apiLogin(knowledgeCandidateUser);
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitile}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignee": "kayo",
+                "assigneeSupportGroup": "US Support 1",
+                "company": "Petramco"
+            }
+            let KADetails = await apiHelper.createKnowledgeArticle(articleData);
+            let displayID = KADetails.displayId;
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCandidateUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(displayID);
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            expect(await feedbackBladeKnowledgeArticlePo.isTellUsMoreDisplayedWithReuqired()).toContain('required', 'required not present with comment box');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonDisplayed()).toBeTruthy('Save button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isCancelButtonDisplayed()).toBeTruthy('Cancel button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
+            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
+            await utilCommon.clickOnWarningCancel();
+            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
+            await utilCommon.clickOnWarningOk();
+            expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
+            await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
+            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await activityTabPo.clickOnRefreshButton();
+            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            //login with contributor
+            await loginPage.login(knowledgeContributorUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(displayID);
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            expect(await feedbackBladeKnowledgeArticlePo.isTellUsMoreDisplayedWithReuqired()).toContain('required', 'required not present with comment box');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonDisplayed()).toBeTruthy('Save button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isCancelButtonDisplayed()).toBeTruthy('Cancel button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
+            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
+            await utilCommon.clickOnWarningCancel();
+            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
+            await utilCommon.clickOnWarningOk();
+            expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
+            await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
+            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await activityTabPo.clickOnRefreshButton();
+            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            //login with publisher
+            await loginPage.login(knowledgePublisherUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(displayID);
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            expect(await feedbackBladeKnowledgeArticlePo.isTellUsMoreDisplayedWithReuqired()).toContain('required', 'required not present with comment box');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonDisplayed()).toBeTruthy('Save button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isCancelButtonDisplayed()).toBeTruthy('Cancel button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
+            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
+            await utilCommon.clickOnWarningCancel();
+            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
+            await utilCommon.clickOnWarningOk();
+            expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
+            await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
+            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await activityTabPo.clickOnRefreshButton();
+            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            //login with publisher
+            await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(displayID);
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            expect(await feedbackBladeKnowledgeArticlePo.isTellUsMoreDisplayedWithReuqired()).toContain('required', 'required not present with comment box');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonDisplayed()).toBeTruthy('Save button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isCancelButtonDisplayed()).toBeTruthy('Cancel button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
+            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
+            await utilCommon.clickOnWarningCancel();
+            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
+            await utilCommon.clickOnWarningOk();
+            expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
+            await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
+            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await activityTabPo.clickOnRefreshButton();
+            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        }
+    }, 300 * 1000);
+
+    it('[DRDMV-5058]: Review article in SME Review status & Approve article', async () => {
+        try {
+            let knowledgeTitile = 'knowledge5058' + randomStr;
+            await apiHelper.apiLogin(knowledgePublisherUser);
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitile}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignee": "kmills",
+                "assigneeSupportGroup": "GB Support 2",
+                "company": "Petramco"
+            }
+            let KADetails = await apiHelper.createKnowledgeArticle(articleData);
+            expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
+            expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "SMEReview", "KMills", "GB Support 2", "Petramco")).toBeTruthy("Article with SME Review status not updated.");
+            await navigationPage.signOut();
+            await loginPage.login('kmills');
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            await utilGrid.clearFilter();
+            let knowledgeGridColumnFields: string[] = ["Review Status"];
+            let columnName: string[] = ["Review Status"];
+            await KnowledgeConsolePage.addAllcolumnOnKnowledgeConsole(knowledgeGridColumnFields)
+            await utilGrid.addFilter('Review Status', 'Pending Review', 'checkbox');
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy('article review not set');
+            await viewKnowledgeArticlePo.clickReviewPendingLink();
+            expect(await reviewCommentsPo.isCancelButtonDisplay()).toBeTruthy('Cancel button not present');
+            expect(await reviewCommentsPo.isApprovedButtonDisplay()).toBeTruthy('Approved button not present');
+            expect(await reviewCommentsPo.isRejectedButtonDisplay()).toBeTruthy('Rejected button not present');
+            expect(await reviewCommentsPo.isTellUsMoreDisplayed()).toBeTruthy('Tell us more not present');
+            await reviewCommentsPo.setTextInTellUsMore(knowledgeTitile);
+            await reviewCommentsPo.clickApprovedButton();
+            expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Published', 'value is not matched with status')
+            await viewKnowledgeArticlePo.clickOnActivityTab();
+            expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills reviewed this article and provided this comment');
+            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile)
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchRecord(KADetails.displayId);
+            expect(await KnowledgeConsolePage.isValueDisplayedInGrid('Review Status')).toContain('Reviewed');
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        }
+    }, 150 * 1000);
+
+    it('[DRDMV-5059]: Review article in SME Review status & Reject article', async () => {
+        try {
+            let knowledgeTitile = 'knowledge5059' + randomStr;
+            await apiHelper.apiLogin(knowledgePublisherUser);
+            await apiHelper.apiLogin(knowledgePublisherUser);
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitile}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignee": "kmills",
+                "assigneeSupportGroup": "GB Support 2",
+                "company": "Petramco"
+            }
+            let KADetails = await apiHelper.createKnowledgeArticle(articleData);
+            expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
+            expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "SMEReview", "KMills", "GB Support 2", "Petramco")).toBeTruthy("Article with SME Review status not updated.");
+            await navigationPage.signOut();
+            await loginPage.login('kmills');
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            await utilGrid.clearFilter();
+            let knowledgeGridColumnFields: string[] = ["Review Status"];
+            let columnName: string[] = ["Review Status"];
+            await KnowledgeConsolePage.addAllcolumnOnKnowledgeConsole(knowledgeGridColumnFields)
+            await utilGrid.addFilter('Review Status', 'Pending Review', 'checkbox');
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy('article review not set');
+            await viewKnowledgeArticlePo.clickReviewPendingLink();
+            expect(await reviewCommentsPo.isCancelButtonDisplay()).toBeTruthy('Cancel button not present');
+            expect(await reviewCommentsPo.isApprovedButtonDisplay()).toBeTruthy('Approved button not present');
+            expect(await reviewCommentsPo.isRejectedButtonDisplay()).toBeTruthy('Rejected button not present');
+            expect(await reviewCommentsPo.isTellUsMoreDisplayed()).toBeTruthy('Tell us more not present');
+            await reviewCommentsPo.setTextInTellUsMore(knowledgeTitile);
+            await reviewCommentsPo.clickRejectedButton();
+            expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Draft', 'value is not matched with status')
+            await viewKnowledgeArticlePo.clickOnActivityTab();
+            expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills reviewed this article and provided this comment');
+            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile)
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilGrid.clearFilter();
+            await utilGrid.searchRecord(KADetails.displayId);
+            expect(await KnowledgeConsolePage.isValueDisplayedInGrid('Review Status')).toContain('Reviewed');
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        }
+    }, 150 * 1000);
+
 })
