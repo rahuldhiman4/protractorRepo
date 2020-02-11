@@ -5,17 +5,19 @@ import { IKnowledgeArticles } from 'e2e/data/api/interface/knowledge.articles.in
 import { IPerson } from 'e2e/data/api/interface/person.interface.api';
 import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.api';
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
-import { browser, element } from 'protractor';
+import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
-import { CaseTemplate, MenuItemStatus, NotificationType, TaskTemplate, CaseStatus, Knowledge } from "../api/constant.api";
+import { CaseStatus, CaseTemplate, Knowledge, MenuItemStatus, NotificationType, ProcessLibConf, TaskTemplate } from "../api/constant.api";
+import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
 import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
-import { IFlowset } from '../data/api/interface/flowset.interface.api';
+import { IFlowset, IProcessLibConfig } from '../data/api/interface/flowset.interface.api';
 import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
-import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
 import { FLAG_UNFLAG_KA } from '../data/api/knowledge/flag-unflag.data.api';
+import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
+
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -115,6 +117,15 @@ class ApiHelper {
         if (data.ownerGroup) {
             let ownerSupportGroup = await coreApi.getSupportGroupGuid(data.ownerGroup);
             templateData.fieldInstances[300287900].value = ownerSupportGroup;
+        }
+        if (data.caseStatus) {
+            let statusValue = CaseStatus[data.caseStatus];
+            let caseTemplateStatus = {
+                "id": "450000021",
+                "value": `${statusValue}`
+            }
+            templateData.fieldInstances["450000021"] = caseTemplateStatus;
+
         }
         if (data.assignee) {
             let assignee = await coreApi.getPersonGuid(data.assignee);
@@ -853,6 +864,30 @@ class ApiHelper {
 
         let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib Case", caseGuid, statusData);
         return updateCaseStatus.status;
+    }
+
+    async createProcessLibConfig(data: IProcessLibConfig): Promise<IIDs> {
+        let newProcessConfig = NEW_PROCESS_LIB;
+        newProcessConfig.fieldInstances[61001]["value"] = data.applicationServicesLib;
+        newProcessConfig.fieldInstances[450000002]["value"] = data.processName;
+        newProcessConfig.fieldInstances[450000003]["value"] = data.processAliasName;
+        newProcessConfig.fieldInstances[7]["value"] = data.status ? ProcessLibConf[data.status] : newProcessConfig.fieldInstances[7].value;
+        newProcessConfig.fieldInstances[8]["value"] = data.description ? data.description : newProcessConfig.fieldInstances[8].value;
+        newProcessConfig.fieldInstances[1000000001]["value"] = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : newProcessConfig.fieldInstances[1000000001].value;
+
+        let newProcessLibConfRecord: AxiosResponse = await coreApi.createRecordInstance(newProcessConfig);
+
+        console.log('Create New Process Lib Config API Status =============>', newProcessLibConfRecord.status);
+
+        const processLibConfRecord = await axios.get(
+            newProcessLibConfRecord.headers.location
+        );
+        console.log('New Process API Status =============>', processLibConfRecord.status);
+
+        return {
+            id: processLibConfRecord.data.id,
+            displayId: processLibConfRecord.data.displayId
+        };
     }
 
     async deleteServiceTargets(serviceTargetTitle?: string): Promise<boolean> {

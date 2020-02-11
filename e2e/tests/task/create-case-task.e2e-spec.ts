@@ -603,7 +603,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    it('[DRDMV-7141]: [Automatic Task] - Task template selection Console: Verify Task Type column, filter', async () => {
+    it('[DRDMV-7141,DRDMV-7122]: [Automatic Task] - Task template selection Console: Verify Task Type column, filter', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData = {
             "templateName": `manualTaskTemplateActive ${randomStr}`,
@@ -680,5 +680,59 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
+    });
+
+    //ankagraw
+    it('[DRDMV-3795]: [Task Template] Task Template Status changes', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+
+        let templateDataDraft1 = {
+            "templateName": `manualTaskTemplateDraft1 ${randomStr}`,
+            "templateSummary": `manualTaskTemplateDraft1 ${randomStr}`,
+            "templateStatus": "Draft",
+        }
+        let templateDataActive = {
+            "templateName": `manualTaskTemplateActive ${randomStr}`,
+            "templateSummary": `manualTaskTemplateActive ${randomStr}`,
+            "templateStatus": "Active",
+        }
+
+        await apiHelper.apiLogin('qkatawazi');
+        let temp1 = await apiHelper.createManualTaskTemplate(templateDataDraft1);
+        let temp2 = await apiHelper.createManualTaskTemplate(templateDataActive);
+        
+        console.log(
+            temp1.displayId, "\n",
+            temp2.displayId, "\n",
+        );
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateDraft1 ${randomStr}`);
+        await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Manual');
+        await editTaskTemplate.clickOnEditMetadataLink();
+        await editTaskTemplate.selectTemplateStatus("Active");
+        await editTaskTemplate.clickOnSaveMetadata();
+        await expect(viewTaskTemplate.getTemplateStatus()).toBe('Active');
+        await editTaskTemplate.clickOnEditMetadataLink();
+        await editTaskTemplate.selectTemplateStatus("Inactive");
+        await editTaskTemplate.clickOnSaveMetadata(); 
+        await expect(viewTaskTemplate.getTemplateStatus()).toBe('Inactive');
+        await editTaskTemplate.clickOnEditMetadataLink();
+        await editTaskTemplate.selectTemplateStatus("Draft");
+        await editTaskTemplate.clickOnSaveMetadata(); 
+        await expect(viewTaskTemplate.getTemplateStatus()).toBe('Draft');
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateActive ${randomStr}`);
+        await editTaskTemplate.clickOnEditMetadataLink();
+        await editTaskTemplate.selectTemplateStatus("Inactive");
+        await editTaskTemplate.clickOnSaveMetadata(); 
+        await expect(viewTaskTemplate.getTemplateStatus()).toBe('Inactive');
+        await editTaskTemplate.clickOnEditMetadataLink();
+        await editTaskTemplate.selectTemplateStatus("Draft");
+        await editTaskTemplate.clickOnSaveMetadata(); 
+        await expect(viewTaskTemplate.getTemplateStatus()).toBe('Draft');
     });
 });
