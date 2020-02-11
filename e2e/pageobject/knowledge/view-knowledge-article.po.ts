@@ -1,5 +1,4 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
 
 class ViewKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -17,15 +16,25 @@ class ViewKnowledgePage {
         percentageValue:'[rx-view-component-id="5cc2757f-7a22-4827-82c0-1e7dee2e12a2"] p',
         activityTab: '[rx-view-component-id="3982f4ea-16a0-41aa-982e-879143a19b00"] .rx-tab a',
         feedbackFlag:'8eb31993-888c-4a17-be30-4d91cbcdb10b',
-        statusChnageBlade:'.modal-content'
+        statusChnageBlade:'.modal-content',
+        reviewPending:'[rx-view-component-id="f0cf7f67-da22-4149-a54d-ec3b95fe05e6"] button',
+        KnwoledgeArticleReviewMessage :'[rx-view-component-id="d2dbea0a-503e-47d8-b4ed-b6dcc9dcf555"] span',
     }
 
     async clickOnKAUsefulYesButton():Promise<void>{
         await $(this.selectors.kAUsefulYesButton).click();
     }
 
+    async isKAUsefulYesButtonDisplayed():Promise<boolean>{
+       return await $(this.selectors.kAUsefulYesButton).isDisplayed();
+    }
+
     async clickOnKAUsefulNoButton():Promise<void>{
         await $(this.selectors.kAUsefulNoButton).click();
+    }
+
+    async isReviewMessageDisplayed(value: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.KnwoledgeArticleReviewMessage, value)).isPresent();
     }
 
     async getStatusValue():Promise<string>{
@@ -89,6 +98,10 @@ class ViewKnowledgePage {
      async getPercentageValue():Promise<string>{
         return await $(this.selectors.percentageValue).getText();
      }
+
+     async clickReviewPendingLink():Promise<void>{
+        await $(this.selectors.reviewPending).click();
+    }       
 }
 
 export default new ViewKnowledgePage();
