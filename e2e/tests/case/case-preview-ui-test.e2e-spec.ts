@@ -126,7 +126,7 @@ describe("Case Preview", () => {
         await casePreviewPo.clickOncreateNewCaseButton();
         await expect(await quickCasePo.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
     })
-    
+
     it('[DRDMV-13680]: UI Validation for Fields on Case Preview Page', async () => {
         try {
             let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -172,13 +172,12 @@ describe("Case Preview", () => {
             expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
             expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
             expect(await casePreviewPo.isCreateNewCaseButton()).toBeTruthy('Create New Case button is missing');
-            expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');   
+            expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');
         }
         catch (e) {
             throw e;
         }
         finally {
-            await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
             await navigationPage.signOut();
             await loginPage.login("qtao");
         }

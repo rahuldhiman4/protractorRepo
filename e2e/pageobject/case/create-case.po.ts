@@ -1,6 +1,6 @@
+import { resolve } from "path";
 import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
-import { resolve } from "path";
 
 
 class CreateCasePage {
@@ -50,7 +50,13 @@ class CreateCasePage {
         assigneGuid: '43c3e9ee-dde2-4e10-94e9-c6ee68217cda',
         assignedGroupGuid: '79750d81-d8e5-447e-b923-94c54f2d3310',
         labelGuid: '47f29467-cdd3-4e04-a7f2-ceb795e8b6e5',
-        
+        attachmentField: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] input[type="file"]',
+    }
+
+    async addDescriptionAttachment(fileToUpload: string): Promise<void> {
+        const absolutePath = resolve(__dirname, fileToUpload);
+        console.log(absolutePath);
+        await $(this.selectors.attachmentField).sendKeys(absolutePath);
     }
 
     async getCreateCaseTitle(): Promise<string> {
