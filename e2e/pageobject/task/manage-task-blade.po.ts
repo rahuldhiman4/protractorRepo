@@ -105,7 +105,8 @@ class ManageTaskBlade {
 
     async isTaskLinkOnManageTask(taskSummary: string): Promise<boolean> {
 //        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary))));
-        return await element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary)).isDisplayed();
+        let summaryLinkTxt = await element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary)).getText();
+        return summaryLinkTxt === taskSummary;
     }
 
     async addTaskFromTaskTemplate(templateSummary: string): Promise<void> {
