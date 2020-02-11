@@ -23,10 +23,10 @@ class TaskTemplateGridPage {
     }
 
     async setTaskSearchBoxValue(input: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTemplate)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTemplate)));
         await $(this.selectors.searchTemplate).clear();
         await $(this.selectors.searchTemplate).sendKeys(input, Key.ENTER);
-//        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async searchAndOpenTaskTemplate(taskName: string): Promise<void> {
@@ -48,65 +48,75 @@ class TaskTemplateGridPage {
     }
 
     async clickOnManualTaskTemplateButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.manualTaskTemplateButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.manualTaskTemplateButton)));
         await $(this.selectors.manualTaskTemplateButton).click();
     }
 
     async clickOnAutomationTaskTemplateButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.automationtaskTemplateButton)));
-//        await browser.sleep(2000);
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.automationtaskTemplateButton)));
+        //        await browser.sleep(2000);
         await $(this.selectors.automationtaskTemplateButton).click();
     }
 
     async clickOnExtrnalTaskTemplateButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.externalTaskTemplateButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.externalTaskTemplateButton)));
         await $(this.selectors.externalTaskTemplateButton).click();
     }
 
     async clickOnCopyTaskTemplateButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyTaskTemplate)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyTaskTemplate)));
         await $(this.selectors.copyTaskTemplate).click();
     }
 
     async clickOnApplyFilter(filterName: string, filtervalue: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filter)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filter)));
         await $(this.selectors.filter).click();
-//        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.availableFilterDrpDown, filterName))));
+        //        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.availableFilterDrpDown, filterName))));
         await element(by.cssContainingText(this.selectors.availableFilterDrpDown, filterName)).click();
         if (filterName.localeCompare('Task Type') || filterName.localeCompare('Template Status')) {
             let dropDown = await $(`[title="${filtervalue}"]`);
-//            await browser.wait(this.EC.elementToBeClickable(dropDown));
+            //            await browser.wait(this.EC.elementToBeClickable(dropDown));
             await dropDown.click();
         } else {
             const dropDown = await $(`[title="${filterName}"]`);
             await dropDown.sendKeys(filtervalue, Key.ENTER);
         }
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyFilter)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyFilter)));
         await $(this.selectors.applyFilter).click();
-//        await utilCommon.waitUntilSpinnerToHide();
+        //        await utilCommon.waitUntilSpinnerToHide();
     };
 
     async isTaskTypeFilterValue(taskTypeValue: string): Promise<boolean> {
         let arr: string[] = await utilGrid.getAllValuesFromColoumn((this.selectors.taskTemplateGuid), 'Task Type');
-        return arr.length === taskTypeValue.length && arr.every(
-            (value, index) => (value === taskTypeValue[index])
-        );
+        let unique = arr.filter(function (elem, index, self) {
+            return index === self.indexOf(elem);
+        });
+        return unique.length === 1 && unique[0] === taskTypeValue;
     }
 
     async isFilterNamePresent(filterName: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filter)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filter)));
         await $(this.selectors.filter).click();
-//        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.availableFilterDrpDown, filterName))));
+        //        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.availableFilterDrpDown, filterName))));
         await element(by.cssContainingText(this.selectors.availableFilterDrpDown, filterName)).isDisplayed();
     }
 
     async isFilteredTemplateDisplayed(filterName: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.recommendedTemplateLink, filterName))));
+        //        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.recommendedTemplateLink, filterName))));
         await element(by.cssContainingText(this.selectors.recommendedTemplateLink, filterName)).click();
     }
 
     async isAllColumnTitleDisplayed(data: string[]): Promise<boolean> {
         return await utilGrid.areColumnHeaderMatches(this.selectors.taskTemplateGuid, data);
     }
+
+    async clickOnColumnAndIsColumnSortedAsending(column: string): Promise<boolean> {
+        return await utilGrid.isGridColumnSorted(column, 'ascending', this.selectors.taskTemplateGuid);
+    }
+
+    async clickOnColumnAndIsColumnSortedDescending(column: string): Promise<boolean> {
+        return await utilGrid.isGridColumnSorted(column, 'descending', this.selectors.taskTemplateGuid);
+    }
+
 }
 export default new TaskTemplateGridPage();

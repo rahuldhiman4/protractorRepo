@@ -541,12 +541,12 @@ describe('Create Case Task', () => {
     //ankagraw
     it('[DRDMV-7121]: [Automatic Task] - Task Template Console: Verify Task Type column, filter ', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateData = {
+        let templateData1 = {
             "templateName": `manualTaskTemplateActive ${randomStr}`,
             "templateSummary": `manualTaskTemplateActive ${randomStr}`,
             "templateStatus": "Active",
         }
-        let templateData4 = {
+        let templateData2 = {
             "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
             "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
             "templateStatus": "Active",
@@ -555,19 +555,22 @@ describe('Create Case Task', () => {
         }
 
         await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createAutomatedTaskTemplate(templateData4);
-        await apiHelper.createManualTaskTemplate(templateData);
+        await apiHelper.createAutomatedTaskTemplate(templateData2);
+        await apiHelper.createManualTaskTemplate(templateData1);
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await utilGrid.clearFilter();
+        expect(await selectTaskTemplate.clickOnColumnAndIsColumnSortedAsending('Task Type')).toBeTruthy();
+        expect(await selectTaskTemplate.clickOnColumnAndIsColumnSortedDescending('Task Type')).toBeTruthy();
         await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Manual');
         await expect(await selectTaskTemplate.isTaskTypeFilterValue('Manual')).toBeTruthy();
         await utilGrid.clearFilter();
         await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Automated');
-        await utilCommon.waitUntilSpinnerToHide();
-        await browser.sleep(2000);
+        //await utilCommon.waitUntilSpinnerToHide();
         await expect(await selectTaskTemplate.isTaskTypeFilterValue('Automated')).toBeTruthy();
+        await utilGrid.clearFilter();
+        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //ankagraw
@@ -582,35 +585,35 @@ describe('Create Case Task', () => {
         await selectTaskTemplate.addColumn(addColoumn);
         await expect(selectTaskTemplate.isAllColumnTitleDisplayed(updateAllColoumn)).toBeTruthy("Updated All Coloumn is not present");
         await selectTaskTemplate.removeColumn(addColoumn);
-
     });
 
     //ankagraw
     it('[DRDMV-7201]: [Automatic Task] - Task Console: Task Type column and filter validation', async () => {
 
         await navigationPage.gotoTaskConsole();
+
         await utilGrid.clearFilter();
-        await expect(consoleTask.getSortedValueFromColumn("Task Type")).toBe("Manual", " Unable to find manual");
-        await expect(consoleTask.clickOnColumnAndisColumnSortedAsending("Task Type")).toBeTruthy();
-        await expect(consoleTask.clickOnColumnAndisColumnSortedDescending("Task Type")).toBeTruthy();
-        await expect(consoleTask.getSortedValueFromColumn("Task Type")).toBe("Automated", " Unable to find automated");
+        expect(await consoleTask.clickOnColumnAndIsColumnSortedAsending('Task Type')).toBeTruthy();
+        expect(await consoleTask.clickOnColumnAndIsColumnSortedDescending('Task Type')).toBeTruthy();
         await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Manual');
-        await expect(await consoleTask.getFilterValue('Manual')).toBeTruthy();
+        await expect(await consoleTask.isTaskTypeFilterValue('Manual')).toBeTruthy();
         await utilGrid.clearFilter();
         await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Automated');
+        //await utilCommon.waitUntilSpinnerToHide();
+        await expect(await consoleTask.isTaskTypeFilterValue('Automated')).toBeTruthy();
+        await utilGrid.clearFilter();
         await utilCommon.waitUntilSpinnerToHide();
-        await expect(await consoleTask.getFilterValue('Automated')).toBeTruthy();
     });
 
     //ankagraw
     it('[DRDMV-7141,DRDMV-7122]: [Automatic Task] - Task template selection Console: Verify Task Type column, filter', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateData = {
+        let templateData1 = {
             "templateName": `manualTaskTemplateActive ${randomStr}`,
             "templateSummary": `manualTaskTemplateActive ${randomStr}`,
             "templateStatus": "Active",
         }
-        let templateData4 = {
+        let templateData2 = {
             "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
             "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
             "templateStatus": "Active",
@@ -619,10 +622,9 @@ describe('Create Case Task', () => {
         }
 
         await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createAutomatedTaskTemplate(templateData4);
-        await apiHelper.createManualTaskTemplate(templateData);
+        await apiHelper.createAutomatedTaskTemplate(templateData2);
+        await apiHelper.createManualTaskTemplate(templateData1);
 
-        await loginPage.login('qkatawazi');
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester('adam');
         await createCasePage.setSummary('set summary');
@@ -639,13 +641,14 @@ describe('Create Case Task', () => {
         await expect(await manageTask.getFilterValue('Manual')).toBeTruthy();
         await utilGrid.clearFilter();
         await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Automated');
-        await utilCommon.waitUntilSpinnerToHide();
+        //await utilCommon.waitUntilSpinnerToHide();
         await expect(await manageTask.getFilterValue('Automated')).toBeTruthy();
+        await utilGrid.clearFilter();
+        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //ankagraw
     it('[DRDMV-2475]: [Permissions] Settings menu for Case Functional Roles', async () => {
-        await loginPage.login('qkatawazi');
         let caseManagementList: string[] = ['', 'Case Management', 'Approvals', 'Assignment', 'Automated Status Transition', 'Notes Template', 'Read Access', 'Status Configuration', 'Templates'];
         let manageFlowsetList: string[] = ['', 'Manage Flowsets', 'Define Flowsets', 'Process Library'];
         let serviceLevelManagementList: string[] = ['', 'Service Level Management', 'Business Time Segment', 'Business Time Shared Entity', 'Configure Data Source', 'Goal Type', 'Service Target', 'Service Target Group'];
