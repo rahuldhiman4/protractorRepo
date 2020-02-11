@@ -98,10 +98,10 @@ class QuickCasePage {
 
     async selectCaseTemplate(templateName: string): Promise<void> {
         await $(this.selectors.inputBox).sendKeys(`!${templateName}`);
-        // await browser.wait(this.EC.or(async () => {
-        //            let count = await $$(this.selectors.caseTemplate).count();
-        //            return count >= 1;
-        //        }));
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.caseTemplate).count();
+            return count >= 1;
+        }), 2000);
         await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).click();
     }
 
