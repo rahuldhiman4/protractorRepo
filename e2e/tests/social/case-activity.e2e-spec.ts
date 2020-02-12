@@ -11,6 +11,7 @@ import activityTabPage from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import utilCommon from '../../utils/util.common';
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 
 describe('Case Activity', () => {
 
@@ -42,7 +43,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await createKnowlegePo.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
-            await createKnowlegePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnActivityTab();
             // // 2nd Step: Inspect Case Activity UI - Click on Filter       
             await activityTabPage.clickOnFilterButton();
             // 3rd Step: Inspect Filter Panel UI
@@ -140,7 +141,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await createKnowlegePo.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
-            await createKnowlegePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnActivityTab();
             // 2nd step: From Task Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Task
             await activityTabPage.clickOnFilterButton();
             await activityTabPage.addAuthorOnFilter('Elizabeth Peters');
@@ -228,7 +229,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await createKnowlegePo.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
-            await createKnowlegePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnActivityTab();
             await activityTabPage.addActivityNote(knowledgeBodyText);
             await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
             await activityTabPage.clickOnPostButton();
@@ -787,7 +788,7 @@ describe('Case Activity', () => {
 
             // View Knowledege Page
             await utilCommon.switchToNewWidnow(1);
-            await createKnowlegePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnActivityTab();
             await activityTabPage.addActivityNote(knowledgeBodyText);
             await activityTabPage.clickOnPostButton();
             await activityTabPage.clickOnHyperlinkFromActivity(knowledgeBodyText, 'Qadim Katawazi');

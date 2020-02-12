@@ -266,7 +266,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    })
+    }, 120 * 1000);
 
     it('[DRDMV-1191,DRDMV-1198]: [Case Creation] Case creation with/without mandatory fields populated ', async () => {
         try {
@@ -686,7 +686,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    }, 120 * 1000);
 
     it('[DRDMV-15974]: Verify the status transition Closed->New is available only when Closed case is Reopened', async () => {
         try {
@@ -762,7 +762,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    }, 140 * 1000);
 
     it('[DRDMV-5479,DRDMV-1192]: verifyCaseAssignmentOnCreateCaseView    ', async () => {
         try {

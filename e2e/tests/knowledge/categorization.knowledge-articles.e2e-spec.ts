@@ -14,6 +14,7 @@ import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-cons
 import createDocumentLibraryPage from '../../pageobject/settings/document-management/create-document-library.po';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 var caseBAUser = 'qkatawazi';
 var caseAgentUser = 'qtao';
 var caseManagerUser = 'qdu';
@@ -838,7 +839,7 @@ describe('Knowledge Articles Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await createKnowledgePage.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
-            await editKnowledgePage.editKnowledgeMedataData();
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePage.getCategoryTier1SelectedValue(categoryTier1)).toBe(categoryTier1FieldVal);
         }
         catch (error) {

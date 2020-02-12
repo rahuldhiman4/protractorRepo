@@ -19,6 +19,7 @@ class ViewTask {
         labelValue: '[rx-view-component-id="4c2784af-c080-4630-8f16-d9e6b07e87a2"] p',
         descriptionValue: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] .show-less-wrapper',
         processnameValue: '[rx-view-component-id="7260c238-9e41-4d31-90de-2d46443117b4"] p',
+        statusReason: '[rx-view-component-id="7cdf9e18-c230-4098-8872-ddce9f005373"] .d-textfield__rx-value',
         taskIdText: '[rx-view-component-id="75371088-cfeb-4554-a939-2fe7b2aa098b"] .text-field',
         viewCaseLink: '[rx-view-component-id="036a7325-43e3-47e6-bb50-7f8d9fe8d118"] button',
         taskIcon: '[rx-view-component-id="75371088-cfeb-4554-a939-2fe7b2aa098b"] [ng-if="icon"]',
@@ -63,7 +64,7 @@ class ViewTask {
     }
 
     async changeTaskStatus(statusValue: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusDropDown)),2000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusDropDown)), 2000);
         await utilCommon.selectDropDown2($(this.selectors.statusDropDown), statusValue);
     }
 
@@ -231,6 +232,11 @@ class ViewTask {
     async getProcessNameValue(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.processnameValue)));
         return await $(this.selectors.processnameValue).getText();
+    }
+
+    async getStatusReason(): Promise<string> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.processnameValue)));
+        return await $(this.selectors.statusReason).getText();
     }
 
     async isProcessNameValue(): Promise<boolean> {

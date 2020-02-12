@@ -40,3 +40,7 @@ export enum CaseStatus {
     Resolved = 5000,
     Closed = 7000
 }
+
+export enum ProcessLibConf {
+    Active = 10
+}

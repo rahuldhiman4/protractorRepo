@@ -182,10 +182,27 @@ describe('Login and create case from API', () => {
         console.log("Org2 GUID...", org2, " ", orgGuid2);
     });
 
+    it('create process lib config', async () => {
+        await apiHelper.apiLogin('qkatawazi');
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+
+        let processLibConfData = {
+            applicationServicesLib: "com.bmc.arsys.rx.approval",
+            processName: "com.bmc.arsys.rx.approval:ApprovalSampleFlow",
+            processAliasName: `New Process${randomStr}`,
+            company: "Petramco",
+            description: `Test the data${randomStr}`,
+            status: "Active"
+        }
+        let newProcess = await apiHelper.createProcessLibConfig(processLibConfData);
+        if (newProcess.id) {
+            console.log("Success");
+        } else console.log("Failed");
+    });
     it('Delete Process Lib Config', async () => {
         await apiHelper.apiLogin('tadmin');
         let processName = 'com.bmc.arsys.rx.approval:Approval Executor';
         let isDeleted = await apiHelper.deleteFlowsetProcessLibConfig(processName);
         console.log("Process Lib Config deleted?.. ", isDeleted);
     });
-})
+});
