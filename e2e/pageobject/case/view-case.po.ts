@@ -24,6 +24,7 @@ class ViewCasePage {
         statusList: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"] .ui-select__rx-choice',
         statusDisplay: '[aria-label="Status activate"]',
         addTaskButton: '[rx-view-component-id="db1c57fc-c332-40fa-b1c0-759e21d9ad5c"] button',
+        addTaskButtonGuid: '[rx-view-component-id="db1c57fc-c332-40fa-b1c0-759e21d9ad5c"]',
         editLink: '.edit-link',
         searchInput: 'input[type="search"]',
         caseIdText: '[rx-view-component-id="7b47ca08-e9d4-4656-8f96-3bc751c098b0"] .title',
@@ -214,6 +215,11 @@ class ViewCasePage {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskButton)),3000);
         await $(this.selectors.addTaskButton).click();
     }
+
+    async isAddtaskButtonDisplayed(): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskButton)),3000);
+            return    await $(this.selectors.addTaskButtonGuid).getAttribute("innerText")?true:false;
+            }
 
     async openTaskCard(taskCardNumber: number): Promise<void> {
         await $$(this.selectors.taskCardArrow).get(taskCardNumber - 1).click();

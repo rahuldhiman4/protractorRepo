@@ -5,7 +5,7 @@ class WorkspacePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         Libraries: '.is-checked',
-        allLink: 'ui-grid__link',
+        allLink: '.ui-grid__link',
     }
     async clickOnLibrariesButton():Promise<void>{
         await $(this.selectors.Libraries).click();
