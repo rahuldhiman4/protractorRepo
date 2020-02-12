@@ -45,7 +45,14 @@ class ConsoleFlowset {
 
     async isFlowsetPresentOnGrid(flowset: string): Promise<boolean> {
         await utilGrid.searchOnGridConsole(flowset);
-        return await element(by.cssContainingText('.ui-grid__link', flowset)).getText() == flowset ? true : false;
+        return await element(by.cssContainingText('.ui-grid__link', flowset)).isPresent().then(async (result) => {
+            if(result){
+                return await element(by.cssContainingText('.ui-grid__link', flowset)).getText() == flowset ? true : false;
+            } else {
+                console.log("Flowset not present");
+                return false;
+            }
+        });
     }
 
     async clearSearcBox(): Promise<void> {
@@ -53,6 +60,7 @@ class ConsoleFlowset {
     }
 
     async isDecriptionPresentOnGrid(description: string): Promise<boolean> {
+        await utilGrid.searchOnGridConsole(description);
         return await element(by.cssContainingText('.ui-grid-cell-contents', description)).getText() == description ? true : false;
     }
 }
