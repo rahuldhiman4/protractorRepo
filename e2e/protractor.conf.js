@@ -32,11 +32,11 @@ exports.config = {
   suites: {
     full: [
       './tests/**/*.e2e-spec.ts',
-     ]
+    ]
   },
 
   directConnect: false,
-  //  baseUrl: 'http://clm-pun-t3erts.bmc.com:8008',
+  //baseUrl: 'http://clm-pun-t3erts.bmc.com:8008',
   baseUrl: 'http://clm-aus-t5jj96.bmc.com:8008',
   framework: 'jasmine',
   jasmineNodeOpts: {
@@ -48,7 +48,7 @@ exports.config = {
   async onPrepare() {
     let globals = require('protractor/built');
     let browser = globals.browser;
-    //    await browser.waitForAngularEnabled(false);
+    //await browser.waitForAngularEnabled(false);
 
     //Implicitly wait
     await browser.manage().timeouts().implicitlyWait(5000);
