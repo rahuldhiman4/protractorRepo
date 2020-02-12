@@ -8,6 +8,7 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import composeMail from '../../pageobject/email/compose-mail.po';
 import utilCommon from '../../utils/util.common';
+import attachmentInformationBladePo from '../../pageobject/attachment/attachment-information-blade.po';
 
 describe("Attachment", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -42,9 +43,9 @@ describe("Attachment", () => {
         expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
     })
 
-    it('[DRDMV-11707,DRDMV-11703]: Upload attachment while creating case via BWF & verify all attachments Grid	', async () => {
+    fit('[DRDMV-11707,DRDMV-11703]: Upload attachment while creating case via BWF & verify all attachments Grid	', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let filePath = '../../data/ui/attachment/demo.txt';
+        let filePath = '../../data/ui/attachment/bwfJpg.jpg';
         await navigationPage.gotCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
@@ -52,15 +53,15 @@ describe("Attachment", () => {
         await createCasePo.clickSaveCaseButton();
         await createCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
-        expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
-        await attachmentBladePo.searchAndSelectCheckBox('demo');
+        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
+        await attachmentBladePo.searchAndSelectCheckBox('bwfJpg');
         await expect(await attachmentBladePo.getTextOfColumnHeader('Attachments ')).toBe('Attachments', 'Attachment column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Media type ')).toBe('Media type', 'Media type  column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
-        await expect(await attachmentBladePo.getRecordValue('demo')).toBe('demo', 'Attachment file name is missing');
+        await expect(await attachmentBladePo.getRecordValue('bwfJpg')).toBe('bwfJpg', 'Attachment file name is missing');
         await expect(await attachmentBladePo.getRecordValue('Case')).toBe('Case', 'Attach to column value is missing');
-        await expect(await attachmentBladePo.getRecordValue('text/plain')).toBe('text/plain', 'Media type column value is missing');
+        await expect(await attachmentBladePo.getRecordValue('image/jpeg')).toBe('image/jpeg', 'Media type column value is missing');
 
         let year: string;
         let month: string;
@@ -91,7 +92,19 @@ describe("Attachment", () => {
         expect(await attachmentBladePo.isDownloadButtonDisplayed()).toBeTruthy('Download button is missing');
         expect(await attachmentBladePo.isCloseButtonDisplayed()).toBeTruthy('Close button is missing');
         await attachmentBladePo.clickOnDownloadButton();
-        expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
+        expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.');
+
+        await attachmentBladePo.clickOnFileName('bwfJpg');
+        expect(await attachmentInformationBladePo.isDownloadButtonDisplayed()).toBeTruthy('download button is missing');
+        expect(await attachmentInformationBladePo.isCloseButtonDisplayed()).toBeTruthy('close button is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation('File Name')).toBe('File Name: bwfJpg','FileName is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation(' Case')).toBe('Type: Case','Type is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation(' image/jpeg')).toBe('Media type: image/jpeg','Media Type is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation(' 49.9 KB')).toBe('Size: 49.9 KB','FileSize is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation(finalDate)).toContain(finalDate,'Created date is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation(' Qianru Tao')).toBe('Created by: Qianru Tao','Created by is missing');
+        expect(await attachmentInformationBladePo.isTitleNameDisplayed()).toBeTruthy('Title is missing');
+        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
     })
 
     it('DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
