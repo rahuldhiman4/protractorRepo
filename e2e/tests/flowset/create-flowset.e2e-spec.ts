@@ -1,12 +1,12 @@
-import { browser, element } from "protractor";
+import { browser } from "protractor";
+import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
+import { CASE_MANAGEMENT_LIB_PROCESS, SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import consoleFlowset from '../../pageobject/flowset/console-flowset-config.po';
 import createFlowset from '../../pageobject/flowset/create-flowset-config.po';
 import editFlowset from '../../pageobject/flowset/edit-flowset-config.po';
-import { CASE_MANAGEMENT_LIB_PROCESS, SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
-import apiCoreUtil from '../../api/api.core.util';
 
 describe('Create Flow Set', () => {
     beforeAll(async () => {
@@ -89,9 +89,8 @@ describe('Create Flow Set', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
         await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeTruthy(" Flowset is not present ")
-        await expect(consoleFlowset.isDecriptionPresentOnGrid('test description')).toBeTruthy(" description is not present ")
-        await expect(consoleFlowset.isFlowsetPresentOnGrid("aaaaaaaaa")).toBeFalsy(" Flowset is present ")
-
+        await expect(consoleFlowset.isDecriptionPresentOnGrid('Test Flowset name description')).toBeTruthy(" description is not present ")
+        await expect(consoleFlowset.isFlowsetPresentOnGrid("FlowsetHasNoName")).toBeFalsy(" Flowset is present ")
     });
 
     //ankagraw
@@ -105,7 +104,7 @@ describe('Create Flow Set', () => {
         await apiCoreUtil.createProcess(case_management);
         // console.log("Case Process created...", newProcessName1);
         // console.log("Case Process Name created...", newProcessName1.split(':')[1]);
-        
+
         let social_Service = SOCIAL_SERVICE_PROCESS;
         let social_Service_Process = social_Service.name + randomStr;
         social_Service.name = social_Service_Process;

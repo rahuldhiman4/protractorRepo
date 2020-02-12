@@ -3,7 +3,7 @@
         "flowsetName": "Test Flowset name",
         "flowsetStatus": 10,
         "company": "Petramco",
-        "description": "test description"
+        "description": "Test Flowset name description"
     },
     "flowsetGlobalFields" : {
         "flowsetName": "Test Flowset Global name",
