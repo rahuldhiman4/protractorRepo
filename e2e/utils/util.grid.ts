@@ -41,8 +41,8 @@ export class GridOperation {
     async areColumnHeaderMatches(guid: string, columnHeader: string[]): Promise<boolean> {
         let arr: string[] = [];
         for (let i: number = 0; i < columnHeader.length; i++) {
-            var customxpath = `(//*[@rx-view-component-id="${guid}"]//span[@class="ui-grid-header-cell-label"])[${i + 1}]`;
-            let columns = await element(by.xpath(customxpath)).getAttribute("innerText");
+            let customCss = `[rx-view-component-id="${guid}"] .ui-grid-header-cell-label`;
+            let columns = await $$(customCss).get(i).getText();
             arr[i] = columns;
         }
         arr.sort();
@@ -119,6 +119,7 @@ export class GridOperation {
             await $(`[rx-view-component-id='${guid}'] input[role="search"]`).clear();
             await $(`[rx-view-component-id='${guid}'] input[role="search"]`).sendKeys(id);
             await $(`[rx-view-component-id='${guid}'] button[rx-id="submit-search-button"]`).click();
+            await element(by.linkText(id)).click();
         } else {
             await $(this.selectors.summaryField1).clear();
             await $(this.selectors.summaryField1).sendKeys(id);
