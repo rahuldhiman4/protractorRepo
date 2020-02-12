@@ -71,16 +71,16 @@ class createNotesTemplate {
 
     async createNotesTemplate(companyValue: string): Promise<string> {
         await consoleNoteTemplate.clickOnCreateNotesTemplate();
-        var notesTemplateStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await this.setTemplateName(notesTemplateStr);
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await this.setTemplateName(randomStr);
         await this.setCompanyValue(companyValue);
         await this.setStatusValue('Active');
         await this.setLanguageValue('English (United States)');
-        await this.setBody("This is new notes template " + notesTemplateStr);
+        await this.setBody("This is new notes template " + randomStr);
         await this.clickOnSaveButton();
 //        await utilCommon.waitUntilPopUpDisappear();
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
-        return notesTemplateStr;
+        return randomStr;
     }
 
     async isCreateNotesTemplateUIPresent(): Promise<boolean> {
