@@ -15,6 +15,15 @@ exports.config = {
 
   capabilities: {
     browserName: 'chrome',
+    'chromeOptions': {
+      prefs: {
+        download: {
+          'prompt_for_download': false,
+          'directory_upgrade': true,
+          'default_directory': process.cwd() + '\\e2e\\data\\downloads'
+        }
+      }
+    },
     'shardTestFiles': true,
     'maxInstances': 1,
     'idle-duration': 5,
@@ -27,7 +36,7 @@ exports.config = {
   },
 
   directConnect: false,
-//  baseUrl: 'http://clm-pun-t3erts.bmc.com:8008',
+  //baseUrl: 'http://clm-pun-t3erts.bmc.com:8008',
   baseUrl: 'http://clm-aus-t5jj96.bmc.com:8008',
   framework: 'jasmine',
   jasmineNodeOpts: {
@@ -39,7 +48,7 @@ exports.config = {
   async onPrepare() {
     let globals = require('protractor/built');
     let browser = globals.browser;
-//    await browser.waitForAngularEnabled(false);
+    //await browser.waitForAngularEnabled(false);
 
     //Implicitly wait
     await browser.manage().timeouts().implicitlyWait(5000);
