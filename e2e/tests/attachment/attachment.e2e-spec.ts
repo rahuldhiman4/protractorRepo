@@ -43,7 +43,7 @@ describe("Attachment", () => {
         expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
     })
 
-    fit('[DRDMV-11707,DRDMV-11703]: Upload attachment while creating case via BWF & verify all attachments Grid	', async () => {
+    it('[DRDMV-11707,DRDMV-11703]: Upload attachment while creating case via BWF & verify all attachments Grid	', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let filePath = '../../data/ui/attachment/bwfJpg.jpg';
         await navigationPage.gotCreateCase();

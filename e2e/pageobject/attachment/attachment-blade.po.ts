@@ -49,9 +49,7 @@ class AttachmentBlade {
     }
 
     async clickOnFileName(value: any): Promise<void> {
-        // return await element(by.cssContainingText(this.selectors.gridValue, value)).click();
         await $(`.attachment-title-text[title='${value}']`).click();
-        // await $(`[rx-view-component-id='${value}'] .ui-grid-header-cell-label`);
 
     }
 
