@@ -1,4 +1,4 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class editNotesTemplate {
@@ -29,7 +29,7 @@ class editNotesTemplate {
     }
 
     async changeTemplateName(templateNameValue: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
         await $(this.selectors.templateName).clear();
         await $(this.selectors.templateName).sendKeys(templateNameValue);
     }
@@ -51,53 +51,54 @@ class editNotesTemplate {
     }
 
     async updateBody(bodyValue: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.body)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.body)));
         await $(this.selectors.body).sendKeys(bodyValue);
     }
 
     async clickOnInsertFieldLink(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.insertField)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.insertField)));
         await $(this.selectors.insertField).click();
     }
 
     async clickOnSaveButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-//        await utilCommon.waitUntilPopUpDisappear();
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
+        //        await utilCommon.waitUntilPopUpDisappear();
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
     }
 
     async clickOnCancelButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
     }
 
     async getStatusValue(): Promise<string> {
-//        await await browser.wait(this.EC.visibilityOf($(this.selectors.statusValue)));
+        //        await await browser.wait(this.EC.visibilityOf($(this.selectors.statusValue)));
         return await $(this.selectors.statusValue).getText();
     }
 
     async getBodyValue(): Promise<string> {
-//        await browser.wait(this.EC.invisibilityOf($(this.selectors.localMessage)));
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.bodyUpdateValue)));
+        //        await browser.wait(this.EC.invisibilityOf($(this.selectors.localMessage)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.bodyUpdateValue)));
         return await $(this.selectors.bodyUpdateValue).getText();
     }
 
     async getLocaleNotPresentMessage(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.localMessageVerification)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.localMessageVerification)));
         return await $(this.selectors.localMessageVerification).getText();
     }
 
     async isStatusFieldEnabled(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         return await $(this.selectors.editStatus).isEnabled();
     }
 
     async isDescriptionFieldEnabled(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         return await $(this.selectors.editDescription).isEnabled();
     }
 
 }
+
 export default new editNotesTemplate();
