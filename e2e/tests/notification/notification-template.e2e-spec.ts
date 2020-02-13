@@ -2,7 +2,6 @@ import { browser, protractor, ProtractorExpectedConditions } from "protractor";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import notificationTempGridPage from "../../pageobject/notification/console-notificationTemplate.po";
-import utilCommon from '../../utils/util.common';
 
 describe("Notification Template", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

@@ -1,4 +1,4 @@
-import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from "../../../utils/util.grid";
 class ConsoleNotesTemplate {
 
@@ -18,22 +18,22 @@ class ConsoleNotesTemplate {
     }
 
     async clickOnCreateNotesTemplate(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notesTemplate)));
-        $(this.selectors.notesTemplate).click();
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notesTemplate)));
+        await $(this.selectors.notesTemplate).click();
     }
 
     async clickOnTemplateName(temmplateName: string): Promise<void> {
-        utilGrid.searchAndOpenHyperlink(temmplateName, this.selectors.gridGuid);
+        await utilGrid.searchAndOpenHyperlink(temmplateName, this.selectors.gridGuid);
     }
 
     async isTemplatePresentInGrid(templateNameValue: string): Promise<string> {
-        utilGrid.searchAndSelectGridRecord(templateNameValue, this.selectors.gridGuid);
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.templateNameFromGrid)));
+        await utilGrid.searchAndSelectGridRecord(templateNameValue, this.selectors.gridGuid);
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.templateNameFromGrid)));
         return await $(this.selectors.templateNameFromGrid).getText();
     }
 
     async searchAndClickNotesTemplateCheckBox(temmplateNameValue: string): Promise<void> {
-//        await browser.wait(this.EC.invisibilityOf($(this.selectors.body)));
+        //        await browser.wait(this.EC.invisibilityOf($(this.selectors.body)));
         await utilGrid.searchAndSelectGridRecord(temmplateNameValue);
     }
 
@@ -42,34 +42,34 @@ class ConsoleNotesTemplate {
     }
 
     async clickOnDeleteButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.deleteButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.deleteButton)));
         await $(this.selectors.deleteButton).click();
     }
 
     async isTemplatePresentOnGrid(templateNameValue): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText((this.selectors.templateNameFromGrid), templateNameValue))));
-        return element(by.cssContainingText(this.selectors.templateNameFromGrid, templateNameValue)).isDisplayed();
+        //        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText((this.selectors.templateNameFromGrid), templateNameValue))));
+        return await element(by.cssContainingText(this.selectors.templateNameFromGrid, templateNameValue)).isDisplayed();
     }
 
     async isNotesTemplateUIConsolePresent(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTextBox)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTextBox)));
         let a: boolean = await $(this.selectors.searchTextBox).isDisplayed();
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.searchButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchButton)));
         let b: boolean = await $(this.selectors.searchButton).isDisplayed();
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.refreshButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.refreshButton)));
         let c: boolean = await $(this.selectors.refreshButton).isDisplayed();
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.notesTemplate)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.notesTemplate)));
         let d: boolean = await $(this.selectors.notesTemplate).isDisplayed();
         return (a == b == c == d == true);
     }
 
     async isAddNotesTemplateBtnDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.notesTemplate)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.notesTemplate)));
         return await $(this.selectors.notesTemplate).getAttribute("disabled") == "true";
     }
 
     async isDeleteNotesTemplateBtnDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
         return await $(this.selectors.deleteButton).getAttribute("disabled") == "true";
     }
 }

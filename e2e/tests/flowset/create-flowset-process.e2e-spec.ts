@@ -7,7 +7,6 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import consoleFlowsetProcessLibrary from '../../pageobject/flowset/console-process-library-config.po';
 import createFlowsetProcessLibrary from '../../pageobject/flowset/create-register-process-config.po';
 import editFlowsetProcessLibrary from '../../pageobject/flowset/edit-register-process-config.po';
-import utilCommon from '../../utils/util.common';
 
 describe('Create Process in Flowset', () => {
     beforeAll(async () => {
@@ -21,7 +20,6 @@ describe('Create Process in Flowset', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //ankagraw

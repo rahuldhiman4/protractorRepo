@@ -119,6 +119,7 @@ export class GridOperation {
             await $(`[rx-view-component-id='${guid}'] input[role="search"]`).clear();
             await $(`[rx-view-component-id='${guid}'] input[role="search"]`).sendKeys(id);
             await $(`[rx-view-component-id='${guid}'] button[rx-id="submit-search-button"]`).click();
+            await element(by.linkText(id)).click();
         } else {
             await $(this.selectors.summaryField1).clear();
             await $(this.selectors.summaryField1).sendKeys(id);
