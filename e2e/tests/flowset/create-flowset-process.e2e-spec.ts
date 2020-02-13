@@ -1,18 +1,13 @@
 import { browser } from "protractor";
+import apiCoreUtil from '../../api/api.core.util';
+import apiHelper from '../../api/api.helper';
+import { SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import consoleFlowsetProcessLibrary from '../../pageobject/flowset/console-process-library-config.po';
 import createFlowsetProcessLibrary from '../../pageobject/flowset/create-register-process-config.po';
 import editFlowsetProcessLibrary from '../../pageobject/flowset/edit-register-process-config.po';
-import utilCommon from '../../utils/util.common';
-import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
-import createCaseTemplate from "../../pageobject/settings/case-management/create-casetemplate.po";
-import viewCaseTemplate from "../../pageobject/settings/case-management/view-casetemplate.po";
-import isWorkSpace from '../../pageobject/common/is.workspace.po';
-import apiHelper from 'e2e/api/api.helper';
-import { SOCIAL_SERVICE_PROCESS } from 'e2e/data/ui/flowset/process-for-flowset.data.ui';
-import apiCoreUtil from 'e2e/api/api.core.util';
-var CaseManagementService = "Case Management Service";
+
 describe('Create Process in Flowset', () => {
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
@@ -25,7 +20,6 @@ describe('Create Process in Flowset', () => {
 
     afterEach(async () => {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //ankagraw
@@ -75,7 +69,7 @@ describe('Create Process in Flowset', () => {
         let social_Service_Process = social_Service.name + randomStr;
         social_Service.name = social_Service_Process;
         await apiCoreUtil.createProcess(social_Service);
-        
+
         let processLibConfData1 = {
             applicationServicesLib: "com.bmc.dsm.social-lib",
             processName: social_Service_Process,
@@ -85,7 +79,7 @@ describe('Create Process in Flowset', () => {
             status: "Active"
         }
         await apiHelper.createProcessLibConfig(processLibConfData1);
-        
+
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
         await consoleFlowsetProcessLibrary.searchAndSelectFlowset(`Process${randomStr}`);
@@ -118,8 +112,19 @@ describe('Create Process in Flowset', () => {
             description: `description${randomStr}`,
             status: "Active"
         }
+        await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createProcessLibConfig(processLibConfData1);
 
+        //login with same company Manager
+        await navigationPage.signOut();
+        await loginPage.login('qdu');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+        await expect(editFlowsetProcessLibrary.isAliasNamePresentOnGrid(`Process${randomStr}`)).toBeTruthy(`Process${randomStr}` + "Name is not present");
+
+        //login with same company CBA 
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
         await consoleFlowsetProcessLibrary.searchAndSelectFlowset(`Process${randomStr}`);
@@ -127,23 +132,35 @@ describe('Create Process in Flowset', () => {
         await editFlowsetProcessLibrary.clickOnSaveButton();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
         await expect(editFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAliasvbv5')).toBeTruthy('UpdateAliasvbv5' + "Name is not present");
+
+        //login with different company CBA
         await navigationPage.signOut();
         await loginPage.login('gwixillian');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
         await expect(editFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAliasvbv5')).toBeFalsy('UpdateAliasvbv5' + "Name is present");
+
+        //login with different company Manager
+        await navigationPage.signOut();
+        await loginPage.login('rrovnitov');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+        await expect(editFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAliasvbv5')).toBeFalsy('UpdateAliasvbv5' + "Name is present");
+
+        //login with same company Agent
         await navigationPage.signOut();
         await loginPage.login('qtao');
         await navigationPage.gotoSettingsPage();
         await expect(navigationPage.isSettingMenuPresent('Manage Flowsets')).toBeFalsy("Setting menu present");
         await apiHelper.apiLogin('tadmin');
-		let processName = 'com.bmc.dsm.social-lib:Social - Sample Activity Update By User';
+        let processName = 'com.bmc.dsm.social-lib:Social - Sample Activity Update By User';
         await apiHelper.deleteFlowsetProcessLibConfig(processName);
     });
 
-    it('[DRDMV-6214]: [Flowsets] Flowsets Console verification', async () => {
+    it('[DRDMV-1298]: [Flowsets] Flowsets Console verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let availableValues: string[] = ['Application', 'Company', 'ID', 'Process Alias Name', 'Process Description', 'Process Name', 'Status'];
+        let allHeaders: string[] = ['Application', 'Company', 'ID', 'Process Alias Name', 'Process Description', 'Process Name', 'Status'];
+        let remainingHeaders: string[] = ['Application', 'Company', 'ID', 'Process Alias Name', 'Process Description', 'Status'];
         await apiHelper.apiLogin('tadmin');
         let social_Service = SOCIAL_SERVICE_PROCESS;
         let social_Service_Process = social_Service.name + randomStr;
@@ -162,7 +179,9 @@ describe('Create Process in Flowset', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
         await consoleFlowsetProcessLibrary.addColumn(["ID", "Process Name"]);
-        await expect(consoleFlowsetProcessLibrary.isAllVisibleColumnPresent(availableValues)).toBeTruthy("Available value is not present");
+        await expect(consoleFlowsetProcessLibrary.isAllVisibleColumnPresent(allHeaders)).toBeTruthy("Available value is not present");
+        await consoleFlowsetProcessLibrary.removeColumn(["Process Name"]);
+        await expect(consoleFlowsetProcessLibrary.isAllVisibleColumnPresent(remainingHeaders)).toBeTruthy("Available value is not present");
         await consoleFlowsetProcessLibrary.searchAndSelectFlowset(`Process${randomStr}`);
         await editFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
         await editFlowsetProcessLibrary.clickOnSaveButton();
@@ -171,7 +190,8 @@ describe('Create Process in Flowset', () => {
         await consoleFlowsetProcessLibrary.clickOnRefreshButton();
         await expect(consoleFlowsetProcessLibrary.getSortedValuesFromColumn("Process Alias Name")).toBeTruthy("Sorted not possible");
         await apiHelper.apiLogin('tadmin');
-		let processName = 'com.bmc.dsm.social-lib:Social - Sample Activity Update By User';
+        let processName = 'com.bmc.dsm.social-lib:Social - Sample Activity Update By User';
         await apiHelper.deleteFlowsetProcessLibConfig(processName);
     });
+
 });

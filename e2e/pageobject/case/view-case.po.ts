@@ -24,6 +24,7 @@ class ViewCasePage {
         statusList: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"] .ui-select__rx-choice',
         statusDisplay: '[aria-label="Status activate"]',
         addTaskButton: '[rx-view-component-id="db1c57fc-c332-40fa-b1c0-759e21d9ad5c"] button',
+        addTaskButtonGuid: '[rx-view-component-id="db1c57fc-c332-40fa-b1c0-759e21d9ad5c"]',
         editLink: '.edit-link',
         searchInput: 'input[type="search"]',
         caseIdText: '[rx-view-component-id="7b47ca08-e9d4-4656-8f96-3bc751c098b0"] .title',
@@ -41,7 +42,7 @@ class ViewCasePage {
         departmentText: '[rx-view-component-id="795da3b4-6442-4b07-b6e1-7ce7c9987352"] .d-textfield__rx-value',
         businessUnitText: '[rx-view-component-id="f14326b0-0c70-4827-8a02-95e82527409a"] .d-textfield__rx-value',
         assignedCompanyText: '[rx-view-component-id="8b4d78f0-fbda-420c-928f-3dee49fde4fc"] .d-textfield__rx-value',
-        attachmentsLink: '[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
+        attachmentsLink: '[rx-view-component-id="43357d0a-a8ec-497a-a7e6-f77e45dad719"] button',
         addToWatchlist: '[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button',
         caseSummary: '[rx-view-component-id="8ebc1637-af05-4a08-b873-4f810c4981b9"] p',
         caseSite: '[rx-view-component-id="4a58cc3b-e699-4357-a68a-482163d6cbbe"] p',
@@ -214,6 +215,11 @@ class ViewCasePage {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskButton)),3000);
         await $(this.selectors.addTaskButton).click();
     }
+
+    async isAddtaskButtonDisplayed(): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskButton)),3000);
+            return    await $(this.selectors.addTaskButtonGuid).getAttribute("innerText")?true:false;
+            }
 
     async openTaskCard(taskCardNumber: number): Promise<void> {
         await $$(this.selectors.taskCardArrow).get(taskCardNumber - 1).click();

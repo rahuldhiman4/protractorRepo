@@ -14,7 +14,13 @@ import editTask from "../../pageobject/task/edit-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import utilCommon from '../../utils/util.common';
+import caseConsolePage from '../../pageobject/case/case-console.po';
 import utilGrid from '../../utils/util.grid';
+import quickCase from "../../pageobject/case/quick-case.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import { CASE_MANAGEMENT_LIB_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
+import apiCoreUtil from '../../api/api.core.util';
 let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
 
 describe('Create Case Task', () => {
@@ -704,10 +710,7 @@ describe('Create Case Task', () => {
         let temp1 = await apiHelper.createManualTaskTemplate(templateDataDraft1);
         let temp2 = await apiHelper.createManualTaskTemplate(templateDataActive);
         
-        console.log(
-            temp1.displayId, "\n",
-            temp2.displayId, "\n",
-        );
+       
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
@@ -719,11 +722,11 @@ describe('Create Case Task', () => {
         await expect(viewTaskTemplate.getTemplateStatus()).toBe('Active');
         await editTaskTemplate.clickOnEditMetadataLink();
         await editTaskTemplate.selectTemplateStatus("Inactive");
-        await editTaskTemplate.clickOnSaveMetadata(); 
+        await editTaskTemplate.clickOnSaveMetadata();
         await expect(viewTaskTemplate.getTemplateStatus()).toBe('Inactive');
         await editTaskTemplate.clickOnEditMetadataLink();
         await editTaskTemplate.selectTemplateStatus("Draft");
-        await editTaskTemplate.clickOnSaveMetadata(); 
+        await editTaskTemplate.clickOnSaveMetadata();
         await expect(viewTaskTemplate.getTemplateStatus()).toBe('Draft');
 
         await navigationPage.gotoSettingsPage();
@@ -731,11 +734,377 @@ describe('Create Case Task', () => {
         await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateActive ${randomStr}`);
         await editTaskTemplate.clickOnEditMetadataLink();
         await editTaskTemplate.selectTemplateStatus("Inactive");
-        await editTaskTemplate.clickOnSaveMetadata(); 
+        await editTaskTemplate.clickOnSaveMetadata();
         await expect(viewTaskTemplate.getTemplateStatus()).toBe('Inactive');
         await editTaskTemplate.clickOnEditMetadataLink();
         await editTaskTemplate.selectTemplateStatus("Draft");
-        await editTaskTemplate.clickOnSaveMetadata(); 
+        await editTaskTemplate.clickOnSaveMetadata();
         await expect(viewTaskTemplate.getTemplateStatus()).toBe('Draft');
     });
+
+    //ankagraw
+    it('[DRDMV-7254]: Automated Task] - Automated Task Activation behavior when Case is created in In Progress status via Case template having Task templates in it', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+
+        let templateData = {
+            "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": `Case Process 1 ${randomStr}`,
+        }
+
+        await apiHelper.apiLogin('fritz');
+        let automationTaskTemplate = await apiHelper.createAutomatedTaskTemplate(templateData);
+
+        let caseTemplateName = randomStr + 'caseTemplateName';
+        let casTemplateSummary = 'CaseSummaryName' + randomStr;
+        let CaseTemplateData = {
+            "templateName": `${caseTemplateName}`,
+            "templateSummary": `${casTemplateSummary}`,
+            "caseStatus": "InProgress",
+            "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
+        }
+        await apiHelper.apiLogin('fritz');
+        let newCaseTemplate = await apiHelper.createCaseTemplate(CaseTemplateData);
+        console.log("active case Template is created===", newCaseTemplate.id);
+        console.log("active case Template is created===", newCaseTemplate.displayId);
+        await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automationTaskTemplate.displayId);
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester('fritz');
+        await createCasePage.setSummary('SummaryAnkush');
+        await createCasePage.clickSelectCaseTemplateButton();
+        await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Completed");
+
+        //Quick Case 
+        await navigationPage.gotoQuickCase();
+        await quickCase.selectRequesterName('adam');
+        await quickCase.selectCaseTemplate('new case');
+        await quickCase.createCaseButton();
+        await quickCase.gotoCaseButton();
+        await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Completed");
+
+    });
+
+    //ankagraw
+    it('[DRDMV-7158]: Automated Task] - Automated Task Activation behavior when Case is created in In Progress status via Case template having Task templates in it', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+
+        let templateData = {
+            "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": `Case Process 1 ${randomStr}`,
+        }
+
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createAutomatedTaskTemplate(templateData);
+
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester('fritz');
+        await createCasePage.setSummary('Summary' + randomStr);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await viewCasePage.clickAddTaskButton();
+        await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.clickOnCloseButton();
+        await viewCasePage.changeCaseStatus('Pending');
+        await viewCasePage.setStatusReason('Customer Response');
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.changeCaseStatus('Canceled');
+        await viewCasePage.setStatusReason('Customer Canceled');
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Canceled");
+    });
+
+    //ankagraw
+    it('[DRDMV-7154,DRDMV-7153]: [Automatic Task] - Task Activation when multiple Tasks are on same sequence', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+
+        await apiHelper.apiLogin('tadmin');
+        let case_management = CASE_MANAGEMENT_LIB_PROCESS;
+        let case_Management_Process = case_management.name + randomStr;
+        case_management.name = case_Management_Process;
+        await apiCoreUtil.createProcess(case_management);
+        let templateData = {
+            "templateName": `FirstAutomatedTaskTemplateActive ${randomStr}`,
+            "templateSummary": `AutomatedTaskTemplateSummaryActive ${randomStr}`,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": case_Management_Process,
+        }
+
+        let templateData1 = {
+            "templateName": `SecondAutomatedTaskTemplateActive1 ${randomStr}`,
+            "templateSummary": `SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": case_Management_Process,
+        }
+
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createAutomatedTaskTemplate(templateData);
+        await apiHelper.createAutomatedTaskTemplate(templateData1);
+
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester('fritz');
+        await createCasePage.setSummary('Summary' + randomStr);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await viewCasePage.clickAddTaskButton();
+        await manageTask.addTaskFromTaskTemplate(`FirstAutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.addTaskFromTaskTemplate(`SecondAutomatedTaskTemplateActive1 ${randomStr}`);
+        await manageTask.clickOnCloseButton();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Staged");
+        await viewTask.clickOnViewCase();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Staged");
+        await viewTask.clickOnViewCase();
+        await viewCasePage.changeCaseStatus('In Progress');
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Completed");
+        await expect(viewTask.getStatusReason()).toBe("Successful")
+        await viewTask.clickOnViewCase();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Completed");
+    }, 240 * 1000);
+
+    it('[DRDMV-7145]: [Automatic task] - Task Activation based on its sequence no.', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+
+        let templateData1 = {
+            "templateName": `manualTaskTemplate1 ${randomStr}`,
+            "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+            "templateStatus": "Active",
+        }
+
+        let templateData2 = {
+            "templateName": `manualTaskTemplate2 ${randomStr}`,
+            "templateSummary": `manualTaskTemplateSummary2 ${randomStr}`,
+            "templateStatus": "Active",
+        }
+
+        let templateData3 = {
+            "templateName": `manualTaskTemplate3 ${randomStr}`,
+            "templateSummary": `manualTaskTemplateSummary3 ${randomStr}`,
+            "templateStatus": "Active",
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createManualTaskTemplate(templateData1);
+        await apiHelper.createManualTaskTemplate(templateData2);
+        await apiHelper.createManualTaskTemplate(templateData3);
+
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester('fritz');
+        await createCasePage.setSummary('Summary' + randomStr);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await viewCasePage.clickAddTaskButton();
+        await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
+        await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate2 ${randomStr}`);
+        await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate3 ${randomStr}`);
+        await manageTask.clickOnCloseButton();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary1 ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Staged");
+        await viewTask.clickOnViewCase();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary2 ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Staged");
+        await viewTask.clickOnViewCase();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary3 ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Staged");
+        await viewTask.clickOnViewCase();
+        await viewCasePage.changeCaseStatus('In Progress');
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary1 ${randomStr}`);
+        await viewTask.clickOnChangeStatus();
+        await expect(viewTask.getTaskStatusValue()).toBe("Assigned");
+        await viewTask.changeTaskStatus('Completed');
+        await updateStatusBladePo.setStatusReason('Successful');
+        await viewTask.clickOnSaveStatus();
+        await viewTask.clickOnViewCase();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary2 ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Assigned");
+        await viewTask.clickOnViewCase();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary3 ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Staged");
+    }, 240 * 1000);
+
+    it('[DRDMV-7143]: [Automatic Task] - Task Activation behaviour immediately after creation when Task is at seq 1', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await apiHelper.apiLogin('tadmin');
+        let case_management = CASE_MANAGEMENT_LIB_PROCESS;
+        let case_Management_Process = case_management.name + randomStr;
+        case_management.name = case_Management_Process;
+        await apiCoreUtil.createProcess(case_management);
+        let templateData = {
+            "templateName": `FirstAutomatedTaskTemplateActive ${randomStr}`,
+            "templateSummary": `AutomatedTaskTemplateSummaryActive ${randomStr}`,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": case_Management_Process,
+        }
+        await apiHelper.apiLogin('fritz');
+        await apiHelper.createAutomatedTaskTemplate(templateData);
+
+        var caseWithInprogressStatus = {
+            "Status": "3000",
+            "Company": "Petramco",
+            "Description": "This case was created by java integration tests",
+            "Requester": "qkatawazi",
+            "Summary": "create case is inProgress Status" + randomStr,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "Elizabeth"
+        }
+
+        var caseWithPendingStatus = {
+            "Status": "4000",
+            "Company": "Petramco",
+            "Description": "This case was created by java integration tests",
+            "Requester": "qkatawazi",
+            "Summary": "create case is in Pending Status" + randomStr,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "Elizabeth"
+        }
+
+        var caseWithResolvedStatus = {
+            "Status": "5000",
+            "Company": "Petramco",
+            "Description": "This case was created by java integration tests",
+            "Requester": "qkatawazi",
+            "Summary": "create case is in Resolved Status" + randomStr,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "Elizabeth"
+        }
+
+        var caseWithClosedStatus = {
+            "Status": "7000",
+            "Company": "Petramco",
+            "Description": "This case was created by java integration tests",
+            "Requester": "qkatawazi",
+            "Summary": "create case is in Closed Status" + randomStr,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "Elizabeth"
+        }
+
+        var caseWithCanceledStatus = {
+            "Status": "6000",
+            "Company": "Petramco",
+            "Description": "This case was created by java integration tests",
+            "Requester": "qkatawazi",
+            "Summary": "create case is in Canceled Status" + randomStr,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "Elizabeth"
+        }
+        await apiHelper.apiLogin('qtao');
+        var inProgressCase = await apiHelper.createCase(caseWithInprogressStatus);
+        var PendingCase = await apiHelper.createCase(caseWithPendingStatus);
+        var resolvedCase = await apiHelper.createCase(caseWithResolvedStatus);
+        var closedCase = await apiHelper.createCase(caseWithClosedStatus);
+        var CanceledCase = await apiHelper.createCase(caseWithCanceledStatus);
+
+        var inProgress: string = inProgressCase.displayId;
+        var pending: string = PendingCase.displayId;
+        var resolved: string = resolvedCase.displayId;
+        var closed: string = closedCase.displayId;
+        var canceled: string = CanceledCase.displayId;
+
+        //Verify New Case
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary("New case" + randomStr);
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
+        await viewCasePage.clickAddTaskButton();
+        await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.clickOnCloseButton();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateActive ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Staged");
+
+        //Verify Assigned Case
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary("Assigned case" + randomStr);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
+        await viewCasePage.clickAddTaskButton();
+        await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.clickOnCloseButton();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateActive ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Staged");
+
+        //Verify In_progress Case
+        await navigationPage.gotoCaseConsole();
+        await utilGrid.clearFilter();
+        await caseConsolePage.searchAndOpenCase(inProgress);
+        await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
+        await viewCasePage.clickAddTaskButton();
+        await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.clickOnCloseButton();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateActive ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Completed");
+
+        //Verify Pending Case
+        await navigationPage.gotoCaseConsole();
+        await utilGrid.clearFilter();
+        await caseConsolePage.searchAndOpenCase(pending);
+        await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
+        await viewCasePage.clickAddTaskButton();
+        await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.clickOnCloseButton();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateActive ${randomStr}`);
+        await expect(viewTask.getTaskStatusValue()).toBe("Staged");
+
+        //Verify Resolved Case
+        await navigationPage.gotoCaseConsole();
+        await utilGrid.clearFilter();
+        await caseConsolePage.searchAndOpenCase(resolved);
+        await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy("Add task button Visible");
+
+        //Verify Closed Case
+        await navigationPage.gotoCaseConsole();
+        await utilGrid.clearFilter();
+        await caseConsolePage.searchAndOpenCase(closed);
+        await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy("Add task button Visible");
+
+        //Verify Canceled Case
+        await navigationPage.gotoCaseConsole();
+        await utilGrid.clearFilter();
+        await caseConsolePage.searchAndOpenCase(canceled);
+        await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy("Add task button Visible");
+
+    }, 300 * 1000);
+
 });

@@ -37,6 +37,10 @@ class ConsoleProcessLibrary {
         await utilGrid.addGridColumn(this.selectors.registerProcessGuid, column);
     }
 
+    async removeColumn(column: string[]): Promise<void> {
+        await utilGrid.removeGridColumn(this.selectors.registerProcessGuid, column);
+    }
+
     async getSortedValuesFromColumn(columnHeader: string): Promise<boolean> {
         return await utilGrid.isGridColumnSorted(columnHeader, 'ascending', this.selectors.registerProcessGuid);
     }

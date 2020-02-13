@@ -1,12 +1,13 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import viewCasePo from '../../pageobject/case/view-case.po';
+import { resolve } from "path";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
+
 
 class CreateCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         createCaseTitle: '[rx-view-component-id="20fd268e-bab1-44f9-af13-a27fe2f1cf50"] span',
-        priorityGuid:'367e71d0-f31f-452a-934b-d7a78125cdf1',
+        priorityGuid: '367e71d0-f31f-452a-934b-d7a78125cdf1',
         attachmentLink: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] button',
         autoCategorization: '[rx-view-component-id="cfb3cc65-210c-4530-b529-3bc414b6d8dc"] button',
         changeAssignment: '[rx-view-component-id="6041cce1-05bd-458d-b097-eb310507cae3"] button',
@@ -42,205 +43,217 @@ class CreateCasePage {
         selectCaseTemplateButton: '[rx-view-component-id="db1cc7ef-0430-42ad-8f28-1e524347cfb3"] button',
         clearTemplateButton: '[rx-view-component-id="d996182c-0930-40ed-987f-43e6da0a8d8a"] button',
         contact: '[rx-view-component-id="e1f5a770-e416-4ed1-bfea-eefeed86544b"] input',
-        drpDownValue:'.ui-select-choices-row-inner',
+        drpDownValue: '.ui-select-choices-row-inner',
         company: '[rx-view-component-id="a7cfc996-f8c8-4ef0-afe4-18ca7e1fef88"] .ui-select-toggle',
         contactGuid: 'e1f5a770-e416-4ed1-bfea-eefeed86544b',
         descriptionGuid: 'e494b462-7749-44aa-922e-fc5d9b3dd5cb',
         assigneGuid: '43c3e9ee-dde2-4e10-94e9-c6ee68217cda',
         assignedGroupGuid: '79750d81-d8e5-447e-b923-94c54f2d3310',
+        labelGuid: '47f29467-cdd3-4e04-a7f2-ceb795e8b6e5',
+        attachmentField: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] input[type="file"]',
+    }
+
+    async addDescriptionAttachment(fileToUpload: string): Promise<void> {
+        const absolutePath = resolve(__dirname, fileToUpload);
+        console.log(absolutePath);
+        await $(this.selectors.attachmentField).sendKeys(absolutePath);
     }
 
     async getCreateCaseTitle(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseTitle)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseTitle)));
         return await $(this.selectors.createCaseTitle).getText();
     }
 
     async getCompany(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.company)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.company)));
         return await $(this.selectors.company).getText();
     }
 
     async clickChangeAssignmentButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignment)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignment)));
         await $(this.selectors.changeAssignment).click();
     }
 
     async isAssigneToMeEnabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeButton)));
         return await $(this.selectors.assignToMeButton).isEnabled();
     }
 
     async isAutocategorizationEnabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.autoCategorization)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.autoCategorization)));
         return await $(this.selectors.autoCategorization).isEnabled();
     }
 
     async isAssignToMePresent(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeButton)));
         return await $(this.selectors.assignToMeButton).isDisplayed();
     }
 
     async isChangeAssignmentButtonEnabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.changeAssignment)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.changeAssignment)));
         return await $(this.selectors.changeAssignment).isEnabled();
     }
 
     async isRequesterRequiredTextPresent(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterInput)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterInput)));
         return await $(this.selectors.requesterInput).getAttribute('ng-required') == 'true' ? true : false;
     }
 
     async isPriorityRequiredTextPresent(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.priorityRequiredText)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.priorityRequiredText)));
         return await $(this.selectors.priorityRequiredText).getAttribute('required') == 'true' ? true : false;
     }
 
     async isSourceRequiredTextPresent(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.sourceRequiredText)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.sourceRequiredText)));
         return await $(this.selectors.sourceRequiredText).getAttribute('required') == 'true' ? true : false;
     }
 
     async isSummaryRequiredTextPresent(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.summary)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.summary)));
         return await $(this.selectors.summary).getAttribute('required') == 'true' ? true : false;
     }
 
     async isAssignedCompanyRequiredTextPresent(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedCompanyRequiredText)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedCompanyRequiredText)));
         return await $(this.selectors.assignedCompanyRequiredText).getAttribute('is-required') == 'true' ? true : false;
     }
 
     async isSelectCaseTemplateButtonEnabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.selectCaseTemplateButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.selectCaseTemplateButton)));
         return await $(this.selectors.selectCaseTemplateButton).isEnabled();
     }
 
     async isClearTemplateButtonEnabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.clearTemplateButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.clearTemplateButton)));
         return await $(this.selectors.clearTemplateButton).isEnabled();
     }
 
     async isAssignedCompanyReadOnly(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedCompany)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedCompany)));
         return await $(this.selectors.assignedCompany).getAttribute('readonly') == 'true' ? true : false;
     }
 
     async isBuisnessUnitReadOnly(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.buisnessUnit)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.buisnessUnit)));
         return await $(this.selectors.buisnessUnit).getAttribute('readonly') == 'true' ? true : false;
     }
 
     async isDepartmentReadOnly(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.department)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.department)));
         return await $(this.selectors.department).getAttribute('readonly') == 'true' ? true : false;
     }
 
     async isAssignedGroupReadOnly(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroup)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroup)));
         return await $(this.selectors.assignedGroup).getAttribute('readonly') == 'true' ? true : false;
     }
 
     async isAssigneeReadOnly(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignee)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignee)));
         return await $(this.selectors.assignee).getAttribute('readonly') == 'true' ? true : false;;
     }
 
     async selectRequester(requester: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterInput)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterInput)));
         await $(this.selectors.requesterInput).sendKeys(requester);
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.requesters)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesters)));
         await $$(this.selectors.requesters).first().click();
     }
 
     async selectContact(contactName: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.contactInput)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.contactInput)));
         await $(this.selectors.contactInput).sendKeys(contactName);
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.contactRequesters)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.contactRequesters)));
         await $$(this.selectors.contactRequesters).first().click();
     }
 
     async selectSite(siteName: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.siteDropDown)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.siteDropDown)));
         await $(this.selectors.siteDropDown).click();
         await $(this.selectors.site).click();
         await $(this.selectors.site).sendKeys(siteName);
         await element(by.cssContainingText(this.selectors.siteOption, siteName)).click();
     }
 
+    async setLabel(label: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.labelGuid, label);
+    }
+
     async setPriority(priorityVal: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.priorityDropDown)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.priorityDropDown)));
         await $(this.selectors.priorityDropDown).click();
         await $(this.selectors.priority).sendKeys(priorityVal);
         await element(by.cssContainingText(this.selectors.priorityOption, priorityVal)).click();
     }
 
     async clickOnPriority(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.priorityDropDown)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.priorityDropDown)));
         await $(this.selectors.priorityDropDown).click();
     }
 
     async setSummary(summary: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summary)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summary)));
         await $(this.selectors.summary).sendKeys(summary);
     }
 
     async allPriorityOptionsPresent(list: string[]): Promise<boolean> {
-     return await utilCommon.isDrpDownvalueDisplayed(this.selectors.priorityGuid,list);
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.priorityGuid, list);
     }
 
     async setDescription(description: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
         await $(this.selectors.description).sendKeys(description);
     }
 
     async selectCategoryTier1(categValue: string): Promise<void> {
-       await utilCommon.selectDropDown(this.selectors.categoryTier1Guid,categValue);
+        await utilCommon.selectDropDown(this.selectors.categoryTier1Guid, categValue);
     }
 
     async selectCategoryTier2(categValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier2Guid,categValue);
+        await utilCommon.selectDropDown(this.selectors.categoryTier2Guid, categValue);
     }
 
     async selectCategoryTier3(categValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier3Guid,categValue);
+        await utilCommon.selectDropDown(this.selectors.categoryTier3Guid, categValue);
     }
 
     async selectCategoryTier4(categValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier4Guid,categValue);
+        await utilCommon.selectDropDown(this.selectors.categoryTier4Guid, categValue);
     }
 
     async clickAssignToMeButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMeButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMeButton)));
         await $(this.selectors.assignToMeButton).click();
     }
 
     async clickSaveCaseButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
         await $(this.selectors.saveCaseButton).click();
-//        await utilCommon.waitUntilPopUpDisappear();
-//        await utilCommon.waitUntilSpinnerToHide();
+        //        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isSaveCaseButtonEnabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveCaseButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveCaseButton)));
         return await $(this.selectors.saveCaseButton).isEnabled();
     }
 
     async clickSaveCaseButtonWithoutMessageDisappear(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
         await $(this.selectors.saveCaseButton).click();
     }
 
     async isAttachmentButtonDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveCaseButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveCaseButton)));
         return await $(this.selectors.saveCaseButton).isDisplayed();
     }
 
     async clickGoToCaseButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.gotoCaseButton__preview)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.gotoCaseButton__preview)));
         await $(this.selectors.gotoCaseButton__preview).click();
-//        await browser.wait(this.EC.elementToBeClickable($(viewCasePo.selectors.addTaskButton)));
-//        await utilCommon.waitUntilSpinnerToHide();
+        //        await browser.wait(this.EC.elementToBeClickable($(viewCasePo.selectors.addTaskButton)));
+        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickSelectCaseTemplateButton(): Promise<void> {
@@ -252,38 +265,38 @@ class CreateCasePage {
     }
 
     async setContactName(contact: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.contact)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.contact)));
         await $(this.selectors.contact).sendKeys(contact);
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.contacts)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.contacts)));
         await $$(this.selectors.contacts).first().click();
     }
 
     async getCategoryTier1Title(categoryTier1: string): Promise<void> {
-        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier1Guid,categoryTier1);
+        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier1Guid, categoryTier1);
     }
 
     async getCategoryTier2Title(categoryTier2: string): Promise<void> {
-        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier2Guid,categoryTier2);
+        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier2Guid, categoryTier2);
     }
 
     async getCategoryTier3Title(categoryTier3: string): Promise<void> {
-        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier3Guid,categoryTier3);
+        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier3Guid, categoryTier3);
     }
 
     async getCategoryTier4Title(categoryTier4: string): Promise<void> {
-        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier4Guid,categoryTier4);
+        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier4Guid, categoryTier4);
     }
 
     async getContactTitle(contact: string): Promise<void> {
-        await utilCommon.isFieldLabelDisplayed(this.selectors.contactGuid,contact);
+        await utilCommon.isFieldLabelDisplayed(this.selectors.contactGuid, contact);
     }
 
     async getDescriptionTitle(description: string): Promise<void> {
-        await utilCommon.isFieldLabelDisplayed(this.selectors.descriptionGuid,description);
+        await utilCommon.isFieldLabelDisplayed(this.selectors.descriptionGuid, description);
     }
 
     async getAssigneeTitle(assignee: string): Promise<void> {
-        await utilCommon.isFieldLabelDisplayed(this.selectors.assigneGuid,assignee);
+        await utilCommon.isFieldLabelDisplayed(this.selectors.assigneGuid, assignee);
     }
 }
 
