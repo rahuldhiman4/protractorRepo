@@ -119,7 +119,7 @@ class ChangeAssignmentBlade {
 //            let count = await companyDropDown.$$(this.selectors.selectOptions).count();
 //            return count >= 1;
 //        }));
-        var option = await element(by.cssContainingText(this.selectors.selectOptions, companyValue));
+        let option = await element(by.cssContainingText(this.selectors.selectOptions, companyValue));
 //        await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
     }
@@ -134,7 +134,7 @@ class ChangeAssignmentBlade {
 //            let count = await businessUnitDropDown.$$(this.selectors.selectOptions).count();
 //            return count >= 1;
 //        }));
-        var option = await element(by.cssContainingText(this.selectors.selectOptions, businessUnit));
+        let option = await element(by.cssContainingText(this.selectors.selectOptions, businessUnit));
 //        await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
     }
@@ -149,7 +149,7 @@ class ChangeAssignmentBlade {
 //            let count = await departmentDropdown.$$(this.selectors.selectOptions).count();
 //            return count >= 1;
 //        }));
-        var option = await element(by.cssContainingText(this.selectors.selectOptions, department));
+        let option = await element(by.cssContainingText(this.selectors.selectOptions, department));
 //        await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
     }
@@ -164,7 +164,7 @@ class ChangeAssignmentBlade {
 //            let count = await supportGroupDropDown.$$(this.selectors.selectOptions).count();
 //            return count >= 1;
 //        }));
-        var option = await element(by.cssContainingText(this.selectors.selectOptions, supportGroup));
+        let option = await element(by.cssContainingText(this.selectors.selectOptions, supportGroup));
 //        await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
     }
@@ -176,9 +176,8 @@ class ChangeAssignmentBlade {
 //            let count = await $$(this.selectors.assignee).count();
 //            return count >= 2;
 //        }));
-        var option = await element(by.cssContainingText(this.selectors.assignee, name));
+        await element(by.cssContainingText(this.selectors.assignee, name)).click();
 //        await browser.wait(this.EC.elementToBeClickable(option)).then(async function () {
-        await option.click();
 //        });
     }
 
@@ -190,13 +189,12 @@ class ChangeAssignmentBlade {
     }
 
     async setAssigneeGroup(group: string): Promise<void> {
-        await this.selectSupportGroup(group);
+        //await this.selectSupportGroup(group);
 //        await browser.wait(this.EC.or(async () => {
 //            let count = await $$(this.selectors.assignee).count();
 //            return count >= 1;
 //        }));
         let name = "Assign to Support Group";
-        var option = await element(by.cssContainingText(this.selectors.assignee, name));
 //        await browser.wait(this.EC.visibilityOf(option));
 //        await browser.wait(this.EC.elementToBeClickable(option));
         await element(by.cssContainingText(this.selectors.assignee, name)).click();
@@ -205,12 +203,10 @@ class ChangeAssignmentBlade {
 
     async selectAssigneeAsSupportGroup(name: string): Promise<void> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchAsignee)));
-        await $(this.selectors.searchAsignee).sendKeys(name);
-        await browser.actions().sendKeys(protractor.Key.ENTER).perform();
-        var option = await element(by.cssContainingText(this.selectors.assignee, 'Assign to Support Group'));
+//        await $(this.selectors.searchAsignee).sendKeys(name);
+        await element(by.cssContainingText(this.selectors.assignee, 'Assign to Support Group')).click();
 //        await browser.wait(this.EC.visibilityOf(option));
 //        await browser.wait(this.EC.elementToBeClickable(option));
-        await option.click();
     }
 }
 

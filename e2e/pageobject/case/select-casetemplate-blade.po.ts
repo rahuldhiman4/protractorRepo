@@ -39,7 +39,8 @@ class SelectCaseTemplateBlade {
         await $(this.selectors.allTemplates).click();
     }
 
-    async searchAndClickOnLink(input: string): Promise<void> {
+    async searchAndOpenCaseTemplate(input: string): Promise<void> {
+        await this.clickOnAllTemplateTab();
         await utilGrid.searchAndOpenHyperlink(input);
     }
 

@@ -109,12 +109,10 @@ describe("Attachment", () => {
         expect(await attachmentInformationBladePo.getValuesOfInformation(' Qianru Tao')).toBe('Created by: Qianru Tao', 'Created by is missing');
         expect(await attachmentInformationBladePo.isTitleNameDisplayed()).toBeTruthy('Title is missing');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
-        await  attachmentInformationBladePo.clickOnDonwloadButton();
+        await attachmentInformationBladePo.clickOnDonwloadButton();
         expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
-
-
-    },90*1000)
+    }, 90 * 1000);
 
     it('[DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
         await navigationPage.gotoCaseConsole();
@@ -200,7 +198,7 @@ describe("Attachment", () => {
         var newCase = await apiHelper.createCase(caseData);
         var caseId: string = newCase.displayId;
 
-         // Create Task Template
+        // Create Task Template
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTaskTemplateData = {
             "templateName": `manualTaskTemplateDraft ${randomStr}`,
@@ -209,7 +207,7 @@ describe("Attachment", () => {
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
-        
+
         await caseConsole.searchAndOpenCase(caseId);
         await viewCasePo.clickAddTaskButton();
         await manageTask.clickAddAdhocTaskButton();
@@ -246,7 +244,7 @@ describe("Attachment", () => {
         await navigationPage.goToPersonProfile();
         await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord.rtf')).toBeTruthy('Attached file name is missing');
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
-    },110*1000);
+    }, 110 * 1000);
 
 
 
