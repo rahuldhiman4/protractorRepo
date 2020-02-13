@@ -1,4 +1,5 @@
 import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../../utils/util.common';
 
 class AssignmentConfigEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -8,7 +9,8 @@ class AssignmentConfigEditPage {
         editName: '[rx-view-component-id="b268be04-346e-424c-be99-7ad16da78037"] input',
         defaultToggle: '[rx-view-component-id="7ca691fd-c299-411f-90fa-9639cbe083c1"] button',
         saveButton: '[rx-view-component-id="0661b9a6-3c08-455c-9972-a2b6f9ca2c0e"] button',
-        assignee: '[rx-view-component-id="50f4da8f-6473-4356-994f-67ebe94b100e"] .ui-select-toggle'
+        assignee: '[rx-view-component-id="50f4da8f-6473-4356-994f-67ebe94b100e"] .ui-select-toggle',
+        companyDrpDwn: '7caa75fa-dfd6-4eca-8dec-2ef096eb6722'
     }
 
     async isEditAssignmentNameDisabled(): Promise<boolean> {
@@ -26,6 +28,14 @@ class AssignmentConfigEditPage {
         let readProperty1: string = await $$(this.selectors.defaultToggle).get(0).getAttribute("disabled");
         let readProperty2: string = await $$(this.selectors.defaultToggle).get(1).getAttribute("disabled");
         return (readProperty1 == "true" && readProperty2 == "true");
+    }
+
+    async setCompany(company:string){
+        await utilCommon.selectDropDown(this.selectors.companyDrpDwn, company);
+    }
+
+    async clickonSaveButton(): Promise<void> {
+        await $(this.selectors.saveButton).click();
     }
 
     async areAllFieldsPresentOnUI(data: string[]): Promise<boolean> {

@@ -4,6 +4,7 @@ import viewCasePage from "../../pageobject/case/view-case.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import caseConsolePage from "../../pageobject/case/case-console.po";
+import utilCommon from '../../utils/util.common';
 import AssignmentConfigConsolePage from "../../pageobject/settings/case-management/assignments-config-console.po";
 import AssignmentConfigCreatePage from "../../pageobject/settings/case-management/create-assignments-config.po";
 import AssignmentConfigEditPage from "../../pageobject/settings/case-management/edit-assignments-config.po";
@@ -46,11 +47,11 @@ describe("Create Case", () => {
         await caseConsolePage.setCaseSearchBoxValue('DRDMV-1210 summary');
         let defaultCaseColumns: string[] = ["Case ID", "Request ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee", "Requester", "Modified Date", "SLM Status"];
         expect(await caseConsolePage.areCaseGridColumnMatches(defaultCaseColumns)).toBeTruthy("Default columns are not matching");
-        let allRequestedCaseColumns: string[] = ["Label"];
-        await caseConsolePage.addRequestedCaseGridColumn(allRequestedCaseColumns);
+        let caseLabelColumn: string[] = ["Label"];
+        await caseConsolePage.addRequestedCaseGridColumn(caseLabelColumn);
         defaultCaseColumns.push("Label");
         expect(await caseConsolePage.areCaseGridColumnMatches(defaultCaseColumns)).toBeTruthy("Default And new columns added are not matching");
-        await caseConsolePage.removeRequestedCaseGridColumn(allRequestedCaseColumns);
+        await caseConsolePage.removeRequestedCaseGridColumn(caseLabelColumn);
         await defaultCaseColumns.splice(defaultCaseColumns.indexOf("Label"),1);
         expect(await caseConsolePage.areCaseGridColumnMatches(defaultCaseColumns)).toBeTruthy("Default And remaining new columns are not matching");
     })
@@ -60,11 +61,11 @@ describe("Create Case", () => {
         await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
         let defaultCaseAssignmentColumns: string[] = ["Assignment Name", "Case Priority", "Company", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Region", "Site", "Support Company", "Support Group", "Default Mapping"];
         expect(await AssignmentConfigConsolePage.areCaseAssignmentGridColumnMatches(defaultCaseAssignmentColumns)).toBeTruthy("Default columns are not matching");
-        let allRequestedCaseAssignmentColumns: string[] = ["Label"];
-        await AssignmentConfigConsolePage.addRequestedCaseAssignmentGridColumn(allRequestedCaseAssignmentColumns);
+        let caseAssignmentLabelColumn: string[] = ["Label"];
+        await AssignmentConfigConsolePage.addRequestedCaseAssignmentGridColumn(caseAssignmentLabelColumn);
         defaultCaseAssignmentColumns.push("Label");
         expect(await AssignmentConfigConsolePage.areCaseAssignmentGridColumnMatches(defaultCaseAssignmentColumns)).toBeTruthy("Default And new columns added are not matching");
-        await AssignmentConfigConsolePage.removeRequestedCaseAssignmentGridColumn(allRequestedCaseAssignmentColumns);
+        await AssignmentConfigConsolePage.removeRequestedCaseAssignmentGridColumn(caseAssignmentLabelColumn);
         await defaultCaseAssignmentColumns.splice(defaultCaseAssignmentColumns.indexOf("Label"),1);
         expect(await AssignmentConfigConsolePage.areCaseAssignmentGridColumnMatches(defaultCaseAssignmentColumns)).toBeTruthy("Default And remaining new columns are not matching");
     })
@@ -100,4 +101,25 @@ describe("Create Case", () => {
         await AssignmentConfigConsolePage.searchAssignmentConfig(assignmentMappingName);
         expect (await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Company")).toBe("- Global -");
     })
+
+    it('[DRDMV-11964]: [Assignment Mapping] Verify Global Company on Assignment Grid', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let assignmentMappingName = "DRDMV-11964 " + randomStr;
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+        await AssignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
+        await AssignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName);
+        await AssignmentConfigCreatePage.setCompany("Petramco");
+        await AssignmentConfigCreatePage.setSupportCompany("Petramco");
+        await AssignmentConfigCreatePage.setSupportGroup("AU Support 1");
+        await AssignmentConfigCreatePage.clickonSaveButton();
+        await AssignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentMappingName);
+        await AssignmentConfigEditPage.setCompany("- Global -")
+        await AssignmentConfigEditPage.clickonSaveButton();
+        await AssignmentConfigConsolePage.searchAndselectAssignmentConfig(assignmentMappingName);
+        expect (await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Company")).toBe("- Global -");
+        await AssignmentConfigConsolePage.clickDeleteButton();
+        await utilCommon.clickOnWarningOk();
+        //expect(await utilCommon.getPopUpMessage()).toBe('Record(s) deleted successfully.');
+    },90 * 1000)
 });
