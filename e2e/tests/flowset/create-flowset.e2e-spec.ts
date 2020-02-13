@@ -8,7 +8,7 @@ import consoleFlowset from '../../pageobject/flowset/console-flowset-config.po';
 import createFlowset from '../../pageobject/flowset/create-flowset-config.po';
 import editFlowset from '../../pageobject/flowset/edit-flowset-config.po';
 
-describe('Create Flow Set', () => {
+describe('Create Flowset', () => {
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qkatawazi');
