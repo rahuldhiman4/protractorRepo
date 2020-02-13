@@ -194,4 +194,31 @@ describe('Create Process in Flowset', () => {
         await apiHelper.deleteFlowsetProcessLibConfig(processName);
     });
 
+    //ankagraw
+    xit('[DRDMV-11987]: [Case Creation] Verify able to create case with Global case template having flowset', async () => {
+        // incomplete test case... create process which changes case priority to low, register process with flowset
+        // create global template, set case priority as high and use flowset
+        // create case using template with medium priority, and verify priority changes to low
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplate1 = 'Case Template 1' + randomStr;
+        let globalCategName = 'DemoCateg1';
+        let categName2 = 'DemoCateg2';
+        let categName3 = 'DemoCateg3';
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.createOperationalCategory(globalCategName, true);
+        await apiHelper.createOperationalCategory(categName2);
+        await apiHelper.createOperationalCategory(categName3);
+        await apiHelper.associateCategoryToCategory(globalCategName, categName2);
+        await apiHelper.associateCategoryToCategory(categName2, categName3);
+        let caseTemplateSummary1 = 'Summary 1' + randomStr;
+
+        await apiHelper.apiLogin('qkatawazi');
+        let flowsetData = require('../../data/ui/case/flowset.ui.json');
+        let flowsetName: string = await flowsetData['flowsetGlobalFields'].flowsetName + randomStr;
+        flowsetData['flowsetGlobalFields'].flowsetName = flowsetName;
+        await apiHelper.createNewFlowset(flowsetData['flowsetGlobalFields']);
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+    }, 180 * 1000);
 });
