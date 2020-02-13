@@ -1,4 +1,4 @@
-import { $$, $, browser, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from "protractor";
+import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 
 class AttachmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -13,7 +13,7 @@ class AttachmentBlade {
         searchButton: 'button[rx-id="submit-search-button"]',
         crossbutton: '.d-icon-cross[aria-label="Clear Search Field"]',
     }
-
+   
     async searchAndSelectCheckBox(record: string): Promise<void> {
         let allAttachmentRows: ElementFinder[] = await $$('.attachments_row');
         let attachmentFound: boolean = false;
@@ -50,11 +50,18 @@ class AttachmentBlade {
 
     async clickOnFileName(value: any): Promise<void> {
         await $(`.attachment-title-text[title='${value}']`).click();
-
     }
 
     async clickOnDownloadButton(): Promise<void> {
         await $(this.selectors.download).click();
+    }
+
+    async isDownloadButtonEnabled(): Promise<boolean> {
+        return await $(this.selectors.download).isEnabled();
+    }
+
+    async clickOnCloseButton(): Promise<void> {
+        await $(this.selectors.close).click();
     }
 
     async getTextOfColumnHeader(columnHeader: string): Promise<string> {

@@ -1,6 +1,7 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
 import util from "../../utils/util.common";
+import { resolve } from "path";
 
 class CreateAdhocTaskTemplatePage {
 
@@ -29,6 +30,13 @@ class CreateAdhocTaskTemplatePage {
         piorityRequiredText: '[ng-model="selectedOption.model"]',
         assignedCompanyRequiredText: '[rx-view-component-id="359f0c65-e48c-458d-8f14-3c2fc85c5cf6"] .d-textfield__item',
         assignedGroupRequiredText: '[rx-view-component-id="6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d"] .d-textfield__item',
+        attachmentField: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] input[type="file"]',
+    }
+
+    async addAttachment(fileToUpload: string): Promise<void> {
+        const absolutePath = resolve(__dirname, fileToUpload);
+        console.log(absolutePath);
+        await $(this.selectors.attachmentField).sendKeys(absolutePath);
     }
 
     async setDescription(description: string): Promise<void> {
