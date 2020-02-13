@@ -21,7 +21,8 @@ class CaseConsolePage {
         allCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] .ui-grid-selection-row-header-buttons',
         selectAllrows: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] div[aria-label="Select all rows"]',
         selectedCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] div[aria-checked="true"]',
-        unselectedCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] div[aria-checked="false"]'
+        unselectedCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] div[aria-checked="false"]',
+        requestedCaseGuid: '934faa1d-0932-4141-9a6e-7f6ac1726427'
     }
 
     async setCaseSearchBoxValue(input: string): Promise<void> {
@@ -130,6 +131,17 @@ class CaseConsolePage {
         return unSelectedCheckboxCount == allCheckboxCount;
     }
 
+    async areCaseGridColumnMatches(columnNames: string[]): Promise<boolean> {
+        return await gridUtil.areColumnHeaderMatches(this.selectors.guid, columnNames);
+    }
+
+    async addRequestedCaseGridColumn(columnNames: string[]): Promise<void> {
+        await gridUtil.addGridColumn(this.selectors.guid, columnNames);
+    }
+
+    async removeRequestedCaseGridColumn(columnNames: string[]): Promise<void> {
+        await gridUtil.removeGridColumn(this.selectors.guid, columnNames);
+    }
 
 }
 
