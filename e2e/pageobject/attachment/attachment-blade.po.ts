@@ -13,7 +13,26 @@ class AttachmentBlade {
         searchButton: 'button[rx-id="submit-search-button"]',
         crossbutton: '.d-icon-cross[aria-label="Clear Search Field"]',
     }
-   
+
+    async searchRecord(record: string): Promise<void> {
+        await $(this.selectors.searchbox).clear();
+        await $(this.selectors.searchbox).click();
+        await $(this.selectors.searchbox).sendKeys(record);
+        await $(this.selectors.searchButton).click();
+        let i: number;
+        for (i = 0; i <= 10; i++) {
+            let bolnVal: boolean = await $(this.selectors.selectCheckbox).isPresent();
+            if (bolnVal == false) {
+                await browser.sleep(5000);
+                await $(this.selectors.searchbox).clear();
+                await $(this.selectors.searchbox).sendKeys(record);
+                await $(this.selectors.searchButton).click();
+            } else {
+                break;
+            }
+        }
+    }
+
     async searchAndSelectCheckBox(record: string): Promise<void> {
         let allAttachmentRows: ElementFinder[] = await $$('.attachments_row');
         let attachmentFound: boolean = false;
@@ -26,7 +45,7 @@ class AttachmentBlade {
             }
         }
         if (!attachmentFound) {
-            await $(this.selectors.searchbox).click();
+            await $(this.selectors.searchbox).clear();
             await $(this.selectors.searchbox).sendKeys(record);
             await $(this.selectors.searchButton).click();
             let i: number;

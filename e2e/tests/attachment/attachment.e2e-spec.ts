@@ -182,7 +182,7 @@ describe("Attachment", () => {
 
     it('[DRDMV-11708]: Upload attachment from task activity & verify all attachments grid', async () => {
         let xlsxFilePath = '../../data/ui/attachment/bwfXlsx.xlsx';
-        let wordFilePath = '../../data/ui/attachment/bwfWord.rtf';
+        let wordFilePath = '../../data/ui/attachment/bwfWord1.rtf';
         let adhocTaskSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let addNotes = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -230,22 +230,48 @@ describe("Attachment", () => {
         await activityTabPo.addActivityNote(addNotes);
         await activityTabPo.addAttachment(wordFilePath);
         await activityTabPo.clickOnPostButton();
-        await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord.rtf')).toBeTruthy('Attached file name is missing');
+        await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAttachmentsLink();
-        await expect(await attachmentBladePo.getRecordValue('bwfWord')).toBe('bwfWord', 'Attachment file name is missing');
+        await expect(await attachmentBladePo.getRecordValue('bwfWord1')).toBe('bwfWord1', 'Attachment file name is missing');
         await expect(await attachmentBladePo.getRecordValue('Social')).toBe('Social', 'Attach to column value is missing');
-        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfWord.rtf')).toBeTruthy('File is delete sucessfully');
-        await attachmentBladePo.searchAndSelectCheckBox('bwfWord');
+        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
+        await attachmentBladePo.searchAndSelectCheckBox('bwfWord1');
         await attachmentBladePo.clickOnDownloadButton();
-        await expect(await utilCommon.isFileDownloaded('bwfWord.rtf')).toBeTruthy('File is not downloaded.');
-        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfWord.rtf')).toBeTruthy('File is delete sucessfully');
+        await expect(await utilCommon.isFileDownloaded('bwfWord1.rtf')).toBeTruthy('File is not downloaded.');
+        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.clickOnCloseButton();
         await navigationPage.goToPersonProfile();
-        await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord.rtf')).toBeTruthy('Attached file name is missing');
+        await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
     }, 110 * 1000);
 
+    it('[DRDMV-11718]: Large number of attachments verification', async () => {
+        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotCreateCase();
+        await createCasePo.selectRequester('Elizabeth Peters');
+        await createCasePo.setSummary(caseSummary);
+        let fileName1:string[]=['articleStatus.png','bwfJpg.jpg','bwfJpg1.jpg','bwfJpg2.jpg','bwfJpg3.jpg','bwfJpg4.jpg','bwfJson1.json','bwfJson2.json','bwfJson3.json','bwfJson4.json','bwfJson5.json','bwfPdf.pdf','bwfPdf1.pdf','bwfPdf2.pdf','bwfPdf3.pdf','bwfPdf4.pdf','bwfWord1.rtf','bwfWord2.rtf','bwfXlsx.xlsx','demo.txt'];
 
+        for (let i:number=0;i<fileName1.length;i++){
+            await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
+        }
+        await createCasePo.clickSaveCaseButton();
+        await createCasePo.clickGoToCaseButton();
+        await viewCasePo.clickAttachmentsLink();
+        let fileName2:string[]=['articleStatus','bwfJpg','bwfJpg1','bwfJpg2','bwfJpg3','bwfJpg4','bwfJson1','bwfJson2','bwfJson3','bwfJson4','bwfJson5','bwfPdf','bwfPdf1','bwfPdf2','bwfPdf3','bwfPdf4','bwfWord1','bwfWord2','bwfXlsx','demo'];
+        let j:number;
+        for ( j=0;j<fileName2.length;j++){
+            await attachmentBladePo.searchRecord(`${fileName2[j]}`);
+            await expect(await attachmentBladePo.getRecordValue(`${fileName2[j]}`)).toBe(`${fileName2[j]}`, 'Attachment file name is missing');
+            await attachmentBladePo.searchAndSelectCheckBox(`${fileName2[j]}`);
+            await attachmentBladePo.clickOnDownloadButton();
+            await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
+            await attachmentBladePo.searchAndSelectCheckBox(`${fileName2[j]}`);
+            await expect(await utilCommon.isFileDownloaded(`${fileName1[j]}`)).toBeTruthy('File is not downloaded.');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
+        }
+
+    },240*1000);
 
 });
