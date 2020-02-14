@@ -274,4 +274,31 @@ describe("Attachment", () => {
 
     },240*1000);
 
+    it('[DRDMV-11702]: Multiple attachments download', async () => {
+        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotCreateCase();
+        await createCasePo.selectRequester('Elizabeth Peters');
+        await createCasePo.setSummary(caseSummary);
+        let fileName1:string[]=['articleStatus.png','bwfJpg.jpg'];
+        for (let i:number=0;i<fileName1.length;i++){
+            await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
+        }
+        await createCasePo.clickSaveCaseButton();
+        await createCasePo.clickGoToCaseButton();
+        await viewCasePo.clickAttachmentsLink();
+        await attachmentBladePo.clickOnAllCheckboxButton();
+        await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[0]}`)).toBeTruthy('File is delete sucessfully');
+        await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[1]}`)).toBeTruthy('File is delete sucessfully');
+
+        await attachmentBladePo.clickOnDownloadButton();
+        await browser.sleep(5000);
+        let fileName2:string[]=['articleStatus','bwfJpg'];
+        let j:number;
+        for ( j=0;j<fileName2.length;j++){
+            
+            await expect(await utilCommon.isFileDownloaded(`${fileName1[j]}`)).toBeTruthy('File is not downloaded.');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
+        }
+
+    },100*1000);
 });

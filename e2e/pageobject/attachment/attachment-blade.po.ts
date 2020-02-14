@@ -12,6 +12,7 @@ class AttachmentBlade {
         searchbox: 'input[role="search"]',
         searchButton: 'button[rx-id="submit-search-button"]',
         crossbutton: '.d-icon-cross[aria-label="Clear Search Field"]',
+        allCheckbox: '.row_selection .ui-grid-selection-row-header-button'
     }
 
     async searchRecord(record: string): Promise<void> {
@@ -61,6 +62,10 @@ class AttachmentBlade {
                 }
             }
         }
+    }
+
+    async clickOnAllCheckboxButton(): Promise<void> {
+        await $(this.selectors.allCheckbox).click();    
     }
 
     async getRecordValue(value: any): Promise<string> {
