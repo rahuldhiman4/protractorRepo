@@ -1,4 +1,4 @@
-import utilGrid from 'e2e/utils/util.grid';
+import utilGrid from '../../utils/util.grid';
 import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 

@@ -7,6 +7,13 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import consoleFlowsetProcessLibrary from '../../pageobject/flowset/console-process-library-config.po';
 import createFlowsetProcessLibrary from '../../pageobject/flowset/create-register-process-config.po';
 import editFlowsetProcessLibrary from '../../pageobject/flowset/edit-register-process-config.po';
+import utilCommon from '../../utils/util.common';
+import consoleCasetemplatePage from '../../pageobject/settings/case-management/console-casetemplate.po';
+import createCaseTemplate from '../../pageobject/settings/case-management/create-casetemplate.po';
+import viewCaseTemplate from '../../pageobject/settings/case-management/view-casetemplate.po';
+import isWorkSpace from '../../pageobject/common/is.workspace.po';
+import isCasemanagementService from '../../pageobject/common/is.case-management-service.po';
+let CaseManagementService = "Case Management Service";
 
 describe('Create Process in Flowset', () => {
     beforeAll(async () => {
