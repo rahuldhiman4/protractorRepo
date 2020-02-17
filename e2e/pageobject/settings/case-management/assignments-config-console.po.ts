@@ -1,5 +1,6 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../../utils/util.grid'
+import utilCommon from '../../../utils/util.common';
 
 class AssignmentsConfigConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -28,6 +29,10 @@ class AssignmentsConfigConsolePage {
         await utilGrid.searchAndSelectGridRecord(caseTemplateValue, this.selectors.guid);
     }
 
+    async selectAllRecordsAssignmentConfig(): Promise<void>{
+       await utilGrid.selectAllCheckBox(); 
+    }
+
     async searchAssignmentConfig(assignmentMappingName: string): Promise<void> {
         await utilGrid.searchOnGridConsole(assignmentMappingName);
     }
@@ -54,6 +59,28 @@ class AssignmentsConfigConsolePage {
 
     async clickDeleteButton(): Promise<void> {
         await $(this.selectors.deleteButton).click();
+    }
+
+    async clickDeleteButtonOnlyIfRecordsPresent(): Promise<void>{
+        let recordsCount = await utilGrid.getNumberOfRecordsInGrid(this.selectors.guid);
+        if(recordsCount>0){
+            await utilGrid.selectAllCheckBox();
+            await $(this.selectors.deleteButton).click();
+            await utilCommon.clickOnWarningOk();
+        }
+        else{
+            console.log("No records to delete")
+        }
+    }
+
+    async addFilter(fieldName: string, textValue: string,type:string): Promise<void> {
+        await utilGrid.addFilter(fieldName,textValue,type);
+//        await utilCommon.waitUntilSpinnerToHide();
+    }
+
+    async clearFilter(): Promise<void> {
+        await utilGrid.clearFilter();
+//        await utilCommon.waitUntilSpinnerToHide();
     }
 
 }

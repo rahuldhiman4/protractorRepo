@@ -7,9 +7,10 @@ import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.ap
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
 import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
-import { CaseStatus, CaseTemplate, Knowledge, MenuItemStatus, NotificationType, ProcessLibConf, TaskTemplate } from "../api/constant.api";
+import { CaseStatus, CasePriority, CaseTemplate, Knowledge, MenuItemStatus, NotificationType, ProcessLibConf, TaskTemplate } from "../api/constant.api";
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
+import { ICaseAssignmentMapping} from "../data/api/interface/case.assignment.mapping.interface.api";
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
 import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
 import { IFlowset, IProcessLibConfig } from '../data/api/interface/flowset.interface.api';
@@ -127,6 +128,28 @@ class ApiHelper {
             templateData.fieldInstances["450000021"] = caseTemplateStatus;
 
         }
+        if (data.categoryTier1) {
+            let category1Value = await coreApi.getCategoryGuid(data.categoryTier1);
+           templateData.fieldInstances["1000000063"].value = category1Value;
+
+        }
+        if (data.categoryTier2) {
+            let category2Value = await coreApi.getCategoryGuid(data.categoryTier2);
+            templateData.fieldInstances["1000000064"].value = category2Value;
+
+        }
+        if (data.categoryTier3) {
+            let category3Value = await coreApi.getCategoryGuid(data.categoryTier3);
+            templateData.fieldInstances["1000000065"].value = category3Value;
+        }
+        if (data.casePriority) {
+            let priorityValue = CasePriority[data.casePriority];
+            let priorityObj = {
+                "id": "1000000164",
+                "value": `${priorityValue}`
+            }
+            templateData.fieldInstances["1000000164"] = priorityObj;
+        }
         if (data.assignee) {
             let assignee = await coreApi.getPersonGuid(data.assignee);
             var caseTemplateDataAssignee = {
@@ -166,6 +189,80 @@ class ApiHelper {
         return {
             id: caseTemplateDetails.data.id,
             displayId: caseTemplateDetails.data.displayId
+        };
+    }
+
+    async createCaseAssignmentMapping(data: ICaseAssignmentMapping): Promise<IIDs> {
+        var assignmentMappingDataFile = await require('../data/api/case/case.assignment.api.json');
+        var assignmentMappingData = await assignmentMappingDataFile.CaseAssignmentMappingData;
+        assignmentMappingData.fieldInstances[8].value = data.assignmentMappingName;
+        assignmentMappingData.fieldInstances[1000001437].value = data.assignmentMappingName;
+        assignmentMappingData.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
+        assignmentMappingData.fieldInstances[450000153].value = await apiCoreUtil.getOrganizationGuid(data.supportCompany);
+        assignmentMappingData.fieldInstances[1000000217].value = await apiCoreUtil.getSupportGroupGuid(data.supportGroup);
+        if (data.flowset) {
+            let flowsetGuid = await coreApi.getFlowsetGuid(data.flowset);
+            assignmentMappingData.fieldInstances.push = flowsetGuid;
+        }
+        if (data.categoryTier1) {
+            let category1Guid = await coreApi.getCategoryGuid(data.categoryTier1);
+            assignmentMappingData.fieldInstances[1000000063].value = category1Guid;
+        }
+        if (data.categoryTier2) {
+            let category2Guid = await coreApi.getCategoryGuid(data.categoryTier2);
+            assignmentMappingData.fieldInstances[1000000064].value = category2Guid;
+        }
+        if (data.categoryTier3) {
+            let category3Guid = await coreApi.getCategoryGuid(data.categoryTier3);
+            assignmentMappingData.fieldInstances[1000000065].value = category3Guid;
+        }
+        if (data.categoryTier4) {
+            let category4Guid = await coreApi.getCategoryGuid(data.categoryTier4);
+            assignmentMappingData.fieldInstances[450000158].value = category4Guid;
+        }
+        if (data.label) {
+            let labelGuid = await coreApi.getLabelGuid(data.label);
+            assignmentMappingData.fieldInstances[450000159].value = labelGuid;
+        }
+        if (data.region) {
+            let regionGuid = await coreApi.getRegionGuid(data.region);
+            assignmentMappingData.fieldInstances[450000157].value = regionGuid;
+        }
+        if (data.site) {
+            let siteGuid = await coreApi.getSiteGuid(data.site);
+            assignmentMappingData.fieldInstances[450000156].value = siteGuid;
+        }
+        if (data.businessUnit) {
+            let businessUnitGuid = await coreApi.getBusinessUnitGuid(data.businessUnit);
+            assignmentMappingData.fieldInstances[450000381].value = businessUnitGuid;
+        }
+        if (data.department) {
+            let departmentGuid = await coreApi.getDepartmentGuid(data.department);
+            assignmentMappingData.fieldInstances[450000371].value = departmentGuid;
+        }
+        if (data.assignee) {
+            let assigneeGuid = await coreApi.getPersonGuid(data.assignee);
+            assignmentMappingData.fieldInstances[450000152].value = assigneeGuid;
+        }
+        if (data.priority) {
+            let priorityValue = CasePriority[data.priority];
+            assignmentMappingData.fieldInstances["1000000164"].value = priorityValue;
+        }
+        if (data.useAsDefault) {
+            let defaultValue = data.useAsDefault ? "1" : "0";
+            assignmentMappingData.fieldInstances["450000001"].value = defaultValue;
+        }
+
+        var newCaseAssignmentMapping: AxiosResponse = await coreApi.createRecordInstance(assignmentMappingData);
+        console.log('Create Case Assignment Mapping API Status =============>', newCaseAssignmentMapping.status);
+        const caseAssignmentMappingDetails = await axios.get(
+            await newCaseAssignmentMapping.headers.location
+        );
+        console.log('New Case Assignment Mapping Details API Status =============>', caseAssignmentMappingDetails.status);
+
+        return {
+            id: caseAssignmentMappingDetails.data.id,
+            displayId: caseAssignmentMappingDetails.data.displayId
         };
     }
 
