@@ -16,6 +16,7 @@ class AttachmentBlade {
         attachmentSize: '.attachmnet-size',
         paginationNextButton: '.d-icon-right-angle_right',
         paginationPreviousButton: '.d-icon-right-angle_left',
+        refreshButton: '.d-icon-refresh',
     }
 
     async searchRecord(record: string): Promise<void> {
@@ -58,10 +59,10 @@ class AttachmentBlade {
                 let bolnVal: boolean = await $(this.selectors.selectCheckbox).isPresent();
                 if (bolnVal == false) {
                     await browser.sleep(5000);
-                        await $(this.selectors.searchbox).clear();
-                        await $(this.selectors.searchbox).sendKeys(record);
-                        await $(this.selectors.searchButton).click();
-                    
+                    await $(this.selectors.searchbox).clear();
+                    await $(this.selectors.searchbox).sendKeys(record);
+                    await $(this.selectors.searchButton).click();
+
                 } else {
                     break;
                 }
@@ -71,24 +72,65 @@ class AttachmentBlade {
 
 
     async getAttachmentSize(): Promise<string> {
-        return await $(this.selectors.attachmentSize).getText();    
-   }
+        return await $(this.selectors.attachmentSize).getText();
+    }
 
-   async getAttachmentNameCount(attachmentName:string): Promise<number> {
-    return await $$(`.attachment-title-text[title='${attachmentName}']`).count();    
-}
+    async getAttachmentNameCount(attachmentName: string): Promise<number> {
+        return await $$(`.attachment-title-text[title='${attachmentName}']`).count();
+    }
+
+    async getAttachmentToolTipText(attachmentName: string): Promise<boolean> {
+        return await $(`.attachment-title-text[title='${attachmentName}']`).getAttribute('title') == attachmentName ? true : false;
+    }
 
     async clickOnAllCheckboxButton(): Promise<void> {
-        await $(this.selectors.allCheckbox).click();    
+        await $(this.selectors.allCheckbox).click();
+    }
+
+    async isCheckBoxSelected(record: string): Promise<boolean> {
+        let allAttachmentRows: ElementFinder[] = await $$('.attachments_row');
+        let attachmentFound: boolean = false;
+        for (let i: number = 0; i < allAttachmentRows.length; i++) {
+            let attachmentName: ElementFinder = await allAttachmentRows[i].$('.attachment-title-text');
+            if (await attachmentName.getText() === record) {
+                await browser.executeScript("arguments[0].scrollIntoView();", await allAttachmentRows[i].$('.ui-grid-selection-row-header-buttons').getWebElement());
+                let kk= await allAttachmentRows[i].$('.ui-grid-selection-row-header-buttons').isSelected();
+                attachmentFound = true;
+                return kk;
+            }
+        }
+        if (!attachmentFound) {
+            await $(this.selectors.searchbox).clear();
+            await $(this.selectors.searchbox).sendKeys(record);
+            await $(this.selectors.searchButton).click();
+            let i: number;
+            for (i = 0; i <= 10; i++) {
+                let bolnVal: boolean = await $(this.selectors.selectCheckbox).isPresent();
+                if (bolnVal == false) {
+                    await browser.sleep(5000);
+                    await $(this.selectors.searchbox).clear();
+                    await $(this.selectors.searchbox).sendKeys(record);
+                    await $(this.selectors.searchButton).click();
+                    return await $(this.selectors.selectCheckbox).isSelected();
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    
+    async clickOnPaginationPreviousButton(): Promise<void> {
+        await $(this.selectors.paginationPreviousButton).click();
     }
 
     async clickOnPaginationNextButton(): Promise<void> {
-        await $(this.selectors.paginationNextButton).click();    
+        await $(this.selectors.paginationNextButton).click();
     }
 
-    async clickOnPaginationPreviousButton(): Promise<void> {
-        await $(this.selectors.paginationPreviousButton).click();    
+    async clickOnRefreshButton(): Promise<void> {
+        await $(this.selectors.refreshButton).click();
     }
+
 
     async getRecordValue(value: any): Promise<string> {
         return await element(by.cssContainingText(this.selectors.gridValue, value)).getText();

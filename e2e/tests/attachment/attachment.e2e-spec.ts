@@ -303,7 +303,7 @@ describe("Attachment", () => {
 
     }, 100 * 1000);
 
-    it('[DRDMV-11721]: Multiple tasks on same case with attachments verification with task id', async () => {
+    it('[DRDMV-11721,DRDMV-11746]: Multiple tasks on same case with attachments verification with task id', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randTask1 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randTask2 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -349,8 +349,8 @@ describe("Attachment", () => {
             await utilCommon.scrollUpOrDownTillElement(viewTaskPo.selectors.viewCaseLink);
             await viewTaskPo.clickOnViewCase();
         }
-
         await viewCasePo.clickAttachmentsLink();
+
         let fileName2: string[] = ['bwfJpg', 'bwfXlsx', 'bwfXml'];
         for (let j: number = 0; j < taskRandString.length; j++) {
 
@@ -358,10 +358,17 @@ describe("Attachment", () => {
             await expect(await attachmentInformationBladePo.getValuesOfInformation(taskId[j])).toContain(taskId[j]);
             await attachmentInformationBladePo.clickOnCloseButton();
         }
+        
+        await expect(await attachmentBladePo.getAttachmentToolTipText('bwfJpg')).toBeTruthy('ToolTip is missing of attachment');
+        await attachmentBladePo.clickOnAllCheckboxButton();
+        await attachmentBladePo.clickOnRefreshButton();
+        await expect(await attachmentBladePo.isCheckBoxSelected('bwfJpg')).toBeFalsy('bwfJpg CheckBox is selected');
+        await expect(await attachmentBladePo.isCheckBoxSelected('bwfXlsx')).toBeFalsy('bwfXlsx CheckBox is selected');
+        await expect(await attachmentBladePo.isCheckBoxSelected('bwfXml')).toBeFalsy('bwfXml CheckBox is selected');
         await attachmentBladePo.clickOnCloseButton();
-    }, 250 * 1000);
+    }, 170 * 1000);
 
-    it('[DRDMV-11701,DRDMV-11706]: Pagination on all attachments grid', async () => {
+    it('[DRDMV-11701,DRDMV-11706,DRDMV-11746]: Pagination on all attachments grid', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
@@ -380,6 +387,4 @@ describe("Attachment", () => {
         await attachmentBladePo.clickOnPaginationPreviousButton();
         await attachmentBladePo.clickOnCloseButton();
     });
-
-
 });
