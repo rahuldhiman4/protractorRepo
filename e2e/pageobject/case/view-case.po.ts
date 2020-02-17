@@ -47,8 +47,10 @@ class ViewCasePage {
         caseSummary: '[rx-view-component-id="8ebc1637-af05-4a08-b873-4f810c4981b9"] p',
         caseSite: '[rx-view-component-id="4a58cc3b-e699-4357-a68a-482163d6cbbe"] p',
         inprogressErrorMsg: '[rx-view-component-id="dd40ce76-9d16-4c6a-b1a1-16fe6aa6721f"] p',
-        resolutionCodeText: '[rx-view-component-id="8eae4351-a5ac-4079-b77f-df2cc969a0d8"] .d-textfield__item',
+        resolutionCodeText: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] .d-textfield__item',
         resolutionDescriptionText: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .d-textfield__item',
+        resolutionCodeValue: '.ui-select-match-text',
+        resolutionDescriptionValue: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .rx-description-textarea-read div div',
         resolutionCodeSelect: '.ui-select__rx-choice',
         resolutionDescriptionTextBoxId: '[rx-view-component-id="d98df37c-7a96-43c3-bf69-2e6e735031ae"]',
         emptyResolutionDescriptionTextBox: '.d-textfield__label .ng-empty',
@@ -84,13 +86,22 @@ class ViewCasePage {
         await updateStatusBlade.selectResolutionCode(resolutionCode);
     }
 
+    async getResolutionCodeValue(): Promise<string> {
+        return await $(this.selectors.resolutionCodeValue).getText();
+    }
+
+    async getResolutionDescription(): Promise<string> {
+        return await $(this.selectors.resolutionDescriptionValue).getText();
+    }
+
     async isCaseReopenLinkPresent(): Promise<boolean> {
 //        await browser.wait(this.EC.presenceOf($('[rx-view-component-id="2d51cf41-f176-4e20-bc48-f2741bcbbcb0"]')));
-        let presentInDom: boolean = await $(this.selectors.reOpenCase).isPresent();
-        if (presentInDom) {
-            await browser.wait(this.EC.visibilityOf($(this.selectors.reOpenCase)), 5000);
-        }
-        return presentInDom;
+        return await $(this.selectors.reOpenCase).isPresent();
+        // let presentInDom: boolean = await $(this.selectors.reOpenCase).isPresent();
+        // if (presentInDom) {
+        //     await browser.wait(this.EC.visibilityOf($(this.selectors.reOpenCase)), 5000);
+        // }
+        // return presentInDom;
     }
 
     async clickOnCancelButtonOfUpdateStatus(): Promise<void> {

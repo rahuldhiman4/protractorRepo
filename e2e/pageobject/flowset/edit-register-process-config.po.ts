@@ -1,5 +1,5 @@
-import utilGrid from 'e2e/utils/util.grid';
 import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilGrid from '../../utils/util.grid';
 import utilCommon from '../../utils/util.common';
 
 class EditRegisterProcessPage {

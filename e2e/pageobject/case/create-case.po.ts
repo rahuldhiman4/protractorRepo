@@ -96,7 +96,7 @@ class CreateCasePage {
 
     async isRequesterRequiredTextPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterInput)));
-        return await $(this.selectors.requesterInput).getAttribute('ng-required') == 'true' ? true : false;
+        return await utilCommon.isRequiredTagToField('be946309-c359-40fe-a579-1a0e0d04bb01');
     }
 
     async isPriorityRequiredTextPresent(): Promise<boolean> {
@@ -114,9 +114,8 @@ class CreateCasePage {
         return await $(this.selectors.summary).getAttribute('required') == 'true' ? true : false;
     }
 
-    async isAssignedCompanyRequiredTextPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedCompanyRequiredText)));
-        return await $(this.selectors.assignedCompanyRequiredText).getAttribute('is-required') == 'true' ? true : false;
+    async isCompanyRequiredTextPresent(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField('a7cfc996-f8c8-4ef0-afe4-18ca7e1fef88');
     }
 
     async isSelectCaseTemplateButtonEnabled(): Promise<boolean> {

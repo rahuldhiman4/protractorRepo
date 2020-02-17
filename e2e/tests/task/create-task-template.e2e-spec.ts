@@ -1,6 +1,11 @@
 import { browser } from "protractor";
+import apiCoreUtil from '../../api/api.core.util';
+import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import consoleCasetemplatePage from '../../pageobject/settings/case-management/console-casetemplate.po';
+import createCaseTemplate from '../../pageobject/settings/case-management/create-casetemplate.po';
+import viewCaseTemplate from '../../pageobject/settings/case-management/view-casetemplate.po';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
@@ -260,5 +265,73 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
+    }, 180 * 1000);
+
+    async function foundationData(company: string) {
+        const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
+        const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
+        const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+        const personDataFile = require('../../data/ui/foundation/person.ui.json');
+        await apiHelper.apiLogin('tadmin');
+        let businessData = businessDataFile['BusinessUnitData12111'];
+        let departmentData = departmentDataFile['DepartmentData12111'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData12111'];
+        let personData = personDataFile['PersonData12111'];
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        departmentData.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData);
+        suppGrpData.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData);
+        await apiHelper.createNewUser(personData);
+        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
+        await apiHelper.associatePersonToCompany(personData.userId, company)
+    }
+
+
+    it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Verify Company, Business Unit, Department and Support Group selection hierarchy in Change Owner.', async () => {
+        await foundationData("Petramco");
+        const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
+        const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
+        const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+        let randomStr = 'Manual  task' + Math.floor(Math.random() * 1000000);
+        let businessData = businessDataFile['BusinessUnitData12111'];
+        let departmentData = departmentDataFile['DepartmentData12111'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData12111'];
+
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
+        await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
+        await createCaseTemplate.setTemplateName("caseTemplateName" + randomStr);
+        await createCaseTemplate.setCompanyName("Petramco");
+        await createCaseTemplate.setCaseSummary("caseTemplateSummary1" + randomStr);
+        await createCaseTemplate.setOwnerCompanyValue("Petramco");
+        await createCaseTemplate.setBusinessUnitDropdownValue(businessData.orgName);
+        await createCaseTemplate.setDepartmentDropdownValue(departmentData.orgName);
+        await createCaseTemplate.setOwnerGroupDropdownValue(suppGrpData.orgName);
+        await createCaseTemplate.clickSaveCaseTemplate();
+        expect(await viewCaseTemplate.getOwnerCompanyValue()).toBe("Petramco");
+        expect(await viewCaseTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
+        expect(await viewCaseTemplate.getBuisnessUnitValue()).toBe(businessData.orgName);
+        expect(await viewCaseTemplate.getDepartmentValue()).toBe(departmentData.orgName);
+
+        //Manual task Template
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
+            .toEqual('Task Templates - Business Workflows');
+        await selectTaskTemplate.clickOnManualTaskTemplateButton();
+        await taskTemplate.setTemplateName('manualTaskTemplate' + randomStr);
+        await taskTemplate.setTaskSummary('manualTaskSummary' + randomStr);
+        await taskTemplate.setTaskDescription('Description in manual task');
+        await taskTemplate.selectCompanyByName('Petramco');
+        await taskTemplate.selectBuisnessUnit(businessData.orgName);
+        await taskTemplate.selectDepartment(departmentData.orgName);
+        await taskTemplate.selectOwnerGroup(suppGrpData.orgName)
+        await taskTemplate.clickOnSaveTaskTemplate();
+        await expect(viewTaskTemplate.getOwnerCompanyValue()).toBe('Petramco');
+        await expect(viewTaskTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
+        await expect(viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
+        await expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
     }, 180 * 1000);
 });

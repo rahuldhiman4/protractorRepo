@@ -16,6 +16,8 @@ class ViewCaseTemplate {
         resolveCaseOnLastTaskCompletion: '[rx-view-component-id="e4956197-0230-4272-8fc4-87358bd084bf"] p',
         categoryTier4: '[rx-view-component-id="fbc0f516-1f57-44ad-82ab-f8bbbe1aa5f5"] p',
         priority: '.selection-field',
+        buisnessUnitvalue: '[rx-view-component-id="40817c2b-387f-4859-82e9-0a3251cdc7dc"] .d-textfield__rx-value',
+        departmentValue: '[rx-view-component-id="d5d0c773-b825-4be7-b357-4ed4eb73ee8d"] .d-textfield__rx-value',
     }
 
     async getIdentityValdationValue(): Promise<string> {
@@ -31,6 +33,16 @@ class ViewCaseTemplate {
     async getOwnerCompanyValue(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.ownerCompany)));
         return await $(this.selectors.ownerCompany).getText();
+    }
+
+    async getBuisnessUnitValue(): Promise<string> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.ownerCompany)));
+        return await $(this.selectors.buisnessUnitvalue).getText();
+    }
+
+    async getDepartmentValue(): Promise<string> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.ownerCompany)));
+        return await $(this.selectors.departmentValue).getText();
     }
 
     async getPriorityValue(): Promise<string> {
