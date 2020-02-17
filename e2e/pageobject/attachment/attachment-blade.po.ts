@@ -12,7 +12,10 @@ class AttachmentBlade {
         searchbox: 'input[role="search"]',
         searchButton: 'button[rx-id="submit-search-button"]',
         crossbutton: '.d-icon-cross[aria-label="Clear Search Field"]',
-        allCheckbox: '.row_selection .ui-grid-selection-row-header-button'
+        allCheckbox: '.row_selection .ui-grid-selection-row-header-button',
+        attachmentSize: '.attachmnet-size',
+        paginationNextButton: '.d-icon-right-angle_right',
+        paginationPreviousButton: '.d-icon-right-angle_left',
     }
 
     async searchRecord(record: string): Promise<void> {
@@ -40,6 +43,7 @@ class AttachmentBlade {
         for (let i: number = 0; i < allAttachmentRows.length; i++) {
             let attachmentName: ElementFinder = await allAttachmentRows[i].$('.attachment-title-text');
             if (await attachmentName.getText() === record) {
+                await browser.executeScript("arguments[0].scrollIntoView();", await allAttachmentRows[i].$('.ui-grid-selection-row-header-buttons').getWebElement());
                 await allAttachmentRows[i].$('.ui-grid-selection-row-header-buttons').click();
                 attachmentFound = true;
                 break;
@@ -54,9 +58,10 @@ class AttachmentBlade {
                 let bolnVal: boolean = await $(this.selectors.selectCheckbox).isPresent();
                 if (bolnVal == false) {
                     await browser.sleep(5000);
-                    await $(this.selectors.crossbutton).click();
-                    await $(this.selectors.searchbox).sendKeys(record);
-                    await $(this.selectors.searchButton).click();
+                        await $(this.selectors.searchbox).clear();
+                        await $(this.selectors.searchbox).sendKeys(record);
+                        await $(this.selectors.searchButton).click();
+                    
                 } else {
                     break;
                 }
@@ -64,8 +69,25 @@ class AttachmentBlade {
         }
     }
 
+
+    async getAttachmentSize(): Promise<string> {
+        return await $(this.selectors.attachmentSize).getText();    
+   }
+
+   async getAttachmentNameCount(attachmentName:string): Promise<number> {
+    return await $$(`.attachment-title-text[title='${attachmentName}']`).count();    
+}
+
     async clickOnAllCheckboxButton(): Promise<void> {
         await $(this.selectors.allCheckbox).click();    
+    }
+
+    async clickOnPaginationNextButton(): Promise<void> {
+        await $(this.selectors.paginationNextButton).click();    
+    }
+
+    async clickOnPaginationPreviousButton(): Promise<void> {
+        await $(this.selectors.paginationPreviousButton).click();    
     }
 
     async getRecordValue(value: any): Promise<string> {

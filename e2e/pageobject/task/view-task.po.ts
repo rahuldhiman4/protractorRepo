@@ -189,10 +189,11 @@ class ViewTask {
 
     async clickOnViewCase(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewCaseLink)),2000);
+        // await browser.executeScript("arguments[0].scrollIntoView();", $(this.selectors.viewCaseLink).getWebElement());
+        
         await $(this.selectors.viewCaseLink).click();
         //        await utilCommon.waitUntilSpinnerToHide();
     }
-
 
     async getCategoryTier1Value(): Promise<string> {
         //        await browser.wait(this.EC.presenceOf($(this.selectors.categoryTier1Value)));

@@ -11,7 +11,7 @@ import composeMail from '../../pageobject/email/compose-mail.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTaskPo from '../../pageobject/task/edit-task.po';
-import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
+import { default as manageTask } from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import utilCommon from '../../utils/util.common';
 describe("Attachment", () => {
@@ -109,7 +109,7 @@ describe("Attachment", () => {
         expect(await attachmentInformationBladePo.getValuesOfInformation(' Qianru Tao')).toBe('Created by: Qianru Tao', 'Created by is missing');
         expect(await attachmentInformationBladePo.isTitleNameDisplayed()).toBeTruthy('Title is missing');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
-        await attachmentInformationBladePo.clickOnDonwloadButton();
+        await attachmentInformationBladePo.clickOnDownloadButton();
         expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
     }, 90 * 1000);
@@ -251,20 +251,21 @@ describe("Attachment", () => {
         await navigationPage.gotCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
-        let fileName1:string[]=['articleStatus.png','bwfJpg.jpg','bwfJpg1.jpg','bwfJpg2.jpg','bwfJpg3.jpg','bwfJpg4.jpg','bwfJson1.json','bwfJson2.json','bwfJson3.json','bwfJson4.json','bwfJson5.json','bwfPdf.pdf','bwfPdf1.pdf','bwfPdf2.pdf','bwfPdf3.pdf','bwfPdf4.pdf','bwfWord1.rtf','bwfWord2.rtf','bwfXlsx.xlsx','demo.txt'];
+        let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf', 'bwfXlsx.xlsx', 'demo.txt'];
 
-        for (let i:number=0;i<fileName1.length;i++){
+        for (let i: number = 0; i < fileName1.length; i++) {
             await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
         }
         await createCasePo.clickSaveCaseButton();
         await createCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
-        let fileName2:string[]=['articleStatus','bwfJpg','bwfJpg1','bwfJpg2','bwfJpg3','bwfJpg4','bwfJson1','bwfJson2','bwfJson3','bwfJson4','bwfJson5','bwfPdf','bwfPdf1','bwfPdf2','bwfPdf3','bwfPdf4','bwfWord1','bwfWord2','bwfXlsx','demo'];
-        let j:number;
-        for ( j=0;j<fileName2.length;j++){
+
+        let fileName2: string[] = ['articleStatus', 'bwfJpg', 'bwfJpg1', 'bwfJpg2', 'bwfJpg3', 'bwfJpg4', 'bwfJson1', 'bwfJson2', 'bwfJson3', 'bwfJson4', 'bwfJson5', 'bwfPdf', 'bwfPdf1', 'bwfPdf2', 'bwfPdf3', 'bwfPdf4', 'bwfWord1', 'bwfWord2', 'bwfXlsx', 'demo'];
+        let j: number;
+        for (j = 0; j < fileName2.length; j++) {
             await attachmentBladePo.searchRecord(`${fileName2[j]}`);
-            await expect(await attachmentBladePo.getRecordValue(`${fileName2[j]}`)).toBe(`${fileName2[j]}`, 'Attachment file name is missing');
             await attachmentBladePo.searchAndSelectCheckBox(`${fileName2[j]}`);
+            await expect(await attachmentBladePo.getRecordValue(`${fileName2[j]}`)).toBe(`${fileName2[j]}`, 'Attachment file name is missing');
             await attachmentBladePo.clickOnDownloadButton();
             await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
             await attachmentBladePo.searchAndSelectCheckBox(`${fileName2[j]}`);
@@ -272,15 +273,15 @@ describe("Attachment", () => {
             await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
         }
 
-    },240*1000);
+    }, 240 * 1000);
 
     it('[DRDMV-11702]: Multiple attachments download', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
-        let fileName1:string[]=['articleStatus.png','bwfJpg.jpg'];
-        for (let i:number=0;i<fileName1.length;i++){
+        let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg'];
+        for (let i: number = 0; i < fileName1.length; i++) {
             await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
         }
         await createCasePo.clickSaveCaseButton();
@@ -292,13 +293,93 @@ describe("Attachment", () => {
 
         await attachmentBladePo.clickOnDownloadButton();
         await browser.sleep(5000);
-        let fileName2:string[]=['articleStatus','bwfJpg'];
-        let j:number;
-        for ( j=0;j<fileName2.length;j++){
-            
+        let fileName2: string[] = ['articleStatus', 'bwfJpg'];
+        let j: number;
+        for (j = 0; j < fileName2.length; j++) {
+
             await expect(await utilCommon.isFileDownloaded(`${fileName1[j]}`)).toBeTruthy('File is not downloaded.');
             await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
         }
 
-    },100*1000);
+    }, 100 * 1000);
+
+    it('[DRDMV-11721]: Multiple tasks on same case with attachments verification with task id', async () => {
+        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randTask1 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randTask2 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randTask3 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let taskId: string[] = [];
+
+        // Create case API
+        var caseData =
+        {
+            "Requester": "qtao",
+            "Summary": caseSummary,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin('qtao');
+        var newCase = await apiHelper.createCase(caseData);
+        var caseId: string = newCase.displayId;
+        await caseConsole.searchAndOpenCase(caseId);
+        //Create Task API
+
+        let taskRandString: string[] = [randTask1, randTask2, randTask3];
+        let fileName: string[] = ['bwfJpg.jpg', 'bwfXlsx.xlsx', 'bwfXml.xml'];
+        for (let i: number = 0; i < taskRandString.length; i++) {
+
+            let manualTaskTemplateData = {
+                "templateName": `manualTaskTemplateDraft ${taskRandString[i]}`,
+                "templateSummary": `manualTaskTemplateDraft ${taskRandString[i]}`,
+                "templateStatus": "Active",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+            //Add Task into Blade
+            await viewCasePo.clickAddTaskButton();
+            await manageTask.addTaskFromTaskTemplate(`manualTaskTemplateDraft ${taskRandString[i]}`);
+            await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateDraft ${taskRandString[i]}`);
+
+            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.addAttachment(`../../data/ui/attachment/${fileName[i]}`);
+            await editTaskPo.clickOnAssignToMe();
+            await editTaskPo.clickOnSaveButton();
+            let taskIdText: string = await viewTaskPo.getTaskID();
+            taskId[i] = taskIdText;
+            await utilCommon.scrollUpOrDownTillElement(viewTaskPo.selectors.viewCaseLink);
+            await viewTaskPo.clickOnViewCase();
+        }
+
+        await viewCasePo.clickAttachmentsLink();
+        let fileName2: string[] = ['bwfJpg', 'bwfXlsx', 'bwfXml'];
+        for (let j: number = 0; j < taskRandString.length; j++) {
+
+            await attachmentBladePo.clickOnFileName(fileName2[j]);
+            await expect(await attachmentInformationBladePo.getValuesOfInformation(taskId[j])).toContain(taskId[j]);
+            await attachmentInformationBladePo.clickOnCloseButton();
+        }
+        await attachmentBladePo.clickOnCloseButton();
+    }, 250 * 1000);
+
+    it('[DRDMV-11701,DRDMV-11706]: Pagination on all attachments grid', async () => {
+        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotCreateCase();
+        await createCasePo.selectRequester('Elizabeth Peters');
+        await createCasePo.setSummary(caseSummary);
+        let fileName1: string[] = ['articleStatus.png','articleStatus.png','articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf'];
+        for (let i: number = 0; i < fileName1.length; i++) {
+            await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
+        }
+        await createCasePo.clickSaveCaseButton();
+        await createCasePo.clickGoToCaseButton();
+        await viewCasePo.clickAttachmentsLink();
+        await expect(await attachmentBladePo.getAttachmentNameCount('articleStatus')).toEqual(3);
+        await expect(await attachmentBladePo.getAttachmentSize()).toBe('1 - 10 of 20');
+        await attachmentBladePo.clickOnPaginationNextButton();
+        await expect(await attachmentBladePo.getAttachmentSize()).toBe('11 - 20 of 20');
+        await attachmentBladePo.clickOnPaginationPreviousButton();
+        await attachmentBladePo.clickOnCloseButton();
+    });
+
+
 });
