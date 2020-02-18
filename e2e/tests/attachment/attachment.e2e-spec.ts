@@ -31,6 +31,7 @@ describe("Attachment", () => {
         await navigationPage.signOut();
     });
 
+    //kgaikwad
     it('[DRDMV-11697]: All attachments grid verification', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
@@ -48,6 +49,7 @@ describe("Attachment", () => {
         expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
     })
 
+    //kgaikwad
     it('[DRDMV-11707,DRDMV-11703,DRDMV-11704]: Upload attachment while creating case via BWF & verify all attachments Grid	', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let filePath = '../../data/ui/attachment/bwfJpg.jpg';
@@ -115,6 +117,7 @@ describe("Attachment", () => {
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
     }, 90 * 1000);
 
+    //kgaikwad
     it('[DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -142,6 +145,7 @@ describe("Attachment", () => {
         expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
     });
 
+    //kgaikwad
     it('[DRDMV-11710,DRDMV-11698]: Upload attachment from Social & verify all attachments grid', async () => {
         let filePath = '../../data/ui/attachment/bwfPdf.pdf';
         let caseBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -181,6 +185,7 @@ describe("Attachment", () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
     });
 
+    //kgaikwad
     it('[DRDMV-11708]: Upload attachment from task activity & verify all attachments grid', async () => {
         let xlsxFilePath = '../../data/ui/attachment/bwfXlsx.xlsx';
         let wordFilePath = '../../data/ui/attachment/bwfWord1.rtf';
@@ -247,6 +252,7 @@ describe("Attachment", () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
     }, 110 * 1000);
 
+    //kgaikwad
     it('[DRDMV-11718,DRDMV-11720]: Large number of attachments verification', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
@@ -274,8 +280,9 @@ describe("Attachment", () => {
             await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
         }
 
-    }, 240 * 1000);
+    }, 280 * 1000);
 
+    //kgaikwad
     it('[DRDMV-11721,DRDMV-11746]: Multiple tasks on same case with attachments verification with task id', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randTask1 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -341,6 +348,7 @@ describe("Attachment", () => {
         await attachmentBladePo.clickOnCloseButton();
     }, 170 * 1000);
 
+    //kgaikwad
     it('[DRDMV-11701,DRDMV-11706]: Pagination on all attachments grid', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
@@ -360,7 +368,8 @@ describe("Attachment", () => {
         await attachmentBladePo.clickOnPaginationPreviousButton();
         await attachmentBladePo.clickOnCloseButton();
     });
-
+    
+    //kgaikwad
     it('[DRDMV-11714,DRDMV-11705]: Remove attachment which is added via case console & verify all attachments grid', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();

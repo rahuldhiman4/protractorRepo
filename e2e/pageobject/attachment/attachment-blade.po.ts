@@ -21,7 +21,6 @@ class AttachmentBlade {
 
     async searchRecord(record: string): Promise<void> {
         await $(this.selectors.searchbox).clear();
-        await $(this.selectors.searchbox).click();
         await $(this.selectors.searchbox).sendKeys(record);
         await $(this.selectors.searchButton).click();
         let i: number;
