@@ -27,6 +27,7 @@ describe("Create Case", () => {
         await browser.refresh();
     });
 
+    //radhiman
     it('[DRDMV-15014]: Verify Case agent can change the Site field once it is populated according to requesters primary location on create case view', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester('qtao');
@@ -38,6 +39,7 @@ describe("Create Case", () => {
         expect(await viewCasePage.getCaseSite()).toBe('Berlin');
     })
 
+    //radhiman
     it('[DRDMV-1210]: Case Workspace table columns', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester('apavlik');
@@ -58,6 +60,7 @@ describe("Create Case", () => {
         expect(await caseConsolePage.areCaseGridColumnMatches(defaultCaseColumns)).toBeTruthy("Default And remaining new columns are not matching");
     })
 
+    //radhiman
     it('[DRDMV-15168]: Assignment mapping table columns', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
@@ -73,6 +76,7 @@ describe("Create Case", () => {
         expect(await AssignmentConfigConsolePage.areCaseAssignmentGridColumnMatches(defaultCaseAssignmentColumns)).toBeTruthy("Default And remaining new columns are not matching");
     })
 
+    //radhiman
     it('[DRDMV-1242]: [Assignment Mapping] Add/Edit Assignment Mapping views (UI verification)', async () => {
         let assignmentFields: string[] = ["Assignment Mapping Name", "Company", "Flowset", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Category Tier 4", "Priority", "Label", "Region", "Site", "Use as Default", "Support Company", "Business Unit", "Department", "Support Group", "Assignee"];
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -91,6 +95,7 @@ describe("Create Case", () => {
         expect(await AssignmentConfigEditPage.areAllFieldsPresentOnUI(assignmentFields)).toBeTruthy("Expected fields are not matching with actual fields present on Edit Assignent UI");
     })
 
+    //radhiman
     it('[DRDMV-11999]: [Assignment Mapping] Verify Global Company on Assignment Grid', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let assignmentMappingName = "DRDMV-11999 " + randomStr;
@@ -107,6 +112,7 @@ describe("Create Case", () => {
         expect(await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Company")).toBe("- Global -");
     })
 
+    //radhiman
     it('[DRDMV-11964]: [Assignment Mapping] Verify Global Company on Assignment Grid', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let assignmentMappingName = "DRDMV-11964 " + randomStr;
@@ -129,6 +135,7 @@ describe("Create Case", () => {
         //expect(await utilCommon.getPopUpMessage()).toBe('Record(s) deleted successfully.');
     }, 90 * 1000)
 
+    //radhiman
     it('[DRDMV-11963]: [Assignment Mapping] Global Assignment Mapping', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -166,6 +173,7 @@ describe("Create Case", () => {
         }
     }, 150 * 1000)
 
+    //radhiman
     it('[DRDMV-12034]: [Assignment Mapping] Verify precedence will be given to company specific assignment mapping if we have global approval mapping with Same name', async () => {
         const randomStr1 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         const randomStr2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -204,6 +212,7 @@ describe("Create Case", () => {
         expect(await viewCasePage.getAssignedGroupText()).toBe("AU Support 2");
     }, 150 * 1000)
 
+    //radhiman
     it('[DRDMV-12033]: [Assignment Mapping] Verify Global assignment mapping applied to case if assignment qualification matches', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -247,6 +256,7 @@ describe("Create Case", () => {
         }
     }, 150 * 1000)
 
+    //radhiman
     it('[DRDMV-1212]: [Assignment Mapping] Configuring an Assignment Mapping', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let assignmentMappingName = "DRDMV-1212 " + randomStr;

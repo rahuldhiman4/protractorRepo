@@ -22,6 +22,7 @@ describe("Notification Template", () => {
         await browser.refresh();
     });
 
+    //radhiman
     it('[DRDMV-19109]: [Copy Notification] - UI behavior when copying a notification template', async () => {
         let notificationData = require('../../data/ui/notification/notificationTemplate.ui.json');
         let expectedJsonName = 'notificationData_DRDMV19109';
