@@ -146,6 +146,7 @@ describe('Knowledge Article', () => {
     it('[DRDMV-2374]: [Edit Knowledge Article] Article creation not possible by selecting disabled templates', async () => {
         try {
             await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates','Knowledge Article Templates - Business Workflows');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName(randomStr);
             await createKnowledgeArticleTemplatePo.clickOnDisableEnableCheckBox();

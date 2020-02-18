@@ -20,8 +20,8 @@ class CreateKnowledgePage {
         authorRequiredText: '[rx-view-component-id="cbf446b0-c8f6-433e-9a8e-b9a30f7ab79c"] .d-textfield__input',
         attachmentField: '[rx-view-component-id="bf6900ad-d67a-4705-b907-3caa50b640c7"] .d-icon-paperclip',
         templateHeading: '[rx-view-component-id="6e402c66-fcdc-464b-b6e7-7e963d9c3a17"] .templateName',
-        regionGuid: '[rx-view-component-id="17b172fd-28d5-4553-bd22-b59695953287"]',
-        siteGuid: '[rx-view-component-id="ba9870e4-81f4-45ea-b034-9aff10bc3ab7"]',
+        regionGuid: '17b172fd-28d5-4553-bd22-b59695953287',
+        siteGuid: 'ba9870e4-81f4-45ea-b034-9aff10bc3ab7',
         editRegionGuid: '[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"]',
         editSiteGuid: '[rx-view-component-id="aa218b2b-4fa3-4525-82f3-3e0f9bfc4193"]',
         documentRegionGuid: '[rx-view-component-id="cec69daa-b696-415b-b2ab-ebec81251d10"]',
@@ -43,7 +43,10 @@ class CreateKnowledgePage {
         knowledgeTemplateStyle: '.create-ka-template__style-label',
         knowledgePreview: '.create-ka-template__preview',
         selectDifferentTemplate: '.create-ka-template__back-button',
-        changeTemplate: '[rx-view-component-id="64e29650-ca7f-4b3d-a2af-826be22f8e0f"] button'
+        changeTemplate: '[rx-view-component-id="64e29650-ca7f-4b3d-a2af-826be22f8e0f"] button',
+        categoryTier1Value:'[rx-view-component-id="b51fcb01-f3d1-4da2-a42d-ffc5873a21b3"] .ui-select-match-text',
+        categoryTier2Value:'[rx-view-component-id="6f480482-c224-4742-b941-bce655d40fde"] .ui-select-match-text',
+        categoryTier3Value:'[rx-view-component-id="2774b518-00ab-4e02-bb23-95bdb0285840"] .ui-select-match-text',
     }
 
     async clickChangeTemplateButton(): Promise<void> {
@@ -189,6 +192,17 @@ class CreateKnowledgePage {
         return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier4Guid, fieldName);
     }
 
+    async getValueOfCategoryTier1():Promise<string>{
+        return $(this.selectors.categoryTier1Value).getText();
+    }
+
+    async getValueOfCategoryTier2():Promise<string>{
+        return $(this.selectors.categoryTier2Value).getText();
+    }
+
+    async getValueOfCategoryTier3():Promise<string>{
+        return $(this.selectors.categoryTier3Value).getText();
+    }
 
     async selectCategoryTier1Option(fieldOption: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.categoryTier1Guid, fieldOption);
