@@ -1,5 +1,6 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import changeAssignmentBladePo from '../common/change-assignment-blade.po';
+import { resolve } from "path";
 
 class EditTask {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -10,7 +11,15 @@ class EditTask {
         assignToMe: '.d-icon-left-user_plus',
         saveButton: '[rx-view-component-id="a19228d0-81a9-4b19-9cb3-b5bd9550966f"] button',
         changesAssignmentButton: '[rx-view-component-id="c423242c-28ca-4fd2-a81c-4495bf2fffb7"] button',
+        attachmentField:'[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] input[type="file"]',
     }
+
+    async addAttachment(fileToUpload: string): Promise<void> {
+        const absolutePath = resolve(__dirname, fileToUpload);
+        console.log(absolutePath);
+        await $(this.selectors.attachmentField).sendKeys(absolutePath);
+    }
+
 
     async clickOnAssignToMe() {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMe)));

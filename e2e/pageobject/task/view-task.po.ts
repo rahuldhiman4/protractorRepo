@@ -193,7 +193,6 @@ class ViewTask {
         //        await utilCommon.waitUntilSpinnerToHide();
     }
 
-
     async getCategoryTier1Value(): Promise<string> {
         //        await browser.wait(this.EC.presenceOf($(this.selectors.categoryTier1Value)));
         return await $(this.selectors.categoryTier1Value).getText();
