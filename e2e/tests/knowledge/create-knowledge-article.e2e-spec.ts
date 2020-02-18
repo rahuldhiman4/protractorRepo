@@ -15,6 +15,7 @@ import utilGrid from '../../utils/util.grid';
 import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
 import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
 import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 
 describe('Knowledge Article', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -701,4 +702,147 @@ describe('Knowledge Article', () => {
         }
     }, 150 * 1000);
 
+    it('[DRDMV-2433]: Assign SME - Reviewer assignment UI validation', async () => {
+        try {
+            let knowledgeTitile = 'knowledge2433' + randomStr;
+            await apiHelper.apiLogin(knowledgePublisherUser);
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitile}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignee": "kmills",
+                "assigneeSupportGroup": "GB Support 2",
+                "company": "Petramco"
+            }
+            let KADetails = await apiHelper.createKnowledgeArticle(articleData);
+            expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
+            await navigationPage.signOut();
+            await loginPage.login('kmills');
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusAsSMEReview('Petramco', 'Compensation and Benefits', 'Peter Kahn');
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            expect(await editKnowledgePage.getKnowledgeReviewHeader()).toContain('Knowledge Review');
+            expect(await editKnowledgePage.isReviewerFieldDisabledInEdit()).toBeTruthy('Reviwer field is enabled');
+            expect(await editKnowledgePage.isReviewerGroupFieldDisabledInEdit()).toBeTruthy('Reviwer Group field is enabled');
+            await editKnowledgePage.clickChangeReviewerBtn();
+            await changeAssignmentBlade.selectCompany('Petramco');
+            await changeAssignmentBlade.selectSupportGroup('AU Support 3');
+            await changeAssignmentBlade.selectAssignee('Kane Williamson');
+            await changeAssignmentBlade.clickOnAssignButton();
+            expect(await editKnowledgePage.getReviewerValue()).toContain('Kane Williamson', 'Reviewer not matched with expected');
+            await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        }
+    }, 120* 1000);
+
+    it('[DRDMV-1914]: [Article Creation] Ability to select the knowledge set during article creation', async () => {
+        let knowledgeTitle = 'knowledgeCoachUser1914' + randomStr;
+        await navigationPage.gotoKnowledgeConsole();
+        await navigationPage.gotoCreateKnowledge();
+        expect(await createKnowledgePage.isTemplatePresent('KCS')).toBeTruthy('Template is not present');
+        expect(await createKnowledgePage.isTemplatePresent('Reference')).toBeTruthy('Template is not present');
+        expect(await createKnowledgePage.isTemplatePresent('How To')).toBeTruthy('Template is not present');
+        await createKnowledgePage.clickOnTemplate('Reference');
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.setReferenceValue('reference values are as follows');
+        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
+        await createKnowledgePage.selectRegionDropDownOption('Australia');
+        await createKnowledgePage.selectSiteDropDownOption('Melbourne');
+        await createKnowledgePage.selectCategoryTier1Option('Applications');
+        await createKnowledgePage.selectCategoryTier2Option('Help Desk');
+        await createKnowledgePage.selectCategoryTier3Option('Incident');
+        expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitle, 'expected Value not present');
+        expect(await createKnowledgePage.getValueOfCategoryTier1()).toContain('Applications', 'value not matched with expected');
+        expect(await createKnowledgePage.getValueOfCategoryTier2()).toContain('Help Desk', 'value not matched with expected');
+        expect(await createKnowledgePage.getValueOfCategoryTier3()).toContain('Incident', 'value not matched with expected');
+        expect(await createKnowledgePage.isSaveButtonEnabled()).toBeFalsy('Save Button is enabled');
+        await createKnowledgePage.selectKnowledgeSet('HR');
+        expect(await createKnowledgePage.getKnowledgeSetValue()).toContain('HR', 'expected Value not present');
+        expect(await createKnowledgePage.isSaveButtonEnabled()).toBeTruthy('Save Button is disabled');
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+        await previewKnowledgePo.clickOnBackButton();
+        await navigationPage.gotoKnowledgeConsole();
+        await utilGrid.clearFilter();
+        await utilGrid.searchRecord(knowledgeTitle);
+        expect(await KnowledgeConsolePage.isValueDisplayedInGrid('Knowledge Set')).toContain('HR', 'HR not display on Knowledge Console');
+    });
+
+    it('[DRDMV-1783]: [Knowledge Article] Access to the Create Knowledge view (Negative)', async () => {
+        try {
+            await navigationPage.signOut();
+            await loginPage.login('sbadree');
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilCommon.switchToNewWidnow(1);
+            expect(KnowledgeConsolePage.getMessageOfAccess()).toContain('You do not have access to the Knowledge management application.');
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        }
+    });
+
+    it('[DRDMV-2887]: [Knowledge Article] Adding/Modifying location data while creating knowledge articles - site, region', async () => {
+        try{
+        let knowledgeTitle = 'knowledge2887' + randomStr;
+        await navigationPage.gotoKnowledgeConsole();
+        await navigationPage.gotoCreateKnowledge();
+        await createKnowledgePage.clickOnTemplate('Reference');
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
+        await createKnowledgePage.selectKnowledgeSet('HR');
+        await createKnowledgePage.selectRegionDropDownOption('Australia');
+        await createKnowledgePage.selectSiteDropDownOption('Melbourne');
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+        await createKnowledgePage.clickOnviewArticleLinkButton();
+        await utilCommon.switchToNewWidnow(1);
+        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
+        expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Melbourne');
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.selectRegionDropDownOption('EMEA');
+        await editKnowledgePage.selectSiteDropDownOption('Barcelona 1');
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('EMEA');
+        expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Barcelona 1');
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.removeRegionValue();
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('');
+        expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('');
+        await utilCommon.switchToDefaultWindowClosingOtherTabs();
+        await previewKnowledgePo.clickOnBackButton();
+        await navigationPage.gotoCreateKnowledge();
+        await createKnowledgePage.clickOnTemplate('Reference');
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        let knowledgeNewTitle = 'knowledgeNew2887' + randomStr;
+        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeNewTitle);
+        await createKnowledgePage.selectKnowledgeSet('HR');
+        await createKnowledgePage.selectRegionDropDownOption('Australia');
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+        await createKnowledgePage.clickOnviewArticleLinkButton();
+        await utilCommon.switchToNewWidnow(1);
+        await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA();
+        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
+    }
+    catch (e) {
+        throw e;
+    }
+    finally {
+        await utilCommon.switchToDefaultWindowClosingOtherTabs();
+        await previewKnowledgePo.clickOnBackButton();
+    }
+},150*1000);
 })
