@@ -1,5 +1,4 @@
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
-
 class AttachmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -18,6 +17,7 @@ class AttachmentBlade {
         paginationPreviousButton: '.d-icon-right-angle_left',
         refreshButton: '.d-icon-refresh',
     }
+
 
     async searchRecord(record: string): Promise<void> {
         await $(this.selectors.searchbox).clear();
@@ -70,9 +70,16 @@ class AttachmentBlade {
         }
     }
 
-
     async getAttachmentSize(): Promise<string> {
         return await $(this.selectors.attachmentSize).getText();
+    }
+
+    async clickOnColumnHeader(columnHeader: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.columnnHeader, columnHeader)).click();
+    }
+
+    async isAttachmentPresent(attachmentName: string): Promise<boolean> {
+        return await $(`.attachment-title-text[title='${attachmentName}']`).isPresent();
     }
 
     async getAttachmentNameCount(attachmentName: string): Promise<number> {
@@ -89,36 +96,15 @@ class AttachmentBlade {
 
     async isCheckBoxSelected(record: string): Promise<boolean> {
         let allAttachmentRows: ElementFinder[] = await $$('.attachments_row');
-        let attachmentFound: boolean = false;
         for (let i: number = 0; i < allAttachmentRows.length; i++) {
             let attachmentName: ElementFinder = await allAttachmentRows[i].$('.attachment-title-text');
             if (await attachmentName.getText() === record) {
                 await browser.executeScript("arguments[0].scrollIntoView();", await allAttachmentRows[i].$('.ui-grid-selection-row-header-buttons').getWebElement());
-                let kk= await allAttachmentRows[i].$('.ui-grid-selection-row-header-buttons').isSelected();
-                attachmentFound = true;
-                return kk;
-            }
-        }
-        if (!attachmentFound) {
-            await $(this.selectors.searchbox).clear();
-            await $(this.selectors.searchbox).sendKeys(record);
-            await $(this.selectors.searchButton).click();
-            let i: number;
-            for (i = 0; i <= 10; i++) {
-                let bolnVal: boolean = await $(this.selectors.selectCheckbox).isPresent();
-                if (bolnVal == false) {
-                    await browser.sleep(5000);
-                    await $(this.selectors.searchbox).clear();
-                    await $(this.selectors.searchbox).sendKeys(record);
-                    await $(this.selectors.searchButton).click();
-                    return await $(this.selectors.selectCheckbox).isSelected();
-                } else {
-                    break;
-                }
+                return await allAttachmentRows[i].$('.ui-grid-selection-row-header-buttons').isSelected();
             }
         }
     }
-    
+
     async clickOnPaginationPreviousButton(): Promise<void> {
         await $(this.selectors.paginationPreviousButton).click();
     }
@@ -130,7 +116,6 @@ class AttachmentBlade {
     async clickOnRefreshButton(): Promise<void> {
         await $(this.selectors.refreshButton).click();
     }
-
 
     async getRecordValue(value: any): Promise<string> {
         return await element(by.cssContainingText(this.selectors.gridValue, value)).getText();

@@ -1,4 +1,4 @@
-import { browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { browser, protractor, ProtractorExpectedConditions, ActionSequence } from "protractor";
 import apiHelper from '../../api/api.helper';
 import attachmentBladePo from '../../pageobject/attachment/attachment-blade.po';
 import attachmentInformationBladePo from '../../pageobject/attachment/attachment-information-blade.po';
@@ -14,6 +14,7 @@ import editTaskPo from '../../pageobject/task/edit-task.po';
 import { default as manageTask } from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import utilCommon from '../../utils/util.common';
+import editCasePo from '../../pageobject/case/edit-case.po';
 describe("Attachment", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -275,34 +276,6 @@ describe("Attachment", () => {
 
     }, 240 * 1000);
 
-    it('[DRDMV-11702]: Multiple attachments download', async () => {
-        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotCreateCase();
-        await createCasePo.selectRequester('Elizabeth Peters');
-        await createCasePo.setSummary(caseSummary);
-        let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg'];
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
-        }
-        await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
-        await viewCasePo.clickAttachmentsLink();
-        await attachmentBladePo.clickOnAllCheckboxButton();
-        await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[0]}`)).toBeTruthy('File is delete sucessfully');
-        await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[1]}`)).toBeTruthy('File is delete sucessfully');
-
-        await attachmentBladePo.clickOnDownloadButton();
-        await browser.sleep(5000);
-        let fileName2: string[] = ['articleStatus', 'bwfJpg'];
-        let j: number;
-        for (j = 0; j < fileName2.length; j++) {
-
-            await expect(await utilCommon.isFileDownloaded(`${fileName1[j]}`)).toBeTruthy('File is not downloaded.');
-            await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
-        }
-
-    }, 100 * 1000);
-
     it('[DRDMV-11721,DRDMV-11746]: Multiple tasks on same case with attachments verification with task id', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randTask1 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -368,7 +341,7 @@ describe("Attachment", () => {
         await attachmentBladePo.clickOnCloseButton();
     }, 170 * 1000);
 
-    it('[DRDMV-11701,DRDMV-11706,DRDMV-11746]: Pagination on all attachments grid', async () => {
+    it('[DRDMV-11701,DRDMV-11706]: Pagination on all attachments grid', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
@@ -385,6 +358,33 @@ describe("Attachment", () => {
         await attachmentBladePo.clickOnPaginationNextButton();
         await expect(await attachmentBladePo.getAttachmentSize()).toBe('11 - 20 of 20');
         await attachmentBladePo.clickOnPaginationPreviousButton();
+        await attachmentBladePo.clickOnCloseButton();
+    });
+
+    it('[DRDMV-11714,DRDMV-11705]: Remove attachment which is added via case console & verify all attachments grid', async () => {
+        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotCreateCase();
+        await createCasePo.selectRequester('Elizabeth Peters');
+        await createCasePo.setSummary(caseSummary);
+        let fileName1: string[] = ['bwfJpg.jpg', 'articleStatus.png'];
+        for (let i: number = 0; i < fileName1.length; i++) {
+            await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
+        }
+        await createCasePo.clickSaveCaseButton();
+        await createCasePo.clickGoToCaseButton();
+        await viewCasePo.clickAttachmentsLink();
+        await attachmentBladePo.searchRecord('bwf');
+        await expect(await attachmentBladePo.isAttachmentPresent('bwfJpg')).toBeTruthy('bwfJpg Attachment is missing on grid');
+        await attachmentBladePo.searchRecord('art');
+        await expect(await attachmentBladePo.isAttachmentPresent('articleStatus')).toBeTruthy('articleStatus.png Attachment is missing on grid');
+        await attachmentBladePo.clickOnCloseButton();
+        await viewCasePo.clickEditCaseButton();
+        await editCasePo.removeAttachment('bwfJpg.jpg');
+        await editCasePo.removeAttachment('articleStatus.png');
+        await editCasePo.clickSaveCase();
+        await viewCasePo.clickAttachmentsLink();
+        await expect(await attachmentBladePo.isAttachmentPresent('bwfJpg')).toBeFalsy('bwfJpg Attachment displayed on grid');
+        await expect(await attachmentBladePo.isAttachmentPresent('bwfXlsx')).toBeFalsy('bwfXlsx Attachment displayed on grid');
         await attachmentBladePo.clickOnCloseButton();
     });
 });
