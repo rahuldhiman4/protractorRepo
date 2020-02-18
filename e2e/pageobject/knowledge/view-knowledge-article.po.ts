@@ -19,10 +19,20 @@ class ViewKnowledgePage {
         statusChnageBlade:'.modal-content',
         reviewPending:'[rx-view-component-id="f0cf7f67-da22-4149-a54d-ec3b95fe05e6"] button',
         KnwoledgeArticleReviewMessage :'[rx-view-component-id="d2dbea0a-503e-47d8-b4ed-b6dcc9dcf555"] span',
+        regionValue:'[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"] .d-textfield__rx-value',
+        siteValue:'[rx-view-component-id="aa218b2b-4fa3-4525-82f3-3e0f9bfc4193"] .d-textfield__rx-value'
     }
 
     async clickOnKAUsefulYesButton():Promise<void>{
         await $(this.selectors.kAUsefulYesButton).click();
+    }
+
+    async getRegionValue():Promise<string>{
+        return await $(this.selectors.regionValue).getText();
+    }
+
+    async getSiteValue():Promise<string>{
+        return await $(this.selectors.siteValue).getText();
     }
 
     async isKAUsefulYesButtonDisplayed():Promise<boolean>{
