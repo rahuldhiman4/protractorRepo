@@ -6,7 +6,7 @@ class EditKnowledgePage {
     selectors = {
         statusChange: '.status-transition',
         statusSaveBtn: '[rx-view-component-id="e45ca390-e752-4bd5-97c7-69618d609d59"] .d-button',
-        changeReviewerBtn: '[rx-view-component-id="6b2b2601-811e-4774-b09e-255fab00e547"] .d-button',
+        changeReviewerBtn: '[rx-view-component-id="f8c32272-6166-4001-a2dc-60762b5f6d69"] button',
         assigneToMeReviewerAssign: '*.assign-to-me-component button',
         reviewerCompanyfldStatusBlade: '[rx-view-component-id="b4f529dc-f3b8-476a-b25d-40f5e6b71b5f"] .btn-default',
         reviewerBUfldStatusBlade: '[rx-view-component-id="bd3d17d2-074a-41e6-8d27-c5d47c6b6a63"] .btn-default',
@@ -23,8 +23,12 @@ class EditKnowledgePage {
         knowledgeTitle: '[rx-view-component-id="cd9b041b-6a82-4322-8a07-165a370ad0dd"] input',
         statusChnageBlade: '.modal-content',
         knowledgeReviewHeader:'[rx-view-component-id="1d906e6a-cf0e-4358-94e8-d86ff0733068"] p span',
+        knowledgeRevierGroup:'[rx-view-component-id="0b622151-c917-4d1c-97e4-3a9b7f082e2d"] .btn-default',
+        KnowledgeReviewer:'[rx-view-component-id="387dfda7-4f77-4df0-9ac0-6f4fb83b6fe7"] .btn-default',
+        knowledgeReviewerValue:'[rx-view-component-id="387dfda7-4f77-4df0-9ac0-6f4fb83b6fe7"] .ui-select-match-text',
+        siteValue:'[rx-view-component-id="453a86af-6544-4b36-b47c-98484a7c2235"] .ui-select-match-text',
+        removeRegionValues:'[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"] .glyphicon-remove'
     }
-
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
@@ -146,6 +150,14 @@ class EditKnowledgePage {
         return await $(this.selectors.reviewerfldStatusBlade).getAttribute("disabled") == "true";
     }
 
+    async isReviewerFieldDisabledInEdit():Promise<boolean>{
+        return await $(this.selectors.KnowledgeReviewer).getAttribute("disabled") == "true";
+    }
+
+    async isReviewerGroupFieldDisabledInEdit():Promise<boolean>{
+        return await $(this.selectors.KnowledgeReviewer).getAttribute("disabled") == "true";
+    }
+
     async isReviewPendingButtonDisplayed(): Promise<Boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewPendingBtn)));
         return await $(this.selectors.reviewPendingBtn).isDisplayed();
@@ -159,8 +171,8 @@ class EditKnowledgePage {
         return await utilCommon.getSelectedFieldValue(fieldName);
     }
 
-    async getSiteSelectedValue(fieldName: string): Promise<string> {
-        return await utilCommon.getSelectedFieldValue(fieldName);
+    async getSiteSelectedValue(fieldName:string): Promise<string> {
+       return await utilCommon.getSelectedFieldValue(fieldName);
     }
 
     async clickOnSaveButtonOfKA(): Promise<void> {
@@ -177,6 +189,14 @@ class EditKnowledgePage {
 
     async getKnowledgeReviewHeader():Promise<string>{
         return await $(this.selectors.knowledgeReviewHeader).getText();
+    }
+
+    async getReviewerValue():Promise<string>{
+       return await $(this.selectors.knowledgeReviewerValue).getText()
+    }
+    
+    async removeRegionValue():Promise<void>{
+        await $(this.selectors.removeRegionValues).click();
     }
 }
 

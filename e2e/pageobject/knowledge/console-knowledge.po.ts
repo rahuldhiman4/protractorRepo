@@ -15,6 +15,7 @@ class ConsoleKnowledge {
         gridGuid: '0df18e99-4315-457c-aef0-3abc96fb08ee',
         knowledgeArticleTitle: '[rx-view-component-id="11f37569-5ecd-4239-aaa7-075d1874b1d1"] span',
         searchFilterOptions: '.search-filter__option-item_search',
+        getAccessText:'[rx-view-component-id="234d397b-5a98-400a-8c72-9de75e6659d9"]',
     }
 
     async searchKnowledgeArticle(input: string): Promise<void> {
@@ -51,7 +52,11 @@ class ConsoleKnowledge {
     }
 
     async areColumnHeaderMatches(knowledgeGridColumn: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.gridGuid, knowledgeGridColumn)
+        return await utilGrid.areColumnHeaderMatches(this.selectors.gridGuid, knowledgeGridColumn);
+    }
+
+    async getMessageOfAccess():Promise<string>{
+        return await $(this.selectors.getAccessText).getText();
     }
 }
 export default new ConsoleKnowledge();
