@@ -148,7 +148,7 @@ export class GridOperation {
             if (await element(by.xpath(locator)).getText() == value) break;	
         }	
         let checkbox: string = `(${guidId}//div[@aria-label='Select row'])[${cnt}]`;	
-//        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(checkbox))));	
+//        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(checkbox))));	        
         await element(by.xpath(checkbox)).click();	
     }
     
@@ -178,6 +178,7 @@ export class GridOperation {
             if(result){
                 await $(this.selectors.filterPreset).click();
                 await $(this.selectors.clearFilterButton).click();
+                await utilCommon.waitUntilSpinnerToHide();
             } else {
                 console.log("Filters are already cleared");
             }
