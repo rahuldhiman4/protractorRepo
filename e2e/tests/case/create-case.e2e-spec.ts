@@ -900,5 +900,5 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });
+    },180*1000);
 });

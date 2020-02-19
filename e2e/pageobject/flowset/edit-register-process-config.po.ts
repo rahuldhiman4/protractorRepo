@@ -18,22 +18,13 @@ class EditRegisterProcessPage {
         await $(this.selectors.aliasName).clear();
         await $(this.selectors.aliasName).sendKeys(alias);
     }
-
-    async isAliasNamePresentOnGrid(alias: string): Promise<boolean> {
-        await utilGrid.searchOnGridConsole(alias);
-        return await element(by.cssContainingText('.ui-grid__link', alias)).getText() == alias ? true : false;
-    }
-
+   
     async searchAndGetDescription(description: string): Promise<string> {
         return await element(by.cssContainingText('.ui-grid-cell-contents', description)).getText();
     }
 
     async getDescription(description: string): Promise<string> {
         return await element(by.cssContainingText('.ui-grid-cell-contents', description)).getText();
-    }
-
-    async isProcessPresentOnGrid(process: string): Promise<boolean> {
-        return await element(by.cssContainingText('.ui-grid-cell-contents', process)).getText() == process ? true : false;
     }
 
     async setDescription(description: string): Promise<void> {

@@ -29,6 +29,7 @@ class CaseEditPage {
         saveUpdateTaskStatus: '[rx-view-component-id="6759ba60-df0d-4d5e-8eb9-5101490fd4d4"] button',
         slaProgressBar: '.d-progress__bar',
         summary: '[rx-view-component-id="244ffab2-bf04-4769-a5ac-c2a1f430e393"] .d-textfield__input',
+        summaryGuid: '244ffab2-bf04-4769-a5ac-c2a1f430e393',
         caseDescription: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .rx-description-textarea-edit',
         priorityGuid: 'add23d12-52e7-4c43-aa78-2aa0c6125bb5',
         priorityRequiredText: '[rx-view-component-id="add23d12-52e7-4c43-aa78-2aa0c6125bb5"] .ui-select-container',
@@ -73,17 +74,19 @@ class CaseEditPage {
         resourcesTab: '[rx-view-component-id="4a577ada-86cd-43fe-88b1-4b627dce93e6"] a[title="Resources"]',
         activityTab: '[rx-view-component-id="4a577ada-86cd-43fe-88b1-4b627dce93e6"] a[title="Activity"]',
         assigneeCompany: '[rx-view-component-id="196878af-30b3-4ae2-ae7f-4c65baa5d951"] .ui-select-container',
+        assigneeCompanyGuid: '196878af-30b3-4ae2-ae7f-4c65baa5d951',
         department: '[rx-view-component-id="3265d389-cd00-45ca-b65a-8335c67582b7"] .ui-select-container',
         assigneee: '[rx-view-component-id="7f1c67bf-9c39-4c46-b9ff-8d21ebaff4cb"] .ui-select-container',
         buisnessUnit: '[rx-view-component-id="54e4d84f-daca-4988-b064-d79084ab9421"] .ui-select-container',
         assignedGroup: '[rx-view-component-id="116edc77-c040-42db-8a32-dc836e4cb254"] .ui-select-container',
+        assignedGroupGuid: '116edc77-c040-42db-8a32-dc836e4cb254',
         activityFeed: '[author="feedItem.author"]',
         activityChangeFile: '.d-icon-files_change_o',
         getCaseDisplayId: 'span.text-field',
     }
 
-    async removeAttachment(fileName: string): Promise<void> {
-        await $(`.rx-attachment-view-remove[aria-label="Remove Attachment ${fileName}"] i`).click();
+    async removeAttachment(fileName: string): Promise<void> {
+        await $(`.rx-attachment-view-remove[aria-label="Remove Attachment ${fileName}"] i`).click();
     }
 
     async waitForEditCasePageToBeDisplayed(): Promise<void> {
@@ -343,24 +346,24 @@ class CaseEditPage {
         return await $(this.selectors.personEmailLink).getText();
     }
 
-    async isSummaryRequiredText(): Promise<string> {
+    async isSummaryRequiredText(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.summary)));
-        return await $(this.selectors.summary).getAttribute('required');
+        return await utilCommon.isRequiredTagToField(this.selectors.summaryGuid);
     }
 
-    async isPriorityRequiredText(): Promise<string> {
+    async isPriorityRequiredText(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.priorityRequiredText)));
-        return await $(this.selectors.priorityRequiredText).getAttribute('required');
+        return await utilCommon.isRequiredTagToField(this.selectors.priorityGuid);
     }
 
-    async isAssignedCompanyRequiredText(): Promise<string> {
+    async isAssignedCompanyRequiredText(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeCompany)));
-        return await $(this.selectors.assigneeCompany).getAttribute('required');
+        return await utilCommon.isRequiredTagToField(this.selectors.assigneeCompanyGuid);
     }
 
-    async isAssignedGroupRequiredText(): Promise<string> {
+    async isAssignedGroupRequiredText(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroup)));
-        return await $(this.selectors.assignedGroup).getAttribute('required');
+        return await utilCommon.isRequiredTagToField(this.selectors.assignedGroupGuid);
     }
 
     async  isClearContactButtonEnable(): Promise<boolean> {
