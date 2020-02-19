@@ -140,13 +140,12 @@ describe('Create Case Task', () => {
     //ankagraw
     it('[DRDMV-12577]: Case BA other than task template owner group can NOT update the template', async () => {
         try {
-            let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
+            let manualTaskTemplate = 'Manual task' + Math.floor(Math.random() * 1000000);
             let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
 
             //Manual task Template
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-                .toEqual('Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
             await taskTemplate.setTemplateName(manualTaskTemplate);
             await taskTemplate.setTaskSummary(manualTaskSummary);
@@ -154,13 +153,13 @@ describe('Create Case Task', () => {
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.selectTemplateStatus('Active');
             await taskTemplate.clickOnSaveTaskTemplate();
+            await expect(viewTaskTemplate.getTemplateName()).toBe(manualTaskTemplate);
             //await utilCommon.waitUntilPopUpDisappear();
 
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-                .toEqual('Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(manualTaskTemplate);
             await editTaskTemplate.clickOnEditMetadataLink();
             await expect(editTaskTemplate.isTemplateStatusDisabled()).toBeTruthy("Template status is enabled");
@@ -171,12 +170,12 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 150 * 100);
+    }, 180 * 1000);
 
     //ankagraw
     it('[DRDMV-12567]: Case BA from task template owner group can update the template', async () => {
         try {
-            let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
+            let manualTaskTemplate = 'Manual task' + Math.floor(Math.random() * 1000000);
             let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
             let updateSummary = 'update Summary' + Math.floor(Math.random() * 1000000);
             let Description = 'Description' + Math.floor(Math.random() * 1000000);
@@ -220,12 +219,12 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });
+    }, 150 * 1000);
 
     //ankagraw
     it('[DRDMV-12555]: Task template submitter from same company of owner group can edit the task template', async () => {
         try {
-            let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
+            let manualTaskTemplate = 'Manual task' + Math.floor(Math.random() * 1000000);
             let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
             let updateSummary = 'update Summary' + Math.floor(Math.random() * 1000000);
             let Description = 'Description' + Math.floor(Math.random() * 1000000);
@@ -301,7 +300,7 @@ describe('Create Case Task', () => {
         let suppGrpData = supportGrpDataFile['SuppGrpData12111'];
 
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows')).toEqual('Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
         await createCaseTemplate.setTemplateName("caseTemplateName" + randomStr);
         await createCaseTemplate.setCompanyName("Petramco");
@@ -318,8 +317,7 @@ describe('Create Case Task', () => {
 
         //Manual task Template
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await selectTaskTemplate.clickOnManualTaskTemplateButton();
         await taskTemplate.setTemplateName('manualTaskTemplate' + randomStr);
         await taskTemplate.setTaskSummary('manualTaskSummary' + randomStr);
