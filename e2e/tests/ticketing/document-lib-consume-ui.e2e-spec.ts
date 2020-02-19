@@ -28,7 +28,7 @@ describe('Document Library Consume UI', () => {
     });
 
     //kgaikwad
-    // Defect ID: DRDMV-20519
+    // DefectID: DRDMV-20519
     it('[DRDMV-13539]: Documents attached on case still accessible when someone deletes them from document library', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let docLib1 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -66,7 +66,6 @@ describe('Document Library Consume UI', () => {
         await expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('failureMsg: demo.txt File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('demo');
         await attachmentBladePo.clickOnDownloadButton();
-        // Defect: After File Download from attachment blade file doesn't get downloaded.
         await expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('demo.txt File is not downloaded.');
         await expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('failureMsg: demo.txt File is delete sucessfully');
         await attachmentBladePo.clickOnCloseButton();
