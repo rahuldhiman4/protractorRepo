@@ -101,6 +101,22 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getFlowsetGuid(flowsetName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.flowsets-lib:Flowsets");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[450000002] === flowsetName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getLabelGuid(labelValue: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.shared-services-lib:Lookup Items");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[450000152] === labelValue;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+    
     async getPersonGuid(personName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Person");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
