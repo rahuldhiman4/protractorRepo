@@ -1,11 +1,10 @@
-
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import consoleNotificationTemplatePo from '../../pageobject/notification/console-notificationTemplate.po';
-import createNotificationTemplatePo from '../../pageobject/notification/create-notificationTemplate.po';
+import consoleNotificationTemplatePo from '../../pageobject/settings/notification-config/console-notification-template.po';
+import createNotificationTemplatePo from '../../pageobject/settings/notification-config/create-notification-template.po';
 import consoleNotestemplatePo from '../../pageobject/settings/common/console-notestemplate.po';
 import createNotestemplatePo from '../../pageobject/settings/common/create-notestemplate.po';
 import consoleDocumentTemplatePo from '../../pageobject/settings/document-management/console-document-template.po';
@@ -13,6 +12,8 @@ import createDocumentTemplatePo from '../../pageobject/settings/document-managem
 import consoleEmailTemplatePo from '../../pageobject/settings/email/console-email-template.po';
 import createEmailTemplatePo from '../../pageobject/settings/email/create-email-template.po';
 import utilCommon from '../../utils/util.common';
+import editNotificationTemplatePo from '../../pageobject/settings/notification-config/edit-notification-template.po';
+import utilGrid from '../../utils/util.grid';
 
 describe('Dynamic data', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -32,6 +33,9 @@ describe('Dynamic data', () => {
     });
 
     it('[DRDMV-19353]: Accessibility of Dynamic Fields in Notification and Dynamic Templates', async () => {
+        await apiHelper.apiLogin('tadmin');
+        let recDeleted = await apiHelper.deleteDynamicFieldAndGroup();
+        console.log("Record deleted...", recDeleted);
         let caseTemplateName = 'caseTemplate' + randomStr;
         let caseTemaplateSummary = 'caseTemplate' + randomStr;
         var casetemplateData = {
@@ -63,7 +67,6 @@ describe('Dynamic data', () => {
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDyanmicDataOnTemplate(tasktemplate.id, 'DynamicdataForTaskTemplate');
-
         let globalTaskTemplateName = 'Global  task' + randomStr;
         let globalmanualTaskSummary = 'GlobalTaskSummary' + randomStr;
         var gloabalTaskData = {
@@ -93,7 +96,6 @@ describe('Dynamic data', () => {
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('casePetramco1')).toBeTruthy();
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('casePetramco2')).toBeTruthy();
         await addFieldsPopPo.clickOnOkButtonOfEditor();
-
         await createNotificationTemplatePo.clickOnInsertFieldOfAlert();
         await addFieldsPopPo.navigateToDynamicFieldInCaseTemplate(globalcaseTemplateName);
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField1')).toBeTruthy();
@@ -120,6 +122,8 @@ describe('Dynamic data', () => {
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalTaskField2')).toBeTruthy();
         await addFieldsPopPo.clickOnOkButtonOfEditor();
         await createNotificationTemplatePo.clickOnCancelButton();
+        await utilCommon.clickOnWarningOk();
+        await browser.navigate().back();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
         await consoleDocumentTemplatePo.clickOnCreateDocumentTemplate();
@@ -142,10 +146,14 @@ describe('Dynamic data', () => {
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField1')).toBeTruthy();
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField2')).toBeTruthy();
         await addFieldsPopPo.clickOnOkButtonOfEditor();
-        await browser.refresh();
-    }, 230 * 1000)
+        await createDocumentTemplatePo.clickOnCancelButton();
+        await utilCommon.clickOnWarningOk();
+    }, 260 * 1000);
 
     it('[DRDMV-19270]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
+        await apiHelper.apiLogin('tadmin');
+        let recDeleted = await apiHelper.deleteDynamicFieldAndGroup();
+        console.log("Record deleted...", recDeleted);
         let caseTemplateName = 'caseTempRDMV-192700lp3ir' + randomStr;
         let caseTemaplateSummary = 'caseTempRDMV-19270Template' + randomStr;
         var casetemplateData = {
@@ -165,10 +173,11 @@ describe('Dynamic data', () => {
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDyanmicDataOnTemplate(tasktemplate.id, 'TasktemplatewithConfidential');
+        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
         await consoleNotificationTemplatePo.clickOnCreateNotificationTemplate();
-        await createNotificationTemplatePo.selectEvent('Approval');
+        await createNotificationTemplatePo.selectEvent('Approval Rejection');
         await createNotificationTemplatePo.selectModuleName('Cases');
         await createNotificationTemplatePo.setTemplateName("Notification" + randomStr);
         await createNotificationTemplatePo.setDescription("Notification Description " + randomStr);
@@ -211,14 +220,15 @@ describe('Dynamic data', () => {
         expect(await createNotificationTemplatePo.isDynamicFieldDisplayedInEmailBody('LocalConfidentail')).toBeTruthy();
         expect(await createNotificationTemplatePo.isDynamicFieldDisplayedInEmailBody('OuterNonConfidential')).toBeTruthy();
         await createNotificationTemplatePo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully.');
+        expect(await editNotificationTemplatePo.getHeaderText()).toContain('Edit Notification Template');
+        await editNotificationTemplatePo.clickOnCancelButton();
         await consoleNotificationTemplatePo.clickOnCreateNotificationTemplate();
-        await createNotificationTemplatePo.selectEvent('Approval');
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteEmailOrNotificationTemplate("Notification" + randomStr);
         await createNotificationTemplatePo.selectModuleName('Cases');
-        await createNotificationTemplatePo.setTemplateName("Notification" + randomStr);
-        await createNotificationTemplatePo.setDescription("Notification Description " + randomStr);
-        await createNotificationTemplatePo.setTemplateName("Notification" + randomStr);
-        await createNotificationTemplatePo.setDescription("Notification Description " + randomStr);
+        await createNotificationTemplatePo.selectEvent('Case Reassignment');
+        await createNotificationTemplatePo.setTemplateName("NotificationNew" + randomStr);
+        await createNotificationTemplatePo.setDescription("NotificationNew Description " + randomStr);
         await createNotificationTemplatePo.clickOnInsertFieldOfAlert();
         await addFieldsPopPo.navigateToAssociationsInCase();
         expect(await addFieldsPopPo.isAssocitionDisplayed('Case Origin Lookup Assoc')).toBeTruthy();
@@ -266,8 +276,11 @@ describe('Dynamic data', () => {
         expect(await createNotificationTemplatePo.isDynamicFieldDisplayedInEmailBody('SLM Status')).toBeTruthy();
         expect(await createNotificationTemplatePo.isDynamicFieldDisplayedInEmailBody('Visible to All Organization')).toBeTruthy();
         await createNotificationTemplatePo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully.');
+        expect(await editNotificationTemplatePo.getHeaderText()).toContain('Edit Notification Template');
+        await editNotificationTemplatePo.clickOnCancelButton();
         await navigationPage.gotoCaseConsole();
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteEmailOrNotificationTemplate("NotificationNew" + randomStr);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
         await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
@@ -294,14 +307,15 @@ describe('Dynamic data', () => {
         expect(await createEmailTemplatePo.isDynamicFieldDisplayedInBody('LocalNonConfidential')).toBeTruthy();
         expect(await createEmailTemplatePo.isDynamicFieldDisplayedInBody('nonConfidentialPulic')).toBeTruthy();
         await createEmailTemplatePo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully.');
+        await utilGrid.searchRecord('emailTemp' + randomStr);
+        expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toContain('emailTemp' + randomStr, 'value is not displaying in Grid');
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
         await consoleNotestemplatePo.clickOnCreateNotesTemplate();
         await createNotestemplatePo.setCompanyValue('Petramco');
-        await createEmailTemplatePo.setTemplateName('NotesTemplate' + randomStr);
-        await createEmailTemplatePo.clickOnInsertField();
+        await createNotestemplatePo.setTemplateName('NotesTemplate' + randomStr);
+        await createNotestemplatePo.clickOnInsertFieldLink();
         await addFieldsPopPo.navigateToDynamicFieldInTaskTemplate(taskTemplateName);
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('TaskOuterNonConfidential')).toBeTruthy();
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('TaskListOfDataName')).toBeTruthy();
@@ -316,10 +330,10 @@ describe('Dynamic data', () => {
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('TaskconfidentialPublic')).toBeFalsy();
         await addFieldsPopPo.selectDynamicField('TasknonConfidentialPulic');
         await addFieldsPopPo.clickOnOkButtonOfEditor();
-        expect(await createEmailTemplatePo.isDynamicFieldDisplayedInBody('TaskOuterNonConfidential')).toBeTruthy();
-        expect(await createEmailTemplatePo.isDynamicFieldDisplayedInBody('TaskLocalNonConfidential')).toBeTruthy();
-        expect(await createEmailTemplatePo.isDynamicFieldDisplayedInBody('TasknonConfidentialPulic')).toBeTruthy();
-        await createEmailTemplatePo.clickOnInsertField();
+        expect(await createNotestemplatePo.isDynamicFieldDisplayedInBody('TaskOuterNonConfidential')).toBeTruthy();
+        expect(await createNotestemplatePo.isDynamicFieldDisplayedInBody('TaskLocalNonConfidential')).toBeTruthy();
+        expect(await createNotestemplatePo.isDynamicFieldDisplayedInBody('TasknonConfidentialPulic')).toBeTruthy();
+        await createNotestemplatePo.clickOnInsertFieldLink();
         await addFieldsPopPo.navigateToAssociationsInTask();
         expect(await addFieldsPopPo.isAssocitionDisplayed('Case to Task')).toBeTruthy();
         expect(await addFieldsPopPo.isAssocitionDisplayed('DynamicTicketData')).toBeTruthy();
@@ -331,7 +345,6 @@ describe('Dynamic data', () => {
         expect(await addFieldsPopPo.isAssocitionDisplayed('Ticket - Assigned Company')).toBeTruthy();
         expect(await addFieldsPopPo.isAssocitionDisplayed('Ticket Field - Agent')).toBeTruthy();
         expect(await addFieldsPopPo.isAssocitionDisplayed('Ticket Field - Contact')).toBeTruthy();
-        expect(await addFieldsPopPo.isAssocitionDisplayed('Case to Resolution Code Association')).toBeTruthy();
         expect(await addFieldsPopPo.isAssocitionDisplayed('Ticket Field - Operational Category  Tier 2')).toBeTruthy();
         expect(await addFieldsPopPo.isAssocitionDisplayed('Ticket Field - Operational Category Tier 1')).toBeTruthy();
         expect(await addFieldsPopPo.isAssocitionDisplayed('Ticket Field - Operational Category Tier 3')).toBeTruthy();
@@ -346,9 +359,9 @@ describe('Dynamic data', () => {
         await addFieldsPopPo.clickOnAssocitionAndSelectField('DynamicTicketData', 'Confidential data');
         await addFieldsPopPo.clickOnAssocitionAndSelectField('Site to Ticket', 'Additional Site Details');
         await addFieldsPopPo.clickOnOkButtonOfEditor();
-        expect(await createEmailTemplatePo.isDynamicFieldDisplayedInBody('Confidential data')).toBeTruthy();
-        expect(await createEmailTemplatePo.isDynamicFieldDisplayedInBody('Additional Site Details')).toBeTruthy();
+        expect(await createNotestemplatePo.isDynamicFieldDisplayedInBody('Confidential data')).toBeTruthy();
+        expect(await createNotestemplatePo.isDynamicFieldDisplayedInBody('Additional Site Details')).toBeTruthy();
         await createNotestemplatePo.clickOnSaveButton();
         expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully.');
-    }, 200 * 1000)
-})
+    }, 250 * 1000);
+});

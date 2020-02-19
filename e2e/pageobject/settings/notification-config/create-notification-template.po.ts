@@ -1,5 +1,5 @@
 import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
+import utilCommon from '../../../utils/util.common';
 
 class createNotificationTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
