@@ -26,10 +26,10 @@ class ViewTask {
         taskPriority: '[rx-view-component-id="75371088-cfeb-4554-a939-2fe7b2aa098b"] .selection-field',
         taskTimeDetails: '[rx-view-component-id="75371088-cfeb-4554-a939-2fe7b2aa098b"] .date-info',
         caseIdText: '.rx-record-preview-card__field .rx-record-preview-card__value',
-        caseSummary: '[class="rx-record-preview-card__field ng-enter-prepare"]',
+        caseSummary: '.ng-enter-prepare',
         taskSummary: '[rx-view-component-id="fa66e566-757c-4d10-a850-9ea3bd037707"] p',
         taskStatus: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] .status-transition',
-        requesterName: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] [class="person-name person-link"]',
+        requesterName: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-link    a',
         requesterContact: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .ac-link-person-phone',
         requesterMail: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .ac-link-person-email',
         assigneeName: '[rx-view-component-id="1801d8c6-4997-4253-b716-809b39909598"] .person-main',
@@ -239,11 +239,14 @@ class ViewTask {
     }
 
     async isProcessNameValue(): Promise<boolean> {
-        try {
-            return await $(this.selectors.processnameValue).isDisplayed();
-        } catch (error) {
-            return false;
-        }
+            return await $(this.selectors.processnameValue).isPresent().then(async (result) => {
+                if(result){
+                    return await $(this.selectors.processnameValue).getText() ? true : false;
+                } else {
+                    console.log("Flowset not present");
+                    return false;
+                }
+            });
     }
 
     async getTaskID(): Promise<string> {

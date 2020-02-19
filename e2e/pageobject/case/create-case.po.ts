@@ -17,12 +17,13 @@ class CreateCasePage {
         assignedGroup: '[rx-view-component-id="79750d81-d8e5-447e-b923-94c54f2d3310"] .ui-select-match',
         assignee: '[rx-view-component-id="43c3e9ee-dde2-4e10-94e9-c6ee68217cda"] .ui-select-match',
         assignedCompanyRequiredText: '[rx-view-component-id="8ac19557-eebc-4c14-9304-efc60d01e09f"] rx-select-with-pagination',
-        sourceRequiredText: '[rx-view-component-id="e658258a-bc01-4325-a5be-2dfad7aaefdd"] .ui-select-container',
+        sourceGuid: 'e658258a-bc01-4325-a5be-2dfad7aaefdd',
         priorityRequiredText: '[rx-view-component-id="367e71d0-f31f-452a-934b-d7a78125cdf1"] .ui-select-container',
         requesterInput: '[rx-view-component-id="be946309-c359-40fe-a579-1a0e0d04bb01"] input.person-input',
         requesters: '[rx-view-component-id="be946309-c359-40fe-a579-1a0e0d04bb01"] .uib-typeahead-match',
         contacts: '[rx-view-component-id="e1f5a770-e416-4ed1-bfea-eefeed86544b"] .uib-typeahead-match',
         summary: '[rx-view-component-id="d73c8aff-f9e0-4eef-8226-a65f19fab4db"] input',
+        summaryGuid: 'd73c8aff-f9e0-4eef-8226-a65f19fab4db',
         contactInput: '[rx-view-component-id="e1f5a770-e416-4ed1-bfea-eefeed86544b"] input',
         contactRequesters: '[rx-view-component-id="e1f5a770-e416-4ed1-bfea-eefeed86544b"] .uib-typeahead-match',
         siteDropDown: '[rx-view-component-id="1113b368-e1eb-40e9-898f-65c075565462"] .ui-select-toggle',
@@ -101,17 +102,17 @@ class CreateCasePage {
 
     async isPriorityRequiredTextPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.priorityRequiredText)));
-        return await $(this.selectors.priorityRequiredText).getAttribute('required') == 'true' ? true : false;
+        return await utilCommon.isRequiredTagToField(this.selectors.priorityGuid);
     }
 
     async isSourceRequiredTextPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.sourceRequiredText)));
-        return await $(this.selectors.sourceRequiredText).getAttribute('required') == 'true' ? true : false;
+        return await utilCommon.isRequiredTagToField(this.selectors.sourceGuid);
     }
 
     async isSummaryRequiredTextPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.summary)));
-        return await $(this.selectors.summary).getAttribute('required') == 'true' ? true : false;
+        return await utilCommon.isRequiredTagToField(this.selectors.summaryGuid);
     }
 
     async isCompanyRequiredTextPresent(): Promise<boolean> {

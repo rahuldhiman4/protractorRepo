@@ -542,7 +542,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 120 * 1000);
+    }, 180 * 1000);
 
     //ankagraw
     it('[DRDMV-7121]: [Automatic Task] - Task Template Console: Verify Task Type column, filter ', async () => {
@@ -963,8 +963,8 @@ describe('Create Case Task', () => {
         case_management.name = case_Management_Process;
         await apiCoreUtil.createProcess(case_management);
         let templateData = {
-            "templateName": `FirstAutomatedTaskTemplateActive ${randomStr}`,
-            "templateSummary": `AutomatedTaskTemplateSummaryActive ${randomStr}`,
+            "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateSummary":  `AutomatedTaskTemplateActive ${randomStr}`,
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": case_Management_Process,
@@ -1045,7 +1045,7 @@ describe('Create Case Task', () => {
         await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
         await manageTask.clickOnCloseButton();
         await viewCasePage.openTaskCard(1);
-        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.clickTaskLinkOnManageTask( `AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
 
         //Verify Assigned Case
@@ -1057,10 +1057,10 @@ describe('Create Case Task', () => {
         await createCasePage.clickGoToCaseButton();
         await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
         await viewCasePage.clickAddTaskButton();
-        await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.addTaskFromTaskTemplate( `AutomatedTaskTemplateActive ${randomStr}`);
         await manageTask.clickOnCloseButton();
         await viewCasePage.openTaskCard(1);
-        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.clickTaskLinkOnManageTask( `AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
 
         //Verify In_progress Case
@@ -1069,10 +1069,10 @@ describe('Create Case Task', () => {
         await caseConsolePage.searchAndOpenCase(inProgress);
         await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
         await viewCasePage.clickAddTaskButton();
-        await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.addTaskFromTaskTemplate( `AutomatedTaskTemplateActive ${randomStr}`);
         await manageTask.clickOnCloseButton();
         await viewCasePage.openTaskCard(1);
-        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.clickTaskLinkOnManageTask( `AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Completed");
 
         //Verify Pending Case
@@ -1081,10 +1081,10 @@ describe('Create Case Task', () => {
         await caseConsolePage.searchAndOpenCase(pending);
         await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
         await viewCasePage.clickAddTaskButton();
-        await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.addTaskFromTaskTemplate( `AutomatedTaskTemplateActive ${randomStr}`);
         await manageTask.clickOnCloseButton();
         await viewCasePage.openTaskCard(1);
-        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.clickTaskLinkOnManageTask( `AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
 
         //Verify Resolved Case

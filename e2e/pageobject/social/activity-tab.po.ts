@@ -340,11 +340,11 @@ class ActivityTabPage {
     }
 
     async isPersonLinkPresent(): Promise<boolean> {
-        return await element($(this.selectors.activityLog)).isDisplayed();
+        return await $(this.selectors.activityLog).isDisplayed();
     }
 
     async isActivityTextPresent(): Promise<boolean> {
-        return await element($(this.selectors.activityText)).isDisplayed();
+        return await $(this.selectors.activityText).isDisplayed();
     }
 
     async getIconOfActivity(caseActivityLogText: string): Promise<string> {

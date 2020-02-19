@@ -40,10 +40,10 @@ describe('Create Adhoc task', () => {
         //Adhoc task validation
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickAddAdhocTaskButton();
-        await expect(await adhoctaskTemplate.getTaskSummaryRequiredText('required')).toBeTruthy();
-        await expect(await adhoctaskTemplate.getPriorityRequiredText('required')).toBeTruthy();
-        // await expect(await adhoctaskTemplate.getAssignedCompanyRequiredText('required')).toBeTruthy();
-        // await expect(await adhoctaskTemplate.getAssignedGroupRequiredText('required')).toBeTruthy();
+        await expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy();
+        await expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy();
+        await expect(await adhoctaskTemplate.isAssignedCompanyRequiredTextPresent()).toBeTruthy();
+        await expect(await adhoctaskTemplate.isAssignedGroupRequiredTextPresent()).toBeTruthy();
 
         await expect(await adhoctaskTemplate.getSaveButtonAttribute('ng-disabled')).toBeTruthy();
         await expect(adhoctaskTemplate.getStatusAttribute()).toBeTruthy();
@@ -103,9 +103,9 @@ describe('Create Adhoc task', () => {
         await expect(viewTask.isAssigneeNameDisplayed()).toBeTruthy();
         await expect(viewTask.isAssignCompanyDisplayed()).toBeTruthy();
         await expect(viewTask.isAssignGroupTextDisplayed()).toBeTruthy();
-        await expect(activitytab.isActivityTextPresent()).toBeTruthy();
-        await expect(activitytab.isActivityTextPresent()).toBeTruthy();
-    });
+        await expect(activitytab.isActivityTextPresent()).toBeTruthy("Activiy no Present");
+       
+    },300*1000);
 
     it('[DRDMV-7130]: [Automatic Task] - Create Ad hoc Task', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
@@ -126,7 +126,7 @@ describe('Create Adhoc task', () => {
 
         await manageTask.clickTaskLinkOnManageTask(summary);
         await expect(viewTask.getTaskTypeValue()).toBe('Manual');
-        await expect(viewTask.isProcessNameValue()).toBeTruthy();
+        await expect(viewTask.isProcessNameValue()).toBeFalsy();
     });
 
     it('[DRDMV-1580,DRDMV-12243]: Adhoc Task details view (UI verification))', async () => {
@@ -219,5 +219,5 @@ describe('Create Adhoc task', () => {
         await expect(viewTask.isCaseViewLinkDisplayed()).toBeTruthy('Case View Link is not displayed');
         await navigationPage.signOut();
         await loginPage.login('qtao');
-    }, 180 * 1000);
+    }, 240 * 1000);
 });
