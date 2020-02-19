@@ -755,7 +755,7 @@ class ApiHelper {
         return flagAndUnflagResponse.status == 204;
     }
 
-    async deleteEmailTemplate(emailTemplateName: string): Promise<boolean> {
+    async deleteEmailOrNotificationTemplate(emailTemplateName: string): Promise<boolean> {
         let emailTemplateGuid = await coreApi.getEmailTemplateGuid(emailTemplateName);
         return await coreApi.deleteRecordInstance('com.bmc.dsm.notification-lib:NotificationTemplate', emailTemplateGuid);
     }

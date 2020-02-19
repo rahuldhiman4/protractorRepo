@@ -1,8 +1,8 @@
 import { browser, protractor, ProtractorExpectedConditions } from "protractor";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import notificationTempGridPage from "../../pageobject/notification/console-notificationTemplate.po";
-import editNotificationTemplate from "../../pageobject/notification/edit-notificationTemplate.po";
+import notificationTempGridPage from "../../pageobject/settings/notification-config/console-notification-template.po";
+import editNotificationTemplate from "../../pageobject/settings/notification-config/edit-notification-template.po";
 
 describe("Notification Template", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -49,11 +49,10 @@ describe("Notification Template", () => {
         //Select Company drpdown value again, and click Copy Template button
         await notificationTempGridPage.setCompanyDropDownValPresentInCopyTempWindow(notificationData[expectedJsonName].Company);
         await notificationTempGridPage.clickCopyTemplateButtonInCopyTempWindow();
-        await editNotificationTemplate.clickOnCancelButtonWithoutWarning();
+        await editNotificationTemplate.clickOnCancelButton();
         //Validate if the new copied template is created
         await browser.refresh();
         await notificationTempGridPage.searchTemplate(notificationData[expectedJsonName].CopiedTemplateName);
         expect(await notificationTempGridPage.getValueOnAssignmentConfigGrid("Template Name")).toBe(notificationData[expectedJsonName].CopiedTemplateName);
     });
-
 })

@@ -64,7 +64,7 @@ class addField {
     }
 
     async isDynamicFieldPresentInTemplate(value: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.fieldVariable, value)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.fieldVariable, value)).isPresent();
     }
 
     async selectDynamicField(value: string): Promise<void> {
