@@ -1,11 +1,12 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 
 class NotificationTemplateGridPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        copyTemplate: '.d-icon-left-pencil',
+        guid: '7d5c5beb-d652-4bf9-9fc7-ccc7100d3b77',
+        copyTemplate: '[rx-view-component-id="c2e4b483-9365-4a10-a326-2c43a76de2fa"] .d-button',
         searchButton: '.d-icon-search',
         selectTemplateCheckBox: '.ui-grid-icon-ok',
         copyTemplateWindow: '.modal-title',
@@ -91,9 +92,12 @@ class NotificationTemplateGridPage {
 
     async clickCopyTemplateButtonInCopyTempWindow() {
 //        await browser.wait(this.EC.visibilityOf(element(by.buttonText('Create Copy'))));
-        element(by.buttonText('Create Copy')).click();
+        await element(by.buttonText('Create Copy')).click();
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
-        await $(this.selectors.saveButton).click();
+    }
+
+    async getValueOnAssignmentConfigGrid(columnName:string): Promise<string>{
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.guid,columnName);
     }
 
 }

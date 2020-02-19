@@ -1,4 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { CaseTemplate } from 'e2e/api/constant.api';
 
 class QuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -97,7 +98,8 @@ class QuickCasePage {
     }
 
     async selectCaseTemplate(templateName: string): Promise<void> {
-        await $(this.selectors.inputBox).sendKeys(`!${templateName}`);
+        await $(this.selectors.inputBox).sendKeys('!');
+        await $(this.selectors.inputBox).sendKeys(templateName);
         await browser.wait(this.EC.or(async () => {
             let count = await $$(this.selectors.caseTemplate).count();
             return count >= 1;
