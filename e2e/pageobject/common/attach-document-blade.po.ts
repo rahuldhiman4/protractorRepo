@@ -12,11 +12,8 @@ class AttachDocumentBlade {
     async searchAndAttachDocument(documentName:string): Promise<void> {
         await this.clickOnAdvanceSearchButton();
         await this.searchRecord(documentName);
-        await browser.sleep(3000);
         await this.selectDocument();
-        await browser.sleep(3000);
         await this.clickOnAttachButton();
-        await browser.sleep(3000);
     }
 
     async clickOnAdvanceSearchButton(): Promise<void> {
@@ -37,9 +34,6 @@ class AttachDocumentBlade {
                 break;
             }
         }
-
-
-
     }
 
     async selectDocument(): Promise<void> {
