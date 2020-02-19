@@ -7,7 +7,9 @@ class CreateTaskTemplatePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         templateName: '[rx-view-component-id="2e4ef0dc-9b73-4c8f-afe6-221ddf0594c7"] input',
+        templateNameGuid: '2e4ef0dc-9b73-4c8f-afe6-221ddf0594c7',
         taskSummary: '[rx-view-component-id="c19d336e-7339-4970-b69a-100108d672fd"] input',
+        taskSummaryGuid: 'c19d336e-7339-4970-b69a-100108d672fd',
         taskCompny: 'f62bd26b-c464-4dff-ab7b-e4446d1cbf99',
         taskPriority: '1b9c265f-e618-4f0a-9b21-55dbb78e0cd1',
         label: 'df2fba00-56d2-412c-ac22-b2990fcd4337',
@@ -27,20 +29,15 @@ class CreateTaskTemplatePage {
         processBundleIdDrpDownForNewProcess: 'e8a2406c-6991-4ea1-bfdf-bde29abe2ef7',
         processBundleIdDrpDownForExistingProcess: '[rx-view-component-id="71e09acc-0077-4e55-9c24-7f6bdc90ce5d"] .d-icon-right-angle_down',
         toggleBox: '0ef8534e-a8bf-40c3-bdc1-a91edde177c4',
+        toggleBoxRequiredText: '0af92a6a-5e77-4915-8227-aab93d0b9401',
         newProcessName: '[rx-view-component-id="eefdf45b-47af-48cb-8c8b-a82c73f7d5a4"] input',
         searchProcess: '.d-icon-search',
         setInputdataInProcess: '[rx-view-component-id="71e09acc-0077-4e55-9c24-7f6bdc90ce5d"] input',
         selectNameInProcess: '.rx-definition-picker__instance-name mark',
-        taskPriorityRequiredText: '[rx-view-component-id="1b9c265f-e618-4f0a-9b21-55dbb78e0cd1"] .ui-select-container',
-        templateStatusRequiredText: '[rx-view-component-id="09db292a-212a-433e-8c20-a92f8c4e5168"] .ui-select-container',
-        ownerCompanyRequiredText: '[rx-view-component-id="87ec3995-3350-4e3f-ab19-0f1e7846fbd7"] .ui-select-container',
-        ownerGroupRequiredText: '[rx-view-component-id="61278673-8106-419c-83e4-a9e00f12f835"] .ui-select-container',
         taskDescriptionGuid: '8dab5855-547b-449d-a010-3f1bd09fd7f5',
         addTaskTemplateTitle: '[rx-view-component-id="e564f60e-d84f-41fc-b130-998cdc60eca4"] span',
         templateMetadataTitle: '[rx-view-component-id="24bd49d8-5ca3-451a-86a1-eb26b687e801"] span',
-        createNewProcessToggleRequiredTxt: '[rx-view-component-id="0ef8534e-a8bf-40c3-bdc1-a91edde177c4"] .ng-valid-required',
-        processBundleIdRequiredTxt: '[rx-view-component-id="5f30b3d4-caa2-4c28-8af6-cebf094bc2e8"] .ng-valid-required',
-        newProcessNameRequiredTxt: '[rx-view-component-id="eefdf45b-47af-48cb-8c8b-a82c73f7d5a4"] .ng-valid', 
+        processBundleIdRequiredTxt: '5f30b3d4-caa2-4c28-8af6-cebf094bc2e8',
         newprocessGuid: 'eefdf45b-47af-48cb-8c8b-a82c73f7d5a4',
     }
 
@@ -70,7 +67,7 @@ class CreateTaskTemplatePage {
     async clickOnSaveTaskTemplate(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-        await utilCommon.waitUntilPopUpDisappear();
+      //  await utilCommon.waitUntilPopUpDisappear();
     }
 
     async clickOnCancelTaskTemplate(): Promise<void> {
@@ -153,42 +150,42 @@ class CreateTaskTemplatePage {
     }
 
     async setcreateNewProcess(processName: boolean): Promise<void> {
-        await util.selectToggleButton(this.selectors.toggleBox, processName);
+        await util.selectToggleButton(this.selectors.toggleBoxRequiredText, processName);
     }
     async isTemplateNameRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredAttributePresent(this.selectors.templateName);
+        return await utilCommon.isRequiredTagToField(this.selectors.templateNameGuid);
     }
 
     async isTaskSummaryRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredAttributePresent(this.selectors.taskSummary);
+        return await utilCommon.isRequiredTagToField(this.selectors.taskSummaryGuid);
     }
 
     async isTaskPriorityRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredAttributePresent(this.selectors.taskPriorityRequiredText);
+        return await utilCommon.isRequiredTagToField(this.selectors.taskPriority);
     }
 
     async isTemplateStatusRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredAttributePresent(this.selectors.templateStatusRequiredText);
+        return await utilCommon.isRequiredTagToField(this.selectors.templateStatus);
     }
 
     async isOwnerComapnyRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredAttributePresent(this.selectors.ownerCompanyRequiredText);
+        return await utilCommon.isRequiredTagToField(this.selectors.ownerCompany);
     }
 
     async isOwnerGroupRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredAttributePresent(this.selectors.ownerGroupRequiredText);
+        return await utilCommon.isRequiredTagToField(this.selectors.ownerGroup);
     }
 
      async isCreateNewProcessRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredAttributePresent(this.selectors.createNewProcessToggleRequiredTxt);
+        return await utilCommon.isRequiredTagToField(this.selectors.toggleBoxRequiredText);
     }
 
     async isProcessBundleIdRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredAttributePresent(this.selectors.processBundleIdRequiredTxt);
+        return await utilCommon.isRequiredTagToField(this.selectors.processBundleIdRequiredTxt);
     }
 
     async isNewProcessNameRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredAttributePresent(this.selectors.newProcessNameRequiredTxt);
+        return await utilCommon.isRequiredTagToField(this.selectors.newprocessGuid);
     }
 
     async isTaskDescriptionTitlePresent(value: string): Promise<boolean> {

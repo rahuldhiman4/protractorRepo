@@ -62,7 +62,14 @@ class ViewTaskTemplate {
 
     async isManageDynamicFieldLinkDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.manageDynamicField)));
-        return await $(this.selectors.manageDynamicField).isDisplayed();
+        return await $(this.selectors.manageDynamicField).isPresent().then(async (result) => {
+            if(result){
+                return await $(this.selectors.manageDynamicField).getText()? true : false;
+            } else {
+                console.log("Managelink not present");
+                return false;
+            }
+        });
     }
 
     async getOwnerCompanyValue(): Promise<string> {
@@ -111,7 +118,14 @@ class ViewTaskTemplate {
     }
 
     async isEditProcessLinkDisplayed(): Promise<boolean> {
-        return await $(this.selectors.editProcessLink).isDisplayed();
+        return await $(this.selectors.editProcessLink).isPresent().then(async (result) => {
+            if(result){
+                return await $(this.selectors.editProcessLink).getText()? true : false;
+            } else {
+                console.log("Flowset not present");
+                return false;
+            }
+        });
     }
 
     async clickOnEditLink(): Promise<void> {
