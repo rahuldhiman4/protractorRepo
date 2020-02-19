@@ -12,7 +12,7 @@ class AssignmentConfigCreatePage {
         flowsetDrpDwn: 'beda4ca9-322d-4f25-9bba-5da984836656',
         catTier1DrpDwn: 'caeb2d28-0f57-4dd9-b1c9-e201b14ca604',
         catTier2DrpDwn: '9a658851-6b56-493e-8336-e7634643bdcd',
-        catTier3Dwn: 'f644d025-c5a8-46a7-baa5-4f09994d9859',
+        catTier3DrpDwn: 'f644d025-c5a8-46a7-baa5-4f09994d9859',
         catTier4DrpDwn: 'e357ee21-d59e-4d89-9864-5e481a116a04',
         priorityDrpDwn: '790dfab1-2353-4b06-909d-741ebbc896d5',
         labelDrpDwn: '0274367e-248b-40cc-9f6b-7fed430e9829',
@@ -35,6 +35,26 @@ class AssignmentConfigCreatePage {
 
     async setCompany(company:string){
         await utilCommon.selectDropDown(this.selectors.companyDrpDwn, company);
+    }
+
+    async setFlowset(flowset:string){
+        await utilCommon.selectDropDown(this.selectors.flowsetDrpDwn, flowset);
+    }
+
+    async setCategoryTier1(category1:string){
+        await utilCommon.selectDropDown(this.selectors.catTier1DrpDwn, category1);
+    }
+
+    async setCategoryTier2(category2:string){
+        await utilCommon.selectDropDown(this.selectors.catTier2DrpDwn, category2);
+    }
+
+    async setCategoryTier3(category3:string){
+        await utilCommon.selectDropDown(this.selectors.catTier3DrpDwn, category3);
+    }
+
+    async setPriority(company:string){
+        await utilCommon.selectDropDown(this.selectors.priorityDrpDwn, company);
     }
 
     async setSupportCompany(suppCompany:string){

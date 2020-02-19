@@ -41,6 +41,13 @@ export enum CaseStatus {
     Closed = 7000
 }
 
+export enum CasePriority {
+    Critical = 1000,
+    High = 2000,
+    Medium = 3000,
+    Low = 4000
+}
+
 export enum ProcessLibConf {
     Active = 10
 }
