@@ -1,4 +1,4 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
 import utilCommon from '../../../utils/util.common';
 import consoleNoteTemplate from './console-notestemplate.po';
 
@@ -22,7 +22,8 @@ class createNotesTemplate {
         companyDD: '[rx-view-component-id="43cf35b1-9b8e-46ac-bae9-1cca6b245c52"] .d-textfield__label',
         notesTemplate: '[rx-view-component-id="ec3b4b22-122a-480c-a4d7-b62647710c87"] button',
         settingsButton: 'rx-shell .d-n-action__settings',
-        languageDD: '[rx-view-component-id="951065ca-a003-4465-aed5-9623a689fd4f"] .d-textfield__label'
+        languageDD: '[rx-view-component-id="951065ca-a003-4465-aed5-9623a689fd4f"] .d-textfield__label',
+        fieldValueInBody:'[rx-view-component-id="55da6dac-fe85-435e-9937-5b917d4b7971"] .cke_wysiwyg_div span',
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
@@ -102,6 +103,10 @@ class createNotesTemplate {
         await utilCommon.clickOnWarningOk();
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
         return (a == b == c == d == e == f == g == true);
+    }
+
+    async isDynamicFieldDisplayedInBody(value:string):Promise<boolean>{
+        return await element(by.cssContainingText(this.selectors.fieldValueInBody, value)).isDisplayed();
     }
 }
 export default new createNotesTemplate();

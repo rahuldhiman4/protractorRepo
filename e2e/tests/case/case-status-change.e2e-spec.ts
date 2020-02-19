@@ -459,5 +459,5 @@ describe('Case Status Change', () => {
         await viewCasePage.openTaskCard(1);
         await manageTask.clickTaskLinkOnManageTask(manualSummary);
         await expect(viewTask.getTaskStatusValue()).toBe('Canceled', 'canceled status not found');
-    }, 120 * 1000);
+    }, 150 * 1000);
 })

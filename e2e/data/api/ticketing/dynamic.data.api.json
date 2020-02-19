@@ -185,7 +185,7 @@
             {
                 "name": "OuterConfidential",
                 "description": "OuterConfidentialDesc",
-                "dataType": "ATTACHMENT",
+                "dataType": "TEXT",
                 "required": false,
                 "confidential": true,
                 "dataProviderUserRole": "Agent"
@@ -280,7 +280,7 @@
             {
                 "name": "TaskOuterConfidential",
                 "description": "TaskOuterConfidentialDesc",
-                "dataType": "ATTACHMENT",
+                "dataType": "TEXT",
                 "required": false,
                 "confidential": true,
                 "dataProviderUserRole": "Agent"

@@ -72,6 +72,11 @@ class ConsoleNotesTemplate {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
         return await $(this.selectors.deleteButton).getAttribute("disabled") == "true";
     }
+    
+    async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+    }
+
 }
 
 export default new ConsoleNotesTemplate();

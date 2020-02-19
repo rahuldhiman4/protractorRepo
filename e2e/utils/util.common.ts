@@ -249,7 +249,14 @@ export class Util {
     async isFieldLabelDisplayed(guid: string, fieldName: string): Promise<boolean> {
         let fieldLabel = `[rx-view-component-id='${guid}'] .d-textfield__item`;
         //        await browser.wait(this.EC.visibilityOf($(fieldLabel)));
-        return await element(by.cssContainingText(fieldLabel, fieldName)).isDisplayed();
+        return await element(by.cssContainingText(fieldLabel, fieldName)).isPresent().then(async (result) => {
+            if(result){
+                return await element(by.cssContainingText(fieldLabel, fieldName)).getText() == fieldName ? true : false;
+            } else {
+                console.log("Flowset not present");
+                return false;
+            }
+        });
     }
 
     async isRequiredAttributePresent(locator: any): Promise<boolean> {
