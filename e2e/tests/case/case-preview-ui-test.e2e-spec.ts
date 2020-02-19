@@ -25,6 +25,7 @@ describe("Case Preview", () => {
         await navigationPage.signOut();
     });
 
+    //kgaikwad
     it('[DRDMV-13703]: Navigate the Case from Quick Case->Preview Case->Case Full view', async () => {
         let caseSummary = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoQuickCase();
@@ -35,6 +36,7 @@ describe("Case Preview", () => {
         expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy('On View Case page edit button not present');
     });
 
+    //kgaikwad
     it('[DRDMV-13640]: Create a Case via Quick Case and check Case Preview screen', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoQuickCase();
@@ -59,9 +61,10 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isAssignedGroupDisplayed('Workforce Administration')).toBeTruthy('Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
-        expect(await casePreviewPo.isCreateNewCaseButton()).toBeTruthy('Create New Case button is missing');
+        expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
     });
 
+    //kgaikwad
     it('[DRDMV-14110]: Create a Case without template via Quick Case and check Case Preview screen', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoQuickCase();
@@ -85,9 +88,10 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isAssignedGroupDisplayed('Workforce Administration')).toBeTruthy('Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
-        expect(await casePreviewPo.isCreateNewCaseButton()).toBeTruthy('Create New Case button is missing');
+        expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
     });
 
+    //kgaikwad
     it('[DRDMV-13642,DRDMV-13641]: Create a Case from console with Template and check Case Preview', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
@@ -112,10 +116,11 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isAssignedGroupDisplayed('Workforce Administration')).toBeTruthy('Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
-        expect(await casePreviewPo.isCreateNewCaseButton()).toBeTruthy('Create New Case button is missing');
+        expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');
     }, 120 * 1000);
 
+    //kgaikwad
     it('[DRDMV-13666,DRDMV-13672]: Create a Quick Case and Click on Back button on Case Preview blade', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoQuickCase();
@@ -127,6 +132,7 @@ describe("Case Preview", () => {
         await expect(await quickCasePo.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
     });
 
+    //kgaikwad
     it('[DRDMV-13680]: UI Validation for Fields on Case Preview Page', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -168,7 +174,38 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isAssignedGroupDisplayed('Compensation and Benefits')).toBeTruthy('Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
-        expect(await casePreviewPo.isCreateNewCaseButton()).toBeTruthy('Create New Case button is missing');
+        expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');
+    });
+
+    //kgaikwad
+    it('[DRDMV-13644]: Create a Case via Quick Case by pinning articles and cases and check Case Preview on save', async () => {
+        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoQuickCase();
+        await quickCasePo.selectRequesterName('qkatawazi');
+        await quickCasePo.selectCaseTemplate('Generate Employee Verification Letter');
+        await quickCasePo.setCaseSummary(caseSummary);
+        await quickCasePo.clickOnRecommendedKnowledgePinButton(2);
+        await quickCasePo.clickOnRecommendedCasesPinButton(2);
+        await quickCasePo.saveCase();
+
+        expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('failureMsg: Case Preview Title is missing');
+        expect(await casePreviewPo.isCaseSummaryDisplayed(caseSummary)).toBeTruthy('failureMsg: Summary is missing');
+        expect(await casePreviewPo.isCaseIdDisplayed()).toBeTruthy('failureMsg: Case ID is missing');
+        expect(await casePreviewPo.isPriorityDisplayed('High')).toBeTruthy('failureMsg: Priority is missing');
+        expect(await casePreviewPo.isCaseStatusDisplayed('Assigned')).toBeTruthy('failureMsg: Case Status is missing');
+        expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('failureMsg: Requester name is missing');
+        expect(await casePreviewPo.isRequesterPhoneDisplayed('+15123431923')).toBeTruthy('Requester phone number is missing');
+        expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('failureMsg: Requester email id is missing');
+        expect(await casePreviewPo.isCaseTemplateDisplayed('Change My Legal Name')).toBeFalsy('failureMsg: Case Template is displayed');
+        expect(await casePreviewPo.isDescriptionDisplayed('Qadim Katawazi Generate Employee Verification Letter ' + caseSummary)).toBeTruthy('failureMsg: Description is missing');
+        expect(await casePreviewPo.isCategoryTier1Displayed('Workforce Administration')).toBeTruthy('failureMsg: CategoryTier1 is missing');
+        expect(await casePreviewPo.isCategoryTier2Displayed('HR Operations')).toBeTruthy('failureMsg: CategoryTier2 is missing');
+        expect(await casePreviewPo.isCategoryTier3Displayed('Employment Verification')).toBeTruthy('failureMsg: CategoryTier3 is missing');
+        expect(await casePreviewPo.isAssigneeDisplayed('Al Allbrook')).toBeTruthy('failureMsg: Assignee name is missing');
+        expect(await casePreviewPo.isAssignedGroupDisplayed('Workforce Administration')).toBeTruthy('failureMsg: Assigned group name is missing');
+        expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('failureMsg: Assigned company name is missing');
+        expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('failureMsg: View Case button is missing');
+        expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('failureMsg: Create New Case button is missing');
     });
 }) 
