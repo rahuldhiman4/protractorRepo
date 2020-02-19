@@ -1,5 +1,4 @@
-import { $, browser, protractor, ProtractorExpectedConditions, element, by, $$, Key, WebElement, ElementFinder } from "protractor";
-import utilCommon from '../../utils/util.common';
+import { $, $$, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../utils/util.grid';
 
 class CaseWatchlistBlade {
@@ -26,8 +25,7 @@ class CaseWatchlistBlade {
         filterDropdown: '.show__more-tags',
         caseLinks: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .ui-grid__link',
         clearSearchicon: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .d-icon-cross',
-        watchListModal: '.modal-dialog',
-        caseIdSortTriangle: '//*[@rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"]//span[text()="Case ID"]//ancestor::div[@class="sortable"]//i[@class="ui-grid-icon-angle-down"]'
+        watchListModal: '.modal-dialog'
     }
 
     async addWatchlistEvent(eventName: string): Promise<void> {
@@ -120,6 +118,12 @@ class CaseWatchlistBlade {
         await utilGrid.clickCheckBoxOfValueInGrid(caseId, this.selectors.guid);
     }
 
+    async selectTwoCases(caseId1: string, caseId2: string): Promise<void>{
+        await this.sortDescendingByCaseId();
+        await utilGrid.clickCheckBoxOfValueInGrid(caseId1, this.selectors.guid);
+        await utilGrid.clickCheckBoxOfValueInGrid(caseId2, this.selectors.guid);
+    }
+
     async clickOnRemoveBtn(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.removeBtn)));
         await $(this.selectors.removeBtn).click();
@@ -208,14 +212,18 @@ class CaseWatchlistBlade {
         await $(this.selectors.closeButton).click();
     }
 
-    async sortDescendingByCaseId(): Promise<void>{
-//        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.caseIdSortTriangle))));
-        await element(by.xpath(this.selectors.caseIdSortTriangle)).click();
-        let descendingSign: ElementFinder = element.all(by.repeater('item in menuItems')).get(1);
-//        await browser.wait(this.EC.elementToBeClickable(descendingSign));
-        await descendingSign.click();
-//        await utilCommon.waitUntilSpinnerToHide();
-    }
+async sortDescendingByCaseId(): Promise<void>{
+            let headerText = await $$('[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .sortable');
+            for(let i:number=0; i<(await headerText.length); i++){
+                let columnName = await headerText[i].$('span');
+                if(await columnName.getText()=='Case ID'){
+                    await headerText[i].$('.ui-grid-icon-angle-down').click();
+                    break;
+                }
+            }
+            let descendingSign: ElementFinder = await element.all(by.repeater('item in menuItems')).get(1);
+            await descendingSign.click();
+        }
 
 }
 

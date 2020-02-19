@@ -6,15 +6,10 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
 import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
-import serviceTargetViewConsole from '../../pageobject/settings/slm/service-target-viewconsole.po';
-import utilCommon from '../../utils/util.common';
-import serviceTargetBladePo from '../../pageobject/settings/slm/service-target-blade.po';
-import caseConsolePo from '../../pageobject/case/case-console.po';
-import viewCasePo from 'e2e/pageobject/case/view-case.po';
 
-var caseBAUser = 'qkatawazi';
+let caseBAUser = 'qkatawazi';
 
-describe('Service Taret Tests', () => {
+describe('Service Target - Second Level Association Tests', () => {
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login(caseBAUser);
@@ -28,7 +23,7 @@ describe('Service Taret Tests', () => {
         await browser.refresh();
     });
 
-    it('[DRDMV-19665]:UI Validation to check how associations are displayed on build expression blade', async () => {
+    fit('[DRDMV-19665]:UI Validation to check how associations are displayed on build expression blade', async () => {
         let assignedCompanySecondLevelAssociation: string[] = ["Abbreviation", "Type"];
         let caseSiteSecondLevelAssociation: string[] = ["Address", "Country", "State", "Type", "Zip or Postal Code"];
         let requesterSecondLevelAssociation: string[] = ["Corporate ID", "Cost Centre", "Email", "Full Name", "Functional Roles", "Job Title", "Type", "VIP"];
@@ -337,49 +332,6 @@ describe('Service Taret Tests', () => {
         expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     }, 600 * 1000);
 
-    it('DRDMV-19668:Check SVT is attached to a Case and later Associations are updated', async () => {
-        await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
-            .toEqual('Service Target - Administration - Business Workflows');
-        await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-
-        //Verify second level association for Company
-        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Company','Abbreviation',"=",'TEXT',"ptramco");
-        let selectedExpx = await slmExpressionBuilder.getSelectedExpression();
-        var expectedSelectedExp = "'" + "Company > Abbreviation" + "'" + "=" + '"' + "ptramco" + '"'
-        expect(selectedExpx).toEqual(expectedSelectedExp);
-        await slmExpressionBuilder.clickOnSaveExpressionButton();
-        await serviceTargetConfig.selectGoal("4");
-        await serviceTargetConfig.selectMileStone();
-        await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-        await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-        await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
-        await serviceTargetConfig.clickOnSaveSVTButton();
-        browser.sleep(3000);
-        await navigationPage.gotCreateCase();
-        await createCasePage.selectRequester('Qiang');
-        await createCasePage.setSummary('Case for SVT creation');
-        await createCasePage.selectCategoryTier1('Employee Relations');
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
-        let caseDisplayId = await viewCasePo.getCaseID();
-        console.log(caseDisplayId);
-        expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-        await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
-            .toEqual('Service Target - Administration - Business Workflows');
-        await serviceTargetViewConsole.searchServiceTarget('SVT from Protractor');
-        await serviceTargetBladePo.clickOnBuildExpression();
-        await slmExpressionBuilder.clearSelectedExpression();
-        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Requester','Email',"=",'TEXT',"qtao@petramco.com");
-        await slmExpressionBuilder.clickOnSaveExpressionButton();
-        await serviceTargetConfig.clickOnSaveSVTButton();
-        await navigationPage.gotoCaseConsole();
-        await caseConsolePo.searchAndOpenCase(caseDisplayId);
-        expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true); //green
-    },600*1000);
 
 
 })

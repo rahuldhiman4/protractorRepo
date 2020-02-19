@@ -5,7 +5,7 @@ import { IKnowledgeArticles } from 'e2e/data/api/interface/knowledge.articles.in
 import { IPerson } from 'e2e/data/api/interface/person.interface.api';
 import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.api';
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
-import { browser } from 'protractor';
+import { browser, element } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
 import { CaseStatus, CasePriority, CaseTemplate, Knowledge, MenuItemStatus, NotificationType, ProcessLibConf, TaskTemplate } from "../api/constant.api";
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';

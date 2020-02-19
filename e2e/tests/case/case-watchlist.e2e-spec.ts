@@ -176,8 +176,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
         await caseConsole.clickOnWatchlistIcon();
-        await caseWatchlist.selectCase(caseId[0]);
-        await caseWatchlist.selectCase(caseId[1]);
+        await caseWatchlist.selectTwoCases(caseId[0], caseId[1]);
         await caseWatchlist.clickOnRemoveBtn();
         await caseWatchlist.clearWatchlistFilter();
         expect(await caseWatchlist.isCasePresent(caseId[0])).toBeFalsy(caseId[0] + ": Case is not removed");
@@ -378,7 +377,7 @@ describe('Case Watchlist', () => {
         expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeFalsy(assignmentNotification2 + " is present");
         expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeFalsy(statusNotification2 + " is present");
         await notificationAlerts.clickOnNotificationIcon();
-    });
+    },150*1000);
 
     it('[DRDMV-16044,DRDMV-16060]: Verify the position, Labels and * icon on Case console, Case and Watchlist modal', async () => {
         await apiHelper.apiLogin(qyuanStr);
@@ -820,7 +819,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
         }
-    });
+    },180*1000);
 
     it('[DRDMV-16055]: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -859,7 +858,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
-        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222157): Added 2 selected case(s) to the watchlist.");
+        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222157): Added 1 selected case(s) to the watchlist.");
 
         //Change the case status and case assignment for first case
         await utilGrid.searchAndOpenHyperlink(caseId[0]);
@@ -905,7 +904,7 @@ describe('Case Watchlist', () => {
         expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeTruthy(assignmentNotification2 + " is not present");
         expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeTruthy(statusNotification2 + " is not present");
         await notificationAlerts.clickOnNotificationIcon();
-    });
+    },160*1000);
 
     it('[DRDMV-16052]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -944,7 +943,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
-        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222157): Added 2 selected case(s) to the watchlist.");
+        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222157): Added 1 selected case(s) to the watchlist.");
 
         //Change the case status and case assignment for first case
         await utilGrid.searchAndOpenHyperlink(caseId[0]);
@@ -987,7 +986,7 @@ describe('Case Watchlist', () => {
         expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeTruthy(assignmentNotification2 + " is not present");
         expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeTruthy(statusNotification2 + " is not present");
         await notificationAlerts.clickOnNotificationIcon();
-    });
+    },160*1000);
 
     it('[DRDMV-16050]: Verify that write access Agent can add the case to watchlist from Case', async () => {
         await apiHelper.apiLogin(qtaoStr);

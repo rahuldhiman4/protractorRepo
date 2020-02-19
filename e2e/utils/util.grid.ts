@@ -125,8 +125,8 @@ export class GridOperation {
             await $(this.selectors.summaryField1).sendKeys(id);
             //          await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton1)));
             await $(this.selectors.searchButton1).click();
-            //          await browser.sleep(3000);
-            //          await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText('.ui-grid__link', id))));
+//          await browser.sleep(3000);
+            await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText('.ui-grid__link', id))),3000);
             await element(by.linkText(id)).click();
             //          await utilCommon.waitUntilSpinnerToHide();
         }
