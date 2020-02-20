@@ -219,7 +219,6 @@ describe('Automated Case Status Transition', () => {
         await browser.refresh();
         await notificationPo.clickOnNotificationIcon();
         expect(await notificationPo.isAlertPresent('Petramco Administrator changed the status of ' + caseId + ' to Closed')).toBeTruthy('Alert message is not present');
-        await notificationPo.clickOnNotificationIcon();
     });
 
 })

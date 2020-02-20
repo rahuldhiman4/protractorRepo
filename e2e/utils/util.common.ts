@@ -9,8 +9,10 @@ export class Util {
         dropDownInput: 'input[type="search"]',
         dropDownOption: '.ui-select-choices-row-inner *',
         popUpMsgLocator: '.rx-growl-item__message',
-        warningOk: '.d-modal__footer button[class*="d-button d-button_primary d-button_small"]',
-        warningCancel: '.d-modal__footer button[class*="d-button d-button_secondary d-button_small"]',
+        warningOk: '.modal-footer button[class*="d-button d-button_primary"], .d-modal__footer button[class*="d-button d-button_primary"]',
+        warningCancel: '.modal-footer button[class*="d-button d-button_secondary"], .d-modal__footer button[class*="d-button d-button_secondary"]',
+        warningDialog: '.modal-content .modal-dialog, .modal-content .d-modal__dialog',
+        warningDialogMsg: '.modal-content .modal-body, .modal-content .d-modal__content-item',
         closeTipMsg: '.close.rx-growl-close',
         errorMsg: '.rx-alert-error',
         advancedSearchInput: 'input.rx-adv-search-textField',
@@ -18,7 +20,7 @@ export class Util {
         advancedSearchSettingsBtnClose: 'button[ng-hide="showAdvOptions"]',
         advancedSearchResult: '.km-group-list-item__description',
         dropDownChoice: '.ui-select__rx-choice',
-        warningMsgText: '.d-modal__content-item',
+        warningMsgText: '.modal-content .modal-title-message, .modal-content .d-modal__title',
         configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
     }
 
@@ -26,6 +28,11 @@ export class Util {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.configurationOptionsErrorMessage)));
         return await element(by.cssContainingText(this.selectors.configurationOptionsErrorMessage, errorMessage)).isDisplayed();
 
+    }
+
+    async isWarningDialogBoxDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.warningDialog)),2000);
+        return await $(this.selectors.warningDialog).isDisplayed();
     }
 
     async getWarningMessagegText(): Promise<string> {
@@ -283,6 +290,10 @@ export class Util {
         let filePath: string = 'e2e/data/downloads/' + fileName;
         await browser.sleep(5000);
         return await fs.existsSync(filePath);
+    }
+
+    async getWarningDialogMsg(): Promise<string> {
+        return await $(this.selectors.warningDialogMsg).getText();
     }
 }
 

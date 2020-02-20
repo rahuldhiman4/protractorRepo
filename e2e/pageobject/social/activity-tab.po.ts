@@ -452,7 +452,9 @@ class ActivityTabPage {
     async isComplexSurveyOrderIsThird(): Promise<boolean> {
         //        await utilCommon.waitUntilSpinnerToHide();
         //        await browser.wait(this.EC.visibilityOf(element(by.xpath("(//div[@class='log-item__content'])[3]//div[text()='View Survey Information']"))));
-        return await element(by.xpath("(//div[@class='log-item__content'])[3]//div[text()='View Survey Information']")).isPresent();
+        let activityLog = await $$('.log-item__content').get(2);
+        let textValue = await activityLog.getText();
+        return textValue.includes('View Survey Information');
     }
 
 }
