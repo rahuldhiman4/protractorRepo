@@ -14,7 +14,7 @@ class RelatedPersonPage {
         relatedPersonNames: ' .person-name a',
         relations: ' .person-relationship p',
         personOrganization: ' .person-organization',
-        emailLink: ' .list-email',
+        emailLink: ' .list-email, [rx-view-component-id="6bfe26e7-5065-4db7-a317-18e14a37cd30"] .ac-link-person-email',
         site: ' .ac-text-site-value',
         phoneNumber: ' .ac-link-person-phone',
         removePersonCrossIcon: ' .close.close-button',
@@ -154,7 +154,7 @@ class RelatedPersonPage {
             let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
             if (nm == personName) {
                 person = await $$(this.selectors.allRelatedPersons).get(i);
-                stat = await person.$$(this.selectors.emailLink).get(i).getAttribute("ng-if") == "!showLink";
+                stat = await person.$$(this.selectors.emailLink).getAttribute("ng-if") == "!showLink";
                 break;
             }
         }

@@ -45,39 +45,6 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    it('[DRDMV-17553]: Case manager - automatic case status transtion rule console validations', async () => {
-        try {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
-            let automatedStatusTransitionData = await require('../../data/ui/case/automatedStatusTransition.ui.json');
-            var configName: string = await automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].name + Math.floor(Math.random() * 100000);
-            automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].name = configName;
-            automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].changeStatusAfter = Math.floor(Math.random() * 180) + 1;
-            await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
-            await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(automatedStatusTransitionData);
-        }
-        catch (ex) {
-            throw ex;
-        }
-        finally {
-            await navigationPage.signOut();
-            await loginPage.login('qdu');
-        }
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
-        expect(await automatedStatusTransitionConsole.isAddAutomatedStatusTransitionBtnEnabled()).toBeFalsy();
-        await utilGrid.searchAndSelectGridRecord(configName);
-        expect(await automatedStatusTransitionConsole.isDeleteAutomatedStatusTransitionBtnEnabled()).toBeFalsy();
-        await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
-        await automatedStatusTransitionConsole.openAutomatedTransitionConfig(configName);
-        expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionNameEnabled()).toBeFalsy();
-        expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionSaveBtnEnabled()).toBeFalsy();
-    });
-
-    // asahitya
     it('[DRDMV-18033]: Check Case manager is not able to perform Create Update Delete operation on Case Assignment Mapping', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
