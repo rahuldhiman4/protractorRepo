@@ -14,8 +14,6 @@ describe('AcknowledgmentTemplate', () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qkatawazi');
 
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
-        await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         label = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
@@ -108,6 +106,8 @@ describe('AcknowledgmentTemplate', () => {
         let templateName = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName2 = 'Public' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName3 = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateName4 = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateName5 = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let subject = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -196,10 +196,11 @@ describe('AcknowledgmentTemplate', () => {
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Search Subject is missing in column');
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('Petramco');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Search Company is missing in column');
+        
 
         // DRDMV-10902
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
-        await createAcknowledgmentTemplatesPo.setTemplateName(templateName3);
+        await createAcknowledgmentTemplatesPo.setTemplateName(templateName4);
         await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
         await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
         await createAcknowledgmentTemplatesPo.selectLabelDropDown(label);
@@ -207,13 +208,24 @@ describe('AcknowledgmentTemplate', () => {
         await createAcknowledgmentTemplatesPo.setSubject(subject);
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:' + templateName3, 'Duplicate private template name error message is missing');
+
+        await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
+        await createAcknowledgmentTemplatesPo.setTemplateName(templateName4);
+        await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
+        await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
+        await createAcknowledgmentTemplatesPo.selectLabelDropDown(label);
+        await createAcknowledgmentTemplatesPo.setDescription(description);
+        await createAcknowledgmentTemplatesPo.setSubject(subject);
+        await createAcknowledgmentTemplatesPo.setBody(body);
+        await createAcknowledgmentTemplatesPo.clickOnSaveButton();
+        
+        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:' + templateName4, 'Duplicate private template name error message is missing');
         await utilCommon.closePopUpMessage();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
 
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
-        await createAcknowledgmentTemplatesPo.setTemplateName(templateName2);
+        await createAcknowledgmentTemplatesPo.setTemplateName(templateName5);
         await createAcknowledgmentTemplatesPo.selectCompanyDropDown('- Global -');
         await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
         await createAcknowledgmentTemplatesPo.selectLabelDropDown(label);
@@ -221,7 +233,18 @@ describe('AcknowledgmentTemplate', () => {
         await createAcknowledgmentTemplatesPo.setSubject(subject);
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:' + templateName2, 'Duplicate private template name error message is missing');
+
+        await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
+        await createAcknowledgmentTemplatesPo.setTemplateName(templateName5);
+        await createAcknowledgmentTemplatesPo.selectCompanyDropDown('- Global -');
+        await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
+        await createAcknowledgmentTemplatesPo.selectLabelDropDown(label);
+        await createAcknowledgmentTemplatesPo.setDescription(description);
+        await createAcknowledgmentTemplatesPo.setSubject(subject);
+        await createAcknowledgmentTemplatesPo.setBody(body);
+        await createAcknowledgmentTemplatesPo.clickOnSaveButton();
+        
+        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:' + templateName5, 'Duplicate private template name error message is missing');
         await utilCommon.closePopUpMessage();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
