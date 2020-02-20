@@ -12,7 +12,7 @@ import { operation, security, type } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 
-describe('Case Watchlist', () => {
+describe('Case Bulk Operation', () => {
 
     let qtaoStr = 'qtao';
     let petramcoStr = 'Petramco';

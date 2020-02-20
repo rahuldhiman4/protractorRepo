@@ -101,6 +101,16 @@ describe('Automated Case Status Transition', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
 
+            expect(await automatedStatusTransitionConsole.isAddAutomatedStatusTransitionBtnEnabled()).toBeFalsy();
+            await utilGrid.searchAndSelectGridRecord(configName1);
+            expect(await automatedStatusTransitionConsole.isDeleteAutomatedStatusTransitionBtnEnabled()).toBeFalsy();
+            await browser.refresh();
+            await utilCommon.waitUntilSpinnerToHide();
+            await automatedStatusTransitionConsole.openAutomatedTransitionConfig(configName1);
+            expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionNameEnabled()).toBeFalsy();
+            expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionSaveBtnEnabled()).toBeFalsy();
+            await browser.refresh();
+
             //Search and presence of existing rule test
             expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy();
             await utilGrid.clearGridSearchBox();
@@ -131,7 +141,7 @@ describe('Automated Case Status Transition', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
         }
-    }, 150 * 1000);
+    }, 170 * 1000);
 
     //asahitya
     it('[DRDMV-17561]: Toggle status for Automatic case status transition configuration rule', async () => {
