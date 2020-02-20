@@ -86,7 +86,7 @@ class CaseEditPage {
     }
 
     async removeAttachment(fileName: string): Promise<void> {
-        await $(`.rx-attachment-view-remove[aria-label="Remove Attachment ${fileName}"] i`).click();
+        await $(`[aria-label="Remove Attachment ${fileName}"] i`).click();
     }
 
     async waitForEditCasePageToBeDisplayed(): Promise<void> {
