@@ -39,7 +39,7 @@ var advancedSearchOptionCategoryTier1ForDocumentLibrary = "Operational Category 
 var knowledgeArticlesStr = "Knowledge Articles ";
 var recommendedKnowledgeStr = "Recommended Knowledge ";
 var applyBtn = "Apply";
-var emptyStr = '';
+var emptyStr = undefined;
 var articleInDraftStatus = 'Knowledge Article_Draft';
 var articleInSMEReviewStatus = 'Knowledge Article_SMEReview';
 var articleInPublishedStatus = 'Knowledge Article_Published';
@@ -54,13 +54,13 @@ var successMsg = "Saved successfully.";
 var documentLibraryStatus = "Published";
 var draftStatus = "Draft";
 var inProgressStatus = "In Progress";
-var smeReviewStatus = "SME Review";
+var smeReviewStatus = "SMEReview";
 var publishedStatus = "Published";
 var retiredStatus = "Retired";
 var closedStatus = "Closed";
 var canceledStatus = "Canceled";
 
-describe('Knowledge Articles Tests', () => {
+describe('Knowledge Articles - Categorization Tests', () => {
     const draft: any = Knowledge.Draft;
     const smeReview: any = Knowledge.SMEReview;
     const published: any = Knowledge.Published;
@@ -103,7 +103,7 @@ describe('Knowledge Articles Tests', () => {
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, smeReviewStatus,knowledgePublisherUser,'GB Support 2','Petramco')).toBeTruthy("Article with SME Review status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, smeReviewStatus,"KMills",'GB Support 2','Petramco')).toBeTruthy("Article with SME Review status not updated.");
 
         //Create article in Published status
         articleData.title = articleData.title + "_" + publishedStatus;
@@ -167,6 +167,7 @@ describe('Knowledge Articles Tests', () => {
             categoryTier2Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier2);
             await knowledgeConsole.searchOnGridConsole(categoryTier3FieldVal);
             categoryTier3Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier3); expect(categoryTier1Val).toEqual(emptyStr);
+            expect(categoryTier1Val).toEqual(emptyStr);
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
             await navigationPage.signOut();
@@ -349,7 +350,6 @@ describe('Knowledge Articles Tests', () => {
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
         }
         catch (error) {
             throw error;
@@ -702,7 +702,6 @@ describe('Knowledge Articles Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
-            await navigationPage.signOut();
         }
         catch (error) {
             throw error;
@@ -795,7 +794,6 @@ describe('Knowledge Articles Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResult()).toEqual(title);
-            await navigationPage.signOut();
         }
         catch (error) {
             throw error;

@@ -20,46 +20,46 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 
-var caseBAUser = 'qkatawazi';
-var caseAgentUser = 'qtao';
-var caseManagerUser = 'qdu';
-var knowledgeCandidateUser = 'kayo';
-var knowledgeContributorUser = 'kkohri';
-var knowledgePublisherUser = 'kmills';
-var knowledgeCoachUser = 'kWilliamson';
-var emptyStr = '';
-var articleInDraftStatus = 'Knowledge Article_Draft';
-var articleInSMEReviewStatus = 'Knowledge Article_SMEReview';
-var articleInPublishedStatus = 'Knowledge Article_Published';
-var articleInRetiredStatus = 'Knowledge Article_Retired';
-var articleInClosedStatus = 'Knowledge Article_Closed';
-var articleInCanceledStatus = 'Knowledge Article_Canceled';
-var regionField = "Region";
-var siteField = "Site";
-var regionFieldVal = "Australia";
-var siteFieldVal = "Canberra";
-var siteFieldVal2 = "Athens";
-var regionFieldVal2 = "Central America";
-var siteFieldVal1 = "Mexico City";
-var knowledgeManagementApp = "Knowledge Management";
-var companyStr = "Petramco";
-var ownerSupportGroup = "Compensation and Benefits";
-var documentLibraryColumnHeader = "Title";
-var applyBtn = "Apply";
-var documentLibraryStr = "Document Library ";
-var RecommendedKnowledgeStr = "Recommended Knowledge ";
-var successMsg = "Saved successfully.";
-var documentLibraryStatus = "Published";
-var knowledgeArticlesStr = "Knowledge Articles ";
-var draftStatus = "Draft";
-var inProgressStatus = "In Progress";
-var smeReviewStatus = "SME Review";
-var publishedStatus = "Published";
-var retiredStatus = "Retired";
-var closedStatus = "Closed";
-var canceledStatus = "Canceled";
+let caseBAUser = 'qkatawazi';
+let caseAgentUser = 'qtao';
+let caseManagerUser = 'qdu';
+let knowledgeCandidateUser = 'kayo';
+let knowledgeContributorUser = 'kkohri';
+let knowledgePublisherUser = 'kmills';
+let knowledgeCoachUser = 'kWilliamson';
+let emptyStr = undefined;
+let articleInDraftStatus = 'Knowledge Article_Draft';
+let articleInSMEReviewStatus = 'Knowledge Article_SMEReview';
+let articleInPublishedStatus = 'Knowledge Article_Published';
+let articleInRetiredStatus = 'Knowledge Article_Retired';
+let articleInClosedStatus = 'Knowledge Article_Closed';
+let articleInCanceledStatus = 'Knowledge Article_Canceled';
+let regionField = "Region";
+let siteField = "Site";
+let regionFieldVal = "Australia";
+let siteFieldVal = "Canberra";
+let siteFieldVal2 = "Athens";
+let regionFieldVal2 = "Central America";
+let siteFieldVal1 = "Mexico City";
+let knowledgeManagementApp = "Knowledge Management";
+let companyStr = "Petramco";
+let ownerSupportGroup = "Compensation and Benefits";
+let documentLibraryColumnHeader = "Title";
+let applyBtn = "Apply";
+let documentLibraryStr = "Document Library ";
+let RecommendedKnowledgeStr = "Recommended Knowledge ";
+let successMsg = "Saved successfully.";
+let documentLibraryStatus = "Published";
+let knowledgeArticlesStr = "Knowledge Articles ";
+let draftStatus = "Draft";
+let inProgressStatus = "In Progress";
+let smeReviewStatus = "SME Review";
+let publishedStatus = "Published";
+let retiredStatus = "Retired";
+let closedStatus = "Closed";
+let canceledStatus = "Canceled";
 
-describe('Knowledge Articles Tests', () => {
+describe('Knowledge Articles - Location (Region / Site) Tests', () => {
     const draft: any = Knowledge.Draft;
     const smeReview: any = Knowledge.SMEReview;
     const published: any = Knowledge.Published;
@@ -83,7 +83,7 @@ describe('Knowledge Articles Tests', () => {
             "assignee":"KMills",
             "assigneeSupportGroup":"GB Support 2"
         }
-        //Create article in in progress status
+        // Create article in in progress status
         articleData.title = articleData.title + "_" + inProgressStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
 
@@ -98,7 +98,7 @@ describe('Knowledge Articles Tests', () => {
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, smeReviewStatus,knowledgePublisherUser,'GB Support 2','Petramco')).toBeTruthy("Article with SME Review status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, smeReviewStatus,"KMills",'GB Support 2','Petramco')).toBeTruthy("Article with SME Review status not updated.");
 
         //Create article in Published status
         articleData.title = articleData.title + "_" + publishedStatus;
@@ -135,6 +135,7 @@ describe('Knowledge Articles Tests', () => {
     });
 
     it('[DRDMV-19569,DRDMV-19570,DRDMV-19571]:Verify the search functionality of knowledge articles console for Region', async () => {
+        try{
         let regionFieldColumn: string[] = ["Region"];
         let knowledgeGridColumnFields: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged", "Region"];
         let knowledgeGridColumnFieldsWithoutRegion: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged"];
@@ -145,7 +146,7 @@ describe('Knowledge Articles Tests', () => {
         expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
         await utilGrid.searchOnGridConsole(regionFieldVal);
         let regionVal: string = await knowledgeConsole.getSelectedGridRecordValue(regionField);
-        expect(regionVal).toEqual(regionFieldVal);
+        expect(regionVal).toEqual(regionFieldVal);        
 
         await knowledgeConsole.removeColumnOnGrid(regionFieldColumn);
         expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFieldsWithoutRegion)).toBe(true);
@@ -251,7 +252,18 @@ describe('Knowledge Articles Tests', () => {
         regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
         expect(regionVal).toEqual(emptyStr);
         await utilCommon.switchToDefaultWindowClosingOtherTabs();
+    }
+    catch (error) {
+        throw error;
+    }
+    finally {
+        await utilCommon.switchToDefaultWindowClosingOtherTabs();
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.signOut();
+        await loginPage.login(caseBAUser);
+    }
+
     }, 400 * 1000);
 
     it('[DRDMV-19565,DRDMV-19567,DRDMV-19568]:Verify the Save functionality of Region and Site fields on Knowledge Articles Create / Edit screen', async () => {
@@ -275,8 +287,8 @@ describe('Knowledge Articles Tests', () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
-            await createKnowledgePage.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
+            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
@@ -299,8 +311,8 @@ describe('Knowledge Articles Tests', () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
-            await createKnowledgePage.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
+            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
@@ -323,8 +335,8 @@ describe('Knowledge Articles Tests', () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
-            await createKnowledgePage.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
+            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
@@ -348,13 +360,13 @@ describe('Knowledge Articles Tests', () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal2);
-            await createKnowledgePage.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
+            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
-            //Login with Knowledge Candidate
+            //Login with Knowledge Contributor
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
@@ -404,7 +416,7 @@ describe('Knowledge Articles Tests', () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
-            //Login with Knowledge Candidate
+            //Login with Knowledge Coach
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
@@ -427,7 +439,6 @@ describe('Knowledge Articles Tests', () => {
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
         }
         catch (error) {
             throw error;
@@ -437,10 +448,12 @@ describe('Knowledge Articles Tests', () => {
             await browser.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
+            await loginPage.login(caseBAUser);
         }
     }, 400 * 1000);
 
     it('[DRDMV-19574]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
+        try{
         await apiHelper.apiLogin('tadmin');
         var caseAgentuserData = {
             "firstName": "caseAgent",
@@ -454,6 +467,7 @@ describe('Knowledge Articles Tests', () => {
             "userId": "caseManager",
             "userPermission": "AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
         }
+
         await apiHelper.createNewUser(caseAgentuserData);
         await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
 
@@ -532,9 +546,22 @@ describe('Knowledge Articles Tests', () => {
         await createDocumentLibraryPage.selectStatus(documentLibraryStatus);
         await createDocumentLibraryPage.saveUpdatedDocument();
         await navigationPage.signOut();
+    }
+    catch (error) {
+        throw error;
+    }
+    finally {
+        await utilCommon.switchToDefaultWindowClosingOtherTabs();
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
+        await navigationPage.signOut();
+        await loginPage.login(caseBAUser);
+    }
+
     }, 400 * 1000);
 
     it('[DRDMV-19575]:Verify the search functionality of Document library console for Region', async () => {
+        try{
         await apiHelper.apiLogin('tadmin');
         var regionFields: string[] = ["Region"];
         var siteFields: string[] = ["Site"];
@@ -616,9 +643,21 @@ describe('Knowledge Articles Tests', () => {
         regionVal = await documentLibraryPage.getSelectedGridRecordValue(regionField);
         expect(regionVal).toEqual(emptyStr);
         await navigationPage.signOut();
+    }
+    catch (error) {
+        throw error;
+    }
+    finally {
+        await utilCommon.switchToDefaultWindowClosingOtherTabs();
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
+        await navigationPage.signOut();
+        await loginPage.login(caseBAUser);
+    }
     }, 400 * 1000);
 
     it('[DRDMV-19573]:Verify the document search based on Region and Site from attachments', async () => {
+        try{
         let caseSummary = `Case for Document Search-${new Date().valueOf()}`;
 
         //Create a document library
@@ -760,9 +799,22 @@ describe('Knowledge Articles Tests', () => {
         await resources.clickOnAdvancedSearchSettingsIconToClose();
         await expect(await resources.getAdvancedSearchResult()).toEqual(title);
         await navigationPage.signOut();
+    }
+    catch (error) {
+        throw error;
+    }
+    finally {
+        await utilCommon.switchToDefaultWindowClosingOtherTabs();
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
+        await navigationPage.signOut();
+        await loginPage.login(caseBAUser);
+    }
+
     }, 400 * 1000);
 
     it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
+       try{
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName(caseAgentUser);
         await quickCase.setCaseSummary(articleInDraftStatus);
@@ -1335,6 +1387,18 @@ describe('Knowledge Articles Tests', () => {
         await resources.clickOnAdvancedSearchSettingsIconToClose();
         await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
         await navigationPage.signOut();
+    }
+    catch (error) {
+        throw error;
+    }
+    finally {
+        await utilCommon.switchToDefaultWindowClosingOtherTabs();
+        await browser.refresh();
+        await utilCommon.waitUntilSpinnerToHide();
+        await navigationPage.signOut();
+        await loginPage.login(caseBAUser);
+    }
+
     }, 400 * 1000);
 
 })

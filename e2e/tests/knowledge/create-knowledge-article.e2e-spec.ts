@@ -638,6 +638,7 @@ describe('Knowledge Article', () => {
             await utilGrid.clearFilter();
             await utilGrid.searchRecord(KADetails.displayId);
             expect(await KnowledgeConsolePage.isValueDisplayedInGrid('Review Status')).toContain('Reviewed');
+            await knowledgeArticlesConsolePo.removeColumnOnGrid(columnName);
         }
         catch (e) {
             throw e;
@@ -652,7 +653,6 @@ describe('Knowledge Article', () => {
     it('[DRDMV-5059]: Review article in SME Review status & Reject article', async () => {
         try {
             let knowledgeTitile = 'knowledge5059' + randomStr;
-            await apiHelper.apiLogin(knowledgePublisherUser);
             await apiHelper.apiLogin(knowledgePublisherUser);
             let articleData = {
                 "knowledgeSet": "HR",
@@ -691,6 +691,7 @@ describe('Knowledge Article', () => {
             await utilGrid.clearFilter();
             await utilGrid.searchRecord(KADetails.displayId);
             expect(await KnowledgeConsolePage.isValueDisplayedInGrid('Review Status')).toContain('Reviewed');
+            await knowledgeArticlesConsolePo.removeColumnOnGrid(knowledgeGridColumnFields);
         }
         catch (e) {
             throw e;
