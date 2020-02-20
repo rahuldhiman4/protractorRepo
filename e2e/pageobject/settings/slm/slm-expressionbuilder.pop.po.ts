@@ -294,7 +294,7 @@ class SlmExpressionBuilder {
     }
 
     async clickOnSaveExpressionButton() {
-        //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
+        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)),2000);
         await $(this.expressionBuilderSelectors.saveSVTExpressionButton).click();
     }
 

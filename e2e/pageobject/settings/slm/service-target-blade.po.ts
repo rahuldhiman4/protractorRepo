@@ -30,6 +30,7 @@ class ServiceTargetConfig {
         valueSearch: ' input[type="search"]',
         addButton: '.d-textfield__label .margin-top-10 button',
         expressionBuilderBtn: 'button.d-textfield__item',
+        termsAndConditionsField: 'textarea[aria-label="Terms and Condition"]'
     }
 
     async isServiceTargetBladeDisplayed(): Promise<boolean> {
@@ -52,6 +53,26 @@ class ServiceTargetConfig {
         await $$(this.selectors.buildExpressionLink).first().click();
     }
 
+    async enterSVTTitle(svtTitleStr: string): Promise<void> {
+        await element(by.model(this.selectors.svtTitle)).sendKeys(svtTitleStr);
+    }
+
+    async selectCompany(company: string): Promise<void> {
+        await $(this.selectors.selectCompanyDD).click();
+        await element(by.cssContainingText(this.selectors.dropDownOption, company)).click();
+    }
+
+    async selectDataSource(dataSource: string): Promise<void> {
+        await $(this.selectors.selectDataSourceDD).click();
+        await element(by.cssContainingText(this.selectors.dropDownOption, dataSource)).click();
+    }
+
+    async clickBuildExpressionLink(): Promise<void> {
+        await $$(this.selectors.buildExpressionLink).first().click();
+    }
+
+
+
     async selectGoalType(svtGoalType: string): Promise<void> {
         await $(this.selectors.selectGoalType).click();
         await element(by.cssContainingText(this.selectors.dropDownOption, svtGoalType)).click();
@@ -67,7 +88,7 @@ class ServiceTargetConfig {
 
 
     async isTermsAndConditionsFieldMandatory(): Promise<boolean> {
-        return await utilCommon.isRequiredAttributePresent(this.selectors.buildExpressionLink);
+        return await $(this.selectors.termsAndConditionsField).getAttribute("required") == 'true';
     }
 
     async clickOnBuildExpression(): Promise<void> {
@@ -90,6 +111,7 @@ class ServiceTargetConfig {
         //        browser.sleep(2000);
         await $$(this.selectors.segments).get(1).$$(this.selectors.buildExpressionLink).get(measurementExp).click();
         //        browser.sleep(2000);
+        await SlmExpressionBuilder.clearSelectedExpression();
         await SlmExpressionBuilder.selectExpressionQualification(field, operator, fieldAttribute, fieldvalue);
         await SlmExpressionBuilder.clickOnAddExpressionButton(fieldAttribute);
         await SlmExpressionBuilder.clickOnSaveExpressionButton();
@@ -118,7 +140,7 @@ class ServiceTargetConfig {
     }
 
     async isSaveButtonEnabled(): Promise<boolean> {
-        return await $(this.selectors.saveSVTButton).isEnabled();
+        return await $(this.selectors.saveSVTButton).getAttribute("disabled") == 'true';
     }
 
     async isCloseButtonEnabled(): Promise<boolean> {
