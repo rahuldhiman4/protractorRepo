@@ -43,7 +43,7 @@ export class GridOperation {
 
         let gridColumnHeaderList = await $$(`[rx-view-component-id='${guid}'] .ui-grid-header-cell-label`);
         for (let i: number = 0; i < gridColumnHeaderList.length; i++) {
-            arr.push(await gridColumnHeaderList[i].getText());
+            arr.push(await gridColumnHeaderList[i].getAttribute('innerText'));
         }
         arr.sort();
         columnHeader.sort();
