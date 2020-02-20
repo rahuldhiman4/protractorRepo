@@ -4,6 +4,7 @@ import caseTaskTab from '../../pageobject/case/case-task-tab.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import loginPage from "../../pageobject/common/login.po";
+import { SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
 import navigationPage from "../../pageobject/common/navigation.po";
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
@@ -21,6 +22,7 @@ import updateStatusBladePo from '../../pageobject/common/update.status.blade.po'
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import { CASE_MANAGEMENT_LIB_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
 import apiCoreUtil from '../../api/api.core.util';
+import viewTasktemplatePage from '../../pageobject/settings/task-management/view-tasktemplate.po';
 let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
 
 describe('Create Case Task', () => {
@@ -141,6 +143,7 @@ describe('Create Case Task', () => {
         await taskTemplate.selectTaskCategoryTier4('Failure');
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.clickOnSaveTaskTemplate();
+        await expect(viewTasktemplatePage.getTaskCompanyNameValue()).toBe("Petramco");
         //await utilCommon.waitUntilPopUpDisappear();
 
         //case create
@@ -190,7 +193,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 210 * 1000);
+    }, 240 * 1000);
 
     //ankagraw
     it('[DRDMV-7124]: [Automatic Task] - Task Template UI in Edit mode: New fields validations ', async () => {
@@ -486,7 +489,12 @@ describe('Create Case Task', () => {
 
     //ankagraw
     it('[DRDMV-7149]: [Automatic Task] - Automated Task Status transition validation', async () => {
-
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await apiHelper.apiLogin('tadmin');
+        let social_Service = SOCIAL_SERVICE_PROCESS;
+        let social_Service_Process = social_Service.name + randomStr;
+        social_Service.name = social_Service_Process;
+        await apiCoreUtil.createProcess(social_Service);
         let automationTaskTemplate = 'Automatic task' + Math.floor(Math.random() * 1000000);
         let automationTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
         let createCase = 'Create Case task' + Math.floor(Math.random() * 1000000);
@@ -497,8 +505,8 @@ describe('Create Case Task', () => {
             "templateName": automationTaskTemplate,
             "templateSummary": automationTaskSummary,
             "templateStatus": "Active",
-            "processBundle": "com.bmc.dsm.bwfa",
-            "processName": processName,
+            "processBundle": "com.bmc.dsm.social-lib",
+            "processName": social_Service_Process,
         }
         //Automation Task template
         await apiHelper.apiLogin('qkatawazi');
@@ -516,16 +524,8 @@ describe('Create Case Task', () => {
             await createCasePage.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(templateData.templateName);
-            await expect(await manageTask.isTaskLinkOnManageTask(templateData.templateSummary)).toBeTruthy(templateData.templateSummary + ' Task is not added to case');
-            await manageTask.clickTaskLinkOnManageTask(templateData.templateSummary);
-            await viewTask.clickOnChangeStatus();
-            await viewTask.changeTaskStatus('Canceled');
-            await viewTask.clickOnSaveStatus();
-            await expect(utilCommon.getPopUpMessage()).toBe('ERROR (222103): The Task can be moved to next stage only when the case is not in the Pending  status.');
-            await viewTask.clickOnCancelStatus();
-            await utilCommon.clickOnWarningOk();
-            await viewTask.clickOnViewCase();
-
+            await manageTask.clickOnCloseButton();
+           
             //validate Automation Template With Required Field
             await viewCasePage.changeCaseStatus("In Progress");
             await viewCasePage.clickSaveStatus();
@@ -536,6 +536,11 @@ describe('Create Case Task', () => {
             await viewTask.clickOnUpdateStatusDrpdown();
             await expect(viewTask.allTaskOptionsPresent(status)).toBeTruthy("Staus Not Found");
             await viewTask.clickOnCancelStatus();
+            await viewTask.clickOnChangeStatus();
+            await viewTask.changeTaskStatus('Closed');
+            await viewTask.clickOnSaveStatus();
+            await expect(viewTask.getTaskStatusValue()).toBe('Closed');
+
         } catch (e) {
             throw e;
         } finally {
