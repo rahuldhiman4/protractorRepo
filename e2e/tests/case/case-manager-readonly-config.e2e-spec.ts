@@ -109,9 +109,9 @@ describe('Case Manager Read-only Config', () => {
         await browser.refresh();
     });
 
-    //Defect: Description and Status fields are enabled
     // asahitya
     it('[DRDMV-18072]: Check Case manager is not able to perform Create Update operation on Process Library configuration', async () => {
+        await navigationPage.gotCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
         expect(await processLibraryConfigConsole.isRegisterProcessBtnDisabled()).toBeTruthy();
@@ -124,6 +124,7 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18069]: Check Case manager is not able to perform Create Update operation on Menu Items', async () => {
+        await navigationPage.gotCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
         expect(await menuItemsConfigConsole.isAddButtonDisabled()).toBeTruthy();
@@ -136,6 +137,7 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18038]: Check Case manager is not able to perform Create Update Delete operation on Case-> Status Configuration', async () => {
+        await navigationPage.gotCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
         await caseStatusConfig.setCompanyDropdown("Petramco");
@@ -153,6 +155,7 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18169]: Check Case manager is not able to perform Create Update operation on Goal Type', async () => {
+        await navigationPage.gotCreateCase();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type - Business Workflows');
         expect(await goalTypeConfigConsole.isAddGoalTypeBtnDisabled()).toBeTruthy("Add button is enabled");
         await utilGrid.searchAndOpenHyperlink("Case Resolution Time");
@@ -205,7 +208,6 @@ describe('Case Manager Read-only Config', () => {
         await browser.refresh();
     });
 
-    //Defect: Description and Status fields are enabled
     // asahitya
     it('[DRDMV-18034]: Check Case manager is not able to perform Create Update Delete operation on Note template', async () => {
         //API call to create the case notes template
@@ -220,7 +222,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
-        await utilGrid.searchAndSelectAllCheckBoxWOGrid(notesTemplateName);
+        await utilGrid.clickCheckBoxOfValueInGrid(notesTemplateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
         await browser.refresh();
         await utilGrid.searchAndOpenHyperlink(notesTemplateName);
@@ -229,7 +231,6 @@ describe('Case Manager Read-only Config', () => {
         await browser.refresh();
     });
 
-    //Defect: Description and Status fields are enabled
     // asahitya
     it('[DRDMV-18056]: Check Case manager is not able to perform Create Update Delete operation on Task->Note Template', async () => {
         //API call to create the case notes template
@@ -253,7 +254,6 @@ describe('Case Manager Read-only Config', () => {
         await browser.refresh();
     });
 
-    //Defect: Description and Status fields are enabled
     // asahitya
     it('[DRDMV-18042]: Check Case manager is not able to perform Create Update Delete operation on People->Note Template', async () => {
         //API call to create the case notes template
@@ -277,7 +277,6 @@ describe('Case Manager Read-only Config', () => {
         await browser.refresh();
     });
 
-    //Defect: Description and Status fields are enabled
     // asahitya
     it('[DRDMV-18071]: Check Case manager is not able to perform Create Update operation on Define Flowset configuration', async () => {
         //API call to create the flowset

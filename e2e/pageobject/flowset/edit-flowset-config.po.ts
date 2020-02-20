@@ -29,7 +29,7 @@ class EditFlowsetPage {
 
     async isFlowsetNameDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.flowsetName)));
-        return await $(this.selectors.flowsetName).getAttribute("disabled") == "true";
+        return await $(this.selectors.flowsetName).getAttribute("readonly") == "true";
     }
 
     async selectProcessName(process: string): Promise<void> {
