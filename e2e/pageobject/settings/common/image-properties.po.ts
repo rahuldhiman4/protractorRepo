@@ -1,6 +1,5 @@
 import { resolve } from "path";
-import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import { $, browser, by, element, protractor, ProtractorExpectedConditions, $$ } from "protractor";
 
 class ImagePropertiesPopUp {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -10,40 +9,42 @@ class ImagePropertiesPopUp {
         sendItToServerButton: '.cke_dialog_ui_fileButton .cke_dialog_ui_button',
         oKButton: '.cke_dialog_ui_button_ok',
         preViewBoxImg: '.ImagePreviewBox img[style]',
-
+        inputFieldsOnImageInfoTab: '.cke_dialog_ui_hbox_first input.cke_dialog_ui_input_text',
     }
 
-    async addImg(menuName: string,fileToUpload:string): Promise<void> {
+    async addImg(menuName: string, fileToUpload: string): Promise<void> {
         await this.clickOnTab(menuName);
         await this.addAttachment(fileToUpload);
         await this.clickOnSendItToServerButton();
+        await browser.wait(this.EC.visibilityOf($$(this.selectors.inputFieldsOnImageInfoTab).get(0)), 5000);
         await this.clickOnOkButton();
     }
 
     async clickOnOkButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.oKButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.oKButton)));
         await $(this.selectors.oKButton).click();
     }
 
     async clickOnSendItToServerButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.sendItToServerButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.sendItToServerButton)));
         await $(this.selectors.sendItToServerButton).click();
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.preViewBoxImg)));
-
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.preViewBoxImg)));
     }
 
     async clickOnTab(menuName: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.tabs)));
-        await element(by.cssContainingText(this.selectors.tabs,menuName)).click();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.tabs)), 3000);
+        await element(by.cssContainingText(this.selectors.tabs, menuName)).click();
     }
 
-    async addAttachment(fileToUpload:string): Promise<void> {
-        var elem = $('iframe.cke_dialog_ui_input_file');
-        await browser.switchTo().frame(elem.getWebElement());
+    async addAttachment(fileToUpload: string): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame(await $('iframe.cke_dialog_ui_input_file').getWebElement());
+        await browser.wait(this.EC.elementToBeClickable($('input[type="file"]')), 3000);
         const absolutePath = resolve(__dirname, fileToUpload);
         console.log("image to upload>>>>>>>>>>>>>>", absolutePath);
         await $(this.selectors.updalodFile).sendKeys(absolutePath);
         await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
     }
 }
 
