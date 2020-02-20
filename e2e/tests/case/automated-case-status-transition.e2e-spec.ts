@@ -1,14 +1,14 @@
 import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
+import { UPDATE_CASE_STATUS_MODIFIED_DATE } from '../../data/ui/case/update.case.data.api';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import notificationPo from '../../pageobject/notification/notification.po';
 import automatedStatusTransitionConsole from "../../pageobject/settings/case-management/automated-status-transition-console.po";
 import automatedStatusTransitionCreatePage from "../../pageobject/settings/case-management/create-automated-status-config.po";
 import automatedStatusTransitionEditPage from "../../pageobject/settings/case-management/edit-automated-status-config.po";
-import utilGrid from '../../utils/util.grid';
 import utilCommon from '../../utils/util.common';
-import apiHelper from '../../api/api.helper';
-import { UPDATE_CASE_STATUS_MODIFIED_DATE } from '../../data/ui/case/update.case.data.api';
-import notificationPo from '../../pageobject/notification/notification.po';
+import utilGrid from '../../utils/util.grid';
 
 describe('Automated Case Status Transition', () => {
     beforeAll(async () => {
@@ -27,7 +27,7 @@ describe('Automated Case Status Transition', () => {
     });
 
     //asahitya
-    it('DRDMV-17551: Case business analyst - automatic case status transtion rule console', async () => {
+    it('[DRDMV-17551]: Case business analyst - automatic case status transtion rule console', async () => {
         let automatedStatusTransitionData = await require('../../data/ui/case/automatedStatusTransition.ui.json');
 
         //Create first Record
@@ -78,7 +78,7 @@ describe('Automated Case Status Transition', () => {
     }, 130 * 1000);
 
     //asahitya
-    it('DRDMV-17553: Case manager - automatic case status transtion rule console validations', async () => {
+    it('[DRDMV-17553]: Case manager - automatic case status transtion rule console validations', async () => {
         let automatedStatusTransitionData = await require('../../data/ui/case/automatedStatusTransition.ui.json');
 
         //Create first Record
@@ -134,7 +134,7 @@ describe('Automated Case Status Transition', () => {
     }, 150 * 1000);
 
     //asahitya
-    it('DRDMV-17561: Toggle status for Automatic case status transition configuration rule', async () => {
+    it('[DRDMV-17561]: Toggle status for Automatic case status transition configuration rule', async () => {
         let configName: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let automatedStatusTransitionData = await require('../../data/ui/case/automatedStatusTransition.ui.json');
         automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].name = configName;
@@ -153,7 +153,7 @@ describe('Automated Case Status Transition', () => {
         expect(await automatedStatusTransitionConsole.getEnabledColumnValueOfRule(configName)).toBe('True');
     });
 
-    it('DRDMV-17557: Duplicate detection - create new automatic case transition rule which has field values same as existing rule', async () => {
+    it('[DRDMV-17557]: Duplicate detection - create new automatic case transition rule which has field values same as existing rule', async () => {
         let configName: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let days: any = Math.floor(Math.random() * 180) + 1;
 
@@ -185,7 +185,7 @@ describe('Automated Case Status Transition', () => {
         await utilCommon.clickOnWarningOk();
     });
 
-    it('DRDMV-17566: Automatic status transition of a case - Notification is sent to assignee', async () => {
+    it('[DRDMV-17566]: Automatic status transition of a case - Notification is sent to assignee', async () => {
         //Create the case
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
@@ -209,7 +209,7 @@ describe('Automated Case Status Transition', () => {
 
         //Update the case status to Resolved, update the modified date and run the Process
         await apiHelper.apiLogin("qkatawazi");
-        
+
         await apiHelper.updateCaseStatus(caseGuid, "Resolved", "Customer Follow-Up Required");
         await apiHelper.updateCase(caseGuid, UPDATE_CASE_STATUS_MODIFIED_DATE);
         await apiHelper.apiLogin("tadmin");

@@ -23,7 +23,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await browser.refresh();
     });
 
-    fit('[DRDMV-19665]:UI Validation to check how associations are displayed on build expression blade', async () => {
+    it('[DRDMV-19665]:UI Validation to check how associations are displayed on build expression blade', async () => {
         let assignedCompanySecondLevelAssociation: string[] = ["Abbreviation", "Type"];
         let caseSiteSecondLevelAssociation: string[] = ["Address", "Country", "State", "Type", "Zip or Postal Code"];
         let requesterSecondLevelAssociation: string[] = ["Corporate ID", "Cost Centre", "Email", "Full Name", "Functional Roles", "Job Title", "Type", "VIP"];
