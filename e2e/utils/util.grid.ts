@@ -210,11 +210,14 @@ export class GridOperation {
 
     async getSelectedGridRecordValue(guid: string, columnHeader: string): Promise<string> {
         let gridColumnHeaderList = await $$(`[rx-view-component-id='${guid}'] .ui-grid-header-cell-label`);
+        let columnValue = undefined;
         for (let i: number = 0; i < gridColumnHeaderList.length; i++) {
             if (await gridColumnHeaderList[i].getText() == columnHeader) {
-                return await $$(`[rx-view-component-id='${guid}'] .ui-grid-cell[role='gridcell'] .ui-grid-cell-contents`).then(async (result: ElementFinder[]) => {
+                columnValue = await $$(`[rx-view-component-id='${guid}'] .ui-grid-cell[role='gridcell'] .ui-grid-cell-contents`).then(async (result: ElementFinder[]) => {
+                    await browser.sleep(1000);
                     return await result[i].getText();
                 });
+                return columnValue;
             }
         }
     }

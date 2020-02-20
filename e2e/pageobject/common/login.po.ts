@@ -25,7 +25,7 @@ class LoginPage {
         let tasksConsole = this.EC.titleContains('Tasks - Business Workflows');
         let innovationStudio = this.EC.titleContains('Workspace - Innovation Studio');
         let noAccess = this.EC.titleContains('No Access');
-        await browser.wait(this.EC.or(caseConsole, knowledgeConsole, tasksConsole, innovationStudio, noAccess), 5000);
+        await browser.wait(this.EC.or(caseConsole, knowledgeConsole, tasksConsole, innovationStudio, noAccess), 10000);
 //        await utilCommon.waitUntilPopUpDisappear();
     }
 
@@ -40,7 +40,7 @@ class LoginPage {
         let tasksConsole = this.EC.titleContains('Tasks - Business Workflows');
         let innovationStudio = this.EC.titleContains('Workspace - Innovation Studio');
         let noAccess = this.EC.titleContains('No Access');
-        await browser.wait(this.EC.or(caseConsole, knowledgeConsole, tasksConsole, innovationStudio, noAccess), 5000);
+        await browser.wait(this.EC.or(caseConsole, knowledgeConsole, tasksConsole, innovationStudio, noAccess), 10000);
 //        await utilCommon.waitUntilPopUpDisappear();
     }
 }

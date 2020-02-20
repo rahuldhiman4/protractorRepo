@@ -10,7 +10,7 @@ const specJsonReporter = require('./reporters/spec-json-reporter/jasmine-spec-js
  * @type { import("protractor").Config }
  */
 exports.config = {
-  allScriptsTimeout: 10000,
+  allScriptsTimeout: 15000,
   getPageTimeout: 20000,
 
   capabilities: {
