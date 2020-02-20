@@ -12,6 +12,8 @@ import utilCommon from '../../utils/util.common';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import apiHelper from '../../api/api.helper';
 import utilGrid from '../../utils/util.grid';
+import serviceTargetBladePo from '../../pageobject/settings/slm/service-target-blade.po';
+import slmExpressionbuilderPopPo from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 
 var caseBAUser = 'qkatawazi';
 var caseAgentUser = 'qtao';
@@ -179,6 +181,103 @@ describe('Service Target Tests', () => {
         await browser.sleep(2000);
         expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
     }, 300 * 1000);
+
+    //skhobrag
+    it('[DRDMV-5038]:"Terms and Condition" qualification is added on Service Target - Create View', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+        await serviceTargetConfig.clickCreateSVTButton();
+        expect(await serviceTargetBladePo.isTermsAndConditionsFieldMandatory()).toBeTruthy('Terms and Conditions field is optional.');
+        await serviceTargetConfig.enterSVTTitle('SVT from Protractor');
+        await serviceTargetConfig.selectCompany('Petramco');
+        await serviceTargetConfig.selectDataSource('Case Management');
+        await serviceTargetConfig.selectGoal("2");
+        await serviceTargetConfig.selectMileStone();
+        await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+        await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
+        await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+        expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeTruthy('Save button is enabled when mandatory fields are left empty.');
+        await serviceTargetConfig.clickBuildExpressionLink();
+        await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
+        await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+        let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+        let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "High" + '"'
+        expect(selectedExp).toEqual(expectedSelectedExp);
+        await SlmExpressionBuilder.clickOnSaveExpressionButton();
+    }, 300 * 1000);
+
+
+    //skhobrag
+    it('[DRDMV-5039]:"Terms and Condition" qualification is added on Service Target - Edit View', async () => {
+        try {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+            let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "High" + '"'
+            expect(selectedExp).toEqual(expectedSelectedExp);
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await serviceTargetConfig.selectGoal("2");
+            await serviceTargetConfig.selectMileStone();
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.clickOnSaveSVTButton();
+            await utilGrid.searchAndOpenHyperlink('SVT from Protractor');
+            expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Edit Service Target Configuration blade is not displayed.');
+            expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeTruthy('Save button is enabled when mandatory fields are left empty. 1');
+            expect(await serviceTargetBladePo.isTermsAndConditionsFieldMandatory()).toBeTruthy('Terms and Conditions field is optional.');
+            await serviceTargetConfig.clickBuildExpressionLink();
+            await SlmExpressionBuilder.clearSelectedExpression();
+            await browser.sleep(1000);
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await browser.sleep(1000);
+            expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save button is enabled when mandatory fields are left empty. 2');
+            await serviceTargetConfig.clickBuildExpressionLink();
+            await SlmExpressionBuilder.clearSelectedExpression();
+            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
+            selectedExp = await SlmExpressionBuilder.getSelectedExpression();
+            expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
+            await expect(selectedExp).toEqual(expectedSelectedExp);
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await serviceTargetConfig.clickOnSaveSVTButton();
+        }catch( error){
+            throw error;
+        }
+        }, 300 * 1000);
+
+    //skhobrag
+    it('[DRDMV-2363]:SLM - Service Target - Measurement Build Expression', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+
+        //when SVT created with both mandatory and optional details
+        await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Case Management');
+        await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
+        await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+        await SlmExpressionBuilder.clickOnSaveExpressionButton();
+        await serviceTargetConfig.selectGoalType('Case Response Time');
+        await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc');
+        await serviceTargetConfig.selectGoal("2");
+        await serviceTargetConfig.selectMileStone();
+        await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+        await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+        await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+        await serviceTargetConfig.clickOnSaveSVTButton();
+        expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+
+        await utilGrid.searchAndOpenHyperlink('SVT with all fields');
+        await browser.sleep(1000);
+        await serviceTargetConfig.selectMileStone();
+        await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "New");
+        await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "In Progress");
+        await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+        await serviceTargetConfig.clickOnSaveSVTButton();
+        expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+     }, 300 * 1000);
 
 
 })
