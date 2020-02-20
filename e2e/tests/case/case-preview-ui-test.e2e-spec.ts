@@ -185,8 +185,8 @@ describe("Case Preview", () => {
         await quickCasePo.selectRequesterName('qkatawazi');
         await quickCasePo.selectCaseTemplate('Generate Employee Verification Letter');
         await quickCasePo.setCaseSummary(caseSummary);
-        await quickCasePo.clickOnRecommendedKnowledgePinButton(2);
-        await quickCasePo.clickOnRecommendedCasesPinButton(2);
+        await quickCasePo.pinRecommendedKnowledgeArticles(2);
+        await quickCasePo.pinRecommendedCases(2);
         await quickCasePo.saveCase();
 
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('failureMsg: Case Preview Title is missing');

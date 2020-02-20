@@ -22,14 +22,14 @@ class QuickCasePage {
         requester: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .ac-person-full-name'
     }
 
-    async clickOnRecommendedKnowledgePinButton(pinNo: number): Promise<void> {
-        for (let i = 0; i < pinNo; i++) {
+    async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
+        for (let i = 0; i < numberOfArticles; i++) {
             await $$('.km-group').get(1).$$('i[role="checkbox"]').get(i).click();
         }
     }
 
-    async clickOnRecommendedCasesPinButton(pinNo: number): Promise<void> {
-        for (let i = 0; i < pinNo; i++) {
+    async pinRecommendedCases(numberOfCases: number): Promise<void> {
+        for (let i = 0; i < numberOfCases; i++) {
             await $$('.km-group').get(2).$$('i[role="checkbox"]').get(i).click();
         }
     }
