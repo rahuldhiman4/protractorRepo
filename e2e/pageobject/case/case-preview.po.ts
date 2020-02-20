@@ -129,7 +129,7 @@ class CasePreview {
         return await $(this.selectors.assignedCompany).getText() == assignedCompany ? true : false;
     }
 
-    async isCreateNewCaseButton(): Promise<boolean> {
+    async isCreateNewCaseButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.viewCaseButton).isDisplayed();
     }
 }
