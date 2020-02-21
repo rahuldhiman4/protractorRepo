@@ -35,29 +35,28 @@ describe('Service Target - Second Level Association Tests', () => {
         //Verify second level association for Assigned Company
         let firstLevelExpression = await slmExpressionBuilder.getFirstLevelExpressionField('Assigned Company');
         expect(firstLevelExpression).toBe('Assigned Company');
-        await slmExpressionBuilder.selectSecondLevelExpressionField('Assigned Company', 'Abbreviation');
-        let secondLevelExpression: boolean = await slmExpressionBuilder.getSecondLevelExpressionField('Assigned Company', assignedCompanySecondLevelAssociation);
+        //await slmExpressionBuilder.selectSecondLevelExpressionField('Assigned Company', 'Abbreviation');
+        let secondLevelExpression: boolean = await slmExpressionBuilder.areSecondLevelExpressionFieldsMatches('Assigned Company', assignedCompanySecondLevelAssociation);
         expect(secondLevelExpression).toBeTruthy('Assigned Company second level association fields does not matches.');
 
         //Verify second level association for Case Site
         firstLevelExpression = await slmExpressionBuilder.getFirstLevelExpressionField('Case Site');
         expect(firstLevelExpression).toBe('Case Site');
-        await slmExpressionBuilder.selectSecondLevelExpressionField('Case Site', 'Address');
-        secondLevelExpression = await slmExpressionBuilder.getSecondLevelExpressionField('Case Site', caseSiteSecondLevelAssociation);
+        //await slmExpressionBuilder.selectSecondLevelExpressionField('Case Site', 'Address');
+        secondLevelExpression = await slmExpressionBuilder.areSecondLevelExpressionFieldsMatches('Case Site', caseSiteSecondLevelAssociation);
         expect(secondLevelExpression).toBeTruthy('Case Site second level association fields does not matches.');
 
         //Verify second level association for Company
         firstLevelExpression = await slmExpressionBuilder.getFirstLevelExpressionField('Company');
-        expect(firstLevelExpression).toBe('Company');
-        await slmExpressionBuilder.selectSecondLevelExpressionField('Company', 'Type');
-        secondLevelExpression = await slmExpressionBuilder.getSecondLevelExpressionField('Company', assignedCompanySecondLevelAssociation);
+        //await slmExpressionBuilder.selectSecondLevelExpressionField('Company', 'Type');
+        secondLevelExpression = await slmExpressionBuilder.areSecondLevelExpressionFieldsMatches('Company', assignedCompanySecondLevelAssociation);
         expect(secondLevelExpression).toBeTruthy('Company second level association fields does not matches.');
 
         //Verify second level association for Requester
         firstLevelExpression = await slmExpressionBuilder.getFirstLevelExpressionField('Requester');
         expect(firstLevelExpression).toBe('Requester');
-        await slmExpressionBuilder.selectSecondLevelExpressionField('Requester', 'Email');
-        secondLevelExpression = await slmExpressionBuilder.getSecondLevelExpressionField('Requester', requesterSecondLevelAssociation);
+        //await slmExpressionBuilder.selectSecondLevelExpressionField('Requester', 'Email');
+        secondLevelExpression = await slmExpressionBuilder.areSecondLevelExpressionFieldsMatches('Requester', requesterSecondLevelAssociation);
         expect(secondLevelExpression).toBeTruthy('Requester second level association fields does not matches.');
     });
 
@@ -106,11 +105,11 @@ describe('Service Target - Second Level Association Tests', () => {
         await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
 
         //Verify second level association for Assigned Company
-        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco.com");
-        selectedExpx = await slmExpressionBuilder.getSelectedExpression();
-        var expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "Qiang Du" + '"'
-        console.log(selectedExpx);
-        expect(selectedExpx).toEqual(expectedSelectedExp);
+        await slmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
+        await slmExpressionBuilder.clickOnAddExpressionButton('PERSON');
+        let selectedExp: string = await slmExpressionBuilder.getSelectedExpression();
+        expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"';
+        expect(selectedExp).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("2");
         await serviceTargetConfig.selectMileStone();
