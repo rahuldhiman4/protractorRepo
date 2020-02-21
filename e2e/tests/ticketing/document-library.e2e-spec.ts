@@ -3,7 +3,7 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';
-import consoleKnowledgePo from '../../pageobject/knowledge/console-knowledge.po';
+import consoleKnowledgePo from '../../pageobject/knowledge/knowledge-articles-console.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
 import informationTabPo from '../../pageobject/knowledge/information-tab.po';
 import createDocumentLibraryPo from '../../pageobject/settings/document-management/create-document-library.po';

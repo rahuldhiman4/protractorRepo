@@ -9,7 +9,7 @@ import changeAssignmentPage from '../../pageobject/common/change-assignment-blad
 import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import KnowledgeConsolePage from "../../pageobject/knowledge/console-knowledge.po";
+import KnowledgeConsolePage from "../../pageobject/knowledge/knowledge-articles-console.po";
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import createMenuItems from '../../pageobject/settings/application-config/create-menu-items-blade.po';
 import editMenuItemsConfigPo from '../../pageobject/settings/application-config/edit-menu-items-config.po';
