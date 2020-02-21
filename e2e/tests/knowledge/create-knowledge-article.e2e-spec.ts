@@ -4,7 +4,6 @@ import apiHelper from '../../api/api.helper';
 import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import KnowledgeConsolePage from "../../pageobject/knowledge/console-knowledge.po";
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePage from "../../pageobject/knowledge/edit-knowledge.po";
 import utilCommon from '../../utils/util.common';
@@ -76,7 +75,7 @@ describe('Knowledge Article', () => {
             let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
             let knowledgeData = knowledgeDataFile['DRDMV-19020'];
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials(personData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -86,9 +85,8 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await createKnowledgePage.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
-            let assigneeFullName = personData.firstName + " " + personData.lastName;
-            await editKnowledgePage.verifyKnowledgeMetadata('Assignee', assigneeFullName);
-            await editKnowledgePage.verifyKnowledgeMetadata('Assigned Group', suppGrpData.orgName);
+            await editKnowledgePage.verifyKnowledgeMetadata('Assignee', 'Qadim Katawazi');
+            await editKnowledgePage.verifyKnowledgeMetadata('Assigned Group', 'Compensation and Benefits');
         }
         catch (error) {
             throw error;
@@ -126,9 +124,9 @@ describe('Knowledge Article', () => {
             expect(await editKnowledgePage.isReviewerDepartmentfieldDisbaledOnStatusChangeBlade()).toBeTruthy();
             expect(await editKnowledgePage.isReviewerGrpFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
             expect(await editKnowledgePage.isReviewerFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
-            expect(await editKnowledgePage.isChangeReviewerButtonPresent()).toBeTruthy();
+            expect(await statusBladeKnowledgeArticlePo.isChangeReviewerButtonPresent()).toBeTruthy();
             expect(await editKnowledgePage.isAssignToMeButtonPresent()).toBeTruthy();
-            await editKnowledgePage.clickChangeReviewerBtn();
+            await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
             await changeAssignmentBlade.selectCompany(knowledgeData.Company);
             await changeAssignmentBlade.selectBusinessUnit(businessData.orgName);
             await changeAssignmentBlade.selectDepartment(departmentData.orgName);
@@ -345,7 +343,6 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await expect(createKnowledgePage.isKnowledgeTitleRequired()).toBeTruthy(" Required Text is not present in knowledge title");
             await expect(createKnowledgePage.isKnowledgeSetRequired()).toBeTruthy("Required Text is not present in knowledge Set");
-            await expect(createKnowledgePage.isAuthorRequired()).toBeTruthy("Required Text is not present in author");
             await expect(createKnowledgePage.isSaveButtonEnabled());
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
             await createKnowledgePage.selectKnowledgeSet('HR');
@@ -353,8 +350,8 @@ describe('Knowledge Article', () => {
             var knowledgeIdValue: string = await createKnowledgePage.getKnowledgeId();
             await createKnowledgePage.clickBackButton();
             await navigationPage.gotoKnowledgeConsole();
-            await KnowledgeConsolePage.searchKnowledgeArticle(knowledgeTitle);
-            await expect(KnowledgeConsolePage.isArticleIdDisplayed(knowledgeIdValue)).toBeTruthy("Knowledge Article is not displayed");
+            await knowledgeArticlesConsolePo.searchKnowledgeArticle(knowledgeTitle);
+            await expect(knowledgeArticlesConsolePo.isArticleIdDisplayed(knowledgeIdValue)).toBeTruthy("Knowledge Article is not displayed");
         } catch (error) {
             throw error;
         }
@@ -619,7 +616,7 @@ describe('Knowledge Article', () => {
             await utilGrid.clearFilter();
             let knowledgeGridColumnFields: string[] = ["Review Status"];
             let columnName: string[] = ["Review Status"];
-            await KnowledgeConsolePage.addAllcolumnOnKnowledgeConsole(knowledgeGridColumnFields)
+            await knowledgeArticlesConsolePo.addColumnOnGrid(knowledgeGridColumnFields)
             await utilGrid.addFilter('Review Status', 'Pending Review', 'checkbox');
             await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy('article review not set');
@@ -637,7 +634,7 @@ describe('Knowledge Article', () => {
             await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilGrid.clearFilter();
             await utilGrid.searchRecord(KADetails.displayId);
-            expect(await KnowledgeConsolePage.isValueDisplayedInGrid('Review Status')).toContain('Reviewed');
+            expect(await knowledgeArticlesConsolePo.isValueDisplayedInGrid('Review Status')).toContain('Reviewed');
             await knowledgeArticlesConsolePo.removeColumnOnGrid(columnName);
         }
         catch (e) {
@@ -672,7 +669,7 @@ describe('Knowledge Article', () => {
             await utilGrid.clearFilter();
             let knowledgeGridColumnFields: string[] = ["Review Status"];
             let columnName: string[] = ["Review Status"];
-            await KnowledgeConsolePage.addAllcolumnOnKnowledgeConsole(knowledgeGridColumnFields)
+            await knowledgeArticlesConsolePo.addColumnOnGrid(knowledgeGridColumnFields)
             await utilGrid.addFilter('Review Status', 'Pending Review', 'checkbox');
             await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy('article review not set');
@@ -690,7 +687,7 @@ describe('Knowledge Article', () => {
             await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilGrid.clearFilter();
             await utilGrid.searchRecord(KADetails.displayId);
-            expect(await KnowledgeConsolePage.isValueDisplayedInGrid('Review Status')).toContain('Reviewed');
+            expect(await knowledgeArticlesConsolePo.isValueDisplayedInGrid('Review Status')).toContain('Reviewed');
             await knowledgeArticlesConsolePo.removeColumnOnGrid(knowledgeGridColumnFields);
         }
         catch (e) {
@@ -775,7 +772,7 @@ describe('Knowledge Article', () => {
         await navigationPage.gotoKnowledgeConsole();
         await utilGrid.clearFilter();
         await utilGrid.searchRecord(knowledgeTitle);
-        expect(await KnowledgeConsolePage.isValueDisplayedInGrid('Knowledge Set')).toContain('HR', 'HR not display on Knowledge Console');
+        expect(await knowledgeArticlesConsolePo.isValueDisplayedInGrid('Knowledge Set')).toContain('HR', 'HR not display on Knowledge Console');
     });
 
     it('[DRDMV-1783]: [Knowledge Article] Access to the Create Knowledge view (Negative)', async () => {
@@ -784,7 +781,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('sbadree');
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
-            expect(KnowledgeConsolePage.getMessageOfAccess()).toContain('You do not have access to the Knowledge management application.');
+            expect(knowledgeArticlesConsolePo.getMessageOfAccess()).toContain('You do not have access to the Knowledge management application.');
         }
         catch (e) {
             throw e;

@@ -17,7 +17,7 @@ class CreateKnowledgePage {
         docEditorSection: '.doc-editor__section .d-textfield__label',
         knowledgeMetadataSection: '[rx-view-component-id="830947fd-773e-4a70-860a-98893c9b36b4"] .d-textfield',
         knowledgeSetRequiedtext: '[name="knowledgeSet"]',
-        authorRequiredText: '[rx-view-component-id="cbf446b0-c8f6-433e-9a8e-b9a30f7ab79c"] .d-textfield__input',
+        authorRequiredText: '[rx-view-component-id="0a50ea72-5fe9-4488-9547-de0a7eb38dee"] .d-textfield__input',
         attachmentField: '[rx-view-component-id="bf6900ad-d67a-4705-b907-3caa50b640c7"] .d-icon-paperclip',
         templateHeading: '[rx-view-component-id="6e402c66-fcdc-464b-b6e7-7e963d9c3a17"] .templateName',
         regionGuid: '17b172fd-28d5-4553-bd22-b59695953287',
@@ -158,7 +158,7 @@ class CreateKnowledgePage {
 
     async isAuthorRequired(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.authorRequiredText).last()));
-        return await $(this.selectors.knowledgeSetRequiedtext).getAttribute("is-required") == "true";
+        return await $(this.selectors.authorRequiredText).getAttribute("is-required") == "true";
     }
 
     async isSaveButtonEnabled(): Promise<boolean> {

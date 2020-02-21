@@ -2,7 +2,6 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import KnowledgeConsolePage from "../../pageobject/knowledge/console-knowledge.po";
 import { default as createKnowledgePage, default as createKnowlegePo } from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePage from "../../pageobject/knowledge/edit-knowledge.po";
 import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
@@ -17,8 +16,9 @@ import changeAssignmentBladePo from '../../pageobject/common/change-assignment-b
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
 import feedbackBladeKnowledgeArticlePo from '../../pageobject/knowledge/feedback-blade-Knowledge-article.po';
-import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
-import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
+import knowledgeConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
+
+
 describe('Knowledge Article', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     var knowledgeCandidateUser = 'kayo';
@@ -130,7 +130,7 @@ describe('Knowledge Article', () => {
             await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilGrid.clearFilter();
             await utilGrid.searchRecord('Knowledge1164' + randomStr);
-            expect(await KnowledgeConsolePage.isValueDisplayedInGrid('Title')).toContain('Knowledge1164' + randomStr, 'value is not displaying in Grid');
+            expect(await knowledgeConsolePo.isValueDisplayedInGrid('Title')).toContain('Knowledge1164' + randomStr, 'value is not displaying in Grid');
         }
         catch (e) {
             throw e;
@@ -179,15 +179,15 @@ describe('Knowledge Article', () => {
         }
         await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.gotoKnowledgeConsole();
-        await KnowledgeConsolePage.addAllcolumnOnKnowledgeConsole(knowledgeGridColumnFields)
+        await knowledgeConsolePo.addColumnOnGrid(knowledgeGridColumnFields)
         await utilGrid.clearFilter();
         await utilGrid.searchRecord(knowledgeTitle);
-        expect(await KnowledgeConsolePage.isValueDisplayedInGrid('Title')).toContain(knowledgeTitle, 'KA not present');
-        let knowledgeArticleID = await KnowledgeConsolePage.isValueDisplayedInGrid('Article ID')
+        expect(await knowledgeConsolePo.isValueDisplayedInGrid('Title')).toContain(knowledgeTitle, 'KA not present');
+        let knowledgeArticleID = await knowledgeConsolePo.isValueDisplayedInGrid('Article ID')
         await utilGrid.clearGridSearchBox();
         await utilGrid.searchRecord(knowledgeArticleID)
-        expect(await KnowledgeConsolePage.isValueDisplayedInGrid('Article ID')).toContain(knowledgeArticleID, 'KA not present');
-        await KnowledgeConsolePage.removeAddedColumns(knowledgeGridColumnFields);
+        expect(await knowledgeConsolePo.isValueDisplayedInGrid('Article ID')).toContain(knowledgeArticleID, 'KA not present');
+        await knowledgeConsolePo.removeColumnOnGrid(knowledgeGridColumnFields);
     });
 
     //ptidke
@@ -322,7 +322,8 @@ describe('Knowledge Article', () => {
         await navigationPage.gotoKnowledgeConsole();
         await utilGrid.clearFilter();
         await utilGrid.searchRecord(knowledgeArticleData.displayId);
-        expect(await KnowledgeConsolePage.isValueDisplayedInGrid('Title')).toContain(updatedName, 'KA not present');
+        console.log(updatedName);
+        expect(await knowledgeConsolePo.isValueDisplayedInGrid('Title')).toContain(updatedName, 'KA not present');
     });
 
     //ptidke
@@ -535,21 +536,26 @@ describe('Knowledge Article', () => {
 
     it('[DRDMV-1064]:[Create Mode] Removing sections with the Remove button', async () => {
         await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates');
         await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
         await createKnowledgeArticleTemplatePo.setTemplateName('template1064' + randomStr);
         await createKnowledgeArticleTemplatePo.clickOnAddSection();
         await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
         await createKnowledgeArticleTemplatePo.setSectionTitle('First' + randomStr);
-        await createKnowledgeArticleTemplatePo.clickRemoveSection();
-        expect(await utilCommon.getWarningMessagegText()).toContain('You have unsaved data. Do you want to continue?', 'warning message not visiable');
+        await editKnowledgeArticleTemplatePo.clickOnCancelButton();
+        expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
+        expect(await utilCommon.getWarningMessagegText()).toBe('Warning!');
+        expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
         await utilCommon.clickOnWarningOk();
+        await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
+        await createKnowledgeArticleTemplatePo.setTemplateName('template1064' + randomStr);
+        await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
         await createKnowledgeArticleTemplatePo.clickOnAddSection();
         await createKnowledgeArticleTemplatePo.setDescription('DescriptionOFKA');
         await createKnowledgeArticleTemplatePo.setSectionTitle('Second' + randomStr);
         await createKnowledgeArticleTemplatePo.clickOnSaveButton();
         await utilGrid.searchAndOpenHyperlink('template1064' + randomStr);
         expect(await editKnowledgeArticleTemplatePo.getSectionTitleValue('First' + randomStr)).toBeFalsy('removed section is Present');
-        await editKnowledgeArticleTemplatePo.clickOnCancelButton();
     });
 
     it('[DRDMV-2444]: KA Console - Article Navigation', async () => {
@@ -659,7 +665,7 @@ describe('Knowledge Article', () => {
         expect(await navigationPage.isKnowledgeConsoleTitleDisplayed()).toBeTruthy('Knowledge Console not present');
         await utilGrid.clearFilter();
         await utilGrid.searchRecord(knowledgeTitile);
-        expect(await KnowledgeConsolePage.isValueDisplayedInGrid('Title') == knowledgeTitile).toBeFalsy('KA is present');
+        expect(await knowledgeConsolePo.isValueDisplayedInGrid('Title') == knowledgeTitile).toBeFalsy('KA is present');
     });
 
     it('[DRDMV-5158]: Click on thumbs up and thumbs down', async () => {

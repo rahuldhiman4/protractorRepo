@@ -173,7 +173,7 @@ export class Util {
     }
 
     async clickOnWarningOk(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningOk)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningOk)),2000);
         await $(this.selectors.warningOk).click();
     }
 
