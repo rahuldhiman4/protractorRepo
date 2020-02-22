@@ -380,84 +380,91 @@ describe('Case Status Change', () => {
 
     //ankagraw
     it('[DRDMV-1199]: [Case Status] Case status change from In Progress', async () => {
-        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let summary1: string = randomStr + "Summary 1";
-        let summary2: string = randomStr + "Summary 2";
-        let summary3 = randomStr + "Summary 3";
-        let manualTask = 'manual task' + randomStr;
-        let manualSummary = 'manual Summary' + randomStr;
-        var caseData1 =
-        {
-            "Requester": "qtao",
-            "Summary": summary1,
-            "Support Group": "Compensation and Benefits",
-            "Assignee": "qkatawazi",
-            "Status": "3000",
+        try {
+            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let summary1: string = randomStr + "Summary 1";
+            let summary2: string = randomStr + "Summary 2";
+            let summary3 = randomStr + "Summary 3";
+            let manualTask = 'manual task' + randomStr;
+            let manualSummary = 'manual Summary' + randomStr;
+            var caseData1 =
+            {
+                "Requester": "qtao",
+                "Summary": summary1,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "3000",
+            }
+
+            var caseData2 =
+            {
+                "Requester": "qtao",
+                "Summary": summary2,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "3000",
+            }
+
+            var caseData3 =
+            {
+                "Requester": "qtao",
+                "Summary": summary3,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "3000",
+            }
+
+            var templateData1 = {
+                "templateName": manualTask,
+                "templateSummary": manualSummary,
+                "templateStatus": "Active",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            var newCase1 = await apiHelper.createCase(caseData1);
+            var caseId1: string = newCase1.displayId;
+            var newCase2 = await apiHelper.createCase(caseData2);
+            var caseId2: string = newCase2.displayId;
+            var newCase3 = await apiHelper.createCase(caseData3);
+            var caseId3: string = newCase3.displayId;
+            let temp1 = await apiHelper.createManualTaskTemplate(templateData1);
+            let statusOptions: string[] = ["In Progress", "Pending", "Resolved", "Canceled"];
+
+            await caseConsole.searchAndOpenCase(caseId1);
+            await viewCasePage.clickOnStatus();
+            await expect(viewCasePage.allStatusOptionsPresent(statusOptions)).toBeTruthy("Status Options is not present");
+            await viewCasePage.clickOnCancelButtonOfUpdateStatus();
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.addTaskFromTaskTemplate(manualTask);
+            await manageTask.clickOnCloseButton();
+            await viewCasePage.changeCaseStatus('Pending');
+            await viewCasePage.setStatusReason('Third Party');
+            await viewCasePage.clickSaveStatus();
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickTaskLinkOnManageTask(manualSummary);
+            await expect(viewTask.getTaskStatusValue()).toBe('Assigned', 'Assigned status not found');
+
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId2);
+            await viewCasePage.changeCaseStatus('Resolved');
+            await viewCasePage.setStatusReason('Auto Resolved');
+            await viewCasePage.clickSaveStatus();
+
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId3);
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.addTaskFromTaskTemplate(manualTask);
+            await manageTask.clickOnCloseButton();
+            await viewCasePage.changeCaseStatus('Canceled');
+            await viewCasePage.setStatusReason('Approval Rejected');
+            await viewCasePage.clickSaveStatus();
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLinkOnManageTask(manualSummary);
+            await expect(viewTask.getTaskStatusValue()).toBe('Canceled', 'canceled status not found');
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         }
-
-        var caseData2 =
-        {
-            "Requester": "qtao",
-            "Summary": summary2,
-            "Support Group": "Compensation and Benefits",
-            "Assignee": "qkatawazi",
-            "Status": "3000",
-        }
-
-        var caseData3 =
-        {
-            "Requester": "qtao",
-            "Summary": summary3,
-            "Support Group": "Compensation and Benefits",
-            "Assignee": "qkatawazi",
-            "Status": "3000",
-        }
-
-        var templateData1 = {
-            "templateName": manualTask,
-            "templateSummary": manualSummary,
-            "templateStatus": "Active",
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        var newCase1 = await apiHelper.createCase(caseData1);
-        var caseId1: string = newCase1.displayId;
-        var newCase2 = await apiHelper.createCase(caseData2);
-        var caseId2: string = newCase2.displayId;
-        var newCase3 = await apiHelper.createCase(caseData3);
-        var caseId3: string = newCase3.displayId;
-        let temp1 = await apiHelper.createManualTaskTemplate(templateData1);
-        let statusOptions: string[] = ["In Progress", "Pending", "Resolved", "Canceled"];
-
-        await caseConsole.searchAndOpenCase(caseId1);
-        await viewCasePage.clickOnStatus();
-        await expect(viewCasePage.allStatusOptionsPresent(statusOptions)).toBeTruthy("Status Options is not present");
-        await viewCasePage.clickOnCancelButtonOfUpdateStatus();
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.addTaskFromTaskTemplate(manualTask);
-        await manageTask.clickOnCloseButton();
-        await viewCasePage.changeCaseStatus('Pending');
-        await viewCasePage.setStatusReason('Third Party');
-        await viewCasePage.clickSaveStatus();
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.clickTaskLinkOnManageTask(manualSummary);
-        await expect(viewTask.getTaskStatusValue()).toBe('Assigned', 'Assigned status not found');
-
-        await navigationPage.gotoCaseConsole();
-        await caseConsole.searchAndOpenCase(caseId2);
-        await viewCasePage.changeCaseStatus('Resolved');
-        await viewCasePage.setStatusReason('Auto Resolved');
-        await viewCasePage.clickSaveStatus();
-
-        await navigationPage.gotoCaseConsole();
-        await caseConsole.searchAndOpenCase(caseId3);
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.addTaskFromTaskTemplate(manualTask);
-        await manageTask.clickOnCloseButton();
-        await viewCasePage.changeCaseStatus('Canceled');
-        await viewCasePage.setStatusReason('Approval Rejected');
-        await viewCasePage.clickSaveStatus();
-        await viewCasePage.openTaskCard(1);
-        await manageTask.clickTaskLinkOnManageTask(manualSummary);
-        await expect(viewTask.getTaskStatusValue()).toBe('Canceled', 'canceled status not found');
     }, 180 * 1000);
 })
