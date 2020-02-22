@@ -25,7 +25,7 @@ class editNotesTemplate {
         localMessage: '[rx-view-component-id="bcea8e76-32b2-414b-b073-e8c254b5f46e"]',
         localMessageVerification: '[rx-view-component-id="965fcbd6-27d1-40ae-b024-84c41629e47e"] p',
         editStatus: '[rx-view-component-id="6333057d-5f6a-4d5d-b862-a07db2f9997e"] .ui-select-toggle',
-        editDescription: '[rx-view-component-id="9373799a-664e-4027-8bb1-9b2fcc9cd593"] .cke_enable_context_menu'
+        readOnlyDescription: '[rx-view-component-id="9373799a-664e-4027-8bb1-9b2fcc9cd593"] .rtf-read-only'
     }
 
     async changeTemplateName(templateNameValue: string): Promise<void> {
@@ -89,14 +89,14 @@ class editNotesTemplate {
         return await $(this.selectors.localMessageVerification).getText();
     }
 
-    async isStatusFieldEnabled(): Promise<boolean> {
+    async isStatusFieldDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
-        return await $(this.selectors.editStatus).isEnabled();
+        return await $(this.selectors.editStatus).getAttribute('disabled') == 'true';
     }
 
-    async isDescriptionFieldEnabled(): Promise<boolean> {
+    async isDescriptionFieldDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
-        return await $(this.selectors.editDescription).isEnabled();
+        return await $(this.selectors.readOnlyDescription).isPresent();
     }
 
 }

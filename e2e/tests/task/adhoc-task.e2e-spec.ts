@@ -12,6 +12,7 @@ import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 
 describe('Create Adhoc task', () => {
     beforeAll(async () => {
@@ -205,6 +206,7 @@ describe('Create Adhoc task', () => {
         await navigationPage.signOut();
         await loginPage.login('qliu');
         await navigationPage.gotoTaskConsole();
+        await utilGrid.clearFilter();
         await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
         await expect(taskConsole.isCaseIdLinkIsPresent()).toBeFalsy(" Case Id Displayed in Task console");
         await taskConsole.clickFirstLinkInTaskTemplateSearchGrid();
@@ -219,5 +221,5 @@ describe('Create Adhoc task', () => {
         await expect(viewTask.isCaseViewLinkDisplayed()).toBeTruthy('Case View Link is not displayed');
         await navigationPage.signOut();
         await loginPage.login('qtao');
-    }, 240 * 1000);
+    }, 180 * 1000);
 });

@@ -4,7 +4,8 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfile from "../../pageobject/common/person-profile.po";
 import activityTabPage from '../../pageobject/social/activity-tab.po';
-import utilCommon from '../../utils/util.common';
+import relatedTabPage from '../../pageobject/common/related-person-tab.po';
+import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 
 describe('Person Profile test', () => {
     beforeAll(async () => {
@@ -93,11 +94,16 @@ describe('Person Profile test', () => {
 
     //asahitya
     it('[DRDMV-17019]: Check agent cannot view notes to own Person profile in agent work history tab', async () => {
+        await navigationPage.goToPersonProfile();
+        await relatedTabPage.addRelatedPerson();
+        await addRelatedPopupPage.addPerson('Qiang Du', 'Former Manager');
+        await relatedTabPage.waitUntilNewRelatedPersonAdded(2);
+        await relatedTabPage.clickRelatedPersonName('Qiang Du');
         await activityTabPage.addActivityNote("DRDMV-17019");
         await activityTabPage.clickOnPostButton();
         try {
             await navigationPage.signOut();
-            await loginPage.login("hannah");
+            await loginPage.login("qdu");
             await navigationPage.goToPersonProfile();
             expect(await activityTabPage.isTextPresentInActivityLog("DRDMV-17019")).toBeFalsy("Notes are avaialble on Hannah's Profile");
         }
@@ -120,7 +126,7 @@ describe('Person Profile test', () => {
         for (let i: number = 0; i < 4; i++) {
             let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             caseData['DRDMV-14087'].summary = "DRDMV-14028 " + randomStr;
-            let response = await apiHelper.createCase(caseData['DRDMV-14087']);
+            await apiHelper.createCase(caseData['DRDMV-14087']);
         }
 
         //Verifying default column matching
@@ -136,7 +142,7 @@ describe('Person Profile test', () => {
 
         //Verify sorting
         expect(await personProfile.isRequestedCasesColumnsSortedAscending("Case ID")).toBeTruthy("Columns are not sorted");
-    });
+    },120*1000);
 
     //asahitya
     it('[DRDMV-14029]: Verify Assigned Cases tab of My Profile console', async () => {
@@ -153,13 +159,13 @@ describe('Person Profile test', () => {
 
         //Verifying default column matching
         let defaultAssignedCaseColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Requester", "Modified Date"];
-        expect(await personProfile.areAssignedCaseColumnMatches(defaultAssignedCaseColumns)).toBeTruthy("Default Requested columns are not matching");
+        expect(await personProfile.areAssignedCaseColumnMatches(defaultAssignedCaseColumns)).toBeTruthy("Default Assigned columns are not matching");
 
         //Verifying all columns
         let allAssignedCaseColumns: string[] = ["Assignee Login Name", "Company", "ID", "Label", "Region", "Request ID", "Site", "Source", "Status Value", "Support Group"];
         await personProfile.addAssignedCaseGridColumn(allAssignedCaseColumns);
         let expectedAllColumns: string[] = ["Assignee Login Name", "Company", "ID", "Label", "Region", "Request ID", "Site", "Source", "Status Value", "Support Group", "Case ID", "Priority", "Status", "Summary", "Requester", "Modified Date"];
-        expect(await personProfile.areAssignedCaseColumnMatches(expectedAllColumns)).toBeTruthy("All Requested columns are not matching");
+        expect(await personProfile.areAssignedCaseColumnMatches(expectedAllColumns)).toBeTruthy("All Assigned columns are not matching");
         await personProfile.removeAssignedCaseGridColumn(allAssignedCaseColumns);
 
         //Verify sorting

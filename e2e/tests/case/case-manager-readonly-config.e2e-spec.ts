@@ -193,8 +193,8 @@ describe('Case Manager Read-only Config', () => {
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
         await browser.refresh();
         await utilGrid.searchAndOpenHyperlink(notesTemplateName);
-        expect(await editNotesTemplateConfig.isStatusFieldEnabled()).toBeFalsy("Status field is enabled");
-        expect(await editNotesTemplateConfig.isDescriptionFieldEnabled()).toBeFalsy("Description field is enabled");
+        expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
+        expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
         await browser.refresh();
     });
 
@@ -212,12 +212,12 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
-        await utilGrid.searchAndSelectAllCheckBoxWOGrid(notesTemplateName);
+        await utilGrid.clickCheckBoxOfValueInGrid(notesTemplateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
         await browser.refresh();
         await utilGrid.searchAndOpenHyperlink(notesTemplateName);
-        expect(await editNotesTemplateConfig.isStatusFieldEnabled()).toBeFalsy("Status field is enabled");
-        expect(await editNotesTemplateConfig.isDescriptionFieldEnabled()).toBeFalsy("Description field is enabled");
+        expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
+        expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
         await browser.refresh();
     });
 
@@ -235,12 +235,12 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
-        await utilGrid.searchAndSelectAllCheckBoxWOGrid(notesTemplateName);
+        await utilGrid.clickCheckBoxOfValueInGrid(notesTemplateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
         await browser.refresh();
         await utilGrid.searchAndOpenHyperlink(notesTemplateName);
-        expect(await editNotesTemplateConfig.isStatusFieldEnabled()).toBeFalsy("Status field is enabled");
-        expect(await editNotesTemplateConfig.isDescriptionFieldEnabled()).toBeFalsy("Description field is enabled");
+        expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
+        expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
         await browser.refresh();
     });
 

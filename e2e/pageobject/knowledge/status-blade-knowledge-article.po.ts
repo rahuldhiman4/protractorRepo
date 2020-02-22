@@ -23,6 +23,14 @@ class StatusBladKnowledgeArticle {
         await $(this.selectors.saveButtonOnReviewer).click();
     }
 
+    async clickChangeReviewerBtn():Promise<void>{
+        await $(this.selectors.changeReviwerButton).click();
+    }
+
+    async isChangeReviewerButtonPresent(): Promise<Boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.changeReviewerBtn)));
+        return await $(this.selectors.changeReviwerButton).isDisplayed();
+    }
 }   
 
 export default new StatusBladKnowledgeArticle();
