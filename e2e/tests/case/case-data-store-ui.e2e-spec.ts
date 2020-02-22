@@ -132,15 +132,13 @@ describe('Case Data Store', () => {
             await navigationPage.gotoTaskConsole();
             await taskConsole.clearFilter();
             await taskConsole.setTaskSearchBoxValue(taskvalue);
-            await expect(taskConsole.isCaseIdLinkIsPresent()).toBeFalsy(" Case Id Displayed in Task console");
             await taskConsole.clickFirstLinkInTaskTemplateSearchGrid();
-            await expect(viewTaskTemplate.getDynamicField('Field Description')).toBe('Field Description');
+            await expect(viewTaskTemplate.isDynamicFieldPresent('Field Description')).toBeTruthy('Field Description');
         } catch (error) {
             throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 180 * 1000);
-
+    }, 150 * 1000);
 });
