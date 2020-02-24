@@ -52,7 +52,7 @@ class SelectEmailTemplateBlad {
     }
 
     async searchAndSelectEmailTemplate(templateName: string): Promise<void> {
-        await utilGrid.searchAndSelectGridRecord(templateName, this.selectors.gridGuid);
+        await utilGrid.searchAndSelectGridRecord(templateName);
     }
 
     async searchEmailTemplate(templateName: string): Promise<void> {

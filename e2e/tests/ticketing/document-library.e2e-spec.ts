@@ -304,10 +304,10 @@ describe('Document Library', () => {
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
 
-        await editDocumentLibraryPo.selectReadAccessDropDown('Add Support Group', 'Employee Relations');
+        await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Employee Relations');
         await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
         await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-        await editDocumentLibraryPo.selectReadAccessDropDown('Add Company', 'Petramco');
+        await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Petramco');
         await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Company');
         await editDocumentLibraryPo.clickOnCancelButton();
 
@@ -348,28 +348,28 @@ describe('Document Library', () => {
             await utilCommon.closePopUpMessage();
 
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectReadAccessDropDown('Add Company', 'BMC Software');
+            await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('BMC Software');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Company');
             await utilCommon.waitUntilSpinnerToHide();
             expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
             await utilCommon.closePopUpMessage();
 
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectReadAccessDropDown('Add Business Unit', 'ESM');
+            await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('ESM');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Business Unit');
             await utilCommon.waitUntilSpinnerToHide();
             expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
             await utilCommon.closePopUpMessage();
 
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectReadAccessDropDown('Add Support Department', 'Engineering');
+            await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Engineering');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Department');
             await utilCommon.waitUntilSpinnerToHide();
             expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
             await utilCommon.closePopUpMessage();
 
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectReadAccessDropDown('Add Support Group', 'Accounts Payable (AP)');
+            await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Accounts Payable (AP)');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
             await utilCommon.waitUntilSpinnerToHide();
             expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
@@ -406,10 +406,11 @@ describe('Document Library', () => {
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft', 'Draft Status is missing');
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
-        await editDocumentLibraryPo.selectReadAccessDropDown('Add Company', 'BMC Software');
+        await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('BMC Software');
         await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Company');
         await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-        await editDocumentLibraryPo.selectReadAccessDropDown('Add Support Group', 'Compensation and Benefits');
+        // await editDocumentLibraryPo.selectReadAccessDropDown('Add Support Group', 'Compensation and Benefits');
+        await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Compensation and Benefits');
         await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
         expect(await editDocumentLibraryPo.sameSupportGroupErrorMessageDisplayed(' This group has been added with the another access. Please contact the administrator to replace the settings')).toBeTruthy('Same Support Group select error message displayed ');
     });

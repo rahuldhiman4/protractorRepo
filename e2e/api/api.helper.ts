@@ -461,9 +461,8 @@ class ApiHelper {
             userData.fieldInstances[1000000019].value = data.firstName;
             userData.fieldInstances[1000000018].value = data.lastName;
             userData.fieldInstances[4].value = data.userId;
-            userData.fieldInstances[430000002].value = data.userPermission ? apiCoreUtil.getGuid(data.userPermission) : userData.fieldInstances[430000002].value;
+            userData.fieldInstances[430000002].value = data.userPermission ? data.userPermission : userData.fieldInstances[430000002].value;
             //data.emailId ? userData.fieldInstances[1000000048].value = data.emailId : null;
-
             const newUser = await coreApi.createRecordInstance(userData);
             console.log('Create New User Details API Status =============>', newUser.status);
 

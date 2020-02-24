@@ -49,7 +49,7 @@ describe("compose email", () => {
         expect(await composeMail.isToOrCCInputTetxboxPresent('To')).toBeTruthy('To title missing');
         expect(await composeMail.isToOrCCInputTetxboxPresent('Cc')).toBeTruthy('Cc title missing');
         expect(await composeMail.isSubjectPresent()).toBeTruthy('Subject title missing');
-        expect(await composeMail.getSubject()).toBe(caseId + ":  ");
+        expect(await composeMail.getSubject()).toBe(caseId + ":");
         expect(await composeMail.isSelectEmailTemplateLinkPresent()).toBeTruthy('SelectEmailTemplateLink is missing');
         expect(await composeMail.isMessageBodyFontPannelBarPresent()).toBeTruthy('MessageBodyFontPannelBar is missing');
         expect(await composeMail.isAttachLinkPresent()).toBeTruthy('Attach Link is  missing');
@@ -70,7 +70,7 @@ describe("compose email", () => {
         expect(await composeMail.isToOrCCInputTetxboxPresent('To')).toBeTruthy('To title missing');
         expect(await composeMail.isToOrCCInputTetxboxPresent('Cc')).toBeTruthy('Cc title missing');
         expect(await composeMail.isSubjectPresent()).toBeTruthy('Subject title missing');
-        expect(await composeMail.getSubject()).toBe(quickCaseId + ":  ");
+        expect(await composeMail.getSubject()).toBe(quickCaseId + ":");
         expect(await composeMail.isSelectEmailTemplateLinkPresent()).toBeTruthy('SelectEmailTemplateLink is missing');
         expect(await composeMail.isMessageBodyFontPannelBarPresent()).toBeTruthy('MessageBodyFontPannelBar is missing');
         expect(await composeMail.isAttachLinkPresent()).toBeTruthy('Attach Link is  missing');
@@ -142,6 +142,7 @@ describe("compose email", () => {
         await selectEmailTemplateBladePo.addGridColumn(columns);
         let columnHeaders: string[] = ["Template Name", "Message Subject", "Locale", "ID", "Display ID", "Company", "Description", "Label", "Template Id"];
         expect(await selectEmailTemplateBladePo.areColumnHeaderMatches(columnHeaders)).toBeTruthy('wrong column headers');
+        await selectEmailTemplateBladePo.removeGridColumn(columns);
     });
 
     it('[DRDMV-10409]: Apply button disable', async () => {
@@ -197,8 +198,9 @@ describe("compose email", () => {
         await composeMail.clickOnSendButton();
         expect(await activityTabPo.getemailContent()).toContain('Qianru Tao sent an email');
         expect(await activityTabPo.getemailContent()).toContain(emailTemplateName);
-        expect(await activityTabPo.getemailContent()).toContain('To: Fritz Schulz');
+        expect(await activityTabPo.getemailContent()).toContain('TO: Fritz Schulz');
         expect(await activityTabPo.getemailContent()).toContain(caseId + ':' + 'Leave summary');
+        await activityTabPo.clickShowMoreForEmailActivity();
         expect(await activityTabPo.getemailContent()).toContain('I am taking leave today.');
     });
 
@@ -224,9 +226,10 @@ describe("compose email", () => {
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
         expect(await composeMail.getSubject()).toContain(caseId);//part of DRDMV-10393
-        await expect(await composeMail.getEmailBody()).toContain('Regards');
-        await expect(await composeMail.getEmailBody()).toContain('Qianru Tao');
-        await expect(await composeMail.getEmailBody()).toContain('qtao@petramco.com');
+        //Below lines are commented as signature has been removed Feature: DRDMV-19708
+        // await expect(await composeMail.getEmailBody()).toContain('Regards');
+        // await expect(await composeMail.getEmailBody()).toContain('Qianru Tao');
+        // await expect(await composeMail.getEmailBody()).toContain('qtao@petramco.com');
         await composeMail.clickOnSelectEmailTemplateLink();
         await utilCommon.waitUntilSpinnerToHide();
         await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
@@ -263,7 +266,7 @@ describe("compose email", () => {
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnRequestersEmail();
         await composeMail.clickOnSelectEmailTemplateLink();
-        await utilCommon.waitUntilSpinnerToHide();
+        //await utilCommon.waitUntilSpinnerToHide();
         await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
         await emailTemplateBladePo.clickOnApplyButton();
         await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
@@ -309,18 +312,18 @@ describe("compose email", () => {
         await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
         await emailTemplateBladePo.clickOnApplyButton();
         await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
-        expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
+        expect(await composeMail.getEmailBody()).toContain('I am taking leave today.', 'Email Body 1 does not match');
         expect(await composeMail.getSubject()).toContain(caseId);
-        expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
-        expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplateName);
+        expect(await composeMail.getSubjectInputValue()).toContain('Leave summary', 'Subject value 1 does not match');
+        expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplateName, 'email Template Name 1 does not match');
         await composeMail.clickOnSelectEmailTemplateLink();
         await utilCommon.waitUntilSpinnerToHide();
         await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplate1);
         await emailTemplateBladePo.clickOnApplyButton();
-        expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI have checked my salary.\n\nThanks.');
+        expect(await composeMail.getEmailBody()).toContain('I have checked my salary.', 'Email Body 2 does not match');
         expect(await composeMail.getSubject()).toContain(caseId);
-        expect(await composeMail.getSubjectInputValue()).toContain('Salary summary');
-        expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate1);
+        expect(await composeMail.getSubjectInputValue()).toContain('Salary summary', 'Subject 2 does not match');
+        expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate1, 'Email Template name heading does not match');
         await composeMail.clickOnSendButton();
     });
 
