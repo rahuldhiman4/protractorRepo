@@ -1,4 +1,4 @@
-import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 class ViewTask {
@@ -37,8 +37,16 @@ class ViewTask {
         assignCompany: '[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] .d-textfield__label',
         taskStatusGuid: 'aea81ee2-85d9-4bb6-adb4-08c29028d45d',
         requesterEmailLink: '[rx-view-component-id="71cbebcb-9fd6-44dc-8039-20d3178f7143"] .ac-link-person-email',
+        attachmentFile: '.rx-attachment-view-name',
     }
 
+    async isAttachedDocumentPresent(fileName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.attachmentFile, fileName)).isPresent();
+    }
+
+    async clickOnAttachedDocumentFile(fileName: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.attachmentFile, fileName)).click();
+    }
     async clickOnRequesterEmail(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesterEmailLink)));
         await $(this.selectors.requesterEmailLink).click();
@@ -239,14 +247,14 @@ class ViewTask {
     }
 
     async isProcessNameValue(): Promise<boolean> {
-            return await $(this.selectors.processnameValue).isPresent().then(async (result) => {
-                if(result){
-                    return await $(this.selectors.processnameValue).getText() ? true : false;
-                } else {
-                    console.log("Flowset not present");
-                    return false;
-                }
-            });
+        return await $(this.selectors.processnameValue).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.processnameValue).getText() ? true : false;
+            } else {
+                console.log("Flowset not present");
+                return false;
+            }
+        });
     }
 
     async getTaskID(): Promise<string> {
