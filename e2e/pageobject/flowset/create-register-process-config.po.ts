@@ -5,6 +5,8 @@ class CreateFlowset {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         companyGuid: '838b3d55-e82c-4d5e-859b-4144ad048254',
+        searchIcon:'[rx-view-component-id="7fc0ca1d-6fa7-418c-826a-4a09c9dccf87"] .d-icon-search',
+        searchProcessTxtbox: '[rx-view-component-id="7fc0ca1d-6fa7-418c-826a-4a09c9dccf87"] .d-textfield__input',
         selectProcess: '[rx-view-component-id="7fc0ca1d-6fa7-418c-826a-4a09c9dccf87"] .rx-definition-picker__instance-name',
         processName: '[rx-view-component-id="7fc0ca1d-6fa7-418c-826a-4a09c9dccf87"] .rx-definition-picker__fake-input',
         company: '[rx-view-component-id="838b3d55-e82c-4d5e-859b-4144ad048254"] .ui-select-toggle',
@@ -76,6 +78,8 @@ class CreateFlowset {
 
     async selectProcessName(process: string): Promise<void> {
         await $(this.selectors.processName).click();
+        await $(this.selectors.searchIcon).click();
+        await $(this.selectors.searchProcessTxtbox).sendKeys(process);
         await element(by.cssContainingText(this.selectors.selectProcess, process)).click();
     }
 

@@ -60,8 +60,13 @@ class ActivityTabPage {
     }
 
     async isAttachedFileNameDisplayed(fileName: string): Promise<boolean> {
-        return await $(this.selectors.AttachedfileName).getText() == fileName ? true : false;
+        return await element(by.cssContainingText(this.selectors.AttachedfileName,fileName)).getText() == fileName ? true : false;
     }
+
+    async clickAndDownloadAttachmentFile(fileName: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.AttachedfileName,fileName)).click();
+    }
+
 
     async clickOnReply(): Promise<void> {
         //        await utilCommon.waitUntilSpinnerToHide();
