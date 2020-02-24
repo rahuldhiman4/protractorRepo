@@ -100,7 +100,7 @@ class NavigationPage {
             let quickCase: boolean = await $(this.verticalSelectors.createQuickCaseMenu).isDisplayed();
             let closedHamberger: boolean = await $(this.verticalSelectors.closeHambergerMenu).isDisplayed();
             if (closedHamberger == true) {
-                $(this.verticalSelectors.closeHambergerMenu).click();
+                await $(this.verticalSelectors.closeHambergerMenu).click();
             }
             return quickCase;
         } else {
