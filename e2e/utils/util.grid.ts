@@ -279,7 +279,9 @@ export class GridOperation {
     async searchAndSelectGridRecord(searchValue: string, guid?: string): Promise<void> {
         await this.searchOnGridConsole(searchValue);
         await utilCommon.waitUntilSpinnerToHide();
+        await browser.sleep(1000);
         let checkboxRows: ElementFinder[];
+
         if (guid) {
             checkboxRows = await $$(`*[rx-view-component-id="${guid}"] .ui-grid .ui-grid-pinned-container .ui-grid-viewport .ui-grid-row`);
         } else {
