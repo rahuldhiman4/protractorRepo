@@ -69,18 +69,18 @@ class ViewCasePage {
 
     async clickOnEmailLink(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
-        await ($(this.selectors.emailLink)).click();
+        await $(this.selectors.emailLink).click();
         //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickOnRequestersEmail(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesterEmail)));
-        await ($(this.selectors.requesterEmail)).click();
+        await $(this.selectors.requesterEmail).click();
     }
 
     async isEmailLinkPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
-        return await ($(this.selectors.emailLink)).isPresent();
+        return await $(this.selectors.emailLink).isPresent();
     }
 
     async isResolutionDescriptionTextBoxEmpty(): Promise<boolean> {

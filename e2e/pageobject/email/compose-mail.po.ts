@@ -45,17 +45,17 @@ class ComposeMail {
     }
 
     async clickOnSelectEmailTemplateLink(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectTemplateButton)),2000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectTemplateButton)),4000);
         await $(this.selectors.selectTemplateButton).click();
     }
 
     async getTextOfDiscardButtonWarningMessage(): Promise<string> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.getTextOfWarningMsg)));
-        return await utilCommon.getWarningMessagegText();
+        return await utilCommon.getWarningDialogMsg();
     }
 
     async clickOnDiscardButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.discardButton)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.discardButton)),2000);
         await $(this.selectors.discardButton).click();
     }
 
@@ -154,7 +154,7 @@ class ComposeMail {
 
     async getEmailBody(): Promise<string> {
         await browser.switchTo().frame(element(by.css("iframe.cke_wysiwyg_frame")).getWebElement());
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
         let value = await $(this.selectors.emailBody).getText();;
         await browser.switchTo().defaultContent();
         return value;
@@ -193,11 +193,11 @@ class ComposeMail {
 
     async setToOrCCInputTetxbox(value: String, emailIdForToOrCc: string): Promise<void> {
         let element = await $(`input[aria-label="${value}"]`);
-//        await browser.wait(this.EC.elementToBeClickable(element));
+        await browser.wait(this.EC.elementToBeClickable(element),3000);
         await element.click();
         await element.clear();
         await element.sendKeys(emailIdForToOrCc);
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.popupEmail)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.popupEmail)),4000);
         await $(this.selectors.popupEmail).click();
 
     }
