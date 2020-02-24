@@ -28,6 +28,7 @@ import taskConsolepage from "../../pageobject/task/console-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import viewTasktemplatePage from '../../pageobject/settings/task-management/view-tasktemplate.po';
 
 describe("Create Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -504,7 +505,7 @@ describe("Create Case", () => {
             await expect(navigationPage.isCreateKnowledge()).toBeTruthy("Create knowledge is not displayed ");
             await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
             await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
-            await navigationPage.gotoSettingsPage();
+           // await navigationPage.gotoSettingsPage();
 
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -516,7 +517,7 @@ describe("Create Case", () => {
             await expect(navigationPage.isCreateKnowledge()).toBeTruthy("Create knowledge is not displayed ");
             await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
             await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
-            await navigationPage.gotoSettingsPage();
+           // await navigationPage.gotoSettingsPage();
 
             await navigationPage.signOut();
             await loginPage.login('qdu');
@@ -528,7 +529,7 @@ describe("Create Case", () => {
             await expect(navigationPage.isCreateKnowledge()).toBeTruthy("Create knowledge is not displayed ");
             await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
             await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
-            await navigationPage.gotoSettingsPage();
+            //await navigationPage.gotoSettingsPage();
         } catch (e) {
             throw e;
         } finally {
@@ -634,8 +635,6 @@ describe("Create Case", () => {
 
         //manual Task template
         try {
-            await navigationPage.signOut();
-            await loginPage.login('qtao');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
@@ -648,9 +647,12 @@ describe("Create Case", () => {
             await createTaskTemplate.selectTaskCategoryTier3(categName3);
             await createTaskTemplate.selectTemplateStatus('Active');
             await createTaskTemplate.clickOnSaveTaskTemplate();
+            await expect(viewTasktemplatePage.getOwnerCompanyValue()).toBe("Petramco");
             //await utilCommon.waitUntilPopUpDisappear();
 
             //Create Case
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
             await navigationPage.gotCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary1212');
@@ -878,9 +880,10 @@ describe("Create Case", () => {
             expect((await createCasePage.getCreateCaseTitle()).trim()).toBe('Create Case', "Create Case title is not displayed in Create Case Page");
             expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
             await createCasePage.selectRequester('adam');
-            await createCasePage.clickSaveCaseButtonWithoutMessageDisappear();
-            expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
-            await utilCommon.closePopUpMessage();
+            // await createCasePage.clickSaveCaseButtonWithoutMessageDisappear();
+            // expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
+            // await utilCommon.closePopUpMessage();
+            await expect(createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is Enabled");
             //await utilCommon.waitUntilPopUpDisappear();
             await createCasePage.setSummary(caseSummary);
             await createCasePage.clickSaveCaseButton();

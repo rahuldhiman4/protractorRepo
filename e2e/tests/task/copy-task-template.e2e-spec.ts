@@ -12,6 +12,7 @@ import viewTaskTemplate from "../../pageobject/settings/task-management/view-tas
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import utilCommon from '../../utils/util.common';
+import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
 
 describe('Copy Task Template', () => {
     beforeAll(async () => {
@@ -449,6 +450,7 @@ describe('Copy Task Template', () => {
             await taskTemplatePage.selectCompanyByName('Petramco');
             await taskTemplatePage.selectTemplateStatus('Active');
             await taskTemplatePage.clickOnSaveTaskTemplate();
+            await expect(viewTasktemplatePo.getOwnerCompanyValue()).toBe("Petramco");
             //await utilCommon.waitUntilPopUpDisappear();
 
             await navigationPage.gotoSettingsPage();
@@ -458,8 +460,9 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.setNewProcessName(processName);
             await copyTemplatePage.clickSaveCopytemplate();
-            await expect(await utilCommon.isPopUpMessagePresent('ERROR (902): Duplicate process name com.bmc.dsm.bwfa:' + processName)).toBeTruthy();
-            await expect(await utilCommon.isPopUpMessagePresent("Saved successfully.")).toBeTruthy();
+            await expect(await utilCommon.isPopUpMessagePresent("Saved successfully.")).toBeTruthy("Saved successfully not present");
+            await expect(await utilCommon.isErrorMsgPresent()).toBeTruthy('Error msg not present');
+           
         } catch (e) {
             throw e;
         } finally {
@@ -580,6 +583,7 @@ describe('Copy Task Template', () => {
             await taskTemplatePage.selectTaskCategoryTier3('Chatter');
             await taskTemplatePage.selectTemplateStatus('Active');
             await taskTemplatePage.clickOnSaveTaskTemplate();
+            await expect(viewTasktemplatePo.getOwnerCompanyValue()).toBe("Petramco");
             //await utilCommon.waitUntilPopUpDisappear();
 
             await navigationPage.signOut();
