@@ -1,13 +1,12 @@
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
-import { SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
+import { CASE_MANAGEMENT_LIB_PROCESS, SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import consoleFlowsetProcessLibrary from '../../pageobject/flowset/console-process-library-config.po';
 import createFlowsetProcessLibrary from '../../pageobject/flowset/create-register-process-config.po';
 import editFlowsetProcessLibrary from '../../pageobject/flowset/edit-register-process-config.po';
-let CaseManagementService = "Case Management Service";
 
 describe('Create Process in Flowset', () => {
     beforeAll(async () => {
@@ -29,10 +28,13 @@ describe('Create Process in Flowset', () => {
         let drpDownStatus: string[] = ['Draft', 'Active', 'Inactive'];
 
         await apiHelper.apiLogin('tadmin');
-        let social_Service = SOCIAL_SERVICE_PROCESS;
-        let social_Service_Process = social_Service.name + randomStr;
-        social_Service.name = social_Service_Process;
-        await apiCoreUtil.createProcess(social_Service);
+        let case_management = CASE_MANAGEMENT_LIB_PROCESS;
+        let case_Management_Process = case_management.name + randomStr;
+        case_management.name = case_Management_Process;
+        await apiCoreUtil.createProcess(case_management);
+         
+        let processName=case_Management_Process.split(':')[1];
+
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
         await expect(consoleFlowsetProcessLibrary.isRegisterProcessEnable()).toBeTruthy("Add flowset register Process is disabled");
@@ -59,8 +61,8 @@ describe('Create Process in Flowset', () => {
 
         //add Flowsets
         await createFlowsetProcessLibrary.selectCompany('Petramco');
-        await createFlowsetProcessLibrary.selectApplicationService("Assignment");
-        await createFlowsetProcessLibrary.selectProcessName('Assignment Process');
+        await createFlowsetProcessLibrary.selectApplicationService("Case Management Service");
+        await createFlowsetProcessLibrary.selectProcessName(processName);
         await createFlowsetProcessLibrary.setAliasName("Alias" + randomStr);
         await createFlowsetProcessLibrary.setDescription("description" + randomStr);
         await createFlowsetProcessLibrary.selectStatus("Active");

@@ -494,6 +494,16 @@ describe("Create Case", () => {
 
     //ankagraw
     it('[DRDMV-7027]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
+        await navigationPage.gotoCaseConsole();
+        await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
+        await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
+        await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
+        await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
+        await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
+        await expect(navigationPage.isCreateKnowledge()).toBeTruthy("Create knowledge is not displayed ");
+        await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
+        await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
+//        browser.sleep(3000);
         try {
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -505,19 +515,7 @@ describe("Create Case", () => {
             await expect(navigationPage.isCreateKnowledge()).toBeTruthy("Create knowledge is not displayed ");
             await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
             await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
-           // await navigationPage.gotoSettingsPage();
-
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-            await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
-            await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
-            await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
-            await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
-            await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
-            await expect(navigationPage.isCreateKnowledge()).toBeTruthy("Create knowledge is not displayed ");
-            await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
-            await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
-           // await navigationPage.gotoSettingsPage();
+            // await navigationPage.gotoSettingsPage();
 
             await navigationPage.signOut();
             await loginPage.login('qdu');
@@ -536,7 +534,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    }, 150 * 1000);
 
     //ankagraw
     it('[DRDMV-8868]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', async () => {
@@ -903,5 +901,5 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    },180*1000);
+    }, 180 * 1000);
 });

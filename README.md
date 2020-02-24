@@ -5,12 +5,8 @@
 4. Download Visual Studio Code IDE
 5. Open clonned folder in the IDE
 6. Open new terminal in the IDE
-7. Run following command from the downloaded repo
-    a. npm install (to install required modules)
-    b. npm install -g protractor
-    c. npm install axios (to install api client)
-    d. ng serve (to compile the project, select protractor as option when asked)
-    e. ng e2e (to run protractor.conf.js)
+7. npm install (to install required modules)
+8. npm run e2e-protractor (to start execution)
 
 # Bwfa
 
