@@ -50,7 +50,7 @@ export class CreateJiraCycle {
     projectId: string;
     versionId: string;
     inputFile: string;
-    generateStats: boolean;
+    generateStats: string;
     userName: string;
     password: string;
     passJiraTest = [];
@@ -259,7 +259,7 @@ export class CreateJiraCycle {
             let totalExe = 0;
 
             // calculate pass percentage
-            if (this.generateStats) {
+            if (this.generateStats.toLowerCase() == 'true') {
                 let passPercent = await this.getTotalExecutionAndPassPercent(issueId);
                 passDetails = passPercent.passPercentage;
                 totalExe = passPercent.totalExecution;
