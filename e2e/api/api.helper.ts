@@ -5,7 +5,7 @@ import { IKnowledgeArticles } from 'e2e/data/api/interface/knowledge.articles.in
 import { IPerson } from 'e2e/data/api/interface/person.interface.api';
 import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.api';
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
-import { browser } from 'protractor';
+import { browser, element } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
 import { CaseStatus, CasePriority, CaseTemplate, Knowledge, MenuItemStatus, NotificationType, ProcessLibConf, TaskTemplate } from "../api/constant.api";
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
@@ -18,6 +18,7 @@ import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
 import { FLAG_UNFLAG_KA } from '../data/api/knowledge/flag-unflag.data.api';
 import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
+import { AUTOMATED_CASE_STATUS_TRANSITION, REOPEN_CASE, CASE_WATCHLIST_ALL_EVENTS } from '../data/api/shared-services/process.data.api';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -754,7 +755,7 @@ class ApiHelper {
         return flagAndUnflagResponse.status == 204;
     }
 
-    async deleteEmailTemplate(emailTemplateName: string): Promise<boolean> {
+    async deleteEmailOrNotificationTemplate(emailTemplateName: string): Promise<boolean> {
         let emailTemplateGuid = await coreApi.getEmailTemplateGuid(emailTemplateName);
         return await coreApi.deleteRecordInstance('com.bmc.dsm.notification-lib:NotificationTemplate', emailTemplateGuid);
     }
@@ -958,7 +959,7 @@ class ApiHelper {
             statusData.fieldInstances[1000000881]["value"] = await apiCoreUtil.getStatusChangeReasonGuid(statusReason);
         }
 
-        let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib Case", caseGuid, statusData);
+        let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case", caseGuid, statusData);
         return updateCaseStatus.status;
     }
 
@@ -1024,6 +1025,21 @@ class ApiHelper {
                 return !result.includes(false);
             });
         }
+    }
+
+    async updateCase(caseGuid: string, jsonBody: any): Promise<boolean>{
+        jsonBody.id = caseGuid;
+        let updateCase = await coreApi.updateRecordInstance('com.bmc.dsm.case-lib:Case', caseGuid, jsonBody);
+        return updateCase.status==204;
+    }
+
+    
+    async runAutomatedCaseTransitionProcess(): Promise<number>{
+        let response = await axios.post(
+            commandUri,
+            AUTOMATED_CASE_STATUS_TRANSITION
+        )        
+        return response.status;
     }
 }
 

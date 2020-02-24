@@ -101,7 +101,7 @@ describe('KnowledgeArticlestyle', () => {
         await articleTemplateStylePo.clickSaveButton();
         expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully')
         await articleTemplateStylePo.clickDeleteButton();
-        await articleTemplateStylePo.clickSaveButton()
+        await articleTemplateStylePo.clickSaveButton();
         expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully')
     });
 

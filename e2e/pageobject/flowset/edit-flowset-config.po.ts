@@ -8,8 +8,6 @@ class EditFlowsetPage {
     selectors = {
         processExecutionTypeGuid: '275b58b7-85e0-4d56-9d39-215f3551d471',
         functionGuid: '37ec6a5a-d6ba-4825-ab89-6fa4175c0751',
-        summaryField1: '[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] input[role="search"]',
-        searchButton1: '[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] button[rx-id="submit-search-button"]',
         processnameGuid: '8ed57f59-49e6-4ef5-bc10-30fc55bc5556',
         processMappingSaveBtn: '[rx-view-component-id="106495e9-95f6-4d94-b9c8-f71c5a76f09d"] button',
         editProcessMappingSaveBtn: '[rx-view-component-id="0d0e544e-e9e4-4854-ae72-6599a7ae38cd"] button',
@@ -26,11 +24,12 @@ class EditFlowsetPage {
         associateResolutionCode: '[rx-view-component-id="3d0801f0-7f99-4967-a71a-6347f25c8427"] button',
         addResolutionCode: '[rx-view-component-id="80823193-b62b-425d-aae6-3a6191dea8bc"] button',
         companyValue: '[rx-view-component-id="2303bffc-b2c5-4cd2-a55a-bac22b61d516"] .ui-select-toggle',
+        processmappingConsoleGuid: '0e25a330-f284-4892-9777-84ae2a5583ff'
     }
 
     async isFlowsetNameDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.flowsetName)));
-        return await $(this.selectors.flowsetName).getAttribute("disabled") == "true";
+        return await $(this.selectors.flowsetName).getAttribute("readonly") == "true";
     }
 
     async selectProcessName(process: string): Promise<void> {
@@ -96,15 +95,22 @@ class EditFlowsetPage {
         await $(this.selectors.editProcessMappingSaveBtn).click();
     }
 
-    async isFlowsetPresent(flowset: string): Promise<boolean> {
-        await utilGrid.searchOnGridConsole(flowset);
-        return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid__link', flowset)).getText() == flowset ? true : false
-
+    async searchProcessMappingName(processMappingName: string): Promise<boolean> {
+        await utilGrid.searchRecord(processMappingName, this.selectors.processmappingConsoleGuid);
+        return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid__link', processMappingName)).isPresent().then(async (result) => {
+            if (result) {
+                return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid__link', processMappingName)).getText() == processMappingName ? true : false;
+            } else {
+                console.log("Mapping not present");
+                return false;
+            }
+        });
     }
 
-    async searchAndOpenFlowset(flowset: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(flowset);
+    async searchAndOpenProcessMapping(processMappingName: string): Promise<void> {
+        await utilGrid.searchAndOpenHyperlink(processMappingName, this.selectors.processmappingConsoleGuid);
     }
+    
     async navigateToProcessTab(): Promise<void> {
         let locator = $$(this.selectors.tab).get(1);
         //        await browser.wait(this.EC.elementToBeClickable(locator));
@@ -117,7 +123,14 @@ class EditFlowsetPage {
     }
 
     async isProcessExecutionTypePresent(process: string): Promise<boolean> {
-        return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid-cell-contents', process)).getText() == process ? true : false;
+        return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid-cell-contents', process)).isPresent().then(async (result) => {
+            if (result) {
+                return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid-cell-contents', process)).getText() == process ? true : false;
+            } else {
+                console.log("Process not present");
+                return false;
+            }
+        });
     }
 
     async clickOnAddNewMappingBtn(): Promise<void> {

@@ -39,10 +39,10 @@ describe('Create Flowset', () => {
         await createFlowset.clickOnStatus();
         await expect(createFlowset.statusDropDownValuesDisplayed(drpDownStatus)).toBeTruthy("Given value os not present");
         //verify the Required Fields
-        await expect(createFlowset.isCompanyRequiredTextDisplayed()).toBe("required", " Company Required text not present ");
-        await expect(createFlowset.isFlowsetRequiredTextDisplayed()).toBe("required", " Flowset Name Required text not present ");
-        await expect(createFlowset.isDescriptionRequiredTextDisplayed()).toBe("required", " Description Required text not present ");
-        await expect(createFlowset.isStatusRequiredTextDisplayed()).toBe("required", " Status Required text not present ");
+        await expect(createFlowset.isCompanyRequiredTextDisplayed()).toBeTruthy(" Company Required text not present ");
+        await expect(createFlowset.isFlowsetRequiredTextDisplayed()).toBeTruthy(" Flowset Name Required text not present ");
+        await expect(createFlowset.isDescriptionRequiredTextDisplayed()).toBeTruthy(" Description Required text not present ");
+        await expect(createFlowset.isStatusRequiredTextDisplayed()).toBeTruthy( " Status Required text not present ");
 
         //add Flowsets
         await createFlowset.selectCompany('Petramco');
@@ -125,9 +125,9 @@ describe('Create Flowset', () => {
         let processLibConfData1 = {
             applicationServicesLib: "com.bmc.dsm.social-lib",
             processName: social_Service_Process,
-            processAliasName: `Second Process${randomStr}`,
+            processAliasName: `Second Process ${randomStr}`,
             company: "Petramco",
-            description: `Second description${randomStr}`,
+            description: `Second description ${randomStr}`,
             status: "Active"
         }
         await apiHelper.createProcessLibConfig(processLibConfData);
@@ -146,23 +146,23 @@ describe('Create Flowset', () => {
         await editFlowset.clickOnAddNewMappingBtn();
         await editFlowset.selectProcessName(`First Process ${randomStr}`);
         await editFlowset.clickSaveBtnOnProcessMapping();
-        await expect(editFlowset.isFlowsetPresent('`First Process ${randomStr}`')).toBeTruthy(`First Process ${randomStr}` + "Processing mapping not visible");
+        await expect(editFlowset.searchProcessMappingName(`First Process ${randomStr}`)).toBeTruthy(`First Process ${randomStr}` + "Processing mapping not visible");
         await expect(editFlowset.isProcessExecutionTypePresent('Additive')).toBeTruthy("Additive not present on grid");
         await editFlowset.clickOnAddNewMappingBtn();
         await editFlowset.selectFunction('Assignment');
         await editFlowset.selectProcessName(`Second Process ${randomStr}`);
         await editFlowset.clickSaveBtnOnProcessMapping();
-        await expect(editFlowset.isFlowsetPresent(`Second Process ${randomStr}`)).toBeTruthy(`Second Process${randomStr}` + "Processing mapping not visible");
+        await expect(editFlowset.searchProcessMappingName(`Second Process ${randomStr}`)).toBeTruthy(`Second Process${randomStr}` + "Processing mapping not visible");
         await expect(editFlowset.isProcessExecutionTypePresent('Additive')).toBeTruthy("Additive not present on grid");
-        await editFlowset.searchAndOpenFlowset('`First Process ${randomStr}`');
+        await editFlowset.searchAndOpenProcessMapping(`First Process ${randomStr}`);
         await editFlowset.selectProcessExecutionType('Exclusive');
         await editFlowset.clickSaveBtnOnEditProcessMapping();
-        await expect(editFlowset.isFlowsetPresent('`First Process ${randomStr}`')).toBeTruthy(`First Process ${randomStr}` + "Processing mapping not visible");
+        await expect(editFlowset.searchProcessMappingName(`First Process ${randomStr}`)).toBeTruthy(`First Process ${randomStr}` + "Processing mapping not visible");
         await expect(editFlowset.isProcessExecutionTypePresent('Exclusive')).toBeTruthy("Exclusive not present on grid")
-        await editFlowset.searchAndOpenFlowset(`Second Process ${randomStr}`);
+        await editFlowset.searchAndOpenProcessMapping(`Second Process ${randomStr}`);
         await editFlowset.selectProcessExecutionType('Exclusive');
         await editFlowset.clickSaveBtnOnEditProcessMapping();
-        await expect(editFlowset.isFlowsetPresent(`Second Process ${randomStr}`)).toBeTruthy(`Second Process ${randomStr}` + "Processing mapping not visible");
+        await expect(editFlowset.searchProcessMappingName(`Second Process ${randomStr}`)).toBeTruthy(`Second Process ${randomStr}` + "Processing mapping not visible");
         await expect(editFlowset.isProcessExecutionTypePresent('Exclusive')).toBeTruthy("Exclusive not present on grid")
 
         await apiHelper.apiLogin('tadmin');
@@ -170,13 +170,14 @@ describe('Create Flowset', () => {
         let processName1 = 'com.bmc.dsm.case-lib:Case - Initialization';
         await apiHelper.deleteFlowsetProcessLibConfig(processName1);
         await apiHelper.deleteFlowsetProcessLibConfig(processName);
-    });
+    },150*1000);
 
     //ankagraw
     it('[DRDMV-1259]: [Permissions] Flowsets access', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
-        //API call to create the flowset
+      try {
+            //API call to create the flowset
         await apiHelper.apiLogin('qkatawazi');
         let flowsetData = require('../../data/ui/case/flowset.ui.json');
         let flowsetName: string = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
@@ -198,6 +199,10 @@ describe('Create Flowset', () => {
         await loginPage.login('qtao');
         await navigationPage.gotoSettingsPage();
         await expect(navigationPage.isSettingMenuPresent('Manage Flowsets')).toBeFalsy("Setting menu present");
+      } catch (error) {
+          await navigationPage.signOut();
+          await loginPage.login("qkatawazi");
+      }
     });
 
     //ankagraw
@@ -212,12 +217,6 @@ describe('Create Flowset', () => {
         let flowsetName: string = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
         flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
         await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
-
-        await apiHelper.apiLogin('qkatawazi');
-        let flowsetData1 = require('../../data/ui/case/flowset.ui.json');
-        let flowsetName1: string = await flowsetData['flowsetMandatoryFields'].flowsetName1 + randomStr1;
-        flowsetData['flowsetMandatoryFields'].flowsetName1 = flowsetName1;
-        await apiHelper.createNewFlowset(flowsetData1['flowsetMandatoryFields']);
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');

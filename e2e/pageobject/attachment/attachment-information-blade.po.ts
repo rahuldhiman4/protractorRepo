@@ -23,8 +23,12 @@ class AttachmentBlade {
         return await $(this.selectors.close).isDisplayed();
     }
 
-    async clickOnDonwloadButton(): Promise<void> {
+    async clickOnDownloadButton(): Promise<void> {
         await $(this.selectors.download).click();
+    }
+
+    async clickOnCloseButton(): Promise<void> {
+        await $(this.selectors.close).click();
     }
 
     async isTitleNameDisplayed(): Promise<boolean> {

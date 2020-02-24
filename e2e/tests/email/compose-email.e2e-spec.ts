@@ -272,7 +272,7 @@ describe("compose email", () => {
         expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
         expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplateName);
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteEmailTemplate(emailTemplateName);
+        await apiHelper.deleteEmailOrNotificationTemplate(emailTemplateName);
         await composeMail.clickOnSelectEmailTemplateLink();
         await utilCommon.waitUntilSpinnerToHide();
         await utilGrid.searchRecord(emailTemplateName);

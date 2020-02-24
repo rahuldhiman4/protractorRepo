@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import { $,element,by, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../utils/util.grid';
 
 class ConsoleProcessLibrary {
@@ -9,6 +9,17 @@ class ConsoleProcessLibrary {
         registerProcessGuid: '1aed89be-c517-4afb-a5bc-ad1e82652a6c',
         summaryField1: 'input[role="search"]',
         searchButton1: 'button[rx-id="submit-search-button"]',
+    }
+
+    async isProcessPresentOnGrid(process: string): Promise<boolean> {
+        return await element(by.cssContainingText('.ui-grid-cell-contents', process)).isPresent().then(async (result) => {
+            if(result){
+                return await element(by.cssContainingText('.ui-grid-cell-contents', process)).getText() == process ? true : false;
+            } else {
+                console.log("Flowset not present");
+                return false;
+            }
+        });
     }
 
     async clickOnRegisterProcess(): Promise<void> {
@@ -24,6 +35,19 @@ class ConsoleProcessLibrary {
     async searchAndSelectFlowset(flowset: string): Promise<void> {
         await utilGrid.searchAndOpenHyperlink(flowset);
     }
+
+    async isAliasNamePresentOnGrid(alias: string): Promise<boolean> {
+        await utilGrid.searchOnGridConsole(alias);
+        return await element(by.cssContainingText('.ui-grid__link', alias)).isPresent().then(async (result) => {
+            if(result){
+                return await element(by.cssContainingText('.ui-grid__link', alias)).getText() == alias ? true : false;
+            } else {
+                console.log("Flowset not present");
+                return false;
+            }
+        });
+    }
+
 
     async clickOnRefreshButton(): Promise<void> {
         await utilGrid.clickOnGridRefreshButton();

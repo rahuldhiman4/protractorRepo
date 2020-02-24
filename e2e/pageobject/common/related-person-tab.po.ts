@@ -14,7 +14,7 @@ class RelatedPersonPage {
         relatedPersonNames: ' .person-name a',
         relations: ' .person-relationship p',
         personOrganization: ' .person-organization',
-        emailLink: ' .list-email',
+        emailLink: ' .list-email, [rx-view-component-id="6bfe26e7-5065-4db7-a317-18e14a37cd30"] .ac-link-person-email',
         site: ' .ac-text-site-value',
         phoneNumber: ' .ac-link-person-phone',
         removePersonCrossIcon: ' .close.close-button',
@@ -59,11 +59,16 @@ class RelatedPersonPage {
     }
 
     async clickRelatedPersonName(personName: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
-        let option = await $(this.selectors.allRelatedPersons).element(by.linkText(personName));
-//        await browser.wait(this.EC.elementToBeClickable(option)).then(async function () {
-            await option.click();
-//        });
+        let allPersonNum: number = await $$(this.selectors.allRelatedPersons).count();
+        for (let i = 0; i < allPersonNum; i++) {
+            let person = await $$(this.selectors.allRelatedPersons).get(i);
+            let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
+            if (nm == personName) {
+                person = await $$(this.selectors.allRelatedPersons).get(i);
+                await person.$(this.selectors.relatedPersonNames).click();
+                break;
+            }
+        }
     }
 
     async getRelatedPersonCompanyName(personName: string): Promise<string> {
@@ -154,7 +159,7 @@ class RelatedPersonPage {
             let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
             if (nm == personName) {
                 person = await $$(this.selectors.allRelatedPersons).get(i);
-                stat = await person.$$(this.selectors.emailLink).get(i).getAttribute("ng-if") == "!showLink";
+                stat = await person.$$(this.selectors.emailLink).getAttribute("ng-if") == "!showLink";
                 break;
             }
         }

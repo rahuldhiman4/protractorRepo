@@ -6,15 +6,10 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
 import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
-import serviceTargetViewConsole from '../../pageobject/settings/slm/service-target-viewconsole.po';
-import utilCommon from '../../utils/util.common';
-import serviceTargetBladePo from '../../pageobject/settings/slm/service-target-blade.po';
-import caseConsolePo from '../../pageobject/case/case-console.po';
-import viewCasePo from 'e2e/pageobject/case/view-case.po';
 
-var caseBAUser = 'qkatawazi';
+let caseBAUser = 'qkatawazi';
 
-describe('Service Taret Tests', () => {
+describe('Service Target - Second Level Association Tests', () => {
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login(caseBAUser);
@@ -40,29 +35,28 @@ describe('Service Taret Tests', () => {
         //Verify second level association for Assigned Company
         let firstLevelExpression = await slmExpressionBuilder.getFirstLevelExpressionField('Assigned Company');
         expect(firstLevelExpression).toBe('Assigned Company');
-        await slmExpressionBuilder.selectSecondLevelExpressionField('Assigned Company', 'Abbreviation');
-        let secondLevelExpression: boolean = await slmExpressionBuilder.getSecondLevelExpressionField('Assigned Company', assignedCompanySecondLevelAssociation);
+        //await slmExpressionBuilder.selectSecondLevelExpressionField('Assigned Company', 'Abbreviation');
+        let secondLevelExpression: boolean = await slmExpressionBuilder.areSecondLevelExpressionFieldsMatches('Assigned Company', assignedCompanySecondLevelAssociation);
         expect(secondLevelExpression).toBeTruthy('Assigned Company second level association fields does not matches.');
 
         //Verify second level association for Case Site
         firstLevelExpression = await slmExpressionBuilder.getFirstLevelExpressionField('Case Site');
         expect(firstLevelExpression).toBe('Case Site');
-        await slmExpressionBuilder.selectSecondLevelExpressionField('Case Site', 'Address');
-        secondLevelExpression = await slmExpressionBuilder.getSecondLevelExpressionField('Case Site', caseSiteSecondLevelAssociation);
+        //await slmExpressionBuilder.selectSecondLevelExpressionField('Case Site', 'Address');
+        secondLevelExpression = await slmExpressionBuilder.areSecondLevelExpressionFieldsMatches('Case Site', caseSiteSecondLevelAssociation);
         expect(secondLevelExpression).toBeTruthy('Case Site second level association fields does not matches.');
 
         //Verify second level association for Company
         firstLevelExpression = await slmExpressionBuilder.getFirstLevelExpressionField('Company');
-        expect(firstLevelExpression).toBe('Company');
-        await slmExpressionBuilder.selectSecondLevelExpressionField('Company', 'Type');
-        secondLevelExpression = await slmExpressionBuilder.getSecondLevelExpressionField('Company', assignedCompanySecondLevelAssociation);
+        //await slmExpressionBuilder.selectSecondLevelExpressionField('Company', 'Type');
+        secondLevelExpression = await slmExpressionBuilder.areSecondLevelExpressionFieldsMatches('Company', assignedCompanySecondLevelAssociation);
         expect(secondLevelExpression).toBeTruthy('Company second level association fields does not matches.');
 
         //Verify second level association for Requester
         firstLevelExpression = await slmExpressionBuilder.getFirstLevelExpressionField('Requester');
         expect(firstLevelExpression).toBe('Requester');
-        await slmExpressionBuilder.selectSecondLevelExpressionField('Requester', 'Email');
-        secondLevelExpression = await slmExpressionBuilder.getSecondLevelExpressionField('Requester', requesterSecondLevelAssociation);
+        //await slmExpressionBuilder.selectSecondLevelExpressionField('Requester', 'Email');
+        secondLevelExpression = await slmExpressionBuilder.areSecondLevelExpressionFieldsMatches('Requester', requesterSecondLevelAssociation);
         expect(secondLevelExpression).toBeTruthy('Requester second level association fields does not matches.');
     });
 
@@ -111,11 +105,11 @@ describe('Service Taret Tests', () => {
         await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
 
         //Verify second level association for Assigned Company
-        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco.com");
-        selectedExpx = await slmExpressionBuilder.getSelectedExpression();
-        var expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "Qiang Du" + '"'
-        console.log(selectedExpx);
-        expect(selectedExpx).toEqual(expectedSelectedExp);
+        await slmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
+        await slmExpressionBuilder.clickOnAddExpressionButton('PERSON');
+        let selectedExp: string = await slmExpressionBuilder.getSelectedExpression();
+        expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"';
+        expect(selectedExp).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("2");
         await serviceTargetConfig.selectMileStone();
@@ -337,49 +331,6 @@ describe('Service Taret Tests', () => {
         expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     }, 600 * 1000);
 
-    it('DRDMV-19668:Check SVT is attached to a Case and later Associations are updated', async () => {
-        await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
-            .toEqual('Service Target - Administration - Business Workflows');
-        await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-
-        //Verify second level association for Company
-        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Company','Abbreviation',"=",'TEXT',"ptramco");
-        let selectedExpx = await slmExpressionBuilder.getSelectedExpression();
-        var expectedSelectedExp = "'" + "Company > Abbreviation" + "'" + "=" + '"' + "ptramco" + '"'
-        expect(selectedExpx).toEqual(expectedSelectedExp);
-        await slmExpressionBuilder.clickOnSaveExpressionButton();
-        await serviceTargetConfig.selectGoal("4");
-        await serviceTargetConfig.selectMileStone();
-        await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-        await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-        await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
-        await serviceTargetConfig.clickOnSaveSVTButton();
-        browser.sleep(3000);
-        await navigationPage.gotCreateCase();
-        await createCasePage.selectRequester('Qiang');
-        await createCasePage.setSummary('Case for SVT creation');
-        await createCasePage.selectCategoryTier1('Employee Relations');
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
-        let caseDisplayId = await viewCasePo.getCaseID();
-        console.log(caseDisplayId);
-        expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-        await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
-            .toEqual('Service Target - Administration - Business Workflows');
-        await serviceTargetViewConsole.searchServiceTarget('SVT from Protractor');
-        await serviceTargetBladePo.clickOnBuildExpression();
-        await slmExpressionBuilder.clearSelectedExpression();
-        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Requester','Email',"=",'TEXT',"qtao@petramco.com");
-        await slmExpressionBuilder.clickOnSaveExpressionButton();
-        await serviceTargetConfig.clickOnSaveSVTButton();
-        await navigationPage.gotoCaseConsole();
-        await caseConsolePo.searchAndOpenCase(caseDisplayId);
-        expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true); //green
-    },600*1000);
 
 
 })

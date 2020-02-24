@@ -1,4 +1,4 @@
-import { $,browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 class createNotificationTemplate {
@@ -59,7 +59,6 @@ class createNotificationTemplate {
     async clickOnCancelButton():Promise<void>{
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
-        await utilCommon.clickOnWarningOk();
     }
 
     async isDynamicFieldDisplayedInAlertBody(value: string): Promise<boolean> {

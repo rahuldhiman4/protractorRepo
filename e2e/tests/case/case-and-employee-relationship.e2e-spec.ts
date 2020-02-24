@@ -128,7 +128,7 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedCasePage.getRelatedCaseModDate(caseId)).toContain('Modified')
         expect(await relatedCasePage.getRelatedCasePriority(caseId)).toBe('Medium');
         expect(await relatedCasePage.getRelatedCaseStatus(caseId)).toBe('Assigned');
-        expect(await relatedCasePage.getRelatedCaseRelation(caseId)).toBe('Related to');
+        expect(await relatedCasePage.getRelatedCaseRelation(caseId)).toBe('Inspector');
     });
 
     //asahitya
@@ -189,7 +189,7 @@ describe('Case And Employee Relationship', () => {
         await gridUtil.searchAndOpenHyperlink(caseId2);
         await caseEditPage.navigateToRelatedCasesTab();
         expect(await relatedCasePage.isCasePresent(caseId3)).toBeTruthy();
-    }, 100 * 1000);
+    }, 160 * 1000);
 
     //asahitya
     it('[DRDMV-16243]: Check details shown for Employees on Related People tab', async () => {

@@ -1,6 +1,8 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
 import util from "../../utils/util.common";
+import utilCommon from '../../utils/util.common';
+import { resolve } from "path";
 
 class CreateAdhocTaskTemplatePage {
 
@@ -25,49 +27,55 @@ class CreateAdhocTaskTemplatePage {
         assignee: '[rx-view-component-id="58085538-2875-4bf0-a880-f977bdeb842a"] .ui-select-toggle',
         department: '[rx-view-component-id="0cfce715-9fa8-4f61-b670-5aff2b0540f3"] .ui-select-toggle',
         assignedGroup: '[rx-view-component-id="6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d"] .ui-select-toggle',
-        taskSummaryRequiredText: '[rx-view-component-id="76b6b259-a085-4d9f-91ac-8c5cbb2bc725"] input',
-        piorityRequiredText: '[ng-model="selectedOption.model"]',
-        assignedCompanyRequiredText: '[rx-view-component-id="359f0c65-e48c-458d-8f14-3c2fc85c5cf6"] .d-textfield__item',
-        assignedGroupRequiredText: '[rx-view-component-id="6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d"] .d-textfield__item',
+        taskSummaryRequiredText: '76b6b259-a085-4d9f-91ac-8c5cbb2bc725',
+        assignedCompanyRequiredText: '359f0c65-e48c-458d-8f14-3c2fc85c5cf6',
+        assignedGroupRequiredText: '6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d',
+        attachmentField: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] input[type="file"]',
+    }
+
+    async addAttachment(fileToUpload: string): Promise<void> {
+        const absolutePath = resolve(__dirname, fileToUpload);
+        console.log(absolutePath);
+        await $(this.selectors.attachmentField).sendKeys(absolutePath);
     }
 
     async setDescription(description: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.description)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.description)));
         await $(this.selectors.description).sendKeys(description);
     }
 
     async setSummary(summary: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummary)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummary)));
         await $(this.selectors.taskSummary).sendKeys(summary);
     }
 
     async clickOnSaveAdhoctask(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveAdhocTask)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveAdhocTask)));
         await $(this.selectors.saveAdhocTask).click();
     }
 
     async clickOnchangeAssignmentButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
         await $(this.selectors.changeAssignmentButton).click();
     }
 
     async isAttachmentButtonDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentLink)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentLink)));
         return await $(this.selectors.attachmentLink).isDisplayed();
     }
 
     async ischangeAssignmentButtonDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
         return await $(this.selectors.changeAssignmentButton).isDisplayed();
     }
 
     async clickOnAssignButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignButton)));
         await $(this.selectors.assignButton).click();
     }
 
     async clickOnCancelAdhoctask(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.canceladhocTask)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.canceladhocTask)));
         await $(this.selectors.canceladhocTask).click();
     }
 
@@ -96,67 +104,68 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async getStatusAttribute(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.status)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.status)));
         return await $(this.selectors.status).getAttribute('disabled');
     }
 
     async getAssignCompanyAttribute(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignCompany)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignCompany)));
         return await $(this.selectors.assignCompany).getAttribute('disabled');
     }
 
     async getBuisnessUnitAttribute(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.buisnessUnit)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.buisnessUnit)));
         return await $(this.selectors.buisnessUnit).getAttribute('disabled');
     }
 
     async getAssigneeAttribute(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignee)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignee)));
         return await $(this.selectors.assignee).getAttribute('disabled');
     }
 
     async getDepartmentAttribute(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.department)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.department)));
         return await $(this.selectors.department).getAttribute('disabled');
     }
 
     async getAssignedGroupAttribute(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignedGroup)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignedGroup)));
         return await $(this.selectors.assignedGroup).getAttribute('disabled');
     }
 
     async getSaveButtonAttribute(attribute: string): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveAdhocTask)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveAdhocTask)));
         return await $(this.selectors.saveAdhocTask).getAttribute(attribute);
     }
 
-    async getTaskSummaryRequiredText(select: string): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummaryRequiredText)));
-        return await $(this.selectors.taskSummaryRequiredText).getAttribute(select);
+    async isTaskSummaryRequiredTextPresent(): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummaryRequiredText)));
+        return await utilCommon.isRequiredTagToField(this.selectors.taskSummaryRequiredText);
     }
 
-    async getPriorityRequiredText(select: string): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.piorityRequiredText)));
-        return await $(this.selectors.piorityRequiredText).getAttribute(select);
+    async isPriorityRequiredTextPresent(): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.piorityRequiredText)));
+        return await utilCommon.isRequiredTagToField(this.selectors.priority);
     }
 
-    async getAssignedCompanyRequiredText(select: string): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedCompanyRequiredText)));
-        return await $(this.selectors.assignedCompanyRequiredText).getAttribute(select);
+    async isAssignedCompanyRequiredTextPresent(): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedCompanyRequiredText)));
+        return await utilCommon.isRequiredTagToField(this.selectors.assignedCompanyRequiredText);
+
     }
 
-    async getAssignedGroupRequiredText(select: string): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroupRequiredText)));
-        return await $(this.selectors.assignedGroupRequiredText).getAttribute(select);
+    async isAssignedGroupRequiredTextPresent(): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroupRequiredText)));
+        return await utilCommon.isRequiredTagToField(this.selectors.assignedGroupRequiredText);
     }
 
     async isAssignToMeButtonDisplayd(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.assignButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignButton)));
         return await $(this.selectors.assignButton).isDisplayed();
     }
 
     async getchangeAssignmentButtonText(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.changeAssignmentButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.changeAssignmentButton)));
         return await $(this.selectors.changeAssignmentButton).getText();
     }
 

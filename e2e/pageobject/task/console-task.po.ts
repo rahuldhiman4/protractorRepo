@@ -83,5 +83,11 @@ class TaskGridPage {
         return await element(by.cssContainingText(this.selectors.tableValue, filterName)).getText();
     }
 
+    async clearFilter(): Promise<void> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.tableValue)));
+        //        await browser.sleep(3000);
+        await utilGrid.clearFilter()
+    }
+
 }
 export default new TaskGridPage();

@@ -21,34 +21,29 @@ class CreateFlowset {
         descriptionGuid: '920e06e9-5389-4e30-8c6c-74eefa0d19fb'
     }
 
-    async isCompanyRequiredTextDisplayed(): Promise<string> {
+    async isCompanyRequiredTextDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.company)));
-        return await ($(this.selectors.company)).getAttribute("required");
+        return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
     }
 
-    async isProcessRequiredTextDisplayed(): Promise<string> {
+    async isProcessRequiredTextDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.ProcessNameGuid)));
-        return await ($(this.selectors.ProcessNameGuid)).getAttribute("required");
+        return await utilCommon.isRequiredTagToField(this.selectors.ProcessNameGuid);
     }
 
-    async isApplicationServiceRequiredTextDisplayed(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ApplicationService)));
-        return await ($(this.selectors.ApplicationService)).getAttribute("required");
-    }
-
-    async isStatusRequiredTextDisplayed(): Promise<string> {
+    async isStatusRequiredTextDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.statusGuid)));
-        return await ($(this.selectors.statusGuid)).getAttribute("required");
+        return await utilCommon.isRequiredTagToField(this.selectors.statusGuid);
     }
 
-    async isProcessAliasRequiredTextDisplayed(): Promise<string> {
+    async isProcessAliasRequiredTextDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.processAliasname)));
-        return await ($(this.selectors.processAliasname)).getAttribute("required");
+        return await utilCommon.isRequiredTagToField(this.selectors.processAliasGuid);
     }
 
-    async isDescriptionRequiredTextDisplayed(): Promise<string> {
+    async isDescriptionRequiredTextDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.description)));
-        return await ($(this.selectors.description)).getAttribute("required");
+        return await utilCommon.isRequiredTagToField(this.selectors.descriptionGuid);
     }
 
     async isCompanyTitleDisplayed(company: string): Promise<boolean> {

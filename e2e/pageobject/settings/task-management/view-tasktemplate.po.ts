@@ -38,7 +38,7 @@ class ViewTaskTemplate {
         templateStatusGuid: 'd17d9cf8-a5ac-47de-acae-a4b69e086855',
         ownerCompanyGuid: '37dd629c-6d13-4e6d-b70e-90b91dd5b484',
         ownerGroupGuid: 'f02e4c7b-93f9-4b35-af23-f522d56daa4b',
-        taskDescriptonGuid:'cce67ce7-e6a5-4ed6-aa50-c57ea75d2854',
+        taskDescriptonGuid: 'cce67ce7-e6a5-4ed6-aa50-c57ea75d2854',
         supportGroupGuid: '244607b3-1fd7-490c-975b-7640a6b2c615',
         assigneeGuid: 'bb18eb5c-ba9c-47e1-8593-cd79aefac190',
         dynamicField: '[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] .d-textfield__item'
@@ -50,9 +50,16 @@ class ViewTaskTemplate {
         return await $(this.selectors.dynamicFieldTitle).getText();
     }
 
-    async getDynamicField(dynamic: string): Promise<string> {
+    async isDynamicFieldPresent(dynamic: string): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.dynamicField)));
-        return await element(by.cssContainingText(this.selectors.dynamicField, dynamic))
+        return await element(by.cssContainingText(this.selectors.dynamicField, dynamic)).isPresent().then(async (result) => {
+            if (result) {
+                return await element(by.cssContainingText(this.selectors.dynamicField, dynamic)).getText() == dynamic ? true : false;
+            } else {
+                console.log("dynamic data not present");
+                return false;
+            }
+        });
     }
 
     async clickOnManageDynamicFieldLink(): Promise<void> {
@@ -62,7 +69,14 @@ class ViewTaskTemplate {
 
     async isManageDynamicFieldLinkDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.manageDynamicField)));
-        return await $(this.selectors.manageDynamicField).isDisplayed();
+        return await $(this.selectors.manageDynamicField).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.manageDynamicField).getText() ? true : false;
+            } else {
+                console.log("Managelink not present");
+                return false;
+            }
+        });
     }
 
     async getOwnerCompanyValue(): Promise<string> {
@@ -111,7 +125,14 @@ class ViewTaskTemplate {
     }
 
     async isEditProcessLinkDisplayed(): Promise<boolean> {
-        return await $(this.selectors.editProcessLink).isDisplayed();
+        return await $(this.selectors.editProcessLink).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.editProcessLink).getText() ? true : false;
+            } else {
+                console.log("Flowset not present");
+                return false;
+            }
+        });
     }
 
     async clickOnEditLink(): Promise<void> {
