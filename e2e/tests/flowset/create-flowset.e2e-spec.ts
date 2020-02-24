@@ -199,10 +199,12 @@ describe('Create Flowset', () => {
         await loginPage.login('qtao');
         await navigationPage.gotoSettingsPage();
         await expect(navigationPage.isSettingMenuPresent('Manage Flowsets')).toBeFalsy("Setting menu present");
-      } catch (error) {
-          await navigationPage.signOut();
-          await loginPage.login("qkatawazi");
-      }
+      } catch (e) {
+        throw e;
+    } finally {
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
+    }
     });
 
     //ankagraw
