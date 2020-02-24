@@ -264,7 +264,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await loginPage.login(caseBAUser);
     }
 
-    }, 400 * 1000);
+    }, 500 * 1000);
 
     it('[DRDMV-19565,DRDMV-19567,DRDMV-19568]:Verify the Save functionality of Region and Site fields on Knowledge Articles Create / Edit screen', async () => {
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json");
@@ -450,7 +450,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 400 * 1000);
+    }, 500 * 1000);
 
     it('[DRDMV-19574]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
         try{

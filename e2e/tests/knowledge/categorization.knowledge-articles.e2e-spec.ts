@@ -12,6 +12,8 @@ import editKnowledgePage from '../../pageobject/knowledge/edit-knowledge.po';
 import { Knowledge } from '../../api/constant.api';
 import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
 import createDocumentLibraryPage from '../../pageobject/settings/document-management/create-document-library.po';
+import documentLibraryConsolePage from '../../pageobject/settings/document-management/document-library-console.po';
+import editDocumentLibraryPage from '../../pageobject/settings/document-management/edit-document-library.po';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
@@ -70,7 +72,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
     const regionGuid = 'cec69daa-b696-415b-b2ab-ebec81251d10';
     const siteGuid = '1a4afa56-0b87-45ea-9456-f251b0848c70';
     const knowledgeHamburgerGuid = 'a9dfa448-2900-4a2b-a230-503f4a0ac12e';
-    const filePath = '../../api/attachment/articleStatus.png';
+    const filePath = '../../../data/ui/attachment/articleStatus.png';
 
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
@@ -362,7 +364,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 500 * 1000);
+    }, 700 * 1000);
 
     it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
         try {
@@ -714,9 +716,9 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 300 * 1000);
+    }, 500 * 1000);
 
-    it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
+    fit('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
         //Create a document library
         try {
             await navigationPage.gotoSettingsPage();
@@ -733,9 +735,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await createDocumentLibraryPage.selectCategoryTier2(categoryTier2FieldVal);
             await createDocumentLibraryPage.selectCategoryTier3(categoryTier3FieldVal);
             await createDocumentLibraryPage.saveNewDocument();
-            await createDocumentLibraryPage.clickOnSelectedGridRecord(documentLibraryColumnHeader);
-            await createDocumentLibraryPage.selectStatus(documentLibraryStatus);
-            await createDocumentLibraryPage.saveUpdatedDocument();
+            await documentLibraryConsolePage.searchAndOpenDocumentLibrary(title);
+            await editDocumentLibraryPage.selectStatus(documentLibraryStatus);
+            await editDocumentLibraryPage.clickOnSaveButton();
+            await browser.sleep(1000);
             await navigationPage.signOut();
 
             //Login with Case Manager
@@ -754,6 +757,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1ForDocumentLibrary, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
+            await browser.sleep(1000);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResult()).toEqual(title);
             await navigationPage.signOut();

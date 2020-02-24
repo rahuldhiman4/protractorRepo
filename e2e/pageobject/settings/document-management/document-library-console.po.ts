@@ -46,7 +46,7 @@ class DocumentLibraryPage {
     }
 
     async searchAndOpenDocumentLibrary(value: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(value);
+        await utilGrid.searchAndOpenHyperlink(value, this.selectors.gridGuid);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 

@@ -21,6 +21,7 @@ export class Util {
         advancedSearchResult: '.km-group-list-item__description',
         dropDownChoice: '.ui-select__rx-choice',
         warningMsgText: '.modal-content .modal-title-message, .modal-content .d-modal__title',
+        warningMsgTextKnowledgeStyle: '.d-modal__content .d-modal__content-item',
         configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
     }
 
@@ -38,6 +39,11 @@ export class Util {
     async getWarningMessagegText(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.warningMsgText)));
         return await $(this.selectors.warningMsgText).getText();
+    }
+
+    async getWarningMessageTextKnowledgeStyle(): Promise<string> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.warningMsgText)));
+        return await $(this.selectors.warningMsgTextKnowledgeStyle).getText();
     }
 
     async selectDropDown(guid: string, value: string): Promise<void> {

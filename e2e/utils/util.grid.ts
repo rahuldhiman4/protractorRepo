@@ -288,7 +288,7 @@ export class GridOperation {
         await checkboxRows[0].$('.ui-grid-selection-row-header-buttons').click();
     }
 
-    async getNumberOfRecordsInGrid(guid: string): Promise<number> {
+    async getNumberOfRecordsInGrid(guid?: string): Promise<number> {
         if (guid) {
             return await $$(`*[rx-view-component-id="${guid}"] .ui-grid-render-container-body .ui-grid-row`).count();
         } else {

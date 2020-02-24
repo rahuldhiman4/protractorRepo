@@ -60,7 +60,7 @@ export class Resources {
     }
 
     async clickOnAdvancedSearchFiltersButton(buttonText: string): Promise<void> {
-        const advancedSearchFilterBtn = await element(by.xpath(`//button[text()="${buttonText}"]/preceding-sibling::button`));
+        const advancedSearchFilterBtn = await element(by.xpath(`(//button[text()="${buttonText}"])[1]`));
 //        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterBtn));
         await advancedSearchFilterBtn.click();
     }
