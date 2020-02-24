@@ -18,6 +18,7 @@ class EditDocumentLibraryPage {
         bussinessUnit: '[rx-view-component-id="43f01d2a-f8cc-450d-9209-5ac53426f3bb"] .btn-default',
         department: '[rx-view-component-id="04c57da2-5942-407c-9f87-5670a08ab18e"] .btn-default',
         shareExternallyToggleButton: '[rx-view-component-id="422e33d2-be19-42f7-985b-af73daf4d87f"] .ng-valid-required',
+        shareExternallyToggleButtonGuid: '422e33d2-be19-42f7-985b-af73daf4d87f',
         keywords: '.d-input-tags input',
         categoryTier1: '[rx-view-component-id="6d7ee978-79a7-4460-90d6-e0c9841fd0f0"] .ui-select-toggle',
         categoryTier2: '[rx-view-component-id="400ac801-1c40-43c7-87c3-a21e1d5531e9"] .ui-select-toggle',
@@ -49,6 +50,10 @@ class EditDocumentLibraryPage {
         readAccessDropDownValue: '.options-box .options li',
         assignmentDropDownList: '.rx-assignment_modal_filters .rx-assignment-select'
 
+    }
+
+    async setShareExternallyToogleButton(value: boolean): Promise<void> {
+        await utilCommon.selectToggleButton(this.selectors.shareExternallyToggleButtonGuid, value);
     }
 
     async selectAddCompanyDropDownOfReadAccess(value: string): Promise<void> {

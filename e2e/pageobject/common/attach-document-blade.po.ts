@@ -7,6 +7,7 @@ class AttachDocumentBlade {
         searchBox: '[rx-view-component-id="6b6c2401-1732-4a8f-b746-0b3ab3d9df8a"] .rx-adv-search-textField',
         iconCircle: '.icon-circle_thin_o',
         attachButton: '[rx-view-component-id="9d41c65a-85a9-4316-bd64-8fa8ed68dfde"] button',
+        documents: '.km-group-list-item__description'
     }
 
     async searchAndAttachDocument(documentName:string): Promise<void> {
@@ -34,6 +35,11 @@ class AttachDocumentBlade {
                 break;
             }
         }
+    }
+
+
+    async isDocumentLibaryPresent(documentName:string): Promise<boolean> {
+        return await $(`.km-group-list-item__description[title="${documentName}"]`).isPresent();
     }
 
     async selectDocument(): Promise<void> {
