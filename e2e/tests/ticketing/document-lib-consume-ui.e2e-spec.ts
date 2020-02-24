@@ -379,7 +379,7 @@ describe('Document Library Consume UI', () => {
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.clickOnSaveButton();
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocLib1);
-            await editDocumentLibraryPo.setShareExternallyToogleButton(true);
+            await editDocumentLibraryPo.setShareExternallyToggleButton(true);
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
             // Create Publish 2 document
@@ -390,7 +390,7 @@ describe('Document Library Consume UI', () => {
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.clickOnSaveButton();
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocLib2);
-            await editDocumentLibraryPo.setShareExternallyToogleButton(true);
+            await editDocumentLibraryPo.setShareExternallyToggleButton(true);
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
             // Create Draft document
@@ -408,7 +408,7 @@ describe('Document Library Consume UI', () => {
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.clickOnSaveButton();
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocLib5);
-            await editDocumentLibraryPo.setShareExternallyToogleButton(true);
+            await editDocumentLibraryPo.setShareExternallyToggleButton(true);
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
 

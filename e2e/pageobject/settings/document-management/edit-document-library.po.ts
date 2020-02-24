@@ -52,7 +52,7 @@ class EditDocumentLibraryPage {
 
     }
 
-    async setShareExternallyToogleButton(value: boolean): Promise<void> {
+    async setShareExternallyToggleButton(value: boolean): Promise<void> {
         await utilCommon.selectToggleButton(this.selectors.shareExternallyToggleButtonGuid, value);
     }
 
