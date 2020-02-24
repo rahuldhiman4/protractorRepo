@@ -29,7 +29,7 @@ class CreateTaskTemplatePage {
         processBundleIdDrpDownForNewProcess: 'e8a2406c-6991-4ea1-bfdf-bde29abe2ef7',
         processBundleIdDrpDownForExistingProcess: '[rx-view-component-id="71e09acc-0077-4e55-9c24-7f6bdc90ce5d"] .d-icon-right-angle_down',
         toggleBox: '0ef8534e-a8bf-40c3-bdc1-a91edde177c4',
-        toggleBoxRequiredText: '0af92a6a-5e77-4915-8227-aab93d0b9401',
+        toggleBoxRequiredText: '[rx-view-component-id="0ef8534e-a8bf-40c3-bdc1-a91edde177c4"] label',
         newProcessName: '[rx-view-component-id="eefdf45b-47af-48cb-8c8b-a82c73f7d5a4"] input',
         searchProcess: '.d-icon-search',
         setInputdataInProcess: '[rx-view-component-id="71e09acc-0077-4e55-9c24-7f6bdc90ce5d"] input',
@@ -42,36 +42,36 @@ class CreateTaskTemplatePage {
     }
 
     async setTemplateName(inputValue: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
         await $(this.selectors.templateName).clear();
         await $(this.selectors.templateName).sendKeys(inputValue);
     }
 
     async setTaskSummary(inputValue: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummary)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummary)));
         await $(this.selectors.taskSummary).clear();
         await $(this.selectors.taskSummary).sendKeys(inputValue);
     }
 
     async setTaskDescription(inputValue: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskDescription)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskDescription)));
         await $(this.selectors.taskDescription).clear();
         await $(this.selectors.taskDescription).sendKeys(inputValue);
     }
 
     async clickOnAssignment(): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.changeAssignmentButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.changeAssignmentButton)));
         await $(this.selectors.changeAssignmentButton).click();
     }
 
     async clickOnSaveTaskTemplate(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-      //  await utilCommon.waitUntilPopUpDisappear();
+        //  await utilCommon.waitUntilPopUpDisappear();
     }
 
     async clickOnCancelTaskTemplate(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
@@ -80,7 +80,7 @@ class CreateTaskTemplatePage {
     }
 
     async isProcessTitlePresent(newProcess: string): Promise<boolean> {
-       return await util.isFieldLabelDisplayed(this.selectors.newprocessGuid, newProcess);
+        return await util.isFieldLabelDisplayed(this.selectors.newprocessGuid, newProcess);
     }
 
     async selectTaskPriority(priority: string): Promise<void> {
@@ -130,27 +130,27 @@ class CreateTaskTemplatePage {
     async setNewProcessName(bundle: string, inputValue: string): Promise<void> {
         await util.selectToggleButton(this.selectors.toggleBox, true);
         await util.selectDropDown(this.selectors.processBundleIdDrpDownForNewProcess, bundle);
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.newProcessName)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.newProcessName)));
         await $(this.selectors.newProcessName).clear();
         await $(this.selectors.newProcessName).sendKeys(inputValue);
     }
 
     async setExistingProcessName(processName: string): Promise<void> {
         await util.selectToggleButton(this.selectors.toggleBox, false);
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.processBundleIdDrpDownForExistingProcess)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.processBundleIdDrpDownForExistingProcess)));
         await $(this.selectors.processBundleIdDrpDownForExistingProcess).click();
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchProcess)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchProcess)));
         await $(this.selectors.searchProcess).click();
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.setInputdataInProcess)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.setInputdataInProcess)));
         await $(this.selectors.setInputdataInProcess).sendKeys(processName);
-//        await browser.sleep(1000);
+        //        await browser.sleep(1000);
         var option = await element(by.cssContainingText(this.selectors.selectNameInProcess, processName));
-//        await browser.wait(this.EC.elementToBeClickable(option));
+        //        await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
     }
 
     async setcreateNewProcess(processName: boolean): Promise<void> {
-        await util.selectToggleButton(this.selectors.toggleBoxRequiredText, processName);
+        await util.selectToggleButton(this.selectors.toggleBox, processName);
     }
     async isTemplateNameRequiredText(): Promise<boolean> {
         return await utilCommon.isRequiredTagToField(this.selectors.templateNameGuid);
@@ -176,8 +176,9 @@ class CreateTaskTemplatePage {
         return await utilCommon.isRequiredTagToField(this.selectors.ownerGroup);
     }
 
-     async isCreateNewProcessRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.toggleBoxRequiredText);
+    async isCreateNewProcessRequiredText(): Promise<boolean> {
+        let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', $(this.selectors.toggleBoxRequiredText));
+        return value.trim().substring(3, value.length - 2) === 'required';
     }
 
     async isProcessBundleIdRequiredText(): Promise<boolean> {
@@ -209,13 +210,13 @@ class CreateTaskTemplatePage {
     }
 
     async isAddTaskTemplateTitleDisplayed(value: string): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.addTaskTemplateTitle)));
-        return await $(this.selectors.addTaskTemplateTitle).getText()==value;
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addTaskTemplateTitle)));
+        return await $(this.selectors.addTaskTemplateTitle).getText() == value;
     }
 
     async isTemplateMetadataTitleDisplayed(value: string): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.templateMetadataTitle)));
-        return await $(this.selectors.templateMetadataTitle).getText()==value;
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.templateMetadataTitle)));
+        return await $(this.selectors.templateMetadataTitle).getText() == value;
     }
 }
 

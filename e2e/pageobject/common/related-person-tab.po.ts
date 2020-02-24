@@ -59,11 +59,16 @@ class RelatedPersonPage {
     }
 
     async clickRelatedPersonName(personName: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
-        let option = await $(this.selectors.allRelatedPersons).element(by.linkText(personName));
-//        await browser.wait(this.EC.elementToBeClickable(option)).then(async function () {
-            await option.click();
-//        });
+        let allPersonNum: number = await $$(this.selectors.allRelatedPersons).count();
+        for (let i = 0; i < allPersonNum; i++) {
+            let person = await $$(this.selectors.allRelatedPersons).get(i);
+            let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
+            if (nm == personName) {
+                person = await $$(this.selectors.allRelatedPersons).get(i);
+                await person.$(this.selectors.relatedPersonNames).click();
+                break;
+            }
+        }
     }
 
     async getRelatedPersonCompanyName(personName: string): Promise<string> {

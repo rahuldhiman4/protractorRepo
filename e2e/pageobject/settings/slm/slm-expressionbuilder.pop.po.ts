@@ -70,20 +70,34 @@ class SlmExpressionBuilder {
         return arr.length === data.length && arr.every(
             (value, index) => (value === data[index])
         );
-    }   
+    }
 
 
-    async getSecondLevelExpressionField(firstLevelExpression: string, data: string[]): Promise<boolean> {
+    async areSecondLevelExpressionFieldsMatches(firstLevelExpression: string, data: string[]): Promise<boolean> {
         let arr: string[] = [];
-        //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
-        let expressionFields: string = `div.expanded_field .child_field`;
-        let drpDwnvalue: number = await $(expressionFields).count();
-        for (var i = 0; i < drpDwnvalue; i++) {
-            var ab: string = await $(expressionFields).get(i).getText();
-            arr[i] = ab;
+
+        let listPrimaryOfFields: ElementFinder[] = await $$('.col-sm-4.variable_title li');
+        for (let i: number = 0; i < listPrimaryOfFields.length; i++) {
+            let field: ElementFinder = await listPrimaryOfFields[i].$('.expanded_field');
+            let primaryElementText: string[] = (await field.getText()).split("\n");
+            for (let k: number = 0; k < primaryElementText.length; k++) {
+                if (primaryElementText[k].trim() == firstLevelExpression) {
+                    let primaryFieldArrow: ElementFinder = await listPrimaryOfFields[i].$('.d-icon-triangle_right');
+                    await primaryFieldArrow.click();
+                    let listOFSecondaryFields: ElementFinder[] = await listPrimaryOfFields[i].$$('.expanded_field .child_field');
+                    for (let j: number = 0; j < listOFSecondaryFields.length; j++) {
+                        let v = await listOFSecondaryFields[j].getText();
+                        arr.push(await listOFSecondaryFields[j].getText());
+                    }
+                }
+            }
         }
         arr = arr.sort();
         data = data.sort();
+        if ('Company' == firstLevelExpression) {
+            console.log("my", arr);
+            console.log("new", data);
+        }
         return arr.length === data.length && arr.every(
             (value, index) => (value === data[index])
         );
@@ -110,23 +124,26 @@ class SlmExpressionBuilder {
                 await checkboxRows1[i].click();
             }
         }
-
     }
 
     async selectSecondLevelExpressionField(firstLevelExpression: string, secondLevelExpression: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
-        let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
-        let expandExpressionBtn = `//div[@class='expanded_field'][text()='${firstLevelExpression}']/preceding-sibling::div[contains(@class,'d-icon-triangle_right')]`;
-        let secondLevelExpressionFields = `//div[@class='expanded_field'][text()='${firstLevelExpression}']//*[@class='child_field']`;
-        let secondLevelExpressionFieldVals = `//div[@class='expanded_field'][text()='${firstLevelExpression}']//*[@class='child_field'][text()='${secondLevelExpression}']`
-        browser.sleep(2000);
-        await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).clear();
-        await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).sendKeys(firstLevelExpression);
-        browser.sleep(2000);
-        // await browser.wait(this.EC.elementToBeClickable(element(by.xpath(expandExpressionBtn))),2000);
-        await element(by.xpath(expandExpressionBtn)).click();
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(secondLevelExpressionFields))));
-        await element(by.xpath(secondLevelExpressionFieldVals)).click();
+        let listPrimaryOfFields: ElementFinder[] = await $$('.col-sm-4.variable_title li');
+        for (let i: number = 0; i < listPrimaryOfFields.length; i++) {
+            let field: ElementFinder = await listPrimaryOfFields[i].$('.expanded_field');
+            let primaryElementText: string[] = (await field.getText()).split("\n");
+            for (let k: number = 0; k < primaryElementText.length; k++) {
+                if (primaryElementText[k].trim() == firstLevelExpression) {
+                    let primaryFieldArrow: ElementFinder = await listPrimaryOfFields[i].$('.d-icon-triangle_right');
+                    await primaryFieldArrow.click();
+                    let listOFSecondaryFields: ElementFinder[] = await listPrimaryOfFields[i].$$('.expanded_field .child_field');
+                    for (let j: number = 0; j < listOFSecondaryFields.length; j++) {
+                        if (await listOFSecondaryFields[j].getText() == secondLevelExpression) {
+                            await listOFSecondaryFields[j].click();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     async getExpressionFieldOperatorAvailable(operator: string): Promise<string> {
@@ -241,10 +258,10 @@ class SlmExpressionBuilder {
                 //                browser.sleep(2000);
                 //                await browser.wait(this.EC.elementToBeClickable(element(by.className('uib-typeahead-match active'))));
                 await element(by.className('uib-typeahead-match active')).click();
-            // addButton = `${attributeRef} button`;
-            // //                await browser.wait(this.EC.elementToBeClickable(element(by.css(addButton))));
-            // await element(by.cssContainingText(addButton, addBtn)).click();
-            break;
+                // addButton = `${attributeRef} button`;
+                // //                await browser.wait(this.EC.elementToBeClickable(element(by.css(addButton))));
+                // await element(by.cssContainingText(addButton, addBtn)).click();
+                break;
             default:
                 //                await browser.wait(this.EC.elementToBeClickable(attributeReference.$(textField)));
                 await attributeReference.$(textField).click();
@@ -288,13 +305,13 @@ class SlmExpressionBuilder {
             await $(addButtonVal).click();
         } else {
             //            await browser.wait(this.EC.elementToBeClickable(option));
-            await element(by.cssContainingText(addButtonVal,'Add')).click();
+            await element(by.cssContainingText(addButtonVal, 'Add')).click();
             // await $(addButtonVal).click();
         }
     }
 
     async clickOnSaveExpressionButton() {
-        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)),2000);
+        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)), 2000);
         await $(this.expressionBuilderSelectors.saveSVTExpressionButton).click();
     }
 
