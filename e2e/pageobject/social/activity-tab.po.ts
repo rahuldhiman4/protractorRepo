@@ -51,6 +51,7 @@ class ActivityTabPage {
         AttachedfileName: '.log-item__body .rx-attachment-view-name',
         refreshButton: '.d-icon-left-refresh',
         attachmentField: '.activity-feed-note-buttons__left input[type="file"]',
+        showMoreEmailActivity: '.email .more'
     }
 
     async addAttachment(fileToUpload: string): Promise<void> {
@@ -94,6 +95,10 @@ class ActivityTabPage {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailContent)), 5000);
         let emailBody = await element(by.xpath('(//div[@class="log-item__content"]/email)[1]')).getText();
         return emailBody;
+    }
+
+    async clickShowMoreForEmailActivity(): Promise<void>{
+        await $(this.selectors.showMoreEmailActivity).click();
     }
 
     async getemailAttachmentFileName(): Promise<string> {
