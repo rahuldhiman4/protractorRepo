@@ -230,6 +230,7 @@ describe('Copy Task Template', () => {
             let newAutomationTaskProcess = 'NewProcessDRDMV14217' + randomStr;
 
             //Automation Task template
+            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
@@ -321,6 +322,7 @@ describe('Copy Task Template', () => {
             let Description = 'DescriptionDRDMV13573' + randomStr;
 
             //Automation Task template
+            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
