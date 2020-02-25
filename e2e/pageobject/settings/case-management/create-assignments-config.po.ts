@@ -10,7 +10,7 @@ class AssignmentConfigCreatePage {
         assignmentMappingName: '[rx-view-component-id="eed6ca5c-8167-4af1-9cdd-6d3d64fcc71e"] .d-textfield__input',
         companyDrpDwn: '471bbeb3-3965-46b6-b74d-4f2a10fe3cce',
         flowsetDrpDwn: 'beda4ca9-322d-4f25-9bba-5da984836656',
-        catTier1DrpDwn: 'caeb2d28-0f57-4dd9-b1c9-e201b14ca604',
+        catTier1DrpDwn: '746b3b50-b6e7-4224-948a-24e5ed70849d',
         catTier2DrpDwn: '9a658851-6b56-493e-8336-e7634643bdcd',
         catTier3DrpDwn: 'f644d025-c5a8-46a7-baa5-4f09994d9859',
         catTier4DrpDwn: 'e357ee21-d59e-4d89-9864-5e481a116a04',

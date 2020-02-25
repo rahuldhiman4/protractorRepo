@@ -351,7 +351,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.clickBackButton();
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeArticlesConsolePo.searchKnowledgeArticle(knowledgeTitle);
-            await expect(knowledgeArticlesConsolePo.isArticleIdDisplayed(knowledgeIdValue)).toBeTruthy("Knowledge Article is not displayed");
+            await expect(knowledgeArticlesConsolePo.isArticleIdDisplayed(knowledgeIdValue.trim())).toBeTruthy("Knowledge Article is not displayed");
         } catch (error) {
             throw error;
         }

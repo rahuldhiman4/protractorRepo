@@ -21,8 +21,6 @@ export class Resources {
         headingName: '.km-group__header span'
     }
 
-
-
     async clickOnAdvancedSearchOptions(searchArea: string): Promise<void> {
         let advancedSearchButton = await element(by.xpath(`//*[@id='km-group__knowledge-header'][text()='${searchArea}']/following-sibling::div/button`));
 //        await browser.wait(this.EC.elementToBeClickable(advancedSearchButton));
@@ -60,15 +58,16 @@ export class Resources {
     }
 
     async clickOnAdvancedSearchFiltersButton(buttonText: string): Promise<void> {
-        const advancedSearchFilterBtn = await element(by.xpath(`//button[text()="${buttonText}"]/preceding-sibling::button`));
+        const advancedSearchFilterBtn = await element(by.xpath(`//*[contains(@class,'km-group')]//button[text()="${buttonText}"]`));
 //        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterBtn));
         await advancedSearchFilterBtn.click();
     }
 
-    async getAdvancedSearchResult(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
-        return await $(this.selectors.advancedSearchResult).getText();
-    }
+    async getAdvancedSearchResultForParticularSection(headingType:string): Promise<string> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
+        const searchResult = await element(by.xpath(`//*[text()="${headingType}"]/..//*[contains(@class,"km-group-list-item__description")]`))
+                return await searchResult.getText();
+            }
 
     async getCountOfHeading(headerName:string): Promise<string> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.headingName)));

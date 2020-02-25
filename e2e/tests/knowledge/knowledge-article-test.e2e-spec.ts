@@ -645,7 +645,7 @@ describe('Knowledge Article', () => {
     });
 
     it('[DRDMV-1186,DRDMV-768]: [Knowledge Article] [ArticleCreation] Closing the article without saving it', async () => {
-        let knowledgeTitile = 'knowledge1186' + randomStr;
+        let knowledgeTitle = 'knowledge1186' + randomStr;
         await navigationPage.gotoCreateKnowledge();
         expect(await createKnowledgePage.isTemplatePresent('KCS')).toBeTruthy('Template is not present');
         expect(await createKnowledgePage.isTemplatePresent('How To')).toBeTruthy('Template is not present');
@@ -654,18 +654,18 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
         await createKnowledgePage.selectKnowledgeSet('HR');
         expect(await createKnowledgePage.isSaveButtonEnabled()).toBeFalsy('save button not disabled');
-        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitile);
+        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
         await createKnowledgePage.setReferenceValue('Refrence values');
         await createKnowledgePage.clickOnDiscardButton();
         await utilCommon.clickOnWarningCancel();
         expect(await createKnowledgePage.getKnowledgeSetValue()).toContain('HR', 'expected Value not present');
-        expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitile, 'expected Value not present');
+        expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitle, 'expected Value not present');
         await createKnowledgePage.clickOnDiscardButton();
         await utilCommon.clickOnWarningOk();
         expect(await navigationPage.isKnowledgeConsoleTitleDisplayed()).toBeTruthy('Knowledge Console not present');
         await utilGrid.clearFilter();
-        await utilGrid.searchRecord(knowledgeTitile);
-        expect(await knowledgeConsolePo.isValueDisplayedInGrid('Title') == knowledgeTitile).toBeFalsy('KA is present');
+        await utilGrid.searchRecord(knowledgeTitle);
+        expect(await knowledgeConsolePo.getNumberOfRecordsInGrid()>0).toBeFalsy('failureMsg: KA is present')
     });
 
     it('[DRDMV-5158]: Click on thumbs up and thumbs down', async () => {
