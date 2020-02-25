@@ -203,12 +203,17 @@ class SlmExpressionBuilder {
         await this.selectFirstLevelExpressionField(field);
         await this.selectOperator(operator);
         await this.selectFieldOption(fieldAttribute, fieldvalue);
+        await this.clickOnAddExpressionButton(fieldAttribute);
     }
 
     async selectSecondLevelExpressionQualification(firstLevelAssociationfield: string, secondLevelAssociationfield: string, operator: string, fieldAttribute: string, fieldvalue: string): Promise<void> {
+        let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
+        await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).clear();
+        await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).sendKeys(firstLevelAssociationfield);
         await this.selectSecondLevelExpressionField(firstLevelAssociationfield, secondLevelAssociationfield);
         await this.selectOperator(operator);
         await this.selectFieldOption(fieldAttribute, fieldvalue);
+        await this.clickOnAddExpressionButton(fieldAttribute);
     }
 
     async selectFieldOption(fieldAttribute: string, fieldOptionValue: string): Promise<void> {
