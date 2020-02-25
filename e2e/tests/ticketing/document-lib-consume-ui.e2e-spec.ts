@@ -591,4 +591,135 @@ describe('Document Library Consume UI', () => {
         }
     }, 530 * 1000);
 
+    //kgaikwad
+    it('[DRDMV-13480]: Add Activity - Case agent attaches published document from document library who has read access to that document', async () => {
+        try {
+            let filePath1 = '../../../data/ui/attachment/bwfJpg.jpg';
+            let filePath2 = '../../../data/ui/attachment/bwfPdf.pdf';
+            let filePath3 = '../../../data/ui/attachment/bwfJpg1.jpg';
+            let filePath4 = '../../../data/ui/attachment/bwfJpg2.jpg';
+            let filePath5 = '../../../data/ui/attachment/bwfXlsx.xlsx';
+            let publishDocLib1 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let publishDocLib2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let publishDocLib3 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let draftDocLib4 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let publishDocLib5 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let addNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let loginId = 'caseagentbwf';
+            // Create User and assigned Document Manager Permission to agent
+            await apiHelper.apiLogin('tadmin');
+            var caseAgentuserData = {
+                "firstName": "caseAgent2",
+                "lastName": "user2",
+                "userId": loginId,
+                "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+            }
+            await apiHelper.createNewUser(caseAgentuserData);
+            await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
+             // Create Publish 3 which assigned support group as a 'Facilities' document
+             await navigationPage.gotoSettingsPage();
+             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+             await createDocumentLibraryPo.openAddNewDocumentBlade();
+             await createDocumentLibraryPo.addAttachment(filePath3);
+             await createDocumentLibraryPo.setTitle(publishDocLib3);
+             await createDocumentLibraryPo.selectCompany('Petramco');
+             await createDocumentLibraryPo.selectOwnerGroup('Staffing');
+             await createDocumentLibraryPo.clickOnSaveButton();
+             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocLib3);
+             await editDocumentLibraryPo.selectStatus('Published');
+             await editDocumentLibraryPo.clickOnSaveButton();
+
+            await navigationPage.signOut();
+            await loginPage.login(loginId);
+           
+            // Create Publish 1 document
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await createDocumentLibraryPo.openAddNewDocumentBlade();
+            await createDocumentLibraryPo.addAttachment(filePath1);
+            await createDocumentLibraryPo.setTitle(publishDocLib1);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+            await createDocumentLibraryPo.clickOnSaveButton();
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocLib1);
+            await editDocumentLibraryPo.selectStatus('Published');
+            await editDocumentLibraryPo.clickOnSaveButton();
+            // Create Publish 2nd document
+            await createDocumentLibraryPo.openAddNewDocumentBlade();
+            await createDocumentLibraryPo.addAttachment(filePath2);
+            await createDocumentLibraryPo.setTitle(publishDocLib2);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+            await createDocumentLibraryPo.clickOnSaveButton();
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocLib2);
+            await editDocumentLibraryPo.selectStatus('Published');
+            await editDocumentLibraryPo.clickOnSaveButton();
+            // Create Draft 4th document
+            await createDocumentLibraryPo.openAddNewDocumentBlade();
+            await createDocumentLibraryPo.addAttachment(filePath4);
+            await createDocumentLibraryPo.setTitle(draftDocLib4);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+            await createDocumentLibraryPo.clickOnSaveButton();
+            // Create publish 5th doc
+            await createDocumentLibraryPo.openAddNewDocumentBlade();
+            await createDocumentLibraryPo.addAttachment(filePath5);
+            await createDocumentLibraryPo.setTitle(publishDocLib5);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+            await createDocumentLibraryPo.clickOnSaveButton();
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocLib5);
+            await editDocumentLibraryPo.selectStatus('Published');
+            await editDocumentLibraryPo.clickOnSaveButton();
+            //Create Case
+            await navigationPage.gotCreateCase();
+            await createCasePo.selectRequester('qtao');
+            await createCasePo.setSummary(caseSummary);
+            await createCasePo.clickSaveCaseButton();
+            await createCasePo.clickGoToCaseButton();
+            // Activity Tab
+            await activityTabPo.addActivityNote(addNoteText);
+            await activityTabPo.clickOnAttachLink();           
+            await attachDocumentBladePo.clickOnAdvanceSearchButton();
+
+            await attachDocumentBladePo.searchRecord(publishDocLib3);
+            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLib3)).toBeFalsy('FailuerMsg: publishDocLib3 doc is displayed');
+            await attachDocumentBladePo.searchRecord(draftDocLib4);
+            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLib4)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
+            await attachDocumentBladePo.searchRecord(publishDocLib1);
+            await attachDocumentBladePo.selectDocument();
+            await attachDocumentBladePo.clickOnAttachButton();
+            await activityTabPo.clickOnPostButton();
+            await utilCommon.waitUntilSpinnerToHide();
+            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
+            await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
+            await expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
+
+            // Multiple attachment
+            await activityTabPo.addActivityNote(addNoteText);
+            await activityTabPo.clickOnAttachLink(); 
+            await attachDocumentBladePo.searchAndAttachDocument(publishDocLib2);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(publishDocLib5);
+            await activityTabPo.clickOnPostButton();
+            await utilCommon.waitUntilSpinnerToHide();
+            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
+            await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
+            await expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+            
+            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
+            await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
+            await expect(await utilCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    }, 240 * 1000);
+
 })
