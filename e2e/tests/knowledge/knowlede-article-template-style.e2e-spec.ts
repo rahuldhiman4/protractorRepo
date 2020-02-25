@@ -133,5 +133,5 @@ describe('KnowledgeArticlestyle', () => {
         await articleTemplateStylePo.setStyleName("DRDMV-5014"+randomStr);
         await articleTemplateStylePo.clickSaveButton();
         expect(await utilCommon.getPopUpMessage()).toContain('is already taken by another style. Please select a different name.');
-    }, 500*100);
+    }, 500*1000);
 })

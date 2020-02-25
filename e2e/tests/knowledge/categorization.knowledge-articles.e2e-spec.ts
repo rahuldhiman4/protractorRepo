@@ -718,7 +718,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
     }, 500 * 1000);
 
-    fit('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
+    it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
         //Create a document library
         try {
             await navigationPage.gotoSettingsPage();

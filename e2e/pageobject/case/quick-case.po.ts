@@ -1,5 +1,4 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import { CaseTemplate } from 'e2e/api/constant.api';
 
 class QuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
