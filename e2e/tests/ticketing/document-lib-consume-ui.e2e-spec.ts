@@ -573,17 +573,6 @@ describe('Document Library Consume UI', () => {
     //kgaikwad
     it('[DRDMV-13480]: Add Activity - Case agent attaches published document from document library who has read access to that document', async () => {
         try {
-            let filePath1 = '../../../data/ui/attachment/bwfJpg.jpg';
-            let filePath2 = '../../../data/ui/attachment/bwfPdf.pdf';
-            let filePath3 = '../../../data/ui/attachment/bwfJpg1.jpg';
-            let filePath4 = '../../../data/ui/attachment/bwfJpg2.jpg';
-            let filePath5 = '../../../data/ui/attachment/bwfXlsx.xlsx';
-            let publishDocLib1 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let publishDocLib2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let publishDocLib3 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let draftDocLib4 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let publishDocLib5 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let addNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let loginId = 'caseagentbwf';
             // Create User and assigned Document Manager Permission to agent
