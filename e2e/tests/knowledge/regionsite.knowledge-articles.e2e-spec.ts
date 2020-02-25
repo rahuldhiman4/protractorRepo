@@ -28,12 +28,12 @@ let knowledgeContributorUser = 'kkohri';
 let knowledgePublisherUser = 'kmills';
 let knowledgeCoachUser = 'kWilliamson';
 let emptyStr = undefined;
-let articleInDraftStatus = 'Knowledge Article_Draft';
-let articleInSMEReviewStatus = 'Knowledge Article_SMEReview';
-let articleInPublishedStatus = 'Knowledge Article_Published';
-let articleInRetiredStatus = 'Knowledge Article_Retired';
-let articleInClosedStatus = 'Knowledge Article_Closed';
-let articleInCanceledStatus = 'Knowledge Article_Canceled';
+let articleInDraftStatus = 'DRDMV-19572 KnowledgeArticle_Draft';
+let articleInSMEReviewStatus = 'DRDMV-19572 KnowledgeArticle_SMEReview';
+let articleInPublishedStatus = 'DRDMV-19572 KnowledgeArticle_Published';
+let articleInRetiredStatus = 'DRDMV-19572 KnowledgeArticle_Retired';
+let articleInClosedStatus = 'DRDMV-19572 KnowledgeArticle_Closed';
+let articleInCanceledStatus = 'DRDMV-19572 KnowledgeArticle_Canceled';
 let regionField = "Region";
 let siteField = "Site";
 let regionFieldVal = "Australia";
@@ -58,6 +58,7 @@ let publishedStatus = "Published";
 let retiredStatus = "Retired";
 let closedStatus = "Closed";
 let canceledStatus = "Canceled";
+var title = "DRDMV-19572 KnowledgeArticle";
 
 describe('Knowledge Articles - Location (Region / Site) Tests', () => {
     const draft: any = Knowledge.Draft;
@@ -73,7 +74,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await apiHelper.apiLogin(knowledgePublisherUser);
         var articleData = {
             "knowledgeSet": "HR",
-            "title": "DRDMV18670KnowledgeArticle",
+            "title": "KnowledgeArticle",
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
             "categoryTier1": "Applications",
             "categoryTier2": "Help Desk",
@@ -84,31 +85,31 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             "assigneeSupportGroup":"GB Support 2"
         }
         // Create article in in progress status
-        articleData.title = articleData.title + "_" + inProgressStatus;
+        articleData.title = title + "_" + inProgressStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
 
         //Create article in draft status
-        articleData.title = articleData.title + "_" + draftStatus;
+        articleData.title = title + "_" + draftStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
 
         //Create article in SMEReview status
-        articleData.title = articleData.title + "_" + smeReviewStatus;
+        articleData.title = title + "_" + smeReviewStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, smeReviewStatus,"KMills",'GB Support 2','Petramco')).toBeTruthy("Article with SME Review status not updated.");
 
         //Create article in Published status
-        articleData.title = articleData.title + "_" + publishedStatus;
+        articleData.title = title + "_" + publishedStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
 
         //Create article in Retired status
-        articleData.title = articleData.title + "_" + retiredStatus;
+        articleData.title = title + "_" + retiredStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
@@ -116,7 +117,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, retiredStatus)).toBeTruthy("Article with Retired status not updated.");
 
         //Create article in Closed status
-        articleData.title = articleData.title + "_" + closedStatus;
+        articleData.title = title + "_" + closedStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
@@ -124,7 +125,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, closedStatus)).toBeTruthy("Article with Closed status not updated.");
 
         //Create article in Canceled status
-        articleData.title = articleData.title + "_" + canceledStatus;
+        articleData.title = title + "_" + canceledStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, canceledStatus)).toBeTruthy("Article with Canceled status not updated.");
@@ -264,7 +265,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await loginPage.login(caseBAUser);
     }
 
-    }, 400 * 1000);
+    }, 500 * 1000);
 
     it('[DRDMV-19565,DRDMV-19567,DRDMV-19568]:Verify the Save functionality of Region and Site fields on Knowledge Articles Create / Edit screen', async () => {
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json");
@@ -450,7 +451,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 400 * 1000);
+    }, 500 * 1000);
 
     it('[DRDMV-19574]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
         try{
@@ -696,13 +697,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(title);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
         await resources.enterAdvancedSearchText(title);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(title);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
 
         await viewCasePage.clickOnEmailLink();
         await composeMailPo.clickOnAttachmentLink();
@@ -711,13 +712,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(title);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
         await resources.enterAdvancedSearchText(title);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(title);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
         await navigationPage.signOut();
 
         //Navigate to Create case
@@ -736,13 +737,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(title);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
         await resources.enterAdvancedSearchText(title);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(title);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
 
         await viewCasePage.clickOnEmailLink();
         await composeMailPo.clickOnAttachmentLink();
@@ -751,13 +752,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(title);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
         await resources.enterAdvancedSearchText(title);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(title);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
         await navigationPage.signOut();
 
         //Navigate to Create case
@@ -776,13 +777,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(title);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
         await resources.enterAdvancedSearchText(title);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(title);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
 
         await viewCasePage.clickOnEmailLink();
         await composeMailPo.clickOnAttachmentLink();
@@ -791,13 +792,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(title);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
         await resources.enterAdvancedSearchText(title);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(title);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
         await navigationPage.signOut();
     }
     catch (error) {
@@ -811,7 +812,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await loginPage.login(caseBAUser);
     }
 
-    }, 400 * 1000);
+    }, 500 * 1000);
 
     it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
        try{
@@ -825,13 +826,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInDraftStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
         await resources.enterAdvancedSearchText(articleInDraftStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInDraftStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
 
         //Search with knowledge article with SMEReview status
         await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
@@ -841,13 +842,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInSMEReviewStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInSMEReviewStatus);
         await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInSMEReviewStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInSMEReviewStatus);
 
         //Search with knowledge article with Published status
         await resources.enterAdvancedSearchText(articleInPublishedStatus);
@@ -857,13 +858,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInPublishedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
         await resources.enterAdvancedSearchText(articleInPublishedStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInPublishedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
 
         //Search with knowledge article with Retired status
         await resources.enterAdvancedSearchText(articleInRetiredStatus);
@@ -873,13 +874,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInRetiredStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInRetiredStatus);
         await resources.enterAdvancedSearchText(articleInRetiredStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInRetiredStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInRetiredStatus);
 
         //Search with knowledge article with Closed status
         await resources.enterAdvancedSearchText(articleInClosedStatus);
@@ -889,13 +890,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInClosedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInClosedStatus);
         await resources.enterAdvancedSearchText(articleInClosedStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInClosedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInClosedStatus);
 
         //Search with knowledge article with Canceled status
         await resources.enterAdvancedSearchText(articleInCanceledStatus);
@@ -905,13 +906,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
         await resources.enterAdvancedSearchText(articleInCanceledStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
 
         //Navigate to Create case
         await navigationPage.gotCreateCase();
@@ -929,13 +930,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInDraftStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInDraftStatus);
         await resources.enterAdvancedSearchText(articleInDraftStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInDraftStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInDraftStatus);
 
         //Search with knowledge article with SMEReview status
         await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
@@ -943,13 +944,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInSMEReviewStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInSMEReviewStatus);
         await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInSMEReviewStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInSMEReviewStatus);
 
         //Search with knowledge article with Published status
         await resources.enterAdvancedSearchText(articleInPublishedStatus);
@@ -957,13 +958,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInPublishedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInPublishedStatus);
         await resources.enterAdvancedSearchText(articleInPublishedStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInPublishedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInPublishedStatus);
 
         //Search with knowledge article with Retired status
         await resources.enterAdvancedSearchText(articleInRetiredStatus);
@@ -971,13 +972,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInRetiredStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInRetiredStatus);
         await resources.enterAdvancedSearchText(articleInRetiredStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInRetiredStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInRetiredStatus);
 
         //Search with knowledge article with Closed status
         await resources.enterAdvancedSearchText(articleInClosedStatus);
@@ -985,13 +986,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInClosedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInClosedStatus);
         await resources.enterAdvancedSearchText(articleInClosedStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInClosedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInClosedStatus);
 
         //Search with knowledge article with Canceled status
         await resources.enterAdvancedSearchText(articleInCanceledStatus);
@@ -999,13 +1000,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInCanceledStatus);
         await resources.enterAdvancedSearchText(articleInCanceledStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInCanceledStatus);
         await navigationPage.signOut();
 
         //Login with Case Manager
@@ -1020,13 +1021,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInDraftStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
         await resources.enterAdvancedSearchText(articleInDraftStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInDraftStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
 
         //Search with knowledge article with SMEReview status
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
@@ -1035,13 +1036,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInSMEReviewStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInSMEReviewStatus);
         await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInSMEReviewStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInSMEReviewStatus);
 
         //Search with knowledge article with Published status
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
@@ -1050,13 +1051,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInPublishedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
         await resources.enterAdvancedSearchText(articleInPublishedStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInPublishedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
 
         //Search with knowledge article with Retired status
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
@@ -1065,13 +1066,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInRetiredStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInRetiredStatus);
         await resources.enterAdvancedSearchText(articleInRetiredStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInRetiredStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInRetiredStatus);
 
         //Search with knowledge article with Closed status
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
@@ -1080,13 +1081,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInClosedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInClosedStatus);
         await resources.enterAdvancedSearchText(articleInClosedStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInClosedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInClosedStatus);
 
         //Search with knowledge article with Canceled status
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
@@ -1095,13 +1096,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
         await resources.enterAdvancedSearchText(articleInCanceledStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
 
         //Navigate to Create case
         await navigationPage.gotCreateCase();
@@ -1119,13 +1120,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInDraftStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInDraftStatus);
         await resources.enterAdvancedSearchText(articleInDraftStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInDraftStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInDraftStatus);
 
         //Search with knowledge article with SMEReview status
         await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
@@ -1133,13 +1134,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInSMEReviewStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInSMEReviewStatus);
         await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInSMEReviewStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInSMEReviewStatus);
 
         //Search with knowledge article with Published status
         await resources.enterAdvancedSearchText(articleInPublishedStatus);
@@ -1147,13 +1148,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInPublishedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInPublishedStatus);
         await resources.enterAdvancedSearchText(articleInPublishedStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInPublishedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInPublishedStatus);
 
         //Search with knowledge article with Retired status
         await resources.enterAdvancedSearchText(articleInRetiredStatus);
@@ -1161,13 +1162,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInRetiredStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInRetiredStatus);
         await resources.enterAdvancedSearchText(articleInRetiredStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInRetiredStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInRetiredStatus);
 
         //Search with knowledge article with Closed status
         await resources.enterAdvancedSearchText(articleInClosedStatus);
@@ -1175,13 +1176,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInClosedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInClosedStatus);
         await resources.enterAdvancedSearchText(articleInClosedStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInClosedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInClosedStatus);
 
         //Search with knowledge article with Canceled status
         await resources.enterAdvancedSearchText(articleInCanceledStatus);
@@ -1189,13 +1190,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInCanceledStatus);
         await resources.enterAdvancedSearchText(articleInCanceledStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInCanceledStatus);
         await navigationPage.signOut();
 
         //Login as Case Agent
@@ -1210,13 +1211,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInDraftStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
         await resources.enterAdvancedSearchText(articleInDraftStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInDraftStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
 
         //Search with knowledge article with SMEReview status
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
@@ -1225,13 +1226,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInSMEReviewStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInSMEReviewStatus);
         await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInSMEReviewStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInSMEReviewStatus);
 
         //Search with knowledge article with Published status
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
@@ -1240,13 +1241,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInPublishedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
         await resources.enterAdvancedSearchText(articleInPublishedStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInPublishedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
 
         //Search with knowledge article with Retired status
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
@@ -1255,13 +1256,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInRetiredStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInRetiredStatus);
         await resources.enterAdvancedSearchText(articleInRetiredStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInRetiredStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInRetiredStatus);
 
         //Search with knowledge article with Closed status
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
@@ -1270,13 +1271,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInClosedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInClosedStatus);
         await resources.enterAdvancedSearchText(articleInClosedStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInClosedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInClosedStatus);
 
         //Search with knowledge article with Canceled status
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
@@ -1285,13 +1286,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
         await resources.enterAdvancedSearchText(articleInCanceledStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
 
         //Navigate to Create case
         await navigationPage.gotCreateCase();
@@ -1309,13 +1310,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInDraftStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInDraftStatus);
         await resources.enterAdvancedSearchText(articleInDraftStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInDraftStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInDraftStatus);
 
         //Search with knowledge article with SMEReview status
         await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
@@ -1323,13 +1324,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInSMEReviewStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInSMEReviewStatus);
         await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInSMEReviewStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInSMEReviewStatus);
 
         //Search with knowledge article with Published status
         await resources.enterAdvancedSearchText(articleInPublishedStatus);
@@ -1337,13 +1338,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInPublishedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInPublishedStatus);
         await resources.enterAdvancedSearchText(articleInPublishedStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInPublishedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInPublishedStatus);
 
         //Search with knowledge article with Retired status
         await resources.enterAdvancedSearchText(articleInRetiredStatus);
@@ -1351,13 +1352,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInRetiredStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInRetiredStatus);
         await resources.enterAdvancedSearchText(articleInRetiredStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInRetiredStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInRetiredStatus);
 
         //Search with knowledge article with Closed status
         await resources.enterAdvancedSearchText(articleInClosedStatus);
@@ -1365,13 +1366,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInClosedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInClosedStatus);
         await resources.enterAdvancedSearchText(articleInClosedStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInClosedStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInClosedStatus);
 
         //Search with knowledge article with Canceled status
         await resources.enterAdvancedSearchText(articleInCanceledStatus);
@@ -1379,13 +1380,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInCanceledStatus);
         await resources.enterAdvancedSearchText(articleInCanceledStatus);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.clickOnAdvancedSearchSettingsIconToClose();
-        await expect(await resources.getAdvancedSearchResult()).toEqual(articleInCanceledStatus);
+        await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInCanceledStatus);
         await navigationPage.signOut();
     }
     catch (error) {
@@ -1399,6 +1400,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await loginPage.login(caseBAUser);
     }
 
-    }, 400 * 1000);
+    }, 700 * 1000);
 
 })
