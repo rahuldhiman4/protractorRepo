@@ -21,6 +21,7 @@ export class Util {
         advancedSearchResult: '.km-group-list-item__description',
         dropDownChoice: '.ui-select__rx-choice',
         warningMsgText: '.modal-content .modal-title-message, .modal-content .d-modal__title',
+        warningMsgTextKnowledgeStyle: '.d-modal__content .d-modal__content-item',
         configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
     }
 
@@ -38,6 +39,11 @@ export class Util {
     async getWarningMessagegText(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.warningMsgText)));
         return await $(this.selectors.warningMsgText).getText();
+    }
+
+    async getWarningMessageTextKnowledgeStyle(): Promise<string> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.warningMsgText)));
+        return await $(this.selectors.warningMsgTextKnowledgeStyle).getText();
     }
 
     async selectDropDown(guid: string, value: string): Promise<void> {
@@ -295,6 +301,27 @@ export class Util {
     async getWarningDialogMsg(): Promise<string> {
         return await $(this.selectors.warningDialogMsg).getText();
     }
+
+    async isPopupMsgsMatches(msgs:string[]): Promise<boolean>{
+        let arr: string[] = await this.getAllPopupMsg();
+        msgs.sort();
+        return arr.length === msgs.length && arr.every(
+            (value, index) => (value === msgs[index])
+        );
+    }
+
+    async getAllPopupMsg(): Promise<string[]>{
+        await browser.waitForAngularEnabled(false);
+        let arr: string[] = [];
+        await browser.wait(this.EC.visibilityOf($$(this.selectors.popUpMsgLocator).last()));
+        let msgLocator = await $$(this.selectors.popUpMsgLocator);
+        for (let i: number = 0; i < msgLocator.length; i++) {
+            arr[i]=await msgLocator[i].getText();            
+        }
+        await browser.waitForAngularEnabled(true);
+        return arr;
+    }
+
 }
 
 export default new Util();

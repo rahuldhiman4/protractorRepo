@@ -7,6 +7,7 @@ class KnowledgeArticlesGridConsole {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
+        guid: '0df18e99-4315-457c-aef0-3abc96fb08ee',
         knowledgeArticleConsoleTitle: '[rx-view-component-id="11f37569-5ecd-4239-aaa7-075d1874b1d1"] span',
         searchInput: '[rx-id="search-text-input"]',
         searchIcon: '[rx-id="submit-search-button"]',
@@ -88,6 +89,10 @@ class KnowledgeArticlesGridConsole {
 
     async isValueDisplayedInGrid(columnName: string): Promise<string> {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.knowledgeArticleGridConsoleGuid, columnName);
+    }
+
+    async getNumberOfRecordsInGrid(): Promise<number>{
+        return await utilGrid.getNumberOfRecordsInGrid(this.selectors.guid);
     }
 
     async getMessageOfAccess():Promise<string>{

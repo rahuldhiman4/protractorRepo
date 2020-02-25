@@ -5,7 +5,8 @@ class NotificationTemplateGridPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        copyTemplate: '.d-icon-left-pencil',
+        guid: '7d5c5beb-d652-4bf9-9fc7-ccc7100d3b77',
+        copyTemplate: '[rx-view-component-id="c2e4b483-9365-4a10-a326-2c43a76de2fa"] .d-button',
         searchButton: '.d-icon-search',
         selectTemplateCheckBox: '.ui-grid-icon-ok',
         copyTemplateWindow: '.modal-title',
@@ -15,8 +16,7 @@ class NotificationTemplateGridPage {
         tempNameCopyTempWindow: ".modal-content [class*='d-textfield__input field']",
         saveButton: "[rx-view-component-id='50e25982-5452-4f20-ac79-5682de7cb467'] button",
         createNotificationTemplate: "[rx-view-component-id='48d1ab7c-3e17-458c-9d57-4acb72f49595'] button",
-        searchBox: "[rx-view-component-id='7d5c5beb-d652-4bf9-9fc7-ccc7100d3b77'] [rx-id='search-text-input']",
-        guid: '7d5c5beb-d652-4bf9-9fc7-ccc7100d3b77', 
+        searchBox: "[rx-view-component-id='7d5c5beb-d652-4bf9-9fc7-ccc7100d3b77'] [rx-id='search-text-input']"
     }
 
     async isCopyTemplateButtonDisabled(): Promise<boolean> {
