@@ -10,14 +10,14 @@ import attachDocumentBladePo from '../../pageobject/common/attach-document-blade
 import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import composeMailPo from '../../pageobject/email/compose-mail.po';
 import createDocumentLibraryPo from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryConsolePo from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import utilCommon from '../../utils/util.common';
-import composeMailPo from '../../pageobject/email/compose-mail.po';
-import activityTabPo from '../../pageobject/social/activity-tab.po';
 
 
 describe('Document Library Consume UI', () => {
@@ -33,6 +33,18 @@ describe('Document Library Consume UI', () => {
     afterEach(async () => {
         await browser.refresh();
     });
+
+    let filePath1 = '../../../data/ui/attachment/bwfJpg.jpg';
+    let filePath2 = '../../../data/ui/attachment/bwfPdf.pdf';
+    let filePath3 = '../../../data/ui/attachment/bwfJpg1.jpg';
+    let filePath4 = '../../../data/ui/attachment/bwfJpg2.jpg';
+    let filePath5 = '../../../data/ui/attachment/bwfXlsx.xlsx';
+    let publishDocLib1 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    let publishDocLib2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    let publishDocLib3 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    let draftDocLib4 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    let publishDocLib5 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
     //kgaikwad
     // DefectID: DRDMV-20519
@@ -93,7 +105,7 @@ describe('Document Library Consume UI', () => {
         await attachmentBladePo.clickOnDownloadButton();
         await expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('failureMsg: demo.txt File is not downloaded.');
     }, 150 * 1000);
-    
+
     //kgaikwad
     it('[DRDMV-13533]: Access to the documents attached on case when agent has read access to the case', async () => {
         try {
@@ -175,17 +187,6 @@ describe('Document Library Consume UI', () => {
     it('[DRDMV-13524]: Edit Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
         try {
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let filePath1 = '../../../data/ui/attachment/bwfJpg.jpg';
-            let filePath2 = '../../../data/ui/attachment/bwfPdf.pdf';
-            let filePath3 = '../../../data/ui/attachment/bwfJpg1.jpg';
-            let filePath4 = '../../../data/ui/attachment/bwfJpg2.jpg';
-            let filePath5 = '../../../data/ui/attachment/bwfXlsx.xlsx';
-            let publishDocLib1 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let publishDocLib2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let publishDocLib3 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let draftDocLib4 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let publishDocLib5 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseTemplateName = 'caseTemplateName' + randomStr;
             let casTemplateSummary = 'CaseSummaryName' + randomStr;
             let loginId = 'caseagentbwf';
@@ -199,18 +200,18 @@ describe('Document Library Consume UI', () => {
             }
             await apiHelper.createNewUser(caseAgentuserData);
             await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
-             // Create Publish 3 which assigned support group as a 'Facilities' document
-             await navigationPage.gotoSettingsPage();
-             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-             await createDocumentLibraryPo.openAddNewDocumentBlade();
-             await createDocumentLibraryPo.addAttachment(filePath3);
-             await createDocumentLibraryPo.setTitle(publishDocLib3);
-             await createDocumentLibraryPo.selectCompany('Petramco');
-             await createDocumentLibraryPo.selectOwnerGroup('Staffing');
-             await createDocumentLibraryPo.clickOnSaveButton();
-             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocLib3);
-             await editDocumentLibraryPo.selectStatus('Published');
-             await editDocumentLibraryPo.clickOnSaveButton();
+            // Create Publish 3 which assigned support group as a 'Facilities' document
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await createDocumentLibraryPo.openAddNewDocumentBlade();
+            await createDocumentLibraryPo.addAttachment(filePath3);
+            await createDocumentLibraryPo.setTitle(publishDocLib3);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectOwnerGroup('Staffing');
+            await createDocumentLibraryPo.clickOnSaveButton();
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocLib3);
+            await editDocumentLibraryPo.selectStatus('Published');
+            await editDocumentLibraryPo.clickOnSaveButton();
 
             await navigationPage.signOut();
             await loginPage.login(loginId);
@@ -330,17 +331,6 @@ describe('Document Library Consume UI', () => {
     //kgaikwad
     it('[DRDMV-13507]: Compose Email - Case agent attaches published document from document library where case agent is author of the document', async () => {
         try {
-            let filePath1 = '../../../data/ui/attachment/bwfJpg.jpg';
-            let filePath2 = '../../../data/ui/attachment/bwfPdf.pdf';
-            let filePath3 = '../../../data/ui/attachment/bwfJpg1.jpg';
-            let filePath4 = '../../../data/ui/attachment/bwfJpg2.jpg';
-            let filePath5 = '../../../data/ui/attachment/bwfWord1.rtf';
-            let publishDocLib1 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let publishDocLib2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let publishDocLib3 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let draftDocLib4 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let publishDocLib5 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let loginId = 'caseagentbwf';
             // Create User and assigned Document Manager Permission to agent
             await apiHelper.apiLogin('tadmin');
@@ -431,9 +421,9 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchRecord(publishDocLib1);
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
-            await composeMailPo.setToOrCCInputTetxbox('To','fritz.schulz@petramco.com');
+            await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
-            
+
             await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
@@ -444,7 +434,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publishDocLib2);
             await composeMailPo.clickOnAttachmentLink();
             await attachDocumentBladePo.searchAndAttachDocument(publishDocLib5);
-            await composeMailPo.setToOrCCInputTetxbox('To','fritz.schulz@petramco.com');
+            await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
 
             await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
@@ -467,17 +457,6 @@ describe('Document Library Consume UI', () => {
     //kgaikwad
     it('[DRDMV-13449]: Edit Case - Case agent attaches published document from document library who has write access to that document', async () => {
         try {
-            let filePath1 = '../../../data/ui/attachment/bwfJpg.jpg';
-            let filePath2 = '../../../data/ui/attachment/bwfPdf.pdf';
-            let filePath3 = '../../../data/ui/attachment/bwfJpg1.jpg';
-            let filePath4 = '../../../data/ui/attachment/bwfJpg2.jpg';
-            let filePath5 = '../../../data/ui/attachment/bwfXlsx.xlsx';
-            let publishDocLib1 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let publishDocLib2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let publishDocLib3 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let draftDocLib4 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let publishDocLib5 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let loginId = 'caseagentbwf';
             // Create User and assigned Document Manager Permission to agent
             await apiHelper.apiLogin('tadmin');
@@ -489,22 +468,22 @@ describe('Document Library Consume UI', () => {
             }
             await apiHelper.createNewUser(caseAgentuserData);
             await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
-             // Create Publish 3 which assigned support group as a 'Facilities' document
-             await navigationPage.gotoSettingsPage();
-             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-             await createDocumentLibraryPo.openAddNewDocumentBlade();
-             await createDocumentLibraryPo.addAttachment(filePath3);
-             await createDocumentLibraryPo.setTitle(publishDocLib3);
-             await createDocumentLibraryPo.selectCompany('Petramco');
-             await createDocumentLibraryPo.selectOwnerGroup('Staffing');
-             await createDocumentLibraryPo.clickOnSaveButton();
-             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocLib3);
-             await editDocumentLibraryPo.selectStatus('Published');
-             await editDocumentLibraryPo.clickOnSaveButton();
+            // Create Publish 3 which assigned support group as a 'Facilities' document
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await createDocumentLibraryPo.openAddNewDocumentBlade();
+            await createDocumentLibraryPo.addAttachment(filePath3);
+            await createDocumentLibraryPo.setTitle(publishDocLib3);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectOwnerGroup('Staffing');
+            await createDocumentLibraryPo.clickOnSaveButton();
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocLib3);
+            await editDocumentLibraryPo.selectStatus('Published');
+            await editDocumentLibraryPo.clickOnSaveButton();
 
             await navigationPage.signOut();
             await loginPage.login(loginId);
-           
+
             // Create Publish 1 document
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
@@ -578,7 +557,7 @@ describe('Document Library Consume UI', () => {
             await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfPdf.pdf');
             await expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
-            
+
             await expect(await viewCasePo.isAttachedDocumentPresent('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
             await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfXlsx.xlsx');
@@ -617,22 +596,22 @@ describe('Document Library Consume UI', () => {
             }
             await apiHelper.createNewUser(caseAgentuserData);
             await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
-             // Create Publish 3 which assigned support group as a 'Facilities' document
-             await navigationPage.gotoSettingsPage();
-             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-             await createDocumentLibraryPo.openAddNewDocumentBlade();
-             await createDocumentLibraryPo.addAttachment(filePath3);
-             await createDocumentLibraryPo.setTitle(publishDocLib3);
-             await createDocumentLibraryPo.selectCompany('Petramco');
-             await createDocumentLibraryPo.selectOwnerGroup('Staffing');
-             await createDocumentLibraryPo.clickOnSaveButton();
-             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocLib3);
-             await editDocumentLibraryPo.selectStatus('Published');
-             await editDocumentLibraryPo.clickOnSaveButton();
+            // Create Publish 3 which assigned support group as a 'Facilities' document
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await createDocumentLibraryPo.openAddNewDocumentBlade();
+            await createDocumentLibraryPo.addAttachment(filePath3);
+            await createDocumentLibraryPo.setTitle(publishDocLib3);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectOwnerGroup('Staffing');
+            await createDocumentLibraryPo.clickOnSaveButton();
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocLib3);
+            await editDocumentLibraryPo.selectStatus('Published');
+            await editDocumentLibraryPo.clickOnSaveButton();
 
             await navigationPage.signOut();
             await loginPage.login(loginId);
-           
+
             // Create Publish 1 document
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
@@ -680,7 +659,7 @@ describe('Document Library Consume UI', () => {
             await createCasePo.clickGoToCaseButton();
             // Activity Tab
             await activityTabPo.addActivityNote(addNoteText);
-            await activityTabPo.clickOnAttachLink();           
+            await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
 
             await attachDocumentBladePo.searchRecord(publishDocLib3);
@@ -699,7 +678,7 @@ describe('Document Library Consume UI', () => {
 
             // Multiple attachment
             await activityTabPo.addActivityNote(addNoteText);
-            await activityTabPo.clickOnAttachLink(); 
+            await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publishDocLib2);
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publishDocLib5);
@@ -709,7 +688,7 @@ describe('Document Library Consume UI', () => {
             await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
             await expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
-            
+
             await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
             await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
