@@ -344,6 +344,7 @@ describe('Case Status Change', () => {
 
     //kgaikwad
     it('[DRDMV-1617]: [Case] Fields validation for case in Pending status', async () => {
+        try{
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester("adam");
@@ -376,11 +377,19 @@ describe('Case Status Change', () => {
         await editCasePage.clickSaveCase();
         var str: string = await utilCommon.getPopUpMessage();
         await expect(str).toBe('Saved successfully.');
+    } catch (e) {
+        throw e;
+    } finally {
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
+    }
     });
 
     //ankagraw
     it('[DRDMV-1199]: [Case Status] Case status change from In Progress', async () => {
         try {
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let summary1: string = randomStr + "Summary 1";
             let summary2: string = randomStr + "Summary 2";
@@ -429,6 +438,7 @@ describe('Case Status Change', () => {
             let temp1 = await apiHelper.createManualTaskTemplate(templateData1);
             let statusOptions: string[] = ["In Progress", "Pending", "Resolved", "Canceled"];
 
+            await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickOnStatus();
             await expect(viewCasePage.allStatusOptionsPresent(statusOptions)).toBeTruthy("Status Options is not present");

@@ -123,6 +123,7 @@ describe('Case Manager Read-only Config', () => {
     // asahitya
     it('[DRDMV-18169]: Check Case manager is not able to perform Create Update operation on Goal Type', async () => {
         await navigationPage.gotCreateCase();
+        await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type - Business Workflows');
         expect(await goalTypeConfigConsole.isAddGoalTypeBtnDisabled()).toBeTruthy("Add button is enabled");
         await utilGrid.searchAndOpenHyperlink("Case Resolution Time");

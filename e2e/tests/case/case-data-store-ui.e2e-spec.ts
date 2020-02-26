@@ -33,6 +33,7 @@ describe('Case Data Store', () => {
 
         try {
             //Automation Task template
+            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
@@ -82,7 +83,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });
+    },100*1000);
 
     //ankagraw
     it('[DRDMV-13169]: [Dynamic Data] [UI] - Automated Task UI on Edit view', async () => {

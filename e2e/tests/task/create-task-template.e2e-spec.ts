@@ -12,7 +12,7 @@ import editTaskTemplate from "../../pageobject/settings/task-management/edit-tas
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import utilCommon from '../../utils/util.common';
 
-describe('Create Case Task', () => {
+describe('Create Task Template', () => {
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qkatawazi');
