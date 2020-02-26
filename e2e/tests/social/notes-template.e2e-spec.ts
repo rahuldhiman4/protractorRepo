@@ -277,7 +277,7 @@ describe('Notes template', () => {
         await editNotetemplate.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
         //await utilCommon.waitUntilSpinnerToHide();
-    }, 180 * 1000);
+    }, 210 * 1000);
 
     //ptidke
     it('[DRDMV-16040]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {

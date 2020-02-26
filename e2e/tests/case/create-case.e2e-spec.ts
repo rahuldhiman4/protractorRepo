@@ -471,6 +471,7 @@ describe("Create Case", () => {
     //ankagraw
     it('[DRDMV-1237]: [Global navigation] Navigation to Workspaces and Create subitems in the Shell ', async () => {
         try {
+            await navigationPage.gotoCaseConsole();
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
