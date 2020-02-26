@@ -1,4 +1,4 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import updateStatusBlade from '../../pageobject/common/update.status.blade.po';
 import utilCommon from '../../utils/util.common';
 
@@ -70,7 +70,7 @@ class ViewCasePage {
     async clickOnEmailLink(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
         await $(this.selectors.emailLink).click();
-        //        await utilCommon.waitUntilSpinnerToHide();
+        await browser.wait(this.EC.visibilityOf($('.modal-content')), 2000); // wait until compose email appears (api is not involved hence EC wait)
     }
 
     async clickOnRequestersEmail(): Promise<void> {
