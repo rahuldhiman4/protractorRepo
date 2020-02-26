@@ -9,76 +9,63 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePage from '../../pageobject/knowledge/edit-knowledge.po';
-import { Knowledge } from '../../api/constant.api';
 import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import createDocumentLibraryPage from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryConsolePage from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPage from '../../pageobject/settings/document-management/edit-document-library.po';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
-import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
-var caseBAUser = 'qkatawazi';
-var caseAgentUser = 'qtao';
-var caseManagerUser = 'qdu';
-var knowledgeCandidateUser = 'kayo';
-var knowledgeContributorUser = 'kkohri';
-var knowledgePublisherUser = 'kmills';
-var knowledgeCoachUser = 'kWilliamson';
-var categoryTier1 = 'Category Tier 1';
-var categoryTier2 = 'Category Tier 2';
-var categoryTier3 = 'Category Tier 3';
-var categoryTier4 = 'Category Tier 4';
-var categoryTier1FieldVal = 'Applications';
-var categoryTier1FieldVal1 = 'Employee Relations';
-var categoryTier2FieldVal = 'Help Desk';
-var categoryTier3FieldVal = 'Incident';
-var knowledgeManagementApp = "Knowledge Management";
-var knowledgeArticlesTitleStr = "Knowledge Articles";
-var knowledgeArticlesGuid = "0df18e99-4315-457c-aef0-3abc96fb08ee";
-var advancedSearchOptionCategoryTier1 = "Operational Category Tier 1";
-var advancedSearchOptionCategoryTier1ForDocumentLibrary = "Operational Category 1";
-var knowledgeArticlesStr = "Knowledge Articles ";
-var recommendedKnowledgeStr = "Recommended Knowledge ";
-var applyBtn = "Apply";
-var emptyStr = undefined;
-var articleInDraftStatus = 'DRDMV-19004 KnowledgeArticle_Draft';
-var articleInSMEReviewStatus = 'DRDMV-19004 KnowledgeArticle_SMEReview';
-var articleInPublishedStatus = 'DRDMV-19004 KnowledgeArticle_Published';
-var articleInRetiredStatus = 'DRDMV-19004 KnowledgeArticle_Retired';
-var articleInClosedStatus = 'DRDMV-19004 KnowledgeArticle_Closed';
-var articleInCanceledStatus = 'DRDMV-19004 KnowledgeArticle_Canceled';
-var companyStr = "Petramco";
-var ownerSupportGroup = "Compensation and Benefits";
-var documentLibraryColumnHeader = "Title";
-var documentLibraryStr = "Document Library ";
-var successMsg = "Saved successfully.";
-var documentLibraryStatus = "Published";
-var draftStatus = "Draft";
-var inProgressStatus = "In Progress";
-var smeReviewStatus = "SMEReview";
-var publishedStatus = "Published";
-var retiredStatus = "Retired";
-var closedStatus = "Closed";
-var canceledStatus = "Canceled";
-var title = "DRDMV-19004 KnowledgeArticle";
+let caseBAUser = 'qkatawazi';
+let caseAgentUser = 'qtao';
+let caseManagerUser = 'qdu';
+let knowledgeCandidateUser = 'kayo';
+let knowledgeContributorUser = 'kkohri';
+let knowledgePublisherUser = 'kmills';
+let knowledgeCoachUser = 'kWilliamson';
+let categoryTier1 = 'Category Tier 1';
+let categoryTier2 = 'Category Tier 2';
+let categoryTier3 = 'Category Tier 3';
+let categoryTier4 = 'Category Tier 4';
+let categoryTier1FieldVal = 'Applications';
+let categoryTier1FieldVal1 = 'Employee Relations';
+let categoryTier2FieldVal = 'Help Desk';
+let categoryTier3FieldVal = 'Incident';
+let knowledgeManagementApp = "Knowledge Management";
+let knowledgeArticlesTitleStr = "Knowledge Articles";
+let advancedSearchOptionCategoryTier1 = "Operational Category Tier 1";
+let advancedSearchOptionCategoryTier1ForDocumentLibrary = "Operational Category 1";
+let knowledgeArticlesStr = "Knowledge Articles ";
+let recommendedKnowledgeStr = "Recommended Knowledge ";
+let applyBtn = "Apply";
+let emptyStr = undefined;
+let articleInDraftStatus = 'DRDMV-19004 KnowledgeArticle_Draft';
+let articleInSMEReviewStatus = 'DRDMV-19004 KnowledgeArticle_SMEReview';
+let articleInPublishedStatus = 'DRDMV-19004 KnowledgeArticle_Published';
+let articleInRetiredStatus = 'DRDMV-19004 KnowledgeArticle_Retired';
+let articleInClosedStatus = 'DRDMV-19004 KnowledgeArticle_Closed';
+let articleInCanceledStatus = 'DRDMV-19004 KnowledgeArticle_Canceled';
+let companyStr = "Petramco";
+let ownerSupportGroup = "Compensation and Benefits";
+let documentLibraryStr = "Document Library ";
+let documentLibraryStatus = "Published";
+let draftStatus = "Draft";
+let inProgressStatus = "In Progress";
+let smeReviewStatus = "SMEReview";
+let publishedStatus = "Published";
+let retiredStatus = "Retired";
+let closedStatus = "Closed";
+let canceledStatus = "Canceled";
+let title = "DRDMV-19004 KnowledgeArticle";
 
 describe('Knowledge Articles - Categorization Tests', () => {
-    const draft: any = Knowledge.Draft;
-    const smeReview: any = Knowledge.SMEReview;
-    const published: any = Knowledge.Published;
-    const retired: any = Knowledge.Retired;
-    const closed: any = Knowledge.Closed;
-    const canceled: any = Knowledge.Canceled;
-    const regionGuid = 'cec69daa-b696-415b-b2ab-ebec81251d10';
-    const siteGuid = '1a4afa56-0b87-45ea-9456-f251b0848c70';
-    const knowledgeHamburgerGuid = 'a9dfa448-2900-4a2b-a230-503f4a0ac12e';
     const filePath = '../../../data/ui/attachment/articleStatus.png';
 
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin(knowledgePublisherUser);
-        var articleData = {
+        let articleData = {
             "knowledgeSet": "HR",
             "title": "KnowledgeArticle",
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
@@ -92,49 +79,53 @@ describe('Knowledge Articles - Categorization Tests', () => {
         }
         //Create article in in progress status
         articleData.title = title + "_" + inProgressStatus;
-        var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-
+        let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        
         //Create article in draft status
         articleData.title = title + "_" + draftStatus;
-        var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        var knowledgeArticleGUID = knowledgeArticleData.id;
+        knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        let knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
 
         //Create article in SMEReview status
         articleData.title = title + "_" + smeReviewStatus;
-        var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        var knowledgeArticleGUID = knowledgeArticleData.id;
+        knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, smeReviewStatus,"KMills",'GB Support 2','Petramco')).toBeTruthy("Article with SME Review status not updated.");
 
         //Create article in Published status
         articleData.title = title + "_" + publishedStatus;
-        var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        var knowledgeArticleGUID = knowledgeArticleData.id;
+        knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
 
         //Create article in Retired status
         articleData.title = title + "_" + retiredStatus;
-        var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        var knowledgeArticleGUID = knowledgeArticleData.id;
+        knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, retiredStatus)).toBeTruthy("Article with Retired status not updated.");
 
         //Create article in Closed status
         articleData.title = title + "_" + closedStatus;
-        var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        var knowledgeArticleGUID = knowledgeArticleData.id;
+        knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, closedStatus)).toBeTruthy("Article with Closed status not updated.");
 
         //Create article in Canceled status
         articleData.title = title + "_" + canceledStatus;
-        var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        var knowledgeArticleGUID = knowledgeArticleData.id;
+        knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, canceledStatus)).toBeTruthy("Article with Canceled status not updated.");
+    });
+
+    afterEach(async () => {
+        await browser.refresh();
     });
 
     afterAll(async () => {
@@ -363,8 +354,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-
-    }, 500 * 1000);
+    }, 10*60*100);
 
     it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
         try {
@@ -715,8 +705,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-
-    }, 500 * 1000);
+    }, 13*60*100);
 
     it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
         //Create a document library
@@ -796,7 +785,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1ForDocumentLibrary, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);    
         }
         catch (error) {
             throw error;
@@ -808,10 +797,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 380 * 1000);
+    }, 8*60*100);
 
     it('[DRDMV-19356]:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
-        var domainTagData = {
+        let domainTagData = {
             domainTagName: 'FacilityTag'
         }
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json");
@@ -854,6 +843,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    },200*1000);
+    }, 4*60*100);
 
 })
