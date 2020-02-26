@@ -1,6 +1,6 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import utilCommon from 'e2e/utils/util.common';
 
 class SelectEmailTemplateBlad {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -16,22 +16,23 @@ class SelectEmailTemplateBlad {
     }
 
     async clickOnApplyButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyButton)));
         await $(this.selectors.applyButton).click();
+        await utilCommon.waitUntilSpinnerToHide(); // wait required to populate email template text in compose email
     }
 
     async clickOnCancelButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
-    async isEmailTemplateGridEmpty(templateName:string):Promise<boolean>{
-        let value= await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid,'Title');
-        return value==templateName ? true : false;
+    async isEmailTemplateGridEmpty(templateName: string): Promise<boolean> {
+        let value = await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, 'Title');
+        return value == templateName ? true : false;
     }
 
     async isApplyButtonEnabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.applyButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.applyButton)));
         return await $(this.selectors.applyButton).isEnabled();
     }
 
