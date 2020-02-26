@@ -74,13 +74,13 @@ describe('Knowledge Articles - Categorization Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignee":"KMills",
-            "assigneeSupportGroup":"GB Support 2"
+            "assignee": "KMills",
+            "assigneeSupportGroup": "GB Support 2"
         }
         //Create article in in progress status
         articleData.title = title + "_" + inProgressStatus;
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        
+
         //Create article in draft status
         articleData.title = title + "_" + draftStatus;
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
@@ -92,7 +92,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, smeReviewStatus,"KMills",'GB Support 2','Petramco')).toBeTruthy("Article with SME Review status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, smeReviewStatus, "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
 
         //Create article in Published status
         articleData.title = title + "_" + publishedStatus;
@@ -122,7 +122,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, canceledStatus)).toBeTruthy("Article with Canceled status not updated.");
-    });
+    }, 3 * 60 * 1000);
 
     afterEach(async () => {
         await browser.refresh();
@@ -354,7 +354,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 10*60*100);
+    }, 10 * 60 * 1000);
 
     it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
         try {
@@ -705,7 +705,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 13*60*100);
+    }, 13 * 60 * 1000);
 
     it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
         //Create a document library
@@ -785,7 +785,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1ForDocumentLibrary, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);    
+            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
         }
         catch (error) {
             throw error;
@@ -797,7 +797,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 8*60*100);
+    }, 8 * 60 * 1000);
 
     it('[DRDMV-19356]:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
         let domainTagData = {
@@ -843,6 +843,5 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 4*60*100);
-
+    }, 4 * 60 * 1000);
 })
