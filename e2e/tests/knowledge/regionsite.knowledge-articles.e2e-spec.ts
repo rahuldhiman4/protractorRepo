@@ -562,7 +562,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await navigationPage.signOut();
         await loginPage.login(caseBAUser);
     }
-
     }, 10 * 60 * 1000);
 
     it('[DRDMV-19575]:Verify the search functionality of Document library console for Region', async () => {
@@ -815,7 +814,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await navigationPage.signOut();
         await loginPage.login(caseBAUser);
     }
-
     }, 9 * 60 * 1000);
 
     it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
@@ -1403,7 +1401,5 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await navigationPage.signOut();
         await loginPage.login(caseBAUser);
     }
-
     }, 15 * 60 * 1000);
-
 })
