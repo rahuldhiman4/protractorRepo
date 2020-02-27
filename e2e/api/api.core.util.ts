@@ -271,7 +271,7 @@ class ApiCoreUtil {
                 bodyFormData.append(key, JSON.stringify(value));
             } else if (key == '1000000351') {
                 bodyFormData.append(key, fs.createReadStream(value.toString()));
-            }
+            } else bodyFormData.append(key, value);
         }
         const headers = {
             ...bodyFormData.getHeaders(),
