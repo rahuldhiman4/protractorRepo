@@ -1,38 +1,3 @@
-export const DOC_LIB_DRAFT1 = {
-    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
-    "recordDefinitionName": "com.bmc.dsm.knowledge:Knowledge Article",
-    "fieldInstances": {
-        "399": {
-            "id": 399,
-            "value": null
-        },
-        "301820700": {
-            "id": 301820700,
-            "value": "Document"
-        },
-        "302300502": {
-            "id": 302300502,
-            "value": "DocTitle2"
-        },
-        "302300512": {
-            "id": 302300512,
-            "value": "1140b3e2334b72693ef33f4bf76f64809c640088a75c9945e17151d2fa3fd0355fbb1ea7fda1de58cfd818ef4404d9d9e865fee9be641becccd9cbcb8c50ab8e"
-        },
-        "302312187": {
-            "id": 302312187,
-            "value": "AGGADG1AAO0VGAP8S4I3P7V1QQBDV5"
-        },
-        "450000441": {
-            "id": 450000441,
-            "value": "0"
-        },
-        "1000000001": {
-            "id": 1000000001,
-            "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
-        }
-    }
-};
-
 export const DOC_LIB_DRAFT = {
     "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
     "recordDefinitionName": "com.bmc.dsm.knowledge:Knowledge Article",
