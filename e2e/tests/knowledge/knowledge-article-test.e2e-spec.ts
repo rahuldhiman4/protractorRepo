@@ -609,7 +609,7 @@ describe('Knowledge Article', () => {
         await changeAssignmentBladePo.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
-    });
+    }, 2 * 60 * 1000);
 
     it('[DRDMV-5195]: [Knowledge]-Assigning the article using Assignment component', async () => {
         let knowledgeTitile = 'knowledge5195' + randomStr;
@@ -844,7 +844,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 160 * 1000);
+    }, 4 * 60 * 1000);
 
      //ptidke
      it('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {
