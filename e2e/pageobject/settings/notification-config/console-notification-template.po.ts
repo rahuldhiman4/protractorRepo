@@ -5,7 +5,7 @@ class NotificationTemplateGridPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        copyTemplate: '.d-icon-left-pencil',
+        copyTemplate: '[rx-view-component-id="c2e4b483-9365-4a10-a326-2c43a76de2fa"] .d-button_link',
         searchButton: '.d-icon-search',
         selectTemplateCheckBox: '.ui-grid-icon-ok',
         copyTemplateWindow: '.modal-title',
