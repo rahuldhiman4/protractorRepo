@@ -18,7 +18,8 @@ export class Resources {
         dropDownChoice: '.ui-select__rx-choice',
         warningMsgText: '.d-modal__content-item',
         configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
-        headingName: '.km-group__header span'
+        headingName: '.km-group__header span',
+        recommendedKnowledgeNo: 'h3[class="km-group__header ng-binding"]:nth-last-child(3) span',
     }
 
     async clickOnAdvancedSearchOptions(searchArea: string): Promise<void> {
@@ -71,7 +72,7 @@ export class Resources {
 
     async getCountOfHeading(headerName:string): Promise<string> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.headingName)));
-        let count:string= await element(by.xpath(`//h3[@class="km-group__header" and contains(text(),'${headerName}')]//span`)).getText();
+        let count:string= await $(this.selectors.recommendedKnowledgeNo).getText();
         return await count.substring(1,count.length-1);
     }
 

@@ -83,10 +83,11 @@ class CaseEditPage {
         activityFeed: '[author="feedItem.author"]',
         activityChangeFile: '.d-icon-files_change_o',
         getCaseDisplayId: 'span.text-field',
+        closedTip: '[class="rx-attachment-view-item ng-scope"] .d-icon-cross',
     }
 
-    async removeAttachment(fileName: string): Promise<void> {
-        await $(`[aria-label="Remove Attachment ${fileName}"] i`).click();
+    async removeAttachment(): Promise<void> {
+        await $(this.selectors.closedTip).click();
     }
 
     async waitForEditCasePageToBeDisplayed(): Promise<void> {

@@ -205,4 +205,21 @@ describe('Login and create case from API', () => {
         let isDeleted = await apiHelper.deleteFlowsetProcessLibConfig(processName);
         console.log("Process Lib Config deleted?.. ", isDeleted);
     });
+
+    fit('Create doc lib', async () => {
+        let docLibData = {
+            docLibTitle : 'NewDocLib',
+            company: 'Petramco',
+            ownerGroup: 'Facilities',
+            shareExternally: true
+        }
+        // delete if doc lib with same name exists
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDocumentLibrary(docLibData.docLibTitle);
+        await apiHelper.apiLogin('qkatawazi');
+        let filePath = "e2e/data/api/attachment/demo.txt";
+        let docLib = await apiHelper.createDocumentLibrary(docLibData, filePath);
+        let docLibPublished = await apiHelper.publishDocumentLibrary(docLib);
+        console.log("doc lib created and published?.. ", docLibPublished);
+    });
 });

@@ -93,11 +93,13 @@ describe('Document Library', () => {
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
         await utilCommon.waitUntilSpinnerToHide();
         let columns1: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified"];
-        expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns1)).toBeTruthy('column headers does not match');
+        expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns1)).toBeTruthy('column headers does not match 1');
         let columns2: string[] = ["Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "GUID", "Region"];
+        let columns3: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified","Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "GUID", "Region"];
         await documentLibraryConsolePo.addColumnOnGrid(columns2);
-        expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns2)).toBeTruthy('column headers does not match');
+        expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns3)).toBeTruthy('column headers does not match 2');
         await documentLibraryConsolePo.removeColumnOnGrid(columns2);
+        expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns1)).toBeTruthy('column headers does not match 3');
     });
 
     //kgaikwad
@@ -406,13 +408,13 @@ describe('Document Library', () => {
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft', 'Draft Status is missing');
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
-        await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('BMC Software');
+        await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Petramco');
         await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Company');
         await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
         // await editDocumentLibraryPo.selectReadAccessDropDown('Add Support Group', 'Compensation and Benefits');
         await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Compensation and Benefits');
         await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
-        expect(await editDocumentLibraryPo.sameSupportGroupErrorMessageDisplayed(' This group has been added with the another access. Please contact the administrator to replace the settings')).toBeTruthy('Same Support Group select error message displayed ');
+        expect(await editDocumentLibraryPo.sameSupportGroupErrorMessageDisplayed(' The group already exists in the access list. To modify the access permissions, remove the group from the access list and add it again.')).toBeTruthy();
     });
 
     it('[DRDMV-13077]: Verify Sort on Document Managment Console', async () => {
