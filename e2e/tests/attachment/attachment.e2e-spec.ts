@@ -384,8 +384,9 @@ describe("Attachment", () => {
         await expect(await attachmentBladePo.isAttachmentPresent('articleStatus')).toBeTruthy('articleStatus.png Attachment is missing on grid');
         await attachmentBladePo.clickOnCloseButton();
         await viewCasePo.clickEditCaseButton();
-        await editCasePo.removeAttachment('bwfJpg.jpg');
-        await editCasePo.removeAttachment('articleStatus.png');
+        await expect(editCasePo.isPriorityRequiredText()).toBeTruthy("Priority not present")
+        await editCasePo.removeAttachment();
+        await editCasePo.removeAttachment();
         await editCasePo.clickSaveCase();
         await viewCasePo.clickAttachmentsLink();
         await expect(await attachmentBladePo.isAttachmentPresent('bwfJpg')).toBeFalsy('bwfJpg Attachment displayed on grid');
