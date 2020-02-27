@@ -64,6 +64,10 @@ class CreateAdhocTaskTemplatePage {
         return await $(this.selectors.attachmentLink).isDisplayed();
     }
 
+    async clickOnAttachButton(): Promise<void> {
+        await $(this.selectors.attachmentLink).click();
+    }
+
     async ischangeAssignmentButtonDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
         return await $(this.selectors.changeAssignmentButton).isDisplayed();

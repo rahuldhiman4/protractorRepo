@@ -21,6 +21,9 @@ export class Resources {
         headingName: '.km-group__header span'
     }
 
+    async isKnowledgeArticlesEmpty(): Promise<boolean> {
+        return await $$('.km-group').get(0).$$('.km-group-list-item_empty').get(0).isPresent();
+    }
 
 
     async clickOnAdvancedSearchOptions(searchArea: string): Promise<void> {
@@ -34,6 +37,11 @@ export class Resources {
         await $(this.selectors.advancedSearchInput).clear();
         await $(this.selectors.advancedSearchInput).sendKeys(searchText);
     }
+
+    async searchTextAndEnter(searchText: string): Promise<void> {
+                await $(this.selectors.advancedSearchInput).clear();
+                await $(this.selectors.advancedSearchInput).sendKeys(searchText + protractor.Key.ENTER);
+            }
 
     async clickOnAdvancedSearchSettingsIconToOpen(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchSettingsBtn)));
