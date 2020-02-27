@@ -4,6 +4,8 @@ import * as uuid from 'uuid';
 const recordInstanceUri = "api/rx/application/record/recordinstance";
 const templateUri = "api/rx/application/command";
 const dynamicDataUri = "api/com.bmc.dsm.ticketing-lib/dynamicdata/definition";
+let FormData = require('form-data');
+let fs = require('fs');
 
 class ApiCoreUtil {
     async createRecordInstance(jsonBody): Promise<AxiosResponse> {
@@ -15,7 +17,7 @@ class ApiCoreUtil {
         return newRecord;
     }
 
-    async updateRecordInstance(recordName: string, recordGUID: string, jsonBody: string): Promise<AxiosResponse> {
+    async updateRecordInstance(recordName: string, recordGUID: string, jsonBody): Promise<AxiosResponse> {
         const newRecord = await axios.put(
             recordInstanceUri + "/" + recordName + "/" + recordGUID,
             jsonBody
@@ -116,7 +118,7 @@ class ApiCoreUtil {
         });
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
-    
+
     async getPersonGuid(personName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Person");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
@@ -244,15 +246,40 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
-    async getServiceTargetGuid(sserviecTargetTitle: string): Promise<string> {
+    async getServiceTargetGuid(serviceTargetTitle: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.slm-lib:Service Target");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-            return obj[490000400] === sserviecTargetTitle;
+            return obj[490000400] === serviceTargetTitle;
         });
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getDocLibGuid(docLibName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.knowledge:Knowledge Article");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[302300502] === docLibName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
 
+    async multiFormPostWithAttachment(parameters: object): Promise<AxiosResponse> {
+        let bodyFormData = new FormData();
+        for (let i: number = 0; i < Object.keys(parameters).length; i++) {
+            let key: string = Object.keys(parameters)[i].toString();
+            let value: any = Object.values(parameters)[i];
+            if(key == 'recordInstance'){
+                bodyFormData.append(key, JSON.stringify(value));
+            } else if (key == '1000000351') {
+                bodyFormData.append(key, fs.createReadStream(value.toString()));
+            }
+        }
+        const headers = {
+            ...bodyFormData.getHeaders(),
+        };
+        let newRecord = await axios.post(recordInstanceUri, bodyFormData, { headers });
+        console.log('Create RecordInstance API Status =============>', newRecord.status);
+        return newRecord;
+    }
 }
 
 export default new ApiCoreUtil();
