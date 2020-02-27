@@ -1,5 +1,6 @@
 import { resolve } from "path";
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../utils/util.common';
 
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -192,7 +193,7 @@ class ActivityTabPage {
     async clickOnPostButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNotePostButton)));
         await $(this.selectors.addNotePostButton).click();
-        //        await utilCommon.waitUntilSpinnerToHide();
+        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickOnCancelButton(): Promise<void> {

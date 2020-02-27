@@ -11,7 +11,7 @@ import AssignmentConfigCreatePage from "../../pageobject/settings/case-managemen
 import AssignmentConfigEditPage from "../../pageobject/settings/case-management/edit-assignments-config.po";
 import utilCommon from '../../utils/util.common';
 
-describe("Create Case", () => {
+describe("Create Case Assignment Mapping", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     beforeAll(async () => {
@@ -288,10 +288,11 @@ describe("Create Case", () => {
         await apiHelper.createCaseAssignmentMapping(assignmentData);
         await navigationPage.gotoQuickCase();
         await QuickCasePage.selectRequesterName("adam");
+        await browser.sleep(30000);
         await QuickCasePage.selectCaseTemplate(caseTemplateName);
-        await QuickCasePage.createCaseButton();
+        await QuickCasePage.saveCase();
         await QuickCasePage.gotoCaseButton();
         await expect(await viewCasePage.getAssignedGroupText()).toBe("Employee Relations");
         await expect(await viewCasePage.getAssigneeText()).toBe("Qiwei Liu");
-    }, 150 * 1000)
+    }, 360 * 1000)
 });

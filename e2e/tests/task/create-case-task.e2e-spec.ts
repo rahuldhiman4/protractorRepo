@@ -116,6 +116,7 @@ describe('Create Case Task', () => {
         let automationTaskSummaryWithallField = 'Automation task Summary with All field' + Math.floor(Math.random() * 1000000) + 1;
 
         //Automated task Template with Required Data
+        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await selectTaskTemplate.clickOnAutomationTaskTemplateButton();

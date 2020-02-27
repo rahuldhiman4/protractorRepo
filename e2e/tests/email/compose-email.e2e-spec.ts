@@ -11,9 +11,9 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import utilCommon from "../../utils/util.common";
 import utilGrid from '../../utils/util.grid';
 
-var emailTemplateData = require('../../data/ui/email/email.template.api.json');
+let emailTemplateData = require('../../data/ui/email/email.template.api.json');
 
-describe("compose email", () => {
+describe("Compose Email", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
         browser.waitForAngularEnabled(false);
@@ -29,10 +29,11 @@ describe("compose email", () => {
         await browser.refresh();
     });
 
+    //kgaikwad
     it('[DRDMV-8377]: UI validation Email Option via Create New Case', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        var caseData =
+        let caseData =
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
@@ -79,10 +80,11 @@ describe("compose email", () => {
         await composeMail.closeComposeEmail();
     });
 
+    //kgaikwad
     it('[DRDMV-8391]: Negative:Compose email discard changes validation', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        var caseData =
+        let caseData =
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
@@ -90,8 +92,8 @@ describe("compose email", () => {
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qkatawazi');
-        var newCase = await apiHelper.createCase(caseData);
-        var caseId: string = newCase.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
@@ -99,10 +101,11 @@ describe("compose email", () => {
         expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?'), 'Warning Email message is missing';
     });
 
+    //kgaikwad
     it('[DRDMV-10453]: Email Template grid columns', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        var caseData =
+        let caseData =
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
@@ -110,8 +113,8 @@ describe("compose email", () => {
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qkatawazi');
-        var newCase = await apiHelper.createCase(caseData);
-        var caseId: string = newCase.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
@@ -120,10 +123,11 @@ describe("compose email", () => {
         expect(await selectEmailTemplateBladePo.areColumnHeaderMatches(columnHeaders)).toBeTruthy('wrong column headers');
     });
 
+    //kgaikwad
     it('[DRDMV-10390]: Visible Columns on Email Template Grid on Compose Email UI', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        var caseData =
+        let caseData =
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
@@ -131,8 +135,8 @@ describe("compose email", () => {
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qkatawazi');
-        var newCase = await apiHelper.createCase(caseData);
-        var caseId: string = newCase.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
@@ -145,10 +149,11 @@ describe("compose email", () => {
         await selectEmailTemplateBladePo.removeGridColumn(columns);
     });
 
+    //kgaikwad
     it('[DRDMV-10409]: Apply button disable', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        var caseData =
+        let caseData =
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
@@ -156,8 +161,8 @@ describe("compose email", () => {
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qkatawazi');
-        var newCase = await apiHelper.createCase(caseData);
-        var caseId: string = newCase.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
@@ -166,6 +171,7 @@ describe("compose email", () => {
         expect(selectEmailTemplateBladePo.isApplyButtonEnabled()).toBeFalsy('Apply button is clickable');
     });
 
+    //kgaikwad
     it('[DRDMV-10394,DRDMV-10397]: Apply Email Template', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -173,7 +179,7 @@ describe("compose email", () => {
         let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + summary;
         emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
-        var caseData =
+        let caseData =
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-10394 RandVal" + summary,
@@ -181,8 +187,8 @@ describe("compose email", () => {
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
-        var newCase = await apiHelper.createCase(caseData);
-        var caseId: string = newCase.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
         await utilGrid.clearFilter();
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
@@ -204,6 +210,7 @@ describe("compose email", () => {
         expect(await activityTabPo.getemailContent()).toContain('I am taking leave today.');
     });
 
+    //kgaikwad
     it('[DRDMV-10401,DRDMV-10393]: Email Body override with template details', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -211,7 +218,7 @@ describe("compose email", () => {
         let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + summary;
         emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
-        var caseData =
+        let caseData =
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-10401 RandVal" + summary,
@@ -219,8 +226,8 @@ describe("compose email", () => {
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
-        var newCase = await apiHelper.createCase(caseData);
-        var caseId: string = newCase.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
         await utilGrid.clearFilter();
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
@@ -251,7 +258,7 @@ describe("compose email", () => {
         let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + summary;
         emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
-        var caseData =
+        let caseData =
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-10398 RandVal" + summary,
@@ -259,8 +266,8 @@ describe("compose email", () => {
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
-        var newCase = await apiHelper.createCase(caseData);
-        var caseId: string = newCase.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
         await utilGrid.clearFilter();
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
@@ -284,49 +291,50 @@ describe("compose email", () => {
         await composeMail.clickOnSendButton();
     });
 
+    //kgaikwad
     it('[DRDMV-10395]: Email template Update', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
-        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + summary;
-        emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
+        let emailTemplate1: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + summary;
+        emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplate1;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
-        let emailTemplate1: string = await emailTemplateData['emailTemplateForSalary'].TemplateName + summary;
-        emailTemplateData['emailTemplateForSalary'].TemplateName = emailTemplate1;
+        let emailTemplate2: string = await emailTemplateData['emailTemplateForSalary'].TemplateName + summary;
+        emailTemplateData['emailTemplateForSalary'].TemplateName = emailTemplate2;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateForSalary']);
-        var caseData =
-        {
+        let caseData = {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-10395 RandVal" + summary,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
-        }
+        };
         await apiHelper.apiLogin('qtao');
-        var newCase = await apiHelper.createCase(caseData);
-        var caseId: string = newCase.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
         await utilGrid.clearFilter();
         await caseConsole.searchAndOpenCase(caseId);
         await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnSelectEmailTemplateLink();
         await utilCommon.waitUntilSpinnerToHide();
-        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
+        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplate1);
         await emailTemplateBladePo.clickOnApplyButton();
         await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
         expect(await composeMail.getEmailBody()).toContain('I am taking leave today.', 'Email Body 1 does not match');
         expect(await composeMail.getSubject()).toContain(caseId);
         expect(await composeMail.getSubjectInputValue()).toContain('Leave summary', 'Subject value 1 does not match');
-        expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplateName, 'email Template Name 1 does not match');
+        expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate1, 'email Template Name 1 does not match');
         await composeMail.clickOnSelectEmailTemplateLink();
         await utilCommon.waitUntilSpinnerToHide();
-        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplate1);
+        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplate2);
         await emailTemplateBladePo.clickOnApplyButton();
         expect(await composeMail.getEmailBody()).toContain('I have checked my salary.', 'Email Body 2 does not match');
         expect(await composeMail.getSubject()).toContain(caseId);
         expect(await composeMail.getSubjectInputValue()).toContain('Salary summary', 'Subject 2 does not match');
-        expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate1, 'Email Template name heading does not match');
+        expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate2, 'Email Template name heading does not match');
         await composeMail.clickOnSendButton();
-    });
+    }, 100 * 1000);
 
+    //kgaikwad
     it('[DRDMV-8392,DRDMV-10384]: Negative: In Email "To" and "cc" should be user from Foundation data ', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

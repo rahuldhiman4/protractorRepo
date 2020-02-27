@@ -96,7 +96,7 @@ describe('KnowledgeArticlestyle', () => {
         expect(await articleTemplateStylePo.getStyleNameFieldRequiredValue()).toContain('required','Field is not reuqired');
         await articleTemplateStylePo.setStyleName(randomStr);
         await articleTemplateStylePo.clickCancelButton();
-        expect(await utilCommon.getWarningMessagegText()).toContain('You have unsaved data. Do you want to continue?');
+        expect(await utilCommon.getWarningMessageTextKnowledgeStyle()).toContain('You have unsaved data. Do you want to continue?');
         utilCommon.clickOnWarningCancel();
         await articleTemplateStylePo.clickSaveButton();
         expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully')
@@ -133,5 +133,5 @@ describe('KnowledgeArticlestyle', () => {
         await articleTemplateStylePo.setStyleName("DRDMV-5014"+randomStr);
         await articleTemplateStylePo.clickSaveButton();
         expect(await utilCommon.getPopUpMessage()).toContain('is already taken by another style. Please select a different name.');
-    });
+    }, 500*1000);
 })

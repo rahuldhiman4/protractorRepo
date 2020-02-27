@@ -230,6 +230,7 @@ describe('Copy Task Template', () => {
             let newAutomationTaskProcess = 'NewProcessDRDMV14217' + randomStr;
 
             //Automation Task template
+            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
@@ -321,6 +322,7 @@ describe('Copy Task Template', () => {
             let Description = 'DescriptionDRDMV13573' + randomStr;
 
             //Automation Task template
+            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
@@ -460,7 +462,8 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.setNewProcessName(processName);
             await copyTemplatePage.clickSaveCopytemplate();
-            await expect(await utilCommon.isPopUpMessagePresent("Saved successfully.")).toBeTruthy("Saved successfully not present");
+            let successmsg:string[]=["Saved successfully."];
+            await expect(await utilCommon.isPopupMsgsMatches(successmsg)).toBeTruthy("Saved successfully not present");
             await expect(await utilCommon.isErrorMsgPresent()).toBeTruthy('Error msg not present');
            
         } catch (e) {

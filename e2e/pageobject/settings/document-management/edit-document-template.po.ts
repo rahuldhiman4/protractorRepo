@@ -1,7 +1,7 @@
 import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
-class EditDocumentLibraryPage {
+class EditDocumentTemplatePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         templateName: '[rx-view-component-id="4b7649f7-fcca-4cd5-80f5-534f41d8a05e"] input',
@@ -95,4 +95,4 @@ class EditDocumentLibraryPage {
     }
 }
 
-export default new EditDocumentLibraryPage();
+export default new EditDocumentTemplatePage();

@@ -5,20 +5,22 @@ import { IKnowledgeArticles } from 'e2e/data/api/interface/knowledge.articles.in
 import { IPerson } from 'e2e/data/api/interface/person.interface.api';
 import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.api';
 import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
-import { browser, element } from 'protractor';
+import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
-import { CaseStatus, CasePriority, CaseTemplate, Knowledge, MenuItemStatus, NotificationType, ProcessLibConf, TaskTemplate } from "../api/constant.api";
+import { CasePriority, CaseStatus, CaseTemplate, Knowledge, MenuItemStatus, NotificationType, ProcessLibConf, TaskTemplate } from "../api/constant.api";
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
+import { ICaseAssignmentMapping } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
-import { ICaseAssignmentMapping} from "../data/api/interface/case.assignment.mapping.interface.api";
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
 import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
 import { IFlowset, IProcessLibConfig } from '../data/api/interface/flowset.interface.api';
 import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
 import { FLAG_UNFLAG_KA } from '../data/api/knowledge/flag-unflag.data.api';
+import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/process.data.api';
 import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
-import { AUTOMATED_CASE_STATUS_TRANSITION, REOPEN_CASE, CASE_WATCHLIST_ALL_EVENTS } from '../data/api/shared-services/process.data.api';
+import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH } from '../data/api/ticketing/document-library.data.api';
+import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -131,7 +133,7 @@ class ApiHelper {
         }
         if (data.categoryTier1) {
             let category1Value = await coreApi.getCategoryGuid(data.categoryTier1);
-           templateData.fieldInstances["1000000063"].value = category1Value;
+            templateData.fieldInstances["1000000063"].value = category1Value;
 
         }
         if (data.categoryTier2) {
@@ -1026,22 +1028,71 @@ class ApiHelper {
         }
     }
 
-    async updateCase(caseGuid: string, jsonBody: any): Promise<boolean>{
+    async updateCase(caseGuid: string, jsonBody: any): Promise<boolean> {
         jsonBody.id = caseGuid;
         let updateCase = await coreApi.updateRecordInstance('com.bmc.dsm.case-lib:Case', caseGuid, jsonBody);
-        return updateCase.status==204;
+        return updateCase.status == 204;
     }
 
-    
-    async runAutomatedCaseTransitionProcess(): Promise<number>{
+    async runAutomatedCaseTransitionProcess(): Promise<number> {
         let response = await axios.post(
             commandUri,
             AUTOMATED_CASE_STATUS_TRANSITION
-        )        
+        )
         return response.status;
     }
+
+    async createDocumentLibrary(docLibDetails: IDocumentLib, filePath: string): Promise<IIDs> {
+        let recordInstanceJson = DOC_LIB_DRAFT;
+        recordInstanceJson.fieldInstances[302300502].value = docLibDetails.docLibTitle;
+        recordInstanceJson.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(docLibDetails.company);
+        recordInstanceJson.fieldInstances[302300512].value = await apiCoreUtil.getSupportGroupGuid(docLibDetails.ownerGroup);
+        recordInstanceJson.fieldInstances[450000441].value = docLibDetails.shareExternally ? '1' : '0';
+        recordInstanceJson.fieldInstances[200000007].value = docLibDetails.region ? await apiCoreUtil.getRegionGuid(docLibDetails.region) : recordInstanceJson.fieldInstances[200000007].value;
+        recordInstanceJson.fieldInstances[260000001].value = docLibDetails.site ? await apiCoreUtil.getSiteGuid(docLibDetails.site) : recordInstanceJson.fieldInstances[260000001].value;
+        recordInstanceJson.fieldInstances[302301262].value = docLibDetails.keywordTag ? docLibDetails.keywordTag : recordInstanceJson.fieldInstances[302301262].value;
+        recordInstanceJson.fieldInstances[450000153].value = docLibDetails.description ? docLibDetails.description : recordInstanceJson.fieldInstances[450000153].value;
+        recordInstanceJson.fieldInstances[450000371].value = docLibDetails.department ? await apiCoreUtil.getDepartmentGuid(docLibDetails.department) : recordInstanceJson.fieldInstances[450000371].value;
+        recordInstanceJson.fieldInstances[450000381].value = docLibDetails.businessUnit ? await apiCoreUtil.getBusinessUnitGuid(docLibDetails.businessUnit) : recordInstanceJson.fieldInstances[450000381].value;
+        recordInstanceJson.fieldInstances[1000000063].value = docLibDetails.category1 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category1) : recordInstanceJson.fieldInstances[1000000063].value;
+        recordInstanceJson.fieldInstances[1000000064].value = docLibDetails.category2 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category2) : recordInstanceJson.fieldInstances[1000000064].value;
+        recordInstanceJson.fieldInstances[1000000065].value = docLibDetails.category3 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category3) : recordInstanceJson.fieldInstances[1000000065].value;
+        recordInstanceJson.fieldInstances[450000167].value = docLibDetails.category4 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category4) : recordInstanceJson.fieldInstances[450000167].value;
+
+        let data = {
+            recordInstance: recordInstanceJson,
+            1000000351: filePath
+        };
+
+        let newDocumentLib: AxiosResponse = await coreApi.multiFormPostWithAttachment(data);
+        console.log('Create Doc Lib API Status =============>', newDocumentLib.status);
+        const newDocumentLibDetails = await axios.get(
+            await newDocumentLib.headers.location
+        );
+        console.log('New Doc Lib Details API Status =============>', newDocumentLibDetails.status);
+
+        return {
+            id: newDocumentLibDetails.data.id,
+            displayId: newDocumentLibDetails.data.displayId
+        };
+    }
+
+    async publishDocumentLibrary(docLibInfo: IIDs): Promise<boolean> {
+        let publishDocLibPayload = DOC_LIB_PUBLISH;
+        publishDocLibPayload.id = docLibInfo.id;
+        publishDocLibPayload.displayId = docLibInfo.displayId;
+
+        let publishDocLibResponse: AxiosResponse = await coreApi.updateRecordInstance('com.bmc.dsm.knowledge:Knowledge Article', docLibInfo.id, publishDocLibPayload);
+        console.log('Publish Doc Lib API Status =============>', publishDocLibResponse.status);
+        return publishDocLibResponse.status == 204;
+    }
+
+    async deleteDocumentLibrary(documentLibTitle: string): Promise<boolean> {
+        let docLibGuid = await coreApi.getDocLibGuid(documentLibTitle);
+        if (docLibGuid) {
+            return await coreApi.deleteRecordInstance('com.bmc.dsm.knowledge:Knowledge Article', docLibGuid);
+        } else console.log('Doc Lib GUID not found =============>', documentLibTitle);
+    }
 }
-
-
 
 export default new ApiHelper();

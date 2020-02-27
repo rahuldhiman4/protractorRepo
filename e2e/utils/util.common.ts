@@ -21,6 +21,7 @@ export class Util {
         advancedSearchResult: '.km-group-list-item__description',
         dropDownChoice: '.ui-select__rx-choice',
         warningMsgText: '.modal-content .modal-title-message, .modal-content .d-modal__title',
+        warningMsgTextKnowledgeStyle: '.d-modal__content .d-modal__content-item',
         configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
     }
 
@@ -31,13 +32,18 @@ export class Util {
     }
 
     async isWarningDialogBoxDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.warningDialog)),2000);
+        await browser.wait(this.EC.visibilityOf($(this.selectors.warningDialog)), 2000);
         return await $(this.selectors.warningDialog).isDisplayed();
     }
 
     async getWarningMessagegText(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.warningMsgText)));
         return await $(this.selectors.warningMsgText).getText();
+    }
+
+    async getWarningMessageTextKnowledgeStyle(): Promise<string> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.warningMsgText)));
+        return await $(this.selectors.warningMsgTextKnowledgeStyle).getText();
     }
 
     async selectDropDown(guid: string, value: string): Promise<void> {
@@ -54,10 +60,10 @@ export class Util {
         //        }));
         var optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
         //        await browser.sleep(1000);
-        var option = await element(by.cssContainingText(optionCss, value));
-        //        await browser.wait(this.EC.elementToBeClickable(option), 2000).then(async function () {
-        await option.click();
-        //        });
+        let option = await element(by.cssContainingText(optionCss, value));
+        await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
+            await option.click();
+        });
     }
 
     async selectDropDown2(dropDownElementFinder: ElementFinder, value: string): Promise<void> {
@@ -116,7 +122,7 @@ export class Util {
         return await $(this.selectors.popUpMsgLocator).getText();
     }
 
-    async scrollUpOrDownTillElement(element:string): Promise<void> {
+    async scrollUpOrDownTillElement(element: string): Promise<void> {
         await browser.executeScript("arguments[0].scrollIntoView();", $(`${element}`).getWebElement());
     }
 
@@ -173,7 +179,7 @@ export class Util {
     }
 
     async clickOnWarningOk(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningOk)),2000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningOk)), 2000);
         await $(this.selectors.warningOk).click();
     }
 
@@ -257,7 +263,7 @@ export class Util {
         let fieldLabel = `[rx-view-component-id='${guid}'] .d-textfield__item`;
         //        await browser.wait(this.EC.visibilityOf($(fieldLabel)));
         return await element(by.cssContainingText(fieldLabel, fieldName)).isPresent().then(async (result) => {
-            if(result){
+            if (result) {
                 return await element(by.cssContainingText(fieldLabel, fieldName)).getText() == fieldName ? true : false;
             } else {
                 console.log("Flowset not present");
@@ -295,6 +301,27 @@ export class Util {
     async getWarningDialogMsg(): Promise<string> {
         return await $(this.selectors.warningDialogMsg).getText();
     }
+
+    async isPopupMsgsMatches(msgs: string[]): Promise<boolean> {
+        let arr: string[] = await this.getAllPopupMsg();
+        msgs.sort();
+        return arr.length === msgs.length && arr.every(
+            (value, index) => (value === msgs[index])
+        );
+    }
+
+    async getAllPopupMsg(): Promise<string[]> {
+        await browser.waitForAngularEnabled(false);
+        let arr: string[] = [];
+        await browser.wait(this.EC.visibilityOf($$(this.selectors.popUpMsgLocator).last()));
+        let msgLocator = await $$(this.selectors.popUpMsgLocator);
+        for (let i: number = 0; i < msgLocator.length; i++) {
+            arr[i] = await msgLocator[i].getText();
+        }
+        await browser.waitForAngularEnabled(true);
+        return arr;
+    }
+
 }
 
 export default new Util();

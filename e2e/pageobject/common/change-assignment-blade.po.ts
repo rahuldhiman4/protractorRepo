@@ -189,7 +189,7 @@ class ChangeAssignmentBlade {
     }
 
     async setAssigneeGroup(group: string): Promise<void> {
-        //await this.selectSupportGroup(group);
+          await this.selectSupportGroup(group);
 //        await browser.wait(this.EC.or(async () => {
 //            let count = await $$(this.selectors.assignee).count();
 //            return count >= 1;
