@@ -19,7 +19,7 @@ import { INotesTemplate } from '../data/api/interface/notes.template.interface.a
 import { FLAG_UNFLAG_KA } from '../data/api/knowledge/flag-unflag.data.api';
 import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/process.data.api';
 import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
-import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH } from '../data/api/ticketing/document-library.data.api';
+import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
 
 axios.defaults.baseURL = browser.baseUrl;
@@ -1085,6 +1085,20 @@ class ApiHelper {
         let publishDocLibResponse: AxiosResponse = await coreApi.updateRecordInstance('com.bmc.dsm.knowledge:Knowledge Article', docLibInfo.id, publishDocLibPayload);
         console.log('Publish Doc Lib API Status =============>', publishDocLibResponse.status);
         return publishDocLibResponse.status == 204;
+    }
+
+    async giveReadAccessToDocLib(docLibInfo: IIDs, orgName: string):Promise<boolean>{
+        let readAccessDocLibPayload = DOC_LIB_READ_ACCESS;
+        readAccessDocLibPayload['processInputValues']['Record Instance ID'] = docLibInfo.id;
+        let orgId = await coreApi.getOrganizationGuid(orgName);
+        if(orgId==null){orgId = await coreApi.getBusinessUnitGuid(orgName);}
+        if(orgId==null){orgId = await coreApi.getDepartmentGuid(orgName);}
+        if(orgId==null){orgId = await coreApi.getSupportGroupGuid(orgName);}
+        readAccessDocLibPayload['processInputValues']['Value'] = orgId;
+        console.log(readAccessDocLibPayload);
+        const readAccessDocLibResponse = await axios.post(commandUri,readAccessDocLibPayload);
+        console.log('Read Access Doc Lib API Status =============>', readAccessDocLibResponse.status);
+        return readAccessDocLibResponse.status == 201;
     }
 
     async deleteDocumentLibrary(documentLibTitle: string): Promise<boolean> {
