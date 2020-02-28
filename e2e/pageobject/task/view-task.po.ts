@@ -37,7 +37,12 @@ class ViewTask {
         assignCompany: '[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] .d-textfield__label',
         taskStatusGuid: 'aea81ee2-85d9-4bb6-adb4-08c29028d45d',
         requesterEmailLink: '[rx-view-component-id="71cbebcb-9fd6-44dc-8039-20d3178f7143"] .ac-link-person-email',
+        attachedfileName: '.rx-attachment-view-item div:nth-child(2) >div.rx-attachment-view-name',
+        attachmentName: 'div.rx-attachment-view-item div:nth-child(2) > div.rx-attachment-view-name',
+        showMoreButton: '.rx-attachment-show-text',
+        saveAdhocTask: '[rx-view-component-id="a19228d0-81a9-4b19-9cb3-b5bd9550966f"] button',
         attachmentFile: '.rx-attachment-view-name',
+        attachmentpath: '.rx-attachment-view .d-icon-cross',
     }
 
     async isAttachedDocumentPresent(fileName: string): Promise<boolean> {
@@ -260,7 +265,30 @@ class ViewTask {
     async getTaskID(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskIdText)),2000);
         return await $(this.selectors.taskIdText).getText();
+
     }
+
+    async isAttachedFileNamePresent(fileName: string): Promise<boolean> {        
+        return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isPresent();
+    }
+
+    async clickOnAttachments(attachmentName: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.attachmentName, attachmentName)).click();
+    }
+
+    async clickOnShowMoreButton(): Promise<void> {
+        await $(this.selectors.showMoreButton).click();
+    }
+
+    async closeAttachment(): Promise<void> {    
+        await element(by.css(this.selectors.attachmentpath)).click();
+    }
+
+    async clickOnSaveViewAdhoctask(): Promise<void> {
+        await $(this.selectors.saveAdhocTask).click();
+    }
+
+
 }
 
 export default new ViewTask();
