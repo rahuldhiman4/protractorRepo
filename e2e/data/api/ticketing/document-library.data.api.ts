@@ -89,3 +89,15 @@ export const DOC_LIB_PUBLISH = {
         }
     }
 }
+
+export const DOC_LIB_READ_ACCESS = {
+    "resourceType": "com.bmc.arsys.rx.application.process.command.StartProcessInstanceCommand",
+    "processDefinitionName": "com.bmc.dsm.knowledge:Knowledge Article - Set Support Group Permissions",
+    "processInputValues": {
+      "Record Instance ID": "AGGADGG8ECDC0AQG3CI7QF5FEVV6AS",
+      "Operation": "ADD",
+      "Type": "GROUP",
+      "Value": "cf1d1b1fdfd540f0a30f753031781241e73195127ed88a8770e902e9d973e80a590eb57eb0f00e50fe9a32f55f6a4eccd97be2bb94c1baa90fcabef696dbf3fd",
+      "Security Type": "READ"
+    }
+}

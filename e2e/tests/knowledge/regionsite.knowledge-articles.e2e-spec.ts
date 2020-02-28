@@ -67,7 +67,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
     const retired: any = Knowledge.Retired;
     const closed: any = Knowledge.Closed;
     const canceled: any = Knowledge.Canceled;
-    const filePath = '../../api/attachment/articleStatus.png';
+    const filePath = '../../../data/ui/attachment/articleStatus.png';
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login(caseBAUser);
@@ -129,6 +129,10 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, canceledStatus)).toBeTruthy("Article with Canceled status not updated.");
+    },3 * 60 * 1000);
+
+    afterEach(async () => {
+        await browser.refresh();
     });
 
     afterAll(async () => {
@@ -265,7 +269,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await loginPage.login(caseBAUser);
     }
 
-    }, 500 * 1000);
+    }, 8 * 60 * 1000);
 
     it('[DRDMV-19565,DRDMV-19567,DRDMV-19568]:Verify the Save functionality of Region and Site fields on Knowledge Articles Create / Edit screen', async () => {
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json");
@@ -451,7 +455,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 500 * 1000);
+    }, 10 * 60 * 1000);
 
     it('[DRDMV-19574]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
         try{
@@ -558,8 +562,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await navigationPage.signOut();
         await loginPage.login(caseBAUser);
     }
-
-    }, 400 * 1000);
+    }, 10 * 60 * 1000);
 
     it('[DRDMV-19575]:Verify the search functionality of Document library console for Region', async () => {
         try{
@@ -655,7 +658,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await navigationPage.signOut();
         await loginPage.login(caseBAUser);
     }
-    }, 400 * 1000);
+    }, 7 * 60 * 1000);
 
     it('[DRDMV-19573]:Verify the document search based on Region and Site from attachments', async () => {
         try{
@@ -811,8 +814,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await navigationPage.signOut();
         await loginPage.login(caseBAUser);
     }
-
-    }, 500 * 1000);
+    }, 9 * 60 * 1000);
 
     it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
        try{
@@ -1399,7 +1401,5 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await navigationPage.signOut();
         await loginPage.login(caseBAUser);
     }
-
-    }, 700 * 1000);
-
+    }, 15 * 60 * 1000);
 })

@@ -80,7 +80,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
         //Create article in in progress status
         articleData.title = title + "_" + inProgressStatus;
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-
         //Create article in draft status
         articleData.title = title + "_" + draftStatus;
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
@@ -123,6 +122,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, canceledStatus)).toBeTruthy("Article with Canceled status not updated.");
     }, 3 * 60 * 1000);
+
+    afterEach(async () => {
+        await browser.refresh();
+    });
 
     afterEach(async () => {
         await browser.refresh();
@@ -785,7 +788,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1ForDocumentLibrary, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);    
         }
         catch (error) {
             throw error;

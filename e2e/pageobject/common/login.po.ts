@@ -12,10 +12,10 @@ class LoginPage {
     }
 
     async login(user: string): Promise<void> {
-        var loginJson = require('../../data/userdata.json');
-        var username: string = loginJson[user].userName;
-        var password: string = loginJson[user].userPassword;
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.loginForm)), 30000);
+        let loginJson = require('../../data/userdata.json');
+        let username: string = loginJson[user].userName;
+        let password: string = loginJson[user].userPassword;
+        await browser.wait(this.EC.visibilityOf($(this.selectors.loginForm)), 10000);
         await $(this.selectors.userName).sendKeys(username);
         await $(this.selectors.password).sendKeys(password);
         await $(this.selectors.signInButton).click();
