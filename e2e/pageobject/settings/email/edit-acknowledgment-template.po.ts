@@ -1,4 +1,4 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 import utilsGrid from "../../../utils/util.grid";
 
@@ -24,6 +24,9 @@ class EditAcknowledgementTemplate {
         saveButton: '.rx-action-button_primary .d-button_primary',
         cancelButton: '.rx-button-bar-action-buttons__inner .d-button_secondary',
         gridGuid: '8b59641c-2fca-4d96-8395-03e232cf05de',
+        msgCheckBox: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] .ui-grid-row-header-cell',
+        editPencilButton: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] .d-icon-left-pencil',
+        statusField: '[rx-view-component-id="a1e0042f-41e7-4c80-9cd8-014786f346e6"] .ui-select-match'
     }
 
     async getTemplateName(): Promise<string> {
@@ -202,6 +205,30 @@ class EditAcknowledgementTemplate {
     }
     async isLocaleDropDownValueDisplayed(arr:string[]): Promise<boolean> {
         return await utilCommon.isDrpDownvalueDisplayed(this.selectors.localeGuid,arr);
+    }
+
+    async isLocalizedMessageButtonEnabled(): Promise<boolean>{
+        return $(this.selectors.localizeMessage).isEnabled();
+    }
+
+    async isTemplateNameEnabled(): Promise<boolean>{
+        return await $(this.selectors.templateName).getAttribute('readonly') =='false';
+    }
+
+    async isStatusFieldEnabled(): Promise<boolean>{
+        return await $(this.selectors.statusField).getAttribute('readonly') =='false';
+    }
+
+    async clickOnBodyCheckbox(): Promise<void>{
+        await $$(this.selectors.msgCheckBox).first().click();
+    }
+
+    async clickOnSubjectCheckbox(): Promise<void>{
+        await $$(this.selectors.msgCheckBox).last().click();
+    }
+
+    async isEditButtonEnabled(): Promise<boolean>{
+        return await $(this.selectors.editPencilButton).isEnabled();
     }
 
 }
