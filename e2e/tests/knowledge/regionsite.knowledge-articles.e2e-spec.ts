@@ -67,7 +67,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
     const retired: any = Knowledge.Retired;
     const closed: any = Knowledge.Closed;
     const canceled: any = Knowledge.Canceled;
-    const filePath = '../../api/attachment/articleStatus.png';
+    const filePath = '../../../data/ui/attachment/articleStatus.png';
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login(caseBAUser);
@@ -455,7 +455,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 8 * 60 * 1000);
+    }, 10 * 60 * 1000);
 
     it('[DRDMV-19574]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
         try{
@@ -562,8 +562,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await navigationPage.signOut();
         await loginPage.login(caseBAUser);
     }
-
-    }, 7 * 60 * 1000);
+    }, 10 * 60 * 1000);
 
     it('[DRDMV-19575]:Verify the search functionality of Document library console for Region', async () => {
         try{
@@ -815,7 +814,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await navigationPage.signOut();
         await loginPage.login(caseBAUser);
     }
-
     }, 9 * 60 * 1000);
 
     it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
@@ -1403,7 +1401,5 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await navigationPage.signOut();
         await loginPage.login(caseBAUser);
     }
-
     }, 15 * 60 * 1000);
-
 })
