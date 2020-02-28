@@ -219,7 +219,10 @@ describe('Login and create case from API', () => {
         await apiHelper.apiLogin('qkatawazi');
         let filePath = "e2e/data/api/attachment/demo.txt";
         let docLib = await apiHelper.createDocumentLibrary(docLibData, filePath);
+        await apiHelper.apiLogin('fritz');   //Always login from the owner group member to assign access 
+        let docLibReadAccess = await apiHelper.giveReadAccessToDocLib(docLib, "Compensation and Benefits");
+        console.log("Read Access defined?..",docLibReadAccess)
         let docLibPublished = await apiHelper.publishDocumentLibrary(docLib);
-        console.log("doc lib created and published?.. ", docLibPublished);
+        console.log("doc lib created, published?.. ", docLibPublished);
     });
 });
