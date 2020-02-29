@@ -94,6 +94,10 @@
 	"werusha": {
 		"userName": "werusha@petramco.com",
 		"userPassword": "Password_1234"
+	},
+	"qheroux": {
+		"userName": "qheroux@petramco.com",
+		"userPassword": "Password_1234"
 	}
 
 }
