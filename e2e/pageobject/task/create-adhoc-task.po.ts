@@ -30,6 +30,7 @@ class CreateAdhocTaskTemplatePage {
         taskSummaryRequiredText: '76b6b259-a085-4d9f-91ac-8c5cbb2bc725',
         assignedCompanyRequiredText: '359f0c65-e48c-458d-8f14-3c2fc85c5cf6',
         assignedGroupRequiredText: '6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d',
+        attachButton: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] button',
         attachmentField: 'input[type="file"]',
     }
 
@@ -176,7 +177,14 @@ class CreateAdhocTaskTemplatePage {
             return false;
         }
     }
+    async isAttachmentButtonEnabled(): Promise<boolean> {
+        return $(this.selectors.attachButton).isEnabled();
+    }
 
-
+    async addAttachmentInDescription(fileToUpload: string): Promise<void> {
+        const absolutePath = resolve(__dirname, fileToUpload);
+        console.log(absolutePath);
+        await $(this.selectors.attachmentField).sendKeys(absolutePath);
+    }
 }
 export default new CreateAdhocTaskTemplatePage();

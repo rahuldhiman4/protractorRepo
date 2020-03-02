@@ -7,11 +7,8 @@ import flowsetEditPage from "../../pageobject/flowset/edit-flowset-config.po";
 import menuItemEditPage from "../../pageobject/settings/application-config/edit-menu-items-config.po";
 import menuItemsConfigConsole from "../../pageobject/settings/application-config/menu-items-config-console.po";
 import assignmentConfigConsole from "../../pageobject/settings/case-management/assignments-config-console.po";
-import automatedStatusTransitionConsole from "../../pageobject/settings/case-management/automated-status-transition-console.po";
 import caseStatusConfig from "../../pageobject/settings/case-management/case-status-config.po";
-import automatedStatusTransitionCreatePage from "../../pageobject/settings/case-management/create-automated-status-config.po";
 import assignmentConfigEditPage from "../../pageobject/settings/case-management/edit-assignments-config.po";
-import automatedStatusTransitionEditPage from "../../pageobject/settings/case-management/edit-automated-status-config.po";
 import caseReadAccessConfigEditPage from "../../pageobject/settings/case-management/edit-read-access-config.po";
 import caseReadAccessConfigConsole from "../../pageobject/settings/case-management/read-access-console.po";
 import notesTemplateConsole from "../../pageobject/settings/common/console-notestemplate.po";
@@ -27,8 +24,12 @@ import configureDataSourceEditPage from "../../pageobject/settings/slm/edit-conf
 import goalTypeEditPage from "../../pageobject/settings/slm/edit-goal-type.po";
 import goalTypeConfigConsole from "../../pageobject/settings/slm/goal-type-config-console.po";
 import taskStatusConfig from "../../pageobject/settings/task-management/task-status-config.po";
-import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
+import relationshipsConfigsPage from "../../pageobject/settings/relationship/relationships-configs.po";
+import emailTemplateConsolePage from "../../pageobject/settings/email/console-email-template.po"
+import editEmailTemplatePage from "../../pageobject/settings/email/edit-email-template.po"
+import acknowledgementTemplateConsolePage from "../../pageobject/settings/email/console-acknowledgment-template.po";
+import editAcknowledementTemplatePage from "../../pageobject/settings/email/edit-acknowledgment-template.po";
 
 describe('Case Manager Read-only Config', () => {
     beforeAll(async () => {
@@ -274,4 +275,91 @@ describe('Case Manager Read-only Config', () => {
         expect(await flowsetEditPage.isAssociateResolutionCodeBtnDisabled()).toBeTruthy("Associate Resolution Code button is enabled");
         await browser.refresh();
     });
+
+    // asahitya
+    it('[DRDMV-18077]: Check Case manager is not able to perform Create Update operation on Case to Case Relationship', async () => {        
+        await navigationPage.gotCreateCase();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Relationships--Case to Case', 'Case to Case Relationship Console - Business Workflows');
+        expect(await relationshipsConfigsPage.isAddRelationButtonEnabled()).toBeFalsy('Add Button is enabled');
+        expect(await relationshipsConfigsPage.isRelationshipNameFieldEnabled('Parent')).toBeFalsy('Parent name is enabled');
+        expect(await relationshipsConfigsPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
+    });
+
+    // asahitya
+    it('[DRDMV-18078]: Check Case manager is not able to perform Create Update operation on Case to Person Relationship', async () => {        
+        await navigationPage.gotCreateCase();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Relationships--Case to Person', 'Case To Person Relationship Console - Business Workflows');
+        expect(await relationshipsConfigsPage.isAddRelationButtonEnabled()).toBeFalsy('Add Button is enabled');
+        expect(await relationshipsConfigsPage.isRelationshipNameFieldEnabled('Witness')).toBeFalsy('Witness name is enabled');
+        expect(await relationshipsConfigsPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
+    });
+
+    // asahitya
+    it('[DRDMV-18079]: Check Case manager is not able to perform Create Update operation on Person to Person Relationship', async () => {        
+        await navigationPage.gotCreateCase();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
+        expect(await relationshipsConfigsPage.isAddRelationButtonEnabled()).toBeFalsy('Add Button is enabled');
+        expect(await relationshipsConfigsPage.isRelationshipNameFieldEnabled('Former Manager')).toBeFalsy('Former Manager name is enabled');
+        expect(await relationshipsConfigsPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
+    });
+
+    //asahitya
+    it('[DRDMV-18063]: Check Case manager is not able to perform Create Update Delete operation on Email->Template', async () => {        
+        await apiHelper.apiLogin('qkatawazi');
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let emailTemplateData = require('../../data/ui/email/email.template.api.json');
+        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
+        emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
+        await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+
+        await navigationPage.gotCreateCase();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+        expect(await emailTemplateConsolePage.isAddEmailTemplateButtonEnabled()).toBeFalsy('Add Email Template Button is enabled');
+        await utilGrid.searchRecord(emailTemplateName);
+        await utilGrid.clickCheckBoxOfValueInGrid(emailTemplateName);
+        expect(await emailTemplateConsolePage.isDeleteEmailTemplateButtonEnabled()).toBeFalsy('Delete Template Button is enabled');
+        await browser.refresh();
+        await utilGrid.searchAndOpenHyperlink(emailTemplateName);
+        expect(await editEmailTemplatePage.isTemplateNameEnabled()).toBeFalsy('Template Name is enabled');
+        expect(await editEmailTemplatePage.isStatusFieldEnabled()).toBeFalsy('Status field is enabled');
+        expect(await editEmailTemplatePage.isLocalizedMessageButtonEnabled()).toBeFalsy('Localized Message button is enabled');
+        await editEmailTemplatePage.clickOnBodyCheckbox();
+        expect(await editEmailTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Body button is enabled');
+        await editEmailTemplatePage.clickOnSubjectCheckbox();
+        expect(await editEmailTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Subject button is enabled');
+        await browser.refresh();
+    });
+
+    //asahitya
+    it('[DRDMV-18061]: Check Case manager is not able to perform Create Update and Delete operation on Email->Acknowledgement template', async () => {        
+        await apiHelper.apiLogin('qkatawazi');
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let emailTemplateData = require('../../data/ui/email/email.template.api.json');
+        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
+        emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
+        await apiHelper.createEmailAcknowledgementTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+
+        await navigationPage.gotCreateCase();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+        expect(await acknowledgementTemplateConsolePage.isAddAcknowledgeTemplateButtonEnabled()).toBeFalsy('Add Email Template Button is enabled');
+        await utilGrid.searchRecord(emailTemplateName);
+        await utilGrid.clickCheckBoxOfValueInGrid(emailTemplateName);
+        expect(await acknowledgementTemplateConsolePage.isDeleteAcknowledgementTemplateButtonEnabled()).toBeFalsy('Delete Template Button is enabled');
+        await browser.refresh();
+        await utilGrid.searchAndOpenHyperlink(emailTemplateName);
+        expect(await editAcknowledementTemplatePage.isTemplateNameEnabled()).toBeFalsy('Template Name is enabled');
+        expect(await editAcknowledementTemplatePage.isStatusFieldEnabled()).toBeFalsy('Status field is enabled');
+        expect(await editAcknowledementTemplatePage.isLocalizedMessageButtonEnabled()).toBeFalsy('Localized Message button is enabled');
+        await editAcknowledementTemplatePage.clickOnBodyCheckbox();
+        expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Body button is enabled');
+        await editAcknowledementTemplatePage.clickOnSubjectCheckbox();
+        expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Subject button is enabled');
+        await browser.refresh();
+    });
+    
 })
