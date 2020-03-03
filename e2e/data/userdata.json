@@ -98,6 +98,10 @@
 	"qheroux": {
 		"userName": "qheroux@petramco.com",
 		"userPassword": "Password_1234"
+	},
+	"casemanagerwithdocmanager": {
+		"userName": "casemanagerwithdocmanager@petramco.com",
+		"userPassword": "Password_1234"
 	}
 
 }
