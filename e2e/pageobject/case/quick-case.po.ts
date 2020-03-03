@@ -34,6 +34,10 @@ class QuickCasePage {
         }
     }
 
+    async isRecommendedKnowledgeEmpty(): Promise<boolean> {
+        return await $$('.km-group .km-group-list-item_empty').get(1).isPresent();
+    }
+
     async selectRequesterName(name: string): Promise<void> {
         let namenew = "@" + name;
         // await browser.wait(this.EC.visibilityOf($(this.selectors.inputBox)));
