@@ -1,4 +1,8 @@
 import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
+import attachmentBladePo from '../../pageobject/attachment/attachment-blade.po';
+import attachmentInformationBladePo from '../../pageobject/attachment/attachment-information-blade.po';
+import caseConsolePo from '../../pageobject/case/case-console.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import { default as viewCasePage, default as viewCasePo } from "../../pageobject/case/view-case.po";
 import changeAssignmentBlade from '../../pageobject/common/change-assignment-blade.po';
@@ -13,6 +17,7 @@ import { default as manageTask, default as manageTaskBladePo } from "../../pageo
 import viewTask from "../../pageobject/task/view-task.po";
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import editTask from "../../pageobject/task/edit-task.po";
 
 describe('Create Adhoc task', () => {
     beforeAll(async () => {
@@ -105,8 +110,8 @@ describe('Create Adhoc task', () => {
         await expect(viewTask.isAssignCompanyDisplayed()).toBeTruthy();
         await expect(viewTask.isAssignGroupTextDisplayed()).toBeTruthy();
         await expect(activitytab.isActivityTextPresent()).toBeTruthy("Activiy no Present");
-       
-    },300*1000);
+
+    }, 300 * 1000);
 
     it('[DRDMV-7130]: [Automatic Task] - Create Ad hoc Task', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
@@ -221,5 +226,107 @@ describe('Create Adhoc task', () => {
         await expect(viewTask.isCaseViewLinkDisplayed()).toBeTruthy('Case View Link is not displayed');
         await navigationPage.signOut();
         await loginPage.login('qtao');
-    }, 180 * 1000);
+    }, 240 * 1000);
+
+    it('[DRDMV-12249,DRDMV-12244]: Verify task creation with attachments & Verify attachment grid from case', async () => {
+        let filePath = '../../data/ui/attachment/demo.txt';
+        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
+        let caseData = {
+            "Requester": "qkatawazi",
+            "Summary": summary
+        }
+        await apiHelper.apiLogin('qtao');
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        await navigationPage.gotoCaseConsole();
+        await caseConsolePo.searchAndOpenCase(newCaseTemplate.displayId);
+
+        //Adhoc task validation
+        await viewCasePage.clickAddTaskButton();
+        await manageTask.clickAddAdhocTaskButton();
+        await expect(adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
+        await adhoctaskTemplate.setSummary(summary);
+        await adhoctaskTemplate.setDescription("Description");
+        await adhoctaskTemplate.addAttachment(filePath);
+        await adhoctaskTemplate.clickOnSaveAdhoctask();
+        await manageTask.clickOnCloseButton();
+        await viewCasePage.clickOnTaskLink(summary);
+        expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeTruthy('Attached file name is missing');
+        await viewTask.clickOnAttachments('demo.txt');
+        expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
+        expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
+
+        //Navigated To Case and Verify attachments grid for task attachments
+        await viewTask.clickOnViewCase();
+        await viewCasePo.clickAttachmentsLink();
+        await attachmentBladePo.clickOnFileName('demo');
+        let finalDate: string = await utilCommon.getCurrentDate();
+        expect(await attachmentInformationBladePo.isDownloadButtonDisplayed()).toBeTruthy('download button is missing');
+        expect(await attachmentInformationBladePo.isCloseButtonDisplayed()).toBeTruthy('close button is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation('File Name')).toBe('File Name: demo', 'FileName is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation('Task')).toBe('Type: Task', 'Type is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation('text/plain')).toBe('Media type: text/plain', 'Media Type is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation('Created date')).toContain(finalDate);
+        expect(await attachmentInformationBladePo.getValuesOfInformation(' Qianru Tao')).toBe('Created by: Qianru Tao', 'Created by is missing');
+        expect(await attachmentInformationBladePo.isTitleNameDisplayed()).toBeTruthy('Title is missing');
+        expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
+        await attachmentInformationBladePo.clickOnDownloadButton();
+        expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
+    });
+
+    it('[DRDMV-12245]: Verify task attachments deletion', async () => {
+        let filePath = '../../data/ui/attachment/demo.txt';
+        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
+        let caseData = {
+            "Requester": "qkatawazi",
+            "Summary": summary,
+        }
+        await apiHelper.apiLogin('qtao');
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        console.log("case is created===", newCaseTemplate.id);
+        await navigationPage.gotoCaseConsole();
+        await caseConsolePo.searchAndOpenCase(newCaseTemplate.displayId);
+
+        //Adhoc task validation
+        await viewCasePage.clickAddTaskButton();
+        await manageTask.clickAddAdhocTaskButton();
+        await expect(adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
+        await adhoctaskTemplate.setSummary(summary);
+        await adhoctaskTemplate.setDescription("Description");
+        await adhoctaskTemplate.addAttachment(filePath);
+        await adhoctaskTemplate.clickOnSaveAdhoctask();
+        await manageTask.clickOnCloseButton();
+        await viewCasePage.clickOnTaskLink(summary);
+        expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeTruthy('Attached file name is not available');
+        await viewTask.clickOnEditTask();
+        await viewTask.closeAttachment();
+        await viewTask.clickOnSaveViewAdhoctask();
+        expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeFalsy('Attached file name is available');
+    });
+
+    it('[DRDMV-12246]: Verify attachment addition on edit task mode', async () => {
+        let filePath = '../../data/ui/attachment/demo.txt';
+        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
+        let caseData = {
+            "Requester": "qkatawazi",
+            "Summary": summary,
+        }
+        await apiHelper.apiLogin('qtao');
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        console.log("case is created===", newCaseTemplate.id);
+        await navigationPage.gotoCaseConsole();
+        await caseConsolePo.searchAndOpenCase(newCaseTemplate.displayId);
+
+        //Adhoc task validation
+        await viewCasePage.clickAddTaskButton();
+        await manageTask.clickAddAdhocTaskButton();
+        await adhoctaskTemplate.setSummary(summary);
+        await adhoctaskTemplate.setDescription("Description");
+        await adhoctaskTemplate.clickOnSaveAdhoctask();
+        await manageTask.clickOnCloseButton();
+        await viewCasePage.clickOnTaskLink(summary);
+        await viewTask.clickOnEditTask();
+        await editTask.addAttachment(filePath);
+        await viewTask.clickOnSaveViewAdhoctask();
+        expect(await viewTask.isAttachedFileNamePresent('demo')).toBeTruthy('Attached file name is not available');
+    });
 });
