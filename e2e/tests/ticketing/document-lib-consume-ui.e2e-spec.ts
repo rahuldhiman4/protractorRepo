@@ -1216,7 +1216,6 @@ describe('Document Library Consume UI', () => {
             await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
             await apiHelper.associatePersonToSupportGroup(loginId2, 'Compensation and Benefits');
 
-            // Create Publish 3 which assigned support group as a 'Staffing' document
             let publishDocLibData1 = {
                 docLibTitle: 'drdmv13508_publish_document3',
                 company: 'Petramco',
@@ -1228,7 +1227,6 @@ describe('Document Library Consume UI', () => {
             let docLib3 = await apiHelper.createDocumentLibrary(publishDocLibData1, filePath3);
             await apiHelper.publishDocumentLibrary(docLib3);
 
-            // Create publish1, publish2,publish5 document libarary for write access of "Compensation and Benefits" group
             let publish: string[] = ['drdmv13508_publish_document1', 'drdmv13508_publish_document2', 'drdmv13508_publish_document5'];
             let files1: string[] = [filePath1, filePath2, filePath5];
             for (let i = 0; i < publish.length; i++) {
@@ -1245,7 +1243,6 @@ describe('Document Library Consume UI', () => {
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData2, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
             }
-            // Create Draft 4th document
             let draftDocLibData = {
                 docLibTitle: 'drdmv13508_draft_document',
                 company: 'Petramco',
@@ -1256,10 +1253,10 @@ describe('Document Library Consume UI', () => {
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
             await apiHelper.apiLogin(loginId2);
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
-            // SingOut & Login in
+
             await navigationPage.signOut();
             await loginPage.login(loginId2);
-            //Create Case
+
             await navigationPage.gotCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
