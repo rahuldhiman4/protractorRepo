@@ -78,5 +78,13 @@ class ConsoleEmailTemplate {
         await utilGrid.searchAndOpenHyperlink(value);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
+
+    async isAddEmailTemplateButtonEnabled(): Promise<boolean>{
+        return await $(this.selectors.addEmailTemplate).isEnabled();
+    }
+
+    async isDeleteEmailTemplateButtonEnabled(): Promise<boolean>{
+        return await $(this.selectors.delete).isEnabled();
+    }
 }
 export default new ConsoleEmailTemplate();

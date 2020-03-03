@@ -7,7 +7,7 @@ class AcknowledgmentTemplateConsolePage {
     selectors = {
             gridGuid: 'deb7a0eb-56a9-432d-9c4a-912cf4644086',
             delete: '[rx-view-component-id="b21478a3-5ca4-4d00-85d3-da3a5bc4ea96"] button',
-            addAckTemplates: '.d-icon-left-plus span',
+            addAckTemplates: '.d-icon-left-plus',
     }
 
     async clickOnAddAcknowlegeTemplateButton(): Promise<void> {
@@ -76,6 +76,14 @@ class AcknowledgmentTemplateConsolePage {
 
     async clearGridFilter(): Promise<void> {
         await utilGrid.clearFilter();
+    }
+
+    async isAddAcknowledgeTemplateButtonEnabled(): Promise<boolean>{
+        return await $(this.selectors.addAckTemplates).isEnabled();
+    }
+
+    async isDeleteAcknowledgementTemplateButtonEnabled(): Promise<boolean>{
+        return await $(this.selectors.delete).isEnabled();
     }
 }
 
