@@ -45,7 +45,7 @@ def printTopic(topic) {
   println("[*] ${topic} ".padRight(80, '-'))
 }
 
-node('master') {
+node('agent||master') {
   //
   def pullRequest = false
   def commitSha = ''
