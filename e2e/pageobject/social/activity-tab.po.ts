@@ -201,11 +201,6 @@ class ActivityTabPage {
         await $(this.selectors.addNoteCancelButton).click();
     }
 
-    async clickOneAttachLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteAttachLink)));
-        await $(this.selectors.addNoteAttachLink).click();
-    }
-
     async clickOnNotesTemplate(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteNotesTemplate)));
         await $(this.selectors.addNoteNotesTemplate).click();
