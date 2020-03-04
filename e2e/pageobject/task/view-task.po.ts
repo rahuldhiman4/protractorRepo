@@ -39,7 +39,8 @@ class ViewTask {
         requesterEmailLink: '[rx-view-component-id="71cbebcb-9fd6-44dc-8039-20d3178f7143"] .ac-link-person-email',
         attachedfileName: '.rx-attachment-view-item div:nth-child(2) >div.rx-attachment-view-name',
         attachmentName: 'div.rx-attachment-view-item div:nth-child(2) > div.rx-attachment-view-name',
-        showMoreButton: '.rx-attachment-show-text',
+        showAttachmentLink: '.rx-attachment-show-text',
+        showAttachmentCounterButton: '.rx-attachment-show-more',
         saveAdhocTask: '[rx-view-component-id="a19228d0-81a9-4b19-9cb3-b5bd9550966f"] button',
         attachmentFile: '.rx-attachment-view-name',
         attachmentpath: '.rx-attachment-view .d-icon-cross',
@@ -277,7 +278,15 @@ class ViewTask {
     }
 
     async clickOnShowMoreButton(): Promise<void> {
-        await $(this.selectors.showMoreButton).click();
+        await $(this.selectors.showAttachmentLink).click();
+    }
+
+    async clickOnShowLessButton(): Promise<void> {
+        await $(this.selectors.showAttachmentLink).click();
+    }
+
+    async clickOnShowMoreCounterButton(showMoreCounter: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.showAttachmentCounterButton, showMoreCounter)).click();
     }
 
     async closeAttachment(): Promise<void> {    
