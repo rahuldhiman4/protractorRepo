@@ -46,6 +46,15 @@ class ApiHelper {
         axios.defaults.headers.common['Cookie'] = `AR-JWT=${response.data}`;
     }
 
+    async apiLoginWithCredential(user: string, password: string): Promise<void> {
+        let response = await axios.post(
+            "api/rx/authentication/loginrequest",
+            { "userName": user, "password": password },
+        )
+        console.log('Login API Status =============>', response.status);
+        axios.defaults.headers.common['Cookie'] = `AR-JWT=${response.data}`;
+    }
+
     async createCase(data: any): Promise<IIDs> {
         const newCase = await axios.post(
             "api/com.bmc.dsm.case-lib/cases",
