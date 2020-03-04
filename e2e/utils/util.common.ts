@@ -302,6 +302,31 @@ export class Util {
         return await $(this.selectors.warningDialogMsg).getText();
     }
 
+    async getCurrentDate(): Promise<string> {
+        let month: string;
+        let date: string;
+
+        let objDate: Date = new Date();
+        let numYear: number = objDate.getFullYear();
+        let year: string = new Number(numYear).toString();
+
+        let numMonth: number = objDate.getUTCMonth() + 1;
+        let month1 = new Number(numMonth);
+        if (month1 <= 9) {
+            month = '0' + month1.toString();
+        } else {
+            month = month1.toString();
+        }
+        let numDate: number = objDate.getUTCDate();
+        let date1 = new Number(numDate);
+        if (date1 <= 9) {
+            date = '0' + date1.toString();
+        } else {
+            date = date1.toString();
+        }
+        return date + '/' + month + '/' + year;
+    }
+    
     async isPopupMsgsMatches(msgs: string[]): Promise<boolean> {
         let arr: string[] = await this.getAllPopupMsg();
         msgs.sort();

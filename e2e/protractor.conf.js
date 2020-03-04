@@ -10,8 +10,8 @@ const specJsonReporter = require('./reporters/spec-json-reporter/jasmine-spec-js
  * @type { import("protractor").Config }
  */
 exports.config = {
-  allScriptsTimeout: 15000,
-  getPageTimeout: 20000,
+  allScriptsTimeout: 25000,
+  getPageTimeout: 30000,
 
   capabilities: {
     browserName: 'chrome',
@@ -41,7 +41,7 @@ exports.config = {
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 80000,
+    defaultTimeoutInterval: 100000,
     print: function () { }
   },
 

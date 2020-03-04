@@ -632,6 +632,27 @@ class ApiHelper {
         return emailTemplateResponse.status == 201;
     }
 
+    async createEmailAcknowledgementTemplate(data: IEmailTemplate): Promise<boolean> {
+        let emailTemplateFile = await require('../data/api/email/email.template.api.json');
+        let templateData = await emailTemplateFile.EmailAcknowledgementTemplateData;
+        let companyGuid = await coreApi.getOrganizationGuid(data.Company);
+        templateData.processInputValues["Company"] = companyGuid;
+        templateData.processInputValues["TemplateName"] = data.TemplateName;
+        templateData.processInputValues["Status"] = data.Status;
+        templateData.processInputValues["Description"] = data.Description;
+        templateData.processInputValues["EmailMessageSubject"] = data.EmailMessageSubject;
+        templateData.processInputValues["EmailMessageBody"] = data.EmailMessageBody;
+        templateData.processInputValues["Module"] = "Cases";
+        templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.case-lib:Case";
+        const emailTemplateResponse = await axios.post(
+            commandUri,
+            templateData
+        );
+
+        console.log('Create Email Template API Status =============>', emailTemplateResponse.status);
+        return emailTemplateResponse.status == 201;
+    }
+
     async createNotesTemplate(module: string, data: INotesTemplate): Promise<boolean> {
         let notesTemplateFile = await require('../data/api/social/notes.template.api.json');
         let templateData = await notesTemplateFile.NotesTemplateData;
