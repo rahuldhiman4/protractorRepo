@@ -32,8 +32,8 @@ export class Util {
     }
 
     async isWarningDialogBoxDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.warningDialog)), 2000);
-        return await $(this.selectors.warningDialog).isDisplayed();
+        //await browser.wait(this.EC.visibilityOf($(this.selectors.warningDialog)), 2000);
+        return await $(this.selectors.warningDialog).isPresent();
     }
 
     async getWarningMessagegText(): Promise<string> {
