@@ -442,7 +442,7 @@ describe('Document Library', () => {
         expect(await createKnowlegePo.isDocumentTemplatePresent('Document')).toBeFalsy('Document heading is not displayed');
     });
 
-    fit('[DRDMV-13040,DRDMV-13078]: Verify document can be Edited in draft status', async () => {
+    it('[DRDMV-13040,DRDMV-13078]: Verify document can be Edited in draft status', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
@@ -479,5 +479,4 @@ describe('Document Library', () => {
         await expect(newTime[0]+":"+newTime[1]).toBe(systemTime[0]+":"+systemTime[1]);
         await documentLibraryConsolePo.removeColumnOnGrid(column);
     });
-
 })
