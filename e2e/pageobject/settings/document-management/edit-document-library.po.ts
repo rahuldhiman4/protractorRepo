@@ -7,6 +7,7 @@ class EditDocumentLibraryPage {
         titleTextBox: '[rx-view-component-id="64f47195-458a-43ee-8169-cab57666a856"] .rx-character-field__input',
         company: '[rx-view-component-id="0484edce-0480-421f-9d7f-105447889a49"] .ui-select-toggle',
         ownerGroup: '[rx-view-component-id="048757f9-8d97-4bcc-8cd9-ad236b093157"] .btn-default',
+        ownerGroupGuid: '048757f9-8d97-4bcc-8cd9-ad236b093157',
         statusGuid: '0a8b7179-dd0a-47f9-8515-7c7aceda3118',
         status: '[rx-view-component-id="0a8b7179-dd0a-47f9-8515-7c7aceda3118"] .btn-default',
         saveButton: '[rx-view-component-id="8035353f-acb0-4bb5-a5c5-fe7626c01b3e"] button',
@@ -48,12 +49,17 @@ class EditDocumentLibraryPage {
         clickOnReadAccessDropDown: '.ui-select-bootstrap button',
         searchFieldReadAccessDropDown: '.field input',
         readAccessDropDownValue: '.options-box .options li',
-        assignmentDropDownList: '.rx-assignment_modal_filters .rx-assignment-select'
+        assignmentDropDownList: '.rx-assignment_modal_filters .rx-assignment-select',
+        descriptionField: '[rx-view-component-id="407cbfa2-3ee5-457c-913f-53d561e3be8c"] textarea',
 
     }
 
     async setShareExternallyToggleButton(value: boolean): Promise<void> {
         await utilCommon.selectToggleButton(this.selectors.shareExternallyToggleButtonGuid, value);
+    }
+
+    async selectOwnerGroup(ownerGroup: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.ownerGroupGuid, ownerGroup);
     }
 
     async selectAddCompanyDropDownOfReadAccess(value: string): Promise<void> {
@@ -215,6 +221,13 @@ class EditDocumentLibraryPage {
     async isTitleTextBoxDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.titleTextBox)));
         return await $(this.selectors.titleTextBox).getAttribute('readonly') == 'true';
+    }
+
+    async setTitle(title: string): Promise<void> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.titleTextBox)));
+        await $(this.selectors.titleTextBox).clear();
+        await $(this.selectors.titleTextBox).sendKeys(title);
+
     }
 
     async isCompanyDropDownDisabled(): Promise<boolean> {
