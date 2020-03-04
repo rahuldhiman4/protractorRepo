@@ -13,11 +13,11 @@ import taskTemplate from "../../pageobject/settings/task-management/create-taskt
 import activitytab from "../../pageobject/social/activity-tab.po";
 import taskConsole from "../../pageobject/task/console-task.po";
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
+import editTask from "../../pageobject/task/edit-task.po";
 import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import editTask from "../../pageobject/task/edit-task.po";
 
 describe('Create Adhoc task', () => {
     beforeAll(async () => {
@@ -328,5 +328,50 @@ describe('Create Adhoc task', () => {
         await editTask.addAttachment(filePath);
         await viewTask.clickOnSaveViewAdhoctask();
         expect(await viewTask.isAttachedFileNamePresent('demo')).toBeTruthy('Attached file name is not available');
+    });
+
+    it('[DRDMV-12248,DRDMV-12247,DRDMV-12250]: Verify max attachments added to task', async () => {
+        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
+        let caseData = {
+            "Requester": "qkatawazi",
+            "Summary": summary
+        }
+        await apiHelper.apiLogin('qtao');
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        console.log("case is created===", newCaseTemplate.id);
+        await navigationPage.gotoCaseConsole();
+        await caseConsolePo.searchAndOpenCase(newCaseTemplate.displayId);
+
+        //Adhoc task validation
+        await viewCasePage.clickAddTaskButton();
+        await manageTask.clickAddAdhocTaskButton();
+        await expect(adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
+        await adhoctaskTemplate.setSummary(summary);
+        await adhoctaskTemplate.setDescription("Description");
+        expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeTruthy('Attachment button is disabled');
+        let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf', 'bwfXlsx.xlsx', 'demo.txt'];
+        for (let i: number = 0; i < fileName1.length; i++) {
+            await adhoctaskTemplate.addAttachmentInDescription(`../../data/ui/attachment/${fileName1[i]}`);
+        }
+        expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeFalsy('Attachment button is enabled');
+        await adhoctaskTemplate.clickOnSaveAdhoctask();
+        if (await utilCommon.isWarningDialogBoxDisplayed()) {
+            await utilCommon.clickOnWarningOk();
+        }
+        await manageTask.clickOnCloseButton();
+        await viewCasePage.clickOnTaskLink(summary);
+        await viewTask.clickOnShowMoreButton();
+        let fileName2: string[] = ['articleStatus', 'bwfJpg', 'bwfJpg1', 'bwfJpg2', 'bwfJpg3', 'bwfJpg4', 'bwfJson1', 'bwfJson2', 'bwfJson3', 'bwfJson4', 'bwfJson5', 'bwfPdf', 'bwfPdf1', 'bwfPdf2', 'bwfPdf3', 'bwfPdf4', 'bwfWord1', 'bwfWord2', 'bwfXlsx', 'demo'];
+        let fileCount = fileName2.length;
+        for (let j: number = 0; j < fileCount; j++) {
+            expect(await viewTask.isAttachedFileNamePresent(`${fileName2[j]}`)).toBeTruthy('Attached file name is missing');
+        }
+        await viewTask.clickOnShowLessButton();
+        let fileCount1: number = fileCount - 3;
+        let showMoreCounter: string = fileCount1 + " more";
+        await viewTask.clickOnShowMoreCounterButton(showMoreCounter);
+        for (let j: number = 0; j < fileCount; j++) {
+            expect(await viewTask.isAttachedFileNamePresent(`${fileName2[j]}`)).toBeTruthy('Attached file name is missing');
+        }
     });
 });
