@@ -19,7 +19,7 @@ class AttachDocumentBlade {
 
     }
 
-    async isDocumentListHeadingDisplayed(): Promise<string> {
+    async getTextOfDocumentListHeading(): Promise<string> {
         return await $$(this.selectors.listHeading).get(0).getText();
     }
 
