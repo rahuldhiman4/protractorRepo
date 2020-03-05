@@ -1,4 +1,4 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class EditDocumentLibraryPage {
@@ -21,11 +21,14 @@ class EditDocumentLibraryPage {
         shareExternallyToggleButtonGuid: '422e33d2-be19-42f7-985b-af73daf4d87f',
         keywords: '.d-input-tags input',
         categoryTier1: '[rx-view-component-id="6d7ee978-79a7-4460-90d6-e0c9841fd0f0"] .ui-select-toggle',
+        categoryTier1Guid: '6d7ee978-79a7-4460-90d6-e0c9841fd0f0',
         categoryTier2: '[rx-view-component-id="400ac801-1c40-43c7-87c3-a21e1d5531e9"] .ui-select-toggle',
         categoryTier3: '[rx-view-component-id="6d35f3df-e3eb-4e6c-8ba8-ff0c683a9bb7"] .ui-select-toggle',
         categoryTier4: '[rx-view-component-id="a82103c1-077b-4bae-8ef5-69093da58be8"] .ui-select-toggle',
         region: '[rx-view-component-id="836aa6d7-1d77-46b4-b270-50d7d25424ba"] .ui-select-toggle',
+        regionGuid: '836aa6d7-1d77-46b4-b270-50d7d25424ba',
         site: '[rx-view-component-id="b22d4dc1-83b5-4b06-a2c0-10e3865fb46e"] .ui-select-toggle',
+        siteGuid: 'b22d4dc1-83b5-4b06-a2c0-10e3865fb46e',
         tabs: '.rx-tab',
         supportGroupAccessButton: '.rx-case-access-block .ac-manage-support',
         addCompany: '.flex-item .ac-company-field .dropdown-toggle',
@@ -50,6 +53,17 @@ class EditDocumentLibraryPage {
         readAccessDropDownValue: '.options-box .options li',
         assignmentDropDownList: '.rx-assignment_modal_filters .rx-assignment-select'
 
+    }
+    async setCategoryTier1(value: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.categoryTier1Guid, value);
+    }
+
+    async setRegion(value: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.regionGuid, value);
+    }
+
+    async setSite(value: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.siteGuid, value);
     }
 
     async setShareExternallyToggleButton(value: boolean): Promise<void> {

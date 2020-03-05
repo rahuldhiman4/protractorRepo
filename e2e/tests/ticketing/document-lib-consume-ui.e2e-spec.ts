@@ -11,7 +11,7 @@ import attachDocumentBladePo from '../../pageobject/common/attach-document-blade
 import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import resourcesTabPo from '../../pageobject/common/resources-tab.po';
+import { default as resources, default as resourcesTabPo } from '../../pageobject/common/resources-tab.po';
 import composeMailPo from '../../pageobject/email/compose-mail.po';
 import documentLibraryConsolePo from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
@@ -493,7 +493,7 @@ describe('Document Library Consume UI', () => {
                 await apiHelper.apiLogin('qkatawazi');
                 let getFilePath1 = files1[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
-                await apiHelper.apiLogin('qheroux');   
+                await apiHelper.apiLogin('qheroux');
                 await apiHelper.giveReadAccessToDocLib(docLib, "Compensation and Benefits");
                 await apiHelper.publishDocumentLibrary(docLib);
             }
@@ -1205,9 +1205,9 @@ describe('Document Library Consume UI', () => {
     it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
         try {
             let loginId2 = 'casemanagerwithdocmanager';
-            
-            let username= `${loginId2}@petramco.com`;
-            let password='Password_1234';
+
+            let username = `${loginId2}@petramco.com`;
+            let password = 'Password_1234';
             await apiHelper.apiLogin('tadmin');
             var caseAgentuserData = {
                 "firstName": "CaseManager",
@@ -1241,7 +1241,7 @@ describe('Document Library Consume UI', () => {
                 }
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData2.docLibTitle);
-                await apiHelper.apiLoginWithCredential(username,password);
+                await apiHelper.apiLoginWithCredential(username, password);
                 let getFilePath1 = files1[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData2, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
@@ -1254,11 +1254,11 @@ describe('Document Library Consume UI', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
-            await apiHelper.apiLoginWithCredential(username,password);
+            await apiHelper.apiLoginWithCredential(username, password);
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
 
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials(username,password);
+            await loginPage.loginWithCredentials(username, password);
             await navigationPage.gotCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
@@ -1308,5 +1308,82 @@ describe('Document Library Consume UI', () => {
             await loginPage.login('qkatawazi');
         }
     }, 340 * 1000);
+
+    //kgaikwad
+    it('[DRDMV-13534]: Search and UI Validation of document library search view', async () => {
+        let addNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let publish: string[] = ['drdmv13534_publish_document1', 'drdmv13534_publish_document2', 'drdmv13534_publish_document3', 'drdmv13534_publish_document4', 'drdmv13534_publish_document5', 'drdmv13534_publish_document6', 'drdmv13534_publish_document7', 'drdmv13534_publish_document8', 'drdmv13534_publish_document9', 'drdmv13534_publish_document10', 'drdmv13534_publish_document11'];
+        let files1: string[] = [filePath1, filePath2, filePath3, filePath4, filePath5, filePath1, filePath2, filePath3, filePath4, filePath5, filePath1];
+        for (let i = 0; i < publish.length; i++) {
+            let publishDocLibData1 = {
+                docLibTitle: publish[i],
+                company: 'Petramco',
+                ownerGroup: 'Compensation and Benefits',
+            }
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
+            await apiHelper.apiLogin(loginId);
+            let getFilePath1 = files1[i];
+            let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
+            await apiHelper.publishDocumentLibrary(docLib);
+        }
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publish[0]);
+        await editDocumentLibraryPo.selectStatus('Draft');
+        await editDocumentLibraryPo.clickOnSaveButton();
+        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publish[0]);
+        await editDocumentLibraryPo.setCategoryTier1('Applications');
+        await editDocumentLibraryPo.setRegion('Australia');
+        await editDocumentLibraryPo.setSite('Canberra');
+        await editDocumentLibraryPo.selectStatus('Published');
+        await editDocumentLibraryPo.clickOnSaveButton();
+        //Create Case
+        await navigationPage.gotCreateCase();
+        await createCasePo.selectRequester('qtao');
+        await createCasePo.setSummary(caseSummary);
+        await createCasePo.clickSaveCaseButton();
+        await createCasePo.clickGoToCaseButton();
+
+        await activityTabPo.addActivityNote(addNoteText);
+        await activityTabPo.clickOnAttachLink();
+        await attachDocumentBladePo.clickOnAdvanceSearchButton();
+        await attachDocumentBladePo.searchRecord(publish[0]);
+        await expect(await attachDocumentBladePo.isBladeTitleDisplayed()).toBeTruthy('Failuer: Attach Document Blade title is missing');
+        await expect(await attachDocumentBladePo.isDocumentListHeadingDisplayed()).toContain('Document Library ');
+        await expect(await attachDocumentBladePo.isAttachFromLocalDriveButtonDisplayed()).toBeTruthy('Failuer: Attach from local drive button is missing');
+        await expect(await attachDocumentBladePo.isAttachButtonDisplayed()).toBeTruthy('Failuer: Attach button is missing');
+        await expect(await attachDocumentBladePo.isCancelButtonDisplayed()).toBeTruthy('Failuer: cancel button is missing');
+        await expect(await attachDocumentBladePo.isDocumentTitleDisplayed(publish[0])).toBeTruthy('Failuer: bwfJpg.jpg file name is missing');
+        let objDate: Date = new Date();
+        let numYear: number = objDate.getFullYear();
+        let year = new Number(numYear).toString();
+        await expect(await attachDocumentBladePo.isUpdatedDateDisplayed(year)).toBeTruthy('Failuer: cancel button is missing');
+        await expect(await attachDocumentBladePo.isDocumentAttachmentNameDisplayed('bwfJpg.jpg')).toBeTruthy('Failuer: attached file name is missing');
+        await attachDocumentBladePo.isDocumentLibaryPresent(publish[0]);
+        await attachDocumentBladePo.searchRecord('%');
+        await expect(await attachDocumentBladePo.isPaginationPresent()).toBeTruthy('Failuer: Pagination is missing');
+        await resources.clickOnAdvancedSearchSettingsIconToOpen();
+        await resources.selectAdvancedSearchFilterOption('Operational Category 1', 'Applications');
+        await resources.selectAdvancedSearchFilterOption('Region', 'Australia');
+        await resources.selectAdvancedSearchFilterOption('Site', 'Canberra');
+        await resources.clickOnAdvancedSearchFiltersButton('Apply');
+        await attachDocumentBladePo.selectDocument();
+        await attachDocumentBladePo.clickOnAttachButton();
+        await activityTabPo.clickOnAttachLink();
+        await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
+        await activityTabPo.clickOnPostButton();
+        await utilCommon.waitUntilSpinnerToHide();
+        await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
+        await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
+        await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
+        await expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
+
+        await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
+        await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
+        await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
+        await expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+    }, 240 * 1000);
 
 })
