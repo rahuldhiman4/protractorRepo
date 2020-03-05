@@ -79,9 +79,6 @@ describe('Email', () => {
         await manageTaskBladePo.clickTaskLinkOnManageTask(automatedTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         await emailPo.clickOnEmailIconLink();
-        await expect(await emailPo.getEmailBody()).toContain('Regards');
-        await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
-        await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
         await emailPo.clickOnDiscardButton();
         await utilCommon.clickOnWarningOk();
         await viewTask.clickOnViewCase();
@@ -89,9 +86,6 @@ describe('Email', () => {
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         await emailPo.clickOnEmailIconLink();
-        await expect(await emailPo.getEmailBody()).toContain('Regards');
-        await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
-        await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
         await emailPo.clickOnDiscardButton();
         await utilCommon.clickOnWarningOk();
         await viewTask.clickOnViewCase();
@@ -99,9 +93,6 @@ describe('Email', () => {
         await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         await emailPo.clickOnEmailIconLink();
-        await expect(await emailPo.getEmailBody()).toContain('Regards');
-        await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
-        await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
         await emailPo.clickOnDiscardButton();
         await utilCommon.clickOnWarningOk();
 

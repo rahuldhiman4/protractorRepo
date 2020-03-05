@@ -30,9 +30,17 @@ exports.config = {
   },
 
   suites: {
-    full: [
-      './tests/**/*.e2e-spec.ts',
-    ]
+    attachment: ['./tests/attachment/*.e2e-spec.ts'],
+    case: ['./tests/case/*.e2e-spec.ts'],
+    cognitive: ['./tests/cognitive/*.e2e-spec.ts'],
+    email: ['./tests/email/*.e2e-spec.ts'],
+    flowset: ['./tests/flowset/*.e2e-spec.ts'],
+    knowledge: ['./tests/knowledge/*.e2e-spec.ts'],
+    notification: ['./tests/notification/*.e2e-spec.ts'],
+    slm: ['./tests/slm/*.e2e-spec.ts'],
+    social: ['./tests/social/*.e2e-spec.ts'],
+    task: ['./tests/task/*.e2e-spec.ts'],
+    ticketing: ['./tests/ticketing/*.e2e-spec.ts'],
   },
 
   directConnect: false,
