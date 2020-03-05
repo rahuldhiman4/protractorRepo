@@ -1204,7 +1204,10 @@ describe('Document Library Consume UI', () => {
     //kgaikwad
     it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
         try {
-            let loginId2 = 'casemanagerwithdocmanager'
+            let loginId2 = 'casemanagerwithdocmanager';
+            
+            let username= `${loginId2}@petramco.com`;
+            let password='Password_1234';
             await apiHelper.apiLogin('tadmin');
             var caseAgentuserData = {
                 "firstName": "CaseManager",
@@ -1238,7 +1241,7 @@ describe('Document Library Consume UI', () => {
                 }
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData2.docLibTitle);
-                await apiHelper.apiLogin(loginId2);
+                await apiHelper.apiLoginWithCredential(username,password);
                 let getFilePath1 = files1[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData2, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
@@ -1251,12 +1254,11 @@ describe('Document Library Consume UI', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
-            await apiHelper.apiLogin(loginId2);
+            await apiHelper.apiLoginWithCredential(username,password);
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
 
             await navigationPage.signOut();
-            await loginPage.login(loginId2);
-
+            await loginPage.loginWithCredentials(username,password);
             await navigationPage.gotCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
@@ -1306,4 +1308,5 @@ describe('Document Library Consume UI', () => {
             await loginPage.login('qkatawazi');
         }
     }, 340 * 1000);
+
 })
