@@ -40,11 +40,11 @@ node("Protractor"){
       bat """if not exist "${dirName}" mkdir "${dirName}" """
       runList["${suiteName}"] = {
         stage('build ' + suiteName) {
-          // dir(dirName){
-          //   git branch: 'master',
-          //   credentialsId: '807c8e4d-6d6c-47e1-a62e-ef2de91d6dce',
-          //   url: 'https://github.bmc.com/DSM-Apps/bwf-e2e-protractor.git'
-          // }
+          dir(dirName){
+            git branch: 'master',
+            credentialsId: '807c8e4d-6d6c-47e1-a62e-ef2de91d6dce',
+            url: 'https://github.bmc.com/DSM-Apps/bwf-e2e-protractor.git'
+          }
           bat """if exist "./${dirName}/e2e/reports" RMDIR /S /Q "./${dirName}/e2e/reports" """
           bat """npm --prefix ./${dirName}/ install ./${dirName}/"""
           bat """npm --prefix ./${dirName}/ run webdriver-update ./${dirName}/"""
@@ -105,7 +105,7 @@ node("Protractor"){
   try {
     stage('Send Email'){
       emailext (
-        subject: "BWF UI - Protractor Automation Report Build # ${env.BUILD_NUMBER}",
+        subject: "BWF UI - Protractor Automation Parallel Run Report Build # ${env.BUILD_NUMBER}",
         body:
           """
           <style type="text/css">
@@ -133,7 +133,7 @@ node("Protractor"){
               padding: 5px;
             }
           </style>
-          <h3>BWF UI - Protractor Automation Report</h3>
+          <h3>BWF UI - Protractor Automation Parallel Run Report</h3>
           <table>
             <tr><td class=bold>Environment Name: </td><td>${envNameList}</td></tr>
             <tr><td class=bold>Build URL:</td><td><a href="${env.BUILD_URL}">View Jenkins</a></td></tr>
