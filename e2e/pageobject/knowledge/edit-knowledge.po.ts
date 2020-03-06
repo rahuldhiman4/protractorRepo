@@ -1,4 +1,4 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 class EditKnowledgePage {
@@ -22,12 +22,15 @@ class EditKnowledgePage {
         editSiteGuid: 'aa218b2b-4fa3-4525-82f3-3e0f9bfc4193',
         knowledgeTitle: '[rx-view-component-id="cd9b041b-6a82-4322-8a07-165a370ad0dd"] input',
         statusChnageBlade: '.modal-content',
-        knowledgeReviewHeader:'[rx-view-component-id="1d906e6a-cf0e-4358-94e8-d86ff0733068"] p span',
-        knowledgeRevierGroup:'[rx-view-component-id="0b622151-c917-4d1c-97e4-3a9b7f082e2d"] .btn-default',
-        KnowledgeReviewer:'[rx-view-component-id="387dfda7-4f77-4df0-9ac0-6f4fb83b6fe7"] .btn-default',
-        knowledgeReviewerValue:'[rx-view-component-id="387dfda7-4f77-4df0-9ac0-6f4fb83b6fe7"] .ui-select-match-text',
-        siteValue:'[rx-view-component-id="453a86af-6544-4b36-b47c-98484a7c2235"] .ui-select-match-text',
-        removeRegionValues:'[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"] .glyphicon-remove'
+        knowledgeReviewHeader: '[rx-view-component-id="1d906e6a-cf0e-4358-94e8-d86ff0733068"] p span',
+        knowledgeRevierGroup: '[rx-view-component-id="0b622151-c917-4d1c-97e4-3a9b7f082e2d"] .btn-default',
+        KnowledgeReviewer: '[rx-view-component-id="387dfda7-4f77-4df0-9ac0-6f4fb83b6fe7"] .btn-default',
+        knowledgeReviewerValue: '[rx-view-component-id="387dfda7-4f77-4df0-9ac0-6f4fb83b6fe7"] .ui-select-match-text',
+        siteValue: '[rx-view-component-id="453a86af-6544-4b36-b47c-98484a7c2235"] .ui-select-match-text',
+        removeRegionValues: '[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"] .glyphicon-remove',
+        articleEditOption: '[rx-view-component-id="1592eebc-8777-48cc-ae6c-d2b82a60a972"] button',
+        articleMinorEditOptionHelpText: '[rx-view-component-id="27c1d328-8b58-4f1f-9b78-61d99f18dcc6"] p',
+        articleMajorEditOptionHelpText: '[rx-view-component-id="3ba9e93b-6d48-4e15-ab0a-ca19f12b5a41"] p'
     }
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
@@ -150,11 +153,11 @@ class EditKnowledgePage {
         return await $(this.selectors.reviewerfldStatusBlade).getAttribute("disabled") == "true";
     }
 
-    async isReviewerFieldDisabledInEdit():Promise<boolean>{
+    async isReviewerFieldDisabledInEdit(): Promise<boolean> {
         return await $(this.selectors.KnowledgeReviewer).getAttribute("disabled") == "true";
     }
 
-    async isReviewerGroupFieldDisabledInEdit():Promise<boolean>{
+    async isReviewerGroupFieldDisabledInEdit(): Promise<boolean> {
         return await $(this.selectors.KnowledgeReviewer).getAttribute("disabled") == "true";
     }
 
@@ -171,8 +174,8 @@ class EditKnowledgePage {
         return await utilCommon.getSelectedFieldValue(fieldName);
     }
 
-    async getSiteSelectedValue(fieldName:string): Promise<string> {
-       return await utilCommon.getSelectedFieldValue(fieldName);
+    async getSiteSelectedValue(fieldName: string): Promise<string> {
+        return await utilCommon.getSelectedFieldValue(fieldName);
     }
 
     async clickOnSaveButtonOfKA(): Promise<void> {
@@ -187,17 +190,53 @@ class EditKnowledgePage {
         await $(this.selectors.knowledgeTitle).sendKeys(value);
     }
 
-    async getKnowledgeReviewHeader():Promise<string>{
+    async getKnowledgeReviewHeader(): Promise<string> {
         return await $(this.selectors.knowledgeReviewHeader).getText();
     }
 
-    async getReviewerValue():Promise<string>{
-       return await $(this.selectors.knowledgeReviewerValue).getText()
+    async getReviewerValue(): Promise<string> {
+        return await $(this.selectors.knowledgeReviewerValue).getText()
     }
-    
-    async removeRegionValue():Promise<void>{
+
+    async removeRegionValue(): Promise<void> {
         await $(this.selectors.removeRegionValues).click();
     }
+
+    async isArticleEditOptionDisplayed(editOption: string): Promise<boolean> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleEditOption)),2000);
+        return await element(by.cssContainingText(this.selectors.articleEditOption, editOption)).isPresent();
+    }
+
+    async isArticleEditOptionDisabled(editOption: string): Promise<boolean> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleEditOption)),2000);
+        return await element(by.cssContainingText(this.selectors.articleEditOption, editOption)).isPresent();
+    }
+
+    async selectArticleEditOption(editOption: string): Promise<void> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleEditOption)),2000);
+        await element(by.cssContainingText(this.selectors.articleEditOption, editOption)).click();
+    }
+
+    async isHelpTextMinorEditOptionDisplayed(): Promise<boolean> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleMinorEditOptionHelpText)),2000);
+        return await $(this.selectors.articleMinorEditOptionHelpText).isPresent();
+    }
+
+    async isHelpTextForMajorEditOptionDisplayed(): Promise<boolean> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleMajorEditOptionHelpText)),2000);
+        return await $(this.selectors.articleMajorEditOptionHelpText).isPresent();
+    }
+
+    async getHelpTextForMinorEditOptionDisplayed(): Promise<string> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleMinorEditOptionHelpText)),2000);
+        return await $(this.selectors.articleMinorEditOptionHelpText).getText();
+    }
+
+    async getHelpTextForMajorEditOptionDisplayed(): Promise<string> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleMajorEditOptionHelpText)),2000);
+        return await $(this.selectors.articleMajorEditOptionHelpText).getText();
+    }
+
 }
 
 export default new EditKnowledgePage();

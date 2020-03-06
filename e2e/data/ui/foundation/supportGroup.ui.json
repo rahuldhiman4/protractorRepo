@@ -19,5 +19,10 @@
     "SuppGrpData12111": {
         "orgName": "UI-SupportGroup-12111",
         "relatedOrgId": null
+    },
+    "SuppGrpData2002": {
+        "orgName": "UI-SupportGroup-2002",
+        "relatedOrgId": null,
+        "domainTag":"AccountsDomain"
     }
 }

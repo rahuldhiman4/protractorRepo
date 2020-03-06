@@ -267,12 +267,13 @@ class ApiCoreUtil {
         for (let i: number = 0; i < Object.keys(parameters).length; i++) {
             let key: string = Object.keys(parameters)[i].toString();
             let value: any = Object.values(parameters)[i];
-            if(key == 'recordInstance'){
+            if(key == 'recordInstance' || key == 'associationOperations'){
                 bodyFormData.append(key, JSON.stringify(value));
             } else if (key == '1000000351') {
                 bodyFormData.append(key, fs.createReadStream(value.toString()));
             } else bodyFormData.append(key, value);
         }
+        
         const headers = {
             ...bodyFormData.getHeaders(),
         };

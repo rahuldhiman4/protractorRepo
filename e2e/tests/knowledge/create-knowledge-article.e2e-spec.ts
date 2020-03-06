@@ -37,6 +37,7 @@ describe('Knowledge Article', () => {
         await foundationData('Petramco');
         await foundationData19501('Petramco');
         await foundationData19082('Petramco');
+        await foundationData2002('Psilon');
     });
 
     afterAll(async () => {
@@ -44,6 +45,9 @@ describe('Knowledge Article', () => {
         await apiHelper.apiLogin("tadmin");
         let domainTag = await apiHelper.createDomainTag(domainTagDataFile['DomainTagData']);
         await apiHelper.disableDomainTag(domainTag);
+        let domainTagPsilon = await apiHelper.createDomainTag(domainTagDataFile['DomainTagDataPsilon']);
+        await apiHelper.disableDomainTag(domainTagPsilon);
+
     });
 
     afterEach(async () => {
@@ -309,28 +313,60 @@ describe('Knowledge Article', () => {
         await apiHelper.associatePersonToCompany(personData.userId, company)
     }
 
+    async function foundationData2002(company: string) {
+        await apiHelper.apiLogin('tadmin');
+        let domainTagData = domainTagDataFile['DomainTagDataPsilon'];
+        let businessData = (businessDataFile['BusinessUnitData2002']);
+        let departmentData = departmentDataFile['DepartmentData2002'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData2002'];
+        let personData = personDataFile['PersonData2002'];
+        await apiHelper.createDomainTag(domainTagData);
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        departmentData.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData);
+        suppGrpData.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData);
+        // await apiHelper.createNewUser(personData);
+        await apiHelper.associatePersonToSupportGroup('dbomei', suppGrpData.orgName);
+        // await apiHelper.associatePersonToCompany(personData.userId, company)
+    }
+
     it('[DRDMV-19082]: Domain config should be honored while Assigning Assignee and Reviewer', async () => {
         //All below BU, Dep and Supp grps are tagged to DomainName
-        let businessData = businessDataFile['BusinessUnitData19082'];
-        let departmentData = departmentDataFile['DepartmentData19082'];
-        let suppGrpData = supportGrpDataFile['SuppGrpData19082'];
-        let personData = personDataFile['PersonData19082'];
+        await navigationPage.signOut();
+        let knowledgeSetTitleStr = 'versionedKnowledgeSet_' + randomStr;
+        let knowledgeSetData = {
+            knowledgeSetTitle: `${knowledgeSetTitleStr}`,
+            knowledgeSetDesc: `${knowledgeSetTitleStr}+'Desc'`,
+            company: 'Psilon'
+        }
+
+        await apiHelper.apiLogin('gderuno');
+        let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
+
+        let businessData = businessDataFile['BusinessUnitData2002'];
+        let departmentData = departmentDataFile['DepartmentData2002'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData2002'];
+        let personData = personDataFile['PersonData2002'];
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
-        let knowledgeData = knowledgeDataFile['DRDMV-19082'];
+        let knowledgeData = knowledgeDataFile['DRDMV-2002'];
+        await loginPage.login('werusha');
         await navigationPage.gotoCreateKnowledge();
         await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
         await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-        await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+        await createKnowledgePage.selectKnowledgeSet(knowledgeSetTitleStr);
         await createKnowledgePage.clickChangeAssignmentButton();
         await changeAssignmentBlade.selectCompany(knowledgeData.Company);
         await changeAssignmentBlade.selectBusinessUnit(businessData.orgName);
         await changeAssignmentBlade.selectDepartment(departmentData.orgName);
         await changeAssignmentBlade.selectSupportGroup(suppGrpData.orgName);
-        await changeAssignmentBlade.selectAssignee(personData.firstName);
+        await changeAssignmentBlade.selectAssignee('Doomi');
         await changeAssignmentBlade.clickOnAssignButton();
         await createKnowledgePage.clickOnSaveKnowledgeButton();
-    });
+    },240*1000);
 
     it('[DRDMV-799,DRDMV-788]: [KM-BWF integration] [Knowledge Article] Mandatory fields of the Create Knowledge Article view', async () => {
         try {

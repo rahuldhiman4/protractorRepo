@@ -60,6 +60,8 @@ let title = "DRDMV-19004 KnowledgeArticle";
 
 describe('Knowledge Articles - Categorization Tests', () => {
     const filePath = '../../../data/ui/attachment/articleStatus.png';
+    const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+
 
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
@@ -77,7 +79,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             "assignee": "KMills",
             "assigneeSupportGroup": "GB Support 2"
         }
-        //Create article in in progress status
+        // Create article in in progress status
         articleData.title = title + "_" + inProgressStatus;
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         //Create article in draft status
@@ -804,7 +806,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
     it('[DRDMV-19356]:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
         let domainTagData = {
-            domainTagName: 'FacilityTag'
+            domainTagName: 'FacilityDomainTag'
         }
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json");
         let knowledgeData = knowledgeDataFile['DRDMV-19020'];
@@ -812,14 +814,25 @@ describe('Knowledge Articles - Categorization Tests', () => {
         await apiHelper.apiLogin("tadmin");
         let domainTag = await apiHelper.createDomainTag(domainTagData);
         await apiHelper.associateCategoryUnderDomainTag(categoryTier1FieldVal, domainTag);
-        await apiHelper.associateCategoryUnderDomainTag(categoryTier1FieldVal1, domainTag);
+
+        let knowledgeSetTitleStr = 'versionedKnowledgeSet_' + randomStr;
+        let knowledgeSetData = {
+            knowledgeSetTitle: `${knowledgeSetTitleStr}`,
+            knowledgeSetDesc: `${knowledgeSetTitleStr}+'Desc'`,
+            company: 'Psilon'
+        }
+
+        await apiHelper.apiLogin('gderuno');
+        let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
 
         try {
+            await navigationPage.signOut();
+            await loginPage.login('werusha');
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-            await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeSetTitleStr);
             expect(await createKnowledgePage.isCategoryTier1FieldLabelDisplayed(categoryTier1)).toBe(true);
             expect(await createKnowledgePage.isCategoryTier2FieldLabelDisplayed(categoryTier2)).toBe(true);
             expect(await createKnowledgePage.isCategoryTier3FieldLabelDisplayed(categoryTier3)).toBe(true);
@@ -828,7 +841,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await createKnowledgePage.selectCategoryTier1Option(categoryTier1FieldVal);
             await createKnowledgePage.selectCategoryTier2Option(categoryTier2FieldVal);
             await createKnowledgePage.selectCategoryTier3Option(categoryTier3FieldVal);
-            await createKnowledgePage.clickAssignToMeButton();
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await createKnowledgePage.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
@@ -842,9 +854,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await browser.refresh();
             // await utilCommon.waitUntilSpinnerToHide();
+            await apiHelper.apiLogin('tadmin');
             await apiHelper.disableDomainTag(domainTag);
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 4 * 60 * 1000);
+    }, 240 * 1000);
 })
