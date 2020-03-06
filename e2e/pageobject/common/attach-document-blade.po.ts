@@ -19,8 +19,8 @@ class AttachDocumentBlade {
 
     }
 
-    async isDocumentListHeadingDisplayed(): Promise<boolean> {
-        return await $$(this.selectors.listHeading).get(0).getText() == 'Document Library ' ? true : false;
+    async getTextOfDocumentListHeading(): Promise<string> {
+        return await $$(this.selectors.listHeading).get(0).getText();
     }
 
     async isDocumentTitleDisplayed(documentTitle: string): Promise<boolean> {
@@ -56,10 +56,10 @@ class AttachDocumentBlade {
     }
 
     async clickOnFilterApplyButton(): Promise<void> {
-         await $(this.selectors.filterApplyButton).click();
+        await $(this.selectors.filterApplyButton).click();
     }
 
-    
+
 
     async searchAndAttachDocument(documentName: string): Promise<void> {
         await this.clickOnAdvanceSearchButton();
