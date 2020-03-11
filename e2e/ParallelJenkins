@@ -47,7 +47,7 @@ node("Protractor"){
           }
           bat """if exist "./${dirName}/e2e/reports" RMDIR /S /Q "./${dirName}/e2e/reports" """
           bat """npm --prefix ./${dirName}/ install ./${dirName}/"""
-          bat """npm --prefix ./${dirName}/ run webdriver-update ./${dirName}/"""
+          bat """npm --prefix ./${dirName}/ run webdriver-update -- --gecko=false"""
         }
 
         try {
@@ -75,14 +75,16 @@ node("Protractor"){
         // Create Jira Cycle
         bat """npm --prefix ./${dirName}/ run jira-cycle ./${dirName}/ -- --cycle=%CycleName% --folder="%FolderName% ${dateNow}" --stats=%Stats%"""
 
-        // Create Zip and FTP upload
+        // Create Zip file
         zip archive: false, dir: """${dirName}/e2e/reports""", zipFile: """${dirName}/e2e/reports/${reportZipFileName}"""
-        ftpPublisher alwaysPublishFromMaster: true, continueOnError: true, failOnError: false, publishers: [
-          [configName: 'vl-pun-rem-qa4n-protractor', transfers: [
-            [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAutoParallel_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: """${dirName}/e2e/reports/${reportZipFileName}"""]
-          ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
-        ]
       }
+
+      // FTP upload
+      ftpPublisher alwaysPublishFromMaster: true, continueOnError: true, failOnError: false, publishers: [
+        [configName: 'vl-pun-rem-qa4n-protractor', transfers: [
+          [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAutoParallel_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: """**/reports/*.zip"""]
+        ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
+      ]
 
       // merge all Jira output csv files
       def jiraReportPath = "e2e/reports/spec-jira-report";
