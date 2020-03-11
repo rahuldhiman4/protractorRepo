@@ -1351,7 +1351,7 @@ describe('Document Library Consume UI', () => {
         await activityTabPo.clickOnAttachLink();
         await attachDocumentBladePo.clickOnAdvanceSearchButton();
         await attachDocumentBladePo.searchRecord(publish[0]);
-        await expect(await attachDocumentBladePo.isBladeTitleDisplayed()).toBeTruthy('Attach Document Blade title is missing');
+        await expect(await attachDocumentBladePo.isBladeTitleDisplayed()).toBeTruthy(': Attach Document Blade title is missing');
         await expect(await attachDocumentBladePo.getTextOfDocumentListHeading()).toContain('Document Library ');
         await expect(await attachDocumentBladePo.isAttachFromLocalDriveButtonDisplayed()).toBeTruthy('Failure: Attach from local drive button is missing');
         await expect(await attachDocumentBladePo.isAttachButtonDisplayed()).toBeTruthy('Failure: Attach button is missing');

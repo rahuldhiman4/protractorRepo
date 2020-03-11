@@ -19,6 +19,11 @@
     "DepartmentData12111": {
         "orgName": "UI-Department-12111",
         "relatedOrgId": null
+    },
+    "DepartmentData2002": {
+        "orgName": "UI-Department-2002",
+        "relatedOrgId": null,
+        "domainTag":"AccountsDomain"
     }
 
 }

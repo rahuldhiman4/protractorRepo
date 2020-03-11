@@ -1,6 +1,6 @@
-import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, by, element, protractor, ProtractorExpectedConditions, $$ } from "protractor";
 
-class addField {
+class AddField {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         fieldVariable: '.rx-data-dictionary-item-value',
@@ -16,13 +16,13 @@ class addField {
         return await $(this.selectors.addField).getText();
     }
 
-    async navigateToDynamicFieldInCaseTemplate(fromTemplate: string) {
-        let option = await element(by.cssContainingText(this.selectors.parentFields, 'Additional Fields from Case Template'));
+    async navigateToDynamicFieldInCaseTemplate(caseTemplate: string) {
+        let option = await element.all(by.cssContainingText(this.selectors.parentFields,'Additional Fields from Case Template')).click();
         //        await browser.wait(this.EC.elementToBeClickable(option));
-        await option.click();
-        let templateName = await element(by.cssContainingText(this.selectors.parentFields, fromTemplate));
+      //  await option.click();
+        let templateName = await element.all(by.cssContainingText(this.selectors.parentFields, caseTemplate)).click();
         //        await browser.wait(this.EC.elementToBeClickable(templateName));
-        await templateName.click();
+       // await templateName.click();
     }
 
     async navigateToDynamicFieldInTaskTemplate(fromTemplate: string) {
@@ -34,10 +34,12 @@ class addField {
         await templateName.click();
     }
 
+    async clickOnCase():Promise<void>{
+        await $$(this.selectors.parentFields).first().click();
+    }
+
     async navigateToAssociationsInCase() {
-        let option = await element(by.cssContainingText(this.selectors.parentFields, 'Case'));
-        //        await browser.wait(this.EC.elementToBeClickable(option));
-        await option.click();
+        await $$(this.selectors.parentFields).first().click();
         let associations = await element(by.cssContainingText(this.selectors.parentFields, 'Associations'));
         //        await browser.wait(this.EC.elementToBeClickable(associations));
         await associations.click();
@@ -98,4 +100,4 @@ class addField {
     }
 }
 
-export default new addField();
+export default new AddField();

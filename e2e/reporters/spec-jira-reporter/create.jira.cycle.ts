@@ -73,9 +73,9 @@ export class CreateJiraCycle {
             this.generateOutputFile();
             this.writeExecutionSummary();
         } else {
-            console.log('Jira report failure!!! Test cycle and or folder is not created');
-            console.log(`###### Test Cycle details ###### \n Test cycle Name >> ${this.testCycleName} \n Test cycle Id >> ${this.testCycleId}`);
-            console.log(`Folder Name >> ${this.folderName} \n Folder Id >> ${this.folderId}`);
+            console.log('FAILURE:: Test cycle and or folder is not created');
+            console.log(`FAILURE::###### Test Cycle details ###### \nFAILURE::Test cycle Name >> ${this.testCycleName} \nFAILURE::Test cycle Id >> ${this.testCycleId}`);
+            console.log(`FAILURE::Folder Name >> ${this.folderName} \nFAILURE::Folder Id >> ${this.folderId}`);
         }
     }
 
@@ -163,26 +163,49 @@ export class CreateJiraCycle {
             } else return false;
         } else console.log("Cycle already present...", this.testCycleName);
 
-        // create folder inside cycle
-        let timestamp = this.getTimeStamp();
-        this.folderName = `${this.folderName} ${timestamp}`;
+        // if folder name has timestamp verify folder is present
+        let isFolderPresent = false;
+        let hasNumber = /\d/;
+        if (hasNumber.test(this.folderName)) {
+            //verify folder is present in the cycle
+            let jiraFolderInfo = await axios.get(
+                "/rest/zapi/latest/cycle/" + this.testCycleId + "/folders?projectId=" + this.projectId + "&versionId=" + this.versionId
+            );
 
-        let folderPayload = {
-            "cycleId": `${this.testCycleId}`,
-            "name": `${this.folderName}`,
-            "description": `${this.env}`,
-            "projectId": `${this.projectId}`,
-            "versionId": `${this.versionId}`,
+            isFolderPresent = find(jiraFolderInfo.data, (folder) => {
+                if (folder.folderName === this.folderName) {
+                    this.folderId = folder.folderId;
+                    return true;
+                }
+            });
+        } else {
+            let timestamp = this.getTimeStamp();
+            this.folderName = `${this.folderName} ${timestamp}`;
         }
-        const newFolder = await axios.post(
-            "/rest/zapi/latest/folder/create",
-            folderPayload
-        );
-        console.log('Create Test Folder API Status =============>', newFolder.status, " ", this.folderName);
-        if (newFolder.status == 200) {
-            this.folderId = newFolder.data.id;
+
+        if (!isFolderPresent) {
+            // create folder inside cycle
+            let folderPayload = {
+                "cycleId": `${this.testCycleId}`,
+                "name": `${this.folderName}`,
+                "description": `${this.env}`,
+                "projectId": `${this.projectId}`,
+                "versionId": `${this.versionId}`,
+            }
+            const newFolder = await axios.post(
+                "/rest/zapi/latest/folder/create",
+                folderPayload
+            );
+            console.log('Create Test Folder API Status =============>', newFolder.status, " ", this.folderName);
+            if (newFolder.status == 200) {
+                this.folderId = newFolder.data.id;
+                return true;
+            } else return false;
+        } else {
+            console.log("Folder already present...");
+            console.log(`Folder Name >> ${this.folderName} \nFolder Id >> ${this.folderId}`);
             return true;
-        } else return false;
+        }
     }
 
     async addExecutionToCycle(testInput): Promise<void> {
