@@ -1,4 +1,4 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilGrid from '../../../utils/util.grid';
 
 class NotificationTemplateGridPage {
@@ -17,11 +17,16 @@ class NotificationTemplateGridPage {
         createNotificationTemplate: "[rx-view-component-id='48d1ab7c-3e17-458c-9d57-4acb72f49595'] button",
         searchBox: "[rx-view-component-id='7d5c5beb-d652-4bf9-9fc7-ccc7100d3b77'] [rx-id='search-text-input']",
         guid: '7d5c5beb-d652-4bf9-9fc7-ccc7100d3b77', 
+        deleteButton:'[rx-view-component-id="78c3aad2-3ffa-4212-ab32-0055553d7048"] button'
     }
 
     async isCopyTemplateButtonDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.copyTemplate)));
         return await $(this.selectors.copyTemplate).getAttribute("disabled") == "true";
+    }
+
+    async clickOnDeleteButton():Promise<void>{
+        await $(this.selectors.deleteButton).click();
     }
 
     async searchTemplate(tempName: string) {
@@ -43,7 +48,7 @@ class NotificationTemplateGridPage {
     }
 
     async clickCopyTmplate() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyTemplate)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyTemplate)),3000);
         await $(this.selectors.copyTemplate).click();
     }
 
