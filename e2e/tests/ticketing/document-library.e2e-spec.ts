@@ -1,11 +1,12 @@
 import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';
-import consoleKnowledgePo from '../../pageobject/knowledge/knowledge-articles-console.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
 import informationTabPo from '../../pageobject/knowledge/information-tab.po';
+import consoleKnowledgePo from '../../pageobject/knowledge/knowledge-articles-console.po';
 import createDocumentLibraryPo from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryConsolePo from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
@@ -95,7 +96,7 @@ describe('Document Library', () => {
         let columns1: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified"];
         expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns1)).toBeTruthy('column headers does not match 1');
         let columns2: string[] = ["Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "GUID", "Region"];
-        let columns3: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified","Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "GUID", "Region"];
+        let columns3: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified", "Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "GUID", "Region"];
         await documentLibraryConsolePo.addColumnOnGrid(columns2);
         expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns3)).toBeTruthy('column headers does not match 2');
         await documentLibraryConsolePo.removeColumnOnGrid(columns2);
@@ -416,7 +417,7 @@ describe('Document Library', () => {
         await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
         expect(await editDocumentLibraryPo.sameSupportGroupErrorMessageDisplayed(' The group already exists in the access list. To modify the access permissions, remove the group from the access list and add it again.')).toBeTruthy();
     });
-
+    //kgaikwad
     it('[DRDMV-13077]: Verify Sort on Document Managment Console', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -436,12 +437,12 @@ describe('Document Library', () => {
         await documentLibraryConsolePo.isGridColumnSorted('Company', 'descending');
 
     });
-
+    //kgaikwad 
     it('[DRDMV-13081]: Verify OOB Document template will not appear in knowledge console', async () => {
         await navigationPage.gotoCreateKnowledge();
         expect(await createKnowlegePo.isDocumentTemplatePresent('Document')).toBeFalsy('Document heading is not displayed');
     });
-
+    //kgaikwad
     it('[DRDMV-13040,DRDMV-13078]: Verify document can be Edited in draft status', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -460,23 +461,47 @@ describe('Document Library', () => {
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal), 'Title is missing';
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'Published Status is missing';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        await editDocumentLibraryPo.setTitle("update"+titleRandVal);
+        await editDocumentLibraryPo.setTitle("update" + titleRandVal);
         await editDocumentLibraryPo.selectStatus("Published");
-        let systemDate:string=await new Date().toLocaleTimeString()
-        let systemTime:string[]=systemDate.split(":");
+        let systemDate: string = await new Date().toLocaleTimeString()
+        let systemTime: string[] = systemDate.split(":");
 
         await editDocumentLibraryPo.clickOnSaveButton();
-        let column:string[]=["Author"];
+        let column: string[] = ["Author"];
         await documentLibraryConsolePo.addColumnOnGrid(column);
-        await documentLibraryConsolePo.searchOnGridConsole("update"+titleRandVal);
-        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe("update"+titleRandVal), 'Title is missing';
+        await documentLibraryConsolePo.searchOnGridConsole("update" + titleRandVal);
+        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe("update" + titleRandVal), 'Title is missing';
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'Published Status is missing';
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Company')).toBe("Petramco"), 'Title is missing';
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Author')).toBe("Qadim Katawazi"), 'Title is missing';
-        let time:string=await documentLibraryConsolePo.getSelectedGridRecordValue('Last Modified');
-        let newtime:string[]=time.split(" ");
-        let newTime:string[]=newtime[3].split(":");
-        await expect(newTime[0]+":"+newTime[1]).toBe(systemTime[0]+":"+systemTime[1]);
+        let time: string = await documentLibraryConsolePo.getSelectedGridRecordValue('Last Modified');
+        let newtime: string[] = time.split(" ");
+        let newTime: string[] = newtime[3].split(":");
+        await expect(newTime[0] + ":" + newTime[1]).toBe(systemTime[0] + ":" + systemTime[1]);
         await documentLibraryConsolePo.removeColumnOnGrid(column);
+    });
+    //kgaikwad
+    it('[DRDMV-13088]: Verify read access component UI', async () => {
+        let filePath = 'e2e/data/ui/attachment/demo.txt';
+        let draftDocLibData = {
+            docLibTitle: 'drdmv13088_draft_document',
+            company: 'Petramco',
+            ownerGroup: 'Compensation and Benefits',
+        }
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createDocumentLibrary(draftDocLibData, filePath);
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(draftDocLibData.docLibTitle);
+        await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
+        await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Petramco');
+        await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('UI-BusinessUnit');
+        await editDocumentLibraryPo.selectAddSupportDepartmentDropDownOfReadAccess('UI-Department');
+        await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('UI-SupportGroup');
+        await editDocumentLibraryPo.clickOnSaveButton();
+        await expect(utilCommon.getAllPopupMsg()).toBe('Saved successfully.');
     });
 })

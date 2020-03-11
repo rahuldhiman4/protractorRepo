@@ -1,13 +1,19 @@
 import { browser, protractor, ProtractorExpectedConditions } from "protractor";
-import quickCase from "../../pageobject/case/quick-case.po";
+import apiHelper from '../../api/api.helper';
+import createCasePo from '../../pageobject/case/create-case.po';
+import { default as quickCase, default as quickCasePo } from "../../pageobject/case/quick-case.po";
+import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
+import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 import utilCommon from '../../utils/util.common';
 
 describe("Quick Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     const requester = "Requester";
     const contact = "Contact";
+    let loginId = 'caseagentbwf';
 
     beforeAll(async () => {
         browser.waitForAngularEnabled(false);
@@ -105,4 +111,89 @@ describe("Quick Case", () => {
         await expect(quickCase.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
     });
 
+    //kgaikwad
+    it('[DRDMV-771]: [Quick Case] Similar cases search in Resources', async () => {
+        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseDescription = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotCreateCase();
+        await createCasePo.selectRequester("Adam Pavlik");
+        await createCasePo.setSummary(caseSummary);
+        await createCasePo.setDescription(caseDescription);
+        await createCasePo.clickSaveCaseButton();
+        await createCasePo.clickGoToCaseButton();
+        await viewCasePo.clickOnTab('Case Access');
+
+        await navigationPage.gotoQuickCase();
+        let categoryvalues: string[] = [caseSummary, caseDescription];
+        for (let i = 0; i < categoryvalues.length; i++) {
+            let result;
+            for (let j = 0; i < 3; j++) {
+                await browser.refresh();
+                await quickCasePo.selectRequesterName('Adam Pavlik');
+                await quickCasePo.setCaseSummary(categoryvalues[i]);
+                await utilCommon.waitUntilSpinnerToHide();
+                let qcSummary = await quickCasePo.isCaseSummaryPresentInRecommendedCases(categoryvalues[i]);
+                if (qcSummary == false) {
+                    await browser.sleep(3000);
+                    result = false;
+                }
+                else {
+                    result = true
+                    break;
+                }
+            }
+            await expect(result).toBeTruthy(`FailureMsg: Case Summary does not match for ${categoryvalues[i]}`);
+        }
+    });
+
+    //kgaikwad
+    it('[DRDMV-797]: [Quick Case] Case creation with inactive template (negative)', async () => {
+        let templateName = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        var templateData = {
+            "templateName": 'drdmv_797_templateName' + templateName,
+            "templateSummary": 'drdmv_797_templateName' + templateSummary,
+            "templateStatus": "Active",
+            "company": 'Petramco'
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createCaseTemplate(templateData);
+        // Quick case 
+        await navigationPage.gotoQuickCase();
+        for (let i = 0; i < 6; i++) {
+            await quickCasePo.selectRequesterName("Adam Pavlik");
+            let kk = await quickCasePo.isCaseTemplatePresent(templateData.templateName);
+            if (kk == false) {
+                await browser.refresh();
+                await browser.sleep(5000);
+            }
+            else {
+                await browser.refresh();
+                await quickCasePo.selectRequesterName("Adam Pavlik");
+                await quickCasePo.selectCaseTemplate(templateData.templateName);
+                break;
+            }
+        }
+        await browser.executeScript("window.open('about:blank','_blank');");
+        await utilCommon.switchToNewWidnow(1);
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData.templateName);
+        await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
+        await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
+        await editCasetemplatePo.changeOwnerGroupDropdownValue('Compensation and Benefits');
+        await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+        await utilCommon.switchToNewWidnow(0);
+        await quickCasePo.saveCase();
+        await expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for inactive template');
+
+        await utilCommon.switchToNewWidnow(1);
+        await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
+        await editCasetemplatePo.changeTemplateStatusDropdownValue('Inactive');
+        await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+        await utilCommon.switchToNewWidnow(0);
+        await quickCasePo.saveCase();
+        await expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for inactive template');
+    });
 })
