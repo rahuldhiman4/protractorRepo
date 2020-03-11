@@ -5,7 +5,7 @@ node("Protractor"){
   properties([
 	  parameters([
       text(
-        defaultValue: 'case=http://clm-aus-t5jj96.bmc.com:8008\ntask=http://clm-aus-t5jj96.bmc.com:8008',
+        defaultValue: 'case,cognitive=http://clm-aus-t5jj96.bmc.com:8008\ntask,social,attachment=http://clm-aus-t5jj96.bmc.com:8008\nknowledge,email=http://clm-aus-t5jj96.bmc.com:8008\nslm,flowset,notification=http://clm-aus-t5jj96.bmc.com:8008\nticketing=http://clm-aus-t5jj96.bmc.com:8008',
         description: 'Execution Suite List',
         name: 'SuiteList',
       ),
