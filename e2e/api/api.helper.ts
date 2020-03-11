@@ -1,10 +1,10 @@
 import axios, { AxiosResponse } from "axios";
-import { IBusinessUnit } from 'e2e/data/api/interface/business.unit.interface.api';
-import { IDepartment } from 'e2e/data/api/interface/department.interface.api';
-import { IKnowledgeArticles } from 'e2e/data/api/interface/knowledge.articles.interface.api';
-import { IPerson } from 'e2e/data/api/interface/person.interface.api';
-import { ISupportGroup } from 'e2e/data/api/interface/support.group.interface.api';
-import { ITaskTemplate } from 'e2e/data/api/interface/task.template.interface.api';
+import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
+import { IDepartment } from '../data/api/interface/department.interface.api';
+import { IKnowledgeArticles } from '../data/api/interface/knowledge.articles.interface.api';
+import { IPerson } from '../data/api/interface/person.interface.api';
+import { ISupportGroup } from '../data/api/interface/support.group.interface.api';
+import { ITaskTemplate } from '../data/api/interface/task.template.interface.api';
 import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
 import { CasePriority, CaseStatus, CaseTemplate, Knowledge, MenuItemStatus, NotificationType, ProcessLibConf, TaskTemplate } from "../api/constant.api";
@@ -21,11 +21,16 @@ import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/pr
 import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
+import { IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api';
+import { KnowledegeSet_ASSOCIATION, KNOWLEDGE_SET, KNOWLEDGESET_PERMISSION } from '../data/api/knowledge/knowledge-set.data.api';
+import { IknowledgeSetPermissions } from '../data/api/interface/knowledge-set.permissions.interface.api';
+import { KNOWLEDGEARTICLE_TEMPLATE } from '../data/api/knowledge/knowledge-article.template.api';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 const commandUri = 'api/rx/application/command';
+const articleTemplateUri = 'api/com.bmc.dsm.knowledge/rx/application/article/template';
 
 export interface IIDs {
     id: string;
@@ -1073,24 +1078,24 @@ class ApiHelper {
     }
 
     async createDocumentLibrary(docLibDetails: IDocumentLib, filePath: string): Promise<IIDs> {
-        let recordInstanceJson = DOC_LIB_DRAFT;
-        recordInstanceJson.fieldInstances[302300502].value = docLibDetails.docLibTitle;
-        recordInstanceJson.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(docLibDetails.company);
-        recordInstanceJson.fieldInstances[302300512].value = await apiCoreUtil.getSupportGroupGuid(docLibDetails.ownerGroup);
-        recordInstanceJson.fieldInstances[450000441].value = docLibDetails.shareExternally ? '1' : '0';
-        recordInstanceJson.fieldInstances[200000007].value = docLibDetails.region ? await apiCoreUtil.getRegionGuid(docLibDetails.region) : recordInstanceJson.fieldInstances[200000007].value;
-        recordInstanceJson.fieldInstances[260000001].value = docLibDetails.site ? await apiCoreUtil.getSiteGuid(docLibDetails.site) : recordInstanceJson.fieldInstances[260000001].value;
-        recordInstanceJson.fieldInstances[302301262].value = docLibDetails.keywordTag ? docLibDetails.keywordTag : recordInstanceJson.fieldInstances[302301262].value;
-        recordInstanceJson.fieldInstances[450000153].value = docLibDetails.description ? docLibDetails.description : recordInstanceJson.fieldInstances[450000153].value;
-        recordInstanceJson.fieldInstances[450000371].value = docLibDetails.department ? await apiCoreUtil.getDepartmentGuid(docLibDetails.department) : recordInstanceJson.fieldInstances[450000371].value;
-        recordInstanceJson.fieldInstances[450000381].value = docLibDetails.businessUnit ? await apiCoreUtil.getBusinessUnitGuid(docLibDetails.businessUnit) : recordInstanceJson.fieldInstances[450000381].value;
-        recordInstanceJson.fieldInstances[1000000063].value = docLibDetails.category1 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category1) : recordInstanceJson.fieldInstances[1000000063].value;
-        recordInstanceJson.fieldInstances[1000000064].value = docLibDetails.category2 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category2) : recordInstanceJson.fieldInstances[1000000064].value;
-        recordInstanceJson.fieldInstances[1000000065].value = docLibDetails.category3 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category3) : recordInstanceJson.fieldInstances[1000000065].value;
-        recordInstanceJson.fieldInstances[450000167].value = docLibDetails.category4 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category4) : recordInstanceJson.fieldInstances[450000167].value;
+        let documentLibRecordInstanceJson = DOC_LIB_DRAFT;
+        documentLibRecordInstanceJson.fieldInstances[302300502].value = docLibDetails.docLibTitle;
+        documentLibRecordInstanceJson.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(docLibDetails.company);
+        documentLibRecordInstanceJson.fieldInstances[302300512].value = await apiCoreUtil.getSupportGroupGuid(docLibDetails.ownerGroup);
+        documentLibRecordInstanceJson.fieldInstances[450000441].value = docLibDetails.shareExternally ? '1' : '0';
+        documentLibRecordInstanceJson.fieldInstances[200000007].value = docLibDetails.region ? await apiCoreUtil.getRegionGuid(docLibDetails.region) : documentLibRecordInstanceJson.fieldInstances[200000007].value;
+        documentLibRecordInstanceJson.fieldInstances[260000001].value = docLibDetails.site ? await apiCoreUtil.getSiteGuid(docLibDetails.site) : documentLibRecordInstanceJson.fieldInstances[260000001].value;
+        documentLibRecordInstanceJson.fieldInstances[302301262].value = docLibDetails.keywordTag ? docLibDetails.keywordTag : documentLibRecordInstanceJson.fieldInstances[302301262].value;
+        documentLibRecordInstanceJson.fieldInstances[450000153].value = docLibDetails.description ? docLibDetails.description : documentLibRecordInstanceJson.fieldInstances[450000153].value;
+        documentLibRecordInstanceJson.fieldInstances[450000371].value = docLibDetails.department ? await apiCoreUtil.getDepartmentGuid(docLibDetails.department) : documentLibRecordInstanceJson.fieldInstances[450000371].value;
+        documentLibRecordInstanceJson.fieldInstances[450000381].value = docLibDetails.businessUnit ? await apiCoreUtil.getBusinessUnitGuid(docLibDetails.businessUnit) : documentLibRecordInstanceJson.fieldInstances[450000381].value;
+        documentLibRecordInstanceJson.fieldInstances[1000000063].value = docLibDetails.category1 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category1) : documentLibRecordInstanceJson.fieldInstances[1000000063].value;
+        documentLibRecordInstanceJson.fieldInstances[1000000064].value = docLibDetails.category2 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category2) : documentLibRecordInstanceJson.fieldInstances[1000000064].value;
+        documentLibRecordInstanceJson.fieldInstances[1000000065].value = docLibDetails.category3 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category3) : documentLibRecordInstanceJson.fieldInstances[1000000065].value;
+        documentLibRecordInstanceJson.fieldInstances[450000167].value = docLibDetails.category4 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category4) : documentLibRecordInstanceJson.fieldInstances[450000167].value;
 
         let data = {
-            recordInstance: recordInstanceJson,
+            recordInstance: documentLibRecordInstanceJson,
             1000000351: filePath
         };
 
@@ -1117,16 +1122,16 @@ class ApiHelper {
         return publishDocLibResponse.status == 204;
     }
 
-    async giveReadAccessToDocLib(docLibInfo: IIDs, orgName: string):Promise<boolean>{
+    async giveReadAccessToDocLib(docLibInfo: IIDs, orgName: string): Promise<boolean> {
         let readAccessDocLibPayload = DOC_LIB_READ_ACCESS;
         readAccessDocLibPayload['processInputValues']['Record Instance ID'] = docLibInfo.id;
         let orgId = await coreApi.getOrganizationGuid(orgName);
-        if(orgId==null){orgId = await coreApi.getBusinessUnitGuid(orgName);}
-        if(orgId==null){orgId = await coreApi.getDepartmentGuid(orgName);}
-        if(orgId==null){orgId = await coreApi.getSupportGroupGuid(orgName);}
+        if (orgId == null) { orgId = await coreApi.getBusinessUnitGuid(orgName); }
+        if (orgId == null) { orgId = await coreApi.getDepartmentGuid(orgName); }
+        if (orgId == null) { orgId = await coreApi.getSupportGroupGuid(orgName); }
         readAccessDocLibPayload['processInputValues']['Value'] = orgId;
         console.log(readAccessDocLibPayload);
-        const readAccessDocLibResponse = await axios.post(commandUri,readAccessDocLibPayload);
+        const readAccessDocLibResponse = await axios.post(commandUri, readAccessDocLibPayload);
         console.log('Read Access Doc Lib API Status =============>', readAccessDocLibResponse.status);
         return readAccessDocLibResponse.status == 201;
     }
@@ -1136,6 +1141,71 @@ class ApiHelper {
         if (docLibGuid) {
             return await coreApi.deleteRecordInstance('com.bmc.dsm.knowledge:Knowledge Article', docLibGuid);
         } else console.log('Doc Lib GUID not found =============>', documentLibTitle);
+    }
+
+    async createKnowledgeSet(knowledgeSetDetails: IKnowledgeSet): Promise<IIDs> {
+        let knowledgeSetData = KNOWLEDGE_SET;
+        knowledgeSetData.fieldInstances[8].value = knowledgeSetDetails.knowledgeSetDesc;
+        knowledgeSetData.fieldInstances[301820700].value = knowledgeSetDetails.knowledgeSetTitle;
+        knowledgeSetData.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(knowledgeSetDetails.company);
+
+        let recordInstanceKSetAssociationJson = KnowledegeSet_ASSOCIATION;
+        let data = {
+            recordInstance: knowledgeSetData,
+            associationOperations: recordInstanceKSetAssociationJson
+        };
+        
+        let newKnowledgeSet: AxiosResponse = await coreApi.multiFormPostWithAttachment(data);
+        console.log('Create Knowledge set API Status =============>', newKnowledgeSet.status);
+        const newKnowledgeSetDetails = await axios.get(
+            await newKnowledgeSet.headers.location
+        );
+        return {
+            id: newKnowledgeSetDetails.data.id,
+            displayId: newKnowledgeSetDetails.data.displayId
+        };
+    }
+
+    async updateKnowledgeSetPermissions(knowledgeSetId: string, isSupportGroup: string, knowledgeSetPermissionDetails: IknowledgeSetPermissions): Promise<boolean> {
+        let knowledgeSetAccess = KNOWLEDGESET_PERMISSION;
+        knowledgeSetAccess.processInputValues["Record Instance ID"] = knowledgeSetId;
+        knowledgeSetAccess.processInputValues.Operation = knowledgeSetPermissionDetails.operation;
+        knowledgeSetAccess.processInputValues.Type = knowledgeSetPermissionDetails.type;
+        if (isSupportGroup == 'Support Group') {
+            knowledgeSetAccess.processInputValues.Value = await apiCoreUtil.getSupportGroupGuid(knowledgeSetPermissionDetails.value);
+        }
+        else {
+            knowledgeSetAccess.processInputValues.Value = await apiCoreUtil.getOrganizationGuid(knowledgeSetPermissionDetails.value);
+        }
+        knowledgeSetAccess.processInputValues["Security Type"] = knowledgeSetPermissionDetails.securityType;
+
+        const updateKnowledgeSetAccess = await axios.post(
+            commandUri,
+            knowledgeSetAccess
+        );
+
+        console.log('Update Knowledge Set Access API Status =============>', updateKnowledgeSetAccess.status);
+        return updateKnowledgeSetAccess.status === 201;
+    }
+
+    async createKnowledgeArticleTemplate(knowledgeSetTitle:string,knowledgeSetId: string, data:any):Promise<IIDs>{
+        let knowledgeSetTemplateData = KNOWLEDGEARTICLE_TEMPLATE;
+        knowledgeSetTemplateData.sections[0].title = data.title;     
+        knowledgeSetTemplateData.templateName = data.templateName;
+        knowledgeSetTemplateData.knowledgeSet = knowledgeSetTitle;
+        knowledgeSetTemplateData.company = await apiCoreUtil.getOrganizationGuid(data.company);
+        knowledgeSetTemplateData.knowledgeSetId = knowledgeSetId;
+        
+        const articleTemplateResponse = await axios.post(
+            articleTemplateUri,
+            knowledgeSetTemplateData
+        );
+
+        console.log('Create Knowledge Article Template API Status =============>', articleTemplateResponse.status);
+        return {
+            id: articleTemplateResponse.data.id,
+            displayId: articleTemplateResponse.data.displayId
+        };
     }
 }
 

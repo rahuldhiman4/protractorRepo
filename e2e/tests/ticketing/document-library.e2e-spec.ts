@@ -61,7 +61,7 @@ describe('Document Library', () => {
     }, 120 * 1000);
 
     //kgaikwad
-    it('[DRDMV-13045]: Verify Delete button on document', async () => {
+    it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify Delete button on document', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
@@ -95,7 +95,7 @@ describe('Document Library', () => {
         let columns1: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified"];
         expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns1)).toBeTruthy('column headers does not match 1');
         let columns2: string[] = ["Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "GUID", "Region"];
-        let columns3: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified","Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "GUID", "Region"];
+        let columns3: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified", "Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "GUID", "Region"];
         await documentLibraryConsolePo.addColumnOnGrid(columns2);
         expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns3)).toBeTruthy('column headers does not match 2');
         await documentLibraryConsolePo.removeColumnOnGrid(columns2);
@@ -460,23 +460,67 @@ describe('Document Library', () => {
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal), 'Title is missing';
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'Published Status is missing';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        await editDocumentLibraryPo.setTitle("update"+titleRandVal);
+        await editDocumentLibraryPo.setTitle("update" + titleRandVal);
         await editDocumentLibraryPo.selectStatus("Published");
-        let systemDate:string=await new Date().toLocaleTimeString()
-        let systemTime:string[]=systemDate.split(":");
+        let systemDate: string = await new Date().toLocaleTimeString()
+        let systemTime: string[] = systemDate.split(":");
 
         await editDocumentLibraryPo.clickOnSaveButton();
-        let column:string[]=["Author"];
+        let column: string[] = ["Author"];
         await documentLibraryConsolePo.addColumnOnGrid(column);
-        await documentLibraryConsolePo.searchOnGridConsole("update"+titleRandVal);
-        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe("update"+titleRandVal), 'Title is missing';
+        await documentLibraryConsolePo.searchOnGridConsole("update" + titleRandVal);
+        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe("update" + titleRandVal), 'Title is missing';
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'Published Status is missing';
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Company')).toBe("Petramco"), 'Title is missing';
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Author')).toBe("Qadim Katawazi"), 'Title is missing';
-        let time:string=await documentLibraryConsolePo.getSelectedGridRecordValue('Last Modified');
-        let newtime:string[]=time.split(" ");
-        let newTime:string[]=newtime[3].split(":");
-        await expect(newTime[0]+":"+newTime[1]).toBe(systemTime[0]+":"+systemTime[1]);
+        let time: string = await documentLibraryConsolePo.getSelectedGridRecordValue('Last Modified');
+        let newtime: string[] = time.split(" ");
+        let newTime: string[] = newtime[3].split(":");
+        await expect(newTime[0] + ":" + newTime[1]).toBe(systemTime[0] + ":" + systemTime[1]);
         await documentLibraryConsolePo.removeColumnOnGrid(column);
     });
+
+    //apdeshmu
+    it('[DRDMV-13019]: Verify document creation with large size attachment', async () => {
+        let filePath = '../../../data/ui/attachment/50MB.zip';
+        let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await utilCommon.waitUntilSpinnerToHide();
+        await createDocumentLibraryPo.openAddNewDocumentBlade();
+        await createDocumentLibraryPo.setTitle(titleRandVal);
+        await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+        await createDocumentLibraryPo.addAttachment(filePath);
+        await expect(await utilCommon.isPopUpMessagePresent('File size limit is: 20 MB')).toBeTruthy('Info msg not present');
+    });
+
+    //apdeshmu
+    it('[DRDMV-13018]: Verify document creation with Nonsupported and Supported attachment types', async () => {
+        let filePath = '../../../data/ui/attachment/Test.exe';
+        let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJson1.json', 'bwfPdf.pdf', 'bwfWord1.rtf', 'bwfXlsx.xlsx', 'demo.txt'];
+        let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+
+        //Supported attachment type verification
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await utilCommon.waitUntilSpinnerToHide()
+        await createDocumentLibraryPo.openAddNewDocumentBlade();
+        for (let i: number = 0; i < fileName1.length; i++) {
+            await createDocumentLibraryPo.setTitle(titleRandVal);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+            await createDocumentLibraryPo.addAttachment(`../../../data/ui/attachment/${fileName1[i]}`);
+            await createDocumentLibraryPo.clickOnSaveButton();
+            await expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Success msg not present');
+            await utilCommon.waitUntilSpinnerToHide();
+            await createDocumentLibraryPo.openAddNewDocumentBlade();
+        }
+        await createDocumentLibraryPo.setTitle(titleRandVal);
+        await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+        await createDocumentLibraryPo.addAttachment(filePath);
+        await createDocumentLibraryPo.clickOnSaveButton();
+        await expect(await utilCommon.isErrorMsgPresent()).toBeTruthy('Error msg not present');
+    }, 240 * 1000);
 })

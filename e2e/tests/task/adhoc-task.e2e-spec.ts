@@ -330,7 +330,7 @@ describe('Create Adhoc task', () => {
         expect(await viewTask.isAttachedFileNamePresent('demo')).toBeTruthy('Attached file name is not available');
     });
 
-    it('[DRDMV-12248,DRDMV-12247,DRDMV-12250]: Verify max attachments added to task', async () => {
+    it('[DRDMV-12248,DRDMV-12247,DRDMV-12250,DRDMV-13947]: Verify max attachments added to task', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         let caseData = {
             "Requester": "qkatawazi",

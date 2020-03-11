@@ -1,4 +1,4 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element,browser, protractor, ProtractorExpectedConditions } from "protractor";
 
 class ViewKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -20,7 +20,9 @@ class ViewKnowledgePage {
         reviewPending:'[rx-view-component-id="f0cf7f67-da22-4149-a54d-ec3b95fe05e6"] button',
         KnwoledgeArticleReviewMessage :'[rx-view-component-id="d2dbea0a-503e-47d8-b4ed-b6dcc9dcf555"] span',
         regionValue:'[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"] .d-textfield__rx-value',
-        siteValue:'[rx-view-component-id="aa218b2b-4fa3-4525-82f3-3e0f9bfc4193"] .d-textfield__rx-value'
+        siteValue:'[rx-view-component-id="aa218b2b-4fa3-4525-82f3-3e0f9bfc4193"] .d-textfield__rx-value',
+        articleVersion:'[rx-view-component-id="c64b0ab4-1774-4687-a7d2-56a72eeb1c1b"] button',
+        articleVersionDropDown: '[rx-view-component-id="c64b0ab4-1774-4687-a7d2-56a72eeb1c1b"] ul li'
     }
 
     async clickOnKAUsefulYesButton():Promise<void>{
@@ -112,6 +114,40 @@ class ViewKnowledgePage {
      async clickReviewPendingLink():Promise<void>{
         await $(this.selectors.reviewPending).click();
     }       
+
+    async isArticleVersionDisplayed():Promise<boolean>{
+    //    await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleVersion)));
+       return await $(this.selectors.articleVersion).isPresent();
+    }
+
+    async getArticleVersion():Promise<string>{
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleVersion)));
+        return await $(this.selectors.articleVersion).getText();
+     }
+
+    async getAllArticleVersionsFromVersionDropDown():Promise<void>{
+
+    }
+
+    async selectArticleVersion():Promise<void>{
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLinkOnKA)));
+     await $(this.selectors.editLinkOnKA).isDisplayed();
+
+    }
+
+    async formatDate(){
+        const months = ["Jan", "Feb", "Mar","Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let objDate: Date = new Date();
+        let numYear: number = objDate.getFullYear();
+        let year: string = new Number(numYear).toString();
+        let numMonth: number = objDate.getMonth();
+        let month: string = new Number(numMonth).toString();
+        let numDate: number = objDate.getDate();
+        let date: string = new Number(numDate).toString();
+        let formatted_date:string = months[month] + " "+date + ", " + year;    
+        return formatted_date;
+    }
+
 }
 
 export default new ViewKnowledgePage();

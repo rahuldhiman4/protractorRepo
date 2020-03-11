@@ -45,5 +45,11 @@
         "Company": "Petramco",
         "KnowledgeTitle": "KnowledgeTitle_19082",
         "KnowledgeSet": "HR"
+    },
+    "DRDMV-2002": {
+        "TemplateName": "Reference",
+        "Company": "Psilon",
+        "KnowledgeTitle": "KnowledgeTitle_2002",
+        "KnowledgeSet": "HR"
     }
 }

@@ -19,5 +19,10 @@
     "BusinessUnitData12111": {
         "orgName": "UI-BusinessUnit-12111",
         "relatedOrgId": null
+    },
+     "BusinessUnitData2002": {
+        "orgName": "UI-BusinessUnit-2002",
+        "relatedOrgId": null,
+        "domainTag":"AccountsDomain"
     }
 }

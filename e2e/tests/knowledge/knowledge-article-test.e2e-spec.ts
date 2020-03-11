@@ -665,7 +665,7 @@ describe('Knowledge Article', () => {
         expect(await navigationPage.isKnowledgeConsoleTitleDisplayed()).toBeTruthy('Knowledge Console not present');
         await utilGrid.clearFilter();
         await utilGrid.searchRecord(knowledgeTitle);
-        expect(await knowledgeConsolePo.getNumberOfRecordsInGrid()>0).toBeFalsy('failureMsg: KA is present')
+        expect(await knowledgeConsolePo.isValueDisplayedInGrid('Title') == knowledgeTitle).toBeFalsy('KA is present');
     });
 
     it('[DRDMV-5158]: Click on thumbs up and thumbs down', async () => {
