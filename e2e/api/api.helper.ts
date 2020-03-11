@@ -25,7 +25,8 @@ import { IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api
 import { KnowledegeSet_ASSOCIATION, KNOWLEDGE_SET, KNOWLEDGESET_PERMISSION } from '../data/api/knowledge/knowledge-set.data.api';
 import { IknowledgeSetPermissions } from '../data/api/interface/knowledge-set.permissions.interface.api';
 import { KNOWLEDGEARTICLE_TEMPLATE } from '../data/api/knowledge/knowledge-article.template.api';
-
+import {INCOMINGMAIL,EMAILCONFIG,OUTGOINGEMAIL} from '../data/api/email/email.configuration.data.api';
+import {EMAIL_WHITELIST} from '../data/api/email/email.whitelist.data.api';
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -35,6 +36,12 @@ const articleTemplateUri = 'api/com.bmc.dsm.knowledge/rx/application/article/tem
 export interface IIDs {
     id: string;
     displayId: string;
+}
+
+export interface EmailGUIDs {
+    incomingMailGUID: string;
+    outGoingMailGUID: string;
+    emailConfigurationEmailGUID: String;
 }
 
 class ApiHelper {
@@ -122,6 +129,52 @@ class ApiHelper {
         templateData['templateId'] = templateGuid;
         var newCaseTemplate: AxiosResponse = await coreApi.createDyanmicData(templateData);
         console.log('Create Dynamic on Template API Status =============>', newCaseTemplate.status);
+    }
+    
+    async createEmailConfiguration(): Promise<EmailGUIDs> {
+        let incomingMailBox = INCOMINGMAIL;
+        let emailMailBox = EMAILCONFIG;
+        let outGoingMailBox = OUTGOINGEMAIL;
+        let incomingMail: AxiosResponse = await coreApi.createRecordInstance(incomingMailBox);
+        console.log('Configure Incoming Email API Status =============>', incomingMail.status);
+        let outgoing: AxiosResponse = await coreApi.createRecordInstance(outGoingMailBox);
+        console.log('Configure Outgoing Email API Status =============>', outgoing.status);
+        let emailConfiguration: AxiosResponse = await coreApi.createRecordInstance(emailMailBox);
+        console.log('Configure Email Configuration API Status =============>', emailConfiguration.status);
+        const incomingEmailGUID = await axios.get(
+            await incomingMail.headers.location
+        );
+        const outGoingGUID = await axios.get(
+            await outgoing.headers.location
+        );
+        const emailConfigurationGUID = await axios.get(
+            await emailConfiguration.headers.location
+        );
+        return {
+            incomingMailGUID: incomingEmailGUID.data.id,
+            outGoingMailGUID: outGoingGUID.data.id,
+            emailConfigurationEmailGUID: emailConfigurationGUID.data.id
+        };
+    }
+
+    async getHTMLBodyOfEmail(emailSubject: string): Promise<string> {
+        return await coreApi.getEmailHTMLBody(emailSubject);
+    }
+
+    async deleteIncomingOrOutgoingEmailConfiguration(emailGUID: string): Promise<boolean> {
+        return await coreApi.deleteRecordInstance('AR System Email Mailbox Configuration', emailGUID);
+    }
+
+    async deleteEmailConfiguration(emailConfigGUID: string) {
+        return await coreApi.deleteRecordInstance('com.bmc.dsm.email-lib:Email Box Registration', emailConfigGUID);
+    }
+
+    async updateEmailWhiteList(emailTag: string, domainName: string): Promise<boolean> {
+        let emailwhiteListData = EMAIL_WHITELIST;
+        emailwhiteListData.fieldInstances[18301].value = emailTag;
+        emailwhiteListData.fieldInstances[18303].value = domainName;
+        let updateEmail = await coreApi.updateRecordInstance('com.bmc.arsys.rx.environment-configuration:EmailWhiteListConfiguration', 'AGGADG1AANVNMAPKRHEJP9UCTR5FHR', emailwhiteListData);
+        return updateEmail.status == 204;
     }
 
     async createCaseTemplate(data: ICaseTemplate): Promise<IIDs> {
@@ -791,7 +844,7 @@ class ApiHelper {
         return flagAndUnflagResponse.status == 204;
     }
 
-    async deleteEmailOrNotificationTemplate(emailTemplateName: string): Promise<boolean> {
+    async deleteEmailOrNotificationTemplate(emailTemplateName: string,company?:string): Promise<boolean> {
         let emailTemplateGuid = await coreApi.getEmailTemplateGuid(emailTemplateName);
         return await coreApi.deleteRecordInstance('com.bmc.dsm.notification-lib:NotificationTemplate', emailTemplateGuid);
     }

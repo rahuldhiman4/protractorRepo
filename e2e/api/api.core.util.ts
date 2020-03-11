@@ -55,12 +55,21 @@ class ApiCoreUtil {
         return allRecords;
     }
 
-    async getEmailTemplateGuid(emailTemplateName: string): Promise<string> {
+    async getEmailTemplateGuid(emailTemplateName: string,company?:string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.notification-lib:NotificationTemplate");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-            return obj[304412071] === emailTemplateName;
+            if(company) return obj[304412071] === emailTemplateName && obj[301566300] === company;
+            else return obj[304412071] === emailTemplateName;
         });
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getEmailHTMLBody(emailSubject: string): Promise<string> {
+        let allRecords = await this.getGuid("AR System Email Messages");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[18090] === emailSubject;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['18290'] || null : null;
     }
 
     async getDynamicFieldGuid(dynamicFieldName: string): Promise<string> {
