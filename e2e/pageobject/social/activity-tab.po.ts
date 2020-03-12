@@ -509,6 +509,13 @@ class ActivityTabPage {
         return textValue.includes('View Survey Information');
     }
 
+    async clickAttachedFile(fileName: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.AttachedfileName,fileName)).click();
+   }
+
+   async getCountAttachedFiles(fileName:string):Promise<number>{
+       return await element.all(by.cssContainingText(this.selectors.AttachedfileName,fileName)).count();
+   }
 }
 
 export default new ActivityTabPage();
