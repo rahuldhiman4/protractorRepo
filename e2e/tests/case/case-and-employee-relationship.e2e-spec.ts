@@ -59,7 +59,7 @@ describe('Case And Employee Relationship', () => {
         await addRelatedPopupPage.addPerson('Brain Adams', 'Witness');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(5);
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Brain Adams', 'Witness')).toBeTruthy();
-    }, 100 * 1000);
+    }, 120 * 1000);
 
     //asahitya
     it('[DRDMV-16896]: Multiple people can be added by same Relationship', async () => {
@@ -189,7 +189,7 @@ describe('Case And Employee Relationship', () => {
         await gridUtil.searchAndOpenHyperlink(caseId2);
         await caseEditPage.navigateToRelatedCasesTab();
         expect(await relatedCasePage.isCasePresent(caseId3)).toBeTruthy();
-    }, 160 * 1000);
+    }, 180 * 1000);
 
     //asahitya
     it('[DRDMV-16243]: Check details shown for Employees on Related People tab', async () => {

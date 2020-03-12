@@ -359,7 +359,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 10 * 60 * 1000);
+    }, 650 * 1000);
 
     it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
         try {
