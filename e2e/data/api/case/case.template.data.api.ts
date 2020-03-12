@@ -1,4 +1,4 @@
-{
+export const CASE_TEMPLATE_PAYLOAD = {
   "CaseTemplateData": {
     "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
     "recordDefinitionName": "com.bmc.dsm.case-lib:Case Template",
@@ -41,4 +41,17 @@
       }
     }
   }
-}
+};
+
+export const CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD = {
+  "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+  "id": "AGGCEME2HPULZAOQMNX3OPQLPURSV1",
+  "recordDefinitionName": "com.bmc.dsm.case-lib:Case Template",
+  "fieldInstances": {
+    "7": {
+      "resourceType": "com.bmc.arsys.rx.services.record.domain.FieldInstance",
+      "id": 7,
+      "value": 1000
+    }
+  }
+};

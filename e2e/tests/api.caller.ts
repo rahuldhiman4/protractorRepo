@@ -6,33 +6,36 @@ describe('Login and create case from API', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     it('create case', async () => {
-        var caseData =
+        let caseData =
         {
             "Requester": "qtao",
             "Summary": "Testing case creation with minimal input data"
         }
         await apiHelper.apiLogin('qtao');
-        var newCaseTemplate = await apiHelper.createCase(caseData);
+        let newCaseTemplate = await apiHelper.createCase(caseData);
         console.log("case is created===", newCaseTemplate.id);
         console.log("case is created===", newCaseTemplate.displayId);
     });
 
     it('create case template', async () => {
-        var templateData = {
-            "templateName": "global case template 1",
-            "templateSummary": "global case template summary 1",
-            "templateStatus": "Active",
-            "company": '- Global -'
+        let templateData = {
+            "templateName": "case template 2",
+            "templateSummary": "case template summary 2",
+            "templateStatus": "Draft",
+            //"company": '- Global -'
+            "company": 'Petramco'
         }
 
         await apiHelper.apiLogin('qkatawazi');
-        var newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
+        let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
         console.log("active case Template is created===", newCaseTemplate.id);
         console.log("active case Template is created===", newCaseTemplate.displayId);
+        let caseTemplateStatusUpdate = await apiHelper.updateCaseTemplateStatus(newCaseTemplate.id, 'Inactive');
+        console.log("Case template status update==>", caseTemplateStatusUpdate);        
     });
 
     it('create manual task template', async () => {
-        var templateData = {
+        let templateData = {
             "templateName": "task template 1",
             "templateSummary": "task template summary 1",
             "templateStatus": "Active",
@@ -40,26 +43,26 @@ describe('Login and create case from API', () => {
         }
 
         await apiHelper.apiLogin('qkatawazi');
-        var manualTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
+        let manualTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
         console.log("active task Template is created===", manualTaskTemplate.id);
         console.log("active task Template is created===", manualTaskTemplate.displayId);
     });
 
     it('create external task template', async () => {
-        var templateData = {
+        let templateData = {
             "templateName": "external task template 2",
             "templateSummary": "external task template summary 2",
             "templateStatus": "Active",
         }
 
         await apiHelper.apiLogin('qkatawazi');
-        var externalTaskTemplate = await apiHelper.createExternalTaskTemplate(templateData);
+        let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(templateData);
         console.log("external task Template is created===", externalTaskTemplate.id);
         console.log("external task Template is created===", externalTaskTemplate.displayId);
     });
 
     it('create auto task template', async () => {
-        var templateData = {
+        let templateData = {
             "templateName": "task template 1",
             "templateSummary": "task template summary 1",
             "templateStatus": "Active",
@@ -68,14 +71,14 @@ describe('Login and create case from API', () => {
         }
 
         await apiHelper.apiLogin('qkatawazi');
-        var autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(templateData);
+        let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(templateData);
         console.log("active task Template is created===", autoTaskTemplate.id);
         console.log("active task Template is created===", autoTaskTemplate.displayId);
     });
 
     it('create user with psilon and petramco access', async () => {
         await apiHelper.apiLogin('tadmin');
-        var userData = {
+        let userData = {
             "firstName": "Petramco2",
             "lastName": "Psilon2",
             "userId": "psilopetra2",
@@ -89,27 +92,27 @@ describe('Login and create case from API', () => {
 
         await apiHelper.apiLogin('qkatawazi');
 
-        var caseTemplateData = {
+        let caseTemplateData = {
             "templateName": "case template name 5",
             "templateSummary": "case template summary 5",
             "templateStatus": "Active",
         }
-        var newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
-        var manualTaskTemplateData = {
+        let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
+        let manualTaskTemplateData = {
             "templateName": "manual task template name 5",
             "templateSummary": "manual task template summary 5",
             "templateStatus": "Active",
         }
-        var manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+        let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
-        var autoTaskTemplateData = {
+        let autoTaskTemplateData = {
             "templateName": "auto task template 5",
             "templateSummary": "auto task template summary 5",
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": "Case Process 5",
         }
-        var autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
+        let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
 
         console.log(newCaseTemplate.id, "\ntaskID\n", manualTaskTemplate.id, "\ntaskID\n", autoTaskTemplate.id);
         console.log(newCaseTemplate.displayId, "\ntaskID\n", manualTaskTemplate.displayId, "\ntaskID\n", autoTaskTemplate.displayId);
@@ -166,9 +169,9 @@ describe('Login and create case from API', () => {
 
     it('delete all', async () => {
         await apiHelper.apiLogin('tadmin');
-        var recDeleted = await apiHelper.deleteDynamicFieldAndGroup('FG2');
+        let recDeleted = await apiHelper.deleteDynamicFieldAndGroup('FG2');
         console.log("Record deleted...", recDeleted);
-        var deleted = await apiHelper.deleteDynamicFieldAndGroup();
+        let deleted = await apiHelper.deleteDynamicFieldAndGroup();
         console.log("Records deleted...", deleted);
     });
 
@@ -206,7 +209,7 @@ describe('Login and create case from API', () => {
         console.log("Process Lib Config deleted?.. ", isDeleted);
     });
 
-    fit('Create doc lib', async () => {
+    it('Create doc lib', async () => {
         let docLibData = {
             docLibTitle : 'NewDocLib',
             company: 'Petramco',
