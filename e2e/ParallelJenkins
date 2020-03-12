@@ -83,13 +83,6 @@ node("Protractor"){
         bat """xcopy /Y /F /I /Z /Q "${dirName}/e2e/reports/${reportZipFileName}" "./e2e/reports/*" """
       }
 
-      // FTP upload
-      ftpPublisher alwaysPublishFromMaster: true, continueOnError: true, failOnError: false, publishers: [
-        [configName: 'vl-pun-rem-qa4n-protractor', transfers: [
-          [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAutoParallel_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: """**/reports/*.zip"""]
-        ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
-      ]
-
       // merge all Jira output csv files
       def jiraReportPath = "e2e/reports/spec-jira-report";
       def fileArray = [];
@@ -107,7 +100,7 @@ node("Protractor"){
       // zip jira report folder
       zip archive: false, dir: """${jiraReportPath}""", zipFile: """./e2e/reports/jira-report.zip"""
 
-      // FTP upload parent report folder
+      // FTP parent report folder
       ftpPublisher alwaysPublishFromMaster: true, continueOnError: true, failOnError: false, publishers: [
         [configName: 'vl-pun-rem-qa4n-protractor', transfers: [
           [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAutoParallel_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: """e2e/reports/*.zip"""]
