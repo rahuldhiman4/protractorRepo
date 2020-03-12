@@ -1,4 +1,4 @@
-import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, by, element, protractor, ProtractorExpectedConditions, $$, Key } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class CreateEmailTemplate {
@@ -15,7 +15,6 @@ class CreateEmailTemplate {
         fieldValueInBody:'[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_wysiwyg_div span',
         saveButton:'[rx-view-component-id="093a0eeb-c1e0-4ed8-945f-da46d9bbde88"] button',
         cancelButton: '[rx-view-component-id="9aeef4d7-1a10-4ffd-aa3a-22665c32883c"] button',
-
     }
 
     async setTemplateName(value: string): Promise<void> {
@@ -45,9 +44,15 @@ class CreateEmailTemplate {
         await $(this.selectors.subject).sendKeys(value);
     }
 
+    async setFontBody(value: string):Promise<void>{
+        await $(this.selectors.body).sendKeys(value);
+    }
     async setBody(value: string): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.body)));
+        await $(this.selectors.body).click();
         await $(this.selectors.body).sendKeys(value);
+        await browser.actions().sendKeys(protractor.Key.chord(Key.CONTROL + Key.END)).click().sendKeys(protractor.Key.ENTER);
+        await browser.actions().sendKeys(protractor.Key.chord(Key.CONTROL + Key.END)).click().sendKeys(protractor.Key.ENTER);
     }
 
     async clickOnInsertField(): Promise<void> {
@@ -68,5 +73,15 @@ class CreateEmailTemplate {
     async isDynamicFieldDisplayedInBody(value:string):Promise<boolean>{
         return await element(by.cssContainingText(this.selectors.fieldValueInBody, value)).isDisplayed();
     }
+
+    async clickInTableRowOfEmailTemplate(td:number,summary:string):Promise<void>{
+        let locator=`table[summary='${summary}'] td`;
+        await $$(locator).get(td).click();
+    }
+    async setDataInEmailTemplateTable(td: number, value: string, summary: string): Promise<void> {
+        let locator = `table[summary='${summary}'] td`;
+        await $$(locator).get(td).sendKeys(value);
+    }
+
 }
 export default new CreateEmailTemplate();

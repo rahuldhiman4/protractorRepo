@@ -2,6 +2,7 @@ import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpec
 
 const fs = require('fs');
 
+
 export class Util {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -179,7 +180,7 @@ export class Util {
     }
 
     async clickOnWarningOk(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningOk)), 2000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningOk)),2000);
         await $(this.selectors.warningOk).click();
     }
 
@@ -251,6 +252,7 @@ export class Util {
         }
         return str;
     }
+
 
     async getSelectedFieldValue(fieldName: string): Promise<string> {
         let metadataField = `//span[@class='d-textfield__item'][text()='${fieldName}']/following-sibling::*//span[contains(@class,'ui-select-match-text')]`;

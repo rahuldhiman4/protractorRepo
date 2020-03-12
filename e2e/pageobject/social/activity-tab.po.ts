@@ -52,13 +52,50 @@ class ActivityTabPage {
         AttachedfileName: '.log-item__body .rx-attachment-view-name',
         refreshButton: '.d-icon-left-refresh',
         attachmentField: '.activity-feed-note-buttons__left input[type="file"]',
-        showMoreEmailActivity: '.email .more'
+        showMoreEmailActivity: '.email .more',
+        showMoreLink: '.log-item__content .more',
+        emailBodyImage: '.email-body img'
+    }
+
+    async clickOnShowMore(): Promise<void> {
+        await $$(this.selectors.showMoreLink).first().click();
+    }
+
+    async isImageDisplayedInActivity(value: string): Promise<boolean> {
+        return await $(`img[src='${value}']`).isDisplayed();
+    }
+
+    async isLinkDisplayedInActivity(value: string): Promise<boolean> {
+        return await $(`a[href='${value}']`).isDisplayed();
+    }
+
+    async getTextOfAlignment(value: string): Promise<string> {
+        return await $(`td[style="${value}"]`).getText();
+    }
+    
+    async clickOnHyperlink(value:string):Promise<void>{
+        let locator = `a[href='${value}']`;
+        await $(locator).click();
+    }
+
+    async getColorOrFontOfText(value: string): Promise<string> {
+        let locator = `td span[style='${value}']`;
+        return await $(locator).getText();
+    }
+
+    async getTextOfTD(summary: string, tabValue: string): Promise<string> {
+        let locator = `[summary='${summary}'] td ${tabValue}`;
+        return await $(locator).getText();
     }
 
     async addAttachment(fileToUpload: string): Promise<void> {
         const absolutePath = resolve(__dirname, fileToUpload);
         console.log(absolutePath);
         await $(this.selectors.attachmentField).sendKeys(absolutePath);
+    }
+
+    async isFileAttachedOnActivity():Promise<boolean>{
+        return $(this.selectors.AttachedfileName).isPresent();
     }
 
     async isAttachedFileNameDisplayed(fileName: string): Promise<boolean> {
@@ -96,6 +133,10 @@ class ActivityTabPage {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailContent)), 5000);
         let emailBody = await element(by.xpath('(//div[@class="log-item__content"]/email)[1]')).getText();
         return emailBody;
+    }
+
+    async getAttachmentCount():Promise<number>{
+        return await $$(this.selectors.AttachedfileName).count();
     }
 
     async clickShowMoreForEmailActivity(): Promise<void>{

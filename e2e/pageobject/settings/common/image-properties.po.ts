@@ -10,8 +10,37 @@ class ImagePropertiesPopUp {
         oKButton: '.cke_dialog_ui_button_ok',
         preViewBoxImg: '.ImagePreviewBox img[style]',
         inputFieldsOnImageInfoTab: '.cke_dialog_ui_hbox_first input.cke_dialog_ui_input_text',
+        inputBox:'.cke_dialog_ui_labeled_content input.cke_dialog_ui_input_text',
     }
 
+    async setInputBoxValue(value:string,squence:number):Promise<void>{
+        await $$(this.selectors.inputBox).get(squence).sendKeys(value);
+    }
+
+    async getInputBoxValue(squence:number):Promise<string>{
+       return await $$(this.selectors.inputBox).get(squence).getAttribute('value');
+    }
+
+    async addImageOnEmail(menuName: string,fileToUpload:string,width:number,getInputValue:number): Promise<string> {
+        await this.clickOnTab(menuName);
+        await this.addAttachment(fileToUpload);
+        await this.clickOnSendItToServerButton();
+        await this.setInputBoxValue('200',width);
+        let source =await this.getInputBoxValue(getInputValue);
+        await this.clickOnOkButton();
+        return source;
+    }
+
+    async addImageOnEmailTemplate(fileToUpload:string):Promise<string>{
+        await element(by.cssContainingText(this.selectors.tabs, 'Upload')).click();
+        await this.addAttachment(fileToUpload);
+        await this.clickOnSendItToServerButton();
+        await $$(this.selectors.inputBox).get(2).sendKeys(200);
+        let source =await $$(this.selectors.inputBox).first().getAttribute('value')
+        this.clickOnOkButton();
+        return source;
+    }
+    
     async addImg(menuName: string, fileToUpload: string): Promise<void> {
         await this.clickOnTab(menuName);
         await this.addAttachment(fileToUpload);

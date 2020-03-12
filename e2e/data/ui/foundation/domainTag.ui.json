@@ -1,5 +1,8 @@
 {
     "DomainTagData":{
         "domainTagName":"FacilityDomain"
+    },
+    "DomainTagDataPsilon":{
+        "domainTagName":"AccountsDomain"
     }
 }

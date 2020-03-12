@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, Key } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 class ComposeMail {
@@ -31,7 +31,106 @@ class ComposeMail {
         ccEmailgetText: 'rx-person-group-drop-down-list-multi-select[ng-model="ccList"]  .personContainer .padTop3',
         subjectInput: '.subject-name input',
         templateNameHeader: '.template-seperator',
-        popupTemplate: '.popup-template'
+        popupTemplate: '.popup-template',
+        tableIcon: '.cke_toolbar .cke_button__table_icon',
+        imageIcon: '.cke_toolbar .cke_button__image_icon',
+        linkIcon: '.cke_toolbar .cke_button__link_icon',
+        boldIcon: '.cke_button__bold_icon',
+        italicIcon: '.cke_button__italic_icon',
+        underLineIcon: '.cke_button__underline_icon',
+        leftAlignIcon: '.cke_button__justifyleft_icon',
+        centerAlignIcon: '.cke_button__justifycenter_icon',
+        rightAlignIcon: '.cke_button__justifyright_icon',
+        colorIcon: '.cke_button__textcolor',
+        fontType: '.cke_combo__font',
+        fontSize: '.cke_combo__fontsize',
+        numberIcon:'.cke_button__numberedlist_icon',
+        attachmentView:'.rx-attachment-view-name'
+    }
+
+    async clickOnTableIcon(): Promise<void> {
+        await $(this.selectors.tableIcon).click();
+    }
+
+    async clickOnImageIcon(): Promise<void> {
+        await $(this.selectors.imageIcon).click();
+    }
+
+    async clickOnLinkIcon(): Promise<void> {
+        await $(this.selectors.linkIcon).click();
+    }
+
+
+    async clickInTableRow(td: number, summary: string): Promise<void> {
+        let locator = `table[summary='${summary}'] td`;
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame(element(by.css("iframe.cke_wysiwyg_frame")).getWebElement());
+        await $$(locator).get(td).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+    }
+
+    async clickOnBoldIcon(): Promise<void> {
+        await $(this.selectors.boldIcon).click();
+    }
+
+    async clickOnItalicIcon(): Promise<void> {
+        await $(this.selectors.italicIcon).click();
+    }
+
+    async clickOnUnderLineIcon(): Promise<void> {
+        await $(this.selectors.underLineIcon).click();
+    }
+
+    async clickOnLeftAlignIcon(): Promise<void> {
+        await $(this.selectors.leftAlignIcon).click();
+    }
+
+    async clickOnRightAlignIcon(): Promise<void> {
+        await $(this.selectors.rightAlignIcon).click();
+    }
+
+    async clickOnCenterAlignIcon(): Promise<void> {
+        await $(this.selectors.centerAlignIcon).click();
+    }
+
+    async setDataInTable(td: number, value: string, summary: string): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        let locator = `table[summary='${summary}'] td`;
+        await browser.switchTo().frame(element(by.css("iframe.cke_wysiwyg_frame")).getWebElement());
+        await browser.wait(this.EC.elementToBeClickable($$(locator).get(td)), 2000);
+        await $$(locator).get(td).sendKeys(value);
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+    }
+
+    async selectColor(colorValue: string): Promise<void> {
+        await $(this.selectors.colorIcon).click();
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame(await $('iframe.cke_panel_frame').getWebElement());
+        let locator: string = `a[title="${colorValue}"]`;
+        await browser.wait(this.EC.elementToBeClickable($(locator)), 2000);
+        await $(locator).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+    }
+
+    async clickOnFontTypeIcon(): Promise<void> {
+        await $(this.selectors.fontType).click();
+    }
+
+    async clickOnFontSizeIcon(): Promise<void> {
+        await $(this.selectors.fontSize).click();
+    }
+
+    async selectFontTypeOrSize(value: string): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('.cke_panel.cke_combopanel iframe.cke_panel_frame').getWebElement());
+        let locator = `a[title="${value}"]`;
+        await browser.wait(this.EC.elementToBeClickable($(locator)));
+        await $(locator).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
     }
 
     async isUserPopulatedInToOrCc(value: string, emailToOrCCValue): Promise<boolean> {
@@ -105,6 +204,10 @@ class ComposeMail {
         return await $(this.selectors.discardButton).isPresent();
     }
 
+    async getFileDisplayedFileName():Promise<string>{
+        return await $(this.selectors.attachmentView).getText();
+    }
+
     async addAttachment(): Promise<void> {
         const fileToUpload = '../../data/ui/attachment/demo.txt';
         const absolutePath = resolve(__dirname, fileToUpload);
@@ -131,14 +234,32 @@ class ComposeMail {
         return await $(this.selectors.ccEmailgetText).getText();
     }
 
-    async setEmailBody(value: string): Promise<void> {
+    async setBulletPointAndNumer(value: string): Promise<void> {
         await browser.waitForAngularEnabled(false);
-        let elem = $('iframe.cke_wysiwyg_frame');
-        await browser.switchTo().frame(elem);
+        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
         await $(this.selectors.emailBody).click();
-        //  let elm = $(this.selectors.emailBody);
-        await browser.actions().sendKeys(protractor.Key.chord(protractor.Key.CONTROL, protractor.Key.HOME)).sendKeys(value).perform();
+        await browser.actions().sendKeys(protractor.Key.chord(protractor.Key.CONTROL, protractor.Key.END)).sendKeys(Key.ENTER);
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        await $(this.selectors.numberIcon).click();
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
+        await $(this.selectors.emailBody).sendKeys(value);
+        await browser.actions().sendKeys(protractor.Key.chord(protractor.Key.CONTROL, protractor.Key.END)).sendKeys(Key.ENTER);
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);     
+    }
+
+    async setEmailBody(value: string): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        let elem = await $('iframe.cke_wysiwyg_frame');
+        await browser.switchTo().frame(elem.getWebElement());
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)),4000);
+        await $(this.selectors.emailBody).click();
+        await browser.actions().sendKeys(protractor.Key.chord(protractor.Key.CONTROL, protractor.Key.END)).sendKeys(Key.ENTER);
+        await $(this.selectors.emailBody).sendKeys(value);
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
     }
@@ -192,7 +313,6 @@ class ComposeMail {
 
     async isToOrCCInputTetxboxPresent(value: String): Promise<boolean> {
         let element = await $(`input[aria-label="${value}"]`);
-        //        await browser.wait(this.EC.elementToBeClickable(element));
         return await element.isDisplayed();
     }
 
@@ -204,7 +324,6 @@ class ComposeMail {
         await element.sendKeys(emailIdForToOrCc);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.popupEmail)), 4000);
         await $(this.selectors.popupEmail).click();
-
     }
 
     async getSubjectInputValue(): Promise<string> {
@@ -254,6 +373,43 @@ class ComposeMail {
         element.clear();
         //        await browser.wait(this.EC.invisibilityOf($(this.selectors.popupInfo)));
         return countOfPersons;
+    }
+    async isImageDisplayedComposeEmail(value:string):Promise<boolean>{
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
+        let locator = `img[src='${value}']`;
+        let imageIsDisplayed:boolean= await $(locator).isDisplayed();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        return imageIsDisplayed;
+    }
+
+    async isLinkDisplayedComposeEmail(value:string):Promise<boolean>{
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
+        let locator = `[href='${value}']`;
+        let islinkDisplayed:boolean = await $(locator).isDisplayed();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        return islinkDisplayed;
+    }
+
+    async getColorOrFontOfTextComposeEmail(value:string):Promise<string>{
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
+        let locator = `td span[style='${value}']`;
+        let isColorDisplayed=await $(locator).getText();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        return isColorDisplayed;
+    }
+
+    async setSubject(value:string):Promise<void>{
+        await $(this.selectors.subjectInput).clear();
+        await $(this.selectors.subjectInput).sendKeys(value);
     }
 }
 
