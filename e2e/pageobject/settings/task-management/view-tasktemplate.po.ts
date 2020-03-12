@@ -23,6 +23,7 @@ class ViewTaskTemplate {
         ownerGroupValue: '[rx-view-component-id="f02e4c7b-93f9-4b35-af23-f522d56daa4b"] p',
         buisnessunitValue: '[rx-view-component-id="787a1a66-06fc-4e1c-8bf4-172c32be397d"] p',
         departmentValue: '[rx-view-component-id="03314749-1da7-4741-8b0d-8296933e966f"] p',
+        label: '[rx-view-component-id="bae4bb58-1146-4f96-a695-543deecc5cc1"] p',
 
         editLink: '[rx-view-component-id="0ff4dfc7-09f3-4d12-bc32-5c9426f6cc6c"] .rx-record-editor-edit',
         taskTemplateId: '.text-field',
@@ -92,6 +93,11 @@ class ViewTaskTemplate {
     async getDepartmentValue(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerCompanyValue)));
         return await $(this.selectors.departmentValue).getText();
+    }
+
+    async getLabelValue(): Promise<string> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerCompanyValue)));
+        return await $(this.selectors.label).getText();
     }
 
     async getOwnerGroupValue(): Promise<string> {

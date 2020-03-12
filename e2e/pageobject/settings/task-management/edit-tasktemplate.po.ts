@@ -19,8 +19,10 @@ class EditTaskTemplate {
         taskCategoryDrpDown1: 'cab2e62d-090e-4281-985d-2f021bb01a9f',
         taskCategoryDrpDown2: '27a4fb75-0d9c-417b-9638-698f371ec4ec',
         taskCategoryDrpDown3: '414723be-a5c7-4271-b9b0-d76f07023682',
+        taskCategoryDrpDown4: 'd88c4135-b283-4b9a-9909-80f1e83e6087',
         saveMetadata: '[rx-view-component-id="39f08c8c-48ad-450e-b5f2-f379a4432666"] button',
         cancelMetadata: '[rx-view-component-id="209049eb-ef6d-4ddd-8ee4-257ff7a878e5"] button',
+        label: '6df27c33-b3bf-400c-98f7-a76b2e848374',
         templateStatusAttribute: '[rx-view-component-id="279fd957-576d-4428-b503-a1330cbd9498"] .btn-default',
     }
 
@@ -34,6 +36,14 @@ class EditTaskTemplate {
 
     async selectTaskCategoryTier3(category3: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown3, category3);
+    }
+
+    async selectTaskCategoryTier4(category4: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown4, category4);
+    }
+
+    async selectLabel(label: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.label, label);
     }
 
     async selectTaskCompany(company: string): Promise<void> {
