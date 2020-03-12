@@ -199,7 +199,7 @@ describe('Service Target Tests for Tasks', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 400 * 1000);
+    }, 480 * 1000);
 
     //skhobrag
     it('[DRDMV-13056]:Create a SVT for tasks type= Automated, verify Manual Task and Automated Task', async () => {

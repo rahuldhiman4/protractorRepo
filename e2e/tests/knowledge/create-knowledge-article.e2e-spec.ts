@@ -102,7 +102,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    });
+    }, 130 * 1000);
 
     it('[DRDMV-19079]: Change Reviewer blade should process properly on KA', async () => {
         try {
@@ -148,7 +148,7 @@ describe('Knowledge Article', () => {
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
-    });
+    }, 120 * 1000);
 
     it('[DRDMV-19080]: On Edit KA, Change Assignment blade should process properly ', async () => {
         try {
@@ -291,7 +291,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, (160 * 1000));
+    }, 170 * 1000);
 
     async function foundationData19082(company: string) {
         await apiHelper.apiLogin('tadmin');
@@ -366,7 +366,7 @@ describe('Knowledge Article', () => {
         await changeAssignmentBlade.selectAssignee('Doomi');
         await changeAssignmentBlade.clickOnAssignButton();
         await createKnowledgePage.clickOnSaveKnowledgeButton();
-    },240*1000);
+    }, 240 * 1000);
 
     it('[DRDMV-799,DRDMV-788]: [KM-BWF integration] [Knowledge Article] Mandatory fields of the Create Knowledge Article view', async () => {
         try {
@@ -395,7 +395,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    });
+    }, 120 * 1000);
 
     it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
         try {
@@ -777,7 +777,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 120* 1000);
+    }, 120 * 1000);
 
     it('[DRDMV-1914]: [Article Creation] Ability to select the knowledge set during article creation', async () => {
         let knowledgeTitle = 'knowledgeCoachUser1914' + randomStr;
@@ -830,53 +830,53 @@ describe('Knowledge Article', () => {
     });
 
     it('[DRDMV-2887]: [Knowledge Article] Adding/Modifying location data while creating knowledge articles - site, region', async () => {
-        try{
-        let knowledgeTitle = 'knowledge2887' + randomStr;
-        await navigationPage.gotoKnowledgeConsole();
-        await navigationPage.gotoCreateKnowledge();
-        await createKnowledgePage.clickOnTemplate('Reference');
-        await createKnowledgePage.clickOnUseSelectedTemplateButton();
-        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
-        await createKnowledgePage.selectKnowledgeSet('HR');
-        await createKnowledgePage.selectRegionDropDownOption('Australia');
-        await createKnowledgePage.selectSiteDropDownOption('Melbourne');
-        await createKnowledgePage.clickOnSaveKnowledgeButton();
-        await createKnowledgePage.clickOnviewArticleLinkButton();
-        await utilCommon.switchToNewWidnow(1);
-        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
-        expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Melbourne');
-        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.selectRegionDropDownOption('EMEA');
-        await editKnowledgePage.selectSiteDropDownOption('Barcelona 1');
-        await editKnowledgePage.saveKnowledgeMedataDataChanges();
-        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('EMEA');
-        expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Barcelona 1');
-        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.removeRegionValue();
-        await editKnowledgePage.saveKnowledgeMedataDataChanges();
-        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('');
-        expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('');
-        await utilCommon.switchToDefaultWindowClosingOtherTabs();
-        await previewKnowledgePo.clickOnBackButton();
-        await navigationPage.gotoCreateKnowledge();
-        await createKnowledgePage.clickOnTemplate('Reference');
-        await createKnowledgePage.clickOnUseSelectedTemplateButton();
-        let knowledgeNewTitle = 'knowledgeNew2887' + randomStr;
-        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeNewTitle);
-        await createKnowledgePage.selectKnowledgeSet('HR');
-        await createKnowledgePage.selectRegionDropDownOption('Australia');
-        await createKnowledgePage.clickOnSaveKnowledgeButton();
-        await createKnowledgePage.clickOnviewArticleLinkButton();
-        await utilCommon.switchToNewWidnow(1);
-        await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA();
-        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
-    }
-    catch (e) {
-        throw e;
-    }
-    finally {
-        await utilCommon.switchToDefaultWindowClosingOtherTabs();
-        await previewKnowledgePo.clickOnBackButton();
-    }
-},150*1000);
+        try {
+            let knowledgeTitle = 'knowledge2887' + randomStr;
+            await navigationPage.gotoKnowledgeConsole();
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
+            await createKnowledgePage.selectKnowledgeSet('HR');
+            await createKnowledgePage.selectRegionDropDownOption('Australia');
+            await createKnowledgePage.selectSiteDropDownOption('Melbourne');
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await utilCommon.switchToNewWidnow(1);
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
+            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Melbourne');
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            await editKnowledgePage.selectRegionDropDownOption('EMEA');
+            await editKnowledgePage.selectSiteDropDownOption('Barcelona 1');
+            await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('EMEA');
+            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Barcelona 1');
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            await editKnowledgePage.removeRegionValue();
+            await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('');
+            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('');
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await previewKnowledgePo.clickOnBackButton();
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            let knowledgeNewTitle = 'knowledgeNew2887' + randomStr;
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeNewTitle);
+            await createKnowledgePage.selectKnowledgeSet('HR');
+            await createKnowledgePage.selectRegionDropDownOption('Australia');
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await utilCommon.switchToNewWidnow(1);
+            await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA();
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await previewKnowledgePo.clickOnBackButton();
+        }
+    }, 150 * 1000);
 })
