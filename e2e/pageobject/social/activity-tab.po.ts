@@ -99,8 +99,8 @@ class ActivityTabPage {
         return $(this.selectors.AttachedfileName).isPresent();
     }
 
-    async isAttachedFileNameDisplayed(fileName: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.AttachedfileName,fileName)).getText() == fileName ? true : false;
+    async isAttachedFileNamePresent(fileName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.AttachedfileName,fileName)).isPresent();
     }
 
     async clickAndDownloadAttachmentFile(fileName: string): Promise<void> {

@@ -837,7 +837,7 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.getFirstPostContent()).toContain('step 2nd added '+taskBodyText);
-        expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('file is not present');
+        expect(await activityTabPage.isAttachedFileNamePresent('bwfPdf.pdf')).toBeTruthy('file is not present');
         await activityTabPage.clickAttachedFile('bwfPdf.pdf');
         expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');   
         //multiple line

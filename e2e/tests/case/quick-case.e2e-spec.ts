@@ -15,12 +15,14 @@ describe("Quick Case", () => {
     let caseDescription771 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let templateName797 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let templateSummary797 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    let caseTemplateId797 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
     beforeAll(async () => {
         browser.waitForAngularEnabled(false);
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login("qkatawazi");
         await testData771();
+        await testData797();
     });
 
     afterEach(async () => {
@@ -120,7 +122,6 @@ describe("Quick Case", () => {
         await createCasePo.setDescription(caseDescription771);
         await createCasePo.clickSaveCaseButton();
         await createCasePo.clickGoToCaseButton();
-        await browser.sleep(40000);
     }
     //kgaikwad
     it('[DRDMV-771]: [Quick Case] Similar cases search in Resources', async () => {
@@ -152,20 +153,19 @@ describe("Quick Case", () => {
             "company": 'Petramco'
         }
         await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createCaseTemplate(templateData);
+        let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
+        caseTemplateId797 = newCaseTemplate.id;
     }
     //kgaikwad
     it('[DRDMV-797]: [Quick Case] Case creation with inactive template (negative)', async () => {
-
-
-        // Quick case 
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName("Adam Pavlik");
         await quickCasePo.selectCaseTemplate(templateName797);
-         
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.updateCaseTemplateStatus(caseTemplateId797, 'Draft');
         await quickCasePo.saveCase();
-        await expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for inactive template');
-
+        await expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for draft template');
+        await apiHelper.updateCaseTemplateStatus(caseTemplateId797, 'Inactive');
         await quickCasePo.saveCase();
         await expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for inactive template');
     });

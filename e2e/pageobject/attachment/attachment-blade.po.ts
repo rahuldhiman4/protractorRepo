@@ -16,8 +16,12 @@ class AttachmentBlade {
         paginationNextButton: '.d-icon-right-angle_right',
         paginationPreviousButton: '.d-icon-right-angle_left',
         refreshButton: '.d-icon-refresh',
+        selectedCheckBoxCount: 'selected-files-label'
     }
 
+    async getCountOfSelectedCheckBox(): Promise<string> {
+        return await $(this.selectors.attachmentSize).getText();
+    }
 
     async searchRecord(record: string): Promise<void> {
         await $(this.selectors.searchbox).clear();

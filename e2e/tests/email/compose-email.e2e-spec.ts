@@ -1010,7 +1010,7 @@ describe("Compose Email", () => {
         await activityTabPo.clickShowMoreForEmailActivity();
         expect(await activityTabPo.getFirstPostContent()).toContain('This is email body');
         expect(await activityTabPo.getFirstPostContent()).toContain('Qianru Tao sent an email');
-        expect(activityTabPo.isAttachedFileNameDisplayed('demo.txt')).toBeTruthy('Attached file not Present');
+        expect(activityTabPo.isAttachedFileNamePresent('demo.txt')).toBeTruthy('Attached file not Present');
     });
 
     it('[DRDMV-9032]: Negative -Verify large number of attachments. Click on Send button in Compose Email', async () => {
