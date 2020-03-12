@@ -228,7 +228,7 @@ class ApiCoreUtil {
     }
 
     async createProcess(body: any): Promise<string> {
-        var newGuid = uuid.v4();
+        let newGuid = uuid.v4();
         body.guid = newGuid;
         const newProcess = await axios.post(
             "api/rx/application/process/processdefinition",
