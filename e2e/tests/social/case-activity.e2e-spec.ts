@@ -798,4 +798,68 @@ describe('Case Activity', () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
     }, 150 * 1000);
+
+    it('[DRDMV-7152]: [Automatic Task] - Automatic Task: Social: Manual Comments', async () => {
+        // Create automated task template
+        let autoTemplateData = {
+            "templateName": "auto task DRDMV-7152 template",
+            "templateSummary": "auto task DRDMV-7152template summary",
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": "Case Process ",
+        }
+
+        autoTemplateData.templateName = autoTemplateData.templateName + randomStr;
+        autoTemplateData.templateSummary = autoTemplateData.templateSummary + randomStr;
+        autoTemplateData.processName = autoTemplateData.processName + randomStr;
+        await apiHelper.apiLogin('fritz');
+        let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(autoTemplateData);
+        console.log("Automated task Template created===", autoTaskTemplate.id);
+
+        let filePath = '../../data/ui/attachment/bwfPdf.pdf';
+        
+        let taskBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotCreateCase();
+        await createCase.selectRequester('Al Allbrook');
+        await createCase.setSummary('test case for DRDMV-16773');
+        await createCase.clickSaveCaseButton();
+        await createCase.clickGoToCaseButton();
+        await viewCasePo.clickAddTaskButton();
+        await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateName);
+        await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
+        //single line comment
+        await activityTabPage.addActivityNote(taskBodyText);
+        await activityTabPage.clickOnPostButton();
+        expect(await activityTabPage.getFirstPostContent()).toContain(taskBodyText);
+        //one file and commnet
+        await activityTabPage.addActivityNote('step 2nd added '+taskBodyText);
+        await activityTabPage.addAttachment(filePath);
+        await activityTabPage.clickOnPostButton();
+        await utilCommon.waitUntilSpinnerToHide();
+        expect(await activityTabPage.getFirstPostContent()).toContain('step 2nd added '+taskBodyText);
+        expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('file is not present');
+        await activityTabPage.clickAttachedFile('bwfPdf.pdf');
+        expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');   
+        //multiple line
+        let newline:string= "this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things";   
+        await activityTabPage.addActivityNote(newline);
+        await activityTabPage.clickOnPostButton();
+        await activityTabPage.clickOnShowMore();
+        expect(await activityTabPage.getFirstPostContent()).toContain(newline);
+        //html with text
+        let withHTML:string= "this is text for new line and add new things this is text for new line <p><img alt=''>new link<a>Google</a> New things</p> <p>This is new test<span>Font 72Font 72this is newly added text</span></p> <td><span style='color:#3498db;'>SettingColor</span></td>";   
+        await activityTabPage.addActivityNote(withHTML);
+        await activityTabPage.clickOnPostButton();
+        await activityTabPage.clickOnShowMore();
+        expect(await activityTabPage.getFirstPostContent()).toContain(withHTML);
+        let textWithMultipleAttachment:string= "new values with attachments";   
+        await activityTabPage.addActivityNote(textWithMultipleAttachment);
+        for(let i=0;i<=5;i++){
+        await activityTabPage.addAttachment('../../data/ui/attachment/demo.txt');
+        }
+        await activityTabPage.clickOnPostButton();
+        await utilCommon.waitUntilSpinnerToHide();
+        expect(await activityTabPage.getFirstPostContent()).toContain(textWithMultipleAttachment);
+        expect(await activityTabPage.getCountAttachedFiles('demo.txt')).toBe(6);
+    });
 })

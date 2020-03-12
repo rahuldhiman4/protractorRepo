@@ -53,6 +53,7 @@ class ActivityTabPage {
         refreshButton: '.d-icon-left-refresh',
         attachmentField: '.activity-feed-note-buttons__left input[type="file"]',
         showMoreEmailActivity: '.email .more',
+        allTaskActivity: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .fields .value',
         showMoreLink: '.log-item__content .more',
         emailBodyImage: '.email-body img'
     }
@@ -104,6 +105,10 @@ class ActivityTabPage {
 
     async clickAndDownloadAttachmentFile(fileName: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.AttachedfileName,fileName)).click();
+    }
+
+    async getTaskActivity(fileName: string): Promise<string> {
+       return await element(by.cssContainingText(this.selectors.allTaskActivity,fileName)).getText();
     }
 
 
@@ -504,6 +509,13 @@ class ActivityTabPage {
         return textValue.includes('View Survey Information');
     }
 
+    async clickAttachedFile(fileName: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.AttachedfileName,fileName)).click();
+   }
+
+   async getCountAttachedFiles(fileName:string):Promise<number>{
+       return await element.all(by.cssContainingText(this.selectors.AttachedfileName,fileName)).count();
+   }
 }
 
 export default new ActivityTabPage();

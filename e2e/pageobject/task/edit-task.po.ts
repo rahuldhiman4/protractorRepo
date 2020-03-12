@@ -1,5 +1,6 @@
 import { resolve } from "path";
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../utils/util.common';
 
 class EditTask {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -12,6 +13,10 @@ class EditTask {
         changesAssignmentButton: '[rx-view-component-id="c423242c-28ca-4fd2-a81c-4495bf2fffb7"] button',
         attachmentField: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] input[type="file"]',
         attachButton: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] button',
+        categoryTier1: '909ad3ad-6706-4d46-bb5a-bc48fa6ca98e',
+        categoryTier2: '49d231d9-ee81-4d7c-90af-d7ca785a32d4',
+        categoryTier3: 'c8858fb5-5b21-4e0d-a947-c0130a72b51a',
+        categoryTier4: 'ff1636f8-4efe-4447-9c04-f32799904f2b',
         
     }
 
@@ -66,6 +71,22 @@ class EditTask {
 
     async clickOnAttachButton(): Promise<void> {
         await $(this.selectors.attachButton).click();
+    }
+
+    async selectTaskCategoryTier1(categoryTier1:string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.categoryTier1,categoryTier1);
+    }
+
+    async selectTaskCategoryTier2(categoryTier2:string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.categoryTier2,categoryTier2);
+    }
+
+    async selectTaskCategoryTier3(categoryTier3:string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.categoryTier3,categoryTier3);
+    }
+
+    async selectTaskCategoryTier4(categoryTier4:string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.categoryTier4,categoryTier4);
     }
 }
 
