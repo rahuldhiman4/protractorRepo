@@ -28,6 +28,7 @@ node("Protractor"){
   ])
 
   stage('Parallel Automation Run'){
+    bat """if exist "./e2e/reports" RMDIR /S /Q "./e2e/reports" """
     def runList = [:];
     def suite = SuiteList.split('\n');
     envNameList = SuiteList.split('\n').join("<br>");
@@ -77,14 +78,10 @@ node("Protractor"){
 
         // Create Zip file
         zip archive: false, dir: """${dirName}/e2e/reports""", zipFile: """${dirName}/e2e/reports/${reportZipFileName}"""
-      }
 
-      // FTP upload
-      ftpPublisher alwaysPublishFromMaster: true, continueOnError: true, failOnError: false, publishers: [
-        [configName: 'vl-pun-rem-qa4n-protractor', transfers: [
-          [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAutoParallel_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: """**/reports/*.zip"""]
-        ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
-      ]
+        // copy report zip to parent report folder
+        bat """xcopy /Y /F /I /Z /Q "${dirName}/e2e/reports/${reportZipFileName}" "./e2e/reports/*" """
+      }
 
       // merge all Jira output csv files
       def jiraReportPath = "e2e/reports/spec-jira-report";
@@ -97,8 +94,18 @@ node("Protractor"){
         fileContent = fileContent + "\n" + fileLines.tail().join('\n');
       }
       writeFile(file: "./${jiraReportPath}/jira-report.csv", text: fileContent);
-      // copy latest cycle.html file
+      // copy latest cycle.html file to parent report folder
       bat """xcopy /Y /F /I /Z /Q "./${dirSuffix + suiteNameList[suiteNameList.size()-1]}/${jiraReportPath}/CycleReport.html" "./${jiraReportPath}/CycleReport.html*" """
+
+      // zip jira report folder
+      zip archive: false, dir: """${jiraReportPath}""", zipFile: """./e2e/reports/jira-report.zip"""
+
+      // FTP upload parent report folder
+      ftpPublisher alwaysPublishFromMaster: true, continueOnError: true, failOnError: false, publishers: [
+        [configName: 'vl-pun-rem-qa4n-protractor', transfers: [
+          [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAutoParallel_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: """e2e/reports/*.zip"""]
+        ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
+      ]
     }
   } catch (Exception e) {
     echo """Jira Cycle, FTP Failed""" + e;
