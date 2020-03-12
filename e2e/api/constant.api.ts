@@ -1,6 +1,7 @@
 export enum CaseTemplate {
     Active = 2000,
     Draft = 1000,
+    Inactive = 3000,
 }
 
 export enum TaskTemplate {
