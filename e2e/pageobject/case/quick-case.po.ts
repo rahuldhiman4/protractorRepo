@@ -20,29 +20,6 @@ class QuickCasePage {
         requesters: '.smart-recorder__popup-item',
         pinFirstRecommendedCase: '(//*[contains(text(), "Recommended Cases")]/..//i)[1]',
         requester: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .ac-person-full-name',
-        advanceSearchResultDetails: '.padding-top-4',
-        advanceSearchResultId: '.km-group-list-item__title',
-        paginationOfKA: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .rkm-pagination',
-    }
-
-    async isRecommendedKnowledgePaginationDisplayed(): Promise<void> {
-        await $(this.selectors.paginationOfKA).isDisplayed();
-    }
-
-    async isKnowledegArticleIdDisplayedFromSearchResult(idOfKnowlegeArticle: string): Promise<boolean> {
-        return await $$('.km-group').get(1).element(by.cssContainingText(this.selectors.advanceSearchResultId, idOfKnowlegeArticle)).isDisplayed();
-    }
-
-    async isSerachResultDetailsDisplayed(SerachResultDetails: string): Promise<string> {
-        return await $$('.km-group').get(1).element(by.cssContainingText(this.selectors.advanceSearchResultDetails, SerachResultDetails)).getText();
-    }
-
-    async clickOnKnowlegeArticleTitleLink(knowledgeArticleTitle: string): Promise<void> {
-        await $$('.km-group').get(1).element(by.cssContainingText(this.selectors.advanceSearchResultDetails, knowledgeArticleTitle)).click();
-    }
-
-    async clearInputBox(): Promise<void> {
-        await $(this.selectors.inputBox).clear();
     }
 
     async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
@@ -62,16 +39,8 @@ class QuickCasePage {
     }
 
     async isCaseSummaryPresentInRecommendedCases(caseSummary: string): Promise<boolean> {
-        for (let i = 0; i < 5; i++) {
-            let kk = await $$('.km-group').get(2).$$(`div[title="${caseSummary}"]`).isPresent();
-            if (kk == false) {
-                await browser.sleep(3000);
-            }
-            else {
-                return true
-            }
-        }
-
+        return await $$('.km-group').get(2).$$(`div[title="${caseSummary}"]`).isPresent();
+      
     }
 
     async selectRequesterName(name: string): Promise<void> {
@@ -155,7 +124,6 @@ class QuickCasePage {
             let count = await $$(this.selectors.caseTemplate).count();
             return count >= 1;
         }), 2000);
-        await browser.sleep(10000);
         await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).click();
     }
 

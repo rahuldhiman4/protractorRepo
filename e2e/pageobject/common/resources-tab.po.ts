@@ -33,11 +33,6 @@ export class Resources {
         return await $$('.km-group').get(0).$$('.km-group-list-item_empty').get(0).isPresent();
     }
 
-    async isSearchedValueDisplayedInSearchBox(searchValue: string): Promise<boolean> {
-        return await $(`.rx-adv-search-textField[title="${searchValue}"]`).isDisplayed();
-    }
-
-
     async clickOnAdvancedSearchOptions(searchArea: string): Promise<void> {
         let advancedSearchButton = await element(by.xpath(`//*[@id='km-group__knowledge-header'][text()='${searchArea}']/following-sibling::div/button`));
         //        await browser.wait(this.EC.elementToBeClickable(advancedSearchButton));

@@ -1390,10 +1390,10 @@ describe('Document Library Consume UI', () => {
     //kgaikwad
     it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
         try {
-            let filePath6 = '../../data/ui/attachment/bwfXlsx.xlsx';
+            let excelFile = '../../data/ui/attachment/bwfXlsx.xlsx';
             let addNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let publish: string[] = ['drdmv13536_publish_document1', 'drdmv13536_publish_document2'];
-            let files1: string[] = [filePath1, filePath2];
+            let files: string[] = [filePath1, filePath2];
             for (let i = 0; i < publish.length; i++) {
                 let publishDocLibData1 = {
                     docLibTitle: publish[i],
@@ -1403,7 +1403,7 @@ describe('Document Library Consume UI', () => {
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
                 await apiHelper.apiLogin(loginId);
-                let getFilePath1 = files1[i];
+                let getFilePath1 = files[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
                 await apiHelper.apiLogin(loginId);
                 await apiHelper.giveReadAccessToDocLib(docLib, "Staffing");
@@ -1420,7 +1420,7 @@ describe('Document Library Consume UI', () => {
             await createCasePo.clickGoToCaseButton();
             let caseId = await viewCasePo.getCaseID();
             await activityTabPo.addActivityNote(addNoteText);
-            await activityTabPo.addAttachment(filePath6);
+            await activityTabPo.addAttachment(excelFile);
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[0]);
             await activityTabPo.clickOnAttachLink();
