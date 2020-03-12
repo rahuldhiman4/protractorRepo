@@ -504,7 +504,7 @@ describe("Create Case", () => {
         await expect(navigationPage.isCreateKnowledge()).toBeTruthy("Create knowledge is not displayed ");
         await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
         await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
-//        browser.sleep(3000);
+        //        browser.sleep(3000);
         try {
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -896,6 +896,38 @@ describe("Create Case", () => {
             await editCasePage.clearCaseSummary();
             await editCasePage.clickSaveCase();
             expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
+        } catch (error) {
+            throw error;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        }
+    }, 180 * 1000);
+
+    it('[DRDMV-1620]: [Case] Fields validation for case in Closed status ', async () => {
+        try {
+            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            
+            var caseWithClosedStatus = {
+                "Status": "7000",
+                "Company": "Petramco",
+                "Description": "This case was created by java integration tests",
+                "Requester": "qkatawazi",
+                "Summary": "create case is in Closed Status" + randomStr,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "Elizabeth"
+            }
+            await apiHelper.apiLogin('qtao');
+            var closedCase = await apiHelper.createCase(caseWithClosedStatus);
+            var closed: string = closedCase.displayId;
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await navigationPage.gotoCaseConsole();
+            await utilGrid.clearFilter();
+            await caseConsolePage.searchAndOpenCase(closed);
+            await viewCasePage.clickEditCaseButton();
+            await editCasePage.updateCasePriority('Critical');
+            await expect(editCasePage.isSaveCaseEnable()).toBeFalsy("Save button Visible");
         } catch (error) {
             throw error;
         } finally {
