@@ -140,6 +140,12 @@ class CaseEditPage {
         await $(this.selectors.saveCaseButton).click();
     }
 
+    async isSaveCaseEnable(): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
+       return await $(this.selectors.saveCaseButton).isEnabled();
+    }
+
+
     async clickOnCancelCaseButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelBtn)));
         await $(this.selectors.cancelBtn).click();

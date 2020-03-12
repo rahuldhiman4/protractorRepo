@@ -961,7 +961,7 @@ describe('Create Case Task', () => {
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
     }, 240 * 1000);
 
-    it('[DRDMV-7143]: [Automatic Task] - Task Activation behaviour immediately after creation when Task is at seq 1', async () => {
+    it('[DRDMV-7143,DRDMV-7144]: [Automatic Task] - Task Activation behaviour immediately after creation when Task is at seq 1', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         let case_management = CASE_MANAGEMENT_LIB_PROCESS;
