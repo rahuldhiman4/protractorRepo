@@ -32,8 +32,8 @@ describe('Create Process in Flowset', () => {
         let case_Management_Process = case_management.name + randomStr;
         case_management.name = case_Management_Process;
         await apiCoreUtil.createProcess(case_management);
-         
-        let processName=case_Management_Process.split(':')[1];
+
+        let processName = case_Management_Process.split(':')[1];
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
@@ -178,7 +178,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    }, 120 * 1000);
 
     it('[DRDMV-1298]: [Flowsets] Flowsets Console verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

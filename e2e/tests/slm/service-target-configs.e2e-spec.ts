@@ -244,10 +244,10 @@ describe('Service Target Tests', () => {
             await expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.clickOnSaveSVTButton();
-        }catch( error){
+        } catch (error) {
             throw error;
         }
-        }, 300 * 1000);
+    }, 300 * 1000);
 
     //skhobrag
     it('[DRDMV-2363]:SLM - Service Target - Measurement Build Expression', async () => {
@@ -277,7 +277,5 @@ describe('Service Target Tests', () => {
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
         await serviceTargetConfig.clickOnSaveSVTButton();
         expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-     }, 300 * 1000);
-
-
+    }, 360 * 1000);
 })
