@@ -20,13 +20,7 @@ export class Resources {
         configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
         headingName: '.km-group__header span',
         recommendedKnowledgeNo: 'h3[class="km-group__header ng-binding"]:nth-last-child(3) span',
-        advanceSearchResultDetails: '.padding-top-4',
-        advanceSearchResultId: '.km-group-list-item__title',
-        advanceSearchBackButton: '.rx-adv-search-back-btn',
-    }
-
-    async clickOnAdvanceSearchBackButton(): Promise<void> {
-        await $(this.selectors.advanceSearchBackButton).click();
+        advancedSearchButton: 'button.d-icon-left-search'
     }
 
     async isKnowledgeArticlesEmpty(): Promise<boolean> {
@@ -34,8 +28,8 @@ export class Resources {
     }
 
     async clickOnAdvancedSearchOptions(searchArea: string): Promise<void> {
-        let advancedSearchButton = await element(by.xpath(`//*[@id='km-group__knowledge-header'][text()='${searchArea}']/following-sibling::div/button`));
-        //        await browser.wait(this.EC.elementToBeClickable(advancedSearchButton));
+        let advancedSearchButton = await $('button.d-icon-left-search');
+//        await browser.wait(this.EC.elementToBeClickable(advancedSearchButton));
         await advancedSearchButton.click();
     }
 
