@@ -24,7 +24,7 @@ import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
 import { IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api';
 import { KnowledegeSet_ASSOCIATION, KNOWLEDGE_SET, KNOWLEDGESET_PERMISSION } from '../data/api/knowledge/knowledge-set.data.api';
 import { IknowledgeSetPermissions } from '../data/api/interface/knowledge-set.permissions.interface.api';
-import { KNOWLEDGEARTICLE_TEMPLATE } from '../data/api/knowledge/knowledge-article.template.api';
+import { KNOWLEDGEARTICLE_TEMPLATE, KNOWLEDGEARTICLE_HELPFULCOUNTER } from '../data/api/knowledge/knowledge-article.template.api';
 import {INCOMINGMAIL,EMAILCONFIG,OUTGOINGEMAIL} from '../data/api/email/email.configuration.data.api';
 import {EMAIL_WHITELIST} from '../data/api/email/email.whitelist.data.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
@@ -631,6 +631,7 @@ class ApiHelper {
         domainTagData.id = categoryGuid;
         domainTagData.fieldInstances[304417331].value = domainTagGuid;
         let domainTagResponse: AxiosResponse = await coreApi.updateRecordInstance("com.bmc.arsys.rx.foundation:Operational Category", categoryGuid, domainTagData);
+        console.log("category associated under domain tag: "+domainTagResponse.status);        
         return domainTagResponse.status == 204;
     }
 
@@ -777,29 +778,58 @@ class ApiHelper {
         return notesTemplateResponse.status == 201;
     }
 
-    async createKnowledgeArticle(data: IKnowledgeArticles): Promise<IIDs> {
+    async createKnowledgeArticle(data: IKnowledgeArticles, attachment?: string): Promise<IIDs> {
         let knowledgeArticleFile = await require('../data/api/knowledge/knowledge.article.api.json');
         let knowledgeArticleData = await knowledgeArticleFile.KnowledgeArticleData;
-        knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
-        knowledgeArticleData.fieldInstances[302300502].value = data.title;
-        knowledgeArticleData.fieldInstances[302312187].value = data.templateId;
-        knowledgeArticleData.fieldInstances[1000000063].value = data.categoryTier1 ? await apiCoreUtil.getCategoryGuid(data.categoryTier1) : knowledgeArticleData.fieldInstances[1000000063].value;
-        knowledgeArticleData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : knowledgeArticleData.fieldInstances[1000000064].value;
-        knowledgeArticleData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : knowledgeArticleData.fieldInstances[1000000065].value;
-        knowledgeArticleData.fieldInstances[200000007].value = data.region ? await apiCoreUtil.getRegionGuid(data.region) : knowledgeArticleData.fieldInstances[200000007].value;
-        knowledgeArticleData.fieldInstances[260000001].value = data.site ? await apiCoreUtil.getSiteGuid(data.site) : knowledgeArticleData.fieldInstances[260000001].value;
-        knowledgeArticleData.fieldInstances[302300513].value = data.assignee ? await apiCoreUtil.getPersonGuid(data.assignee) : knowledgeArticleData.fieldInstances[302300513].value;
-        knowledgeArticleData.fieldInstances[450000157].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[450000157].value;
-        if (data.assigneeSupportGroup) {
-            let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.assigneeSupportGroup);
-            let assineeSupportGroupData = {
-                "id": 302300512,
-                "value": `${assigneeSupportGroup}`
+        let knowledgeArticleResponse: AxiosResponse;
+
+        if (attachment) {
+            knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
+            knowledgeArticleData.fieldInstances[302300502].value = data.title;
+            knowledgeArticleData.fieldInstances[302312187].value = data.templateId;
+            knowledgeArticleData.fieldInstances[1000000063].value = data.categoryTier1 ? await apiCoreUtil.getCategoryGuid(data.categoryTier1) : knowledgeArticleData.fieldInstances[1000000063].value;
+            knowledgeArticleData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : knowledgeArticleData.fieldInstances[1000000064].value;
+            knowledgeArticleData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : knowledgeArticleData.fieldInstances[1000000065].value;
+            knowledgeArticleData.fieldInstances[200000007].value = data.region ? await apiCoreUtil.getRegionGuid(data.region) : knowledgeArticleData.fieldInstances[200000007].value;
+            knowledgeArticleData.fieldInstances[260000001].value = data.site ? await apiCoreUtil.getSiteGuid(data.site) : knowledgeArticleData.fieldInstances[260000001].value;
+            knowledgeArticleData.fieldInstances[302300513].value = data.assignee ? await apiCoreUtil.getPersonGuid(data.assignee) : knowledgeArticleData.fieldInstances[302300513].value;
+            knowledgeArticleData.fieldInstances[450000157].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[450000157].value;
+            if (data.assigneeSupportGroup) {
+                let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.assigneeSupportGroup);
+                let assineeSupportGroupData = {
+                    "id": 302300512,
+                    "value": `${assigneeSupportGroup}`
+                }
+                knowledgeArticleData.fieldInstances["302300512"] = assineeSupportGroupData;
             }
-            knowledgeArticleData.fieldInstances["302300512"] = assineeSupportGroupData;
+            let articleData = {
+                recordInstance: knowledgeArticleData,
+                302302781: attachment
+            };
+            knowledgeArticleResponse = await coreApi.multiFormPostWithAttachment(articleData);
+            console.log('Create Knowledge Article API Status =============>', knowledgeArticleResponse.status);
+        } else {
+            knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
+            knowledgeArticleData.fieldInstances[302300502].value = data.title;
+            knowledgeArticleData.fieldInstances[302312187].value = data.templateId;
+            knowledgeArticleData.fieldInstances[1000000063].value = data.categoryTier1 ? await apiCoreUtil.getCategoryGuid(data.categoryTier1) : knowledgeArticleData.fieldInstances[1000000063].value;
+            knowledgeArticleData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : knowledgeArticleData.fieldInstances[1000000064].value;
+            knowledgeArticleData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : knowledgeArticleData.fieldInstances[1000000065].value;
+            knowledgeArticleData.fieldInstances[200000007].value = data.region ? await apiCoreUtil.getRegionGuid(data.region) : knowledgeArticleData.fieldInstances[200000007].value;
+            knowledgeArticleData.fieldInstances[260000001].value = data.site ? await apiCoreUtil.getSiteGuid(data.site) : knowledgeArticleData.fieldInstances[260000001].value;
+            knowledgeArticleData.fieldInstances[302300513].value = data.assignee ? await apiCoreUtil.getPersonGuid(data.assignee) : knowledgeArticleData.fieldInstances[302300513].value;
+            knowledgeArticleData.fieldInstances[450000157].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[450000157].value;
+            if (data.assigneeSupportGroup) {
+                let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.assigneeSupportGroup);
+                let assineeSupportGroupData = {
+                    "id": 302300512,
+                    "value": `${assigneeSupportGroup}`
+                }
+                knowledgeArticleData.fieldInstances["302300512"] = assineeSupportGroupData;
+            }
+            knowledgeArticleResponse = await coreApi.createRecordInstance(knowledgeArticleData);
+            console.log('Create Knowledge Article API Status =============>', knowledgeArticleResponse.status);
         }
-        let knowledgeArticleResponse: AxiosResponse = await coreApi.createRecordInstance(knowledgeArticleData);
-        console.log('Create Knowledge Article API Status =============>', knowledgeArticleResponse.status);
         if (knowledgeArticleResponse.status == 201) {
             const knowledgeArticleDetails = await axios.get(await knowledgeArticleResponse.headers.location);
             return {
@@ -1216,7 +1246,7 @@ class ApiHelper {
             recordInstance: knowledgeSetData,
             associationOperations: recordInstanceKSetAssociationJson
         };
-        
+
         let newKnowledgeSet: AxiosResponse = await coreApi.multiFormPostWithAttachment(data);
         console.log('Create Knowledge set API Status =============>', newKnowledgeSet.status);
         const newKnowledgeSetDetails = await axios.get(
@@ -1250,25 +1280,42 @@ class ApiHelper {
         return updateKnowledgeSetAccess.status === 201;
     }
 
-    async createKnowledgeArticleTemplate(knowledgeSetTitle:string,knowledgeSetId: string, data:any):Promise<IIDs>{
+    async createKnowledgeArticleTemplate(knowledgeSetTitle: string, knowledgeSetId: string, data: any): Promise<boolean> {
         let knowledgeSetTemplateData = KNOWLEDGEARTICLE_TEMPLATE;
-        knowledgeSetTemplateData.sections[0].title = data.title;     
+        knowledgeSetTemplateData.sections[0].title = data.title;
         knowledgeSetTemplateData.templateName = data.templateName;
         knowledgeSetTemplateData.knowledgeSet = knowledgeSetTitle;
         knowledgeSetTemplateData.company = await apiCoreUtil.getOrganizationGuid(data.company);
         knowledgeSetTemplateData.knowledgeSetId = knowledgeSetId;
-        
+
         const articleTemplateResponse = await axios.post(
             articleTemplateUri,
             knowledgeSetTemplateData
         );
 
         console.log('Create Knowledge Article Template API Status =============>', articleTemplateResponse.status);
-        return {
-            id: articleTemplateResponse.data.id,
-            displayId: articleTemplateResponse.data.displayId
-        };
+        return articleTemplateResponse.status === 200;
     }
+
+    async updateKnowledgeArticleViewAndHelpFulCounter(knowledgeArticleGuid: string, data: any): Promise<boolean> {
+        let knowledgeArticleHelpfulCounterData = KNOWLEDGEARTICLE_HELPFULCOUNTER;
+        knowledgeArticleHelpfulCounterData.id = knowledgeArticleGuid;
+        knowledgeArticleHelpfulCounterData.fieldInstances[302299521].value = data.linkedCounter;
+        knowledgeArticleHelpfulCounterData.fieldInstances[302309761].value = data.helpfulPercentage;
+        knowledgeArticleHelpfulCounterData.fieldInstances[302311190].value = data.helpfulCounter;
+        knowledgeArticleHelpfulCounterData.fieldInstances[302311191].value = data.viewCounter;
+        knowledgeArticleHelpfulCounterData.fieldInstances[302299491].value = data.notHelpfulCounter;
+
+        let uri: string = "api/rx/application/record/recordinstance/com.bmc.dsm.knowledge:Knowledge Article Template/" + knowledgeArticleGuid;
+        const updateArticleHelpfulCounterResponse = await axios.put(
+            uri,
+            knowledgeArticleHelpfulCounterData
+        );
+        console.log("Alert status ==>>> " + updateArticleHelpfulCounterResponse.status);
+        return updateArticleHelpfulCounterResponse.status == 204;
+    }
+
+
 }
 
 export default new ApiHelper();

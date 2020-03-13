@@ -19,7 +19,7 @@ class QuickCasePage {
         createCaseButton: '.smart-recorder__footer button.d-button_primary',
         requesters: '.smart-recorder__popup-item',
         pinFirstRecommendedCase: '(//*[contains(text(), "Recommended Cases")]/..//i)[1]',
-        requester: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .ac-person-full-name'
+        requester: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .ac-person-full-name',
     }
 
     async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
@@ -36,6 +36,11 @@ class QuickCasePage {
 
     async isRecommendedKnowledgeEmpty(): Promise<boolean> {
         return await $$('.km-group .km-group-list-item_empty').get(1).isPresent();
+    }
+
+    async isCaseSummaryPresentInRecommendedCases(caseSummary: string): Promise<boolean> {
+        return await $$('.km-group').get(2).$$(`div[title="${caseSummary}"]`).isPresent();
+      
     }
 
     async selectRequesterName(name: string): Promise<void> {
@@ -120,6 +125,13 @@ class QuickCasePage {
             return count >= 1;
         }), 2000);
         await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).click();
+    }
+
+    async isCaseTemplatePresent(templateName: string): Promise<boolean> {
+        await $(this.selectors.inputBox).sendKeys('!');
+        await $(this.selectors.inputBox).sendKeys(templateName);
+        return await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).isPresent();
+
     }
 
     async validatePin(): Promise<void> {

@@ -73,8 +73,8 @@ class ActivityTabPage {
     async getTextOfAlignment(value: string): Promise<string> {
         return await $(`td[style="${value}"]`).getText();
     }
-    
-    async clickOnHyperlink(value:string):Promise<void>{
+
+    async clickOnHyperlink(value: string): Promise<void> {
         let locator = `a[href='${value}']`;
         await $(locator).click();
     }
@@ -95,20 +95,23 @@ class ActivityTabPage {
         await $(this.selectors.attachmentField).sendKeys(absolutePath);
     }
 
-    async isFileAttachedOnActivity():Promise<boolean>{
+    async isFileAttachedOnActivity(): Promise<boolean> {
         return $(this.selectors.AttachedfileName).isPresent();
     }
 
     async isAttachedFileNameDisplayed(fileName: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.AttachedfileName,fileName)).getText() == fileName ? true : false;
+        return await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isDisplayed().then(async (result) => {
+            if (result) return true;
+            else return false;
+        });
     }
 
     async clickAndDownloadAttachmentFile(fileName: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.AttachedfileName,fileName)).click();
+        await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).click();
     }
 
     async getTaskActivity(fileName: string): Promise<string> {
-       return await element(by.cssContainingText(this.selectors.allTaskActivity,fileName)).getText();
+        return await element(by.cssContainingText(this.selectors.allTaskActivity, fileName)).getText();
     }
 
 
@@ -140,11 +143,11 @@ class ActivityTabPage {
         return emailBody;
     }
 
-    async getAttachmentCount():Promise<number>{
+    async getAttachmentCount(): Promise<number> {
         return await $$(this.selectors.AttachedfileName).count();
     }
 
-    async clickShowMoreForEmailActivity(): Promise<void>{
+    async clickShowMoreForEmailActivity(): Promise<void> {
         await $(this.selectors.showMoreEmailActivity).click();
     }
 
@@ -510,12 +513,12 @@ class ActivityTabPage {
     }
 
     async clickAttachedFile(fileName: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.AttachedfileName,fileName)).click();
-   }
+        await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).click();
+    }
 
-   async getCountAttachedFiles(fileName:string):Promise<number>{
-       return await element.all(by.cssContainingText(this.selectors.AttachedfileName,fileName)).count();
-   }
+    async getCountAttachedFiles(fileName: string): Promise<number> {
+        return await element.all(by.cssContainingText(this.selectors.AttachedfileName, fileName)).count();
+    }
 }
 
 export default new ActivityTabPage();

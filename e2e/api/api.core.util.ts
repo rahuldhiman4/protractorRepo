@@ -278,7 +278,7 @@ class ApiCoreUtil {
             let value: any = Object.values(parameters)[i];
             if(key == 'recordInstance' || key == 'associationOperations'){
                 bodyFormData.append(key, JSON.stringify(value));
-            } else if (key == '1000000351') {
+            } else if (key == '1000000351' || key == '302302781') {
                 bodyFormData.append(key, fs.createReadStream(value.toString()));
             } else bodyFormData.append(key, value);
         }
@@ -290,6 +290,15 @@ class ApiCoreUtil {
         console.log('Create RecordInstance API Status =============>', newRecord.status);
         return newRecord;
     }
+
+    async getKnowledgeTemplateGuid(knowledgeTemplateTitle: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.knowledge:Template Configuration");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[301820705] === knowledgeTemplateTitle;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
 }
 
 export default new ApiCoreUtil();
