@@ -30,7 +30,8 @@ class EditKnowledgePage {
         removeRegionValues: '[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"] .glyphicon-remove',
         articleEditOption: '[rx-view-component-id="1592eebc-8777-48cc-ae6c-d2b82a60a972"] button',
         articleMinorEditOptionHelpText: '[rx-view-component-id="27c1d328-8b58-4f1f-9b78-61d99f18dcc6"] p',
-        articleMajorEditOptionHelpText: '[rx-view-component-id="3ba9e93b-6d48-4e15-ab0a-ca19f12b5a41"] p'
+        articleMajorEditOptionHelpText: '[rx-view-component-id="3ba9e93b-6d48-4e15-ab0a-ca19f12b5a41"] p',
+        articleCancelButton: '[rx-view-component-id="b7af03ad-d6dd-4db5-86f6-b459ca1fed71"] button'
     }
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
@@ -182,7 +183,7 @@ class EditKnowledgePage {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButtonONKA)));
         await $(this.selectors.saveButtonONKA).click();
     }
-
+    
     async changeKnowledgeTitle(value: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeTitle)));
         await $(this.selectors.knowledgeTitle).click();
@@ -204,7 +205,7 @@ class EditKnowledgePage {
 
     async isArticleEditOptionDisplayed(editOption: string): Promise<boolean> {
         // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleEditOption)),2000);
-        return await element(by.cssContainingText(this.selectors.articleEditOption, editOption)).isPresent();
+        return await element(by.cssContainingText(this.selectors.articleEditOption, editOption)).isDisplayed();
     }
 
     async isArticleEditOptionDisabled(editOption: string): Promise<boolean> {
@@ -236,6 +237,12 @@ class EditKnowledgePage {
         // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleMajorEditOptionHelpText)),2000);
         return await $(this.selectors.articleMajorEditOptionHelpText).getText();
     }
+
+    async clickArticleCancelButton(): Promise<void> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButtonOnKA)));
+        await $(this.selectors.articleCancelButton).click();
+    }
+
 
 }
 
