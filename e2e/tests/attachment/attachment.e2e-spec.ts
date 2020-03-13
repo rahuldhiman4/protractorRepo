@@ -165,7 +165,7 @@ describe("Attachment", () => {
         await activityTabPo.addActivityNote(caseBodyText);
         await activityTabPo.addAttachment(filePath);
         await activityTabPo.clickOnPostButton();
-        expect(await activityTabPo.isAttachedFileNamePresent('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
+        expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
         await viewCasePo.clickAttachmentsLink();
         expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
         expect(await attachmentBladePo.getRecordValue('bwfPdf')).toBe('bwfPdf', 'Attachment file name is missing');
@@ -179,10 +179,10 @@ describe("Attachment", () => {
         expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
         await attachmentBladePo.clickOnCloseButton();
         await activityTabPo.clickOnHyperlinkFromActivity(caseBodyText, 'Qianru Tao');
-        expect(await activityTabPo.isAttachedFileNamePresent('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
+        expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is delete sucessfully');
         await navigationPage.goToPersonProfile();
-        expect(await activityTabPo.isAttachedFileNamePresent('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
+        expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
     });
 
     //kgaikwad
@@ -236,7 +236,7 @@ describe("Attachment", () => {
         await activityTabPo.addActivityNote(addNotes);
         await activityTabPo.addAttachment(wordFilePath);
         await activityTabPo.clickOnPostButton();
-        await expect(await activityTabPo.isAttachedFileNamePresent('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
+        await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAttachmentsLink();
         await expect(await attachmentBladePo.getRecordValue('bwfWord1')).toBe('bwfWord1', 'Attachment file name is missing');
@@ -248,7 +248,7 @@ describe("Attachment", () => {
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.clickOnCloseButton();
         await navigationPage.goToPersonProfile();
-        await expect(await activityTabPo.isAttachedFileNamePresent('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
+        await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
     }, 110 * 1000);
 
     //kgaikwad
