@@ -50,23 +50,36 @@ describe("Create Case", () => {
 
     //kgaikwad
     it('[DRDMV-15253]: Verify Category Tier 4 Can be Populated After Tier 3 selection', async () => {
+        let categName1 = 'DemoCateg1';
+        let categName2 = 'DemoCateg2';
+        let categName3 = 'DemoCateg3';
+        let categName4 = 'DemoCateg4';
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.createOperationalCategory(categName1);
+        await apiHelper.createOperationalCategory(categName2);
+        await apiHelper.createOperationalCategory(categName3);
+        await apiHelper.createOperationalCategory(categName4);
+        await apiHelper.associateCategoryToOrganization(categName1, 'Petramco');
+        await apiHelper.associateCategoryToCategory(categName1, categName2);
+        await apiHelper.associateCategoryToCategory(categName2, categName3);
+        await apiHelper.associateCategoryToCategory(categName3, categName4);
         try {
             await navigationPage.signOut();
             await loginPage.login('qtao')
             await navigationPage.gotCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('set summary');
-            await createCasePage.selectCategoryTier1('Applications');
-            await createCasePage.selectCategoryTier2('Social');
-            await createCasePage.selectCategoryTier3('Chatter');
-            await createCasePage.selectCategoryTier4('Failure');
+            await createCasePage.selectCategoryTier1(categName1);
+            await createCasePage.selectCategoryTier2(categName2);
+            await createCasePage.selectCategoryTier3(categName3);
+            await createCasePage.selectCategoryTier4(categName4);
         } catch (error) {
             throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    })
+    });
 
     //kgaikwad
     it('[DRDMV-17653]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {
@@ -217,7 +230,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setCompanyName('Petramco');
             await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
             await createCaseTemplate.setAllowCaseReopenValue('Yes');
-            await createCaseTemplate.setTemplateStatusDropdownValue('Active')
+            await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
 
             //case template without reopen case
@@ -227,10 +240,11 @@ describe("Create Case", () => {
             await createCaseTemplate.setTemplateName(caseTemplate2);
             await createCaseTemplate.setCompanyName('Petramco');
             await createCaseTemplate.setCaseSummary(caseTemplateSummary2);
+            await createCaseTemplate.setCaseStatusValue("Assigned");
             await createCaseTemplate.clickOnChangeAssignmentButton();
             await changeAssignmentPage.setAssignee('Petramco', 'Compensation and Benefits', 'Qianru Tao');
             await createCaseTemplate.setAllowCaseReopenValue('No');
-            await createCaseTemplate.setTemplateStatusDropdownValue('Active')
+            await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
 
             //create case
@@ -366,7 +380,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setTemplateName(caseTemplate1);
             await createCaseTemplate.setCompanyName('Global');
             await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
-            await createCaseTemplate.setTemplateStatusDropdownValue('Active')
+            await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
 
             //create case
@@ -409,7 +423,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setCompanyName('Petramco');
             await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
             await createCaseTemplate.setAllowCaseReopenValue('Yes');
-            await createCaseTemplate.setTemplateStatusDropdownValue('Active')
+            await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
 
             //case template with reopen case
@@ -420,7 +434,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setCompanyName('Petramco');
             await createCaseTemplate.setCaseSummary(caseTemplateSummary2);
             await createCaseTemplate.setAllowCaseReopenValue('No');
-            await createCaseTemplate.setTemplateStatusDropdownValue('Active')
+            await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
 
             //create case
@@ -713,7 +727,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setCompanyName('Petramco');
             await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
             await createCaseTemplate.setAllowCaseReopenValue('Yes');
-            await createCaseTemplate.setTemplateStatusDropdownValue('Active')
+            await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
 
             //add first case 
@@ -829,7 +843,7 @@ describe("Create Case", () => {
         await createCaseTemplate.setCompanyName('- Global -');
         await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
         await createCaseTemplate.setFlowsetValue(flowsetName);
-        await createCaseTemplate.setTemplateStatusDropdownValue('Active')
+        await createCaseTemplate.setTemplateStatusDropdownValue('Active');
         await createCaseTemplate.clickSaveCaseTemplate();
         //expect(await utilCommon.isErrorMsgPresent()).toBeTruthy(); //no error message
         //await utilCommon.waitUntilPopUpDisappear();

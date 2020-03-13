@@ -48,7 +48,7 @@ class ViewCasePage {
         label: '[rx-view-component-id="2415f5bb-1b76-4359-a034-ff16f8e26f7b"] p',
         resolutionCodeText: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] .d-textfield__item',
         resolutionDescriptionText: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .d-textfield__item',
-        resolutionCodeValue: '.ui-select-match-text',
+        resolutionCodeValue: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] .ui-select-match-text',
         resolutionDescriptionValue: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .rx-description-textarea-read div div',
         resolutionCodeSelect: '.ui-select__rx-choice',
         resolutionDescriptionTextBoxId: '[rx-view-component-id="d98df37c-7a96-43c3-bf69-2e6e735031ae"]',

@@ -99,7 +99,7 @@ describe('AcknowledgmentTemplate', () => {
         await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
         await utilCommon.waitUntilSpinnerToHide();
         expect(await consoleAcknowledgmentTemplatePo.isGridRecordPresent(templateName2)).toBeFalsy('Public template name is preset on grid')
-    }, 180 * 1000)
+    }, 200 * 1000)
 
     //kgaikwad
     it('[DRDMV-10902,DRDMV-10900,DRDMV-10924,DRDMV-10923]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
@@ -196,7 +196,7 @@ describe('AcknowledgmentTemplate', () => {
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Search Subject is missing in column');
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('Petramco');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Search Company is missing in column');
-        
+
 
         // DRDMV-10902
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
@@ -218,7 +218,7 @@ describe('AcknowledgmentTemplate', () => {
         await createAcknowledgmentTemplatesPo.setSubject(subject);
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-        
+
         expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:' + templateName4, 'Duplicate private template name error message is missing');
         await utilCommon.closePopUpMessage();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
@@ -243,10 +243,10 @@ describe('AcknowledgmentTemplate', () => {
         await createAcknowledgmentTemplatesPo.setSubject(subject);
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-        
+
         expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:' + templateName5, 'Duplicate private template name error message is missing');
         await utilCommon.closePopUpMessage();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-    }, 270 * 1000)
+    }, 300 * 1000)
 })
