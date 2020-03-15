@@ -338,7 +338,7 @@ describe('Create Task Template', () => {
         await expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
     }, 180 * 1000);
 
-    it('DRDMV-7151: [Automatic Task] - Automatic Task: Social: System Comments', async () => {
+    it('[DRDMV-7151]: [Automatic Task] - Automatic Task: Social: System Comments', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         var templateData4 = {
             "templateName": `AutomatedTaskTemplateActive ${randomStr}`,

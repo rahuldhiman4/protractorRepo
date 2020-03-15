@@ -1388,7 +1388,7 @@ describe('Document Library Consume UI', () => {
     }, 240 * 1000);
 
     //kgaikwad
-    fit('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
+    it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
         try {
             let excelFile = '../../data/ui/attachment/bwfXlsx.xlsx';
             let addNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1577,6 +1577,6 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 10000 * 1000);
+    }, 200 * 1000);
 
 })
