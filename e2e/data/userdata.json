@@ -98,6 +98,13 @@
 	"qheroux": {
 		"userName": "qheroux@petramco.com",
 		"userPassword": "Password_1234"
+	},
+	"qquettawala": {
+		"userName": "qquettawala@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"frieda": {
+		"userName": "Frieda@petramco.com",
+		"userPassword": "Password_1234"
 	}
-
 }

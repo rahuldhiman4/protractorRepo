@@ -50,6 +50,11 @@ class DocumentLibraryPage {
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
+    async searchAndCheckDocumentLibraryListed(value: string): Promise<boolean> {
+      return  await utilGrid.isGridRecordPresent(value);
+//        await utilCommon.waitUntilSpinnerToHide();
+    }
+
 
 }
 
