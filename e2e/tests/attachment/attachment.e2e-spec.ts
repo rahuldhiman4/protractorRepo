@@ -252,7 +252,7 @@ describe("Attachment", () => {
     }, 110 * 1000);
 
     //kgaikwad
-    it('[DRDMV-11718,DRDMV-11720,DRDMV-13948]: Large number of attachments verification', async () => {
+    it('[DRDMV-11718,DRDMV-11720]: Large number of attachments verification', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');

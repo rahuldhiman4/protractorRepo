@@ -35,6 +35,8 @@ class DocumentLibraryPage {
         status: '0a8b7179-dd0a-47f9-8515-7c7aceda3118',
         editSaveButton: '[rx-view-component-id="8035353f-acb0-4bb5-a5c5-fe7626c01b3e"] button',
         documentHamburgerGuid: '5d1f94a9-693e-4dbf-896f-3b9689f95a42',
+        attachButton: '[rx-view-component-id="9e3b3bb5-8a95-45d9-bbd1-deb35af4bc37"] button',
+        attachmentMaxLimitMsgText: '.ux-attachment-maxlimit-warning',
         descriptionGuid: 'd66ee2b3-fb51-4b16-be2a-80e83d9e6e75',
         departmentGuid:  '16c03e64-8767-490e-b32e-d712b8ec4fbe',
         buisnessUnit:    '3b6ebf9c-13f1-4924-8740-3f720ae8335a',
@@ -223,7 +225,14 @@ class DocumentLibraryPage {
     async clickOnSelectedGridRecord(documentLibraryColumnHeader: string): Promise<void> {
         await utilGrid.clickOnSelectedGridRecord(this.selectors.documentHamburgerGuid, documentLibraryColumnHeader);
     }
+    
+    async isAttachmentButtonEnabled(): Promise<boolean> {
+        return await $(this.selectors.attachButton).isEnabled();
+    }
 
+    async getMessageText(): Promise<string> {
+        return await $(this.selectors.attachmentMaxLimitMsgText).getText();
+    }
 
 }
 
