@@ -5,6 +5,8 @@ import { default as quickCase, default as quickCasePo } from "../../pageobject/c
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import utilCommon from '../../utils/util.common';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
 
 describe("Quick Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -169,4 +171,45 @@ describe("Quick Case", () => {
         await quickCasePo.saveCase();
         await expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for inactive template');
     });
+    it('[DRDMV-800]: [Quick Case] Case creation with requester having same name as other company users', async () => {
+
+        let userData1 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData1",
+        }
+
+        let userData2 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData2",
+        }
+
+        let userData3 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData3",
+        }
+
+        let userData4 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData4",
+        }
+
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.createNewUser(userData3);
+        await apiHelper.createNewUser(userData4);
+
+        await navigationPage.gotoQuickCase();
+        await quickCase.selectRequesterName('Person1');
+        await quickCase.setCaseSummary('caseSummary');
+        await quickCase.createCaseButton();
+        await expect(utilCommon.getPopUpMessage()).toBe('Saved successfully');
+        await quickCase.gotoCaseButton();
+        await expect(viewCasePo.getRequesterName()).toBe('Person1 Person1');
+    });
+
 })

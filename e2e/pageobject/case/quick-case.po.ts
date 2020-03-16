@@ -20,6 +20,8 @@ class QuickCasePage {
         requesters: '.smart-recorder__popup-item',
         pinFirstRecommendedCase: '(//*[contains(text(), "Recommended Cases")]/..//i)[1]',
         requester: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .ac-person-full-name',
+        arrowFirstRecommendedCase: '[role="listitem"] .km-group-list-item__preview-icon',
+        arrowFirstRecommendedKnowledge: '.km-group [role="listitem"] .km-group-list-item__preview-icon',
     }
 
     async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
@@ -110,6 +112,16 @@ class QuickCasePage {
     async pinFirstRecommendedCase(): Promise<void> {
         // await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
         await element(by.xpath(this.selectors.pinFirstRecommendedCase)).click();
+    }
+
+    async clickArrowFirstRecommendedCase(): Promise<void> {
+        // await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
+        await element(by.xpath(this.selectors.arrowFirstRecommendedCase)).click();
+    }
+
+    async clickArrowFirstRecommendedKnowledge(): Promise<void> {
+        // await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
+        await element(by.xpath(this.selectors.arrowFirstRecommendedKnowledge)).click();
     }
 
     async saveCase(): Promise<void> {
