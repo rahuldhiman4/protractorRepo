@@ -29,6 +29,10 @@ import manageTask from "../../pageobject/task/manage-task-blade.po";
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import viewTasktemplatePage from '../../pageobject/settings/task-management/view-tasktemplate.po';
+import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
+import attachmentBladePage from "../../pageobject/attachment/attachment-blade.po";
+import activityTabPo from '../../pageobject/social/activity-tab.po';
+import activityPo from '../../pageobject/social/activity-tab.po';
 
 describe("Create Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -881,7 +885,6 @@ describe("Create Case", () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseSummary = 'Case Summary ' + randomStr;
-
             await navigationPage.signOut();
             await loginPage.login("qtao");
             await navigationPage.gotCreateCase();
@@ -921,7 +924,7 @@ describe("Create Case", () => {
     it('[DRDMV-1620]: [Case] Fields validation for case in Closed status ', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            
+
             var caseWithClosedStatus = {
                 "Status": "7000",
                 "Company": "Petramco",
@@ -949,4 +952,64 @@ describe("Create Case", () => {
             await loginPage.login("qkatawazi");
         }
     }, 180 * 1000);
+
+    //apdeshmu
+    it('[DRDMV-5325]:  Case Agent user able to see all activity records in activity feed for a Case created using template', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let filePath = '../../data/ui/attachment/bwfPdf.pdf';
+        let petramcoStr = "Petramco";
+        let aUsupportStr = "AU Support 1";
+        let kasiaOstlunsStr = "Kasia Ostlun";
+
+        try {
+            await navigationPage.signOut();
+            await loginPage.login("qtao");
+            await navigationPage.gotCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('Summary' + randomStr);
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCaseTemplateBlade.selectCaseTemplate('Change My Legal Name');
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await createCasePage.clickGoToCaseButton();
+            await viewCasePage.changeCaseStatus('In Progress');
+            await viewCasePage.clickSaveStatus();
+            await utilCommon.waitUntilSpinnerToHide();
+            expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
+            await viewCasePage.clickEditCaseButton();
+            await editCasePage.clickChangeAssignmentButton();
+            await changeAssignmentPage.setAssignee(petramcoStr, aUsupportStr, kasiaOstlunsStr);
+            await editCasePage.clickSaveCase();
+            await utilCommon.waitUntilSpinnerToHide();
+            expect(await activityPo.isTextPresentInActivityLog("Kasia Ostlun")).toBeTruthy("Text is not present in activiy tab1");
+            expect(await activityPo.isTextPresentInActivityLog("changed the case assignment")).toBeTruthy("Text is not present in activiy tab2");
+            expect(await activityPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab3");
+            expect(await activityPo.isTextPresentInActivityLog("Assigned Group")).toBeTruthy("Text is not present in activiy tab4");
+            expect(await activityPo.isTextPresentInActivityLog("AU Support 1")).toBeTruthy("Text is not present in activiy tab5");           
+            await activityTabPo.addActivityNote(activityNoteText);
+            await activityTabPo.addAttachment(filePath);
+            await activityTabPo.clickOnPostButton();
+            await utilCommon.waitUntilSpinnerToHide();
+            await utilCommon.waitUntilSpinnerToHide();
+            await expect(activityTabPo.isTextPresentInNote(activityNoteText)).toBeTruthy('Private Note is not Added');     
+            await activityTabPo.addActivityNote(randomStr);
+            await activityTabPo.clickPublicCheckbox();
+            await activityTabPo.clickOnPostButton();
+            await utilCommon.waitUntilSpinnerToHide();
+            expect(await activityTabPo.isTextPresentInNote(randomStr)).toBeTruthy('Public Note is not Added');
+            await viewCasePage.clickAttachmentsLink();
+            await attachmentBladePage.searchAndSelectCheckBox('bwfPdf');
+            expect(await attachmentBladePage.isDownloadButtonEnabled()).toBeTruthy('Download button is disabled');
+            await attachmentBladePage.clickOnDownloadButton();
+            expect(await activityTabPo.isTextPresentInNote(activityNoteText)).toBeTruthy('Private Note is not Added');     
+            expect(await activityTabPo.isAttachmentInActivity('bwfPdf.pdf')).toBeTruthy('File is not present on activity');        
+            expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    }, 240 * 1000);
 });

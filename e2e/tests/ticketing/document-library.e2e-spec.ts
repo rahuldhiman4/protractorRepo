@@ -554,6 +554,22 @@ describe('Document Library', () => {
         await expect(await utilCommon.isErrorMsgPresent()).toBeTruthy('Error msg not present');
     }, 240 * 1000);
 
+    //apdeshmu
+    it('[DRDMV-13012]: Verify that single file can be attach per document', async () => {
+        let filePath = '../../../data/ui/attachment/articleStatus.png';
+        let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await utilCommon.waitUntilSpinnerToHide();
+        await createDocumentLibraryPo.openAddNewDocumentBlade();
+        await createDocumentLibraryPo.setTitle(titleRandVal);
+        await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+        await createDocumentLibraryPo.addAttachment(filePath);
+        expect(await createDocumentLibraryPo.isAttachmentButtonEnabled()).toBeFalsy('Attachment button is enabled');
+        expect(await createDocumentLibraryPo.getMessageText()).toBe('The maximum number of attachments allowed is 1');
+    });
+
     it('[DRDMV-13044]: Verify that Document access on multiple change in assignments of support group.', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -602,5 +618,5 @@ describe('Document Library', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
         await expect(documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeTruthy("Document not visible");
-},240*1000);
+    }, 240 * 1000);
 })
