@@ -11,6 +11,7 @@ class CasePreview {
         priority: '[rx-view-component-id="6934b23e-3403-4b21-b4aa-a7a10283c8eb"] .selection-field',
         caseStatus: '[rx-view-component-id="6bbd4072-3626-49a4-8813-b1a456674fc7"] .status-transition',
         requesterName: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"]  a[title]',
+        contactName: '[rx-view-component-id="2b74f7f4-7a02-4662-a3be-80b246568c7b"]  a[title]',
         requestPhoneNumber: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"] .ac-link-person-phone',
         requesterEmailId: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"] .ac-link-person-email-disabled',
         requesterSite: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"] .ac-text-site-value',
@@ -73,6 +74,10 @@ class CasePreview {
 
     async isRequesterNameDisplayed(requesterName: string): Promise<boolean> {
         return await $(this.selectors.requesterName).getText() == requesterName ? true : false;
+    }
+
+    async isContactNameDisplayed(contactName: string): Promise<boolean> {
+        return await $(this.selectors.contactName).getText() == contactName ? true : false;
     }
 
     async isRequesterPhoneDisplayed(requestPhoneNumber: string): Promise<boolean> {

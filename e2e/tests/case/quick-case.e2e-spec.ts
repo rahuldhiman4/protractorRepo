@@ -7,6 +7,8 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import utilCommon from '../../utils/util.common';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
+import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template-cases.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 
 describe("Quick Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -212,4 +214,46 @@ describe("Quick Case", () => {
         await expect(viewCasePo.getRequesterName()).toBe('Person1 Person1');
     });
 
+   it('[DRDMV-794]: [Quick Case] Requester, Contact, Subject Employee people selection', async () => {
+        await navigationPage.gotoQuickCase();
+        await quickCase.selectRequesterName('allen');
+        expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Requester');
+        await quickCase.selectRequesterName('adam');
+        expect(await quickCase.getDrpDownValueByIndex(2)).toBe('Related to');
+        await quickCase.selectRequesterName('bpitt');
+        expect(await quickCase.getDrpDownValueByIndex(3)).toBe('Related to');
+        await quickCase.selectRequesterName('brain');
+        expect(await quickCase.getDrpDownValueByIndex(4)).toBe('Related to');
+        await quickCase.selectDrpDownValueByIndex('Target',1);
+        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy('Save button Enabled');
+        await quickCase.selectRequesterName('kye');
+        expect(await quickCase.getDrpDownValueByIndex(5)).toBe('Requester');
+        expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Target');
+        await quickCase.selectDrpDownValueByIndex('The requester of the case',1);
+        expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Requester');
+        expect(await quickCase.getDrpDownValueByIndex(5)).toBe('Contact');
+        await quickCase.selectDrpDownValueByIndex('Another person contacting on behalf of the requester',1);
+        expect(await quickCase.getDrpDownValueByIndex(5)).toBe('Requester');
+        expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Contact');
+        await quickCase.setCaseSummary('address');
+        await quickCase.saveCase();
+        expect(await casePreviewPo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy();
+        expect(await casePreviewPo.isContactNameDisplayed('Al Allbrook')).toBeTruthy();     
+    });
+
+    it('[DRDMV-1205]: [Quick Case] People search', async () => {
+        await navigationPage.gotoQuickCase();
+        await quickCase.selectRequesterName('Allen');
+        await quickCase.clearInputBox();
+        await quickCase.selectRequesterName('Allbrook');
+        await quickCase.clearInputBox();
+        await quickCase.selectRequesterName('all');
+        await quickCase.clearInputBox();
+        await quickCase.selectRequesterName('aallbrook');
+        await quickCase.clearInputBox();
+        await quickCase.selectRequesterName('Al Allbrook');
+        await quickCase.clearInputBox();
+        await quickCase.selectRequesterName('allen.allbrook@petramco.com');
+        await quickCase.clearInputBox();
+});
 })
