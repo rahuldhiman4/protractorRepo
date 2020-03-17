@@ -81,7 +81,7 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    },300*1000);
+    }, 300 * 1000);
 
     //skhobrag
     it('[DRDMV-11913]:[Global] Create a Case with global SVT', async () => {
@@ -129,7 +129,7 @@ describe('Service Target Tests for Cases', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 300 * 1000);
+    }, 330 * 1000);
 
     //skhobrag
     it('[DRDMV-2027]:Icons representing measurement status on SLA Progress Bar', async () => {
@@ -206,7 +206,7 @@ describe('Service Target Tests for Cases', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 400 * 1000);
+    }, 420 * 1000);
 
     //skhobrag   
     it('[DRDMV-11914]:[Global] Both svt gets attached if we have Global and company specific SVTs', async () => {
@@ -273,7 +273,7 @@ describe('Service Target Tests for Cases', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 300 * 1000);
+    }, 370 * 1000);
 
     //skhobrag
     it('[DRDMV-8365]:Verify the SLA Progress Bar change in color when single SVT attached', async () => {
@@ -415,7 +415,7 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 200 * 1000);
+    }, 280 * 1000);
 
     //skhobrag
     it('[DRDMV-7044]:[UI]Check the SLA Bar and check the details data on SLA blade', async () => {
@@ -690,7 +690,7 @@ describe('Service Target Tests for Cases', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 300 * 1000);
+    }, 410 * 1000);
 
     //skhobrag
     it('[DRDMV-8367]:Verify the SLA Progress Bar change in color when multiple SVT attached and all SVT are in Pause State', async () => {
@@ -868,7 +868,7 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 500 * 1000);
+    }, 590 * 1000);
 
     //skhobrag
     it('[DRDMV-8370]:Verify Visualization change when Status changes(In Process-> Pending)', async () => {
@@ -1036,7 +1036,7 @@ describe('Service Target Tests for Cases', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 300 * 1000);
+    }, 380 * 1000);
 
     //skhobrag
     it('[DRDMV-8373]:Verify Visualization change when Case is no longer match SVT configurations(In Process->Detached)', async () => {
@@ -1137,7 +1137,7 @@ describe('Service Target Tests for Cases', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 300 * 1000);
+    }, 520 * 1000);
 
     //skhobrag
     it('[DRDMV-2044]:Tooltip text & display allignment for measurements on SLA Progress Bar', async () => {

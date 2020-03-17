@@ -53,8 +53,10 @@ class ActivityTabPage {
         refreshButton: '.d-icon-left-refresh',
         attachmentField: '.activity-feed-note-buttons__left input[type="file"]',
         showMoreEmailActivity: '.email .more',
+        allTaskActivity: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .fields .value',
         showMoreLink: '.log-item__content .more',
-        emailBodyImage: '.email-body img'
+        emailBodyImage: '.email-body img',
+        publicCheckbox: '.activity-feed-note-external .d-checkbox__item',
     }
 
     async clickOnShowMore(): Promise<void> {
@@ -72,8 +74,8 @@ class ActivityTabPage {
     async getTextOfAlignment(value: string): Promise<string> {
         return await $(`td[style="${value}"]`).getText();
     }
-    
-    async clickOnHyperlink(value:string):Promise<void>{
+
+    async clickOnHyperlink(value: string): Promise<void> {
         let locator = `a[href='${value}']`;
         await $(locator).click();
     }
@@ -94,16 +96,23 @@ class ActivityTabPage {
         await $(this.selectors.attachmentField).sendKeys(absolutePath);
     }
 
-    async isFileAttachedOnActivity():Promise<boolean>{
+    async isFileAttachedOnActivity(): Promise<boolean> {
         return $(this.selectors.AttachedfileName).isPresent();
     }
 
     async isAttachedFileNameDisplayed(fileName: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.AttachedfileName,fileName)).getText() == fileName ? true : false;
+        return await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isDisplayed().then(async (result) => {
+            if (result) return true;
+            else return false;
+        });
     }
 
     async clickAndDownloadAttachmentFile(fileName: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.AttachedfileName,fileName)).click();
+        await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).click();
+    }
+
+    async getTaskActivity(fileName: string): Promise<string> {
+        return await element(by.cssContainingText(this.selectors.allTaskActivity, fileName)).getText();
     }
 
 
@@ -135,11 +144,11 @@ class ActivityTabPage {
         return emailBody;
     }
 
-    async getAttachmentCount():Promise<number>{
+    async getAttachmentCount(): Promise<number> {
         return await $$(this.selectors.AttachedfileName).count();
     }
 
-    async clickShowMoreForEmailActivity(): Promise<void>{
+    async clickShowMoreForEmailActivity(): Promise<void> {
         await $(this.selectors.showMoreEmailActivity).click();
     }
 
@@ -355,14 +364,10 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        //        browser.sleep(3000);
-        try {
-            await element(by.cssContainingText('.activity-general-note', bodyText)).isDisplayed();
-            return true;
-        }
-        catch (e) {
-            return false;
-        }
+        return await element(by.cssContainingText('.activity-general-note',bodyText)).isDisplayed().then(async (result) => {
+            if (result) return true;
+            else return false;
+        });
     }
 
     async clickOnHyperlinkFromActivity(bodyText: string, authorText: string): Promise<void> {
@@ -504,6 +509,24 @@ class ActivityTabPage {
         return textValue.includes('View Survey Information');
     }
 
+    async clickAttachedFile(fileName: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).click();
+    }
+
+    async getCountAttachedFiles(fileName: string): Promise<number> {
+        return await element.all(by.cssContainingText(this.selectors.AttachedfileName, fileName)).count();
+    }
+
+    async clickPublicCheckbox(): Promise<void> {
+        await element(by.css(this.selectors.publicCheckbox)).click();
+    }
+
+    async isAttachmentInActivity(bodyText: string): Promise<boolean> {
+        return await element(by.cssContainingText('.rx-attachment-view-name',bodyText)).isDisplayed().then(async (result) => {
+            if (result) return true;
+            else return false;
+        });
+    }
 }
 
 export default new ActivityTabPage();

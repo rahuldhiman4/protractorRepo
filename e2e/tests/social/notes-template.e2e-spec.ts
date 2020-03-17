@@ -199,7 +199,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
         }
-    }, 120 * 1000);
+    });
 
     //ptidke
     it('[DRDMV-15999]: [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
@@ -333,7 +333,7 @@ describe('Notes template', () => {
         await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName3);
         await activityTabPo.clickOnPostButton();
         await expect(await activityTabPo.isTextPresentInNote(notesTemplateBody3)).toBeTruthy();
-    }, 110 * 1000);
+    });
 
     //ptidke
     it('[DRDMV-16578]: Case Agent/Case Manger Should be able to consume People Notes Template in People profile', async () => {
@@ -385,7 +385,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         }
-    }, 120 * 1000);
+    });
 
     //ptidke
     it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual', async () => {

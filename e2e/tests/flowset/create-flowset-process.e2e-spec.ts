@@ -32,8 +32,8 @@ describe('Create Process in Flowset', () => {
         let case_Management_Process = case_management.name + randomStr;
         case_management.name = case_Management_Process;
         await apiCoreUtil.createProcess(case_management);
-         
-        let processName=case_Management_Process.split(':')[1];
+
+        let processName = case_Management_Process.split(':')[1];
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');

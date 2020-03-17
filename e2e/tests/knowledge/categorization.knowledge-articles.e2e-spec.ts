@@ -16,6 +16,9 @@ import documentLibraryConsolePage from '../../pageobject/settings/document-manag
 import editDocumentLibraryPage from '../../pageobject/settings/document-management/edit-document-library.po';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
+import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
+import apiCoreUtil from '../../api/api.core.util';
+
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
 let caseManagerUser = 'qdu';
@@ -61,7 +64,11 @@ let title = "DRDMV-19004 KnowledgeArticle";
 describe('Knowledge Articles - Categorization Tests', () => {
     const filePath = '../../../data/ui/attachment/articleStatus.png';
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
+    const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
+    const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
+    const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+    const personDataFile = require('../../data/ui/foundation/person.ui.json');
+    const domainTagDataFile = require('../../data/ui/foundation/domainTag.ui.json');
 
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
@@ -123,7 +130,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, canceledStatus)).toBeTruthy("Article with Canceled status not updated.");
-    }, 3 * 60 * 1000);
+    }, 180 * 1000);
 
     afterEach(async () => {
         await browser.refresh();
@@ -136,6 +143,27 @@ describe('Knowledge Articles - Categorization Tests', () => {
     afterAll(async () => {
         await navigationPage.signOut();
     });
+
+    async function foundationData2002(company: string) {
+        await apiHelper.apiLogin('tadmin');
+        let domainTagData = domainTagDataFile['DomainTagDataPsilon'];
+        let businessData = (businessDataFile['BusinessUnitData2002']);
+        let departmentData = departmentDataFile['DepartmentData2002'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData2002'];
+        // let personData = personDataFile['PersonData2002'];
+        let domainTag = await apiHelper.createDomainTag(domainTagData);
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        departmentData.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData);
+        suppGrpData.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData);
+        await apiHelper.associatePersonToSupportGroup('dbomei', suppGrpData.orgName);
+        await apiHelper.associateCategoryUnderDomainTag('Applications', domainTag);
+    }
+
+
 
     it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
         let categoryTierFieldColumns: string[] = ["Category Tier 1", "Category Tier 2", "Category Tier 3"];
@@ -359,7 +387,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 10 * 60 * 1000);
+    }, 650 * 1000);
 
     it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
         try {
@@ -710,7 +738,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 13 * 60 * 1000);
+    }, 780 * 1000);
 
     it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
         //Create a document library
@@ -802,19 +830,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 8 * 60 * 1000);
+    }, 480 * 1000);
 
-    it('[DRDMV-19356]:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
-        let domainTagData = {
-            domainTagName: 'FacilityDomainTag'
-        }
+    it('[DRDMV-19356,DRDMV-19082]:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
+        await foundationData2002('Psilon');
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json");
-        let knowledgeData = knowledgeDataFile['DRDMV-19020'];
-
-        await apiHelper.apiLogin("tadmin");
-        let domainTag = await apiHelper.createDomainTag(domainTagData);
-        await apiHelper.associateCategoryUnderDomainTag(categoryTier1FieldVal, domainTag);
-
         let knowledgeSetTitleStr = 'versionedKnowledgeSet_' + randomStr;
         let knowledgeSetData = {
             knowledgeSetTitle: `${knowledgeSetTitleStr}`,
@@ -823,10 +843,15 @@ describe('Knowledge Articles - Categorization Tests', () => {
         }
 
         await apiHelper.apiLogin('gderuno');
-        let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
+        await apiHelper.createKnowledgeSet(knowledgeSetData);
 
         try {
             await navigationPage.signOut();
+            let businessData = businessDataFile['BusinessUnitData2002'];
+            let departmentData = departmentDataFile['DepartmentData2002'];
+            let suppGrpData = supportGrpDataFile['SuppGrpData2002'];
+            let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
+            let knowledgeData = knowledgeDataFile['DRDMV-2002'];
             await loginPage.login('werusha');
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
@@ -837,7 +862,13 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(await createKnowledgePage.isCategoryTier2FieldLabelDisplayed(categoryTier2)).toBe(true);
             expect(await createKnowledgePage.isCategoryTier3FieldLabelDisplayed(categoryTier3)).toBe(true);
             expect(await createKnowledgePage.isCategoryTier4FieldLabelDisplayed(categoryTier4)).toBe(true);
-
+            await createKnowledgePage.clickChangeAssignmentButton();
+            await changeAssignmentBlade.selectCompany(knowledgeData.Company);
+            await changeAssignmentBlade.selectBusinessUnit(businessData.orgName);
+            await changeAssignmentBlade.selectDepartment(departmentData.orgName);
+            await changeAssignmentBlade.selectSupportGroup(suppGrpData.orgName);
+            await changeAssignmentBlade.selectAssignee('Doomi');
+            await changeAssignmentBlade.clickOnAssignButton();
             await createKnowledgePage.selectCategoryTier1Option(categoryTier1FieldVal);
             await createKnowledgePage.selectCategoryTier2Option(categoryTier2FieldVal);
             await createKnowledgePage.selectCategoryTier3Option(categoryTier3FieldVal);
@@ -853,8 +884,9 @@ describe('Knowledge Articles - Categorization Tests', () => {
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await browser.refresh();
-            // await utilCommon.waitUntilSpinnerToHide();
             await apiHelper.apiLogin('tadmin');
+            let domainTagData = domainTagDataFile['DomainTagDataPsilon'];
+            let domainTag = await apiHelper.createDomainTag(domainTagData);
             await apiHelper.disableDomainTag(domainTag);
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);

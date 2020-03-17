@@ -11,6 +11,11 @@ import taskTemplate from "../../pageobject/settings/task-management/create-taskt
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import utilCommon from '../../utils/util.common';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
+import manageTask from "../../pageobject/task/manage-task-blade.po";
+import viewTask from "../../pageobject/task/view-task.po";
+import createCasePage from '../../pageobject/case/create-case.po';
+import viewCasePage from "../../pageobject/case/view-case.po";
 
 describe('Create Task Template', () => {
     beforeAll(async () => {
@@ -332,4 +337,46 @@ describe('Create Task Template', () => {
         await expect(viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
         await expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
     }, 180 * 1000);
+
+    it('[DRDMV-7151]: [Automatic Task] - Automatic Task: Social: System Comments', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        var templateData4 = {
+            "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": `Case Process 1 ${randomStr}`,
+        }
+
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createAutomatedTaskTemplate(templateData4);
+
+        //Create a Case
+        await navigationPage.signOut();
+        await loginPage.login('qtao');
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + randomStr);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await viewCasePage.clickAddTaskButton();
+
+        //Add Automation Task templates in Case
+        await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
+        await expect(viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed")
+        await viewTask.clickOnViewCase();
+        await viewCasePage.changeCaseStatus('In Progress');
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.changeCaseStatus('Resolved');
+        await viewCasePage.setStatusReason('Auto Resolved');
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
+        await activityTabPo.getFirstPostContent();
+        await expect(viewTask.getTaskStatusValue()).toBe("Completed");
+        await expect(activityTabPo.getTaskActivity('Assigned')).toBe('Assigned');
+        await expect(activityTabPo.getTaskActivity('In Progress')).toBe('In Progress');
+        await expect(activityTabPo.getTaskActivity('Completed')).toBe('Completed');
+    });
 });

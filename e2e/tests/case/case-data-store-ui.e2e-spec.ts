@@ -83,7 +83,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    },100*1000);
+    }, 180 * 1000);
 
     //ankagraw
     it('[DRDMV-13169]: [Dynamic Data] [UI] - Automated Task UI on Edit view', async () => {
@@ -141,5 +141,5 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 150 * 1000);
+    }, 210 * 1000);
 });

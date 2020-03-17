@@ -1,5 +1,6 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from "../../utils/util.common";
+import { resolve } from 'path';
 
 class CaseEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -84,6 +85,7 @@ class CaseEditPage {
         activityChangeFile: '.d-icon-files_change_o',
         getCaseDisplayId: 'span.text-field',
         closedTip: '[class="rx-attachment-view-item ng-scope"] .d-icon-cross',
+        attachmentField: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] input',
     }
 
     async removeAttachment(): Promise<void> {
@@ -139,6 +141,12 @@ class CaseEditPage {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
         await $(this.selectors.saveCaseButton).click();
     }
+
+    async isSaveCaseEnable(): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
+       return await $(this.selectors.saveCaseButton).isEnabled();
+    }
+
 
     async clickOnCancelCaseButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelBtn)));
@@ -524,6 +532,12 @@ class CaseEditPage {
 
     async isChangeCaseTemplateButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.changeCaseTemplate).isDisplayed();
+    }
+
+    async addDescriptionAttachment(fileToUpload: string): Promise<void> {
+        const absolutePath = resolve(__dirname, fileToUpload);
+        console.log(absolutePath);
+        await $(this.selectors.attachmentField).sendKeys(absolutePath);
     }
 }
 

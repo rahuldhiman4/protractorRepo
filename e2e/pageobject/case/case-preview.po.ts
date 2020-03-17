@@ -19,6 +19,8 @@ class CasePreview {
         categoryTier1: '[rx-view-component-id="8668462b-3aac-4f43-8793-fc49aafbd5c6"] p',
         categoryTier2: '[rx-view-component-id="1068f2e1-1d3a-48a4-a0ed-ef1a8631ddc1"] p',
         categoryTier3: '[rx-view-component-id="1f32a2f6-ed6c-4b73-be36-c2990cb5a882"] p',
+        categoryTier4: '[rx-view-component-id="aa729db3-52a1-45bf-b4ca-1d72f7c4a209"] p',
+        labelValue: '[rx-view-component-id="ab146574-d991-43bd-8a7b-0be34019164c"] p',
         assignee: '[rx-view-component-id="7e86cba3-c1f9-4478-bf59-ee986a3ca5dd"]',
         assignedGroup: '[rx-view-component-id="2dfc8f80-2665-4e87-af2d-3d4d1137144d"] .d-textfield__rx-value',
         assignedCompany: '[rx-view-component-id="3c3eaad4-9b00-48f0-b1d8-f3881e21e3bc"] .d-textfield__rx-value',
@@ -112,6 +114,14 @@ class CasePreview {
 
     async isCategoryTier3Displayed(categoryTier3: string): Promise<boolean> {
         return await $(this.selectors.categoryTier3).getText() == categoryTier3 ? true : false;
+    }
+
+    async getCategoryTier4(): Promise<string> {
+        return await $(this.selectors.categoryTier4).getText();
+    }
+
+    async getLabelvalue(): Promise<string> {
+        return await $(this.selectors.labelValue).getText();
     }
 
     async isAssigneeDisplayed(assignee: string): Promise<boolean> {

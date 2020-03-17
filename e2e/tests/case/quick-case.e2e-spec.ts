@@ -1,18 +1,30 @@
 import { browser, protractor, ProtractorExpectedConditions } from "protractor";
-import quickCase from "../../pageobject/case/quick-case.po";
+import apiHelper from '../../api/api.helper';
+import createCasePo from '../../pageobject/case/create-case.po';
+import { default as quickCase, default as quickCasePo } from "../../pageobject/case/quick-case.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import utilCommon from '../../utils/util.common';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
 
 describe("Quick Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     const requester = "Requester";
     const contact = "Contact";
+    let loginId = 'caseagentbwf';
+    let caseSummary771 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    let caseDescription771 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    let templateName797 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    let templateSummary797 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    let caseTemplateId797 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
     beforeAll(async () => {
         browser.waitForAngularEnabled(false);
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login("qkatawazi");
+        await testData771();
+        await testData797();
     });
 
     afterEach(async () => {
@@ -103,6 +115,101 @@ describe("Quick Case", () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu&desc=Change my Last Name&contact=test1');
         await expect(quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
         await expect(quickCase.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
+    });
+
+    async function testData771() {
+        await navigationPage.gotCreateCase();
+        await createCasePo.selectRequester("Adam Pavlik");
+        await createCasePo.setSummary(caseSummary771);
+        await createCasePo.setDescription(caseDescription771);
+        await createCasePo.clickSaveCaseButton();
+        await createCasePo.clickGoToCaseButton();
+    }
+    //kgaikwad
+    it('[DRDMV-771]: [Quick Case] Similar cases search in Resources', async () => {
+        await navigationPage.gotoQuickCase();
+        let categoryvalues: string[] = [caseSummary771, caseDescription771];
+        for (let i = 0; i < categoryvalues.length; i++) {
+            let result;
+            await browser.refresh();
+            await quickCasePo.selectRequesterName('Adam Pavlik');
+            await quickCasePo.setCaseSummary(categoryvalues[i]);
+            await utilCommon.waitUntilSpinnerToHide();
+            let qcSummary = await quickCasePo.isCaseSummaryPresentInRecommendedCases(categoryvalues[0]);
+            if (qcSummary == false) {
+                result = false;
+            }
+            else {
+                result = true
+            }
+
+            await expect(result).toBeTruthy(`FailureMsg: Case Summary does not match for ${categoryvalues[i]}`);
+        }
+    });
+
+    async function testData797() {
+        let templateData = {
+            "templateName": templateName797,
+            "templateSummary": templateSummary797,
+            "templateStatus": "Active",
+            "company": 'Petramco'
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
+        caseTemplateId797 = newCaseTemplate.id;
+    }
+    //kgaikwad
+    it('[DRDMV-797]: [Quick Case] Case creation with inactive template (negative)', async () => {
+        await navigationPage.gotoQuickCase();
+        await quickCasePo.selectRequesterName("Adam Pavlik");
+        await quickCasePo.selectCaseTemplate(templateName797);
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.updateCaseTemplateStatus(caseTemplateId797, 'Draft');
+        await quickCasePo.saveCase();
+        await expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for draft template');
+        await apiHelper.updateCaseTemplateStatus(caseTemplateId797, 'Inactive');
+        await quickCasePo.saveCase();
+        await expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for inactive template');
+    });
+    it('[DRDMV-800]: [Quick Case] Case creation with requester having same name as other company users', async () => {
+
+        let userData1 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData1",
+        }
+
+        let userData2 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData2",
+        }
+
+        let userData3 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData3",
+        }
+
+        let userData4 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData4",
+        }
+
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.createNewUser(userData3);
+        await apiHelper.createNewUser(userData4);
+
+        await navigationPage.gotoQuickCase();
+        await quickCase.selectRequesterName('Person1');
+        await quickCase.setCaseSummary('caseSummary');
+        await quickCase.createCaseButton();
+        await expect(utilCommon.getPopUpMessage()).toBe('Saved successfully');
+        await quickCase.gotoCaseButton();
+        await expect(viewCasePo.getRequesterName()).toBe('Person1 Person1');
     });
 
 })

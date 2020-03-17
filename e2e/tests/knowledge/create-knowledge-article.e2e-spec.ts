@@ -22,7 +22,6 @@ describe('Knowledge Article', () => {
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
-    const domainTagDataFile = require('../../data/ui/foundation/domainTag.ui.json');
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     var knowledgeCandidateUser = 'kayo';
     var knowledgeContributorUser = 'kkohri';
@@ -37,16 +36,15 @@ describe('Knowledge Article', () => {
         await foundationData('Petramco');
         await foundationData19501('Petramco');
         await foundationData19082('Petramco');
-        await foundationData2002('Psilon');
     });
 
     afterAll(async () => {
         await navigationPage.signOut();
-        await apiHelper.apiLogin("tadmin");
-        let domainTag = await apiHelper.createDomainTag(domainTagDataFile['DomainTagData']);
-        await apiHelper.disableDomainTag(domainTag);
-        let domainTagPsilon = await apiHelper.createDomainTag(domainTagDataFile['DomainTagDataPsilon']);
-        await apiHelper.disableDomainTag(domainTagPsilon);
+        // await apiHelper.apiLogin("tadmin");
+        // let domainTag = await apiHelper.createDomainTag(domainTagDataFile['DomainTagData']);
+        // await apiHelper.disableDomainTag(domainTag);
+        // let domainTagPsilon = await apiHelper.createDomainTag(domainTagDataFile['DomainTagDataPsilon']);
+        // await apiHelper.disableDomainTag(domainTagPsilon);
 
     });
 
@@ -102,7 +100,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    });
+    }, 140 * 1000);
 
     it('[DRDMV-19079]: Change Reviewer blade should process properly on KA', async () => {
         try {
@@ -152,10 +150,10 @@ describe('Knowledge Article', () => {
 
     it('[DRDMV-19080]: On Edit KA, Change Assignment blade should process properly ', async () => {
         try {
-            let businessData = businessDataFile['BusinessUnitData'];
-            let departmentData = departmentDataFile['DepartmentData'];
-            let suppGrpData = supportGrpDataFile['SuppGrpData'];
-            let personData = personDataFile['PersonData'];
+            let businessData = businessDataFile['BusinessUnitData19082'];
+            let departmentData = departmentDataFile['DepartmentData19082'];
+            let suppGrpData = supportGrpDataFile['SuppGrpData19082'];
+            let personData = personDataFile['PersonData19082'];
             let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
             let knowledgeData = knowledgeDataFile['DRDMV-19080'];
             await navigationPage.gotoCreateKnowledge();
@@ -190,7 +188,7 @@ describe('Knowledge Article', () => {
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
-    });
+    }, 240 * 1000);
 
     it('[DRDMV-19081]: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
         try {
@@ -291,16 +289,14 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, (160 * 1000));
+    }, 170 * 1000);
 
     async function foundationData19082(company: string) {
         await apiHelper.apiLogin('tadmin');
-        let domainTagData = domainTagDataFile['DomainTagData'];
         let businessData = (businessDataFile['BusinessUnitData19082']);
         let departmentData = departmentDataFile['DepartmentData19082'];
         let suppGrpData = supportGrpDataFile['SuppGrpData19082'];
         let personData = personDataFile['PersonData19082'];
-        await apiHelper.createDomainTag(domainTagData);
         let orgId = await apiCoreUtil.getOrganizationGuid(company);
         businessData.relatedOrgId = orgId;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
@@ -312,61 +308,6 @@ describe('Knowledge Article', () => {
         await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
         await apiHelper.associatePersonToCompany(personData.userId, company)
     }
-
-    async function foundationData2002(company: string) {
-        await apiHelper.apiLogin('tadmin');
-        let domainTagData = domainTagDataFile['DomainTagDataPsilon'];
-        let businessData = (businessDataFile['BusinessUnitData2002']);
-        let departmentData = departmentDataFile['DepartmentData2002'];
-        let suppGrpData = supportGrpDataFile['SuppGrpData2002'];
-        let personData = personDataFile['PersonData2002'];
-        await apiHelper.createDomainTag(domainTagData);
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
-        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
-        departmentData.relatedOrgId = businessUnitId;
-        let depId = await apiHelper.createDepartment(departmentData);
-        suppGrpData.relatedOrgId = depId;
-        await apiHelper.createSupportGroup(suppGrpData);
-        // await apiHelper.createNewUser(personData);
-        await apiHelper.associatePersonToSupportGroup('dbomei', suppGrpData.orgName);
-        // await apiHelper.associatePersonToCompany(personData.userId, company)
-    }
-
-    it('[DRDMV-19082]: Domain config should be honored while Assigning Assignee and Reviewer', async () => {
-        //All below BU, Dep and Supp grps are tagged to DomainName
-        await navigationPage.signOut();
-        let knowledgeSetTitleStr = 'versionedKnowledgeSet_' + randomStr;
-        let knowledgeSetData = {
-            knowledgeSetTitle: `${knowledgeSetTitleStr}`,
-            knowledgeSetDesc: `${knowledgeSetTitleStr}+'Desc'`,
-            company: 'Psilon'
-        }
-
-        await apiHelper.apiLogin('gderuno');
-        let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
-
-        let businessData = businessDataFile['BusinessUnitData2002'];
-        let departmentData = departmentDataFile['DepartmentData2002'];
-        let suppGrpData = supportGrpDataFile['SuppGrpData2002'];
-        let personData = personDataFile['PersonData2002'];
-        let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
-        let knowledgeData = knowledgeDataFile['DRDMV-2002'];
-        await loginPage.login('werusha');
-        await navigationPage.gotoCreateKnowledge();
-        await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
-        await createKnowledgePage.clickOnUseSelectedTemplateButton();
-        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-        await createKnowledgePage.selectKnowledgeSet(knowledgeSetTitleStr);
-        await createKnowledgePage.clickChangeAssignmentButton();
-        await changeAssignmentBlade.selectCompany(knowledgeData.Company);
-        await changeAssignmentBlade.selectBusinessUnit(businessData.orgName);
-        await changeAssignmentBlade.selectDepartment(departmentData.orgName);
-        await changeAssignmentBlade.selectSupportGroup(suppGrpData.orgName);
-        await changeAssignmentBlade.selectAssignee('Doomi');
-        await changeAssignmentBlade.clickOnAssignButton();
-        await createKnowledgePage.clickOnSaveKnowledgeButton();
-    },240*1000);
 
     it('[DRDMV-799,DRDMV-788]: [KM-BWF integration] [Knowledge Article] Mandatory fields of the Create Knowledge Article view', async () => {
         try {
@@ -423,7 +364,7 @@ describe('Knowledge Article', () => {
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
-            await statusBladeKnowledgeArticlePo.setKnowledgeStatusAsSMEReview('Petramco', 'AU Support 3', 'Kane Williamson')
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'AU Support 3', 'Kane Williamson')
             expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
             await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilGrid.clearFilter();
@@ -470,7 +411,7 @@ describe('Knowledge Article', () => {
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
-            await statusBladeKnowledgeArticlePo.setKnowledgeStatusAsSMEReview('Petramco', 'Compensation and Benefits', 'Peter Kahn')
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Compensation and Benefits', 'Peter Kahn')
             expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
             await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilGrid.clearFilter();
@@ -756,7 +697,7 @@ describe('Knowledge Article', () => {
             await utilCommon.switchToNewWidnow(1);
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
-            await statusBladeKnowledgeArticlePo.setKnowledgeStatusAsSMEReview('Petramco', 'Compensation and Benefits', 'Peter Kahn');
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Compensation and Benefits', 'Peter Kahn');
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePage.getKnowledgeReviewHeader()).toContain('Knowledge Review');
             expect(await editKnowledgePage.isReviewerFieldDisabledInEdit()).toBeTruthy('Reviwer field is enabled');
@@ -777,7 +718,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 120* 1000);
+    });
 
     it('[DRDMV-1914]: [Article Creation] Ability to select the knowledge set during article creation', async () => {
         let knowledgeTitle = 'knowledgeCoachUser1914' + randomStr;
@@ -830,53 +771,53 @@ describe('Knowledge Article', () => {
     });
 
     it('[DRDMV-2887]: [Knowledge Article] Adding/Modifying location data while creating knowledge articles - site, region', async () => {
-        try{
-        let knowledgeTitle = 'knowledge2887' + randomStr;
-        await navigationPage.gotoKnowledgeConsole();
-        await navigationPage.gotoCreateKnowledge();
-        await createKnowledgePage.clickOnTemplate('Reference');
-        await createKnowledgePage.clickOnUseSelectedTemplateButton();
-        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
-        await createKnowledgePage.selectKnowledgeSet('HR');
-        await createKnowledgePage.selectRegionDropDownOption('Australia');
-        await createKnowledgePage.selectSiteDropDownOption('Melbourne');
-        await createKnowledgePage.clickOnSaveKnowledgeButton();
-        await createKnowledgePage.clickOnviewArticleLinkButton();
-        await utilCommon.switchToNewWidnow(1);
-        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
-        expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Melbourne');
-        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.selectRegionDropDownOption('EMEA');
-        await editKnowledgePage.selectSiteDropDownOption('Barcelona 1');
-        await editKnowledgePage.saveKnowledgeMedataDataChanges();
-        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('EMEA');
-        expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Barcelona 1');
-        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.removeRegionValue();
-        await editKnowledgePage.saveKnowledgeMedataDataChanges();
-        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('');
-        expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('');
-        await utilCommon.switchToDefaultWindowClosingOtherTabs();
-        await previewKnowledgePo.clickOnBackButton();
-        await navigationPage.gotoCreateKnowledge();
-        await createKnowledgePage.clickOnTemplate('Reference');
-        await createKnowledgePage.clickOnUseSelectedTemplateButton();
-        let knowledgeNewTitle = 'knowledgeNew2887' + randomStr;
-        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeNewTitle);
-        await createKnowledgePage.selectKnowledgeSet('HR');
-        await createKnowledgePage.selectRegionDropDownOption('Australia');
-        await createKnowledgePage.clickOnSaveKnowledgeButton();
-        await createKnowledgePage.clickOnviewArticleLinkButton();
-        await utilCommon.switchToNewWidnow(1);
-        await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA();
-        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
-    }
-    catch (e) {
-        throw e;
-    }
-    finally {
-        await utilCommon.switchToDefaultWindowClosingOtherTabs();
-        await previewKnowledgePo.clickOnBackButton();
-    }
-},150*1000);
+        try {
+            let knowledgeTitle = 'knowledge2887' + randomStr;
+            await navigationPage.gotoKnowledgeConsole();
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
+            await createKnowledgePage.selectKnowledgeSet('HR');
+            await createKnowledgePage.selectRegionDropDownOption('Australia');
+            await createKnowledgePage.selectSiteDropDownOption('Melbourne');
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await utilCommon.switchToNewWidnow(1);
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
+            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Melbourne');
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            await editKnowledgePage.selectRegionDropDownOption('EMEA');
+            await editKnowledgePage.selectSiteDropDownOption('Barcelona 1');
+            await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('EMEA');
+            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Barcelona 1');
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            await editKnowledgePage.removeRegionValue();
+            await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('');
+            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('');
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await previewKnowledgePo.clickOnBackButton();
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            let knowledgeNewTitle = 'knowledgeNew2887' + randomStr;
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeNewTitle);
+            await createKnowledgePage.selectKnowledgeSet('HR');
+            await createKnowledgePage.selectRegionDropDownOption('Australia');
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await utilCommon.switchToNewWidnow(1);
+            await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA();
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await previewKnowledgePo.clickOnBackButton();
+        }
+    }, 150 * 1000);
 })

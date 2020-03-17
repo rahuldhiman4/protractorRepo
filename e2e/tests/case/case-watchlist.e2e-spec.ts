@@ -377,7 +377,7 @@ describe('Case Watchlist', () => {
         expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeFalsy(assignmentNotification2 + " is present");
         expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeFalsy(statusNotification2 + " is present");
         await notificationAlerts.clickOnNotificationIcon();
-    },150*1000);
+    }, 150 * 1000);
 
     it('[DRDMV-16044,DRDMV-16060]: Verify the position, Labels and * icon on Case console, Case and Watchlist modal', async () => {
         await apiHelper.apiLogin(qyuanStr);
@@ -482,7 +482,7 @@ describe('Case Watchlist', () => {
         expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification1)).toBeTruthy(groupAssignmentNotification1 + " is not present");
         expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification2)).toBeFalsy(groupAssignmentNotification2 + " is present");
         await notificationAlerts.clickOnNotificationIcon();
-    });
+    }, 180 * 1000);
 
     it('[DRDMV-16556]: Verify that Agent remove the Case Group Assignment and Status from Watchlist update event then only Assignment change notifications will be shown', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -551,7 +551,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
         }
-    }, 130 * 1000);
+    }, 220 * 1000);
 
     it('[DRDMV-16557]: Verify that Agent can update(add) Case group Assignment for any of the existing Watched case', async () => {
         await apiHelper.apiLogin(qyuanStr);
@@ -674,7 +674,7 @@ describe('Case Watchlist', () => {
         expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeFalsy(assignmentNotification2 + " is present");
         expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeFalsy(statusNotification2 + " is present");
         await notificationAlerts.clickOnNotificationIcon();
-    });
+    }, 140 * 1000);
 
     it('[DRDMV-16061]: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -819,7 +819,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
         }
-    },180*1000);
+    }, 180 * 1000);
 
     it('[DRDMV-16055]: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -904,7 +904,7 @@ describe('Case Watchlist', () => {
         expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeTruthy(assignmentNotification2 + " is not present");
         expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeTruthy(statusNotification2 + " is not present");
         await notificationAlerts.clickOnNotificationIcon();
-    },160*1000);
+    }, 160 * 1000);
 
     it('[DRDMV-16052]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -986,7 +986,7 @@ describe('Case Watchlist', () => {
         expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeTruthy(assignmentNotification2 + " is not present");
         expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeTruthy(statusNotification2 + " is not present");
         await notificationAlerts.clickOnNotificationIcon();
-    },160*1000);
+    }, 190 * 1000);
 
     it('[DRDMV-16050]: Verify that write access Agent can add the case to watchlist from Case', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -1041,7 +1041,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
         }
-    }, 120 * 1000);
+    });
 
     it('[DRDMV-16041]: Verify that Case Agent can follow/unfollow the cases from case itself - Read only user', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -1134,6 +1134,6 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
         }
-    }, 160 * 1000);
+    }, 230 * 1000);
 
 })

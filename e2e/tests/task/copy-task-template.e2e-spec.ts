@@ -86,7 +86,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 120 * 1000);
+    }, 200 * 1000);
 
     it('[DRDMV-13548]: Create a Copy of Task template where Submitter do not belong to any Support Groups', async () => {
         try {
@@ -133,7 +133,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 120 * 1000);
+    }, 190 * 1000);
 
     it('[DRDMV-14218]: The copy of Automated Task template is created across company and check the way to Edit the existing linked Process.', async () => {
         try {
@@ -182,7 +182,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(newAutomationTaskTemplate);
             await copyTemplatePage.setNewProcessName(newAutomationTaskProcess);
             await copyTemplatePage.clickSaveCopytemplate();
-           // await utilCommon.waitUntilPopUpDisappear();
+            // await utilCommon.waitUntilPopUpDisappear();
             await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
 
             //Login through only Petramco User
@@ -207,7 +207,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 240 * 1000);
+    }, 300 * 1000);
 
     it('[DRDMV-14217]: Copy of Automated task template created across company and no new Process is created', async () => {
         try {
@@ -361,7 +361,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    }, 180 * 1000);
 
     it('[DRDMV-14215]: Create a Copy of an automated Task Template where New Process is created and check its execution', async () => {
         try {
@@ -430,7 +430,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 240 * 1000);
+    }, 320 * 1000);
 
     it('[DRDMV-13737]: [Negative] Try to copy Automated template with same process Name and different field data', async () => {
         try {
@@ -462,17 +462,17 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.setNewProcessName(processName);
             await copyTemplatePage.clickSaveCopytemplate();
-            let successmsg:string[]=["Saved successfully."];
+            let successmsg: string[] = ["Saved successfully."];
             await expect(await utilCommon.isPopupMsgsMatches(successmsg)).toBeTruthy("Saved successfully not present");
             await expect(await utilCommon.isErrorMsgPresent()).toBeTruthy('Error msg not present');
-           
+
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    }, 180 * 1000);
 
     it('[DRDMV-14221]: Check Error Message when trying to edit a process, where process is linked to Active Automated Task template', async () => {
         try {
@@ -515,7 +515,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 110 * 1000);
+    }, 190 * 1000);
 
     it('[DRDMV-13574,DRDMV-13553]: Fields copied while creating copy of External Task template', async () => {
         try {
@@ -606,7 +606,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 130 * 1000);
+    }, 140 * 1000);
 
     it('[DRDMV-13572]: Fields copied while creating copy of Manual Task template', async () => {
         try {
@@ -754,5 +754,5 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 120 * 1000);
+    });
 });

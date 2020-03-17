@@ -370,7 +370,7 @@ describe("Compose Email", () => {
         expect(await composeMail.getSubjectInputValue()).toContain('Salary summary', 'Subject 2 does not match');
         expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate2, 'Email Template name heading does not match');
         await composeMail.clickOnSendButton();
-    }, 100 * 1000);
+    });
 
     //kgaikwad
     it('[DRDMV-8392,DRDMV-10384]: Negative: In Email "To" and "cc" should be user from Foundation data ', async () => {
@@ -960,5 +960,80 @@ describe("Compose Email", () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
         }
-    }, 180 * 1000);
+    }, 300 * 1000);
+
+    it('[DRDMV-9033]: Negative - Verify Discard button on adding attachment in Compose Email', async () => {
+        await navigationPage.gotoCaseConsole();
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseData =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-9033 RandVal" + summary,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin('qtao');
+        let newCase = await apiHelper.createCase(caseData);
+        await utilGrid.clearFilter();
+        await caseConsole.searchAndOpenCase(newCase.displayId);
+        await viewCasePo.clickOnEmailLink();
+        await composeMail.addAttachment();
+        expect(await composeMail.getFileDisplayedFileName()).toContain('demo.txt');
+        await composeMail.clickOnDiscardButton();
+        await utilCommon.clickOnWarningOk();
+        expect(await activityTabPo.isFileAttachedOnActivity()).toBeFalsy('file is attached on activity');
+    });
+
+    it('[DRDMV-9028]: Send Email to requester with attachments VIA Compose Email', async () => {
+        await navigationPage.gotoCaseConsole();
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseData =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-9028 RandVal" + summary,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin('qtao');
+        let newCase = await apiHelper.createCase(caseData);
+        await utilGrid.clearFilter();
+        await caseConsole.searchAndOpenCase(newCase.displayId);
+        await viewCasePo.clickOnEmailLink();
+        await composeMail.addAttachment();
+        expect(await composeMail.getFileDisplayedFileName()).toContain('demo.txt');
+        await composeMail.setToOrCCInputTetxbox('To', 'franz.schwarz@petramco.com');
+        expect(await composeMail.getToEmailPerson()).toContain('Franz Schwarz');
+        await composeMail.setToOrCCInputTetxbox('Cc', 'franz.schwarz@petramco.com');
+        expect(await composeMail.getToEmailPerson()).toContain('Franz Schwarz');
+        await composeMail.setEmailBody('This is email body');
+        await composeMail.clickOnSendButton();
+        await activityTabPo.clickShowMoreForEmailActivity();
+        expect(await activityTabPo.getFirstPostContent()).toContain('This is email body');
+        expect(await activityTabPo.getFirstPostContent()).toContain('Qianru Tao sent an email');
+        expect(activityTabPo.isAttachedFileNameDisplayed('demo.txt')).toBeTruthy('Attached file not Present');
+    });
+
+    it('[DRDMV-9032]: Negative -Verify large number of attachments. Click on Send button in Compose Email', async () => {
+        await navigationPage.gotoCaseConsole();
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseData =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-9028 RandVal" + summary,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin('qtao');
+        let newCase = await apiHelper.createCase(caseData);
+        await utilGrid.clearFilter();
+        await caseConsole.searchAndOpenCase(newCase.displayId);
+        await viewCasePo.clickOnEmailLink();
+        for (let i = 0; i <= 20; i++) {
+            await composeMail.addAttachment();
+        }
+        await composeMail.setToOrCCInputTetxbox('To', 'franz.schwarz@petramco.com');
+        await composeMail.clickOnSendButton();
+        await activityTabPo.clickShowMoreForEmailActivity();
+        expect(await activityTabPo.getAttachmentCount()).toBe(21);
+    });
 })

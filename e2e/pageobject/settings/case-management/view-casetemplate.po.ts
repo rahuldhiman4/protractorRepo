@@ -16,6 +16,7 @@ class ViewCaseTemplate {
         resolveCaseOnLastTaskCompletion: '[rx-view-component-id="e4956197-0230-4272-8fc4-87358bd084bf"] p',
         categoryTier4: '[rx-view-component-id="fbc0f516-1f57-44ad-82ab-f8bbbe1aa5f5"] p',
         priority: '.selection-field',
+        labelvalue: '[rx-view-component-id="06d4ad28-b48e-493a-b6b3-925fea737576"] p',
         buisnessUnitvalue: '[rx-view-component-id="40817c2b-387f-4859-82e9-0a3251cdc7dc"] .d-textfield__rx-value',
         departmentValue: '[rx-view-component-id="d5d0c773-b825-4be7-b357-4ed4eb73ee8d"] .d-textfield__rx-value',
     }
@@ -38,6 +39,11 @@ class ViewCaseTemplate {
     async getBuisnessUnitValue(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.ownerCompany)));
         return await $(this.selectors.buisnessUnitvalue).getText();
+    }
+
+    async getLabelValue(): Promise<string> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.ownerCompany)));
+        return await $(this.selectors.labelvalue).getText();
     }
 
     async getDepartmentValue(): Promise<string> {

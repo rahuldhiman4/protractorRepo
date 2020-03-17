@@ -42,7 +42,7 @@ describe('Create Flowset', () => {
         await expect(createFlowset.isCompanyRequiredTextDisplayed()).toBeTruthy(" Company Required text not present ");
         await expect(createFlowset.isFlowsetRequiredTextDisplayed()).toBeTruthy(" Flowset Name Required text not present ");
         await expect(createFlowset.isDescriptionRequiredTextDisplayed()).toBeTruthy(" Description Required text not present ");
-        await expect(createFlowset.isStatusRequiredTextDisplayed()).toBeTruthy( " Status Required text not present ");
+        await expect(createFlowset.isStatusRequiredTextDisplayed()).toBeTruthy(" Status Required text not present ");
 
         //add Flowsets
         await createFlowset.selectCompany('Petramco');
@@ -170,41 +170,41 @@ describe('Create Flowset', () => {
         let processName1 = 'com.bmc.dsm.case-lib:Case - Initialization';
         await apiHelper.deleteFlowsetProcessLibConfig(processName1);
         await apiHelper.deleteFlowsetProcessLibConfig(processName);
-    },150*1000);
+    }, 150 * 1000);
 
     //ankagraw
     it('[DRDMV-1259]: [Permissions] Flowsets access', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
-      try {
+        try {
             //API call to create the flowset
-        await apiHelper.apiLogin('qkatawazi');
-        let flowsetData = require('../../data/ui/case/flowset.ui.json');
-        let flowsetName: string = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
-        flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
-        await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+            await apiHelper.apiLogin('qkatawazi');
+            let flowsetData = require('../../data/ui/case/flowset.ui.json');
+            let flowsetName: string = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
+            flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
+            await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
 
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
-        await consoleFlowset.searchAndSelectFlowset(flowsetName);
-        await editFlowset.setDescription("edit description" + randomStr);
-        await editFlowset.clickSaveBtn();
-        await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeTruthy(" Flowset is not present ");
-        await navigationPage.signOut();
-        await loginPage.login('gwixillian');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
-        await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeFalsy(" Flowset is present ");
-        await navigationPage.signOut();
-        await loginPage.login('qtao');
-        await navigationPage.gotoSettingsPage();
-        await expect(navigationPage.isSettingMenuPresent('Manage Flowsets')).toBeFalsy("Setting menu present");
-      } catch (e) {
-        throw e;
-    } finally {
-        await navigationPage.signOut();
-        await loginPage.login('qkatawazi');
-    }
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            await consoleFlowset.searchAndSelectFlowset(flowsetName);
+            await editFlowset.setDescription("edit description" + randomStr);
+            await editFlowset.clickSaveBtn();
+            await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeTruthy(" Flowset is not present ");
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeFalsy(" Flowset is present ");
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await navigationPage.gotoSettingsPage();
+            await expect(navigationPage.isSettingMenuPresent('Manage Flowsets')).toBeFalsy("Setting menu present");
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
     });
 
     //ankagraw

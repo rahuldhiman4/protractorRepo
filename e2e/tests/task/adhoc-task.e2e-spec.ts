@@ -162,7 +162,7 @@ describe('Create Adhoc task', () => {
         await expect(viewTask.isViewCaseLinkDisplayed()).toBeTruthy("view case link is displayed ");
         await viewTask.clickOnViewCase();
         await expect(viewCasePo.getCaseSummary()).toBe('Summary ' + summary);
-    }, 120 * 1000);
+    });
 
     it('[DRDMV-1500]: [Permissions] Navigating to case from the task', async () => {
 
@@ -330,7 +330,7 @@ describe('Create Adhoc task', () => {
         expect(await viewTask.isAttachedFileNamePresent('demo')).toBeTruthy('Attached file name is not available');
     });
 
-    it('[DRDMV-12248,DRDMV-12247,DRDMV-12250,DRDMV-13947]: Verify max attachments added to task', async () => {
+    it('[DRDMV-12248,DRDMV-12247,DRDMV-12250]: Verify max attachments added to task', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         let caseData = {
             "Requester": "qkatawazi",
@@ -355,11 +355,10 @@ describe('Create Adhoc task', () => {
         }
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeFalsy('Attachment button is enabled');
         await adhoctaskTemplate.clickOnSaveAdhoctask();
-        if (await utilCommon.isWarningDialogBoxDisplayed()) {
-            await utilCommon.clickOnWarningOk();
-        }
-        await manageTask.clickOnCloseButton();
-        await viewCasePage.clickOnTaskLink(summary);
+        await utilCommon.waitUntilPopUpDisappear();
+        // hardwait to upload multiple files
+        await browser.sleep(10000);
+        await manageTask.clickTaskLinkOnManageTask(summary);
         await viewTask.clickOnShowMoreButton();
         let fileName2: string[] = ['articleStatus', 'bwfJpg', 'bwfJpg1', 'bwfJpg2', 'bwfJpg3', 'bwfJpg4', 'bwfJson1', 'bwfJson2', 'bwfJson3', 'bwfJson4', 'bwfJson5', 'bwfPdf', 'bwfPdf1', 'bwfPdf2', 'bwfPdf3', 'bwfPdf4', 'bwfWord1', 'bwfWord2', 'bwfXlsx', 'demo'];
         let fileCount = fileName2.length;

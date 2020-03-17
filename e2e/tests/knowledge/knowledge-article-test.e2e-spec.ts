@@ -81,7 +81,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
             await utilCommon.waitUntilSpinnerToHide();
         }
-    }, 130 * 1000);
+    }, 140 * 1000);
 
     //ptidke
     it('[DRDMV-13646,DRDMV-13681]: Create a Knowledge article and check Knowledge Preview', async () => {
@@ -140,13 +140,13 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 90 * 1000);
+    });
 
     //ptidke
     it('[DRDMV-2374]: [Edit Knowledge Article] Article creation not possible by selecting disabled templates', async () => {
         try {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates','Knowledge Article Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates - Business Workflows');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName(randomStr);
             await createKnowledgeArticleTemplatePo.clickOnDisableEnableCheckBox();
@@ -609,7 +609,7 @@ describe('Knowledge Article', () => {
         await changeAssignmentBladePo.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
-    }, 2 * 60 * 1000);
+    });
 
     it('[DRDMV-5195]: [Knowledge]-Assigning the article using Assignment component', async () => {
         let knowledgeTitile = 'knowledge5195' + randomStr;
@@ -844,10 +844,10 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 4 * 60 * 1000);
+    }, 240 * 1000);
 
-     //ptidke
-     it('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {
+    //ptidke
+    it('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {
         try {
             let knowledgeTitile = 'knowledge2746' + randomStr;
             await apiHelper.apiLogin(knowledgePublisherUser);
@@ -937,30 +937,30 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     }, 380 * 1000);
-    
+
     it('[DRDMV-1784]: [Knowledge Article] Changing the template for the article', async () => {
         let knowledgeTitile = 'knowledgeCoachUser1784' + randomStr;
-         await navigationPage.gotoKnowledgeConsole();       
+        await navigationPage.gotoKnowledgeConsole();
         await navigationPage.gotoCreateKnowledge();
         expect(await createKnowledgePage.isTemplatePresent('KCS')).toBeTruthy('Template is not present');
         expect(await createKnowledgePage.isTemplatePresent('Reference')).toBeTruthy('Template is not present');
         expect(await createKnowledgePage.isTemplatePresent('How To')).toBeTruthy('Template is not present');
         await createKnowledgePage.clickOnTemplate('Environment');
-        expect(createKnowledgePage.getTemplatePreviewText()).toContain('Environment','Preview is not present');
+        expect(createKnowledgePage.getTemplatePreviewText()).toContain('Environment', 'Preview is not present');
         expect(createKnowledgePage.isKnoledgeSetTemplateIsDisplayed()).toBeTruthy('style is not present');
         await createKnowledgePage.clickOnSelectDifferentTemplate();
         await createKnowledgePage.clickOnTemplate('Reference');
-        expect(createKnowledgePage.getTemplatePreviewText()).toContain('Reference','Preview is not present');
+        expect(createKnowledgePage.getTemplatePreviewText()).toContain('Reference', 'Preview is not present');
         expect(createKnowledgePage.isKnoledgeSetTemplateIsDisplayed()).toBeTruthy('style is not present');
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
         await createKnowledgePage.setReferenceValue('reference values are as follows');
         await createKnowledgePage.clickChangeTemplateButton();
         await utilCommon.clickOnWarningOk();
         await createKnowledgePage.clickOnTemplate('Question');
-        expect(createKnowledgePage.getTemplatePreviewText()).toContain('Question','Preview is not present');
+        expect(createKnowledgePage.getTemplatePreviewText()).toContain('Question', 'Preview is not present');
         expect(createKnowledgePage.isKnoledgeSetTemplateIsDisplayed()).toBeTruthy('style is not present');
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
-        await createKnowledgePage.setValueInRTF('Question','frist values are as follows');
+        await createKnowledgePage.setValueInRTF('Question', 'frist values are as follows');
         await createKnowledgePage.clickChangeTemplateButton();
         await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitile);
         await utilCommon.clickOnWarningCancel();

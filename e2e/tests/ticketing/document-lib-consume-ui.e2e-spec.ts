@@ -9,6 +9,7 @@ import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate
 import viewCasePo from '../../pageobject/case/view-case.po';
 import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
 import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import { default as resources, default as resourcesTabPo } from '../../pageobject/common/resources-tab.po';
@@ -1068,7 +1069,7 @@ describe('Document Library Consume UI', () => {
         await resourcesTabPo.clickOnAdvancedSearchOptions('Knowledge Articles ');
         await resourcesTabPo.searchTextAndEnter(publishDocLibData1.docLibTitle);
         await expect(await resourcesTabPo.isKnowledgeArticlesEmpty()).toBeTruthy('Failuer: Knowledge Article is not empty');
-    }, 120 * 1000);
+    });
 
     //kgaikwad
     it('[DRDMV-13517]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
@@ -1199,15 +1200,15 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 362 * 1000);
+    }, 370 * 1000);
 
     //kgaikwad
     it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
         try {
             let loginId2 = 'casemanagerwithdocmanager';
-            
-            let username= `${loginId2}@petramco.com`;
-            let password='Password_1234';
+
+            let username = `${loginId2}@petramco.com`;
+            let password = 'Password_1234';
             await apiHelper.apiLogin('tadmin');
             var caseAgentuserData = {
                 "firstName": "CaseManager",
@@ -1241,7 +1242,7 @@ describe('Document Library Consume UI', () => {
                 }
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData2.docLibTitle);
-                await apiHelper.apiLoginWithCredential(username,password);
+                await apiHelper.apiLoginWithCredential(username, password);
                 let getFilePath1 = files1[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData2, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
@@ -1254,11 +1255,11 @@ describe('Document Library Consume UI', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
-            await apiHelper.apiLoginWithCredential(username,password);
+            await apiHelper.apiLoginWithCredential(username, password);
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
 
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials(username,password);
+            await loginPage.loginWithCredentials(username, password);
             await navigationPage.gotCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
@@ -1385,5 +1386,197 @@ describe('Document Library Consume UI', () => {
         await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
         await expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
     }, 240 * 1000);
+
+    //kgaikwad
+    it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
+        try {
+            let excelFile = '../../data/ui/attachment/bwfXlsx.xlsx';
+            let addNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let publish: string[] = ['drdmv13536_publish_document1', 'drdmv13536_publish_document2'];
+            let files: string[] = [filePath1, filePath2];
+            for (let i = 0; i < publish.length; i++) {
+                let publishDocLibData1 = {
+                    docLibTitle: publish[i],
+                    company: 'Petramco',
+                    ownerGroup: 'Compensation and Benefits',
+                }
+                await apiHelper.apiLogin('tadmin');
+                await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
+                await apiHelper.apiLogin(loginId);
+                let getFilePath1 = files[i];
+                let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
+                await apiHelper.apiLogin(loginId);
+                await apiHelper.giveReadAccessToDocLib(docLib, "Staffing");
+                await apiHelper.publishDocumentLibrary(docLib);
+            }
+
+            await navigationPage.signOut();
+            await loginPage.login(loginId);
+
+            await navigationPage.gotCreateCase();
+            await createCasePo.selectRequester('qtao');
+            await createCasePo.setSummary('drdmv-13536' + caseSummary);
+            await createCasePo.clickSaveCaseButton();
+            await createCasePo.clickGoToCaseButton();
+            let caseId = await viewCasePo.getCaseID();
+            await activityTabPo.addActivityNote(addNoteText);
+            await activityTabPo.addAttachment(excelFile);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(publish[0]);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
+            await activityTabPo.clickOnPostButton();
+            await utilCommon.waitUntilSpinnerToHide();
+            await viewCasePo.clickAttachmentsLink();
+            await attachmentBladePo.clickOnCloseButton();
+
+            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
+            await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
+            await expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
+
+            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf Attached Document is missing');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
+            await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
+            await expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is not downloaded.');
+
+            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailureMsg:bwfXlsx.xlsx Attached Document is missing');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is delete sucessfully');
+            await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
+            await expect(await utilCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
+
+            await viewCasePo.clickOnTab('Case Access');
+            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
+            await caseAccessTabPo.selectAndAddAgent('qstrong');
+            await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Quin Strong')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
+            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
+            await caseAccessTabPo.selectAndAddAgent('qgeorge');
+            await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Quanah George')).toBeTruthy('Failuer: Quanah George Agent Name is missing');
+
+            await navigationPage.signOut();
+            await loginPage.login('qstrong');
+            await caseConsolePo.searchAndOpenCase(caseId);
+
+            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg:bwfJpg.jpg Attached Document is missing');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
+            await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
+            await expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
+
+            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg:bwfPdf.pdf Attached Document is missing');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
+            await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
+            await expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is not downloaded.');
+
+            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailureMsg:bwfXlsx.xlsx Attached Document is missing');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is delete sucessfully');
+            await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
+            await expect(await utilCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
+
+            await navigationPage.signOut();
+            await loginPage.loginWithCredentials('qgeorge@petramco.com', 'Password_1234');
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailureMsg:bwfXlsx.xlsx Attached Document is missing');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is delete sucessfully');
+            await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
+            await expect(await utilCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
+            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeFalsy('FailureMsg:bwfJpg.jpg Attached Document is displayed');
+            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeFalsy('FailureMsg:bwfPdf.pdf Attached Document is displayed');
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    }, 240 * 1000);
+
+    //kgaikwad
+    it('[DRDMV-13528]: Access to the documents attached on case when case is re-assigned to some other support group', async () => {
+        try {
+            let caseId;
+            let publishDocLibData1 = {
+                docLibTitle: 'drdmv13528_publish_document1',
+                company: 'Petramco',
+                ownerGroup: 'Compensation and Benefits',
+            }
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
+            await apiHelper.apiLogin(loginId);
+            let docLib1 = await apiHelper.createDocumentLibrary(publishDocLibData1, filePath1);
+            await apiHelper.giveReadAccessToDocLib(docLib1, "Staffing");
+            await apiHelper.publishDocumentLibrary(docLib1);
+
+            let publishDocLibData2 = {
+                docLibTitle: 'drdmv13528_publish_document2',
+                company: 'Petramco',
+                ownerGroup: 'Compensation and Benefits',
+            }
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDocumentLibrary(publishDocLibData2.docLibTitle);
+            await apiHelper.apiLogin(loginId);
+            let docLib2 = await apiHelper.createDocumentLibrary(publishDocLibData2, filePath2);
+            await apiHelper.publishDocumentLibrary(docLib2);
+
+            await navigationPage.signOut();
+            await loginPage.login(loginId);
+
+            await navigationPage.gotCreateCase();
+            await createCasePo.selectRequester('qtao');
+            await createCasePo.setSummary(caseSummary);
+            await createCasePo.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Petramco');
+            await changeAssignmentBladePo.selectSupportGroup('Staffing');
+            await changeAssignmentBladePo.selectAssignee('Quin Strong');
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await createCasePo.clickSaveCaseButton();
+            await createCasePo.clickGoToCaseButton();
+            caseId = await viewCasePo.getCaseID();
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(publishDocLibData1.docLibTitle);
+            await editCasePo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(publishDocLibData2.docLibTitle);
+            await editCasePo.clickSaveCase();
+            await expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
+            await viewCasePo.clickOnAttachedDocumentFile('bwfJpg.jpg');
+            await expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
+
+            await expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf Attached Document is missing');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
+            await viewCasePo.clickOnAttachedDocumentFile('bwfPdf.pdf');
+            await expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is not downloaded.');
+
+            await navigationPage.signOut();
+            await loginPage.login('qstrong');
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
+            await viewCasePo.clickOnAttachedDocumentFile('bwfJpg.jpg');
+            await expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
+            await expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeFalsy('FailuerMsg: bwfPdf.pdf Attached Document is displayed');
+
+            await navigationPage.signOut();
+            await loginPage.login(loginId);
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Petramco');
+            await changeAssignmentBladePo.selectSupportGroup('Employee Relations');
+            await changeAssignmentBladePo.selectAssignee('Quanah George');
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editCasePo.clickSaveCase();
+            await expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+            await navigationPage.signOut();
+            await loginPage.loginWithCredentials('qgeorge@petramco.com', 'Password_1234');
+            await caseConsolePo.searchAndOpenCase('CASE-0000000310');
+            await expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeFalsy('FailureMsg: bwfJpg.jpg Attached Document is displayed');
+            await expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeFalsy('FailureMsg: bwfPdf.pdf Attached Document is displayed');
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    }, 200 * 1000);
 
 })
