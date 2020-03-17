@@ -308,7 +308,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 120 * 1000);
+    });
 
     it('[DRDMV-13573]: Fields copied while creating copy of Automated Task template', async () => {
         try {
@@ -430,7 +430,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 314 * 1000);
+    }, 320 * 1000);
 
     it('[DRDMV-13737]: [Negative] Try to copy Automated template with same process Name and different field data', async () => {
         try {
@@ -563,7 +563,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 120 * 1000);
+    });
 
     it('[DRDMV-13547]: Create a Copy of Task template by Case Business Analyst that belongs to Support Group', async () => {
         try {
@@ -606,7 +606,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 130 * 1000);
+    }, 140 * 1000);
 
     it('[DRDMV-13572]: Fields copied while creating copy of Manual Task template', async () => {
         try {
@@ -754,5 +754,5 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 120 * 1000);
+    });
 });

@@ -59,7 +59,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await assignmentConfigEditPage.isDefaultToggleBtnDisabled()).toBeTruthy();
         expect(await assignmentConfigEditPage.isSaveBtnDisabled()).toBeTruthy();
         await browser.refresh();
-    }, 120 * 1000);
+    });
 
     // asahitya
     it('[DRDMV-18037]: Check Case manager is not able to perform Create Update Delete operation on Read Access mapping', async () => {

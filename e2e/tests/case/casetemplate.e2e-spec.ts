@@ -245,7 +245,7 @@ describe('Case Template', () => {
         await expect(await viewCaseTemplate.getOwnerGroupValue()).toContain(caseTemplateRequiredFields.supportGroup);
         await expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Petramco');
         await expect(await viewCaseTemplate.getTemplateStatusValue()).toContain(caseTemplateRequiredFields.templateStatus);
-    }, 130 * 1000);
+    }, 140 * 1000);
 
     //ptidke
     it('[DRDMV-1229]: [Case Template Console] Search by Summary and Display ID on the Case Template Console', async () => {
@@ -324,7 +324,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    },160*1000);
+    }, 160 * 1000);
 
     //ptidke
     it('[DRDMV-12578]:Case BA from other than case template owner group can NOT update the template', async () => {
@@ -447,7 +447,7 @@ describe('Case Template', () => {
         await viewTaskPo.clickOnSaveStatus();
         await viewTaskPo.clickOnViewCase();
         await expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
-    }, 130 * 1000);
+    }, 140 * 1000);
 
     //ptidke
     it('[DRDMV-19734]:[RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case Template view Look & Feel after adding new configuration field', async () => {

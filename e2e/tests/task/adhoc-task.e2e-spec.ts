@@ -162,7 +162,7 @@ describe('Create Adhoc task', () => {
         await expect(viewTask.isViewCaseLinkDisplayed()).toBeTruthy("view case link is displayed ");
         await viewTask.clickOnViewCase();
         await expect(viewCasePo.getCaseSummary()).toBe('Summary ' + summary);
-    }, 120 * 1000);
+    });
 
     it('[DRDMV-1500]: [Permissions] Navigating to case from the task', async () => {
 
@@ -355,11 +355,10 @@ describe('Create Adhoc task', () => {
         }
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeFalsy('Attachment button is enabled');
         await adhoctaskTemplate.clickOnSaveAdhoctask();
-        if (await utilCommon.isWarningDialogBoxDisplayed()) {
-            await utilCommon.clickOnWarningOk();
-        }
-        await manageTask.clickOnCloseButton();
-        await viewCasePage.clickOnTaskLink(summary);
+        await utilCommon.waitUntilPopUpDisappear();
+        // hardwait to upload multiple files
+        await browser.sleep(10000);
+        await manageTask.clickTaskLinkOnManageTask(summary);
         await viewTask.clickOnShowMoreButton();
         let fileName2: string[] = ['articleStatus', 'bwfJpg', 'bwfJpg1', 'bwfJpg2', 'bwfJpg3', 'bwfJpg4', 'bwfJson1', 'bwfJson2', 'bwfJson3', 'bwfJson4', 'bwfJson5', 'bwfPdf', 'bwfPdf1', 'bwfPdf2', 'bwfPdf3', 'bwfPdf4', 'bwfWord1', 'bwfWord2', 'bwfXlsx', 'demo'];
         let fileCount = fileName2.length;

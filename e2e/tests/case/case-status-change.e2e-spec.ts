@@ -383,7 +383,7 @@ describe('Case Status Change', () => {
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
     }
-    }, 130 * 1000);
+    }, 140 * 1000);
 
     //ankagraw
     it('[DRDMV-1199]: [Case Status] Case status change from In Progress', async () => {

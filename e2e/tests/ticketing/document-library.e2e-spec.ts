@@ -59,7 +59,7 @@ describe('Document Library', () => {
         expect(await utilCommon.getPopUpMessage()).toBe('Document deleted successfully.');
         await utilCommon.waitUntilPopUpDisappear();
         expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Grid Record displayed which should not be');
-    }, 120 * 1000);
+    });
 
     //kgaikwad
     it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify Delete button on document', async () => {
@@ -157,7 +157,7 @@ describe('Document Library', () => {
         expect(await editDocumentLibraryPo.isAddSupportDepartmentAddButtonDisabled()).toBeTruthy('Add Support Department Add Button is enabled');
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete button is enabled');
         expect(await editDocumentLibraryPo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
-    }, 120 * 1000);
+    });
 
     //kgaikwad
     it('[DRDMV-13021]: Verify edit document UI', async () => {

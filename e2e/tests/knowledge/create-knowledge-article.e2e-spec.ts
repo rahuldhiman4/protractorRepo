@@ -100,7 +100,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 130 * 1000);
+    }, 140 * 1000);
 
     it('[DRDMV-19079]: Change Reviewer blade should process properly on KA', async () => {
         try {
@@ -146,7 +146,7 @@ describe('Knowledge Article', () => {
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
-    }, 120 * 1000);
+    });
 
     it('[DRDMV-19080]: On Edit KA, Change Assignment blade should process properly ', async () => {
         try {
@@ -336,7 +336,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 120 * 1000);
+    });
 
     it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
         try {
@@ -718,7 +718,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 120 * 1000);
+    });
 
     it('[DRDMV-1914]: [Article Creation] Ability to select the knowledge set during article creation', async () => {
         let knowledgeTitle = 'knowledgeCoachUser1914' + randomStr;
