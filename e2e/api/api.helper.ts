@@ -957,6 +957,14 @@ class ApiHelper {
         menuItemData.fieldInstances[450000152].value = data.menuItemName;
         menuItemData.fieldInstances[7].value = MenuItemStatus[data.menuItemStatus];
         menuItemData.fieldInstances[450000154].value = randomStr;
+        if (data.uiVisiable) {
+            let valueOfVisiable = data.uiVisiable;
+            let uiVisiablePayload = {
+                "id": "450000471",
+                "value": `${valueOfVisiable}`
+            }
+            menuItemData.fieldInstances["450000471"] = uiVisiablePayload;
+        }
         const menuItem = await coreApi.createRecordInstance(menuItemData);
         const menuItemDetails = await axios.get(
             menuItem.headers.location
