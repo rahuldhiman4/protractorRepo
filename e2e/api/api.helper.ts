@@ -25,8 +25,9 @@ import { IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api
 import { KnowledegeSet_ASSOCIATION, KNOWLEDGE_SET, KNOWLEDGESET_PERMISSION } from '../data/api/knowledge/knowledge-set.data.api';
 import { IknowledgeSetPermissions } from '../data/api/interface/knowledge-set.permissions.interface.api';
 import { KNOWLEDGEARTICLE_TEMPLATE, KNOWLEDGEARTICLE_HELPFULCOUNTER } from '../data/api/knowledge/knowledge-article.template.api';
-import {INCOMINGMAIL,EMAILCONFIG,OUTGOINGEMAIL} from '../data/api/email/email.configuration.data.api';
-import {EMAIL_WHITELIST} from '../data/api/email/email.whitelist.data.api';
+import { INCOMINGMAIL, EMAILCONFIG, OUTGOINGEMAIL } from '../data/api/email/email.configuration.data.api';
+import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
+import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -124,14 +125,14 @@ class ApiHelper {
         }
     }
 
-    async createDyanmicDataOnTemplate(templateGuid: string, payloadName: string): Promise<void> {
-        let templateDynamicDataFile = await require('../data/api/ticketing/dynamic.data.api.json');
-        let templateData = await templateDynamicDataFile[payloadName];
+    async createDynamicDataOnTemplate(templateGuid: string, payloadName: string): Promise<void> {
+        let templateData = DYNAMIC[payloadName] ;
         templateData['templateId'] = templateGuid;
-        let newCaseTemplate: AxiosResponse = await coreApi.createDyanmicData(templateData);
+        let newCaseTemplate: AxiosResponse = await
+            coreApi.createDyanmicData(templateData);
         console.log('Create Dynamic on Template API Status =============>', newCaseTemplate.status);
     }
-    
+
     async createEmailConfiguration(): Promise<EmailGUIDs> {
         let incomingMailBox = INCOMINGMAIL;
         let emailMailBox = EMAILCONFIG;
@@ -631,7 +632,7 @@ class ApiHelper {
         domainTagData.id = categoryGuid;
         domainTagData.fieldInstances[304417331].value = domainTagGuid;
         let domainTagResponse: AxiosResponse = await coreApi.updateRecordInstance("com.bmc.arsys.rx.foundation:Operational Category", categoryGuid, domainTagData);
-        console.log("category associated under domain tag: "+domainTagResponse.status);        
+        console.log("category associated under domain tag: " + domainTagResponse.status);
         return domainTagResponse.status == 204;
     }
 
@@ -883,7 +884,7 @@ class ApiHelper {
         return flagAndUnflagResponse.status == 204;
     }
 
-    async deleteEmailOrNotificationTemplate(emailTemplateName: string,company?:string): Promise<boolean> {
+    async deleteEmailOrNotificationTemplate(emailTemplateName: string, company?: string): Promise<boolean> {
         let emailTemplateGuid = await coreApi.getEmailTemplateGuid(emailTemplateName);
         return await coreApi.deleteRecordInstance('com.bmc.dsm.notification-lib:NotificationTemplate', emailTemplateGuid);
     }

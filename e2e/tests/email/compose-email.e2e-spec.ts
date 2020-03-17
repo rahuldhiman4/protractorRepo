@@ -539,7 +539,7 @@ describe("Compose Email", () => {
             }
             await apiHelper.apiLogin('fritz');
             var newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
-            await apiHelper.createDyanmicDataOnTemplate(newCaseTemplate.id, 'CasetemplatewithConfidential');
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_WITH_CONFIDENTIAL');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
@@ -784,7 +784,7 @@ describe("Compose Email", () => {
             await caseConsole.searchAndOpenCase(newCaseOne.displayId);
             await viewCasePo.changeCaseStatus('In Progress');
             await viewCasePo.clickSaveStatus();
-            let subjectOne = `Fritz Schulz changed the status of '${newCaseOne.displayId}' to In Progress`;
+            let subjectOne = `Fritz Schulz changed the status of '${newCaseOne.displayId}' to In Progress`;
             await apiHelper.apiLogin('tadmin');
             await browser.sleep(8000);
             let emailBody = await apiHelper.getHTMLBodyOfEmail(subjectOne);
