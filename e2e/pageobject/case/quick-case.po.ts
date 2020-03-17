@@ -1,9 +1,11 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../utils/util.common';
 
 class QuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
+        drpdownHeader: '.dropdown-input__button',
         smartSearchTextBox: '.smart-recorder-textarea',
         confirmedItemSelection: '.smart-recorder-confirmedItem_header',
         searchResult: '.smart-recorder__popup-item-email',
@@ -45,6 +47,18 @@ class QuickCasePage {
       
     }
 
+    async getDrpDownValueByIndex(indexValue: number): Promise<string> {
+        return await $$(this.selectors.drpdownHeader).get(indexValue-1).getText();
+    }
+
+    async selectDrpDownValueByIndex(value:string,indexValue: number): Promise<void> {
+         await $$(this.selectors.drpdownHeader).get(indexValue-1).click();
+         let option = await element(by.cssContainingText('.dropdown-item', value));
+         await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async () => {
+             await option.click();
+            });
+    }
+    
     async selectRequesterName(name: string): Promise<void> {
         let namenew = "@" + name;
         // await browser.wait(this.EC.visibilityOf($(this.selectors.inputBox)));
@@ -56,6 +70,11 @@ class QuickCasePage {
     async setCaseSummary(summary: string): Promise<void> {
         //await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
         await $(this.selectors.smartSearchTextBox).sendKeys(summary);
+    }
+
+    async clearInputBox(): Promise<void> {
+        //await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
+        await $(this.selectors.inputBox).clear();
     }
 
     async getRequester(): Promise<string> {
@@ -135,7 +154,7 @@ class QuickCasePage {
         await browser.wait(this.EC.or(async () => {
             let count = await $$(this.selectors.caseTemplate).count();
             return count >= 1;
-        }), 2000);
+        }), 5000);
         await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).click();
     }
 
