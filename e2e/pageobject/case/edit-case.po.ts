@@ -144,7 +144,7 @@ class CaseEditPage {
 
     async isSaveCaseEnable(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
-       return await $(this.selectors.saveCaseButton).isEnabled();
+        return await $(this.selectors.saveCaseButton).isEnabled();
     }
 
 
@@ -532,6 +532,16 @@ class CaseEditPage {
 
     async isChangeCaseTemplateButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.changeCaseTemplate).isDisplayed();
+    }
+
+    async isDynamicFieldDisplayed(value: string): Promise<boolean> {
+        return await $(`span[title=${value}]`).isDisplayed();
+    }
+
+    async addAttachment(attachmentField: string, fileToUpload: string): Promise<void> {
+        const absolutePath = resolve(__dirname, fileToUpload);
+        let attachmentLocator = `input[name=${attachmentField}]`;
+        await $(attachmentLocator).sendKeys(absolutePath);
     }
 
     async addDescriptionAttachment(fileToUpload: string): Promise<void> {

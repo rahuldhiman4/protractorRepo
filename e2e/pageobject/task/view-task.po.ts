@@ -44,6 +44,7 @@ class ViewTask {
         saveAdhocTask: '[rx-view-component-id="a19228d0-81a9-4b19-9cb3-b5bd9550966f"] button',
         attachmentFile: '.rx-attachment-view-name',
         attachmentpath: '.rx-attachment-view .d-icon-cross',
+        showMore:'.rx-attachment-show-text',
     }
 
     async isAttachedDocumentPresent(fileName: string): Promise<boolean> {
@@ -297,6 +298,25 @@ class ViewTask {
         await $(this.selectors.saveAdhocTask).click();
     }
 
+    async getShowMoreLessAttachmentsLinkText():Promise<string>{
+        return await $(this.selectors.showMore).getText();
+    }
+
+    async clickShowMoreLink():Promise<void>{
+        return await $(this.selectors.showMore).click();
+    }
+
+    async isFileDisplayed(fileName:string):Promise<boolean>{
+        return await $(`.rx-attachment-view-thumbnail [alt=${fileName}]`).isDisplayed();
+    }
+
+    async getDynamicFieldName(fieldName:string):Promise<string>{
+        return await $(`span[title=${fieldName}]`).getText();
+    }
+
+    async getDynamicFieldValue(fieldValue:string):Promise<string>{
+        return await $(`p[title='${fieldValue}']`).getText();
+    }
 
 }
 
