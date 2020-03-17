@@ -142,7 +142,7 @@ describe('Person Profile test', () => {
 
         //Verify sorting
         expect(await personProfile.isRequestedCasesColumnsSortedAscending("Case ID")).toBeTruthy("Columns are not sorted");
-    },120*1000);
+    });
 
     //asahitya
     it('[DRDMV-14029]: Verify Assigned Cases tab of My Profile console', async () => {

@@ -269,7 +269,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await loginPage.login(caseBAUser);
     }
 
-    }, 8 * 60 * 1000);
+    }, 480 * 1000);
 
     it('[DRDMV-19565,DRDMV-19567,DRDMV-19568]:Verify the Save functionality of Region and Site fields on Knowledge Articles Create / Edit screen', async () => {
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json");
@@ -455,7 +455,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 10 * 60 * 1000);
+    }, 600 * 1000);
 
     it('[DRDMV-19574]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
         try{
@@ -562,7 +562,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await navigationPage.signOut();
         await loginPage.login(caseBAUser);
     }
-    }, 10 * 60 * 1000);
+    }, 600 * 1000);
 
     it('[DRDMV-19575]:Verify the search functionality of Document library console for Region', async () => {
         try{
@@ -658,7 +658,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await navigationPage.signOut();
         await loginPage.login(caseBAUser);
     }
-    }, 7 * 60 * 1000);
+    }, 420 * 1000);
 
     it('[DRDMV-19573]:Verify the document search based on Region and Site from attachments', async () => {
         try{
@@ -814,7 +814,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await navigationPage.signOut();
         await loginPage.login(caseBAUser);
     }
-    }, 9 * 60 * 1000);
+    }, 540 * 1000);
 
     it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
        try{
@@ -1401,5 +1401,5 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await navigationPage.signOut();
         await loginPage.login(caseBAUser);
     }
-    }, 15 * 60 * 1000);
+    }, 900 * 1000);
 })

@@ -59,7 +59,7 @@ describe('Case And Employee Relationship', () => {
         await addRelatedPopupPage.addPerson('Brain Adams', 'Witness');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(5);
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Brain Adams', 'Witness')).toBeTruthy();
-    }, 120 * 1000);
+    });
 
     //asahitya
     it('[DRDMV-16896]: Multiple people can be added by same Relationship', async () => {
@@ -275,7 +275,7 @@ describe('Case And Employee Relationship', () => {
         await navigationPage.goToPersonProfile();
         expect(await relatedTabPage.isRelatedPersonPresent("Brain Adams")).toBeFalsy("Brain Adams is still related to Person Profile");
         expect(await relatedTabPage.isRemoveRelatedPersonIconPresent("Qiang Du")).toBeFalsy("Cross icon is available");
-    }, 100 * 1000);
+    });
 
     //asahitya
     it('[DRDMV-17029]: Check Related Cases Tab on Case Bottom section', async () => {

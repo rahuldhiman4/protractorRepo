@@ -370,7 +370,7 @@ describe("Compose Email", () => {
         expect(await composeMail.getSubjectInputValue()).toContain('Salary summary', 'Subject 2 does not match');
         expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate2, 'Email Template name heading does not match');
         await composeMail.clickOnSendButton();
-    }, 100 * 1000);
+    });
 
     //kgaikwad
     it('[DRDMV-8392,DRDMV-10384]: Negative: In Email "To" and "cc" should be user from Foundation data ', async () => {

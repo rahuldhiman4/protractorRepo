@@ -26,7 +26,7 @@ describe('create case', () => {
         await browser.wait(EC.visibilityOf($(createCasePage.selectors.gotoCaseButton__preview)));
         await browser.actions().sendKeys(protractor.Key.ESCAPE);
         await browser.wait(EC.invisibilityOf($(createCasePage.selectors.gotoCaseButton__preview)));
-    }, 120 * 1000)
+    });
 
     it('should create case without template', async () => {
         await navigationPage.gotCreateCase();

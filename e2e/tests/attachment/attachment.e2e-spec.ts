@@ -116,7 +116,7 @@ describe("Attachment", () => {
         await attachmentInformationBladePo.clickOnDownloadButton();
         expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
-    }, 90 * 1000);
+    });
 
     //kgaikwad
     it('[DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
@@ -249,7 +249,7 @@ describe("Attachment", () => {
         await attachmentBladePo.clickOnCloseButton();
         await navigationPage.goToPersonProfile();
         await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
-    }, 110 * 1000);
+    });
 
     //kgaikwad
     it('[DRDMV-11718,DRDMV-11720]: Large number of attachments verification', async () => {

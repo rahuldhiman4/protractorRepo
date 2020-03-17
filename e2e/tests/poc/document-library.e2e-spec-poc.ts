@@ -21,7 +21,7 @@ describe('document library', () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows'))
             .toEqual('Document Library Console - Business Workflows');
-    }, 120 * 1000);
+    });
 
     it('should add new document', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
@@ -36,5 +36,5 @@ describe('document library', () => {
         await documentLibraryPage.selectOwnerGroup('Compensation and Benefits');
         await documentLibraryPage.clickOnSaveButton();
         await browser.sleep(5000);
-    }, 120 * 1000);
+    });
 })

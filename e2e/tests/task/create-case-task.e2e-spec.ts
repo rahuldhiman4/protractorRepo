@@ -426,7 +426,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 130 * 1000);
+    }, 140 * 1000);
 
     //ankagraw
     it('[DRDMV-12582]: Task Template access when owner group from different company is applied', async () => {
@@ -657,7 +657,7 @@ describe('Create Case Task', () => {
         await expect(await manageTask.getFilterValue('Automated')).toBeTruthy();
         await utilGrid.clearFilter();
         await utilCommon.waitUntilSpinnerToHide();
-    }, 120 * 1000);
+    });
 
     //ankagraw
     it('[DRDMV-2475]: [Permissions] Settings menu for Case Functional Roles', async () => {
@@ -695,7 +695,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 120 * 1000);
+    });
 
     //ankagraw
     it('[DRDMV-3795]: [Task Template] Task Template Status changes', async () => {
@@ -746,7 +746,7 @@ describe('Create Case Task', () => {
         await editTaskTemplate.selectTemplateStatus("Draft");
         await editTaskTemplate.clickOnSaveMetadata();
         await expect(viewTaskTemplate.getTemplateStatus()).toBe('Draft');
-    }, 120 * 1000);
+    });
 
     //ankagraw
     it('[DRDMV-7254]: Automated Task] - Automated Task Activation behavior when Case is created in In Progress status via Case template having Task templates in it', async () => {

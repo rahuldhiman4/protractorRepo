@@ -130,7 +130,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, canceledStatus)).toBeTruthy("Article with Canceled status not updated.");
-    }, 3 * 60 * 1000);
+    }, 180 * 1000);
 
     afterEach(async () => {
         await browser.refresh();
@@ -738,7 +738,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 13 * 60 * 1000);
+    }, 780 * 1000);
 
     it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
         //Create a document library
@@ -830,7 +830,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 8 * 60 * 1000);
+    }, 480 * 1000);
 
     it('[DRDMV-19356,DRDMV-19082]:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
         await foundationData2002('Psilon');

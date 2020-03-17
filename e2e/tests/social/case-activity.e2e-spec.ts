@@ -192,7 +192,7 @@ describe('Case Activity', () => {
         } finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
-    }, 120 * 1000);
+    });
 
     //kgaikwad
     it('[DRDMV-16773]: [-ve] - Person details displayed in Activity who have long name', async () => {
@@ -239,7 +239,7 @@ describe('Case Activity', () => {
         } finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
-    }, 110 * 1000);
+    });
 
     //kgaikwad
     it('[DRDMV-16733]: Case Activity Filter UI validation', async () => {
@@ -315,7 +315,7 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.clickOnFilterClearButton();
         await expect(await activityTabPage.isfilterPresent()).not.toBeTruthy('filter displayed');
-    }, 130 * 1000);
+    }, 140 * 1000);
 
     //kgaikwad
     it('[DRDMV-16760]: From Task Activity Filters > Person search behavior in Author field', async () => {
@@ -373,7 +373,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isAuthorBoxEmpty()).toBeTruthy('Author field is not empty');
         // ii) - Select another user and click on Apply
         await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
-    }, 130 * 1000);
+    }, 140 * 1000);
 
     //kgaikwad
     it('[DRDMV-16734]: From Case Activity Filters > Person search behavior in Author field', async () => {

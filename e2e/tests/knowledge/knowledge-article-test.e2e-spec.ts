@@ -81,7 +81,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
             await utilCommon.waitUntilSpinnerToHide();
         }
-    }, 130 * 1000);
+    }, 140 * 1000);
 
     //ptidke
     it('[DRDMV-13646,DRDMV-13681]: Create a Knowledge article and check Knowledge Preview', async () => {
@@ -140,7 +140,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 120 * 1000);
+    });
 
     //ptidke
     it('[DRDMV-2374]: [Edit Knowledge Article] Article creation not possible by selecting disabled templates', async () => {
@@ -609,7 +609,7 @@ describe('Knowledge Article', () => {
         await changeAssignmentBladePo.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
-    }, 2 * 60 * 1000);
+    });
 
     it('[DRDMV-5195]: [Knowledge]-Assigning the article using Assignment component', async () => {
         let knowledgeTitile = 'knowledge5195' + randomStr;
@@ -844,7 +844,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 4 * 60 * 1000);
+    }, 240 * 1000);
 
     //ptidke
     it('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {
