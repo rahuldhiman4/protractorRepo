@@ -44,7 +44,6 @@ class EditCaseTemplate {
         reopentimelineDays: '[rx-view-component-id="88249662-e4c4-4ca7-9e34-0ecbd4bc0252"] input',
         manageDynamicFieldsLink: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] .edit-link',
         copyTemplate: '[rx-view-component-id="0bb1dd3b-639f-4019-adbd-96faae6920ef"] button',
-        accessTab: '[rx-view-component-id="f76e9987-cfa0-4742-b92f-087bd38c59df"] [ng-repeat="tab in tabs track by $index"]',
         taskFlow: '[rx-view-component-id="f76e9987-cfa0-4742-b92f-087bd38c59df"] .d-icon-left-pencil',
         assignmentMethodValue: '[rx-view-component-id="9183824b-61c4-4a00-bcfa-7f4e7461e10c"] .ui-select-match-text',
         tier1ValueOnCaseTemplate: '[rx-view-component-id="241f0e58-3106-4f8a-a1cc-43554414bb7c"] .d-textfield__rx-value',
@@ -100,10 +99,6 @@ class EditCaseTemplate {
     async clickEditCaseTemplate(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editcaseTemplate)));
         await $(this.selectors.editcaseTemplate).click();
-    }
-
-    async clickOnTabOfCaseTemplate(value: number) {
-        await $$(this.selectors.accessTab).get(value).click();
     }
 
     async clickOnClearButton(): Promise<void> {

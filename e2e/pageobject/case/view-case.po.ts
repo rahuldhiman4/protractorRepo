@@ -58,9 +58,9 @@ class ViewCasePage {
         addedTaskFromCaseTemplate: '.task-list__task-card a',
         taskCardArrow: '.icon-angle_right.task-list__task-card__preview-icon',
         attachmentFile: '.rx-attachment-view-name',
-        caseTemplate:'[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .d-textfield__rx-value',
-        sourceValue:'[rx-view-component-id="8abd013f-26cd-4aa5-a3bb-63b063d3a7ec"] .d-textfield__rx-value',
-        showMore:'.rx-attachment-show-text',
+        caseTemplate: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .d-textfield__rx-value',
+        sourceValue: '[rx-view-component-id="8abd013f-26cd-4aa5-a3bb-63b063d3a7ec"] .d-textfield__rx-value',
+        showMore: '.rx-attachment-show-text',
     }
 
     async isAttachedDocumentPresent(fileName: string): Promise<boolean> {
@@ -372,29 +372,29 @@ class ViewCasePage {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
-        await $(`.runtime-view-item-holder a[title='${tabName}']`).click();
+        await element(by.linkText(tabName)).click();
     }
 
-    async getCaseTemplateText():Promise<string>{
+    async getCaseTemplateText(): Promise<string> {
         return await $(this.selectors.caseTemplate).getText();
     }
 
-    async getSourceValue():Promise<string>{
+    async getSourceValue(): Promise<string> {
         return await $(this.selectors.sourceValue).getText();
     }
-	  async getShowMoreLessAttachmentsLinkText():Promise<string>{
+    async getShowMoreLessAttachmentsLinkText(): Promise<string> {
         return await $(this.selectors.showMore).getText();
     }
 
-    async clickShowMoreLink():Promise<void>{
+    async clickShowMoreLink(): Promise<void> {
         return await $(this.selectors.showMore).click();
     }
 
-    async isFileDisplayed(fileName:string):Promise<boolean>{
+    async isFileDisplayed(fileName: string): Promise<boolean> {
         return await $(`.rx-attachment-view-thumbnail [alt=${fileName}]`).isDisplayed();
     }
 
-    async clickOnDownloadFile(fileName:string):Promise<void>{
+    async clickOnDownloadFile(fileName: string): Promise<void> {
         await $(`div[aria-label="Download attachment ${fileName}"]`).click();
     }
 }

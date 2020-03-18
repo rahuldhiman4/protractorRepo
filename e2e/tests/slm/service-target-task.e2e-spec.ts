@@ -187,7 +187,7 @@ describe('Service Target Tests for Tasks', () => {
             await viewCasePage.setStatusReason('Successful');
             await viewTask.clickOnSaveStatus();
             await viewTask.clickOnViewCase();
-            await caseTaskTab.clickoncasetaskArrowtab();
+            await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLinkOnManageTask(automatedTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(false);
         }
@@ -280,7 +280,7 @@ describe('Service Target Tests for Tasks', () => {
             await browser.refresh();
             await viewTask.getTaskTypeValue();
             await viewTask.clickOnViewCase();
-            await caseTaskTab.clickoncasetaskArrowtab();
+            await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLinkOnManageTask(manualTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(false);
         }

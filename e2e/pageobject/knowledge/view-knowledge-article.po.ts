@@ -14,7 +14,6 @@ class ViewKnowledgePage {
         kAUsefulYesButton: '[rx-view-component-id="9d4c48c9-fbd8-4e91-bc61-0e395f52bbe7"] button',
         kAUsefulNoButton: '[rx-view-component-id="21f93bfd-53e2-4983-9b15-162e7dd12a31"] button',
         percentageValue: '[rx-view-component-id="5cc2757f-7a22-4827-82c0-1e7dee2e12a2"] p',
-        activityTab: '[rx-view-component-id="3982f4ea-16a0-41aa-982e-879143a19b00"] .rx-tab a',
         feedbackFlag: '8eb31993-888c-4a17-be30-4d91cbcdb10b',
         statusChnageBlade: '.modal-content',
         reviewPending: '[rx-view-component-id="f0cf7f67-da22-4149-a54d-ec3b95fe05e6"] button',
@@ -116,18 +115,12 @@ class ViewKnowledgePage {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.flagBlade)));
     }
 
-
     async isUnFlagButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.unflagButton).isDisplayed();
     }
 
-    async clickOnActivityTab(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.activityTab).last()));
-        await $$(this.selectors.activityTab).last().click();
-    }
-
-    async clickOnInformationTab(): Promise<void> {
-        await $$(this.selectors.activityTab).first().click();
+    async clickOnTab(tabName: string): Promise<void> {
+        await element(by.linkText(tabName)).click();
     }
 
     async getPercentageValue(): Promise<string> {

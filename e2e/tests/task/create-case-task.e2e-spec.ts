@@ -87,7 +87,7 @@ describe('Create Case Task', () => {
             //validate Automation Template
             await editTask.clickOnCancelButton();
             await viewTask.clickOnViewCase();
-            await caseTaskTab.clickoncasetaskArrowtab();
+            await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLinkOnManageTask(autoTaskTemplateData.templateSummary);
             await viewTask.clickOnEditTask();
             await expect(await editTask.getTaskTypeValue()).toBe('Automated');
@@ -178,7 +178,7 @@ describe('Create Case Task', () => {
 
             //validate Automation Template
             await viewTask.clickOnViewCase();
-            await caseTaskTab.clickoncasetaskArrowtab();
+            await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLinkOnManageTask(autmationTaskSummaryWithRequiredData);
             await expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             await expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.bwfa:Get Request Status Data1 ${randomStr}`);

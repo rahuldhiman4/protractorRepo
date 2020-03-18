@@ -12,7 +12,6 @@ class PersonProfilePage {
         email: '[rx-view-component-id="d8be57c9-ee7c-4b08-84af-90c9a552b919"] .ac-link-person-email-disabled',
         site: '[rx-view-component-id="d8be57c9-ee7c-4b08-84af-90c9a552b919"] .ac-text-site-value',
         managerName: '[rx-view-component-id="6f4a19be-2c96-4c58-b9c7-a49e2beb0c7b"] .person-name a',
-        tabs: '[rx-view-component-id="a8207936-a379-4f6c-b450-90facc6b893c"] a.rx-tab',
         activityNotes: '.activity-feed-note input[title]',
         requestedCasesGuid: 'cdba89ff-683c-42ba-9c2a-3adf4322504c',
         assignedCasesGuid: '08bd2811-37eb-43a3-a1fe-de845fe6c5a6',
@@ -20,14 +19,8 @@ class PersonProfilePage {
 
     }
 
-    async navigateToTab(tabName: string): Promise<void> {
-        let tabLocator = await element(by.cssContainingText(this.selectors.tabs, tabName));
-//        await browser.wait(this.EC.elementToBeClickable(tabLocator));
-        await tabLocator.click();
-    }
-
-    async navigateToRelatedCase(): Promise<void> {
-        await this.navigateToTab('Related Cases');
+    async clickOnTab(tabName: string): Promise<void> {
+        await element(by.linkText(tabName)).click();
     }
 
     async getPersonName(): Promise<string> {
