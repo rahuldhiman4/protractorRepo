@@ -1,4 +1,4 @@
-import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilGrid from '../../utils/util.grid';
 
 class SelectCaseTemplateBlade {
@@ -9,10 +9,10 @@ class SelectCaseTemplateBlade {
         searchTextbox: '[rx-id="search-text-input"]',
         refreshbutton: '[rx-id="refresh-button"]',
         checkBox: 'ui-grid-icon-ok',
-        applyButton: '[rx-view-component-id="39321025-7d92-4284-8498-a0c6fc44f6cd"] button',
+        applyButton: '[rx-view-component-id="f348e681-ac02-452c-b37f-009ac4434053"] button',
         caseTemplateCheckBox: '.ui-grid-icon-ok',
         caseTemplateLink: '.ui-grid__link',
-        cancelButton: '[rx-view-component-id="befd164d-2508-4b8e-9445-3ace011022b7"] button',
+        cancelButton: '[rx-view-component-id="161ed2e2-ea43-4db5-9f9c-149f82a74db2"] button',
     }
 
     async clickOnRecommendedTemplateTab(): Promise<void> {
