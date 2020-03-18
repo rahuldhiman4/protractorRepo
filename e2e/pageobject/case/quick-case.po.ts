@@ -177,13 +177,6 @@ class QuickCasePage {
         return success;
     }
 
-    async isCaseTemplatePresent(templateName: string): Promise<boolean> {
-        await $(this.selectors.inputBox).sendKeys('!');
-        await $(this.selectors.inputBox).sendKeys(templateName);
-        return await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).isPresent();
-
-    }
-
     async validatePin(): Promise<void> {
         // await browser.wait(this.EC.visibilityOf($(this.selectors.validateButton)));
         await $(this.selectors.validateButton).click();
