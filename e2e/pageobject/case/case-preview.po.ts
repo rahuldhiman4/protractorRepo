@@ -31,7 +31,7 @@ class CasePreview {
         caseSite: '[rx-view-component-id="974e5fdd-5992-4f87-a640-267c4cc3daae"] .d-textfield__rx-value',
     }
 
-    async clickOnViewCaseButton(): Promise<void> {
+    async clickOnViewCaseLink(): Promise<void> {
         await $(this.selectors.viewCaseButton).click();
     }
 

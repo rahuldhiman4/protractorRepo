@@ -479,7 +479,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
             await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
-            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
@@ -505,7 +505,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
             await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
-            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
@@ -531,7 +531,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
             await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
-            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
@@ -557,7 +557,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
             await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
-            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
         }
@@ -605,7 +605,7 @@ describe('Knowledge Article', () => {
             await reviewCommentsPo.setTextInTellUsMore(knowledgeTitile);
             await reviewCommentsPo.clickApprovedButton();
             expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Published', 'value is not matched with status')
-            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills reviewed this article and provided this comment');
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile)
             await navigationPage.gotoKnoweldgeConsoleFromKM();
@@ -658,7 +658,7 @@ describe('Knowledge Article', () => {
             await reviewCommentsPo.setTextInTellUsMore(knowledgeTitile);
             await reviewCommentsPo.clickRejectedButton();
             expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Draft', 'value is not matched with status')
-            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills reviewed this article and provided this comment');
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile)
             await navigationPage.gotoKnoweldgeConsoleFromKM();

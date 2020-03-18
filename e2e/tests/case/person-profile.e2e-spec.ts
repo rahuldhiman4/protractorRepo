@@ -39,7 +39,7 @@ describe('Person Profile test', () => {
 
     //asahitya
     it('[DRDMV-14087]: Verify cases visible in Requested cases tab of My profile page are according to permissions of logged in user', async () => {
-        await personProfile.navigateToTab("Requested Cases");
+        await personProfile.clickOnTab("Requested Cases");
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['DRDMV-14087']);
@@ -53,7 +53,7 @@ describe('Person Profile test', () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['DRDMV-14088']);
         let caseDisplayId = response.displayId;
-        await personProfile.navigateToTab("Assigned Cases");
+        await personProfile.clickOnTab("Assigned Cases");
         expect(await personProfile.isCasePresentOnAssignedCases(caseDisplayId)).toBeTruthy("Case is not present");
     });
 
@@ -64,11 +64,11 @@ describe('Person Profile test', () => {
         expect(await personProfile.getEmail()).toBe("elizabeth.peters@petramco.com", "Email mismatch");
         expect(await personProfile.getSite()).toBe("Rochester\n70 Linden Oaks, Rochester, New York, 14625, United States", "Site mismatch");
         expect(await personProfile.getManagerName()).toBe("Hannah Haas", "Manager name mismatch");
-        await personProfile.navigateToTab("Requested Cases");
-        await personProfile.navigateToTab("Assigned Cases");
-        await personProfile.navigateToTab("Support Groups");
-        await personProfile.navigateToTab("Related Cases");
-        await personProfile.navigateToTab("Related Persons");
+        await personProfile.clickOnTab("Requested Cases");
+        await personProfile.clickOnTab("Assigned Cases");
+        await personProfile.clickOnTab("Support Groups");
+        await personProfile.clickOnTab("Related Cases");
+        await personProfile.clickOnTab("Related Persons");
     });
 
     //asahitya
@@ -78,11 +78,11 @@ describe('Person Profile test', () => {
         expect(await personProfile.getContactNumber()).toBe("+12135559393", "Phone number mismatch");
         expect(await personProfile.getEmail()).toBe("hannah.haas@petramco.com", "Email mismatch");
         expect(await personProfile.getSite()).toBe("Aichi\n4-6-23 Meieki, Nakamura-ku, Nagoya-shi, Nagoya-shi, Aichi, 450-0002, Japan");
-        await personProfile.navigateToTab("Requested Cases");
-        await personProfile.navigateToTab("Assigned Cases");
-        await personProfile.navigateToTab("Support Groups");
-        await personProfile.navigateToTab("Related Cases");
-        await personProfile.navigateToTab("Related Persons");
+        await personProfile.clickOnTab("Requested Cases");
+        await personProfile.clickOnTab("Assigned Cases");
+        await personProfile.clickOnTab("Support Groups");
+        await personProfile.clickOnTab("Related Cases");
+        await personProfile.clickOnTab("Related Persons");
     });
 
     //asahitya
@@ -119,7 +119,7 @@ describe('Person Profile test', () => {
     //asahitya
     it('[DRDMV-14028]: Verify Requested Cases tab of My Profile console', async () => {
         await navigationPage.goToPersonProfile();
-        await personProfile.navigateToTab("Requested Cases");
+        await personProfile.clickOnTab("Requested Cases");
         //let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
@@ -147,7 +147,7 @@ describe('Person Profile test', () => {
     //asahitya
     it('[DRDMV-14029]: Verify Assigned Cases tab of My Profile console', async () => {
         await navigationPage.goToPersonProfile();
-        await personProfile.navigateToTab("Assigned Cases");
+        await personProfile.clickOnTab("Assigned Cases");
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');

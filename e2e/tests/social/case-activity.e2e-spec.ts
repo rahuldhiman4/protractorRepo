@@ -43,7 +43,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await createKnowlegePo.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
-            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
             // // 2nd Step: Inspect Case Activity UI - Click on Filter       
             await activityTabPage.clickOnFilterButton();
             // 3rd Step: Inspect Filter Panel UI
@@ -141,7 +141,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await createKnowlegePo.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
-            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
             // 2nd step: From Task Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Task
             await activityTabPage.clickOnFilterButton();
             await activityTabPage.addAuthorOnFilter('Elizabeth Peters');
@@ -229,7 +229,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await createKnowlegePo.clickOnviewArticleLinkButton();
             await utilCommon.switchToNewWidnow(1);
-            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(knowledgeBodyText);
             await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
             await activityTabPage.clickOnPostButton();
@@ -788,7 +788,7 @@ describe('Case Activity', () => {
 
             // View Knowledege Page
             await utilCommon.switchToNewWidnow(1);
-            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(knowledgeBodyText);
             await activityTabPage.clickOnPostButton();
             await activityTabPage.clickOnHyperlinkFromActivity(knowledgeBodyText, 'Qadim Katawazi');
