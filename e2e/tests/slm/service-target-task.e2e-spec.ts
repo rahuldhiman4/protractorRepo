@@ -11,7 +11,6 @@ import apiHelper from '../../api/api.helper';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
-import caseTaskTab from '../../pageobject/case/case-task-tab.po';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';

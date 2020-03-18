@@ -4,7 +4,7 @@ import addRelatedCasespopup from '../../pageobject/case/add-related-cases-pop.po
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import quickCase from '../../pageobject/case/quick-case.po';
-import { default as caseViewPage, default as viewCasePo } from '../../pageobject/case/view-case.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfilePage from '../../pageobject/common/person-profile.po';
@@ -116,7 +116,7 @@ describe('Case And Employee Relationship', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
-        let caseId: string = await caseViewPage.getCaseID();
+        let caseId: string = await viewCasePo.getCaseID();
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Brad Pitt', 'Inspector');
@@ -140,7 +140,7 @@ describe('Case And Employee Relationship', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
-        let caseId1: string = await caseViewPage.getCaseID();
+        let caseId1: string = await viewCasePo.getCaseID();
 
         //create case 2
         await navigationPage.gotCreateCase();
@@ -149,7 +149,7 @@ describe('Case And Employee Relationship', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
-        let caseId2: string = await caseViewPage.getCaseID();
+        let caseId2: string = await viewCasePo.getCaseID();
 
         //create case 3
         await navigationPage.gotCreateCase();
@@ -158,7 +158,7 @@ describe('Case And Employee Relationship', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
-        let caseId3: string = await caseViewPage.getCaseID();
+        let caseId3: string = await viewCasePo.getCaseID();
 
         //Add case 1 and case 2 in related cases
         await viewCasePo.clickOnTab('Related Cases');

@@ -1,6 +1,5 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
-import caseTaskTab from '../../pageobject/case/case-task-tab.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import loginPage from "../../pageobject/common/login.po";
