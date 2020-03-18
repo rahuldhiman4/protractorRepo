@@ -14,6 +14,15 @@ import createEmailTemplatePo from '../../pageobject/settings/email/create-email-
 import utilCommon from '../../utils/util.common';
 import editNotificationTemplatePo from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import utilGrid from '../../utils/util.grid';
+import createCasePo from '../../pageobject/case/create-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import composeMailPo from '../../pageobject/email/compose-mail.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import viewTaskPo from '../../pageobject/task/view-task.po';
+import editTaskPo from '../../pageobject/task/edit-task.po';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 describe('Dynamic data', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -38,38 +47,37 @@ describe('Dynamic data', () => {
         console.log("Record deleted...", recDeleted);
         let caseTemplateName = 'caseTemplate' + randomStr;
         let caseTemaplateSummary = 'caseTemplate' + randomStr;
-        var casetemplateData = {
+        let casetemplateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
         }
         await apiHelper.apiLogin('fritz');
-        var newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
-        await apiHelper.createDyanmicDataOnTemplate(newCaseTemplate.id, 'SaveExistingAndNewCaseDynamicDataDefinition');
-
+        let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
+        await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'SAVE_EXISTING_AND_NEW_CASE_DYNAMIC_DATA_DEFINITION');
         let globalcaseTemplateName = 'globalcasetempalte' + randomStr;
         let gloablcaseTemaplateSummary = 'gloabalcasetemplate' + randomStr;
-        var globaltemplateData = {
+        let globaltemplateData = {
             "templateName": `${globalcaseTemplateName}`,
             "templateSummary": `${gloablcaseTemaplateSummary}`,
             "templateStatus": "Active",
             "company": "- Global -",
         }
-        var globaltemplate = await apiHelper.createCaseTemplate(globaltemplateData);
-        await apiHelper.createDyanmicDataOnTemplate(globaltemplate.id, 'GlobalDynamicDataCaseTemplate');
+        let globaltemplate = await apiHelper.createCaseTemplate(globaltemplateData);
+        await apiHelper.createDynamicDataOnTemplate(globaltemplate.id, 'GLOBAL_DYNAMIC_DATA_CASE_TEMPLATE');
 
         let taskTemplateName = 'Manual  task' + randomStr;
         let manualTaskSummary = 'ManualSummary' + randomStr;
-        var templateData = {
+        let templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
-        await apiHelper.createDyanmicDataOnTemplate(tasktemplate.id, 'DynamicdataForTaskTemplate');
+        await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'DYNAMIC_DATA_FOR_TASK_TEMPLATE');
         let globalTaskTemplateName = 'Global  task' + randomStr;
         let globalmanualTaskSummary = 'GlobalTaskSummary' + randomStr;
-        var gloabalTaskData = {
+        let gloabalTaskData = {
             "templateName": `${globalTaskTemplateName}`,
             "templateSummary": `${globalmanualTaskSummary}`,
             "templateStatus": "Active",
@@ -77,7 +85,7 @@ describe('Dynamic data', () => {
         }
 
         let globalTasktemplate = await apiHelper.createManualTaskTemplate(gloabalTaskData);
-        await apiHelper.createDyanmicDataOnTemplate(globalTasktemplate.id, 'GlobalTaskTemplate');
+        await apiHelper.createDynamicDataOnTemplate(globalTasktemplate.id, 'GLOBAL_TASK_TEMPLATE');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
         await consoleNotificationTemplatePo.clickOnCreateNotificationTemplate();
@@ -156,23 +164,23 @@ describe('Dynamic data', () => {
         console.log("Record deleted...", recDeleted);
         let caseTemplateName = 'caseTempRDMV-192700lp3ir' + randomStr;
         let caseTemaplateSummary = 'caseTempRDMV-19270Template' + randomStr;
-        var casetemplateData = {
+        let casetemplateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
         }
         await apiHelper.apiLogin('fritz');
-        var newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
-        await apiHelper.createDyanmicDataOnTemplate(newCaseTemplate.id, 'CasetemplatewithConfidential');
+        let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
+        await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_WITH_CONFIDENTIAL');
         let taskTemplateName = 'ManualtaskDRDMV-19270' + randomStr;
         let manualTaskSummary = 'ManualSummaryDRDMV-19270' + randomStr;
-        var templateData = {
+        let templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
-        await apiHelper.createDyanmicDataOnTemplate(tasktemplate.id, 'TasktemplatewithConfidential');
+        await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_WITH_CONFIDENTIAL');
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
@@ -364,4 +372,313 @@ describe('Dynamic data', () => {
         await createNotestemplatePo.clickOnSaveButton();
         expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully.');
     }, 250 * 1000);
+
+    it('[DRDMV-13567]: [Dynamic Data] [Attachment] - Case UI when it has Dynamic Fields including Attachment', async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDynamicFieldAndGroup();
+        let caseTemplateName = 'caseTemplateDRDMV-13567' + randomStr;
+        let caseTemaplateSummary = 'caseTemplateDRDMV-13567' + randomStr;
+        let casetemplateData = {
+            "templateName": `${caseTemplateName}`,
+            "templateSummary": `${caseTemaplateSummary}`,
+            "templateStatus": "Active",
+        }
+        await apiHelper.apiLogin('fritz');
+        let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
+        await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
+        await navigationPage.gotCreateCase();
+        await createCasePo.selectRequester('qkatawazi');
+        await createCasePo.setSummary('new cases');
+        await createCasePo.clickSelectCaseTemplateButton();
+        await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
+        await createCasePo.clickSaveCaseButton();
+        await createCasePo.clickGoToCaseButton();
+        await viewCasePo.clickEditCaseButton();
+        //dynamic fields
+        expect(await editCasePo.isDynamicFieldDisplayed('temp')).toBeTruthy('field is not present');
+        expect(await editCasePo.isDynamicFieldDisplayed('temp1')).toBeTruthy('field is not present');
+        expect(await editCasePo.isDynamicFieldDisplayed('temp2')).toBeTruthy('field is not present');
+        expect(await editCasePo.isDynamicFieldDisplayed('temp3')).toBeTruthy('field is not present');
+        expect(await editCasePo.isDynamicFieldDisplayed('temp4')).toBeTruthy('field is not present');
+        expect(await editCasePo.isDynamicFieldDisplayed('attachment1')).toBeTruthy('field is not present');
+        expect(await editCasePo.isDynamicFieldDisplayed('attachment2')).toBeTruthy('field is not present');
+        expect(await editCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('field is not present');
+        // attach files in field 1
+        let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
+        for (let i: number = 0; i < fileName1.length; i++) {
+            await editCasePo.addAttachment('attachment1', `../../data/ui/attachment/${fileName1[i]}`);
+        }
+        //attachment2 add 1 file 
+        await editCasePo.addAttachment('attachment2', '../../data/ui/attachment/demo.txt');
+        //attachment3 add 1 file 
+        let fileName2: string[] = ['bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf'];
+        for (let i: number = 0; i < fileName1.length; i++) {
+            await editCasePo.addAttachment('attachment1', `../../data/ui/attachment/${fileName2[i]}`);
+        }
+        await editCasePo.clickSaveCase();
+        //verify show more and show less button
+        expect(await viewCasePo.getShowMoreLessAttachmentsLinkText()).toContain('Show more');
+        await viewCasePo.clickShowMoreLink();
+        expect(await viewCasePo.getShowMoreLessAttachmentsLinkText()).toContain('Show less');
+        //verify attached files on case view
+        expect(await viewCasePo.isFileDisplayed('bwfJpg3.jpg')).toBeTruthy('File is not present');
+        expect(await viewCasePo.isFileDisplayed('bwfJpg.jpg')).toBeTruthy('File is not present');
+        expect(await viewCasePo.isFileDisplayed('demo.txt')).toBeTruthy('File is not present');
+        expect(await viewCasePo.isFileDisplayed('bwfWord1.rtf')).toBeTruthy('File is not present');
+        expect(await viewCasePo.isFileDisplayed('articleStatus.png')).toBeTruthy('File is not present');
+    });
+
+    it('[DRDMV-13947]: [Dynamic Data] [Attachment] - Task UI when it has Dynamic Fields including Attachment', async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDynamicFieldAndGroup();
+        let taskTemplateName = 'ManualtaskDRDMV-13947' + randomStr;
+        let manualTaskSummary = 'ManualSummaryDRDMV-13947' + randomStr;
+        let templateData = {
+            "templateName": `${taskTemplateName}`,
+            "templateSummary": `${manualTaskSummary}`,
+            "templateStatus": "Active",
+        }
+        let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
+        await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
+        await navigationPage.gotCreateCase();
+        await createCasePo.selectRequester('qkatawazi');
+        await createCasePo.setSummary('new cases');
+        await createCasePo.clickSaveCaseButton();
+        await createCasePo.clickGoToCaseButton();
+        await viewCasePo.clickAddTaskButton();
+        await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
+        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await viewTaskPo.clickOnEditTask();
+        //dynamic fields
+        expect(await editTaskPo.isDynamicFieldDisplayed('temp')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('temp1')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('temp2')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('temp3')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('temp4')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('attachment1')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('attachment2')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('field is not present');
+        await editTaskPo.clickOnAssignToMe();
+        // attach files in field 1
+        let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
+        for (let i: number = 0; i < fileName1.length; i++) {
+            await editTaskPo.addAttachmentInDynamicField('attachment1', `../../data/ui/attachment/${fileName1[i]}`);
+        }
+        //attachment2 add 1 file 
+        await editTaskPo.addAttachmentInDynamicField('attachment2', '../../data/ui/attachment/demo.txt');
+        //attachment3 add 1 file 
+        let fileName2: string[] = ['bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf'];
+        for (let i: number = 0; i < fileName1.length; i++) {
+            await editTaskPo.addAttachmentInDynamicField('attachment1', `../../data/ui/attachment/${fileName2[i]}`);
+        }
+        await editTaskPo.clickOnSaveButton();
+        //verify show more and show less button
+        expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText()).toContain('Show more');
+        await viewTaskPo.clickShowMoreLink();
+        expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText()).toContain('Show less');
+        //verify attached files on case view
+        expect(await viewTaskPo.isFileDisplayed('bwfJpg3.jpg')).toBeTruthy('File is not present');
+        expect(await viewTaskPo.isFileDisplayed('bwfJpg.jpg')).toBeTruthy('File is not present');
+        expect(await viewTaskPo.isFileDisplayed('demo.txt')).toBeTruthy('File is not present');
+        expect(await viewTaskPo.isFileDisplayed('bwfWord1.rtf')).toBeTruthy('File is not present');
+        expect(await viewTaskPo.isFileDisplayed('articleStatus.png')).toBeTruthy('File is not present');
+    });
+
+    it('[DRDMV-13948]: [Dynamic Data] [Attachment] - Add different type of files in attachment fields', async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDynamicFieldAndGroup();
+        let caseTemplateName = 'caseTemplateDRDMV-13567' + randomStr;
+        let caseTemaplateSummary = 'caseTemplateDRDMV-13567' + randomStr;
+        let casetemplateData = {
+            "templateName": `${caseTemplateName}`,
+            "templateSummary": `${caseTemaplateSummary}`,
+            "templateStatus": "Active",
+        }
+        await apiHelper.apiLogin('fritz');
+        let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
+        await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
+        await navigationPage.gotCreateCase();
+        await createCasePo.selectRequester('qkatawazi');
+        await createCasePo.setSummary('new cases');
+        await createCasePo.clickSelectCaseTemplateButton();
+        await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
+        await createCasePo.clickSaveCaseButton();
+        await createCasePo.clickGoToCaseButton();
+        await viewCasePo.clickEditCaseButton();
+        //dynamic fields
+        expect(await editCasePo.isDynamicFieldDisplayed('temp')).toBeTruthy('field is not present');
+        expect(await editCasePo.isDynamicFieldDisplayed('temp1')).toBeTruthy('field is not present');
+        expect(await editCasePo.isDynamicFieldDisplayed('temp2')).toBeTruthy('field is not present');
+        expect(await editCasePo.isDynamicFieldDisplayed('temp3')).toBeTruthy('field is not present');
+        expect(await editCasePo.isDynamicFieldDisplayed('temp4')).toBeTruthy('field is not present');
+        expect(await editCasePo.isDynamicFieldDisplayed('attachment1')).toBeTruthy('field is not present');
+        expect(await editCasePo.isDynamicFieldDisplayed('attachment2')).toBeTruthy('field is not present');
+        expect(await editCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('field is not present');
+        // attach files in field 1
+        let fileName1: string[] = ['articleStatus.png', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfPdf4.pdf', 'bwfWord1.rtf'];
+        for (let i: number = 0; i < fileName1.length; i++) {
+            await editCasePo.addAttachment('attachment1', `../../data/ui/attachment/${fileName1[i]}`);
+        }
+        await editCasePo.clickSaveCase();
+        //download the file
+        await viewCasePo.clickOnDownloadFile('articleStatus.png');
+        expect(await utilCommon.isFileDownloaded('articleStatus.png')).toBeTruthy('failureMsg: articleStatus.png File is not downloaded.');
+        await viewCasePo.clickOnDownloadFile('bwfJpg4.jpg');
+        expect(await utilCommon.isFileDownloaded('bwfJpg4.jpg')).toBeTruthy('failureMsg: bwfJpg4.jpg File is not downloaded.');
+        await viewCasePo.clickOnDownloadFile('bwfJson1.json');
+        expect(await utilCommon.isFileDownloaded('bwfJson1.json')).toBeTruthy('failureMsg: bwfJson1.json File is not downloaded.');
+        await viewCasePo.clickOnDownloadFile('bwfPdf4.pdf');
+        expect(await utilCommon.isFileDownloaded('bwfPdf4.pdf')).toBeTruthy('failureMsg: bwfPdf4.pdf File is not downloaded.');
+        await viewCasePo.clickOnDownloadFile('bwfWord1.rtf');
+        expect(await utilCommon.isFileDownloaded('bwfWord1.rtf')).toBeTruthy('failureMsg: bwfWord1.rtf File is not downloaded.');
+        for (let i: number = 0; i <= fileName1.length; i++) {
+            expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[i]}`)).toBeTruthy('FailuerMsg: File is delete sucessfully');
+        }
+        await apiHelper.apiLogin('tadmin');
+        let recDeleted = await apiHelper.deleteDynamicFieldAndGroup();
+        console.log("Record deleted...", recDeleted);
+        let taskTemplateName = 'ManualtaskDRDMV-13947' + randomStr;
+        let manualTaskSummary = 'ManualSummaryDRDMV-13947' + randomStr;
+        let templateData = {
+            "templateName": `${taskTemplateName}`,
+            "templateSummary": `${manualTaskSummary}`,
+            "templateStatus": "Active",
+        }
+        let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
+        await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
+        await viewCasePo.clickAddTaskButton();
+        await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
+        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await viewTaskPo.clickOnEditTask();
+        //dynamic fields
+        expect(await editTaskPo.isDynamicFieldDisplayed('temp')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('temp1')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('temp2')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('temp3')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('temp4')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('attachment1')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('attachment2')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('field is not present');
+        await editTaskPo.clickOnAssignToMe();
+        //attachment3 add 1 file 
+        let fileName2: string[] = ['bwfJpg.jpg', 'bwfPdf.pdf', 'bwfWord2.rtf'];
+        for (let i: number = 0; i < fileName1.length; i++) {
+            await editTaskPo.addAttachmentInDynamicField('attachment1', `../../data/ui/attachment/${fileName2[i]}`);
+        }
+        await editTaskPo.clickOnSaveButton();
+        await viewCasePo.clickOnDownloadFile('bwfJpg.jpg');
+        expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is not downloaded.');
+        await viewCasePo.clickOnDownloadFile('bwfPdf.pdf');
+        expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('failureMsg: bwfPdf.pdf File is not downloaded.');
+        await viewCasePo.clickOnDownloadFile('bwfWord2.rtf');
+        expect(await utilCommon.isFileDownloaded('bwfWord2.rtf')).toBeTruthy('failureMsg: bwfWord2.rtf File is not downloaded.');
+        for (let i: number = 0; i <= fileName2.length; i++) {
+            expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName2[i]}`)).toBeTruthy('FailuerMsg: File is delete sucessfully');
+        }
+    });
+
+    it('[DRDMV-13161]: [-ve] [Dynamic Data] - Task UI with dynamic data having long description/labels with large data in different fields', async () => {
+        let dynamicfield1 = 'theNewDynamicFieldsIsgettingMouseOveredMouseOvered';
+        let dynamicfield2 = 'theSecondDynamicFieldsIsgettingMouseOveredMouseOvered';
+        let dynamicfield3 = 'theThirdDynamicFieldsIsgettingMouseOveredMouseOvered';
+        let dynamicfield4 = 'temp1theNewDynamicFieldsIsgettingMouseOveredMouseOvered';
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDynamicFieldAndGroup();
+        let taskTemplateName = 'ManualtaskDRDMV-13947' + randomStr;
+        let manualTaskSummary = 'ManualSummaryDRDMV-13947' + randomStr;
+        let templateData = {
+            "templateName": `${taskTemplateName}`,
+            "templateSummary": `${manualTaskSummary}`,
+            "templateStatus": "Active",
+        }
+        let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
+        await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_LONG__DYNAMIC_FIELDS');
+        let externalTask = 'externalTaskDRDMV-13947' + randomStr;
+        let externalTaskSummary = 'externalSummaryDRDMV-13947' + randomStr;
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDynamicFieldAndGroup();
+        let externalTemplateData = {
+            "templateName": `${externalTask}`,
+            "templateSummary": `${externalTaskSummary}`,
+            "templateStatus": "Active",
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTemplateData);
+        await apiHelper.createDynamicDataOnTemplate(externalTaskTemplate.id, 'EXTERNAL_TASK_TEMPLATE_LONG__DYNAMIC');
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDynamicFieldAndGroup();
+        let automatedTask = 'automatedTaskDRDMV-13947' + randomStr;
+        let automatedTaskSummary = 'automatedSummaryDRDMV-13947' + randomStr;
+        let automationTemplateData = {
+            "templateName": `${automatedTask}`,
+            "templateSummary": `${automatedTaskSummary}`,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.arsys.rx.approval",
+            "processName": "Approval Process 1",
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automationTemplateData);
+        await apiHelper.createDynamicDataOnTemplate(autoTaskTemplate.id, 'AUTOMATED_TASK_TEMPLATE_LONG__DYNAMIC');
+        await navigationPage.gotCreateCase();
+        await createCasePo.selectRequester('qkatawazi');
+        await createCasePo.setSummary('new cases');
+        await createCasePo.clickSaveCaseButton();
+        await createCasePo.clickGoToCaseButton();
+        await viewCasePo.clickAddTaskButton();
+        await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
+        await manageTaskBladePo.addTaskFromTaskTemplate(automatedTask);
+        await manageTaskBladePo.addTaskFromTaskTemplate(externalTask);
+        await utilCommon.waitUntilPopUpDisappear();
+        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        //verify dynamic field
+        expect(await viewTaskPo.getDynamicFieldName(dynamicfield1)).toContain(dynamicfield1);
+        expect(await viewTaskPo.getDynamicFieldName(dynamicfield2)).toContain(dynamicfield2);
+        expect(await viewTaskPo.getDynamicFieldName(dynamicfield3)).toContain(dynamicfield3);
+        expect(await viewTaskPo.getDynamicFieldName(dynamicfield4)).toContain(dynamicfield4);
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.setDynamicFieldValue(dynamicfield1, dynamicfield2);
+        await editTaskPo.setDynamicFieldValue(dynamicfield2, dynamicfield1);
+        await editTaskPo.clickOnAssignToMe();
+        await editTaskPo.setDynamicFieldValue(dynamicfield3, dynamicfield4);
+        await editTaskPo.setDynamicFieldValue(dynamicfield4, dynamicfield3);
+        await editTaskPo.clickOnSaveButton();
+        //verify input field values are peresent are not 
+        expect(await viewTaskPo.getDynamicFieldValue(dynamicfield1)).toContain(dynamicfield2);
+        expect(await viewTaskPo.getDynamicFieldValue(dynamicfield2)).toContain(dynamicfield1);
+        expect(await viewTaskPo.getDynamicFieldValue(dynamicfield3)).toContain(dynamicfield4);
+        expect(await viewTaskPo.getDynamicFieldValue(dynamicfield4)).toContain(dynamicfield3);
+        await viewTaskPo.clickOnViewCase();
+        await viewCasePo.clickAddTaskButton();
+        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+        //verify dynamic field on external task
+        expect(await viewTaskPo.getDynamicFieldName('theExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
+        expect(await viewTaskPo.getDynamicFieldName('theSecondExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theSecondExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
+        expect(await viewTaskPo.getDynamicFieldName('theThirdDynamicExternalFieldsIsgettingMouseOveredMouseOvered')).toContain('theThirdDynamicExternalFieldsIsgettingMouseOveredMouseOvered');
+        expect(await viewTaskPo.getDynamicFieldName('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.setDynamicFieldValue('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered', 'theThirdDynamicExternalFieldsIsgettingMouseOveredMouseOvered');
+        await editTaskPo.setDynamicFieldValue('theSecondExternalDynamicFieldsIsgettingMouseOveredMouseOvered', 'temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
+        await editTaskPo.clickOnAssignToMe();
+        await editTaskPo.clickOnSaveButton();
+        //verify input field values are peresent are not 
+        expect(await viewTaskPo.getDynamicFieldValue('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theThirdDynamicExternalFieldsIsgettingMouseOveredMouseOvered');
+        expect(await viewTaskPo.getDynamicFieldValue('theSecondExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
+        await viewTaskPo.clickOnViewCase();
+        await viewCasePo.clickAddTaskButton();
+
+        await manageTaskBladePo.clickTaskLinkOnManageTask(automatedTaskSummary);
+
+        expect(await viewTaskPo.getDynamicFieldName('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered');
+        expect(await viewTaskPo.getDynamicFieldName('theSecondautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theSecondautomatedDynamicFieldsIsgettingMouseOveredMouseOvered');
+        expect(await viewTaskPo.getDynamicFieldName('theThirdDynamicautomatedFieldsIsgettingMouseOveredMouseOvered')).toContain('theThirdDynamicautomatedFieldsIsgettingMouseOveredMouseOvered');
+        expect(await viewTaskPo.getDynamicFieldName('temp1theNewautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('temp1theNewautomatedDynamicFieldsIsgettingMouseOveredMouseOvered');
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.setDynamicFieldValue('temp1theNewautomatedDynamicFieldsIsgettingMouseOveredMouseOvered', 'theThirdDynamicautomatedFieldsIsgettingMouseOveredMouseOvered');
+        await editTaskPo.setDynamicFieldValue('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered', 'theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered');
+        await editTaskPo.clickOnAssignToMe();
+        await editTaskPo.clickOnSaveButton();
+        //verify input field values are peresent are not 
+        expect(await viewTaskPo.getDynamicFieldValue('temp1theNewautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theThirdDynamicautomatedFieldsIsgettingMouseOveredMouseOvered');
+        expect(await viewTaskPo.getDynamicFieldValue('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered');
+    }, 280 * 1000);
 });

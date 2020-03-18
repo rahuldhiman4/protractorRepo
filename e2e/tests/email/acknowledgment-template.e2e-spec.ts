@@ -99,7 +99,7 @@ describe('AcknowledgmentTemplate', () => {
         await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
         await utilCommon.waitUntilSpinnerToHide();
         expect(await consoleAcknowledgmentTemplatePo.isGridRecordPresent(templateName2)).toBeFalsy('Public template name is preset on grid')
-    }, 200 * 1000)
+    }, 200 * 1000);
 
     //kgaikwad
     it('[DRDMV-10902,DRDMV-10900,DRDMV-10924,DRDMV-10923]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
@@ -248,5 +248,5 @@ describe('AcknowledgmentTemplate', () => {
         await utilCommon.closePopUpMessage();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-    }, 300 * 1000)
+    }, 300 * 1000);
 })

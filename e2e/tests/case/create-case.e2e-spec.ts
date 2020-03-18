@@ -1,16 +1,17 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import apiHelper from '../../api/api.helper';
+import attachmentBladePage from "../../pageobject/attachment/attachment-blade.po";
 import caseConsolePage from '../../pageobject/case/case-console.po';
 import createCasePage from "../../pageobject/case/create-case.po";
 import editCasePage from '../../pageobject/case/edit-case.po';
-import { default as selectCaseTemplate, default as selectCaseTemplateBlade } from '../../pageobject/case/select-casetemplate-blade.po';
+import { default as selectCaseTemplateBlade } from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
 import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import KnowledgeConsolePage from "../../pageobject/knowledge/knowledge-articles-console.po";
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
+import KnowledgeConsolePage from "../../pageobject/knowledge/knowledge-articles-console.po";
 import createMenuItems from '../../pageobject/settings/application-config/create-menu-items-blade.po';
 import editMenuItemsConfigPo from '../../pageobject/settings/application-config/edit-menu-items-config.po';
 import menuItemConsole from '../../pageobject/settings/application-config/menu-items-config-console.po';
@@ -24,11 +25,12 @@ import viewCaseTemplate from '../../pageobject/settings/case-management/view-cas
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import createTaskTemplate from '../../pageobject/settings/task-management/create-tasktemplate.po';
 import taskTemplatePreview from '../../pageobject/settings/task-management/preview-task-template-cases.po';
+import viewTasktemplatePage from '../../pageobject/settings/task-management/view-tasktemplate.po';
+import { default as activityPo, default as activityTabPo } from '../../pageobject/social/activity-tab.po';
 import taskConsolepage from "../../pageobject/task/console-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import viewTasktemplatePage from '../../pageobject/settings/task-management/view-tasktemplate.po';
 
 describe("Create Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -79,7 +81,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });
+    }, 200 * 1000);
 
     //kgaikwad
     it('[DRDMV-17653]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {
@@ -141,74 +143,67 @@ describe("Create Case", () => {
 
     //kgaikwad
     it('[DRDMV-18031]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
-        try {
-            let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
-            await createMenuItems.clickOnMenuOptionLink();
-            await createMenuItems.selectMenuNameDropDown('Resolution Code');
-            await createMenuItems.clickOnLocalizeLink();
-            //await utilCommon.waitUntilSpinnerToHide();
-            await localizeValuePopPo.setLocalizeValue(randVal);
-            await localizeValuePopPo.clickOnSaveButton();
-            //await utilCommon.waitUntilSpinnerToHide();
-            await createMenuItems.selectStatusDropDown('Active');
-            await createMenuItems.selectAvailableOnUiToggleButton(true);
-            await createMenuItems.clickOnSaveButton();
-            //await utilCommon.waitUntilPopUpDisappear();
+        let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+        await createMenuItems.clickOnMenuOptionLink();
+        await createMenuItems.selectMenuNameDropDown('Resolution Code');
+        await createMenuItems.clickOnLocalizeLink();
+        //await utilCommon.waitUntilSpinnerToHide();
+        await localizeValuePopPo.setLocalizeValue(randVal);
+        await localizeValuePopPo.clickOnSaveButton();
+        //await utilCommon.waitUntilSpinnerToHide();
+        await createMenuItems.selectStatusDropDown('Active');
+        await createMenuItems.selectAvailableOnUiToggleButton(true);
+        await createMenuItems.clickOnSaveButton();
+        //await utilCommon.waitUntilPopUpDisappear();
 
-            await navigationPage.gotoCaseConsole();
-            let caseData1 =
-            {
-                "Requester": "qtao",
-                "Summary": "Test case for DRDMV-2530",
-                "Support Group": "Compensation and Benefits",
-                "Assignee": "qkatawazi"
-            }
-            await apiHelper.apiLogin('qkatawazi');
-            let newCase1 = await apiHelper.createCase(caseData1);
-            let caseId1: string = newCase1.displayId;
-            await caseConsolePage.searchAndOpenCase(caseId1);
-            await viewCasePage.clickEditCaseButton();
-            await editCasePage.updateResolutionCode(randVal);
-            await editCasePage.clickSaveCase();
-            //await utilCommon.waitUntilSpinnerToHide();
-
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
-            //await utilCommon.waitUntilSpinnerToHide();
-            await menuItemConsole.searchAndEditMenuOption(randVal);
-            await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(false);
-            await editMenuItemsConfigPo.clickOnSaveButton();
-            //await utilCommon.waitUntilPopUpDisappear();
-
-            await navigationPage.gotoCaseConsole();
-            let caseData2 =
-            {
-                "Requester": "qtao",
-                "Summary": "Test case for DRDMV-2530",
-                "Support Group": "Compensation and Benefits",
-                "Assignee": "qkatawazi"
-            }
-            await apiHelper.apiLogin('qkatawazi');
-            let newCase2 = await apiHelper.createCase(caseData2);
-            let caseId2: string = newCase2.displayId;
-            await caseConsolePage.searchAndOpenCase(caseId2);
-            await viewCasePage.clickEditCaseButton();
-            expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
-            await editCasePage.clickOnCancelCaseButton();
-            await utilCommon.clickOnWarningOk();
-            //await utilCommon.waitUntilSpinnerToHide();
-            await navigationPage.gotoCaseConsole();
-            await caseConsolePage.searchAndOpenCase(caseId1);
-            await viewCasePage.clickEditCaseButton();
-            expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
-        } catch (error) {
-            throw error;
-        } finally {
-            await navigationPage.signOut();
-            await loginPage.login("qkatawazi");
+        await navigationPage.gotoCaseConsole();
+        let caseData1 =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-2530",
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
         }
+        await apiHelper.apiLogin('qkatawazi');
+        let newCase1 = await apiHelper.createCase(caseData1);
+        let caseId1: string = newCase1.displayId;
+        await caseConsolePage.searchAndOpenCase(caseId1);
+        await viewCasePage.clickEditCaseButton();
+        await editCasePage.updateResolutionCode(randVal);
+        await editCasePage.clickSaveCase();
+        //await utilCommon.waitUntilSpinnerToHide();
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+        //await utilCommon.waitUntilSpinnerToHide();
+        await menuItemConsole.searchAndEditMenuOption(randVal);
+        await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(false);
+        await editMenuItemsConfigPo.clickOnSaveButton();
+        //await utilCommon.waitUntilPopUpDisappear();
+
+        await navigationPage.gotoCaseConsole();
+        let caseData2 =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-2530",
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        let newCase2 = await apiHelper.createCase(caseData2);
+        let caseId2: string = newCase2.displayId;
+        await caseConsolePage.searchAndOpenCase(caseId2);
+        await viewCasePage.clickEditCaseButton();
+        expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
+        await editCasePage.clickOnCancelCaseButton();
+        await utilCommon.clickOnWarningOk();
+        //await utilCommon.waitUntilSpinnerToHide();
+        await navigationPage.gotoCaseConsole();
+        await caseConsolePage.searchAndOpenCase(caseId1);
+        await viewCasePage.clickEditCaseButton();
+        expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
     }, 180 * 1000);
 
     //ankagraw
@@ -361,7 +356,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 100 * 1000);
+    });
 
     //ankagraw
     it('[DRDMV-11856]: [Case Creation] create case with Global case template without flowset ', async () => {
@@ -628,7 +623,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 100 * 1000);
+    });
 
     //ankagraw
     it('[DRDMV-12061]: [ Task ] - Verify create case with Global task template having assignment', async () => {
@@ -822,7 +817,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 90 * 1000);
+    });
 
     //ankagraw
     it('[DRDMV-11818]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
@@ -881,7 +876,6 @@ describe("Create Case", () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseSummary = 'Case Summary ' + randomStr;
-
             await navigationPage.signOut();
             await loginPage.login("qtao");
             await navigationPage.gotCreateCase();
@@ -921,7 +915,7 @@ describe("Create Case", () => {
     it('[DRDMV-1620]: [Case] Fields validation for case in Closed status ', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            
+
             var caseWithClosedStatus = {
                 "Status": "7000",
                 "Company": "Petramco",
@@ -949,4 +943,64 @@ describe("Create Case", () => {
             await loginPage.login("qkatawazi");
         }
     }, 180 * 1000);
+
+    //apdeshmu
+    it('[DRDMV-5325]:  Case Agent user able to see all activity records in activity feed for a Case created using template', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let filePath = '../../data/ui/attachment/bwfPdf.pdf';
+        let petramcoStr = "Petramco";
+        let aUsupportStr = "AU Support 1";
+        let kasiaOstlunsStr = "Kasia Ostlun";
+
+        try {
+            await navigationPage.signOut();
+            await loginPage.login("qtao");
+            await navigationPage.gotCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('Summary' + randomStr);
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCaseTemplateBlade.selectCaseTemplate('Change My Legal Name');
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await createCasePage.clickGoToCaseButton();
+            await viewCasePage.changeCaseStatus('In Progress');
+            await viewCasePage.clickSaveStatus();
+            await utilCommon.waitUntilSpinnerToHide();
+            expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
+            await viewCasePage.clickEditCaseButton();
+            await editCasePage.clickChangeAssignmentButton();
+            await changeAssignmentPage.setAssignee(petramcoStr, aUsupportStr, kasiaOstlunsStr);
+            await editCasePage.clickSaveCase();
+            await utilCommon.waitUntilSpinnerToHide();
+            expect(await activityPo.isTextPresentInActivityLog("Kasia Ostlun")).toBeTruthy("Text is not present in activiy tab1");
+            expect(await activityPo.isTextPresentInActivityLog("changed the case assignment")).toBeTruthy("Text is not present in activiy tab2");
+            expect(await activityPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab3");
+            expect(await activityPo.isTextPresentInActivityLog("Assigned Group")).toBeTruthy("Text is not present in activiy tab4");
+            expect(await activityPo.isTextPresentInActivityLog("AU Support 1")).toBeTruthy("Text is not present in activiy tab5");
+            await activityTabPo.addActivityNote(activityNoteText);
+            await activityTabPo.addAttachment(filePath);
+            await activityTabPo.clickOnPostButton();
+            await utilCommon.waitUntilSpinnerToHide();
+            await utilCommon.waitUntilSpinnerToHide();
+            await expect(activityTabPo.isTextPresentInNote(activityNoteText)).toBeTruthy('Private Note is not Added');
+            await activityTabPo.addActivityNote(randomStr);
+            await activityTabPo.clickPublicCheckbox();
+            await activityTabPo.clickOnPostButton();
+            await utilCommon.waitUntilSpinnerToHide();
+            expect(await activityTabPo.isTextPresentInNote(randomStr)).toBeTruthy('Public Note is not Added');
+            await viewCasePage.clickAttachmentsLink();
+            await attachmentBladePage.searchAndSelectCheckBox('bwfPdf');
+            expect(await attachmentBladePage.isDownloadButtonEnabled()).toBeTruthy('Download button is disabled');
+            await attachmentBladePage.clickOnDownloadButton();
+            expect(await activityTabPo.isTextPresentInNote(activityNoteText)).toBeTruthy('Private Note is not Added');
+            expect(await activityTabPo.isAttachmentInActivity('bwfPdf.pdf')).toBeTruthy('File is not present on activity');
+            expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    }, 240 * 1000);
 });

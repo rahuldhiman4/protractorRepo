@@ -55,7 +55,8 @@ class ActivityTabPage {
         showMoreEmailActivity: '.email .more',
         allTaskActivity: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .fields .value',
         showMoreLink: '.log-item__content .more',
-        emailBodyImage: '.email-body img'
+        emailBodyImage: '.email-body img',
+        publicCheckbox: '.activity-feed-note-external .d-checkbox__item',
     }
 
     async clickOnShowMore(): Promise<void> {
@@ -363,14 +364,10 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        //        browser.sleep(3000);
-        try {
-            await element(by.cssContainingText('.activity-general-note', bodyText)).isDisplayed();
-            return true;
-        }
-        catch (e) {
-            return false;
-        }
+        return await element(by.cssContainingText('.activity-general-note',bodyText)).isDisplayed().then(async (result) => {
+            if (result) return true;
+            else return false;
+        });
     }
 
     async clickOnHyperlinkFromActivity(bodyText: string, authorText: string): Promise<void> {
@@ -518,6 +515,17 @@ class ActivityTabPage {
 
     async getCountAttachedFiles(fileName: string): Promise<number> {
         return await element.all(by.cssContainingText(this.selectors.AttachedfileName, fileName)).count();
+    }
+
+    async clickPublicCheckbox(): Promise<void> {
+        await element(by.css(this.selectors.publicCheckbox)).click();
+    }
+
+    async isAttachmentInActivity(bodyText: string): Promise<boolean> {
+        return await element(by.cssContainingText('.rx-attachment-view-name',bodyText)).isDisplayed().then(async (result) => {
+            if (result) return true;
+            else return false;
+        });
     }
 }
 

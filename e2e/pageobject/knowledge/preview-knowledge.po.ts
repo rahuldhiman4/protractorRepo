@@ -50,5 +50,10 @@ class PreviewKnowledge {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeArticleID)));
         return await $(this.selectors.knowledgeArticleID).getText();
     }
+
+    async isKnowledgeArticleID(): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeArticleID)));
+        return await $(this.selectors.knowledgeArticleID).isDisplayed();
+    }
 }
 export default new PreviewKnowledge();

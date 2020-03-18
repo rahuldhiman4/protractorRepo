@@ -1069,7 +1069,7 @@ describe('Document Library Consume UI', () => {
         await resourcesTabPo.clickOnAdvancedSearchOptions('Knowledge Articles ');
         await resourcesTabPo.searchTextAndEnter(publishDocLibData1.docLibTitle);
         await expect(await resourcesTabPo.isKnowledgeArticlesEmpty()).toBeTruthy('Failuer: Knowledge Article is not empty');
-    }, 120 * 1000);
+    });
 
     //kgaikwad
     it('[DRDMV-13517]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
@@ -1200,7 +1200,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 362 * 1000);
+    }, 370 * 1000);
 
     //kgaikwad
     it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
@@ -1388,7 +1388,7 @@ describe('Document Library Consume UI', () => {
     }, 240 * 1000);
 
     //kgaikwad
-    fit('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
+    it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
         try {
             let excelFile = '../../data/ui/attachment/bwfXlsx.xlsx';
             let addNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1577,6 +1577,6 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 10000 * 1000);
+    }, 200 * 1000);
 
 })

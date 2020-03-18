@@ -277,7 +277,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    it('[DRDMV-18077]: Check Case manager is not able to perform Create Update operation on Case to Case Relationship', async () => {        
+    it('[DRDMV-18077]: Check Case manager is not able to perform Create Update operation on Case to Case Relationship', async () => {
         await navigationPage.gotCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Case to Case', 'Case to Case Relationship Console - Business Workflows');
@@ -287,7 +287,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    it('[DRDMV-18078]: Check Case manager is not able to perform Create Update operation on Case to Person Relationship', async () => {        
+    it('[DRDMV-18078]: Check Case manager is not able to perform Create Update operation on Case to Person Relationship', async () => {
         await navigationPage.gotCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Case to Person', 'Case To Person Relationship Console - Business Workflows');
@@ -297,7 +297,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    it('[DRDMV-18079]: Check Case manager is not able to perform Create Update operation on Person to Person Relationship', async () => {        
+    it('[DRDMV-18079]: Check Case manager is not able to perform Create Update operation on Person to Person Relationship', async () => {
         await navigationPage.gotCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
@@ -307,7 +307,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     //asahitya
-    it('[DRDMV-18063]: Check Case manager is not able to perform Create Update Delete operation on Email->Template', async () => {        
+    it('[DRDMV-18063]: Check Case manager is not able to perform Create Update Delete operation on Email->Template', async () => {
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let emailTemplateData = require('../../data/ui/email/email.template.api.json');
@@ -335,7 +335,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     //asahitya
-    it('[DRDMV-18061]: Check Case manager is not able to perform Create Update and Delete operation on Email->Acknowledgement template', async () => {        
+    it('[DRDMV-18061]: Check Case manager is not able to perform Create Update and Delete operation on Email->Acknowledgement template', async () => {
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let emailTemplateData = require('../../data/ui/email/email.template.api.json');
@@ -360,6 +360,6 @@ describe('Case Manager Read-only Config', () => {
         await editAcknowledementTemplatePage.clickOnSubjectCheckbox();
         expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Subject button is enabled');
         await browser.refresh();
-    });
-    
+    }, 150 * 1000);
+
 })

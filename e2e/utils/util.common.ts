@@ -180,13 +180,19 @@ export class Util {
     }
 
     async clickOnWarningOk(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningOk)),2000);
-        await $(this.selectors.warningOk).click();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningOk)), 2000).then(async (result) => {
+            if (result) {
+                await $(this.selectors.warningOk).click();
+            }
+        });
     }
 
     async clickOnWarningCancel(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningCancel)));
-        await $(this.selectors.warningCancel).click();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningCancel)), 2000).then(async (result) => {
+            if (result) {
+                await $(this.selectors.warningCancel).click();
+            }
+        });
     }
 
     async selectToggleButton(guid: string, value: boolean): Promise<void> {
@@ -328,7 +334,7 @@ export class Util {
         }
         return date + '/' + month + '/' + year;
     }
-    
+
     async isPopupMsgsMatches(msgs: string[]): Promise<boolean> {
         let arr: string[] = await this.getAllPopupMsg();
         msgs.sort();

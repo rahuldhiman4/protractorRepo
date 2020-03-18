@@ -95,8 +95,7 @@ describe('Email', () => {
         await emailPo.clickOnEmailIconLink();
         await emailPo.clickOnDiscardButton();
         await utilCommon.clickOnWarningOk();
-
-    }, 120 * 1000);
+    });
 
     it('[DRDMV-19008]: Email icon and Requester email link should open compose email dialog in Task', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -274,7 +273,7 @@ describe('Email', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         }
-    }, 120 * 1000);
+    });
 
     it('[DRDMV-19558]: Verify social notes other than email should not have reply and reply all options', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

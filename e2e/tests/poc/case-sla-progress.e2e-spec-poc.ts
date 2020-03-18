@@ -45,5 +45,5 @@ describe('SLA progress bar testing', () => {
                 expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
                 browser.sleep(30000);
                 expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)'); */ //red
-    }, 120 * 1000)
+    })
 })

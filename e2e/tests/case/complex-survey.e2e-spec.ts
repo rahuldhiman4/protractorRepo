@@ -206,7 +206,7 @@ describe('Complex Surveys', () => {
         expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(6)).toBe("By what time did you expect resolution for this service ? (This is Date Time type question, Please select date and time)");
         expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(9)).toBe("Sat Dec 14 2019 2:50:00 PM");
         await activityTabPage.closeSurveyInformation();
-    },130*1000);
+    }, 140 * 1000);
 
     it('[DRDMV-18117]: [Simple Survey] - Survey Details in Case which is submitted from DWP with different options', async () => {
         await apiHelper.apiLogin("qkatawazi");
