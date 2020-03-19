@@ -81,6 +81,10 @@ class CaseEditPage {
         getCaseDisplayId: 'span.text-field',
         closedTip: '[class="rx-attachment-view-item ng-scope"] .d-icon-cross',
         attachmentField: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] input',
+        dynamicFieldDate:'[class="input-group"] input[ng-model="date"]',
+        dynamicBooleanValue:'button[aria-label="True"]',
+        dynamicFieldDateTime:'input[ng-model="datetime"]',
+        dynamicFieldTime:'.dynamic-time-field input[ng-model="hours"]',
     }
 
     async removeAttachment(): Promise<void> {
@@ -506,6 +510,31 @@ class CaseEditPage {
         const absolutePath = resolve(__dirname, fileToUpload);
         console.log(absolutePath);
         await $(this.selectors.attachmentField).sendKeys(absolutePath);
+    }
+
+    async setDynamicFieldValue(fieldName:string,fieldValue:string):Promise<void>{
+        await $(`input[name=${fieldName}]`).sendKeys(fieldValue);
+    }
+
+    async setDateValueInDynamicField(value:string):Promise<void>{
+        await $(this.selectors.dynamicFieldDate).sendKeys(value);
+    }
+
+    async clickOnTrueValueOfDynamicField():Promise<void>{
+        await $(this.selectors.dynamicBooleanValue).click();
+    }
+
+    async setDateTimeDynamicFieldValue(value:string):Promise<void>{
+        await $(this.selectors.dynamicFieldDateTime).sendKeys(value);
+    }
+
+    async selectValueFromList(fieldName:string,value:string):Promise<void>{
+        await $(`[ng-title=${fieldName}] div.ui-select-match`).click();
+        await $(`div[title=${value}]`).click();
+    }
+
+    async setTimeInDynamicField(value:string):Promise<void>{
+        await $(this.selectors.dynamicFieldTime).sendKeys(value)
     }
 }
 

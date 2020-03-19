@@ -450,28 +450,4 @@ describe("Attachment", () => {
         await expect(await attachmentBladePo.isCheckBoxSelected('bwfPdf')).toBeFalsy('bwfPdf CheckBox is selected');
         await expect(await attachmentBladePo.isCheckBoxSelected('bwfJson5')).toBeFalsy('bwfJson5 CheckBox is selected');
     });
-
-    //ptidke
-    it('[DRDMV-11702]: Multiple attachments download', async () => {
-        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotCreateCase();
-        await createCasePo.selectRequester('Elizabeth Peters');
-        await createCasePo.setSummary(caseSummary);
-        let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg'];
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
-        }
-        await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
-        await viewCasePo.clickAttachmentsLink();
-        for (let j: number = 0; j < fileName1.length; j++) {
-            expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
-        }
-        await attachmentBladePo.clickOnAllCheckboxButton();
-        // Failling here because of mulitple download pop is not get handlled.  
-        await attachmentBladePo.clickOnDownloadButton();
-        for (let j: number = 0; j < fileName1.length; j++) {
-            await expect(await utilCommon.isFileDownloaded(`${fileName1[j]}`)).toBeTruthy('File is not downloaded.');
-        }
-    });
 });

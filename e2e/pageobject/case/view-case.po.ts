@@ -58,9 +58,11 @@ class ViewCasePage {
         addedTaskFromCaseTemplate: '.task-list__task-card a',
         taskCardArrow: '.icon-angle_right.task-list__task-card__preview-icon',
         attachmentFile: '.rx-attachment-view-name',
-        caseTemplate: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .d-textfield__rx-value',
-        sourceValue: '[rx-view-component-id="8abd013f-26cd-4aa5-a3bb-63b063d3a7ec"] .d-textfield__rx-value',
-        showMore: '.rx-attachment-show-text',
+        caseTemplate:'[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .d-textfield__rx-value',
+        sourceValue:'[rx-view-component-id="8abd013f-26cd-4aa5-a3bb-63b063d3a7ec"] .d-textfield__rx-value',
+        showMore:'.rx-attachment-show-text',
+        dynamicFieldsName:'[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] span',
+        dynamicFieldsValue:'[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] p',
     }
 
     async isAttachedDocumentPresent(fileName: string): Promise<boolean> {
@@ -396,6 +398,17 @@ class ViewCasePage {
 
     async clickOnDownloadFile(fileName: string): Promise<void> {
         await $(`div[aria-label="Download attachment ${fileName}"]`).click();
+    }
+
+    async getValueOfDynamicFields(fieldName:string):Promise<string>{
+       let dynamicFields:number= await $$(this.selectors.dynamicFieldsName).count();
+       for(let i=0; i<dynamicFields;i++){
+          let field= await $$(this.selectors.dynamicFieldsName).get(i).getText();
+          if(fieldName==field){
+            return await $$(this.selectors.dynamicFieldsValue).get(i).getText();
+          }
+       }
+       return null;
     }
 }
 

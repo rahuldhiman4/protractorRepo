@@ -42,7 +42,7 @@ export const CASE_TEMPLATE_DYNAMIC_FIELDS =
         },
         {
             "name": "newfilesd",
-            "description": "asd",
+            "description": "dynamicList",
             "dataType": "LIST",
             "dataProviderUserRole": "Agent",
             "displayDataListDefinitions": [
@@ -515,6 +515,169 @@ export const AUTOMATED_TASK_TEMPLATE_LONG__DYNAMIC =
             "name": "temp1theNewautomatedDynamicFieldsIsgettingMouseOveredMouseOvered",
             "description": "temp1theNewautomatedDynamicFieldsIsgettingMouseOveredMouseOvered",
             "dataType": "NUMBER",
+            "dataProviderUserRole": "Agent",
+        }
+    ]
+};
+export const CASE_TEMPLATE_REQUESTER_DYNAMIC_FIELDS =
+{
+    "name": "case template",
+    "templateId": "xalkdjasd",
+    "templateRecordDefinition": "com.bmc.dsm.case-lib:Case Template",
+    "attributeDefinitions": [
+        {
+            "name": "temp",
+            "description": "temp",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "temp1",
+            "description": "temp1",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "temp2",
+            "description": "temp2",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "temp3",
+            "description": "temp3",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "temp4",
+            "description": "temp4",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "temp5",
+            "description": "temp5",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "newfilesd",
+            "description": "dynamicList",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "attachment1",
+            "description": "attachment1",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        }
+    ]
+};
+export const AUTOMATED_TASK_TEMPLATE__DYNAMIC_FIELDS =
+{
+    "name": "task template",
+    "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
+    "templateId": "nnn",
+    "attributeDefinitions": [
+        {
+            "name": "automatedText",
+            "description": "automatedText",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedNumber",
+            "description": "automatedNumber",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedDate",
+            "description": "automatedDate",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedBoolean",
+            "description": "automatedBoolean",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedDateTime",
+            "description": "automatedDateTime",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedTime",
+            "description": "automatedTime",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedAttachment1",
+            "description": "automatedAttachment1",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Agent",
+        }
+    ]
+};
+export const EXTERNAL_TASK_TEMPLATE__DYNAMIC_FIELDS={
+    "name": "task template",
+    "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
+    "templateId": "nnn",
+    "attributeDefinitions": [
+        {
+            "name": "externalText",
+            "description": "externalText",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externalNumber",
+            "description": "externalNumber",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externalDate",
+            "description": "externalDate",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externalBoolean",
+            "description": "externalBoolean",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externalDateTime",
+            "description": "externalDateTime",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externalTime",
+            "description": "externalTime",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externalAttachment1",
+            "description": "externalAttachment1",
+            "dataType": "ATTACHMENT",
             "dataProviderUserRole": "Agent",
         }
     ]
