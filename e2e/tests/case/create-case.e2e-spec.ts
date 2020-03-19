@@ -628,9 +628,9 @@ describe("Create Case", () => {
     //ankagraw
     it('[DRDMV-12061]: [ Task ] - Verify create case with Global task template having assignment', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let globalCategName = 'DemoCateg1';
-        let categName2 = 'DemoCateg2';
-        let categName3 = 'DemoCateg3';
+        let globalCategName = 'MyCateg1';
+        let categName2 = 'MyCateg2';
+        let categName3 = 'MyCateg3';
         await apiHelper.apiLogin('tadmin');
         await apiHelper.createOperationalCategory(globalCategName, true);
         await apiHelper.createOperationalCategory(categName2);

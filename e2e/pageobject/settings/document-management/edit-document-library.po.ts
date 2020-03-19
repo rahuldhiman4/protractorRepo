@@ -314,11 +314,6 @@ class EditDocumentLibraryPage {
         return await $(this.selectors.site).getAttribute('disabled') == 'true';
     }
 
-    async isSupportGroupAccessButtonDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupAccessButton)));
-        return await $(this.selectors.supportGroupAccessButton).getAttribute('disabled') == 'true';
-    }
-
     async isAddCompanyDropDownDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.addCompany)));
         return await $(this.selectors.addCompany).getAttribute('disabled') == 'true';

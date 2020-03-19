@@ -159,7 +159,7 @@ class QuickCasePage {
 
     async selectCaseTemplate(templateName: string): Promise<boolean> {
         let success: boolean = false;
-        for (let i: number = 0; i <= 5; i++) {
+        for (let i: number = 0; i <= 10; i++) {
             browser.sleep(5 * 1000);
             let template: string = "!" + templateName;
             await $(this.selectors.inputBox).sendKeys(template);

@@ -271,7 +271,7 @@ describe('Create Adhoc task', () => {
         expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
         await attachmentInformationBladePo.clickOnDownloadButton();
         expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
-    });
+    }, 140 * 1000);
 
     it('[DRDMV-12245]: Verify task attachments deletion', async () => {
         let filePath = '../../data/ui/attachment/demo.txt';
