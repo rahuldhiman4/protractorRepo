@@ -1,5 +1,7 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
+import navigationPage from "../../pageobject/common/navigation.po";
+import createCasePo from "../../pageobject/case/create-case.po";
 
 class QuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -28,7 +30,8 @@ class QuickCasePage {
         sourceValue: '.ui-select-toggle .ui-select-match-text',
         roleValue: '.smart-recorder-selectionItem li a',
         descriptionText: '.smart-input-label_big',
-        resources: '.smart-search-placeholder-text'
+        resources: '.smart-search-placeholder-text',
+        startOverButton: '.smart-recorder__footer button.d-button_secondary',
     }
 
     async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
@@ -66,7 +69,7 @@ class QuickCasePage {
 
     async selectRequesterName(name: string): Promise<void> {
         let namenew = "@" + name;
-        await $(this.selectors.inputBox).clear();
+        //await $(this.selectors.inputBox).clear();
         // await browser.wait(this.EC.visibilityOf($(this.selectors.inputBox)));
         await $(this.selectors.inputBox).sendKeys(namenew);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesters)), 3000);
@@ -151,16 +154,16 @@ class QuickCasePage {
 
     async saveCase(): Promise<void> {
         await $(this.selectors.createCaseButton).click();
-        // await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton__preview)));
+       // await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton__preview)));
     }
 
     async selectCaseTemplate(templateName: string): Promise<boolean> {
         let success: boolean = false;
-        for (let i: number = 0; i <= 20; i++) {
+        for (let i: number = 0; i <= 5; i++) {
             browser.sleep(5 * 1000);
             let template: string = "!" + templateName;
             await $(this.selectors.inputBox).sendKeys(template);
-            success = await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).isDisplayed().then(async (result) => {
+            success = await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).isPresent().then(async (result) => {
                 if (result) {
                     await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).click();
                     return true;
@@ -219,6 +222,10 @@ class QuickCasePage {
 
     async getSelectedSourceValue(): Promise<string> {
         return await $(this.selectors.sourceValue).getText();
+    }
+
+    async clickStartOverButton(): Promise<void> {
+        await $(this.selectors.startOverButton).click();
     }
 }
 
