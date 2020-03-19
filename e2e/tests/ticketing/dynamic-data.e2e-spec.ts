@@ -684,6 +684,7 @@ describe('Dynamic data', () => {
         expect(await viewTaskPo.getDynamicFieldValue('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered');
     }, 280 * 1000);
 
+    // ptidke
     it('[DRDMV-13128]: [Dynamic Data] - Create Case with Case Template having dynamic fields and Update dynamic fields data in Case', async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
@@ -711,7 +712,7 @@ describe('Dynamic data', () => {
         await editCasePo.selectValueFromList('dynamicList', 'listvalues');
         await editCasePo.addAttachment('attachment2', '../../data/ui/attachment/demo.txt');
         await editCasePo.clickSaveCase();
-        await browser.sleep(3000);
+        await utilCommon.waitUntilSpinnerToHide();
         //verify update values on case view
         expect(await viewCasePo.getValueOfDynamicFields('temp')).toBe('newtemp');
         expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('333');
@@ -723,6 +724,7 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.isFileDisplayed('demo.txt')).toBeTruthy('File is not present');
     });
 
+    // ptidke
     it('[DRDMV-13127]: [Dynamic Data] - Create Case from Create Case with Template having dynamic fields and also have field with source as Requester', async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
