@@ -95,7 +95,6 @@ class ViewCaseTemplate {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier4)));
         return await $(this.selectors.categoryTier4).getText();
     }
-
 }
 
 export default new ViewCaseTemplate();

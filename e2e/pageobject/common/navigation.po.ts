@@ -209,6 +209,7 @@ class NavigationPage {
     }
 
     async gotoQuickCase(): Promise<void> {
+        await browser.wait(this.EC.invisibilityOf($(this.selectors.modalOpen)),5000); 
         if (await this.isHambergerIconPresent()) {
             await $(this.verticalSelectors.hamburgerIcon).$('button').click();
 //            await browser.wait(this.EC.elementToBeClickable($('.d-n-hamburger__close')));
