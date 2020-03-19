@@ -174,6 +174,7 @@ class QuickCasePage {
                 continue;
             }
         }
+        if(!success) await $(this.selectors.inputBox).sendKeys("!" + templateName);
         return success;
     }
 

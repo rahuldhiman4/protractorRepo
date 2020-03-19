@@ -314,9 +314,9 @@ describe('Create Case Task', () => {
     //ankagraw
     it('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: [ Task ] - Verify Associated menu for Task will show global configuration values as well	 ', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let globalCategName = 'DemoCateg1';
-        let categName2 = 'DemoCateg2';
-        let categName3 = 'DemoCateg3';
+        let globalCategName = 'MyDemoCateg1';
+        let categName2 = 'MyDemoCateg2';
+        let categName3 = 'MyDemoCateg3';
         await apiHelper.apiLogin('tadmin');
         await apiHelper.createOperationalCategory(globalCategName, true);
         await apiHelper.createOperationalCategory(categName2);
@@ -374,7 +374,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 180 * 1000);
+    }, 220 * 1000);
 
     //ankagraw
     it('[DRDMV-12558]: Task Template submitter from different company of owner group can edit the template', async () => {
