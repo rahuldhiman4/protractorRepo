@@ -534,7 +534,7 @@ class CaseEditPage {
     }
 
     async setTimeInDynamicField(value:string):Promise<void>{
-        await $(this.selectors.dynamicFieldTime).sendKeys(value)
+        await $(this.selectors.dynamicFieldTime).sendKeys(value);
     }
 }
 
