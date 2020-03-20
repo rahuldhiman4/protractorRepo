@@ -45,7 +45,6 @@ describe("Compose Email", () => {
 
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
-        browser.waitForAngularEnabled(false);
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login("qtao");
         await apiHelper.apiLogin('tadmin');

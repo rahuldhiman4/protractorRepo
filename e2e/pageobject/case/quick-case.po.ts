@@ -1,7 +1,4 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
-import navigationPage from "../../pageobject/common/navigation.po";
-import createCasePo from "../../pageobject/case/create-case.po";
 
 class QuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -68,10 +65,9 @@ class QuickCasePage {
     }
 
     async selectRequesterName(name: string): Promise<void> {
-        let namenew = "@" + name;
         //await $(this.selectors.inputBox).clear();
-        // await browser.wait(this.EC.visibilityOf($(this.selectors.inputBox)));
-        await $(this.selectors.inputBox).sendKeys(namenew);
+        //await browser.wait(this.EC.visibilityOf($(this.selectors.inputBox)));
+        await $(this.selectors.inputBox).sendKeys(`@${name}`);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesters)), 3000);
         await $$(this.selectors.requesters).first().click();
     }
@@ -93,6 +89,7 @@ class QuickCasePage {
 
     async validatePersonAndHisRelation(relationType: string): Promise<string> {
         let employee: string;
+        await browser.sleep(1000); // required because UI renders after get call used before calling this method
         let elementCount = await $$(this.selectors.confirmedItemSelection).count();
         for (let i = 0; i < elementCount; i++) {
             let actualRelationType = await $$(this.selectors.confirmedItemSelection).get(i).$('button').getText();
@@ -154,7 +151,7 @@ class QuickCasePage {
 
     async saveCase(): Promise<void> {
         await $(this.selectors.createCaseButton).click();
-       // await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton__preview)));
+        // await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton__preview)));
     }
 
     async selectCaseTemplate(templateName: string): Promise<boolean> {
