@@ -1,4 +1,5 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../utils/util.common';
 
 class CaseAccessTab {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -8,6 +9,9 @@ class CaseAccessTab {
         searchInput: '.flex-container .d-textfield__label input',
         agentAddButton: '.ac-person-add',
         agentNameOrSupportGroupName: '.rx-case-access-name',
+        company: '.flex-item .ac-company-field button',
+        supportGroup: '.flex-item .ac-support-group-field button',
+
     }
 
     async clickOnSupportGroupAccessORAgentAccessButton(agentName: string): Promise<void> {
@@ -26,6 +30,13 @@ class CaseAccessTab {
         return await element(by.cssContainingText(this.selectors.agentNameOrSupportGroupName, agentNameOrSupportGroupName)).isDisplayed();
     }
 
+    async selectCompany(statusValue: string): Promise<void> {
+        await utilCommon.selectDropDown2($(this.selectors.company), statusValue);
+    }
+
+    async selectSupportGroup(statusValue: string): Promise<void> {
+        await utilCommon.selectDropDown2($(this.selectors.supportGroup), statusValue);
+    }
 
 }
 export default new CaseAccessTab();

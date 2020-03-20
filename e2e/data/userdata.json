@@ -106,5 +106,9 @@
 	"frieda": {
 		"userName": "Frieda@petramco.com",
 		"userPassword": "Password_1234"
+	},
+	"qcolumbcille": {
+		"userName": "qcolumbcille@petramco.com",
+		"userPassword": "Password_1234"
 	}
 }

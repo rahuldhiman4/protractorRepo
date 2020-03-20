@@ -5,6 +5,7 @@ class QuickCasePage {
 
     selectors = {
         drpdownHeader: '.dropdown-input__button',
+        startOver: '.smart-recorder__footer button[ng-click="clear()"]',
         smartSearchTextBox: '.smart-recorder-textarea',
         confirmedItemSelection: '.smart-recorder-confirmedItem_header',
         searchResult: '.smart-recorder__popup-item-email',

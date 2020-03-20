@@ -43,6 +43,10 @@ class ConsoleFlowset {
         await utilGrid.addGridColumn(this.selectors.flowsetGuid, column);
     }
 
+    async removeColumn(column: string[]): Promise<void> {
+        await utilGrid.removeGridColumn(this.selectors.flowsetGuid, column);
+    }
+
     async isFlowsetPresentOnGrid(flowset: string): Promise<boolean> {
         await utilGrid.searchOnGridConsole(flowset);
         return await element(by.cssContainingText('.ui-grid__link', flowset)).isPresent().then(async (result) => {
