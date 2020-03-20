@@ -25,7 +25,6 @@ describe("Quick Case", () => {
     let caseTemplateId797 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
     beforeAll(async () => {
-        browser.waitForAngularEnabled(false);
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login("qkatawazi");
         await testData771();
@@ -45,17 +44,17 @@ describe("Quick Case", () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18972';
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=PET000000000484&desc=&contact=');
-        await expect(quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester1);
-        await expect(quickCase.isCreateButtonDisabled).toBeTruthy;
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester1);
+        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy;
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu@petramco.com&desc=&contact=');
-        await expect(quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
-        await expect(quickCase.isCreateButtonDisabled).toBeTruthy;
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
+        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy;
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu&desc=&contact=');
-        await expect(quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
-        await expect(quickCase.isCreateButtonDisabled).toBeTruthy;
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
+        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy;
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=+61288992922&desc=&contact=');
-        await expect(quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
-        await expect(quickCase.isCreateButtonDisabled).toBeTruthy();
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
+        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy();
     });
 
     //radhiman
@@ -64,20 +63,20 @@ describe("Quick Case", () => {
         let expectedJsonName = 'caseData_DRDMV18973';
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu@petramco.com&desc=Change my Last Name&contact=PET000000000484');
         await browser.sleep(1000);
-        await expect(quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
-        await expect(quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
+        expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu@petramco.com&desc=Change my Last Name&contact=tesser@petramco.com');
         await browser.sleep(1000);
-        await expect(quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
-        await expect(quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
+        expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu@petramco.com&desc=Change my Last Name&contact=+14085719604');
         await browser.sleep(1000);
-        await expect(quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
-        await expect(quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
+        expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu@petramco.com&desc=Change my Last Name&contact=tesser');
         await browser.sleep(1000);
-        await expect(quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
-        await expect(quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
+        expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
     });
 
     //radhiman
@@ -85,27 +84,27 @@ describe("Quick Case", () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18980';
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu&desc=Change my Last Name&contact');
-        await expect(quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
-        await expect(quickCase.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
+        expect(await quickCase.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu&desc=&contact=+14085719604');
-        await expect(quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
-        await expect(quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
-        await expect(quickCase.isCreateButtonDisabled).toBeTruthy();
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
+        expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
+        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy();
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qdu&desc=Change my Last Name&contact=');
-        await expect(quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester2);
-        await expect(quickCase.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester2);
+        expect(await quickCase.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
     });
 
     //radhiman
     it('[DRDMV-18977]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=Change my Last Name&contact=PET000000000484');
-        await expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
+        expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=Change my Last Name&contact=');
-        await expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
+        expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=&contact=PET000000000484');
-        await expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
+        expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=&contact=');
-        await expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case serch box is not empty');
+        expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case serch box is not empty');
     });
 
     //radhiman
@@ -114,12 +113,12 @@ describe("Quick Case", () => {
         let expectedJsonName = 'caseData_DRDMV18983';
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=Test1&desc=Change my Last Name&contact=qliu');
         await browser.sleep(2000);
-        await expect(quickCase.getPopUpMessage()).toContain(caseData[expectedJsonName].warningMsg);
-        await expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
-        await expect(quickCase.isCreateButtonDisabled).toBeTruthy();
+        expect(await quickCase.getPopUpMessage()).toContain(caseData[expectedJsonName].warningMsg);
+        expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
+        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy();
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu&desc=Change my Last Name&contact=test1');
-        await expect(quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
-        await expect(quickCase.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
+        expect(await quickCase.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
     });
 
     async function testData771() {
@@ -130,6 +129,7 @@ describe("Quick Case", () => {
         await createCasePo.clickSaveCaseButton();
         await createCasePo.clickGoToCaseButton();
     }
+
     //kgaikwad
     it('[DRDMV-771]: [Quick Case] Similar cases search in Resources', async () => {
         await navigationPage.gotoQuickCase();
@@ -141,13 +141,7 @@ describe("Quick Case", () => {
             await quickCasePo.setCaseSummary(categoryvalues[i]);
             await utilCommon.waitUntilSpinnerToHide();
             let qcSummary = await quickCasePo.isCaseSummaryPresentInRecommendedCases(categoryvalues[0]);
-            if (qcSummary == false) {
-                result = false;
-            }
-            else {
-                result = true
-            }
-
+            qcSummary = false ? result = false : result = true;
             await expect(result).toBeTruthy(`FailureMsg: Case Summary does not match for ${categoryvalues[i]}`);
         }
     });
@@ -163,6 +157,7 @@ describe("Quick Case", () => {
         let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
         caseTemplateId797 = newCaseTemplate.id;
     }
+
     //kgaikwad
     it('[DRDMV-797]: [Quick Case] Case creation with inactive template (negative)', async () => {
         await navigationPage.gotoQuickCase();
@@ -171,13 +166,13 @@ describe("Quick Case", () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.updateCaseTemplateStatus(caseTemplateId797, 'Draft');
         await quickCasePo.saveCase();
-        await expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for draft template');
+        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for draft template');
         await apiHelper.updateCaseTemplateStatus(caseTemplateId797, 'Inactive');
         await quickCasePo.saveCase();
-        await expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for inactive template');
+        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for inactive template');
     });
-    it('[DRDMV-800]: [Quick Case] Case creation with requester having same name as other company users', async () => {
 
+    it('[DRDMV-800]: [Quick Case] Case creation with requester having same name as other company users', async () => {
         let userData1 = {
             "firstName": "Person1",
             "lastName": "Person1",
@@ -212,9 +207,9 @@ describe("Quick Case", () => {
         await quickCase.selectRequesterName('Person1');
         await quickCase.setCaseSummary('caseSummary');
         await quickCase.createCaseButton();
-        await expect(utilCommon.getPopUpMessage()).toBe('Saved successfully');
+        expect(await utilCommon.isPopupMsgsMatches(['Saved successfully'])).toBeTruthy('Success message not validated');
         await quickCase.gotoCaseButton();
-        await expect(viewCasePo.getRequesterName()).toBe('Person1 Person1');
+        expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
     });
 
     it('[DRDMV-794]: [Quick Case] Requester, Contact, Subject Employee people selection', async () => {
@@ -247,25 +242,30 @@ describe("Quick Case", () => {
     it('[DRDMV-1205]: [Quick Case] People search', async () => {
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('Allen');
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
         await quickCase.clearInputBox();
-        await quickCase.selectRequesterName('Allbrook');
+        await quickCase.selectRequesterName('@Allbrook');
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
         await quickCase.clearInputBox();
-        await quickCase.selectRequesterName('all');
+        await quickCase.selectRequesterName('@all');
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
         await quickCase.clearInputBox();
-        await quickCase.selectRequesterName('aallbrook');
+        await quickCase.selectRequesterName('@aallbrook');
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
         await quickCase.clearInputBox();
-        await quickCase.selectRequesterName('Al Allbrook');
+        await quickCase.selectRequesterName('@Al Allbrook');
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
         await quickCase.clearInputBox();
-        await quickCase.selectRequesterName('allen.allbrook@petramco.com');
-        await quickCase.clearInputBox();
+        await quickCase.selectRequesterName('@allen.allbrook@petramco.com');
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
     });
 
     //apdeshmu
     it('[DRDMV-1087]:[Quick Case] Case Template search via !', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let assignmentMappingName = "DRDMV-1087 " + randomStr;
-        let caseTemplateName = randomStr + "DRDMV-1087 Petramco";
-        let caseTemplateName1 = randomStr + "DRDMV-1087 Psilon";
+        let caseTemplateName = randomStr + "DRDMV1087Petramco";
+        let caseTemplateName1 = randomStr + "DRDMV1087Psilon";
         let threeCharacterString = randomStr.substr(0, 3);
 
         let assignmentData =
@@ -307,17 +307,17 @@ describe("Quick Case", () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(caseTemplateName);
-            await expect(quickCasePo.selectCaseTemplate(caseTemplateName)).toBeFalsy("Draft Template is founded");;
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateName)).toBeFalsy("Draft Template is founded");;
 
             //Different Company Search
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
-            await expect(quickCasePo.selectCaseTemplate(caseTemplateName1)).toBeFalsy("Template is same as employee comapny");;
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateName1)).toBeFalsy("Template is same as employee comapny");;
 
             //3 Character Search Template Verification
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
-            await expect(quickCasePo.selectCaseTemplate(threeCharacterString)).toBeTruthy("Template is not founded");
+            expect(await quickCasePo.selectCaseTemplate(threeCharacterString)).toBeTruthy("Template is not founded");
 
             //Active Template Verification
             await navigationPage.gotoSettingsPage();
@@ -329,7 +329,7 @@ describe("Quick Case", () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
-            await expect(quickCasePo.selectCaseTemplate(caseTemplateName)).toBeTruthy("Active Template is Not founded");
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateName)).toBeTruthy("Active Template is Not founded");
             await quickCasePo.selectCaseTemplate(caseTemplateName);
             await quickCasePo.saveCase();
             await createCasePo.clickGoToCaseButton();
@@ -345,10 +345,10 @@ describe("Quick Case", () => {
     //apdeshmu
     it('[DRDMV-786]:[Quick Case] Case creation with all case statuses in template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName1 = randomStr + "DRDMV-1087 Petramco1";
-        let caseTemplateName2 = randomStr + "DRDMV-1087 Petramco2";
-        let caseTemplateName3 = randomStr + "DRDMV-1087 Petramco3";
-        let caseTemplateName4 = randomStr + "DRDMV-1087 Petramco4";
+        let caseTemplateName1 = randomStr + "DRDMV1087Petramco1";
+        let caseTemplateName2 = randomStr + "DRDMV1087Petramco2";
+        let caseTemplateName3 = randomStr + "DRDMV1087Petramco3";
+        let caseTemplateName4 = randomStr + "DRDMV1087Petramco4";
 
         let templateData1 = {
             "templateName": caseTemplateName1,
@@ -405,13 +405,13 @@ describe("Quick Case", () => {
             await quickCasePo.selectCaseTemplate(caseTemplateName1);
             await quickCasePo.saveCase();
             await createCasePo.clickGoToCaseButton();
-            await expect(await viewCasePo.getCaseStatusValue()).toContain('New');
+            expect(await viewCasePo.getCaseStatusValue()).toContain('New');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(caseTemplateName2);
             await quickCasePo.saveCase();
             await createCasePo.clickGoToCaseButton();
-            await expect(await viewCasePo.getCaseStatusValue()).toContain('Assigned');
+            expect(await viewCasePo.getCaseStatusValue()).toContain('Assigned');
 
             await navigationPage.signOut();
             await loginPage.login('fritz');
@@ -420,13 +420,13 @@ describe("Quick Case", () => {
             await quickCasePo.selectCaseTemplate(caseTemplateName4);
             await quickCasePo.saveCase();
             await createCasePo.clickGoToCaseButton();
-            await expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
+            expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("fritz");
             await quickCasePo.selectCaseTemplate(caseTemplateName3);
             await quickCasePo.saveCase();
             await createCasePo.clickGoToCaseButton();
-            await expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
+            expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
         } catch (e) {
             throw e;
         }
@@ -490,26 +490,26 @@ describe("Quick Case", () => {
         await quickCase.selectRequesterName('Person1');
         await quickCase.selectCaseTemplate(`${caseTemplateName}`);
         await quickCase.clickArrowFirstRecommendedCase();
-        await expect(previewCaseTemplateCasesPo.getCaseSummary()).toBe(`${casTemplateSummary}`);
-        await expect(previewCaseTemplateCasesPo.getCaseStatus()).toBe("In Progress");
-        await expect(previewCaseTemplateCasesPo.getCaseCompanyValue()).toBe("Petramco");
-        await expect(previewCaseTemplateCasesPo.getCaseTemplateName()).toBe(`${caseTemplateName}`);
-        await expect(previewCaseTemplateCasesPo.getCasePriority()).toBe("Medium");
+        expect(await previewCaseTemplateCasesPo.getCaseSummary()).toBe(`${casTemplateSummary}`);
+        expect(await previewCaseTemplateCasesPo.getCaseStatus()).toBe("In Progress");
+        expect(await previewCaseTemplateCasesPo.getCaseCompanyValue()).toBe("Petramco");
+        expect(await previewCaseTemplateCasesPo.getCaseTemplateName()).toBe(`${caseTemplateName}`);
+        expect(await previewCaseTemplateCasesPo.getCasePriority()).toBe("Medium");
         await previewCaseTemplateCasesPo.clickOnBackButton();
         await quickCase.clickArrowFirstRecommendedKnowledge();
-        await expect(previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy('View article link not present');
-        await expect(previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Knowledge status not present');
-        await expect(previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
+        expect(await previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy('View article link not present');
+        expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Knowledge status not present');
+        expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
         await previewKnowledgePo.clickOnBackButton();
         await quickCase.createCaseButton();
-        await expect(utilCommon.getPopUpMessage()).toBe('Saved successfully');
-        await expect(casePreviewPo.isRequesterNameDisplayed('Person1 Person1')).toBeTruthy();
-        await expect(casePreviewPo.isCaseSummaryDisplayed(`${caseTemplateName}`)).toBeTruthy();
-        await expect(casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();
-        await expect(casePreviewPo.isRequesterEmailIdDisplayed('test@petramco.com')).toBeTruthy();
-        await expect(casePreviewPo.isDescriptionDisplayed('Person1 Person1 2bvfcaseTemplateName')).toBeTruthy();
+        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully');
+        expect(await casePreviewPo.isRequesterNameDisplayed('Person1 Person1')).toBeTruthy();
+        expect(await casePreviewPo.isCaseSummaryDisplayed(`${caseTemplateName}`)).toBeTruthy();
+        expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();
+        expect(await casePreviewPo.isRequesterEmailIdDisplayed('test@petramco.com')).toBeTruthy();
+        expect(await casePreviewPo.isDescriptionDisplayed('Person1 Person1 2bvfcaseTemplateName')).toBeTruthy();
         await casePreviewPo.clickOncreateNewCaseButton();
-        await expect(viewCasePo.getRequesterName()).toBe('Person1 Person1');
+        expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
     }, 480 * 1000);
 
     //ankagraw
@@ -545,11 +545,11 @@ describe("Quick Case", () => {
         await apiHelper.createCaseTemplate(CaseTemplateDataWithDifferentOrganization);
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
-        await expect(quickCase.selectCaseTemplate(`${caseTemplateName}` + 'InDraftStatus')).toBeFalsy("Draft case template present");
+        expect(await quickCase.selectCaseTemplate(`${caseTemplateName}` + 'InDraftStatus')).toBeFalsy("Draft case template present");
         await quickCase.clearInputBox();
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
-        await expect(quickCase.selectCaseTemplate(`${caseTemplateName}` + 'WithDifferentOrganization')).toBeFalsy('Different organization case template present');
+        expect(await quickCase.selectCaseTemplate(`${caseTemplateName}` + 'WithDifferentOrganization')).toBeFalsy('Different organization case template present');
         await quickCase.clearInputBox();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
@@ -559,14 +559,14 @@ describe("Quick Case", () => {
         await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
-        await expect(quickCase.selectCaseTemplate(`${caseTemplateName}` + 'InDraftStatus')).toBeTruthy("template not present");
+        expect(await quickCase.selectCaseTemplate(`${caseTemplateName}` + 'InDraftStatus')).toBeTruthy("template not present");
         await quickCase.clearInputBox();
         await quickCase.clickStartOverButton();
         await quickCase.selectRequesterName('adam');
-        await expect(quickCase.selectCaseTemplate(`${casTemplateSummary}` + 'InDraftStatus')).toBeTruthy("template not present");
+        expect(await quickCase.selectCaseTemplate(`${casTemplateSummary}` + 'InDraftStatus')).toBeTruthy("template not present");
         await quickCase.clickStartOverButton();
         await quickCase.selectRequesterName('adam');
-        await expect(quickCase.selectCaseTemplate("DRDMV-795 verify")).toBeTruthy("template not present");
+        expect(await quickCase.selectCaseTemplate("DRDMV-795 verify")).toBeTruthy("template not present");
         await quickCase.clickStartOverButton();
     });
 })

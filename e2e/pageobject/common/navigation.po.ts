@@ -350,8 +350,8 @@ class NavigationPage {
 
     async goToPersonProfile(): Promise<void> {
         await browser.refresh();
-//        await utilCommon.waitUntilSpinnerToHide();
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.profileMenu)));
+        await utilCommon.waitUntilSpinnerToHide();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.profileMenu)), 10000);
         await browser.actions().mouseMove($(this.selectors.profileMenu)).perform();
 //        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.signOutMenuItem, 'My Profile'))));
         await element(by.cssContainingText(this.selectors.signOutMenuItem, 'My Profile')).click();
