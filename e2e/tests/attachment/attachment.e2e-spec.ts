@@ -122,8 +122,7 @@ describe("Attachment", () => {
     it('[DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        var caseData =
-        {
+        var caseData = {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
             "Support Group": "Compensation and Benefits",
@@ -142,6 +141,7 @@ describe("Attachment", () => {
         expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('demo');
         await expect(await attachmentBladePo.getRecordValue('demo')).toBe('demo', 'demo txt file name is missing');
+        browser.sleep(10000);
         await attachmentBladePo.clickOnDownloadButton();
         expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
     });
