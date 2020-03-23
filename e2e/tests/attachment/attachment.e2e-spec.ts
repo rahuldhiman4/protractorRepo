@@ -141,7 +141,6 @@ describe("Attachment", () => {
         expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('demo');
         await expect(await attachmentBladePo.getRecordValue('demo')).toBe('demo', 'demo txt file name is missing');
-        browser.sleep(10000);
         await attachmentBladePo.clickOnDownloadButton();
         expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
     });
