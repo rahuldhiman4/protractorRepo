@@ -10,7 +10,6 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
-import activitytab from "../../pageobject/social/activity-tab.po";
 import taskConsole from "../../pageobject/task/console-task.po";
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTask from "../../pageobject/task/edit-task.po";
@@ -46,21 +45,21 @@ describe('Create Adhoc task', () => {
         //Adhoc task validation
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickAddAdhocTaskButton();
-        await expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy();
-        await expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy();
-        await expect(await adhoctaskTemplate.isAssignedCompanyRequiredTextPresent()).toBeTruthy();
-        await expect(await adhoctaskTemplate.isAssignedGroupRequiredTextPresent()).toBeTruthy();
+        expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy();
+        expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy();
+        expect(await adhoctaskTemplate.isAssignedCompanyRequiredTextPresent()).toBeTruthy();
+        expect(await adhoctaskTemplate.isAssignedGroupRequiredTextPresent()).toBeTruthy();
 
-        await expect(await adhoctaskTemplate.getSaveButtonAttribute('ng-disabled')).toBeTruthy();
-        await expect(adhoctaskTemplate.getStatusAttribute()).toBeTruthy();
-        await expect(adhoctaskTemplate.getAssignCompanyAttribute()).toBeTruthy();
-        await expect(adhoctaskTemplate.getBuisnessUnitAttribute()).toBeTruthy();
-        await expect(adhoctaskTemplate.getAssigneeAttribute()).toBeTruthy();
-        await expect(adhoctaskTemplate.getDepartmentAttribute()).toBeTruthy();
-        await expect(adhoctaskTemplate.getAssignedGroupAttribute()).toBeTruthy();
-        await expect(adhoctaskTemplate.getchangeAssignmentButtonText()).toBeTruthy();
-        await expect(adhoctaskTemplate.isAssignToMeButtonDisplayd()).toBeTruthy();
-        await expect(adhoctaskTemplate.ischangeAssignmentButtonDisplayed()).toBeTruthy();
+        expect(await adhoctaskTemplate.getSaveButtonAttribute('ng-disabled')).toBeTruthy();
+        expect(await adhoctaskTemplate.getStatusAttribute()).toBeTruthy();
+        expect(await adhoctaskTemplate.getAssignCompanyAttribute()).toBeTruthy();
+        expect(await adhoctaskTemplate.getBuisnessUnitAttribute()).toBeTruthy();
+        expect(await adhoctaskTemplate.getAssigneeAttribute()).toBeTruthy();
+        expect(await adhoctaskTemplate.getDepartmentAttribute()).toBeTruthy();
+        expect(await adhoctaskTemplate.getAssignedGroupAttribute()).toBeTruthy();
+        expect(await adhoctaskTemplate.getchangeAssignmentButtonText()).toBeTruthy();
+        expect(await adhoctaskTemplate.isAssignToMeButtonDisplayd()).toBeTruthy();
+        expect(await adhoctaskTemplate.ischangeAssignmentButtonDisplayed()).toBeTruthy();
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.selectPriority('High');
@@ -68,7 +67,7 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.selectCategoryTier2('Social');
         await adhoctaskTemplate.selectCategoryTier3('Chatter');
         await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await expect(manageTask.isTaskLinkOnManageTask(summary)).toBeTruthy();
+        expect(await manageTask.isTaskLinkOnManageTask(summary)).toBeTruthy();
     });
 
     it('[DRDMV-3821]: Adhoc Task details view (UI verification))', async () => {
@@ -93,24 +92,23 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.clickOnSaveAdhoctask();
 
         await manageTask.clickTaskLinkOnManageTask(summary);
-        await expect(viewTask.isTaskSummaryDisplayed()).toBeTruthy();
-        await expect(viewTask.isTaskIdTextDisplayed).toBeTruthy();
-        await expect(viewTask.isTaskIconDisplayed).toBeTruthy();
-        await expect(viewTask.isTaskPriorityDisplayed()).toBeTruthy();
-        await expect(viewTask.isTaskTimeDetailsDisplayed()).toBeTruthy();
-        await expect(viewTask.isCaseSummaryDisplayed()).toBeTruthy();
-        await expect(viewTask.isRequesterNameDisplayed()).toBeTruthy();
-        await expect(viewTask.isRequesterContactDisplayed()).toBeTruthy();
-        await expect(viewTask.isRequesterMailDisplayed()).toBeTruthy();
-        await expect(viewTask.isEditLinkDisplayed()).toBeTruthy();
-        await expect(viewTask.isCategoryTier1ValueDisplayed()).toBeTruthy();
-        await expect(viewTask.isCategoryTier2ValueDisplayed()).toBeTruthy();
-        await expect(viewTask.isCategoryTier3ValueDisplayed()).toBeTruthy();
-        await expect(viewTask.isAssigneeNameDisplayed()).toBeTruthy();
-        await expect(viewTask.isAssignCompanyDisplayed()).toBeTruthy();
-        await expect(viewTask.isAssignGroupTextDisplayed()).toBeTruthy();
-        await expect(activitytab.isActivityTextPresent()).toBeTruthy("Activiy no Present");
-
+        expect(await viewTask.isTaskSummaryDisplayed()).toBeTruthy();
+        expect(await viewTask.isTaskIdTextDisplayed()).toBeTruthy();
+        expect(await viewTask.isTaskIconDisplayed()).toBeTruthy();
+        expect(await viewTask.isTaskPriorityDisplayed()).toBeTruthy();
+        expect(await viewTask.isTaskTimeDetailsDisplayed()).toBeTruthy();
+        expect(await viewTask.isCaseSummaryDisplayed()).toBeTruthy();
+        expect(await viewTask.isRequesterNameDisplayed()).toBeTruthy();
+        expect(await viewTask.isRequesterContactDisplayed()).toBeTruthy();
+        expect(await viewTask.isRequesterMailDisplayed()).toBeTruthy();
+        expect(await viewTask.isEditLinkDisplayed()).toBeTruthy();
+        expect(await viewTask.isCategoryTier1ValueDisplayed()).toBeTruthy();
+        expect(await viewTask.isCategoryTier2ValueDisplayed()).toBeTruthy();
+        expect(await viewTask.isCategoryTier3ValueDisplayed()).toBeTruthy();
+        expect(await viewTask.isAssigneeNameDisplayed()).toBeTruthy();
+        expect(await viewTask.isAssignCompanyDisplayed()).toBeTruthy();
+        expect(await viewTask.isAssignGroupTextDisplayed()).toBeTruthy();
+        expect(await viewTask.clickOnTab('Activity')); // validation to check activity tab is present
     }, 300 * 1000);
 
     it('[DRDMV-7130]: [Automatic Task] - Create Ad hoc Task', async () => {
@@ -126,13 +124,13 @@ describe('Create Adhoc task', () => {
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickAddAdhocTaskButton();
         await adhoctaskTemplate.setSummary(summary);
-        await expect(adhoctaskTemplate.isProcessFieldPresent()).toBeFalsy();
+        expect(await adhoctaskTemplate.isProcessFieldPresent()).toBeFalsy();
         await adhoctaskTemplate.setDescription("Description")
         await adhoctaskTemplate.clickOnSaveAdhoctask();
 
         await manageTask.clickTaskLinkOnManageTask(summary);
-        await expect(viewTask.getTaskTypeValue()).toBe('Manual');
-        await expect(viewTask.isProcessNameValue()).toBeFalsy();
+        expect(await viewTask.getTaskTypeValue()).toBe('Manual');
+        expect(await viewTask.isProcessNameValue()).toBeFalsy();
     });
 
     it('[DRDMV-1580,DRDMV-12243]: Adhoc Task details view (UI verification))', async () => {
@@ -147,21 +145,21 @@ describe('Create Adhoc task', () => {
         //Adhoc task validation
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickAddAdhocTaskButton();
-        await expect(adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
+        expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.selectPriority('High');
         await adhoctaskTemplate.clickOnSaveAdhoctask();
 
         await manageTask.clickTaskLinkOnManageTask(summary);
-        await expect(viewTask.isCaseSummaryDisplayed()).toBeTruthy("case summary is displayed ");
-        await expect(viewTask.isRequesterNameDisplayed()).toBeTruthy("requester name is displayed ");
-        await expect(viewTask.isRequesterContactDisplayed()).toBeTruthy("requester contact is displayed ");
-        await expect(viewTask.isRequesterMailDisplayed()).toBeTruthy("requester mail is displayed ");
-        await expect(viewTask.isEditLinkDisplayed()).toBeTruthy("edit link is displayed ");
-        await expect(viewTask.isViewCaseLinkDisplayed()).toBeTruthy("view case link is displayed ");
+        expect(await viewTask.isCaseSummaryDisplayed()).toBeTruthy("case summary is displayed ");
+        expect(await viewTask.isRequesterNameDisplayed()).toBeTruthy("requester name is displayed ");
+        expect(await viewTask.isRequesterContactDisplayed()).toBeTruthy("requester contact is displayed ");
+        expect(await viewTask.isRequesterMailDisplayed()).toBeTruthy("requester mail is displayed ");
+        expect(await viewTask.isEditLinkDisplayed()).toBeTruthy("edit link is displayed ");
+        expect(await viewTask.isViewCaseLinkDisplayed()).toBeTruthy("view case link is displayed ");
         await viewTask.clickOnViewCase();
-        await expect(viewCasePo.getCaseSummary()).toBe('Summary ' + summary);
+        expect(await viewCasePo.getCaseSummary()).toBe('Summary ' + summary);
     });
 
     it('[DRDMV-1500]: [Permissions] Navigating to case from the task', async () => {
@@ -213,17 +211,17 @@ describe('Create Adhoc task', () => {
         await navigationPage.gotoTaskConsole();
         await utilGrid.clearFilter();
         await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
-        await expect(taskConsole.isCaseIdLinkIsPresent()).toBeFalsy(" Case Id Displayed in Task console");
+        expect(await taskConsole.isCaseIdLinkIsPresent()).toBeFalsy(" Case Id Displayed in Task console");
         await taskConsole.clickFirstLinkInTaskTemplateSearchGrid();
-        await expect(viewTask.isCaseViewLinkDisplayed()).toBeFalsy('Case View Link is displayed');
+        expect(await viewTask.isCaseViewLinkDisplayed()).toBeFalsy('Case View Link is displayed');
 
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
         await navigationPage.gotoTaskConsole();
         await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
-        await expect(taskConsole.isCaseIdLinkIsPresent()).toBeTruthy('Case Id is not Displayed in Task console');
+        expect(await taskConsole.isCaseIdLinkIsPresent()).toBeTruthy('Case Id is not Displayed in Task console');
         await taskConsole.clickFirstLinkInTaskTemplateSearchGrid();
-        await expect(viewTask.isCaseViewLinkDisplayed()).toBeTruthy('Case View Link is not displayed');
+        expect(await viewTask.isCaseViewLinkDisplayed()).toBeTruthy('Case View Link is not displayed');
         await navigationPage.signOut();
         await loginPage.login('qtao');
     }, 240 * 1000);
@@ -243,7 +241,7 @@ describe('Create Adhoc task', () => {
         //Adhoc task validation
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickAddAdhocTaskButton();
-        await expect(adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
+        expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.addAttachment(filePath);
@@ -289,7 +287,7 @@ describe('Create Adhoc task', () => {
         //Adhoc task validation
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickAddAdhocTaskButton();
-        await expect(adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
+        expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.addAttachment(filePath);
@@ -345,7 +343,7 @@ describe('Create Adhoc task', () => {
         //Adhoc task validation
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickAddAdhocTaskButton();
-        await expect(adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
+        expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeTruthy('Attachment button is disabled');

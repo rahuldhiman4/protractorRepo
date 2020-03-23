@@ -122,8 +122,7 @@ describe("Attachment", () => {
     it('[DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        var caseData =
-        {
+        var caseData = {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
             "Support Group": "Compensation and Benefits",

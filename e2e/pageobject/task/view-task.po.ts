@@ -202,6 +202,10 @@ class ViewTask {
         return await $(this.selectors.assignGroupText).isDisplayed();
     }
 
+    async clickOnTab(tabName: string): Promise<void> {
+        await element(by.linkText(tabName)).click();
+    }
+
     async clickOnViewCase(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewCaseLink)),2000);
         await $(this.selectors.viewCaseLink).click();

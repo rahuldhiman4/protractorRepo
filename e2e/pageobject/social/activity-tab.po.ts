@@ -396,10 +396,6 @@ class ActivityTabPage {
         return await $(this.selectors.activityLog).isDisplayed();
     }
 
-    async isActivityTextPresent(): Promise<boolean> {
-        return await $(this.selectors.activityText).isDisplayed();
-    }
-
     async getIconOfActivity(caseActivityLogText: string): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .log-item__icon')));
         return $('.activity_logs [role="listitem"] .log-item__icon').getAttribute('class');
