@@ -293,7 +293,6 @@ describe('Create Task Template', () => {
         await apiHelper.associatePersonToCompany(personData.userId, company)
     }
 
-
     it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Verify Company, Business Unit, Department and Support Group selection hierarchy in Change Owner.', async () => {
         await foundationData("Petramco");
         const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
@@ -363,6 +362,7 @@ describe('Create Task Template', () => {
         await viewCasePage.clickAddTaskButton();
 
         //Add Automation Task templates in Case
+        await manageTask.addTaskFromTaskTemplate(templateData4.templateSummary);
         await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
         await expect(viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed")
         await viewTask.clickOnViewCase();

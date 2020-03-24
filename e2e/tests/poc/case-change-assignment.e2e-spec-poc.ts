@@ -8,7 +8,6 @@ import navigationPage from "../../pageobject/common/navigation.po";
 describe('Case Assignment', () => {
     beforeAll(async () => {
         await browser.get(`${browser.baseUrl}/innovationsuite/index.html#/com.bmc.dsm.bwfa`);
-        browser.waitForAngularEnabled(false);
     });
 
     it('should login correctly', async () => {

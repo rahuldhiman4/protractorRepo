@@ -1,9 +1,11 @@
 import { browser } from "protractor";
+import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePage from '../../pageobject/case/edit-case.po';
 import quickCase from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
+import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';
@@ -16,8 +18,6 @@ import documentLibraryConsolePage from '../../pageobject/settings/document-manag
 import editDocumentLibraryPage from '../../pageobject/settings/document-management/edit-document-library.po';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
-import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
-import apiCoreUtil from '../../api/api.core.util';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -451,7 +451,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await createCasePage.clickGoToCaseButton();
-            await editCasePage.navigateToResourcesTab();
+            await viewCasePage.clickOnTab('Resources');
 
             //Search with knowledge article with draft status
             await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
@@ -564,7 +564,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await createCasePage.clickGoToCaseButton();
-            await editCasePage.navigateToResourcesTab();
+            await viewCasePage.clickOnTab('Resources');
 
             //Search with knowledge article with draft status
             await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
@@ -677,7 +677,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await createCasePage.clickGoToCaseButton();
-            await editCasePage.navigateToResourcesTab();
+            await viewCasePage.clickOnTab('Resources');
 
             //Search with knowledge article with draft status
             await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
@@ -818,7 +818,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1ForDocumentLibrary, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);    
+            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
         }
         catch (error) {
             throw error;

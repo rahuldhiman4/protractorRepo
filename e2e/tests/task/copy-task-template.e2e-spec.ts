@@ -508,7 +508,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(updatedTaskTemplate);
             await viewTaskTemplate.clickOnEditProcessLink();
-            await expect(await utilCommon.getPopUpMessage()).toBe('WARNING (222062): Updates to dynamic fields or process affect the templates using the selected process :' + taskTemplate);
+            await expect(await utilCommon.isPopupMsgsMatches(['WARNING (222062): Updates to dynamic fields or process affect the templates using the selected process :' + taskTemplate])).toBeTruthy("Popup message doesn't match");
         } catch (e) {
             throw e;
         } finally {

@@ -11,6 +11,11 @@ export const CASE_TEMPLATE_PAYLOAD = {
         "id": 8,
         "value": "Template Summary"
       },
+
+      "450000061": {
+        "id": 450000061,
+        "value": "Case Template description"
+      },
       "1000001437": {
         "id": 1000001437,
         "value": "Template Name"

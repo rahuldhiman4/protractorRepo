@@ -101,6 +101,7 @@ class ActivityTabPage {
     }
 
     async isAttachedFileNameDisplayed(fileName: string): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.AttachedfileName)), 3000);
         return await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
@@ -393,10 +394,6 @@ class ActivityTabPage {
 
     async isPersonLinkPresent(): Promise<boolean> {
         return await $(this.selectors.activityLog).isDisplayed();
-    }
-
-    async isActivityTextPresent(): Promise<boolean> {
-        return await $(this.selectors.activityText).isDisplayed();
     }
 
     async getIconOfActivity(caseActivityLogText: string): Promise<string> {

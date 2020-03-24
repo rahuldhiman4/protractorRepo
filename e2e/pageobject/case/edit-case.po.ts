@@ -1,6 +1,6 @@
+import { resolve } from 'path';
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from "../../utils/util.common";
-import { resolve } from 'path';
 
 class CaseEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -69,11 +69,6 @@ class CaseEditPage {
         categoryTier3Text: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] .d-textfield__rx-value',
         categoryTier4Text: '[rx-view-component-id="aa75da42-eeb4-4a6f-946b-74d5316b7641"] .d-textfield__rx-value',
         caseTemplateText: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .d-textfield__rx-value',
-        relatedCasesTab: '[rx-view-component-id="b3763a3b-0113-42a9-8e68-74bde7464352"] a[title="Related Cases"]',
-        relatedPersonTab: '[rx-view-component-id="b3763a3b-0113-42a9-8e68-74bde7464352"] a[title="Related Persons"]',
-        caseAccessTab: '[rx-view-component-id="b3763a3b-0113-42a9-8e68-74bde7464352"] a[title="Case Access"]',
-        resourcesTab: '[rx-view-component-id="4a577ada-86cd-43fe-88b1-4b627dce93e6"] a[title="Resources"]',
-        activityTab: '[rx-view-component-id="4a577ada-86cd-43fe-88b1-4b627dce93e6"] a[title="Activity"]',
         assigneeCompany: '[rx-view-component-id="196878af-30b3-4ae2-ae7f-4c65baa5d951"] .ui-select-container',
         assigneeCompanyGuid: '196878af-30b3-4ae2-ae7f-4c65baa5d951',
         department: '[rx-view-component-id="3265d389-cd00-45ca-b65a-8335c67582b7"] .ui-select-container',
@@ -86,6 +81,10 @@ class CaseEditPage {
         getCaseDisplayId: 'span.text-field',
         closedTip: '[class="rx-attachment-view-item ng-scope"] .d-icon-cross',
         attachmentField: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] input',
+        dynamicFieldDate:'[class="input-group"] input[ng-model="date"]',
+        dynamicBooleanValue:'button[aria-label="True"]',
+        dynamicFieldDateTime:'input[ng-model="datetime"]',
+        dynamicFieldTime:'.dynamic-time-field input[ng-model="hours"]',
     }
 
     async removeAttachment(): Promise<void> {
@@ -314,32 +313,6 @@ class CaseEditPage {
         return await $(this.selectors.caseTemplateText).getText();
     }
 
-
-    async navigateToRelatedCasesTab(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.relatedCasesTab)));
-        await $(this.selectors.relatedCasesTab).click();
-    }
-
-    async navigateToRelatedPersonsTab(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.relatedPersonTab)));
-        await $(this.selectors.relatedPersonTab).click();
-    }
-
-    async navigateToCaseAccessTab(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseAccessTab)));
-        await $(this.selectors.caseAccessTab).click();
-    }
-
-    async navigateToResourcesTab(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.resourcesTab)));
-        await $(this.selectors.resourcesTab).click();
-    }
-
-    async navigateToActivityTab(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityTab)));
-        await $(this.selectors.activityTab).click();
-    }
-
     async getRequesterName(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterPersonNameLink)));
         return await $(this.selectors.requesterPersonNameLink).getText();
@@ -431,13 +404,12 @@ class CaseEditPage {
     }
 
     async isActivityPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.activityTab)));
         return await $(this.selectors.categoryTier3Drpbox).isDisplayed();
     }
 
     async isResourcePresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.resourcesTab)));
-        return await $(this.selectors.resourcesTab).isDisplayed();
+        // Resources tab is linked text, hence this type of validation
+        return await element(by.linkText('Resources')).getTagName() == 'a';
     }
 
     async getAssignedCompanyReadable(): Promise<string> {
@@ -520,16 +492,6 @@ class CaseEditPage {
         await $(this.selectors.changeCaseTemplate).click();
     }
 
-    async getRelatedPersonTabText(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.relatedPersonTab)));
-        return await $(this.selectors.relatedPersonTab).getText();
-    }
-
-    async getRelatedCasesTabText(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.relatedCasesTab)));
-        return await $(this.selectors.relatedCasesTab).getText();
-    }
-
     async isChangeCaseTemplateButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.changeCaseTemplate).isDisplayed();
     }
@@ -548,6 +510,31 @@ class CaseEditPage {
         const absolutePath = resolve(__dirname, fileToUpload);
         console.log(absolutePath);
         await $(this.selectors.attachmentField).sendKeys(absolutePath);
+    }
+
+    async setDynamicFieldValue(fieldName:string,fieldValue:string):Promise<void>{
+        await $(`input[name=${fieldName}]`).sendKeys(fieldValue);
+    }
+
+    async setDateValueInDynamicField(value:string):Promise<void>{
+        await $(this.selectors.dynamicFieldDate).sendKeys(value);
+    }
+
+    async clickOnTrueValueOfDynamicField():Promise<void>{
+        await $(this.selectors.dynamicBooleanValue).click();
+    }
+
+    async setDateTimeDynamicFieldValue(value:string):Promise<void>{
+        await $(this.selectors.dynamicFieldDateTime).sendKeys(value);
+    }
+
+    async selectValueFromList(fieldName:string,value:string):Promise<void>{
+        await $(`[ng-title=${fieldName}] div.ui-select-match`).click();
+        await $(`div[title=${value}]`).click();
+    }
+
+    async setTimeInDynamicField(value:string):Promise<void>{
+        await $(this.selectors.dynamicFieldTime).sendKeys(value);
     }
 }
 

@@ -69,7 +69,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnUnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(knowledgeArticlesTitleStr + randomStr);
             await flagUnflagKnowledgePo.clickOnUnFlageButtonOnBlade();
-            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeArticlesTitleStr + randomStr, 'content not displaying on Activity'), 'content not displaying on Activity';
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
@@ -691,10 +691,10 @@ describe('Knowledge Article', () => {
         await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
         await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
         let percentage: string = await viewKnowledgeArticlePo.getPercentageValue();
-        await viewKnowledgeArticlePo.clickOnActivityTab();
+        await viewKnowledgeArticlePo.clickOnTab('Activity');
         await activityTabPo.clickOnRefreshButton();
         expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
-        await viewKnowledgeArticlePo.clickOnInformationTab();
+        await viewKnowledgeArticlePo.clickOnTab('Information');
         await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
         expect(await viewKnowledgeArticlePo.getPercentageValue() == percentage).toBeFalsy('Percentage are equal to previous');
     });
@@ -723,7 +723,7 @@ describe('Knowledge Article', () => {
         await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
         await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
         expect(await viewKnowledgeArticlePo.isUnFlagButtonDisplayed()).toBeTruthy('Unflag Button is not present');
-        await viewKnowledgeArticlePo.clickOnActivityTab();
+        await viewKnowledgeArticlePo.clickOnTab('Activity');
         await activityTabPo.clickOnRefreshButton();
         expect(await activityTabPo.getFirstPostContent()).toContain('Peter Kahn flagged the article', 'content not displaying on Activity');
         expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
@@ -798,7 +798,7 @@ describe('Knowledge Article', () => {
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
             await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
             expect(await viewKnowledgeArticlePo.isUnFlagButtonDisplayed()).toBeTruthy('Unflag Button is not present');
-            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain('Peter Kahn flagged the article', 'content not displaying on Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
@@ -808,7 +808,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(knowledgeTitileSecond);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(activityTabPo.getFirstPostContent()).toContain(knowledgeTitileSecond, 'Post not present on activity');
             await navigationPage.signOut();
@@ -820,7 +820,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnUnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(knowledgeTitileSecond);
             await flagUnflagKnowledgePo.clickOnUnFlageButtonOnBlade();
-            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills unflagged the article', 'content not displaying on Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitileSecond, 'content not displaying on Activity');
@@ -832,7 +832,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnUnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(knowledgeTitile);
             await flagUnflagKnowledgePo.clickOnUnFlageButtonOnBlade();
-            await viewKnowledgeArticlePo.clickOnActivityTab();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills unflagged the article', 'content not displaying on Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');

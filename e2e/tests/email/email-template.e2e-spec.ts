@@ -131,12 +131,16 @@ describe('EmailTemplate', () => {
         // DRDMV-11092
         await consoleEmailTemplatePo.addFilter('Template Name', templateName, 'text');
         expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName, 'Filter Template Name is missing in column');
+        await consoleEmailTemplatePo.clearGridFilter();
         await consoleEmailTemplatePo.addFilter('Label', label, 'text');
         expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Label')).toBe(label, ' Filter Label is missing in column');
+        await consoleEmailTemplatePo.clearGridFilter();
         await consoleEmailTemplatePo.addFilter('Status', 'Active', 'checkbox');
         expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Status')).toBe('Active', 'Filter Label is missing in column');
+        await consoleEmailTemplatePo.clearGridFilter();
         await consoleEmailTemplatePo.addFilter('Company', 'Petramco', 'text');
         expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Filter Company is missing in column');
+        await consoleEmailTemplatePo.clearGridFilter();
         await consoleEmailTemplatePo.addFilter('Subject', subject, 'text');
         expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Filter Subject is missing in column');
 
@@ -176,7 +180,7 @@ describe('EmailTemplate', () => {
 
 
         await consoleEmailTemplatePo.searchOnGridConsole('body');
-        expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toBe('<p>' + body2 + '</p>', 'body not updated correctly');
+        expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toBe('<body><p>' + body2 + '</p></body>', 'body not updated correctly');
         await consoleEmailTemplatePo.searchOnGridConsole('subject');
         expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2, 'subject not updated correctly');
 

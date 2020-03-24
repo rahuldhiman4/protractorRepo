@@ -1,11 +1,11 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
 
 class QuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
         drpdownHeader: '.dropdown-input__button',
+        startOver: '.smart-recorder__footer button[ng-click="clear()"]',
         smartSearchTextBox: '.smart-recorder-textarea',
         confirmedItemSelection: '.smart-recorder-confirmedItem_header',
         searchResult: '.smart-recorder__popup-item-email',
@@ -28,7 +28,8 @@ class QuickCasePage {
         sourceValue: '.ui-select-toggle .ui-select-match-text',
         roleValue: '.smart-recorder-selectionItem li a',
         descriptionText: '.smart-input-label_big',
-        resources: '.smart-search-placeholder-text'
+        resources: '.smart-search-placeholder-text',
+        startOverButton: '.smart-recorder__footer button.d-button_secondary',
     }
 
     async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
@@ -65,10 +66,9 @@ class QuickCasePage {
     }
 
     async selectRequesterName(name: string): Promise<void> {
-        let namenew = "@" + name;
-        await $(this.selectors.inputBox).clear();
-        // await browser.wait(this.EC.visibilityOf($(this.selectors.inputBox)));
-        await $(this.selectors.inputBox).sendKeys(namenew);
+        //await $(this.selectors.inputBox).clear();
+        //await browser.wait(this.EC.visibilityOf($(this.selectors.inputBox)));
+        await $(this.selectors.inputBox).sendKeys(`@${name}`);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesters)), 3000);
         await $$(this.selectors.requesters).first().click();
     }
@@ -90,6 +90,7 @@ class QuickCasePage {
 
     async validatePersonAndHisRelation(relationType: string): Promise<string> {
         let employee: string;
+        await browser.sleep(1000); // required because UI renders after get call used before calling this method
         let elementCount = await $$(this.selectors.confirmedItemSelection).count();
         for (let i = 0; i < elementCount; i++) {
             let actualRelationType = await $$(this.selectors.confirmedItemSelection).get(i).$('button').getText();
@@ -156,11 +157,11 @@ class QuickCasePage {
 
     async selectCaseTemplate(templateName: string): Promise<boolean> {
         let success: boolean = false;
-        for (let i: number = 0; i <= 20; i++) {
+        for (let i: number = 0; i <= 10; i++) {
             browser.sleep(5 * 1000);
             let template: string = "!" + templateName;
             await $(this.selectors.inputBox).sendKeys(template);
-            success = await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).isDisplayed().then(async (result) => {
+            success = await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).isPresent().then(async (result) => {
                 if (result) {
                     await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).click();
                     return true;
@@ -218,6 +219,10 @@ class QuickCasePage {
 
     async getSelectedSourceValue(): Promise<string> {
         return await $(this.selectors.sourceValue).getText();
+    }
+
+    async clickStartOverButton(): Promise<void> {
+        await $(this.selectors.startOverButton).click();
     }
 }
 

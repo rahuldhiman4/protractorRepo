@@ -205,6 +205,10 @@ class ApiHelper {
             templateData.fieldInstances["1000000063"].value = category1Value;
 
         }
+
+        if (data.description) {
+            templateData.fieldInstances["450000061"].value = data.description;
+        }
         if (data.categoryTier2) {
             let category2Value = await coreApi.getCategoryGuid(data.categoryTier2);
             templateData.fieldInstances["1000000064"].value = category2Value;
