@@ -206,10 +206,18 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
-    async getTaskTemplateGuid(caseTemplateId: string): Promise<string> {
+    async getTaskTemplateGuid(taskTemplateIdOrName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.task-lib:Task Template");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-            return obj[1] === caseTemplateId;
+            return obj[1] === taskTemplateIdOrName || obj[1000001437] === taskTemplateIdOrName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getDataSourceGuid(dataSourceName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.slm-lib:Config%20Data%20Source");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[300520600] === dataSourceName;
         });
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }

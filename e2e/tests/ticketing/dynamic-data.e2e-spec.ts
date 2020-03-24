@@ -688,8 +688,8 @@ describe('Dynamic data', () => {
     it('[DRDMV-13128]: [Dynamic Data] - Create Case with Case Template having dynamic fields and Update dynamic fields data in Case', async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
-        let caseTemplateName = randomStr+'caseTemplateDRDMV-13128';
-        let caseTemaplateSummary = randomStr+'caseTemplateDRDMV-13128';
+        let caseTemplateName = randomStr + 'caseTemplateDRDMV-13128';
+        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13128';
         let casetemplateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
@@ -703,27 +703,28 @@ describe('Dynamic data', () => {
         await quickCasePo.selectCaseTemplate(caseTemplateName);
         await quickCasePo.createCaseButton();
         await quickCasePo.gotoCaseButton();
+        await utilCommon.waitUntilSpinnerToHide();
         await viewCasePo.clickEditCaseButton();
         await editCasePo.setDynamicFieldValue('temp', 'newtemp');
         await editCasePo.setDynamicFieldValue('temp1', '333');
         await editCasePo.setDateValueInDynamicField('2020-03-01');
+        await editCasePo.clickOnTrueValueOfDynamicField();
+        await editCasePo.addAttachment('attachment2', '../../data/ui/attachment/demo.txt');
         await editCasePo.setDateTimeDynamicFieldValue('2020-03-04');
         await editCasePo.setTimeInDynamicField('02');
         await editCasePo.selectValueFromList('dynamicList', 'listvalues');
-        await editCasePo.addAttachment('attachment2', '../../data/ui/attachment/demo.txt');
         await editCasePo.clickSaveCase();
-        await utilCommon.waitUntilSpinnerToHide();
+        await utilCommon.waitUntilPopUpDisappear();
         //verify update values on case view
         expect(await viewCasePo.getValueOfDynamicFields('temp')).toBe('newtemp');
         expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('333');
         expect(await viewCasePo.getValueOfDynamicFields('temp2')).toBe('Mar 1, 2020');
         expect(await viewCasePo.getValueOfDynamicFields('temp4')).toBe('Mar 4, 2020 12:00 AM');
         expect(await viewCasePo.getValueOfDynamicFields('temp3')).toBe('Yes');
-        expect(await viewCasePo.getValueOfDynamicFields('temp5')).toBe('02:00 AM');
+        expect(await viewCasePo.getValueOfDynamicFields('temp5')).toBe('2:00 AM');
         expect(await viewCasePo.getValueOfDynamicFields('dynamicList')).toBe('listvalues');
-        expect(await viewCasePo.isFileDisplayed('demo.txt')).toBeTruthy('File is not present');
-    });
-
+        expect(await viewCasePo.getValueOfDynamicFields('attachment2')).toContain('demo.txt');    
+    },160*1000);
     // ptidke
     it('[DRDMV-13127]: [Dynamic Data] - Create Case from Create Case with Template having dynamic fields and also have field with source as Requester', async () => {
         await apiHelper.apiLogin('tadmin');
