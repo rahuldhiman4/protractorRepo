@@ -4,4 +4,5 @@ export interface IPerson {
     userId: string;
     emailId?: string;
     userPermission?:string;
+    company?:string;
 }

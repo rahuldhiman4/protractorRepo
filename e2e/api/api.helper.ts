@@ -7,7 +7,7 @@ import { ISupportGroup } from '../data/api/interface/support.group.interface.api
 import { ITaskTemplate } from '../data/api/interface/task.template.interface.api';
 import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
-import { CasePriority, CaseStatus, CaseTemplate, Knowledge, MenuItemStatus, NotificationType, ProcessLibConf, TaskTemplate } from "../api/constant.api";
+import * as constants from "../api/constant.api";
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
 import { ICaseAssignmentMapping } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
@@ -29,6 +29,9 @@ import { INCOMINGMAIL, EMAILCONFIG, OUTGOINGEMAIL } from '../data/api/email/emai
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
+import { UPDATE_PERSON_AS_VIP } from '../data/api/foundation/update.person.data.api';
+import { SERVICE_TARGET_PAYLOAD } from '../data/api/slm/serviceTarget.api';
+import { ADHOC_TASK_PAYLOAD, UPDATE_TASK_STATUS, TASK_CREATION_FROM_TEMPLATE } from '../data/api/task/task.creation.api';
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -126,7 +129,7 @@ class ApiHelper {
     }
 
     async createDynamicDataOnTemplate(templateGuid: string, payloadName: string): Promise<void> {
-        let templateData = DYNAMIC[payloadName] ;
+        let templateData = DYNAMIC[payloadName];
         templateData['templateId'] = templateGuid;
         let newCaseTemplate: AxiosResponse = await
             coreApi.createDyanmicData(templateData);
@@ -184,7 +187,7 @@ class ApiHelper {
         let templateData = await templateDataFile.CaseTemplateData;
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
-        templateData.fieldInstances[7].value = CaseTemplate[data.templateStatus];
+        templateData.fieldInstances[7].value = constants.CaseTemplate[data.templateStatus];
         templateData.fieldInstances[301566300].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
         templateData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[1000000001].value;
         if (data.ownerGroup) {
@@ -192,7 +195,7 @@ class ApiHelper {
             templateData.fieldInstances[300287900].value = ownerSupportGroup;
         }
         if (data.caseStatus) {
-            let statusValue = CaseStatus[data.caseStatus];
+            let statusValue = constants.CaseStatus[data.caseStatus];
             let caseTemplateStatus = {
                 "id": "450000021",
                 "value": `${statusValue}`
@@ -219,7 +222,7 @@ class ApiHelper {
             templateData.fieldInstances["1000000065"].value = category3Value;
         }
         if (data.casePriority) {
-            let priorityValue = CasePriority[data.casePriority];
+            let priorityValue = constants.CasePriority[data.casePriority];
             let priorityObj = {
                 "id": "1000000164",
                 "value": `${priorityValue}`
@@ -271,7 +274,7 @@ class ApiHelper {
     async updateCaseTemplateStatus(caseTemplateGuid: string, status: string): Promise<number> {
         let updateStatusPayload = CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD;
         updateStatusPayload.id = caseTemplateGuid;
-        updateStatusPayload.fieldInstances[7].value = CaseTemplate[status];
+        updateStatusPayload.fieldInstances[7].value = constants.CaseTemplate[status];
         let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, updateStatusPayload);
         return updateCaseStatus.status;
     }
@@ -329,7 +332,7 @@ class ApiHelper {
             assignmentMappingData.fieldInstances[450000152].value = assigneeGuid;
         }
         if (data.priority) {
-            let priorityValue = CasePriority[data.priority];
+            let priorityValue = constants.CasePriority[data.priority];
             assignmentMappingData.fieldInstances["1000000164"].value = priorityValue;
         }
         if (data.useAsDefault) {
@@ -353,7 +356,7 @@ class ApiHelper {
     async createManualTaskTemplate(data: ITaskTemplate): Promise<IIDs> {
         let templateDataFile = await require('../data/api/task/task.template.api.json');
         let templateData = await templateDataFile.ManualTaskTemplate;
-        templateData.fieldInstances[7].value = TaskTemplate[data.templateStatus];
+        templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[301566300].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
@@ -398,7 +401,7 @@ class ApiHelper {
         let templateDataFile = await require('../data/api/task/task.template.api.json');
         let templateData = await templateDataFile.ExternalTaskTemplate;
 
-        templateData.fieldInstances[7].value = TaskTemplate[data.templateStatus];
+        templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
 
@@ -421,11 +424,50 @@ class ApiHelper {
         let templateDataFile = await require('../data/api/task/task.template.api.json');
         let templateData = await templateDataFile.AutoTaskTemplateNewProcess;
 
-        templateData.fieldInstances[7].value = TaskTemplate[data.templateStatus];
+        templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[450000154].value = data.processBundle;
         templateData.fieldInstances[450000141].value = data.processName;
+        if (data.assignee) {
+            let assignee = await coreApi.getPersonGuid(data.assignee);
+            let taskTemplateDataAssignee = {
+                "id": 450000152,
+                "value": `${assignee}`
+            }
+            templateData.fieldInstances["450000152"] = taskTemplateDataAssignee;
+        }
+
+        if (data.supportGroup) {
+            let companysupportGroupGuid = await coreApi.getSupportGroupGuid(data.supportGroup);
+            let taskTemplateDataSupportGroup = {
+                "id": 1000000217,
+                "value": `${companysupportGroupGuid}`
+            }
+            templateData.fieldInstances["1000000217"] = taskTemplateDataSupportGroup;
+        }
+
+        if (data.assignedCompany) {
+            let assignedCompanyGuid = await coreApi.getOrganizationGuid(data.assignedCompany);
+            let taskTemplateDataassignedCompany = {
+                "id": 450000153,
+                "value": `${assignedCompanyGuid}`
+            }
+            templateData.fieldInstances["450000153"] = taskTemplateDataassignedCompany;
+        }
+
+        if (data.priority) {
+            let priority = constants.CasePriority[data.priority];
+            let taskTemplateDataPriority = {
+                "id": 1000000164,
+                "value": `${priority}`
+            }
+            templateData.fieldInstances["1000000164"] = taskTemplateDataPriority;
+        }
+
+        data.company ? templateData.fieldInstances[301566300].value = await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
+        data.ownerGroup ? templateData.fieldInstances[300287900].value = await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
+        data.taskCompany ? templateData.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
         //data.company ? templateData.fieldInstances[301566300].value = data.templateSummary;
 
         let newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
@@ -559,6 +601,7 @@ class ApiHelper {
             let recordDisplayId: string = userDetails.data.displayId;
 
             let updateUser = await userDataFile.EnableUser;
+            data.company ? updateUser.fieldInstances[536870913].value = await coreApi.getOrganizationGuid(data.company) : updateUser.fieldInstances[536870913].value;
             updateUser.displayId = recordDisplayId;
             updateUser.id = recordGUID;
 
@@ -848,7 +891,7 @@ class ApiHelper {
         let knowledgeArticleFile = await require('../data/api/knowledge/knowledge.article.api.json');
         let knowledgeArticleData = await knowledgeArticleFile.UpdateKnowledgeArticleData;
         knowledgeArticleData.id = articleGuid;
-        knowledgeArticleData.fieldInstances[302300500].value = Knowledge[articleStatus];
+        knowledgeArticleData.fieldInstances[302300500].value = constants.Knowledge[articleStatus];
         if (reviewer) {
             let reviewerSGGuid = await apiCoreUtil.getSupportGroupGuid(reviewerGroup);
             let reviewerSGPayload = {
@@ -959,7 +1002,7 @@ class ApiHelper {
         let menuItemData = await menuItemFile.MenuItemConfiguration;
         menuItemData.fieldInstances[450000153].value = data.menuType;
         menuItemData.fieldInstances[450000152].value = data.menuItemName;
-        menuItemData.fieldInstances[7].value = MenuItemStatus[data.menuItemStatus];
+        menuItemData.fieldInstances[7].value = constants.MenuItemStatus[data.menuItemStatus];
         menuItemData.fieldInstances[450000154].value = randomStr;
         if (data.uiVisiable) {
             let valueOfVisiable = data.uiVisiable;
@@ -994,7 +1037,7 @@ class ApiHelper {
         let notificationTypeFile = await require('../data/api/foundation/default.notification.user.api.json');
         let defaultNotificationData = await notificationTypeFile.NotificationSet;
         defaultNotificationData.id = personGuid;
-        defaultNotificationData.fieldInstances[430000003].value = NotificationType[notificationType];
+        defaultNotificationData.fieldInstances[430000003].value = constants.NotificationType[notificationType];
         let uri: string = "api/rx/application/record/recordinstance/com.bmc.arsys.rx.foundation%3APerson/" + personGuid;
         const notificationSetting = await axios.put(
             uri,
@@ -1095,7 +1138,7 @@ class ApiHelper {
         let updateStatusFile = await require('../data/api/case/update.case.status.api.json');
         let statusData = await updateStatusFile.CaseStatusChange;
         statusData["id"] = caseGuid;
-        statusData.fieldInstances[450000021]["value"] = CaseStatus[status];
+        statusData.fieldInstances[450000021]["value"] = constants.CaseStatus[status];
         if (statusReason) {
             statusData.fieldInstances[1000000881]["value"] = await apiCoreUtil.getStatusChangeReasonGuid(statusReason);
         }
@@ -1109,7 +1152,7 @@ class ApiHelper {
         newProcessConfig.fieldInstances[61001]["value"] = data.applicationServicesLib;
         newProcessConfig.fieldInstances[450000002]["value"] = data.processName;
         newProcessConfig.fieldInstances[450000003]["value"] = data.processAliasName;
-        newProcessConfig.fieldInstances[7]["value"] = data.status ? ProcessLibConf[data.status] : newProcessConfig.fieldInstances[7].value;
+        newProcessConfig.fieldInstances[7]["value"] = data.status ? constants.ProcessLibConf[data.status] : newProcessConfig.fieldInstances[7].value;
         newProcessConfig.fieldInstances[8]["value"] = data.description ? data.description : newProcessConfig.fieldInstances[8].value;
         newProcessConfig.fieldInstances[1000000001]["value"] = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : newProcessConfig.fieldInstances[1000000001].value;
 
@@ -1328,6 +1371,121 @@ class ApiHelper {
         return updateArticleHelpfulCounterResponse.status == 204;
     }
 
+    async updatePersonAsVIP(personName: string, vipStatus: string): Promise<boolean> {
+        let personGuid = await coreApi.getPersonGuid(personName);
+        UPDATE_PERSON_AS_VIP.id = personGuid;
+        vipStatus == 'Yes' ? UPDATE_PERSON_AS_VIP.fieldInstances[1000000026].value = 100 : 200;
+        let updatePersonAsVIPResponse = await coreApi.updateRecordInstance('com.bmc.arsys.rx.foundation:Person', personGuid, UPDATE_PERSON_AS_VIP);
+        return updatePersonAsVIPResponse.status == 204;
+    }
+
+    async createSVT(svtData: any): Promise<IIDs> {
+        SERVICE_TARGET_PAYLOAD.fieldInstances[300271400].value = svtData.terms;
+        SERVICE_TARGET_PAYLOAD.fieldInstances[304412691].value = svtData.readableTerms;
+        SERVICE_TARGET_PAYLOAD.fieldInstances[300273000].value = svtData.startWhen;
+        SERVICE_TARGET_PAYLOAD.fieldInstances[304411891].value = svtData.readableStartWhen;
+        SERVICE_TARGET_PAYLOAD.fieldInstances[300273100].value = svtData.stopWhen;
+        SERVICE_TARGET_PAYLOAD.fieldInstances[304411911].value = svtData.readableStopWhen;
+        SERVICE_TARGET_PAYLOAD.fieldInstances[300398100].value = svtData.goalTimeMinutes;
+        SERVICE_TARGET_PAYLOAD.fieldInstances[490000400].value = svtData.svtName;
+        SERVICE_TARGET_PAYLOAD.fieldInstances[300523400].value = await coreApi.getDataSourceGuid(svtData.dataSource);
+        SERVICE_TARGET_PAYLOAD.fieldInstances[304412961].value = await coreApi.getOrganizationGuid(svtData.company);
+        //SERVICE_TARGET.fieldInstances[300272100].value = -1
+
+        let slmResponse: AxiosResponse = await coreApi.createRecordInstance(SERVICE_TARGET_PAYLOAD);
+        console.log('Create Service Target API Status =============>', slmResponse.status);
+        const slmDetails = await axios.get(
+            await slmResponse.headers.location
+        );
+        console.log('New SVT Details API Status =============>', slmDetails.status);
+
+        return {
+            id: slmDetails.data.id,
+            displayId: slmDetails.data.displayId
+        };
+    }
+
+    async createAdhocTask(caseGuid: string, taskData: any): Promise<IIDs> {
+        ADHOC_TASK_PAYLOAD.fieldInstances[8].value = taskData.taskName;
+        ADHOC_TASK_PAYLOAD.fieldInstances[536870913].value = caseGuid;
+        ADHOC_TASK_PAYLOAD.fieldInstances[1000000001].value = await coreApi.getOrganizationGuid(taskData.company);
+        ADHOC_TASK_PAYLOAD.fieldInstances[450000152].value = await coreApi.getPersonGuid(taskData.assignee);
+        ADHOC_TASK_PAYLOAD.fieldInstances[1000000217].value = await coreApi.getSupportGroupGuid(taskData.supportGroup);
+        taskData.priority ? ADHOC_TASK_PAYLOAD.fieldInstances[1000000164].value = constants.CasePriority[taskData.priority] : ADHOC_TASK_PAYLOAD.fieldInstances[1000000164].value;
+
+        let createTaskResponse = await coreApi.createRecordInstance(ADHOC_TASK_PAYLOAD);
+        console.log('Create Task API Status =============>', createTaskResponse.status);
+        const taskDetails = await axios.get(
+            await createTaskResponse.headers.location
+        );
+        console.log('New Task Details API Status =============>', taskDetails.status);
+
+        return {
+            id: taskDetails.data.id,
+            displayId: taskDetails.data.displayId
+        };
+    }
+
+    async updateTaskStatus(taskGuid: string, status: string, statusReason?: string): Promise<number> {
+        UPDATE_TASK_STATUS.id = taskGuid;
+        UPDATE_TASK_STATUS.fieldInstances[450000021]["value"] = constants.TaskStatus[status];
+        if (statusReason) {
+            let statusValue = await apiCoreUtil.getStatusChangeReasonGuid(statusReason);
+            let taskStatusReason = {
+                "id": "1000000881",
+                "value": `${statusValue}`
+            }
+            UPDATE_TASK_STATUS.fieldInstances["1000000881"] = taskStatusReason;
+        }
+
+        let updateTaskStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.task-lib:Task", taskGuid, UPDATE_TASK_STATUS);
+        return updateTaskStatus.status;
+    }
+
+    async addTaskToCase(taskData: any, caseGuid: string): Promise<AxiosResponse> {
+        let templateName = await coreApi.getTaskTemplateGuid(taskData.templateName);
+        TASK_CREATION_FROM_TEMPLATE.processInputValues["Case Company"] = await coreApi.getOrganizationGuid(taskData.company);
+        TASK_CREATION_FROM_TEMPLATE.processInputValues["Case ID"] = caseGuid;
+        TASK_CREATION_FROM_TEMPLATE.processInputValues["Requester ID"] = await coreApi.getPersonGuid(taskData.requesterId);
+        TASK_CREATION_FROM_TEMPLATE.processInputValues["Selected Templates"] = "[{\"379\":\"" + templateName + "\"}]";
+
+        const createTaskResponse = await axios.post(
+            commandUri,
+            TASK_CREATION_FROM_TEMPLATE
+        );
+        console.log('Add Task to Case from Task Template API Status =============>', createTaskResponse.status);
+        return createTaskResponse;
+    }
+
+    async getCreatedTaskIds(createTaskResponse: AxiosResponse): Promise<IIDs> {
+        let taskId = undefined;
+        let taskDisplayId: string = undefined;
+        const taskDetails = await axios.get(
+            await createTaskResponse.headers.location
+        );
+        console.log('New Task Details API Status =============>', taskDetails.status);
+
+        let jsonString: string = taskDetails.data.processVariables["Process Instance Activity Results"];
+        let splitString = jsonString.split('\"');
+
+        for (let i = 0; i < splitString.length; i++) {
+            if (splitString[i] == "displayId" && splitString[i + 2].includes('TASK')) {
+                taskDisplayId = splitString[i + 2];
+                break;
+            }
+        }
+        for (let i = 0; i < splitString.length; i++) {
+            if (splitString[i] == "id") {
+                taskId = splitString[i + 2];
+                break;
+            }
+        }
+
+        return {
+            id: taskId,
+            displayId: taskDisplayId
+        };
+    }
 
 }
 
