@@ -1,4 +1,4 @@
-import { browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { browser, protractor, ProtractorExpectedConditions, $$, element, by, ElementFinder } from "protractor";
 import apiHelper from '../../api/api.helper';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
@@ -12,7 +12,16 @@ import editCaseTemplate from "../../pageobject/settings/case-management/edit-cas
 import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template-cases.po';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import resources from '../../pageobject/common/resources-tab.po';
+import viewCasePage from '../../pageobject/case/view-case.po';
+import activityPo from '../../pageobject/social/activity-tab.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import attachmentBladePo from '../../pageobject/attachment/attachment-information-blade.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
+import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 
+let RecommendedKnowledgeStr = "Recommended Knowledge ";
+let applyBtn = "Apply";
 describe("Quick Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     const requester = "Requester";
@@ -481,7 +490,7 @@ describe("Quick Case", () => {
         await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
 
-        let knowledgeArticleGUID = knowledgeArticleData.id;         
+        let knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'SMEReview', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Published')).toBeTruthy('Status Not Set');
@@ -569,4 +578,241 @@ describe("Quick Case", () => {
         expect(await quickCase.selectCaseTemplate("DRDMV-795 verify")).toBeTruthy("template not present");
         await quickCase.clickStartOverButton();
     });
+
+    //apdeshmu
+    it('[DRDMV-767]:[Quick Case] Case creation with template (end-to-end)', async () => {
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let assignmentMappingName = "DRDMV-1087 " + randomStr;
+        let caseTemplateName = randomStr + "DRDMV-1087 Petramco";
+        let caseTemplateSummary = 'CaseSummaryName' + randomStr;
+        let tasktemplateData = {
+            "templateName": `${caseTemplateName}`,
+            "templateSummary": `${caseTemplateName}`,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": `Case Process 1 ${randomStr}`,
+            "categoryTier1": "Purchasing Card",
+            "categoryTier2": "Policies",
+            "categoryTier3": "Card Issuance",
+        }
+        let CaseTemplateData = {
+            "templateName": `${caseTemplateName}`,
+            "templateSummary": `${caseTemplateSummary}`,
+            "caseStatus": "InProgress",
+            "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities",
+            "supportCompany": "Petramco",
+            "categoryTier1": "Purchasing Card",
+            "categoryTier2": "Policies",
+            "categoryTier3": "Card Issuance",
+            "priority": "Low",
+        }
+        let caseData =
+        {
+            "Requester": "qtao",
+            "Summary": caseTemplateName,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi",
+        }
+        let assignmentData =
+        {
+            "assignmentMappingName": assignmentMappingName,
+            "company": "Petramco",
+            "supportCompany": "Petramco",
+            "supportGroup": "Employee Relations",
+            "assignee": "qliu",
+            "categoryTier1": "Purchasing Card",
+            "categoryTier2": "Policies",
+            "categoryTier3": "Card Issuance",
+            "priority": "Low",
+        }
+        let articleData = {
+            "knowledgeSet": "HR",
+            "title": caseTemplateName,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignee": "KWilliamson",
+            "categoryTier1": "Applications",
+            "categoryTier2": "Help Desk",
+            "categoryTier3": "Incident",
+            "region": "Australia",
+            "site": "Canberra",
+            "assigneeSupportGroup": "AU Support 3",
+            "company": "Petramco",
+        }
+        await apiHelper.apiLogin('fritz');
+        let automationTaskTemplate = await apiHelper.createAutomatedTaskTemplate(tasktemplateData);
+        let newCaseTemplate = await apiHelper.createCaseTemplate(CaseTemplateData);
+        console.log("active case Template is created===", newCaseTemplate.id);
+        console.log("active case Template is created===", newCaseTemplate.displayId);
+        await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automationTaskTemplate.displayId);
+        await apiHelper.createCaseAssignmentMapping(assignmentData);
+        await apiHelper.createCase(caseData);
+        await apiHelper.createKnowledgeArticle(articleData);
+        try {
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName("adam");
+            await quickCasePo.selectCaseTemplate(caseTemplateName);
+            await quickCasePo.selectRequesterName("friz");
+            await quickCase.selectDrpDownValueByIndex('Another person contacting on behalf of the requester', 1);
+            await quickCasePo.selectRequesterName("chetan");
+            await quickCasePo.setCaseSummary(caseTemplateName);
+            await utilCommon.waitUntilSpinnerToHide();
+            await quickCase.pinFirstRecommendedCase();
+            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.enterAdvancedSearchText(caseTemplateName);
+            await resources.clickOnAdvancedSearchSettingsIconToOpen();
+            await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
+            await quickCasePo.pinRecommendedKnowledgeArticles(3);
+            await quickCasePo.saveCase();
+            await utilCommon.waitUntilSpinnerToHide();
+            await utilCommon.waitUntilPopUpDisappear();
+            await createCasePo.clickGoToCaseButton();
+            await utilCommon.waitUntilSpinnerToHide();
+            expect(await viewCasePage.getCaseSummary()).toBe(`${caseTemplateName}`,"Template is not Found");
+            expect(await viewCasePage.getCategoryTier1Value()).toBe('Purchasing Card',"Category is not displaying");
+            expect(await viewCasePage.getCategoryTier2Value()).toBe('Policies',"Category is not displaying");
+            expect(await viewCasePage.getCategoryTier3Value()).toBe('Card Issuance',"Category is not displaying");
+            expect(await viewCasePage.getCaseStatusValue()).toBe('In Progress',"Status is not displaying");
+            expect(await viewCasePage.getAssignedGroupText()).toBe('Facilities');
+            expect(await viewCasePage.getAssignedCompanyText()).toBe('Petramco');
+            expect(await viewCasePage.getCaseTemplateText()).toBe(`${caseTemplateName}`);
+            expect(await activityPo.isTextPresentInActivityLog("created the case")).toBeTruthy("Text is not present in activiy tab1");
+            expect(await activityPo.isTextPresentInActivityLog("created the case")).toBeTruthy("Text is not present in activiy tab1");
+            await utilCommon.scrollUpOrDownTillElement(viewCasePage.selectors.addedTaskFromCaseTemplate);
+            expect(await viewCasePage.isCoreTaskPresent(caseTemplateName)).toBeTruthy("Task Is not added from Case Template");
+            await viewCasePage.clickOnTab('Resources');
+            await resources.clickOnAdvancedSearchOptions(caseTemplateName);
+            await resources.enterAdvancedSearchText(caseTemplateName);
+            await resources.clickOnAdvancedSearchSettingsIconToOpen();
+            await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
+            await resources.clickOnAdvancedSearchSettingsIconToClose();
+            expect(await resources.getAdvancedSearchResultForParticularSection(caseTemplateName)).toEqual(caseTemplateName);
+        } catch (e) {
+            throw e;
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    }, 500 * 1000);
+
+    it('[DRDMV-624]:  Advanced Search UI verification on the Quick Case view', async () => {
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let knowledgeTitile = 'knowledge3542' + randomStr;
+        console.log(knowledgeTitile);
+        await apiHelper.apiLogin('fritz');
+        let articleData1 = {
+            "knowledgeSet": "HR",
+            "title": `${knowledgeTitile}`,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignee": "kayo",
+            "assigneeSupportGroup": "US Support 1",
+            "company": "Petramco",
+            "categoryTier1": "Applications",
+            "region": "Australia",
+            "site": "Canberra",
+        }
+        let articleData2 = {
+            "knowledgeSet": "HR",
+            "title": `${knowledgeTitile}`,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignee": "kayo",
+            "assigneeSupportGroup": "US Support 1",
+            "company": "Petramco",
+            "categoryTier1": "Applications",
+            "region": "Australia",
+            "site": "Canberra",
+        }
+        let articleData3 = {
+            "knowledgeSet": "HR",
+            "title": `${knowledgeTitile}`,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignee": "kayo",
+            "assigneeSupportGroup": "US Support 1",
+            "company": "Petramco",
+            "categoryTier1": "Applications",
+            "region": "Australia",
+            "site": "Canberra",
+        }
+        let articleData4 = {
+            "knowledgeSet": "HR",
+            "title": `${knowledgeTitile}`,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignee": "kayo",
+            "assigneeSupportGroup": "US Support 1",
+            "company": "Petramco",
+            "categoryTier1": "Applications",
+            "region": "Australia",
+            "site": "Canberra",
+        }
+        let articleData5 = {
+            "knowledgeSet": "HR",
+            "title": `${knowledgeTitile}`,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignee": "kayo",
+            "assigneeSupportGroup": "US Support 1",
+            "company": "Petramco",
+            "categoryTier1": "Applications",
+            "region": "Australia",
+            "site": "Canberra",
+        }
+        let articleData6 = {
+            "knowledgeSet": "HR",
+            "title": `${knowledgeTitile}`,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignee": "kayo",
+            "assigneeSupportGroup": "US Support 1",
+            "company": "Petramco",
+            "categoryTier1": "Applications",
+            "region": "Australia",
+            "site": "Canberra",
+        }
+        
+        await apiHelper.createKnowledgeArticle(articleData1);
+        await apiHelper.createKnowledgeArticle(articleData2);
+        await apiHelper.createKnowledgeArticle(articleData3);
+        await apiHelper.createKnowledgeArticle(articleData4);
+        await apiHelper.createKnowledgeArticle(articleData5);
+        await apiHelper.createKnowledgeArticle(articleData6);
+
+        await navigationPage.gotoQuickCase();
+        await quickCasePo.selectRequesterName("fritz");
+        await quickCasePo.setCaseSummary(knowledgeTitile);
+        await utilCommon.waitUntilSpinnerToHide();
+        await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+        await resources.clickOnAdvancedSearchSettingsIconToOpen();
+        expect(await quickCasePo.isFilterAvailable('Status')).toBeTruthy();
+        expect(await quickCasePo.isFilterAvailable('Knowledge Set')).toBeTruthy();
+        expect(await quickCasePo.isFilterAvailable('Site')).toBeTruthy();
+        expect(await quickCasePo.isFilterAvailable('Region')).toBeTruthy();
+        expect(await quickCasePo.isFilterAvailable('Operational Category Tier 1')).toBeTruthy();
+        let statusFieldValues: string[] = ["Closed", "Retired", "Canceled", "In Progress", "Draft", "SME Review", "Published", "Publish Approval", "Retire Approval", "Cancel Approval"];
+        expect(await resources.isAdvancedSearchFilterOptionDropDownValueDisplayed('Status', statusFieldValues)).toBeTruthy();
+        await resources.clickOnAdvancedSearchSettingsIconToClose();
+        await resources.clickOnAdvancedSearchSettingsIconToOpen();
+        await resources.selectAdvancedSearchFilterOption('Status', 'In Progress');
+        await resources.selectAdvancedSearchFilterOption('Knowledge Set', 'HR');
+        await resources.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Applications');
+        await resources.selectAdvancedSearchFilterOption('Region', 'Australia');
+        await resources.selectAdvancedSearchFilterOption('Site', 'Canberra');
+        await resources.clickOnAdvancedSearchFiltersButton('Apply');
+        let getCurrentDate = utilCommon.getCurrentDate();
+        let currentDate = new Date();
+        let dateFormate = currentDate.getDate() + ", " + currentDate.getFullYear();
+        expect(await quickCasePo.getKnowledgeArticleInfo(1)).toContain(knowledgeTitile, 'title not correct');
+        expect(await quickCasePo.getKnowledgeArticleInfo(1)).toContain('Fritz Schulz', 'Author not correct');
+        expect(await quickCasePo.getKnowledgeArticleInfo(1)).toContain('In Progress', 'status not correct');
+        expect(await quickCasePo.getKnowledgeArticleInfo(1)).toContain('KA-', 'KA ID not correct');
+        expect(await quickCasePo.getKnowledgeArticleInfo(1)).toContain(dateFormate, 'KA ID not correct');
+        await quickCasePo.clickArrowFirstRecommendedKnowledge();
+        expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(knowledgeTitile, 'title not correct');
+        expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
+        expect(await previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy('viewArticle link Not peresent');
+        expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Status not displaying');
+        await previewKnowledgePo.clickOnBackButton();
+    }, 360 * 1000);
 })
+ 
