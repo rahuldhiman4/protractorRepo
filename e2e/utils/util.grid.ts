@@ -30,6 +30,8 @@ export class GridOperation {
         filterIcon: '.rx-search-filter button',
         filterItems: '.search-filter-dropdown .d-accordion__item',
         applyButton: '.rx-search-filter-heading__apply',
+        presetFilter: '.rx-filter-preset__title span',
+        appliedFilterName: '.d-tag-label'
     }
 
     async clickOnGridRefreshButton(): Promise<void> {
@@ -53,6 +55,7 @@ export class GridOperation {
     }
 
     async isGridRecordPresent(searchRecord: string): Promise<boolean> {
+        await this.clearGridSearchBox();
         await this.searchOnGridConsole(searchRecord);
         //        await browser.sleep(5000);
         return await $(this.selectors.gridRecordPresent).isPresent();
@@ -378,6 +381,15 @@ export class GridOperation {
         //        await browser.wait(this.EC.elementToBeClickable($(guidId + this.selectors.applyButton)));
         await $(guidId + this.selectors.applyButton).click();
         //        await utilCommon.waitUntilSpinnerToHide();
+    }
+
+    async applyPresetFilter(filterName: string): Promise<void>{
+        await $(this.selectors.filterPreset).click();
+        await element(by.cssContainingText(this.selectors.presetFilter, filterName)).click();
+    }
+
+    async getAppliedFilterName(): Promise<string>{
+        return await $(this.selectors.appliedFilterName).getText();
     }
 }
 export default new GridOperation();

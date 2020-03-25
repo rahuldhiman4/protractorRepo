@@ -7,7 +7,7 @@ import flowsetEditPage from "../../pageobject/flowset/edit-flowset-config.po";
 import menuItemEditPage from "../../pageobject/settings/application-config/edit-menu-items-config.po";
 import menuItemsConfigConsole from "../../pageobject/settings/application-config/menu-items-config-console.po";
 import assignmentConfigConsole from "../../pageobject/settings/case-management/assignments-config-console.po";
-import caseStatusConfig from "../../pageobject/settings/case-management/case-status-config.po";
+import statusConfig from "../../pageobject/settings/common/status-config.po";
 import assignmentConfigEditPage from "../../pageobject/settings/case-management/edit-assignments-config.po";
 import caseReadAccessConfigEditPage from "../../pageobject/settings/case-management/edit-read-access-config.po";
 import caseReadAccessConfigConsole from "../../pageobject/settings/case-management/read-access-console.po";
@@ -23,7 +23,6 @@ import businessTimeEntityConfigEditPage from "../../pageobject/settings/slm/edit
 import configureDataSourceEditPage from "../../pageobject/settings/slm/edit-configure-data-source-config.po";
 import goalTypeEditPage from "../../pageobject/settings/slm/edit-goal-type.po";
 import goalTypeConfigConsole from "../../pageobject/settings/slm/goal-type-config-console.po";
-import taskStatusConfig from "../../pageobject/settings/task-management/task-status-config.po";
 import utilGrid from "../../utils/util.grid";
 import relationshipsConfigsPage from "../../pageobject/settings/relationship/relationships-configs.po";
 import emailTemplateConsolePage from "../../pageobject/settings/email/console-email-template.po"
@@ -108,8 +107,8 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
-        await caseStatusConfig.setCompanyDropdown("Petramco");
-        expect(await caseStatusConfig.isEditLifrCycleBtnDisabled()).toBeTruthy("Edit Life Cycle button is enabled");
+        await statusConfig.setCompanyDropdown("Petramco", 'case');
+        expect(await statusConfig.isEditLifeCycleBtnDisabled()).toBeTruthy("Edit Life Cycle button is enabled");
     });
 
     // asahitya
@@ -117,8 +116,8 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
-        await taskStatusConfig.setCompanyDropdown("Petramco");
-        expect(await taskStatusConfig.isEditLifrCycleBtnDisabled()).toBeTruthy("Edit Life Cycle button is enabled");
+        await statusConfig.setCompanyDropdown("Petramco", 'case');
+        expect(await statusConfig.isEditLifeCycleBtnDisabled()).toBeTruthy("Edit Life Cycle button is enabled");
     });
 
     // asahitya
