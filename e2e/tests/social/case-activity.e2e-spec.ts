@@ -1,17 +1,19 @@
+import quickCasePo from '../../pageobject/case/quick-case.po';
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import { ITaskTemplate } from '../../data/api/interface/task.template.interface.api';
+import caseConsolePo from '../../pageobject/case/case-console.po';
 import createCase from '../../pageobject/case/create-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfilePo from '../../pageobject/common/person-profile.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import activityTabPage from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import utilCommon from '../../utils/util.common';
-import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 
 describe('Case Activity', () => {
 
@@ -799,6 +801,7 @@ describe('Case Activity', () => {
         }
     }, 250 * 1000);
 
+    // ptidke
     it('[DRDMV-7152]: [Automatic Task] - Automatic Task: Social: Manual Comments', async () => {
         // Create automated task template
         let autoTemplateData = {
@@ -836,7 +839,7 @@ describe('Case Activity', () => {
         await activityTabPage.addAttachment(filePath);
         await activityTabPage.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
-        expect(await activityTabPage.getFirstPostContent()).toContain('step 2nd added '+taskBodyText);
+        expect(await activityTabPage.getFirstPostContent()).toContain('step 2nd added ' + taskBodyText);
         expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('file is not present');
         await activityTabPage.clickAttachedFile('bwfPdf.pdf');
         expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
@@ -862,4 +865,88 @@ describe('Case Activity', () => {
         expect(await activityTabPage.getFirstPostContent()).toContain(textWithMultipleAttachment);
         expect(await activityTabPage.getCountAttachedFiles('demo.txt')).toBe(6);
     });
+
+    //kgaikwad
+    it('[DRDMV-16582]: Check case view count log is displayed on the activity feed of case along with name of user and time', async () => {
+        try {
+            let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let caseData = {
+                "Requester": "qtao",
+                "Summary": "Test case for DRDMV-8377RandVal" + summary,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qtao"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            let newCase = await apiHelper.createCase(caseData);
+            let caseId: string = newCase.displayId;
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await await viewCasePo.clickOnTab('Case Access')
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await expect(await activityTabPage.getTitleCount('Qianru Tao viewed the case.')).toEqual(1);
+            await expect(await activityTabPage.getTitleCount('Qadim Katawazi viewed the case.')).toEqual(1);
+            await browser.refresh();
+            await expect(await activityTabPage.getTitleCount('Qadim Katawazi viewed the case.')).toEqual(1);
+            await navigationPage.goToPersonProfile();
+            await expect(await personProfilePo.getTitleCount('Viewed the ' + caseId)).toEqual(1);
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    }, 200 * 1000);
+
+    //kgaikwad
+    it('[DRDMV-16589]: Check case view count is not increased by opening same case by different places', async () => {
+        
+            let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            // Create Task Template
+            let manualTaskTemplateData = {
+                "templateName": "DRDMV-16589_tempname_"+randomStr,
+                "templateSummary": "DRDMV-16589_tempSummary_"+randomStr,
+                "templateStatus": "Active",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+            // Create Case
+            let caseData = {
+                "Requester": "qtao",
+                "Summary": "DRDMV-16589"+summary,
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            let newCase = await apiHelper.createCase(caseData);
+            let caseId: string = newCase.displayId;
+            // Open Task
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
+            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskTemplateData.templateSummary);
+            await viewTaskPo.clickOnViewCase();
+            // Goto case   
+            await expect(await activityTabPage.getTitleCount('Qadim Katawazi viewed the case.')).toEqual(1);
+            // Goto Quick Case
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('qtao');
+            await quickCasePo.setCaseSummary(caseData.Summary);
+            await utilCommon.waitUntilSpinnerToHide();
+            await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
+            await quickCasePo.gotoCaseButton();
+            await expect(await activityTabPage.getTitleCount('Qadim Katawazi viewed the case.')).toEqual(1);
+            await navigationPage.gotoQuickCase();
+            await browser.refresh();
+            await quickCasePo.selectRequesterName('qtao');
+            await quickCasePo.setCaseSummary(caseData.Summary);
+            await quickCasePo.saveCase();
+            await quickCasePo.gotoCaseButton();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('FailuerMsg: Email Link is not present');
+            await expect(await activityTabPage.getTitleCount('Qadim Katawazi viewed the case.')).toEqual(1);
+    }, 290 * 1000);
 })

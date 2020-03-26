@@ -57,6 +57,7 @@ class ActivityTabPage {
         showMoreLink: '.log-item__content .more',
         emailBodyImage: '.email-body img',
         publicCheckbox: '.activity-feed-note-external .d-checkbox__item',
+        logTitle: '.title[ux-bind-html="title"]',
     }
 
     async clickOnShowMore(): Promise<void> {
@@ -365,10 +366,16 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText('.activity-general-note',bodyText)).isDisplayed().then(async (result) => {
+        return await element(by.cssContainingText('[.activity-general-note]',bodyText)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });
+    }
+    
+    async getTitleCount(TitleText: string): Promise<number> {
+        // let kk1=await $$('.title[ux-bind-html="title"]').get(0).getText();
+        // await console.log('>>>>>>>>>>',kk1);
+        return await element.all(by.cssContainingText (this.selectors.logTitle,TitleText)).count();
     }
 
     async clickOnHyperlinkFromActivity(bodyText: string, authorText: string): Promise<void> {

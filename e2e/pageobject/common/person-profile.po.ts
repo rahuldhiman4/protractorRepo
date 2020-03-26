@@ -15,8 +15,12 @@ class PersonProfilePage {
         activityNotes: '.activity-feed-note input[title]',
         requestedCasesGuid: 'cdba89ff-683c-42ba-9c2a-3adf4322504c',
         assignedCasesGuid: '08bd2811-37eb-43a3-a1fe-de845fe6c5a6',
-        requestedCaseGuid: '934faa1d-0932-4141-9a6e-7f6ac1726427'
-
+        requestedCaseGuid: '934faa1d-0932-4141-9a6e-7f6ac1726427',
+        logTitle: '.title[ux-bind-html="title"]',
+    }
+    
+    async getTitleCount(TitleText: string): Promise<number> {
+        return await element.all(by.cssContainingText (this.selectors.logTitle,TitleText)).count();
     }
 
     async clickOnTab(tabName: string): Promise<void> {

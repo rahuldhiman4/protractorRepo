@@ -50,7 +50,10 @@ class QuickCasePage {
 
     async isCaseSummaryPresentInRecommendedCases(caseSummary: string): Promise<boolean> {
         return await $$('.km-group').get(2).$$(`div[title="${caseSummary}"]`).isPresent();
+    }
 
+    async clickOnCaseSummaryInRecommendedCases(caseSummary: string): Promise<void> {
+         await $(`.km-group div[title="${caseSummary}"]`).click();
     }
 
     async getDrpDownValueByIndex(indexValue: number): Promise<string> {
