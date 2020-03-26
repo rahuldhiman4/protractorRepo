@@ -30,6 +30,9 @@ export class GridOperation {
         filterIcon: '.rx-search-filter button',
         filterItems: '.search-filter-dropdown .d-accordion__item',
         applyButton: '.rx-search-filter-heading__apply',
+        dateFrom: 'input[max-date="option.toDatePicker.date"]',
+        dateTo: 'input[min-date="option.fromDatePicker.date"]',
+        datePickerApplyButton: '.dropdown-item_range .d-button_small',
         presetFilter: '.rx-filter-preset__title span',
         appliedFilterName: '.d-tag-label'
     }
@@ -373,7 +376,16 @@ export class GridOperation {
             let cbox = `.rx-search-filter-option[title='${textValue}']`
             //            await browser.wait(this.EC.elementToBeClickable($(cbox)));
             await $(cbox).click();
-        } else {
+        }
+        if (type == 'date') {
+            let date=textValue.split(":");
+            await $(this.selectors.dateFrom).clear();
+            await $(this.selectors.dateFrom).sendKeys(date[0]);
+            await $(this.selectors.dateTo).clear();
+            await $(this.selectors.dateTo).sendKeys(date[1]);
+            await $(this.selectors.datePickerApplyButton).click();
+        }
+        else {
             let txtFieldLocator = fldLocator.$('label.d-textfield__label');
             //            await browser.wait(this.EC.elementToBeClickable(txtFieldLocator));
             await txtFieldLocator.sendKeys(textValue + Key.ENTER);

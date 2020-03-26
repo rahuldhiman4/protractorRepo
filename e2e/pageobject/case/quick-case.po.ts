@@ -29,8 +29,8 @@ class QuickCasePage {
         roleValue: '.smart-recorder-selectionItem li a',
         descriptionText: '.smart-input-label_big',
         resources: '.smart-search-placeholder-text',
-        startOverButton: '.smart-recorder__footer button.d-button_secondary',
         advancedSearchFields: '.ui-select-placeholder',
+        startOverButton: '.smart-recorder__footer button.d-button_secondary',
     }
 
     async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
@@ -226,13 +226,12 @@ class QuickCasePage {
         await $(this.selectors.startOverButton).click();
     }
 
-    async getKnowledgeArticleInfo(articleNumeber:number): Promise<string> {
+    async getKnowledgeArticleInfo(articleNumeber: number): Promise<string> {
         return await $$('.km-group-list-item__info').get(articleNumeber - 1).getText();
     }
 
-    async isFilterAvailable(filterText: string): Promise<boolean>{
+    async isFilterAvailable(filterText: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.advancedSearchFields, filterText)).isPresent();
     }
 }
-
 export default new QuickCasePage();
