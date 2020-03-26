@@ -11,7 +11,9 @@ class CaseAccessTab {
         agentNameOrSupportGroupName: '.rx-case-access-name',
         company: '.flex-item .ac-company-field button',
         supportGroup: '.flex-item .ac-support-group-field button',
-
+        dropdownList: '.options li',
+        searchSupportGroup: '[placeholder="Search for Support Groups"]',
+        searchOrganizationName: '[placeholder="Search Organizations"]',
     }
 
     async clickOnSupportGroupAccessORAgentAccessButton(agentName: string): Promise<void> {
@@ -30,12 +32,18 @@ class CaseAccessTab {
         return await element(by.cssContainingText(this.selectors.agentNameOrSupportGroupName, agentNameOrSupportGroupName)).isDisplayed();
     }
 
-    async selectCompany(statusValue: string): Promise<void> {
-        await utilCommon.selectDropDown2($(this.selectors.company), statusValue);
+    async selectCompany(companyValue: string): Promise<void> {
+        await $(this.selectors.company).click();
+        await $(this.selectors.searchOrganizationName).sendKeys(companyValue);
+        let option = await element(by.cssContainingText(this.selectors.dropdownList, companyValue));
+        await option.click();
     }
 
-    async selectSupportGroup(statusValue: string): Promise<void> {
-        await utilCommon.selectDropDown2($(this.selectors.supportGroup), statusValue);
+    async selectSupportGroup(SupportValue: string): Promise<void> {
+        await $(this.selectors.supportGroup).click();
+        await $(this.selectors.searchSupportGroup).sendKeys(SupportValue);
+        let option = await element(by.cssContainingText(this.selectors.dropdownList, SupportValue));
+        await option.click();
     }
 
 }

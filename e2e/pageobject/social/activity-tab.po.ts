@@ -54,6 +54,7 @@ class ActivityTabPage {
         attachmentField: '.activity-feed-note-buttons__left input[type="file"]',
         showMoreEmailActivity: '.email .more',
         allTaskActivity: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .fields .value',
+        taskActivity: '.fields .value',
         showMoreLink: '.log-item__content .more',
         emailBodyImage: '.email-body img',
         publicCheckbox: '.activity-feed-note-external .d-checkbox__item',
@@ -117,6 +118,9 @@ class ActivityTabPage {
         return await element(by.cssContainingText(this.selectors.allTaskActivity, fileName)).getText();
     }
 
+    async getAllTaskActivity(fileName: string): Promise<string> {
+        return await element(by.cssContainingText(this.selectors.taskActivity, fileName)).getText();
+    }
 
     async clickOnReply(): Promise<void> {
         //        await utilCommon.waitUntilSpinnerToHide();
