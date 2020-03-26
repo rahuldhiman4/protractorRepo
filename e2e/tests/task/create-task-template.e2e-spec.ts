@@ -16,6 +16,14 @@ import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import createCasePage from '../../pageobject/case/create-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import editTaskPo from '../../pageobject/task/edit-task.po';
+import utilGrid from '../../utils/util.grid';
+import taskConsole from "../../pageobject/task/console-task.po";
+import caseConsolePo from '../../pageobject/case/case-console.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+let filePath = '../../data/ui/attachment/bwfPdf.pdf';
 
 describe('Create Task Template', () => {
     beforeAll(async () => {
@@ -379,4 +387,162 @@ describe('Create Task Template', () => {
         await expect(activityTabPo.getTaskActivity('In Progress')).toBe('In Progress');
         await expect(activityTabPo.getTaskActivity('Completed')).toBe('Completed');
     });
+
+    it('[DRDMV-5326]: [Permission] [Task Template] Access to Activity Feed records of the Task created using template', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+
+        let taskTemplateName = 'taskTemplateWithYesResolve' + randomStr;
+        let taskTemplateSummary = 'taskSummaryYesResolved' + randomStr;
+        let taskTemplateDataSet = {
+            "templateName": `${taskTemplateName}`,
+            "templateSummary": `${taskTemplateSummary}`,
+            "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "supportGroup": "Facilities"
+        }
+        await apiHelper.apiLogin('fritz');
+        await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
+        //Create a Case
+        await navigationPage.signOut();
+        await loginPage.login('qtao');
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary DRDMV-5326' + randomStr);
+        await createCasePage.clickChangeAssignmentButton();
+        await changeAssignmentBladePo.selectCompany('Petramco');
+        await changeAssignmentBladePo.selectSupportGroup('Employee Relations');
+        await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Employee Relations');
+        await changeAssignmentBladePo.clickOnAssignButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        let caseId = await viewCasePage.getCaseID();
+        //await viewCasePage.clickAddTaskButton();
+
+        //Add Automation Task templates in Case
+        await viewCasePage.clickOnTab('Case Access');
+        await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+        await caseAccessTabPo.selectCompany('Petramco');
+        await caseAccessTabPo.selectSupportGroup('Staffing');
+        await viewCasePage.clickOnTab('Tasks');
+        await viewCasePage.clickAddTaskButton();
+
+        //Add Automation Task templates in Case
+        await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
+        await expect(viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed")
+        await viewTask.clickOnViewCase();
+        await viewCasePage.changeCaseStatus('In Progress');
+        await viewCasePage.clickSaveStatus();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
+        await activityTabPo.getFirstPostContent();
+        await viewTask.clickOnEditTask();
+        await editTaskPo.clickOnChangeAssignementButton();
+        await changeAssignmentBladePo.selectCompany('Petramco');
+        await changeAssignmentBladePo.selectSupportGroup('Risk Management');
+        await changeAssignmentBladePo.clickOnAssignButton();
+        await expect(activityTabPo.getTaskActivity('Risk Management')).toBe('Risk Management');
+        await activityTabPo.addActivityNote("abcde");
+        await activityTabPo.clickOnPostButton();
+        await expect(activityTabPo.getTaskActivity('abcde')).toBe('abcde');
+        await activityTabPo.addActivityNote("attachment");
+        await activityTabPo.addAttachment(filePath);
+        await activityTabPo.clickOnPostButton();
+        await expect(activityTabPo.getTaskActivity('attachment')).toBe('attachment');
+        await navigationPage.signOut();
+        await loginPage.login('qcolumbcille');
+        await navigationPage.gotoTaskConsole();
+        await utilGrid.clearFilter();
+        await taskConsole.setTaskSearchBoxValue(taskTemplateName);
+        await expect(taskConsole.isCaseIdLinkIsPresent()).toBeFalsy(" Case Id Displayed in Task console");
+        await taskConsole.clickFirstLinkInTaskTemplateSearchGrid();
+        await expect(activityTabPo.getTaskActivity('attachment')).toBe('attachment');
+        await expect(activityTabPo.getTaskActivity('abcde')).toBe('abcde');
+        await navigationPage.signOut();
+        await loginPage.login('qliu');
+        await navigationPage.gotoCaseConsole();
+        await caseConsolePo.searchAndOpenCase(caseId);
+        await viewCasePage.clickEditCaseButton();
+        await editCasePo.clickChangeAssignmentButton();
+        await changeAssignmentBladePo.selectCompany('Petramco');
+        await changeAssignmentBladePo.selectSupportGroup('Facilities');
+        await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
+        await changeAssignmentBladePo.clickOnAssignButton();
+        await editCasePo.clickSaveCase();
+        await viewCasePage.openTaskCard(1);
+        await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
+        await expect(activityTabPo.getTaskActivity('attachment')).toBe('attachment');
+        await expect(activityTabPo.getTaskActivity('abcde')).toBe('abcde');
+    }, 240 * 1000);
+
+    //ankagraw
+    it('[DRDMV-3768]: [Task Template Console] Filter menu verification', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let taskTemplateName = 'taskTemplateWithYesResolve' + randomStr;
+        let taskTemplateSummary = 'taskSummaryYesResolved' + randomStr;
+        let createdDate = new Date();
+        var month = new Array();
+        month[0] = "January";
+        month[1] = "February";
+        month[2] = "March";
+        month[3] = "April";
+        month[4] = "May";
+        month[5] = "June";
+        month[6] = "July";
+        month[7] = "August";
+        month[8] = "September";
+        month[9] = "October";
+        month[10] = "November";
+        month[11] = "December";
+        var dateFormate = month[createdDate.getMonth()] + " " + createdDate.getDate() + ", " + createdDate.getFullYear() + " " + createdDate.toLocaleTimeString();
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
+            .toEqual('Task Templates - Business Workflows');
+        await selectTaskTemplate.clickOnManualTaskTemplateButton();
+        await taskTemplate.setTemplateName(taskTemplateName);
+        await taskTemplate.setTaskSummary(taskTemplateSummary);
+        await taskTemplate.setTaskDescription('Description in manual task');
+        await taskTemplate.selectCompanyByName('Petramco');
+        await taskTemplate.selectTemplateStatus('Active');
+        await taskTemplate.clickOnSaveTaskTemplate();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplateName);
+        let taskTemplateId = await viewTaskTemplate.getTaskTemplateId();
+        await editTaskTemplate.clickOnEditMetadataLink();
+        await editTaskTemplate.selectTemplateStatus('Draft');
+        await editTaskTemplate.clickOnSaveMetadata();
+        let modifiedDate = new Date();
+        let modifiedDateFormate = month[modifiedDate.getMonth()] + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + modifiedDate.toLocaleTimeString();
+
+        let addColoumn: string[] = ['Display ID'];
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await utilGrid.clearFilter();
+        await selectTaskTemplate.addColumn(addColoumn);
+        await utilGrid.addFilter("Support Group", 'Compensation and Benefits', 'text');
+        expect(await utilGrid.isGridRecordPresent('Compensation and Benefits')).toBeTruthy('Compensation and Benefits not present');
+        await utilGrid.clearFilter();        
+        await utilGrid.addFilter("Modified Date", dateFormate+":"+modifiedDateFormate, 'date');
+        expect(await utilGrid.isGridRecordPresent(`${taskTemplateName}`)).toBeTruthy(`${taskTemplateName}`);
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter("Template Name", 'Code of Conduct', 'text');
+        expect(await utilGrid.isGridRecordPresent('Code of Conduct')).toBeTruthy('Code of Conduct not present');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter("Task Category Tier 1", 'Total Rewards', 'text');
+        expect(await utilGrid.isGridRecordPresent('Total Rewards')).toBeTruthy('Total Rewards not present');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter("Template Status", 'Active', 'checkbox');
+        expect(await utilGrid.isGridRecordPresent('Active')).toBeTruthy('Active not present');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter("Template Status", 'Draft', 'checkbox');
+        expect(await utilGrid.isGridRecordPresent('Draft')).toBeTruthy('Draft not present');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter("Template Status", 'Inactive', 'checkbox');
+        expect(await utilGrid.isGridRecordPresent('Inactive')).toBeTruthy('Active not present');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter("Display ID", taskTemplateId, 'text');
+        expect(await utilGrid.isGridRecordPresent(taskTemplateId)).toBeTruthy(taskTemplateId + '  not present');
+        await utilGrid.clearFilter();
+    }, 150 * 1000);
 });

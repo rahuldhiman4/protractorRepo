@@ -9,6 +9,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import personProfilePage from '../../pageobject/common/person-profile.po';
 import composemailPage from '../../pageobject/email/compose-mail.po';
 import utilCommon from '../../utils/util.common';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
 
 describe('Edit Case', () => {
     beforeAll(async () => {
@@ -104,4 +105,56 @@ describe('Edit Case', () => {
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
     });
+
+    //ankagraw
+    it('[DRDMV-7063]: [Case Edit] [Assignment] Changing the Assignment when editing the case by the member of one Support Group', async () => {
+        let Summary = 'Summary' + Math.floor(Math.random() * 1000000);
+
+        await navigationPage.signOut();
+        await loginPage.login('qtao');
+        await navigationPage.gotCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + Summary);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await createCasePage.clickGoToCaseButton();
+        await viewCasePage.clickEditCaseButton();
+        await editCasePage.clickOnAssignToMe();
+        await editCasePage.clickChangeAssignmentButton();
+        expect(await changeAssignmentPage.isAssignToMeCheckBoxSelected()).toBeFalsy("Checkbox is selected");
+        expect(await changeAssignmentPage.getCompanyDefaultValue()).toBe('Petramco');
+        expect(await changeAssignmentPage.getSupportGroupDefaultValue()).toBe('Compensation and Benefits');
+        expect(await changeAssignmentPage.isSupportGroupDrpDwnDisplayed()).toBeTruthy();
+        await changeAssignmentPage.selectAssignee('Qadim Katawazi');
+        await changeAssignmentPage.clickOnAssignButton();
+        await editCasePage.clickSaveCase();
+        expect(await viewCasePage.getAssigneeText()).toBe('Qadim Katawazi');
+
+        await viewCasePage.clickEditCaseButton();
+        await editCasePage.clickChangeAssignmentButton();
+        await changeAssignmentPage.selectSupportGroup('Employee Relations');
+        await changeAssignmentPage.selectAssigneeAsSupportGroup('Employee Relations');
+        await changeAssignmentPage.clickOnAssignButton();
+        await editCasePage.clickSaveCase();
+        expect(await viewCasePage.getAssignedGroupText()).toBe('Employee Relations');
+        expect(await activityTabPo.getAllTaskActivity('Employee Relations')).toBe('Employee Relations');
+        await viewCasePage.clickEditCaseButton();
+        await editCasePage.clickChangeAssignmentButton();
+        await changeAssignmentPage.selectSupportGroup('Facilities');
+        await changeAssignmentPage.selectAssignee('Fritz Schulz');
+        await changeAssignmentPage.clickOnAssignButton();
+        await editCasePage.clickSaveCase();
+        expect(await activityTabPo.getAllTaskActivity('Facilities')).toBe('Facilities');
+        await viewCasePage.clickEditCaseButton();
+        await editCasePage.clickOnAssignToMe();
+        await editCasePage.clickSaveCase();
+        expect(await activityTabPo.getAllTaskActivity('Compensation and Benefits')).toBe('Compensation and Benefits');
+        await viewCasePage.clickEditCaseButton();
+        await editCasePage.clickChangeAssignmentButton();
+        await changeAssignmentPage.selectSupportGroup('Compensation and Benefits');
+        await changeAssignmentPage.selectAssigneeAsSupportGroup('Compensation and Benefits');
+        await changeAssignmentPage.clickOnAssignButton();
+        await editCasePage.clickSaveCase();
+
+},150*1000);
 });
