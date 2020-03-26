@@ -1,30 +1,30 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import createCasePo from '../../pageobject/case/create-case.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
+import requesterResponseBladePo from '../../pageobject/case/requester-response-blade.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
+import dynamicFieldsPo from '../../pageobject/common/dynamic-fields.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import consoleNotificationTemplatePo from '../../pageobject/settings/notification-config/console-notification-template.po';
-import createNotificationTemplatePo from '../../pageobject/settings/notification-config/create-notification-template.po';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import consoleNotestemplatePo from '../../pageobject/settings/common/console-notestemplate.po';
 import createNotestemplatePo from '../../pageobject/settings/common/create-notestemplate.po';
 import consoleDocumentTemplatePo from '../../pageobject/settings/document-management/console-document-template.po';
 import createDocumentTemplatePo from '../../pageobject/settings/document-management/create-document-template.po';
 import consoleEmailTemplatePo from '../../pageobject/settings/email/console-email-template.po';
 import createEmailTemplatePo from '../../pageobject/settings/email/create-email-template.po';
-import utilCommon from '../../utils/util.common';
+import consoleNotificationTemplatePo from '../../pageobject/settings/notification-config/console-notification-template.po';
+import createNotificationTemplatePo from '../../pageobject/settings/notification-config/create-notification-template.po';
 import editNotificationTemplatePo from '../../pageobject/settings/notification-config/edit-notification-template.po';
-import utilGrid from '../../utils/util.grid';
-import createCasePo from '../../pageobject/case/create-case.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import composeMailPo from '../../pageobject/email/compose-mail.po';
+import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
-import editTaskPo from '../../pageobject/task/edit-task.po';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
-import quickCasePo from '../../pageobject/case/quick-case.po';
-import requesterResponseBladePo from '../../pageobject/case/requester-response-blade.po';
+import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 
 describe('Dynamic data', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -723,14 +723,15 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.getValueOfDynamicFields('temp3')).toBe('Yes');
         expect(await viewCasePo.getValueOfDynamicFields('temp5')).toBe('2:00 AM');
         expect(await viewCasePo.getValueOfDynamicFields('dynamicList')).toBe('listvalues');
-        expect(await viewCasePo.getValueOfDynamicFields('attachment2')).toContain('demo.txt');    
-    },160*1000);
+        expect(await viewCasePo.getValueOfDynamicFields('attachment2')).toContain('demo.txt');
+    }, 160 * 1000);
+
     // ptidke
     it('[DRDMV-13127]: [Dynamic Data] - Create Case from Create Case with Template having dynamic fields and also have field with source as Requester', async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
-        let caseTemplateName = randomStr+'caseTemplateDRDMV-13127';
-        let caseTemaplateSummary = randomStr+'caseTemplateDRDMV-13127';
+        let caseTemplateName = randomStr + 'caseTemplateDRDMV-13127';
+        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13127';
         let casetemplateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
@@ -751,10 +752,10 @@ describe('Dynamic data', () => {
         expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp4')).toBeTruthy('field not present');
         expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp5')).toBeTruthy('field not present');
         expect(await requesterResponseBladePo.isDynamicFieldDisplayed('dynamicList')).toBeTruthy('field not present');
-        expect(await requesterResponseBladePo.isDynamicFieldDisplayed('attachment1')).toBeFalsy('field is present');   
+        expect(await requesterResponseBladePo.isDynamicFieldDisplayed('attachment1')).toBeFalsy('field is present');
         await requesterResponseBladePo.clickOkButton();
         await quickCasePo.gotoCaseButton();
-        let empty='';
+        let empty = '';
         //verify fields shoule be empty values on case view
         expect(await viewCasePo.getValueOfDynamicFields('temp')).toBe(empty);
         expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe(empty);
@@ -765,4 +766,270 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.getValueOfDynamicFields('dynamicList')).toBe(empty);
         expect(await viewCasePo.getValueOfDynamicFields('attachment1')).toBe(empty);
     });
+
+    //ptidke
+    it('[DRDMV-13158]: [-ve] [UI] [Dynamic Data] - Update Task dynamic fields with invalid data', async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDynamicFieldAndGroup();
+        let taskTemplateName = 'ManualtaskDRDMV-13158' + randomStr;
+        let manualTaskSummary = 'ManualSummaryDRDMV-13158' + randomStr;
+        let templateData = {
+            "templateName": `${taskTemplateName}`,
+            "templateSummary": `${manualTaskSummary}`,
+            "templateStatus": "Active",
+        }
+        let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
+        await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
+        let externalTask = 'externalTaskDRDMV-13158' + randomStr;
+        let externalTaskSummary = 'externalSummaryDRDMV-13158' + randomStr;
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDynamicFieldAndGroup();
+        let externalTemplateData = {
+            "templateName": `${externalTask}`,
+            "templateSummary": `${externalTaskSummary}`,
+            "templateStatus": "Active",
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTemplateData);
+        await apiHelper.createDynamicDataOnTemplate(externalTaskTemplate.id, 'EXTERNAL_TASK_TEMPLATE__DYNAMIC_FIELDS');
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDynamicFieldAndGroup();
+        let automatedTask = 'automatedTaskDRDMV-13158' + randomStr;
+        let automatedTaskSummary = 'automatedSummaryDRDMV-13158' + randomStr;
+        let automationTemplateData = {
+            "templateName": `${automatedTask}`,
+            "templateSummary": `${automatedTaskSummary}`,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.arsys.rx.approval",
+            "processName": "Approval Process 1",
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automationTemplateData);
+        await apiHelper.createDynamicDataOnTemplate(autoTaskTemplate.id, 'AUTOMATED_TASK_TEMPLATE__DYNAMIC_FIELDS');
+        await navigationPage.gotCreateCase();
+        await createCasePo.selectRequester('qkatawazi');
+        await createCasePo.setSummary('new cases');
+        await createCasePo.clickSaveCaseButton();
+        await createCasePo.clickGoToCaseButton();
+        await viewCasePo.clickAddTaskButton();
+        await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
+        await manageTaskBladePo.addTaskFromTaskTemplate(automatedTask);
+        await manageTaskBladePo.addTaskFromTaskTemplate(externalTask);
+        await utilCommon.waitUntilPopUpDisappear();
+        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        //verify dynamic field
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.setDynamicFieldValue('temp', 'sssssss');
+        await editTaskPo.setDynamicFieldValue('temp1', 'sssssss');
+        await editTaskPo.clickOnAssignToMe();
+        await editTaskPo.setDateValueInDynamicField('wrong date')
+        await editTaskPo.clickOnSaveButton();
+        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        await editTaskPo.setDateTimeDynamicFieldValue('wrongdatetime');
+        await editTaskPo.clickOnSaveButton();
+        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        //  await utilCommon.waitUntilPopUpDisappear();
+        await editTaskPo.clickOnCancelButton();
+        await utilCommon.clickOnWarningOk();
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.setDateValueInDynamicField('2020-03-01');
+        await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
+        await editTaskPo.clickOnAssignToMe();
+        await editTaskPo.setDynamicFieldValue('temp1', 'sssssss');
+        await editTaskPo.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
+        //verify update values on case view
+        expect(await viewTaskPo.getValueOfDynamicFields('temp2')).toBe('Mar 1, 2020');
+        expect(await viewTaskPo.getValueOfDynamicFields('temp4')).toBe('Mar 4, 2020 12:00 AM');
+        expect(await viewTaskPo.getValueOfDynamicFields('temp1')).toBe('');
+
+        await viewTaskPo.clickOnViewCase();
+        await viewCasePo.clickAddTaskButton();
+        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.setDynamicFieldValue('externalText', 'sssssss');
+        await editTaskPo.clickOnAssignToMe();
+        await editTaskPo.setDateValueInDynamicField('wrong date')
+        await editTaskPo.clickOnSaveButton();
+        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        await editTaskPo.setDateTimeDynamicFieldValue('wrongdatetime');
+        await editTaskPo.clickOnSaveButton();
+        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        await editTaskPo.clickOnCancelButton();
+        await utilCommon.clickOnWarningOk();
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.setDateValueInDynamicField('2020-03-01');
+        await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
+        await editTaskPo.clickOnAssignToMe();
+        await editTaskPo.setDynamicFieldValue('externalNumber', 'sssssss');
+        await editTaskPo.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
+        //verify update values on case view
+        expect(await viewTaskPo.getValueOfDynamicFields('externalDate')).toBe('Mar 1, 2020');
+        expect(await viewTaskPo.getValueOfDynamicFields('externalDateTime')).toBe('Mar 4, 2020 12:00 AM');
+        expect(await viewTaskPo.getValueOfDynamicFields('externalNumber')).toBe('');
+        await viewTaskPo.clickOnViewCase();
+        await viewCasePo.clickEditCaseButton();
+        await editCasePo.clickOnAssignToMe();
+        await editCasePo.clickSaveCase();
+        await utilCommon.waitUntilPopUpDisappear();
+        await viewCasePo.changeCaseStatus('In Progress');
+        await viewCasePo.clickSaveStatus('In Progress');
+        await utilCommon.waitUntilPopUpDisappear();
+        await viewCasePo.clickAddTaskButton();
+        await manageTaskBladePo.clickTaskLinkOnManageTask(automatedTaskSummary);
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.setDynamicFieldValue('automatedText', 'sssssss');
+        await editTaskPo.setDateValueInDynamicField('wrong date')
+        await editTaskPo.clickOnSaveButton();
+        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        await editTaskPo.setDateTimeDynamicFieldValue('wrongdatetime');
+        await editTaskPo.clickOnSaveButton();
+        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        await editTaskPo.clickOnCancelButton();
+        await utilCommon.clickOnWarningOk();
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.setDateValueInDynamicField('2020-03-01');
+        await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
+        await editTaskPo.setDynamicFieldValue('automatedNumber', 'values');
+        await editTaskPo.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
+        //verify update values on case view
+        expect(await viewTaskPo.getValueOfDynamicFields('automatedDate')).toBe('Mar 1, 2020');
+        expect(await viewTaskPo.getValueOfDynamicFields('automatedDateTime')).toBe('Mar 4, 2020 12:00 AM');
+        expect(await viewTaskPo.getValueOfDynamicFields('automatedNumber')).toBe('');
+    }, 270 * 1000);
+
+    //ptidke
+    it('[DRDMV-13116]:[-ve] [Dynamic Data] - Add 2 or more new fields in Case Template with same Name (ID)', async () => {
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateName = 'caseTemplateName13116' + randomStr;
+        let casTemplateSummary = 'CaseSummarySummary13116' + randomStr;
+        let templateData = {
+            "templateName": `${caseTemplateName}`,
+            "templateSummary": `${casTemplateSummary}`,
+            "templateStatus": "Draft",
+            "resolveCaseonLastTaskCompletion": "1",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
+        }
+        await apiHelper.apiLogin('fritz');
+        await apiHelper.createCaseTemplate(templateData);
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+        await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+        await dynamicFieldsPo.clickOnDynamicField();
+        await dynamicFieldsPo.setFieldName('news' + randomStr);
+        await dynamicFieldsPo.setDescriptionName('newDescri' + randomStr);
+        await dynamicFieldsPo.clickSaveButton();
+        //duplicate
+        await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+        await dynamicFieldsPo.clickOnDynamicField();
+        await dynamicFieldsPo.setFieldName('news' + randomStr);
+        await dynamicFieldsPo.setDescriptionName('newDescri' + randomStr);
+        await dynamicFieldsPo.clickSaveButton();
+        expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.');
+        await dynamicFieldsPo.setFieldName('newName' + randomStr);
+        await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
+        await dynamicFieldsPo.clickSaveButton();
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed('NewDescription' + randomStr)).toBeTruthy();
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri' + randomStr)).toBeTruthy();
+        await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+        await dynamicFieldsPo.clickOnDynamicField();
+        await dynamicFieldsPo.setFieldName('newName' + randomStr);
+        await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
+        await dynamicFieldsPo.clickSaveButton();
+        expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.');
+        await dynamicFieldsPo.setFieldName('newNameUpdate' + randomStr);
+        await dynamicFieldsPo.setDescriptionName('NewUpdatedDescription' + randomStr);
+        await dynamicFieldsPo.clickSaveButton();
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed('NewUpdatedDescription' + randomStr)).toBeTruthy();
+    }, 180 * 1000);
+
+    //ptidke
+    it('[DRDMV-13132,DRDMV-13124]:[-ve] [Dynamic Data] [UI] - Update Case dynamic fields with invalid data', async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDynamicFieldAndGroup();
+        let caseTemplateName = randomStr + 'caseTemplateDRDMV-13132';
+        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13132';
+        let casetemplateData = {
+            "templateName": `${caseTemplateName}`,
+            "templateSummary": `${caseTemaplateSummary}`,
+            "templateStatus": "Active",
+        }
+        await apiHelper.apiLogin('fritz');
+        let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
+        await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
+        await navigationPage.gotoQuickCase();
+        await quickCasePo.selectRequesterName('qkatawazi');
+        await quickCasePo.selectCaseTemplate(caseTemplateName);
+        await quickCasePo.createCaseButton();
+        await quickCasePo.gotoCaseButton();
+
+        expect(await viewCasePo.isDynamicFieldDisplayed('temp')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('temp1')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('temp2')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('temp3')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('temp4')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('temp5')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('attachment1')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('attachment2')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('dynamicList')).toBeTruthy('dynamic fields not present');
+        await viewCasePo.clickEditCaseButton();
+        await editCasePo.setDynamicFieldValue('temp', 'newtemp');
+        await editCasePo.setDynamicFieldValue('temp1', 'newtempres');
+        await editCasePo.clickSaveCase();
+        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        await editCasePo.setDateValueInDynamicField('wrong date')
+        await editCasePo.clickSaveCase();
+        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        await editCasePo.setDateTimeDynamicFieldValue('wrongdatetime');
+        await editCasePo.clickSaveCase();
+        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        await editCasePo.clickOnCancelCaseButton();
+        await utilCommon.clickOnWarningOk();
+        expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('','field should be empty');
+        expect(await viewCasePo.getValueOfDynamicFields('temp2')).toBe('','field should be empty');
+        expect(await viewCasePo.getValueOfDynamicFields('temp4')).toBe('','field should be empty');
+    }, 180 * 1000);
+
+    //ptidke
+    it('[DRDMV-13125]:[Dynamic Data] - Create Case from Create Case with Template having dynamic fields but does not have field with source as Requester', async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDynamicFieldAndGroup();
+        let caseTemplateName = randomStr + 'caseTemplateDRDMV-13125';
+        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13125';
+        let casetemplateData = {
+            "templateName": `${caseTemplateName}`,
+            "templateSummary": `${caseTemaplateSummary}`,
+            "templateStatus": "Active",
+        }
+        await apiHelper.apiLogin('fritz');
+        let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
+        await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
+        await navigationPage.gotCreateCase();
+        await createCasePo.selectRequester('qkatawazi');
+        await createCasePo.setSummary('new cases');
+        await createCasePo.clickSelectCaseTemplateButton();
+        await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
+        await createCasePo.clickSaveCaseButton();
+        expect(await requesterResponseBladePo.isRequesterBladePresent()).toBeFalsy('requester Blade is not present');
+        await createCasePo.clickGoToCaseButton();
+        await utilCommon.waitUntilSpinnerToHide();
+        expect(await viewCasePo.isDynamicFieldDisplayed('temp')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('temp1')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('temp2')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('temp3')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('temp4')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('temp5')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('attachment1')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('attachment2')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('dynamic fields not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed('dynamicList')).toBeTruthy('dynamic fields not present');
+    }, 150 * 1000);
 });

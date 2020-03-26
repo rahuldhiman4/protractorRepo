@@ -45,6 +45,8 @@ class ViewTask {
         attachmentFile: '.rx-attachment-view-name',
         attachmentpath: '.rx-attachment-view .d-icon-cross',
         showMore:'.rx-attachment-show-text',
+        dynamicFieldsName:'[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] span',
+        dynamicFieldsValue:'[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] p',
     }
 
     async isAttachedDocumentPresent(fileName: string): Promise<boolean> {
@@ -322,6 +324,17 @@ class ViewTask {
         return await $(`p[title='${fieldValue}']`).getText();
     }
 
+    async getValueOfDynamicFields(fieldName:string):Promise<string>{
+        let dynamicFields:number= await $$(this.selectors.dynamicFieldsName).count();
+        for(let i=0; i<dynamicFields;i++){
+           let field= await $$(this.selectors.dynamicFieldsName).get(i).getText();
+           if(fieldName==field){
+             return await $$(this.selectors.dynamicFieldsValue).get(i).getText();
+           }
+        }
+        return null;
+     }
+    
 }
 
 export default new ViewTask();
