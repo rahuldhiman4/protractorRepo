@@ -50,7 +50,7 @@ class ActivityTabPage {
         logItems: '.log-item__body',
         body: '.log-item__body .body',
         AttachedfileName: '.log-item__body .rx-attachment-view-name',
-        refreshButton: '.d-icon-left-refresh',
+        refreshButton: '.activity-log-wrapper .d-icon-left-refresh',
         attachmentField: '.activity-feed-note-buttons__left input[type="file"]',
         showMoreEmailActivity: '.email .more',
         allTaskActivity: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .fields .value',

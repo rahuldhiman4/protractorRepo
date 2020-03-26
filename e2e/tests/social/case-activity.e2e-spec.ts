@@ -10,7 +10,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import personProfilePo from '../../pageobject/common/person-profile.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
-import activityTabPage from '../../pageobject/social/activity-tab.po';
+import { default as activityTabPage, default as activityTabPo } from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import utilCommon from '../../utils/util.common';
@@ -871,7 +871,7 @@ describe('Case Activity', () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseData = {
-                "Requester": "qtao",
+                "Requester": "Fritz",
                 "Summary": "Test case for DRDMV-8377RandVal" + summary,
                 "Support Group": "Compensation and Benefits",
                 "Assignee": "qtao"
@@ -880,18 +880,19 @@ describe('Case Activity', () => {
             let newCase = await apiHelper.createCase(caseData);
             let caseId: string = newCase.displayId;
             await caseConsolePo.searchAndOpenCase(caseId);
+            await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await caseConsolePo.searchAndOpenCase(caseId);
-            await await viewCasePo.clickOnTab('Case Access')
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-            await caseConsolePo.searchAndOpenCase(caseId);
+            await utilCommon.waitUntilSpinnerToHide();
+            await activityTabPo.clickOnRefreshButton();
+            await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
-            await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
             await browser.refresh();
-            await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
+            await utilCommon.waitUntilSpinnerToHide();
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
             await navigationPage.goToPersonProfile();
+            await utilCommon.waitUntilSpinnerToHide();
             await expect(await personProfilePo.getCaseViewCount('Viewed the ' + caseId)).toEqual(1);
         } catch (e) {
             throw e;
@@ -903,51 +904,62 @@ describe('Case Activity', () => {
 
     //kgaikwad
     it('[DRDMV-16589]: Check case view count is not increased by opening same case by different places', async () => {
-
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        // Create Task Template
-        let manualTaskTemplateData = {
-            "templateName": "DRDMV-16589_tempname_" + randomStr,
-            "templateSummary": "DRDMV-16589_tempSummary_" + randomStr,
-            "templateStatus": "Active",
+        try {
+            let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            // Create Task Template
+            let manualTaskTemplateData = {
+                "templateName": "DRDMV-16589_tempname_" + randomStr,
+                "templateSummary": "DRDMV-16589_tempSummary_" + randomStr,
+                "templateStatus": "Active",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+            // Create Case
+            let caseData = {
+                "Requester": "Fritz",
+                "Summary": summary,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qtao"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            let newCase = await apiHelper.createCase(caseData);
+            let caseId: string = newCase.displayId;
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            // Open Task
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
+            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskTemplateData.templateSummary);
+            await viewTaskPo.clickOnViewCase();
+            // Goto case   
+            await utilCommon.waitUntilSpinnerToHide();
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
+            // Goto Quick Case
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('qtao');
+            await quickCasePo.setCaseSummary(caseData.Summary);
+            await utilCommon.waitUntilSpinnerToHide();
+            await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
+            await quickCasePo.gotoCaseButton();
+            await utilCommon.waitUntilSpinnerToHide();
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
+            await navigationPage.gotoQuickCase();
+            await browser.refresh();
+            await quickCasePo.selectRequesterName('qtao');
+            await quickCasePo.setCaseSummary(caseData.Summary);
+            await quickCasePo.saveCase();
+            await quickCasePo.gotoCaseButton();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('FailuerMsg: Email Link is not present');
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         }
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
-        // Create Case
-        let caseData = {
-            "Requester": "qtao",
-            "Summary": "DRDMV-16589" + summary,
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        let newCase = await apiHelper.createCase(caseData);
-        let caseId: string = newCase.displayId;
-        // Open Task
-        await caseConsolePo.searchAndOpenCase(caseId);
-        await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskTemplateData.templateSummary);
-        await viewTaskPo.clickOnViewCase();
-        // Goto case   
-        await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
-        // Goto Quick Case
-        await navigationPage.gotoQuickCase();
-        await quickCasePo.selectRequesterName('qtao');
-        await quickCasePo.setCaseSummary(caseData.Summary);
-        await utilCommon.waitUntilSpinnerToHide();
-        await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
-        await quickCasePo.gotoCaseButton();
-        await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
-        await navigationPage.gotoQuickCase();
-        await browser.refresh();
-        await quickCasePo.selectRequesterName('qtao');
-        await quickCasePo.setCaseSummary(caseData.Summary);
-        await quickCasePo.saveCase();
-        await quickCasePo.gotoCaseButton();
-        await navigationPage.gotoCaseConsole();
-        await caseConsolePo.searchAndOpenCase(caseId);
-        await expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('FailuerMsg: Email Link is not present');
-        await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
-    }, 290 * 1000);
-
+    }, 190 * 1000);
 })
