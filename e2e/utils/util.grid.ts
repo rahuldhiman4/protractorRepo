@@ -367,40 +367,46 @@ export class GridOperation {
         if (guid) {
             guidId = `[rx-view-component-id="${guid}"] `
         }
-        //        await browser.wait(this.EC.elementToBeClickable($(guidId + this.selectors.filterIcon)));
+
+        // await browser.wait(this.EC.elementToBeClickable($(guidId + this.selectors.filterIcon)));
         await $(guidId + this.selectors.filterIcon).click();
         let fldLocator = await element(by.cssContainingText(guidId + this.selectors.filterItems, fieldName));
-        //        await browser.wait(this.EC.elementToBeClickable(fldLocator));
+        // await browser.wait(this.EC.elementToBeClickable(fldLocator));
         await fldLocator.click();
-        if (type == 'checkbox') {
-            let cbox = `.rx-search-filter-option[title='${textValue}']`
-            //            await browser.wait(this.EC.elementToBeClickable($(cbox)));
-            await $(cbox).click();
+
+        switch (type) {
+            case "checkbox": {
+                let cbox = `.rx-search-filter-option[title='${textValue}']`
+                // await browser.wait(this.EC.elementToBeClickable($(cbox)));
+                await $(cbox).click();
+                break;
+            }
+            case "date": {
+                let date = textValue.split(":");
+                await $(this.selectors.dateFrom).clear();
+                await $(this.selectors.dateFrom).sendKeys(date[0]);
+                await $(this.selectors.dateTo).clear();
+                await $(this.selectors.dateTo).sendKeys(date[1]);
+                await $(this.selectors.datePickerApplyButton).click();
+                break;
+            }
+            default: {
+                let txtFieldLocator = fldLocator.$('label.d-textfield__label');
+                // await browser.wait(this.EC.elementToBeClickable(txtFieldLocator));
+                await txtFieldLocator.sendKeys(textValue + Key.ENTER);
+                break;
+            }
         }
-        if (type == 'date') {
-            let date=textValue.split(":");
-            await $(this.selectors.dateFrom).clear();
-            await $(this.selectors.dateFrom).sendKeys(date[0]);
-            await $(this.selectors.dateTo).clear();
-            await $(this.selectors.dateTo).sendKeys(date[1]);
-            await $(this.selectors.datePickerApplyButton).click();
-        }
-        else {
-            let txtFieldLocator = fldLocator.$('label.d-textfield__label');
-            //            await browser.wait(this.EC.elementToBeClickable(txtFieldLocator));
-            await txtFieldLocator.sendKeys(textValue + Key.ENTER);
-        }
-        //        await browser.wait(this.EC.elementToBeClickable($(guidId + this.selectors.applyButton)));
         await $(guidId + this.selectors.applyButton).click();
-        //        await utilCommon.waitUntilSpinnerToHide();
+        // await utilCommon.waitUntilSpinnerToHide();
     }
 
-    async applyPresetFilter(filterName: string): Promise<void>{
+    async applyPresetFilter(filterName: string): Promise<void> {
         await $(this.selectors.filterPreset).click();
         await element(by.cssContainingText(this.selectors.presetFilter, filterName)).click();
     }
 
-    async getAppliedFilterName(): Promise<string>{
+    async getAppliedFilterName(): Promise<string> {
         return await $(this.selectors.appliedFilterName).getText();
     }
 }
