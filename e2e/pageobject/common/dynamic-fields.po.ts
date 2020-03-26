@@ -1,4 +1,4 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions, $$ } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 
@@ -18,14 +18,14 @@ class DynamicField {
 
     async setFieldName(name: string): Promise<void> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.fieldName)));
-        await $(this.selectors.fieldName).clear();
-        await $(this.selectors.fieldName).sendKeys(name);
+        await $$(this.selectors.fieldName).last().clear();
+        await $$(this.selectors.fieldName).last().sendKeys(name);
     }
 
     async setDescriptionName(name: string): Promise<void> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.fieldDescription)));
-        await $(this.selectors.fieldDescription).clear();
-        await $(this.selectors.fieldDescription).sendKeys(name);
+        await $$(this.selectors.fieldDescription).last().clear();
+        await $$(this.selectors.fieldDescription).last().sendKeys(name);
     }
 
     async clickSaveButton(): Promise<void> {
@@ -33,6 +33,6 @@ class DynamicField {
         await $(this.selectors.saveButton).click();
 //        await utilCommon.waitUntilPopUpDisappear();
     }
-}
+   }
 
 export default new DynamicField();
