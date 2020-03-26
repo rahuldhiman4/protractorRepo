@@ -14,6 +14,7 @@ import activityTabPage from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import utilCommon from '../../utils/util.common';
+import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
 
 describe('Case Activity', () => {
 
@@ -887,12 +888,12 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await caseConsolePo.searchAndOpenCase(caseId);
-            await expect(await activityTabPage.getTitleCount('Qianru Tao viewed the case.')).toEqual(1);
-            await expect(await activityTabPage.getTitleCount('Qadim Katawazi viewed the case.')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
             await browser.refresh();
-            await expect(await activityTabPage.getTitleCount('Qadim Katawazi viewed the case.')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
             await navigationPage.goToPersonProfile();
-            await expect(await personProfilePo.getTitleCount('Viewed the ' + caseId)).toEqual(1);
+            await expect(await personProfilePo.getCaseViewCount('Viewed the ' + caseId)).toEqual(1);
         } catch (e) {
             throw e;
         } finally {
@@ -929,7 +930,7 @@ describe('Case Activity', () => {
             await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskTemplateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
             // Goto case   
-            await expect(await activityTabPage.getTitleCount('Qadim Katawazi viewed the case.')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
             // Goto Quick Case
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qtao');
@@ -937,7 +938,7 @@ describe('Case Activity', () => {
             await utilCommon.waitUntilSpinnerToHide();
             await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
             await quickCasePo.gotoCaseButton();
-            await expect(await activityTabPage.getTitleCount('Qadim Katawazi viewed the case.')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
             await navigationPage.gotoQuickCase();
             await browser.refresh();
             await quickCasePo.selectRequesterName('qtao');
@@ -947,6 +948,45 @@ describe('Case Activity', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('FailuerMsg: Email Link is not present');
-            await expect(await activityTabPage.getTitleCount('Qadim Katawazi viewed the case.')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
     }, 290 * 1000);
+
+        //kgaikwad
+        it('[DRDMV-16591]: Check case count is changed with different permission of user read/write/no access to the case', async () => {
+            try {
+                let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+                let caseData = {
+                    "Requester": "qtao",
+                    "Summary": "Test case for DRDMV-8377RandVal" + summary,
+                    "Support Group": "Compensation and Benefits",
+                    "Assignee": "qtao"
+                }
+                await apiHelper.apiLogin('qkatawazi');
+                let newCase = await apiHelper.createCase(caseData);
+                let caseId: string = newCase.displayId;
+                await caseConsolePo.searchAndOpenCase(caseId);
+                await viewCasePo.clickOnTab('Case Access');
+                await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
+                await caseAccessTabPo.selectAndAddAgent('Fabian');
+                await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Quin Strong')).toBeTruthy('Failuer: Quanah George Agent Name is missing');
+                // await navigationPage.signOut();
+                // await loginPage.login('qtao');
+                // await caseConsolePo.searchAndOpenCase(caseId);
+                // await await viewCasePo.clickOnTab('Case Access')
+                // await navigationPage.signOut();
+                // await loginPage.login('qkatawazi');
+                // await caseConsolePo.searchAndOpenCase(caseId);
+                // await expect(await activityTabPage.getTitleCount('Qianru Tao viewed the case.')).toEqual(1);
+                // await expect(await activityTabPage.getTitleCount('Qadim Katawazi viewed the case.')).toEqual(1);
+                // await browser.refresh();
+                // await expect(await activityTabPage.getTitleCount('Qadim Katawazi viewed the case.')).toEqual(1);
+                // await navigationPage.goToPersonProfile();
+                // await expect(await personProfilePo.getTitleCount('Viewed the ' + caseId)).toEqual(1);
+            } catch (e) {
+                throw e;
+            } finally {
+                await navigationPage.signOut();
+                await loginPage.login('qkatawazi');
+            }
+        }, 900 * 1000);
 })

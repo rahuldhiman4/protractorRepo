@@ -18,8 +18,8 @@ class PersonProfilePage {
         requestedCaseGuid: '934faa1d-0932-4141-9a6e-7f6ac1726427',
         logTitle: '.title[ux-bind-html="title"]',
     }
-    
-    async getTitleCount(TitleText: string): Promise<number> {
+
+    async getCaseViewCount(TitleText: string): Promise<number> {
         return await element.all(by.cssContainingText (this.selectors.logTitle,TitleText)).count();
     }
 
