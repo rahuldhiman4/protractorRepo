@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions } from 'protractor';
+import { $, protractor, ProtractorExpectedConditions, $$ } from 'protractor';
 class ViewCaseTemplate {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -19,6 +19,8 @@ class ViewCaseTemplate {
         labelvalue: '[rx-view-component-id="06d4ad28-b48e-493a-b6b3-925fea737576"] p',
         buisnessUnitvalue: '[rx-view-component-id="40817c2b-387f-4859-82e9-0a3251cdc7dc"] .d-textfield__rx-value',
         departmentValue: '[rx-view-component-id="d5d0c773-b825-4be7-b357-4ed4eb73ee8d"] .d-textfield__rx-value',
+        manageDynamicField:'[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
+        dynamicFieldsName:'[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span',
     }
 
     async getIdentityValdationValue(): Promise<string> {
@@ -95,6 +97,22 @@ class ViewCaseTemplate {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier4)));
         return await $(this.selectors.categoryTier4).getText();
     }
+
+    async clickOnMangeDynamicFieldLink():Promise<void>{
+        await $(this.selectors.manageDynamicField).click();
+    }
+
+    async isDynamicFieldDisplayed(fieldName:string):Promise<boolean>{
+        let dynamicFields:number= await $$(this.selectors.dynamicFieldsName).count();
+        for(let i=0; i<dynamicFields;i++){
+           let field= await $$(this.selectors.dynamicFieldsName).get(i).getText();
+           if(fieldName==field){
+             return true;
+           }
+        }
+        return false;
+     }
+    
 }
 
 export default new ViewCaseTemplate();

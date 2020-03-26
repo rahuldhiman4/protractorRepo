@@ -231,4 +231,43 @@ describe('Automated Case Status Transition', () => {
         expect(await notificationPo.isAlertPresent('Petramco Administrator changed the status of ' + caseId + ' to Closed')).toBeTruthy('Alert message is not present');
     });
 
+    //ankagraw
+    it('[DRDMV-17567]: Automated case status transtion rule -Creation form validations', async () => {
+        let configName: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let days: any = Math.floor(Math.random() * 180) + 1;
+        let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.associateCategoryToCategory('Chatter', 'Failure');
+
+        let label = await menuItemDataFile['sampleMenuItem'].menuItemName + configName;
+        menuItemDataFile['sampleMenuItem'].menuItemName = label;
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
+        await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
+        
+        expect(await automatedStatusTransitionCreatePage.isNameRequiredText()).toBeTruthy("Name Required text not present");
+        expect(await automatedStatusTransitionCreatePage.isCompanyRequiredText()).toBeTruthy("Company Required text not present");
+        expect(await automatedStatusTransitionCreatePage.isFromStatusRequiredText()).toBeTruthy("From Status Required text not present");
+        expect(await automatedStatusTransitionCreatePage.isToStatusRequiredText()).toBeTruthy("To Status Required text not present");
+        expect(await automatedStatusTransitionCreatePage.isChangeStatusAferRequiredText()).toBeTruthy("change Status Required text not present");
+        expect(await automatedStatusTransitionCreatePage.isFromStatusEnabled()).toBeFalsy("From Status field Enabled");
+        await automatedStatusTransitionCreatePage.setFlowset('Human Resources');
+        await automatedStatusTransitionCreatePage.setName(configName);
+        await automatedStatusTransitionCreatePage.setCompany('Petramco');
+        expect(await automatedStatusTransitionCreatePage.isFromStatusEnabled()).toBeTruthy("From Status field disabled");
+        await automatedStatusTransitionCreatePage.setFromStatus('Resolved');
+        await automatedStatusTransitionCreatePage.setToStatus('Closed');
+        await automatedStatusTransitionCreatePage.setFromStatusReason('Auto Resolved');
+        await automatedStatusTransitionCreatePage.setToStatusReason('No Further Action Required');
+        await automatedStatusTransitionCreatePage.setChangeStatusAfter(days);
+        await automatedStatusTransitionCreatePage.setCategoryTier1Value('Applications');
+        await automatedStatusTransitionCreatePage.setCategoryTier2Value('Social');
+        await automatedStatusTransitionCreatePage.setCategoryTier3Value('Chatter');
+        await automatedStatusTransitionCreatePage.setCategoryTier4Value('Failure');
+        await automatedStatusTransitionCreatePage.setLabelValue(label);
+        await automatedStatusTransitionCreatePage.saveConfig();
+    },180*1000);
+
 })

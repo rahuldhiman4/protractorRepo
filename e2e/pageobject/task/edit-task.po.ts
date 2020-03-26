@@ -17,9 +17,19 @@ class EditTask {
         categoryTier2: '49d231d9-ee81-4d7c-90af-d7ca785a32d4',
         categoryTier3: 'c8858fb5-5b21-4e0d-a947-c0130a72b51a',
         categoryTier4: 'ff1636f8-4efe-4447-9c04-f32799904f2b',
-
+        dynamicDate:'[class="input-group"] input[ng-model="date"]',
+        dynamicDateTime:'input[ng-model="datetime"]'
     }
 
+    async setDateValueInDynamicField(value:string):Promise<void>{
+        await $(this.selectors.dynamicDate).clear();
+        await $(this.selectors.dynamicDate).sendKeys(value);
+    }
+
+    async setDateTimeDynamicFieldValue(value:string):Promise<void>{
+        await $(this.selectors.dynamicDateTime).clear();
+        await $(this.selectors.dynamicDateTime).sendKeys(value);
+    }
 
     async addAttachment(fileToUpload: string): Promise<void> {
         const absolutePath = resolve(__dirname, fileToUpload);

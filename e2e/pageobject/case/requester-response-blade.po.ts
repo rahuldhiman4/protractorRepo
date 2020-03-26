@@ -21,6 +21,10 @@ class RequesterResponseBlade {
         return await $(this.selectors.bladeHeading).getText();
     }
 
+    async isRequesterBladePresent():Promise<boolean>{
+        return await $(this.selectors.okButton).isPresent();
+    }
+
     async clickOkButton():Promise<void>{    
         await $(this.selectors.okButton).click();
     }
