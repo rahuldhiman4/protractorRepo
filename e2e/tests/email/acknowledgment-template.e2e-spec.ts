@@ -6,6 +6,7 @@ import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/con
 import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
 import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
 import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 
 describe('AcknowledgmentTemplate', () => {
     let label: string;
@@ -139,6 +140,7 @@ describe('AcknowledgmentTemplate', () => {
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         // DRDMV-10900
+        await utilGrid.clearFilter();
         await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate(templateName);
         await utilCommon.waitUntilSpinnerToHide();
         await editAcknowledgmentTemplatePo.updateTemplateName(templateName3);
@@ -148,9 +150,8 @@ describe('AcknowledgmentTemplate', () => {
         await editAcknowledgmentTemplatePo.selectStatusDropDown('Active');
         expect(await editAcknowledgmentTemplatePo.isLocalizedMessageButtonDisplayed()).toBeTruthy('Localize message button is missing');
         await editAcknowledgmentTemplatePo.selectlocaleDropDown('English (United States)');
-        let arr: string[] = ["Dutch (Netherlands)", "English (United States)", "French (France)", "German (Germany)", "Italian (Italy)", "Portuguese (Brazil)", "Spanish (International Sort)", "Swedish (Sweden)"]
+        let arr: string[] = ["Danish (Denmark)", "Dutch (Netherlands)", "English (United States)", "French (France)", "German (Germany)", "Italian (Italy)", "Portuguese (Brazil)", "Spanish (International Sort)", "Swedish (Sweden)"]
         expect(await editAcknowledgmentTemplatePo.isLocaleDropDownValueDisplayed(arr)).toBeTruthy('Values not displayed in locale drop down');
-
 
         await editAcknowledgmentTemplatePo.clickOnGridSearchIcon();
         await editAcknowledgmentTemplatePo.searchAndSelectGridRecord('body');
@@ -166,7 +167,7 @@ describe('AcknowledgmentTemplate', () => {
         await utilCommon.waitUntilPopUpDisappear();
 
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('body');
-        expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toBe('<p>' + body2 + '</p>', 'body not updated correctly');
+        expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toContain(body2, 'body not updated correctly');
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('subject');
         expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2, 'subject not updated correctly');
         await editAcknowledgmentTemplatePo.clickOnSaveButton();
@@ -196,7 +197,6 @@ describe('AcknowledgmentTemplate', () => {
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Search Subject is missing in column');
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('Petramco');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Search Company is missing in column');
-
 
         // DRDMV-10902
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();

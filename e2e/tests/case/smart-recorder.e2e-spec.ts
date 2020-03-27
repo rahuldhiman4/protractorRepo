@@ -1,11 +1,11 @@
 import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
 import quickCase from "../../pageobject/case/quick-case.po";
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import composeMail from '../../pageobject/email/compose-mail.po';
 import utilCommon from '../../utils/util.common';
-import apiHelper from '../../api/api.helper';
 
 describe("Quick Case", () => {
 
@@ -47,8 +47,8 @@ describe("Quick Case", () => {
     //ptidke
     it('[DRDMV-773]: [Quick Case] Case template selection via !', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName = 'caseTemplateDRDMV-773Active' + randomStr;
-        let casTemplateSummary = 'CaseSummaryDRDMV-773Active' + randomStr;
+        let caseTemplateName = randomStr + 'caseTemplateDRDMV773Active';
+        let casTemplateSummary = randomStr + 'CaseSummaryDRDMV773Active';
         let templateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${casTemplateSummary}`,
@@ -61,8 +61,8 @@ describe("Quick Case", () => {
         await apiHelper.apiLogin('fritz');
         await apiHelper.createCaseTemplate(templateData);
 
-        let caseTemplateDraft = 'caseTemplateDraftDRDMV-773' + randomStr;
-        let casTemplateSummaryDraft = 'caseTemplateDraftSummaryDRDMV-773' + randomStr;
+        let caseTemplateDraft = randomStr + 'caseTemplateDraftDRDMV-773';
+        let casTemplateSummaryDraft = randomStr + 'caseTemplateDraftSummaryDRDMV-773';
         let templateDataDraft = {
             "templateName": `${caseTemplateDraft}`,
             "templateSummary": `${casTemplateSummaryDraft}`,
@@ -75,8 +75,8 @@ describe("Quick Case", () => {
         await apiHelper.apiLogin('fritz');
         await apiHelper.createCaseTemplate(templateDataDraft);
 
-        let caseTemplatePsilon = 'caseTemplatePsilonDRDMV-773' + randomStr;
-        let casTemplateSummaryPsilon = 'caseTemplatePsilonSummaryDRDMV-773' + randomStr;
+        let caseTemplatePsilon = randomStr + 'caseTemplatePsilonDRDMV773';
+        let casTemplateSummaryPsilon = randomStr + 'caseTemplatePsilonSummaryDRDMV773';
         let templateDataPsilon = {
             "templateName": `${caseTemplatePsilon}`,
             "templateSummary": `${casTemplateSummaryPsilon}`,
@@ -100,11 +100,11 @@ describe("Quick Case", () => {
         await quickCase.selectRequesterName('adam');
         await quickCase.selectRoleValue('Related to');
         expect(await quickCase.selectCaseTemplate(caseTemplateDraft)).toBeFalsy('template is present');
-    });
+    }, 480 * 1000);
 
     //ptidke
     it('[DRDMV-741]: [Quick Case] UI validation including Source field in Quick Case', async () => {
-       let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
+        let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let activeSourceUI = await menuItemDataFile['sourceMenuItem'].menuItemName + randomStr;
         menuItemDataFile['sourceMenuItem'].menuItemName = activeSourceUI;
@@ -135,8 +135,8 @@ describe("Quick Case", () => {
         await quickCase.gotoCaseButton();
         expect(await viewCasePo.getSourceValue()).toContain(activeSourceUI);
         await navigationPage.gotoQuickCase();
-        expect(await quickCase.isValuePresentInSourceDropDown(sourceDeprecated741)).toBeFalsy(sourceDeprecated741+'is present');
-        expect(await quickCase.isValuePresentInSourceDropDown(inActiveSource741)).toBeFalsy(inActiveSource741+'is present');
-        expect(await quickCase.isValuePresentInSourceDropDown(activeSourceNotUI)).toBeFalsy(activeSourceNotUI+'is present');
+        expect(await quickCase.isValuePresentInSourceDropDown(sourceDeprecated741)).toBeFalsy(sourceDeprecated741 + 'is present');
+        expect(await quickCase.isValuePresentInSourceDropDown(inActiveSource741)).toBeFalsy(inActiveSource741 + 'is present');
+        expect(await quickCase.isValuePresentInSourceDropDown(activeSourceNotUI)).toBeFalsy(activeSourceNotUI + 'is present');
     });
 })
