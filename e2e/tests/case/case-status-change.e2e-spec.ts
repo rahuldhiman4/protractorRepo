@@ -9,6 +9,9 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import utilCommon from '../../utils/util.common';
+import quickCasePo from '../../pageobject/case/quick-case.po';
+import updateStatusBlade from '../../pageobject/common/update.status.blade.po';
+
 
 describe('Case Status Change', () => {
     let statusNew: string = "New";
@@ -470,4 +473,232 @@ describe('Case Status Change', () => {
             await loginPage.login('qkatawazi');
         }
     }, 160 * 1000);
+  
+    //apdeshmu
+    it('[DRDMV-1196]: [Case Status] Case status change from Resolved', async () => {
+        try {
+            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let summary1: string = randomStr + "Summary 1";
+            let summary2: string = randomStr + "Summary 2";
+            let summary3 = randomStr + "Summary 3";
+            let summary4 = randomStr + "Summary 4";
+            let caseData1 =
+            {
+                "Requester": "qtao",
+                "Summary": summary1,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "Resolved",
+            }
+            let caseData2 =
+            {
+                "Requester": "qtao",
+                "Summary": summary2,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "Resolved",
+            }
+            let caseData3 =
+            {
+                "Requester": "qtao",
+                "Summary": summary3,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "Resolved",
+            }
+            let caseData4 =
+            {
+                "Requester": "qtao",
+                "Summary": summary4,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "Resolved",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            let newCase1 = await apiHelper.createCase(caseData1);
+            let caseId1: string = newCase1.displayId;
+            let newCase2 = await apiHelper.createCase(caseData2);
+            let caseId2: string = newCase2.displayId;
+            let newCase3 = await apiHelper.createCase(caseData3);
+            let caseId3: string = newCase3.displayId;
+            let newCase4 = await apiHelper.createCase(caseData4);
+            let caseId4: string = newCase4.displayId;
+  
+            let statusOptions: string[] = ["Resolved","Assigned","In Progress", "Pending","Closed"];
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId4);
+            await viewCasePage.clickOnStatus();
+            expect(await viewCasePage.allStatusOptionsPresent(statusOptions)).toBeTruthy("Status Options is not present");
+            await viewCasePage.clickOnCancelButtonOfUpdateStatus();
+            await viewCasePage.changeCaseStatus('Pending');
+            await updateStatusBlade.isStatusReasonRequiredTextPresent();
+            await viewCasePage.setStatusReason('Third Party');
+            await viewCasePage.clickSaveStatus();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
+
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId2);
+            await viewCasePage.changeCaseStatus('In Progress');
+            await viewCasePage.clickSaveStatus();
+            expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
+
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId3);
+            await viewCasePage.changeCaseStatus('Assigned');
+            await viewCasePage.clickSaveStatus();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
+
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId4);
+            await viewCasePage.changeCaseStatus('Closed');
+            await viewCasePage.clickSaveStatus();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    }, 420 * 1000);
+
+    //apdeshmu
+    it('[DRDMV-1619]: [Case] Fields validation for case in Canceled status', async () => {
+        try {
+            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let summary1: string = randomStr + "Summary 1";
+            let summary2: string = randomStr + "Summary 2";
+            let summary3 = randomStr + "Summary 3";
+            let summary4 = randomStr + "Summary 4";
+            let caseTemplateName1 = randomStr + "DRDMV1087Petramco4";
+            let caseData1 =
+            {
+                "Requester": "qtao",
+                "Summary": summary1,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "New",
+            }
+            let caseData2 =
+            {
+                "Requester": "qtao",
+                "Summary": summary2,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "Assigned",
+            }
+            let caseData3 =
+            {
+                "Requester": "qtao",
+                "Summary": summary3,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "In Progress",
+            }
+            let caseData4 =
+            {
+                "Requester": "qtao",
+                "Summary": summary4,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "Pending",
+            }
+            let templateData1 = {
+                "templateName": caseTemplateName1,
+                "templateSummary": caseTemplateName1,
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "caseStatus": "New"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            let newCase1 = await apiHelper.createCase(caseData1);
+            let caseId1: string = newCase1.displayId;
+            let newCase2 = await apiHelper.createCase(caseData2);
+            let caseId2: string = newCase2.displayId;
+            let newCase3 = await apiHelper.createCase(caseData3);
+            let caseId3: string = newCase3.displayId;
+            let newCase4 = await apiHelper.createCase(caseData4);
+            let caseId4: string = newCase3.displayId;
+            await apiHelper.createCaseTemplate(templateData1);
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName("adam");
+            await quickCasePo.selectCaseTemplate(caseTemplateName1);
+            await quickCasePo.saveCase();
+            await createCasePage.clickGoToCaseButton();
+            await viewCasePage.changeCaseStatus('Canceled');
+            await viewCasePage.setStatusReason('Approval Rejected');
+            await viewCasePage.clickSaveStatus();   
+            await viewCasePage.clickEditCaseButton();
+            await editCasePage.updateCaseSummary(summary1);
+            await expect(editCasePage.isSaveCaseEnable()).toBeFalsy("Save button Visible");
+         
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId1);
+            await viewCasePage.clickEditCaseButton();
+            expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
+            expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
+            expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
+            expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
+            await editCasePage.updateCaseSummary(summary1);
+            await editCasePage.clickSaveCase();
+            await viewCasePage.changeCaseStatus('Canceled');
+            await viewCasePage.setStatusReason('Approval Rejected');
+            await viewCasePage.clickSaveStatus();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
+        
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId2);
+            await viewCasePage.clickEditCaseButton();
+            expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
+            expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
+            expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
+            expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
+            await editCasePage.updateCaseSummary(summary2);
+            await editCasePage.clickSaveCase();
+            await viewCasePage.changeCaseStatus('Canceled');
+            await viewCasePage.setStatusReason('Approval Rejected');
+            await viewCasePage.clickSaveStatus();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
+        
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId3);
+            await viewCasePage.clickEditCaseButton();
+            expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
+            expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
+            expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
+            expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
+            await editCasePage.updateCaseSummary(summary3);
+            await editCasePage.clickSaveCase(); 
+            await viewCasePage.changeCaseStatus('Canceled');
+            await viewCasePage.setStatusReason('Approval Rejected');
+            await viewCasePage.clickSaveStatus();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
+        
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId4);
+            await viewCasePage.clickEditCaseButton();
+            expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
+            expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
+            expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
+            expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
+            await editCasePage.updateCaseSummary(summary4);
+            await editCasePage.clickSaveCase();
+            await viewCasePage.changeCaseStatus('Canceled');
+            await viewCasePage.setStatusReason('Approval Rejected');
+            await viewCasePage.clickSaveStatus();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    }, 380 * 1000);
 });

@@ -1,4 +1,5 @@
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
+import utilGrid from '../../utils/util.grid';
 class AttachmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -16,7 +17,15 @@ class AttachmentBlade {
         paginationNextButton: '.d-icon-right-angle_right',
         paginationPreviousButton: '.d-icon-right-angle_left',
         refreshButton: '.d-icon-refresh',
-        selectedCheckBoxCount: 'selected-files-label'
+        selectedCheckBoxCount: 'selected-files-label',
+        attachmentColoumnValues: 'tbody tr td:nth-of-type(2) div:nth-of-type(2)',
+        attachmentColoumnHeader: 'table thead tr th:nth-of-type(2) div',
+        attachedToColoumnValues: 'tbody tr td:nth-of-type(3) div',
+        attachedToColoumnHeader: 'table thead tr th:nth-of-type(3) div',
+        mediaTypemediaTypeColoumnValues: 'tbody tr td:nth-of-type(4) div',
+        mediaTypeColoumnHeader: 'table thead tr th:nth-of-type(4) div',
+        createdDateColoumnValues: 'tbody tr td:nth-of-type(5) div',
+        createdDateColoumnHeader: 'table thead tr th:nth-of-type(5) div',
     }
 
     async getCountOfSelectedCheckBox(): Promise<string> {
@@ -151,6 +160,29 @@ class AttachmentBlade {
     async isCloseButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.close).isDisplayed();
     }
+
+    async isAttachTableColumnSorted(columnName: string, isDesecndingOrder?: boolean): Promise<boolean> {
+        switch (columnName) {
+            case "Attachment": {
+                return await utilGrid.isTableColumnSorted(this.selectors.attachmentColoumnValues, isDesecndingOrder);
+            }
+            case "Attached to": {
+                return await utilGrid.isTableColumnSorted(this.selectors.attachedToColoumnValues, isDesecndingOrder);
+            }
+            case "Media type": {
+                return await utilGrid.isTableColumnSorted(this.selectors.mediaTypemediaTypeColoumnValues, isDesecndingOrder);
+            }
+            case "Created date": {
+                return await utilGrid.isTableColumnSorted(this.selectors.createdDateColoumnValues, isDesecndingOrder);
+            }
+            default: {
+                console.log(columnName, ' is not a valid parameter');
+                break;
+            }
+        }
+
+    }
 }
 
 export default new AttachmentBlade();
+

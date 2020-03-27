@@ -1,4 +1,4 @@
-import { $, $$, browser, by, By, element, ElementFinder, Key, protractor, ProtractorExpectedConditions, until, ElementHelper } from 'protractor';
+import { $, $$, browser, by, By, element, ElementFinder, Key, protractor, ProtractorExpectedConditions, until, ElementHelper, ElementArrayFinder } from 'protractor';
 import utilCommon, { Util } from './util.common';
 
 export class GridOperation {
@@ -408,6 +408,30 @@ export class GridOperation {
 
     async getAppliedFilterName(): Promise<string> {
         return await $(this.selectors.appliedFilterName).getText();
+    }
+
+    async isTableColumnSorted(allelementLocator: string, isDescendingOrder?: boolean): Promise<boolean> {
+        let allElements = $$(allelementLocator);
+        let originalArray: string[] = [], i = 0, processedArray: string[] = [];
+        for (i = 0; i < (await allElements).length; i++) {
+            await allElements.get(i).getText().then(async (text) => {
+                originalArray.push(text);
+            });
+        }
+        processedArray = originalArray.slice();
+        if (isDescendingOrder) {
+            // Descending         
+            processedArray.sort((a, b) => 0 - (a > b ? 1 : -1));
+        }
+        else {
+            // Ascending
+            originalArray.sort((a, b) => 0 - (a > b ? -1 : 1));
+        }
+        console.log("UI column values: ", originalArray);
+        console.log("Sorted array: ", processedArray);
+        return processedArray.length === originalArray.length && processedArray.every(
+            (value, index) => (value === originalArray[index])
+        );
     }
 }
 export default new GridOperation();
