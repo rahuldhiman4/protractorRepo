@@ -50,7 +50,7 @@ class ActivityTabPage {
         logItems: '.log-item__body',
         body: '.log-item__body .body',
         AttachedfileName: '.log-item__body .rx-attachment-view-name',
-        refreshButton: '.d-icon-left-refresh',
+        refreshButton: '.activity-log-wrapper .d-icon-left-refresh',
         attachmentField: '.activity-feed-note-buttons__left input[type="file"]',
         showMoreEmailActivity: '.email .more',
         allTaskActivity: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .fields .value',
@@ -58,6 +58,7 @@ class ActivityTabPage {
         showMoreLink: '.log-item__content .more',
         emailBodyImage: '.email-body img',
         publicCheckbox: '.activity-feed-note-external .d-checkbox__item',
+        logTitle: '.title[ux-bind-html="title"]',
     }
 
     async clickOnShowMore(): Promise<void> {
@@ -369,10 +370,14 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText('.activity-general-note',bodyText)).isDisplayed().then(async (result) => {
+        return await element(by.cssContainingText('[.activity-general-note]', bodyText)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });
+    }
+
+    async getCaseViewCount(TitleText: string): Promise<number> {
+        return await element.all(by.cssContainingText(this.selectors.logTitle, TitleText)).count();
     }
 
     async clickOnHyperlinkFromActivity(bodyText: string, authorText: string): Promise<void> {
@@ -523,7 +528,7 @@ class ActivityTabPage {
     }
 
     async isAttachmentInActivity(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText('.rx-attachment-view-name',bodyText)).isDisplayed().then(async (result) => {
+        return await element(by.cssContainingText('.rx-attachment-view-name', bodyText)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });
