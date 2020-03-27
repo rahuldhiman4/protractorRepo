@@ -9,8 +9,8 @@ class RequesterResponseBlade {
     }
 
     async isDynamicFieldDisplayed(fieldName:string):Promise<boolean>{
-        let filedsNameCount= await $$(this.selectors.dynamicFieldsName).count(); 
-        for(let i=0;i<filedsNameCount;i++){
+        let fieldsNameCount= await $$(this.selectors.dynamicFieldsName).count(); 
+        for(let i=0;i<fieldsNameCount;i++){
            let field=await $$(this.selectors.dynamicFieldsName).get(i).getText();
            if(field==fieldName) return true;
         }  
@@ -20,11 +20,9 @@ class RequesterResponseBlade {
     async getBladeHeading(): Promise<string> {
         return await $(this.selectors.bladeHeading).getText();
     }
-
     async isRequesterBladePresent():Promise<boolean>{
         return await $(this.selectors.okButton).isPresent();
     }
-
     async clickOkButton():Promise<void>{    
         await $(this.selectors.okButton).click();
     }
