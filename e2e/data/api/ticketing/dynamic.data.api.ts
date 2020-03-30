@@ -580,6 +580,48 @@ export const CASE_TEMPLATE_REQUESTER_DYNAMIC_FIELDS =
             "description": "attachment1",
             "dataType": "ATTACHMENT",
             "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "temp6",
+            "description": "temp6",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "temp7",
+            "description": "temp7",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "temp8",
+            "description": "temp8",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "temp9",
+            "description": "temp9",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "temp10",
+            "description": "temp10",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "temp11",
+            "description": "temp11",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "temp12",
+            "description": "temp12",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
         }
     ]
 };

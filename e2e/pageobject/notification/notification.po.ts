@@ -20,7 +20,7 @@ class NotificationAlerts {
         let status = false;
         for (let i = 0; i < cnt; i++) {
             let notification: string = await $$(this.selectors.alerts).get(i).getText();
-            if (await notification === msg) {
+            if (await notification.includes(msg)) {
                 status = true;
                 break;
             }

@@ -14,6 +14,7 @@ class QuickCasePage {
         validateButton: '[rx-view-component-id="390a77cd-518e-4d67-abb4-bc4d410ce3df"] button',
         pinValidateInput: '[rx-view-component-id="bfe9a8e0-26e7-43a5-9561-1c92539bdda3"] input',
         pinOk: '[rx-view-component-id="ea1b7291-a0de-47d6-9239-cccf6b850a86"] button',
+        quickCaseGuid: 'dbfca64c-b020-43ee-bb30-de8f8c1c8e6e',
         popUpMsgLocator: '.rx-growl-item__message',
         inputBox: '.smart-recorder-textarea',
         smartSearchText: '.smart-recorder-highlightPerfectMatch',
@@ -31,6 +32,7 @@ class QuickCasePage {
         resources: '.smart-search-placeholder-text',
         advancedSearchFields: '.ui-select-placeholder',
         startOverButton: '.smart-recorder__footer button.d-button_secondary',
+        RecommendedKnowledge: 'km-group-list-item__description',
     }
 
     async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
@@ -51,7 +53,10 @@ class QuickCasePage {
 
     async isCaseSummaryPresentInRecommendedCases(caseSummary: string): Promise<boolean> {
         return await $$('.km-group').get(2).$$(`div[title="${caseSummary}"]`).isPresent();
+    }
 
+    async clickOnCaseSummaryInRecommendedCases(caseSummary: string): Promise<void> {
+        await $(`.km-group div[title="${caseSummary}"]`).click();
     }
 
     async getDrpDownValueByIndex(indexValue: number): Promise<string> {
