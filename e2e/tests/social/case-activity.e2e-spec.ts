@@ -25,11 +25,11 @@ describe('Case Activity', () => {
 
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
-        // await loginPage.login('qkatawazi');
+        await loginPage.login('qkatawazi');
     });
 
     afterAll(async () => {
-        // await navigationPage.signOut();
+        await navigationPage.signOut();
     });
 
     afterEach(async () => {
@@ -1078,5 +1078,6 @@ describe('Case Activity', () => {
             await loginPage.login('qkatawazi');
         }
     });
+
 
 })
