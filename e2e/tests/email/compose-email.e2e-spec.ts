@@ -3,24 +3,23 @@ import apiHelper from '../../api/api.helper';
 import caseConsole from '../../pageobject/case/case-console.po';
 import quickCase from "../../pageobject/case/quick-case.po";
 import viewCasePo from '../../pageobject/case/view-case.po';
+import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
+import linkPropertiesPo from '../../pageobject/common/ck-editor.popups.po.ts/link-properties.po';
+import tablePropertiesPo from '../../pageobject/common/ck-editor.popups.po.ts/table-properties.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import composeMail from '../../pageobject/email/compose-mail.po';
 import { default as emailTemplateBladePo, default as selectEmailTemplateBladePo } from '../../pageobject/email/select-email-template-blade.po';
-import activityTabPo from '../../pageobject/social/activity-tab.po';
-import utilCommon from "../../utils/util.common";
-import utilGrid from '../../utils/util.grid';
-import tablePropertiesPo from '../../pageobject/common/ck-editor.popups.po.ts/table-properties.po';
-import linkPropertiesPo from '../../pageobject/common/ck-editor.popups.po.ts/link-properties.po';
 import imagePropertiesPo from '../../pageobject/settings/common/image-properties.po';
 import consoleEmailTemplatePo from '../../pageobject/settings/email/console-email-template.po';
 import createEmailTemplatePo from '../../pageobject/settings/email/create-email-template.po';
-import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
 import consoleNotificationTemplatePo from '../../pageobject/settings/notification-config/console-notification-template.po';
-import editNotificationTemplatePo from '../../pageobject/settings/notification-config/edit-notification-template.po';
-import editMessageTextBladePo from '../../pageobject/settings/notification-config/edit-Message-Text-Blade.po';
 import copyNotificationTemplatePo from '../../pageobject/settings/notification-config/copy-notification-template.po';
-import apiCoreUtil from 'e2e/api/api.core.util';
+import editMessageTextBladePo from '../../pageobject/settings/notification-config/edit-Message-Text-Blade.po';
+import editNotificationTemplatePo from '../../pageobject/settings/notification-config/edit-notification-template.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
+import utilCommon from "../../utils/util.common";
+import utilGrid from '../../utils/util.grid';
 
 let emailTemplateData = require('../../data/ui/email/email.template.api.json');
 let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -49,9 +48,9 @@ describe("Compose Email", () => {
         await loginPage.login("qtao");
         await apiHelper.apiLogin('tadmin');
         emailGuid = await apiHelper.createEmailConfiguration();
-        incomingGUID=emailGuid.incomingMailGUID;
-        outgoingGUID=emailGuid.outGoingMailGUID;
-        emailconfigGUID=emailGuid.emailConfigurationEmailGUID;       
+        incomingGUID = emailGuid.incomingMailGUID;
+        outgoingGUID = emailGuid.outGoingMailGUID;
+        emailconfigGUID = emailGuid.emailConfigurationEmailGUID;
     });
 
     afterAll(async () => {
@@ -239,12 +238,12 @@ describe("Compose Email", () => {
         expect(await composeMail.getSubject()).toContain(caseId);
         expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
         await composeMail.clickOnSendButton();
-        expect(await activityTabPo.getemailContent()).toContain('Qianru Tao sent an email');
-        expect(await activityTabPo.getemailContent()).toContain(emailTemplateName);
-        expect(await activityTabPo.getemailContent()).toContain('TO: Fritz Schulz');
-        expect(await activityTabPo.getemailContent()).toContain(caseId + ':' + 'Leave summary');
+        expect(await activityTabPo.getEmailContent()).toContain('Qianru Tao sent an email');
+        expect(await activityTabPo.getEmailContent()).toContain(emailTemplateName);
+        expect(await activityTabPo.getEmailContent()).toContain('TO: Fritz Schulz');
+        expect(await activityTabPo.getEmailContent()).toContain(caseId + ':' + 'Leave summary');
         await activityTabPo.clickShowMoreForEmailActivity();
-        expect(await activityTabPo.getemailContent()).toContain('I am taking leave today.');
+        expect(await activityTabPo.getEmailContent()).toContain('I am taking leave today.');
     });
 
     //kgaikwad
@@ -795,7 +794,7 @@ describe("Compose Email", () => {
         }
         finally {
             await apiHelper.apiLogin('fritz');
-            await apiHelper.deleteEmailOrNotificationTemplate('Case Status Change','Petramco');
+            await apiHelper.deleteEmailOrNotificationTemplate('Case Status Change', 'Petramco');
             await navigationPage.signOut();
             await loginPage.login("qtao");
         }
@@ -934,7 +933,7 @@ describe("Compose Email", () => {
             await apiHelper.apiLogin('fritz');
             let newCaseOne = await apiHelper.createCase(caseDataOne);
             await utilGrid.clearFilter();
-            await caseConsole.searchAndOpenCase( newCaseOne.displayId);
+            await caseConsole.searchAndOpenCase(newCaseOne.displayId);
             await viewCasePo.clickOnEmailLink();
             await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMail.clickOnSelectEmailTemplateLink();
@@ -948,7 +947,7 @@ describe("Compose Email", () => {
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.getFirstPostContent()).toContain('Fritz Schulz sent an email');
             await browser.sleep(8000);
-            let valueBody: string = await apiHelper.getHTMLBodyOfEmail( newCaseOne.displayId + ':' + newSubject1);
+            let valueBody: string = await apiHelper.getHTMLBodyOfEmail(newCaseOne.displayId + ':' + newSubject1);
             await expect(valueBody.includes('<p><img alt="">new link<a>Google</a> New things</p>')).toBeTruthy('Image is present in email');
             await expect(valueBody.includes('<td><span>SettingColor</span></td> ')).toBeTruthy('span color is present in email');
             await expect(valueBody.includes('<table border="1" cellspacing="1" cellpadding="1">')).toBeFalsy('table border , cellspacing , cellpading displayed in email');

@@ -141,11 +141,11 @@ class ActivityTabPage {
         await $(this.selectors.refreshButton).click();
     }
 
-    async getemailContent(): Promise<string> {
+    async getEmailContent(): Promise<string> {
         //        await browser.sleep(2000);
         //        await utilCommon.waitUntilSpinnerToHide();
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailContent)), 5000);
-        let emailBody = await element(by.xpath('(//div[@class="log-item__content"]/email)[1]')).getText();
+        let emailBody = await $$('email .content-wrapper').first().getText();
         return emailBody;
     }
 
@@ -369,7 +369,7 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText('.activity-general-note',bodyText)).isDisplayed().then(async (result) => {
+        return await element(by.cssContainingText('.activity-general-note', bodyText)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });
@@ -523,7 +523,7 @@ class ActivityTabPage {
     }
 
     async isAttachmentInActivity(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText('.rx-attachment-view-name',bodyText)).isDisplayed().then(async (result) => {
+        return await element(by.cssContainingText('.rx-attachment-view-name', bodyText)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });
