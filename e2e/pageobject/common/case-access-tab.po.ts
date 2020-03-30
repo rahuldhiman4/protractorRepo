@@ -1,5 +1,4 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
 
 class CaseAccessTab {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -14,6 +13,14 @@ class CaseAccessTab {
         dropdownList: '.options li',
         searchSupportGroup: '[placeholder="Search for Support Groups"]',
         searchOrganizationName: '[placeholder="Search Organizations"]',
+        agentAssignWriteAccess: '.ac-assign-person-write-label',
+        removeAgent: '.ac-agent-list .d-icon-cross',
+        removeAgentAlertMsgYesButton: '.rx-case-access-remove[aria-hidden="false"] .ac-remove-person-access-yes',
+    }
+
+    async removeAgentAccess(no: number): Promise<void> {
+        await $$(this.selectors.removeAgent).get(no).click();
+        await $(this.selectors.removeAgentAlertMsgYesButton).click();
     }
 
     async clickOnSupportGroupAccessORAgentAccessButton(agentName: string): Promise<void> {
@@ -25,6 +32,14 @@ class CaseAccessTab {
         await $$(this.selectors.searchInput).first().clear();
         await $$(this.selectors.searchInput).first().sendKeys(agentName);
         await $$(this.selectors.agents).first().click();
+        await $$(this.selectors.agentAddButton).first().click();
+    }
+
+    async selectAgentWithWriteAccess(agentName: string): Promise<void> {
+        await $$(this.selectors.searchInput).first().clear();
+        await $$(this.selectors.searchInput).first().sendKeys(agentName);
+        await $$(this.selectors.agents).first().click();
+        await $$(this.selectors.agentAssignWriteAccess).first().click();
         await $$(this.selectors.agentAddButton).first().click();
     }
 
