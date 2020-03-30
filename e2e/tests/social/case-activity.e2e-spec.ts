@@ -25,11 +25,11 @@ describe('Case Activity', () => {
 
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
-        await loginPage.login('qkatawazi');
+        // await loginPage.login('qkatawazi');
     });
 
     afterAll(async () => {
-        await navigationPage.signOut();
+        // await navigationPage.signOut();
     });
 
     afterEach(async () => {
@@ -1048,7 +1048,7 @@ describe('Case Activity', () => {
     }, 210 * 1000);
 
     //kgaikwad
-    it('[DRDMV-18052]: Check case count is changed with different permission of user read/write/no access to the case', async () => {
+    it('[DRDMV-18052]: Alert Notification should be send to tagged persons other than Assignee and Requester', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             // Create Case
@@ -1078,4 +1078,5 @@ describe('Case Activity', () => {
             await loginPage.login('qkatawazi');
         }
     });
+
 })
