@@ -9,6 +9,7 @@ import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfilePo from '../../pageobject/common/person-profile.po';
+import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import { default as activityTabPage, default as activityTabPo } from '../../pageobject/social/activity-tab.po';
@@ -16,7 +17,6 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import utilCommon from '../../utils/util.common';
 import notificationPo from '../../pageobject/notification/notification.po';
-import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 
 describe('Case Activity', () => {
@@ -984,4 +984,100 @@ describe('Case Activity', () => {
             await loginPage.login('qkatawazi');
         }
     }, 250 * 1000);
+
+    //kgaikwad
+    it('[DRDMV-16591]: Check case count is changed with different permission of user read/write/no access to the case', async () => {
+        try {
+            let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let getUrl;
+            let passwd = 'Password_1234';
+            // Create Case
+            let caseData = {
+                "Requester": "Fritz",
+                "Summary": "DRDMV-16591_TC" + summary,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qtao"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            let newCase = await apiHelper.createCase(caseData);
+            let caseId: string = newCase.displayId;
+            await caseConsolePo.searchAndOpenCase(caseId);
+
+
+            await viewCasePo.clickOnTab('Case Access');
+            //Read Access Agent
+            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
+            await caseAccessTabPo.selectAndAddAgent('Fabian');
+            await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Fabian Krause')).toBeTruthy('Failuer:Fabian Krause Agent Name is missing');
+            await browser.refresh();
+            //Write Access Agent
+            await viewCasePo.clickOnTab('Case Access');
+            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
+            await caseAccessTabPo.selectAgentWithWriteAccess('qyuan');
+            await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Qing Yuan')).toBeTruthy('Failuer: Qing Yuan Agent Name is missing');
+            getUrl = await browser.getCurrentUrl();
+
+            // Login with Read User
+            await navigationPage.signOut();
+            await loginPage.loginWithCredentials('Fabian@petramco.com', passwd);
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with Fabian User');
+            // Login with Write User and check read user count
+            await navigationPage.signOut();
+            await loginPage.loginWithCredentials('qyuan@petramco.com', passwd);
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with qyuan User');
+            await expect(await activityTabPage.getCaseViewCount('Fabian Krause viewed the case.')).toEqual(1);
+            // Login with Read user and check write user count
+            await navigationPage.signOut();
+            await loginPage.loginWithCredentials('Fabian@petramco.com', passwd);
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with qyuan User');
+            await expect(await activityTabPage.getCaseViewCount('Qing Yuan viewed the case.')).toEqual(1);
+            // Login with No Access user
+            await navigationPage.signOut();
+            await loginPage.loginWithCredentials('qannis@petramco.com', passwd);
+            await browser.get(getUrl);
+            await expect(await utilCommon.getPopUpMessage()).toContain('ERROR (302): Record Instance does not exist in the database. com.bmc.dsm.case-lib:Case:')
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    }, 210 * 1000);
+
+    //kgaikwad
+    it('[DRDMV-18052]: Alert Notification should be send to tagged persons other than Assignee and Requester', async () => {
+        try {
+            let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            // Create Case
+            let caseData = {
+                "Requester": "Fritz",
+                "Summary": "DRDMV-16591_TC" + summary,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qtao"
+            }
+
+            await apiHelper.apiLogin('qkatawazi');
+            let newCase = await apiHelper.createCase(caseData);
+            let caseId: string = newCase.displayId;
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await activityTabPage.addActivityNote('From DRDMV-18052');
+            await activityTabPage.addPersonInActivityNote('fritz');
+            await activityTabPage.clickOnPostButton();
+            await utilCommon.waitUntilSpinnerToHide();
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await notificationPo.clickOnNotificationIcon();
+            await expect(await notificationPo.isAlertPresent('Qadim Katawazi mentioned you on ' + caseId)).toBeTruthy('Alert message is not present');
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    });
+
+
 })
