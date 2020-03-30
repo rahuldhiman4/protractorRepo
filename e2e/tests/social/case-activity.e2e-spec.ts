@@ -1,7 +1,6 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import { ITaskTemplate } from '../../data/api/interface/task.template.interface.api';
-import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import createCase from '../../pageobject/case/create-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
@@ -13,11 +12,12 @@ import personProfilePo from '../../pageobject/common/person-profile.po';
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
-import notificationPo from '../../pageobject/notification/notification.po';
 import { default as activityTabPage, default as activityTabPo } from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import utilCommon from '../../utils/util.common';
+import notificationPo from '../../pageobject/notification/notification.po';
+import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 
 describe('Case Activity', () => {
 
@@ -943,7 +943,7 @@ describe('Case Activity', () => {
             // Goto Quick Case
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qtao');
-
+            
             await quickCasePo.setCaseSummary(caseData.Summary);
             await utilCommon.waitUntilSpinnerToHide();
             await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
@@ -960,19 +960,19 @@ describe('Case Activity', () => {
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('FailuerMsg: Email Link is not present');
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
-
+           
             await viewCasePo.clickOnTab('Related Persons');
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Elizabeth Peters', 'Related to');
             await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
             await expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Elizabeth Peters', 'Related to')).toBeTruthy();
-
+           
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.goToPersonProfile();
             await personProfilePo.clickOnTab('Related Cases');
             await relatedTabPage.clickOnCaseSummaryLink(caseData.Summary);
-            await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing');
+            await expect(await viewCasePo.getCaseID()).toBe(caseId,'FailureMsg: CaseId is missing');
             await activityTabPage.clickOnRefreshButton();
             await utilCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Elizabeth Peters viewed the case.')).toEqual(1);

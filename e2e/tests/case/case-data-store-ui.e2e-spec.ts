@@ -13,8 +13,15 @@ import manageTask from "../../pageobject/task/manage-task-blade.po";
 import taskConsole from "../../pageobject/task/console-task.po";
 import utilCommon from '../../utils/util.common';
 import viewTaskPo from '../../pageobject/task/view-task.po';
+import createCasePo from '../../pageobject/case/create-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import requesterResponseBladePo from '../../pageobject/case/requester-response-blade.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
 
 describe('Case Data Store', () => {
+    const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
         await loginPage.login('qkatawazi');
@@ -142,4 +149,122 @@ describe('Case Data Store', () => {
             await loginPage.login("qkatawazi");
         }
     }, 210 * 1000);
-});
+
+    //ptidke
+    it('[DRDMV-13123]:[Dynamic Data] [UI] - Dynamic Fields display on Case Edit view UI', async () => {
+        try {
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            let caseTemplateName = randomStr + 'caseTemplateDRDMV-13123';
+            let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13123';
+            let casetemplateData = {
+                "templateName": `${caseTemplateName}`,
+                "templateSummary": `${caseTemaplateSummary}`,
+                "templateStatus": "Active",
+            }
+            await apiHelper.apiLogin('fritz');
+            let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
+            await navigationPage.gotCreateCase();
+            await createCasePo.selectRequester('qkatawazi');
+            await createCasePo.setSummary('new cases');
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
+            await createCasePo.clickSaveCaseButton();
+            await createCasePo.clickGoToCaseButton();
+            await utilCommon.waitUntilSpinnerToHide();
+            expect(await viewCasePo.isDynamicFieldDisplayed('temp')).toBeTruthy('dynamic fields not present');
+            expect(await viewCasePo.isDynamicFieldDisplayed('temp1')).toBeTruthy('dynamic fields not present');
+            expect(await viewCasePo.isDynamicFieldDisplayed('temp2')).toBeTruthy('dynamic fields not present');
+            expect(await viewCasePo.isDynamicFieldDisplayed('temp3')).toBeTruthy('dynamic fields not present');
+            expect(await viewCasePo.isDynamicFieldDisplayed('temp4')).toBeTruthy('dynamic fields not present');
+            expect(await viewCasePo.isDynamicFieldDisplayed('temp5')).toBeTruthy('dynamic fields not present');
+            expect(await viewCasePo.isDynamicFieldDisplayed('attachment1')).toBeTruthy('dynamic fields not present');
+            expect(await viewCasePo.isDynamicFieldDisplayed('attachment2')).toBeTruthy('dynamic fields not present');
+            expect(await viewCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('dynamic fields not present');
+            expect(await viewCasePo.isDynamicFieldDisplayed('dynamicList')).toBeTruthy('dynamic fields not present');
+            await viewCasePo.clickEditCaseButton();
+            expect(await editCasePo.isDynamicFieldDisplayed('temp')).toBeTruthy('dynamic fields not present');
+            expect(await editCasePo.isDynamicFieldDisplayed('temp1')).toBeTruthy('dynamic fields not present');
+            expect(await editCasePo.isDynamicFieldDisplayed('temp2')).toBeTruthy('dynamic fields not present');
+            expect(await editCasePo.isDynamicFieldDisplayed('temp3')).toBeTruthy('dynamic fields not present');
+            expect(await editCasePo.isDynamicFieldDisplayed('temp4')).toBeTruthy('dynamic fields not present');
+            expect(await editCasePo.isDynamicFieldDisplayed('temp5')).toBeTruthy('dynamic fields not present');
+            expect(await editCasePo.isDynamicFieldDisplayed('attachment1')).toBeTruthy('dynamic fields not present');
+            expect(await editCasePo.isDynamicFieldDisplayed('attachment2')).toBeTruthy('dynamic fields not present');
+            expect(await editCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('dynamic fields not present');
+            expect(await editCasePo.isDynamicFieldDisplayed('dynamicList')).toBeTruthy('dynamic fields not present');
+            await editCasePo.clickOnCancelCaseButton();
+            await navigationPage.gotoCaseConsole();
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        }
+    }, 160 * 1000);
+
+    //ptidke
+    it('[DRDMV-13126]:[Dynamic Data] - Create Case from Quick Case with Template having dynamic fields and also have field with source as Requester', async () => {
+        try {
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            let caseTemplateName = randomStr + 'caseTemplateDRDMV-13126';
+            let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13126';
+            let casetemplateData = {
+                "templateName": `${caseTemplateName}`,
+                "templateSummary": `${caseTemaplateSummary}`,
+                "templateStatus": "Active",
+            }
+            await apiHelper.apiLogin('fritz');
+            let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_REQUESTER_DYNAMIC_FIELDS');
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('qkatawazi');
+            await quickCasePo.selectCaseTemplate(caseTemplateName);
+            await quickCasePo.createCaseButton();
+            expect(await requesterResponseBladePo.getBladeHeading()).toContain("Requester's Response");
+            expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp')).toBeTruthy('field not present');
+            expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp1')).toBeTruthy('field not present');
+            expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp2')).toBeTruthy('field not present');
+            expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp3')).toBeTruthy('field not present');
+            expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp4')).toBeTruthy('field not present');
+            expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp5')).toBeTruthy('field not present');
+            expect(await requesterResponseBladePo.isDynamicFieldDisplayed('dynamicList')).toBeTruthy('field not present');
+            expect(await requesterResponseBladePo.isDynamicFieldDisplayed('attachment1')).toBeFalsy('field is present');
+            expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp6')).toBeTruthy('field not present');
+            expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp7')).toBeTruthy('field not present');
+            expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp8')).toBeTruthy('field not present');
+            expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp9')).toBeTruthy('field not present');
+            expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp10')).toBeTruthy('field not present');
+            expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp11')).toBeTruthy('field not present');
+            expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp12')).toBeTruthy('field not present');
+            await requesterResponseBladePo.clickOkButton();
+            await quickCasePo.gotoCaseButton();
+            //verify fields shoule be empty values on case view
+            expect(await viewCasePo.getValueOfDynamicFields('temp')).toBe('');
+            expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('');
+            expect(await viewCasePo.getValueOfDynamicFields('temp2')).toBe('');
+            expect(await viewCasePo.getValueOfDynamicFields('temp4')).toBe('');
+            expect(await viewCasePo.getValueOfDynamicFields('temp3')).toBe('');
+            expect(await viewCasePo.getValueOfDynamicFields('temp5')).toBe('');
+            expect(await viewCasePo.getValueOfDynamicFields('dynamicList')).toBe('');
+            expect(await viewCasePo.getValueOfDynamicFields('attachment1')).toBe('');
+            expect(await viewCasePo.getValueOfDynamicFields('temp6')).toBe('');
+            expect(await viewCasePo.getValueOfDynamicFields('temp7')).toBe('');
+            expect(await viewCasePo.getValueOfDynamicFields('temp8')).toBe('');
+            expect(await viewCasePo.getValueOfDynamicFields('temp9')).toBe('');
+            expect(await viewCasePo.getValueOfDynamicFields('temp10')).toBe('');
+            expect(await viewCasePo.getValueOfDynamicFields('temp11')).toBe('');
+            expect(await viewCasePo.getValueOfDynamicFields('temp12')).toBe('');
+        } catch (e) { throw e }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        }
+    },180*1000);
+})

@@ -85,6 +85,7 @@ class CaseEditPage {
         dynamicBooleanValue:'button[aria-label="True"]',
         dynamicFieldDateTime:'input[ng-model="datetime"]',
         dynamicFieldTime:'.dynamic-time-field input[ng-model="hours"]',
+        dynamicFieldsName:'[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] .label-wrapper'
     }
 
     async removeAttachment(): Promise<void> {
@@ -496,8 +497,15 @@ class CaseEditPage {
         return await $(this.selectors.changeCaseTemplate).isDisplayed();
     }
 
-    async isDynamicFieldDisplayed(value: string): Promise<boolean> {
-        return await $(`span[title=${value}]`).isDisplayed();
+    async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
+        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
+        for (let i = 0; i < dynamicFields; i++) {
+            let field = await $$(this.selectors.dynamicFieldsName).get(i).getText();
+            if (fieldName == field) {
+                return true;
+            }
+        }
+        return false;
     }
 
     async addAttachment(attachmentField: string, fileToUpload: string): Promise<void> {
