@@ -130,7 +130,7 @@ describe("Case Preview", () => {
         await quickCasePo.selectRequesterName('qkatawazi');
         await quickCasePo.setCaseSummary(caseSummary);
         await quickCasePo.saveCase();
-        await expect(await utilCommon.isPopupMsgsMatches(['Saved successfully'])).toBeTruthy('Case save message not matched');
+        await expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Case save message not matched');
         await casePreviewPo.clickOncreateNewCaseButton();
         await expect(await quickCasePo.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
     });
