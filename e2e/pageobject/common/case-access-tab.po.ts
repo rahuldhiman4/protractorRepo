@@ -14,15 +14,8 @@ class CaseAccessTab {
         searchSupportGroup: '[placeholder="Search for Support Groups"]',
         searchOrganizationName: '[placeholder="Search Organizations"]',
         agentAssignWriteAccess: '.ac-assign-person-write-label',
-        removeAgent: '.ac-agent-list .d-icon-cross',
-        removeAgentAlertMsgYesButton: '.rx-case-access-remove[aria-hidden="false"] .ac-remove-person-access-yes',
     }
-
-    async removeAgentAccess(no: number): Promise<void> {
-        await $$(this.selectors.removeAgent).get(no).click();
-        await $(this.selectors.removeAgentAlertMsgYesButton).click();
-    }
-
+    
     async clickOnSupportGroupAccessORAgentAccessButton(agentName: string): Promise<void> {
         await $(this.selectors.agentAccess).click();
         await element(by.cssContainingText(this.selectors.agentAccess, agentName)).click();
