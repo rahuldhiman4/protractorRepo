@@ -701,4 +701,175 @@ describe('Case Status Change', () => {
             await loginPage.login('qkatawazi');
         }
     }, 380 * 1000);
+
+     //apdeshmu
+     it('[DRDMV-1200]: [Case Status] Case status change from Pending', async () => {
+        try {
+            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let summary1: string = randomStr + "Summary 1";
+            let summary2: string = randomStr + "Summary 2";
+            let summary3 = randomStr + "Summary 3";
+            let summary4 = randomStr + "Summary 4";
+            let summary5 = randomStr + "Summary 5";
+            let caseData1 =
+            {
+                "Requester": "qtao",
+                "Summary": summary1,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "Pending",
+            }
+            let caseData2 =
+            {
+                "Requester": "qtao",
+                "Summary": summary2,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "Pending",
+            }
+            let caseData3 =
+            {
+                "Requester": "qtao",
+                "Summary": summary3,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "Pending",
+            }
+            let caseData4 =
+            {
+                "Requester": "qtao",
+                "Summary": summary4,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "Pending",
+            }
+            let caseData5 =
+            {
+                "Requester": "qtao",
+                "Summary": summary5,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "Pending",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            let newCase1 = await apiHelper.createCase(caseData1);
+            let caseId1: string = newCase1.displayId;
+            let newCase2 = await apiHelper.createCase(caseData2);
+            let caseId2: string = newCase2.displayId;
+            let newCase3 = await apiHelper.createCase(caseData3);
+            let caseId3: string = newCase3.displayId;
+            let newCase4 = await apiHelper.createCase(caseData4);
+            let caseId4: string = newCase4.displayId;
+            let newCase5 = await apiHelper.createCase(caseData5);
+            let caseId5: string = newCase5.displayId;
+  
+            let statusOptions: string[] = ["Assigned","In Progress", "Resolved","Canceled","Closed"];
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId1);
+            await viewCasePage.clickOnStatus();
+            expect(await viewCasePage.allStatusOptionsPresent(statusOptions)).toBeTruthy("Status Options is not present");
+            await viewCasePage.clickOnCancelButtonOfUpdateStatus();
+            await viewCasePage.changeCaseStatus('Resolved');
+            await updateStatusBlade.isStatusReasonRequiredTextPresent();
+            await viewCasePage.setStatusReason('Auto Resolved');
+            await viewCasePage.clickSaveStatus();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
+
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId2);
+            await viewCasePage.clickEditCaseButton();
+            await createCasePage.clickAssignToMeButton();
+            await editCasePage.clickSaveCase();
+            await viewCasePage.changeCaseStatus('In Progress');
+            await viewCasePage.clickSaveStatus();
+            expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
+
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId3);
+            await viewCasePage.changeCaseStatus('Assigned');
+            await viewCasePage.clickSaveStatus();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
+
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId4);
+            await viewCasePage.changeCaseStatus('Closed');
+            await viewCasePage.clickSaveStatus();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
+
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId5);
+            await viewCasePage.changeCaseStatus('Canceled');
+            await updateStatusBlade.isStatusReasonRequiredTextPresent();
+            await viewCasePage.setStatusReason('Customer Canceled');
+            await viewCasePage.clickSaveStatus();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
+       
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    }, 420 * 1000);
+
+    //apdeshmu
+    it('[DRDMV-4680]: [Status Blade] Case Status Blade view', async () => {
+        try {
+            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let summary1: string = randomStr + "Summary 1";
+            let summary2: string = randomStr + "Summary 2";
+            let caseData1 =
+            {
+                "Requester": "qtao",
+                "Summary": summary1,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "Pending",
+            }
+            let caseData2 =
+            {
+                "Requester": "qtao",
+                "Summary": summary2,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi",
+                "Status": "New",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            let newCase1 = await apiHelper.createCase(caseData1);
+            let caseId1: string = newCase1.displayId;
+            let newCase2 = await apiHelper.createCase(caseData2);
+            let caseId2: string = newCase2.displayId;
+            
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId1);
+            await viewCasePage.clickOnStatus();
+            await updateStatusBlade.isChangeStatusFieldPresent();
+            await updateStatusBlade.isCancelUpdateStatusButtonPresent();
+            await updateStatusBlade.isStatusReasonFieldPresent();
+            expect(await updateStatusBlade.isSaveUpdateStatusButtonPresent()).toBeFalsy("Save Button is enabled");
+            await viewCasePage.changeCaseStatus('Resolved');
+            await updateStatusBlade.isStatusReasonRequiredTextPresent();
+            await viewCasePage.setStatusReason('Auto Resolved');
+            expect(await updateStatusBlade.isSaveUpdateStatusButtonPresent()).toBeTruthy("Save Button is enabled");
+            await viewCasePage.clickSaveStatus();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
+
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(caseId2);
+            await viewCasePage.clickOnStatus();
+            await viewCasePage.changeCaseStatus('In Progress');
+            await viewCasePage.clickOnCancelButtonOfUpdateStatus();
+            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');          
+            await utilCommon.clickOnWarningOk();
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    },280 * 1000);
 });

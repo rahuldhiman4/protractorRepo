@@ -21,6 +21,9 @@ class ViewCaseTemplate {
         departmentValue: '[rx-view-component-id="d5d0c773-b825-4be7-b357-4ed4eb73ee8d"] .d-textfield__rx-value',
         manageDynamicField:'[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
         dynamicFieldsName:'[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span',
+        assigneeNameValue: '[rx-view-component-id="b4f3f0e5-70ca-44e8-8e75-75d573167901"] .person-main a',
+        assigneeBusinessUnitValue: '[rx-view-component-id="8019eb00-be2e-462f-8fd4-49d116fc167e"] .d-textfield__rx-value',
+        assigneeDepartmentValue: '[rx-view-component-id="1a3d3085-da94-4981-986c-18be12795e3d"] .d-textfield__rx-value',     
     }
 
     async getIdentityValdationValue(): Promise<string> {
@@ -113,6 +116,18 @@ class ViewCaseTemplate {
         return false;
      }
     
+     async getAssigneeText(): Promise<string> {
+        return await $(this.selectors.assigneeNameValue).getText();
+    }
+
+    async getAssigneeBusinessUnitValue(): Promise<string> {
+        return await $(this.selectors.assigneeBusinessUnitValue).getText();
+    }
+
+    async getAssigneeDepartmentValue(): Promise<string> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerCompanyValue)));
+        return await $(this.selectors.assigneeDepartmentValue).getText();
+    }
 }
 
 export default new ViewCaseTemplate();
