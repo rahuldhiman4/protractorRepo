@@ -18,7 +18,8 @@ class EditTask {
         categoryTier3: 'c8858fb5-5b21-4e0d-a947-c0130a72b51a',
         categoryTier4: 'ff1636f8-4efe-4447-9c04-f32799904f2b',
         dynamicDate:'[class="input-group"] input[ng-model="date"]',
-        dynamicDateTime:'input[ng-model="datetime"]'
+        dynamicDateTime:'input[ng-model="datetime"]',
+        taskSummary:'[rx-view-component-id="1261e01e-00fb-4e2c-b2ac-72e837f9fcea"] input',
     }
 
     async setDateValueInDynamicField(value:string):Promise<void>{
@@ -111,6 +112,11 @@ class EditTask {
 
     async setDynamicFieldValue(fieldName:string,fieldValue:string):Promise<void>{
         await $(`input[name=${fieldName}]`).sendKeys(fieldValue);
+    }
+
+    async updateTaskSummary(summary: string): Promise<void> {
+        await $(this.selectors.taskSummary).clear();
+        await $(this.selectors.taskSummary).sendKeys(summary);
     }
 }
 

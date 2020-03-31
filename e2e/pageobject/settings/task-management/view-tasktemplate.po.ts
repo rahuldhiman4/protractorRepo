@@ -42,7 +42,10 @@ class ViewTaskTemplate {
         taskDescriptonGuid: 'cce67ce7-e6a5-4ed6-aa50-c57ea75d2854',
         supportGroupGuid: '244607b3-1fd7-490c-975b-7640a6b2c615',
         assigneeGuid: 'bb18eb5c-ba9c-47e1-8593-cd79aefac190',
-        dynamicField: '[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] .d-textfield__item'
+        dynamicField: '[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] .d-textfield__item',
+        assigneeNameValue: '[rx-view-component-id="bb18eb5c-ba9c-47e1-8593-cd79aefac190"] .person-main a',
+        assigneeBusinessUnitValue: '[rx-view-component-id="e4548927-a25e-439e-8e9c-d495c7c87378"] p',
+        assigneeDepartmentValue: '[rx-view-component-id="ea7695f8-ebd3-41e6-b85f-ebd800e9c913"] p',     
     }
 
 
@@ -255,6 +258,21 @@ class ViewTaskTemplate {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
         return await $(this.selectors.editLink).isDisplayed();
     }
+
+    async getAssigneeText(): Promise<string> {
+        return await $(this.selectors.assigneeNameValue).getText();
+    }
+
+    async getAssigneeBusinessUnitValue(): Promise<string> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerCompanyValue)));
+        return await $(this.selectors.assigneeBusinessUnitValue).getText();
+    }
+
+    async getAssigneeDepartmentValue(): Promise<string> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerCompanyValue)));
+        return await $(this.selectors.assigneeDepartmentValue).getText();
+    }
+
 }
 
 export default new ViewTaskTemplate();
