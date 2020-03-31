@@ -64,62 +64,48 @@ class ActivityTabPage {
         showLessLinkForAttachment: '.rx-attachment-show-text[aria-label="Show less attachments"]',
     }
 
-    async isaddNoteTextDisplayedInFirstActivity(bodyText: string): Promise<boolean> {
-        return await $$('.content-wrapper').get(0).element(by.cssContainingText('.activity-general-note', bodyText)).isDisplayed().then(async (result) => {
+    async isAddNoteTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).element(by.cssContainingText('.activity-general-note', bodyText)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });
     }
 
-    async isShowMoreLinkDisplayedForNoteTextInFirstActivity(): Promise<boolean> {
-        return await $$('.content-wrapper').get(0).$$(this.selectors.showMoreLink).first().isDisplayed().then(async (result) => {
-            if (result) return true;
-            else return false;
+    async clickShowMoreLinkInActivity(activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLink).isDisplayed().then(async (link) => {
+            if (link) {
+                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLink).click();
+                return true;
+            } else return false;
         });
     }
 
-    async isShowMoreLinkForAttachmentDisplayedInFirstActivity(): Promise<boolean> {
-        try {
-            let showMoreLink = await $$('.content-wrapper').get(0).$(this.selectors.showMoreLinkForAttachment).isDisplayed()
-            if (showMoreLink == true) {
+    async clickShowLessLinkInActivity(activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLink).isDisplayed().then(async (link) => {
+            if (link) {
+                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLink).click();
                 return true;
-            } else {
-                return false;
-            }
-        } catch (error) {
-            return false;
-        }
+            } else return false;
+        });
     }
 
-    async isShowLessLinkDisplayedForNoteTextInFirstActivity(): Promise<boolean> {
-        try {
-            let showMoreLink = await $$('.content-wrapper').get(0).$$(this.selectors.showLessLink).first().isDisplayed();
-            if (showMoreLink == true) {
+    async clickShowMoreLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).isPresent().then(async (link) => {
+            if (link) {
+                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).click();
                 return true;
-            } else {
-                return false;
-            }
-        } catch (error) {
-            return false;
-        }
+            } else return false;
+        });
     }
 
-    async clickOnShowMoreLinkForNoteTextInFirstActivity(): Promise<void> {
-        return await $$('.content-wrapper').get(0).$$(this.selectors.showMoreLink).first().click();
+    async clickShowLessLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLinkForAttachment).isPresent().then(async (link) => {
+            if (link) {
+                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLinkForAttachment).click();
+                return true;
+            } else return false;
+        });
     }
-
-    async clickOnShowLessLinkForNoteTextInFirstActivity(): Promise<void> {
-        return await $$('.content-wrapper').get(0).$$(this.selectors.showLessLink).first().click();
-    }
-
-    async clickOnShowMoreLinkForAttachmentInFirstActivity(): Promise<void> {
-        return await $$('.content-wrapper').get(0).$(this.selectors.showMoreLinkForAttachment).click();
-    }
-
-    async clickOnShowLessLinkForAttachmentInFirstActivity(): Promise<void> {
-        return await $$('.content-wrapper').get(0).$(this.selectors.showLessLinkForAttachment).click();
-    }
-
 
     async clickOnShowMore(): Promise<void> {
         await $$(this.selectors.showMoreLink).first().click();
