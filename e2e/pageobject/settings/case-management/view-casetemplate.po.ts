@@ -19,11 +19,17 @@ class ViewCaseTemplate {
         labelvalue: '[rx-view-component-id="06d4ad28-b48e-493a-b6b3-925fea737576"] p',
         buisnessUnitvalue: '[rx-view-component-id="40817c2b-387f-4859-82e9-0a3251cdc7dc"] .d-textfield__rx-value',
         departmentValue: '[rx-view-component-id="d5d0c773-b825-4be7-b357-4ed4eb73ee8d"] .d-textfield__rx-value',
-        manageDynamicField:'[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
-        dynamicFieldsName:'[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span',
+        manageDynamicField: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
+        dynamicFieldsName: '[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span',
+        editTemplateMetaData: '[rx-view-component-id="c9f48c1b-75e2-411c-929c-76bdce069a3d"] .edit-link',
         assigneeNameValue: '[rx-view-component-id="b4f3f0e5-70ca-44e8-8e75-75d573167901"] .person-main a',
         assigneeBusinessUnitValue: '[rx-view-component-id="8019eb00-be2e-462f-8fd4-49d116fc167e"] .d-textfield__rx-value',
-        assigneeDepartmentValue: '[rx-view-component-id="1a3d3085-da94-4981-986c-18be12795e3d"] .d-textfield__rx-value',     
+        assigneeDepartmentValue: '[rx-view-component-id="1a3d3085-da94-4981-986c-18be12795e3d"] .d-textfield__rx-value',
+
+    }
+
+    async clickEditTemplateMetaData(): Promise<void> {
+        await $(this.selectors.editTemplateMetaData).click();
     }
 
     async getIdentityValdationValue(): Promise<string> {
@@ -101,22 +107,25 @@ class ViewCaseTemplate {
         return await $(this.selectors.categoryTier4).getText();
     }
 
-    async clickOnMangeDynamicFieldLink():Promise<void>{
+    async clickOnMangeDynamicFieldLink(): Promise<void> {
         await $(this.selectors.manageDynamicField).click();
     }
 
-    async isDynamicFieldDisplayed(fieldName:string):Promise<boolean>{
-        let dynamicFields:number= await $$(this.selectors.dynamicFieldsName).count();
-        for(let i=0; i<dynamicFields;i++){
-           let field= await $$(this.selectors.dynamicFieldsName).get(i).getText();
-           if(fieldName==field){
-             return true;
-           }
+    async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
+        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
+        for (let i = 0; i < dynamicFields; i++) {
+            let field = await $$(this.selectors.dynamicFieldsName).get(i).getText();
+            if (fieldName == field) {
+                return true;
+            }
         }
         return false;
-     }
-    
-     async getAssigneeText(): Promise<string> {
+    }
+
+    async isGroupDisplayed(groupName: string): Promise<boolean> {
+        return await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] .group-container__name div[title=${groupName}]`).isDisplayed();
+    }
+    async getAssigneeText(): Promise<string> {
         return await $(this.selectors.assigneeNameValue).getText();
     }
 

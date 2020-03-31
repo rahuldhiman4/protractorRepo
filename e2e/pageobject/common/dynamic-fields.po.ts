@@ -33,6 +33,15 @@ class DynamicField {
         await $(this.selectors.saveButton).click();
 //        await utilCommon.waitUntilPopUpDisappear();
     }
+
+    async isFieldDisplayedInFieldSection(fieldName:string):Promise<boolean>{
+        return await $(`.column-pill span[title=${fieldName}]`).isDisplayed();
+    }
+
+    async removeField(fieldName:string):Promise<void>{
+        await $(`[aria-label=${fieldName}] .remove-button-text`).click();
+    }
+
    }
 
 export default new DynamicField();
