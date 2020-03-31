@@ -422,15 +422,6 @@ class ActivityTabPage {
         });
     }
 
-    async getBodyTextRowsCount(bodyText: string): Promise<number> {
-        let getTextOfBody: string = await element(by.cssContainingText('[.activity-general-note]', bodyText)).getText();
-        let splitbodyText = getTextOfBody.split('\n');
-        let boodyTextRows = splitbodyText.length;
-        return boodyTextRows;
-    }
-
-
-
     async getCaseViewCount(TitleText: string): Promise<number> {
         return await element.all(by.cssContainingText(this.selectors.logTitle, TitleText)).count();
     }

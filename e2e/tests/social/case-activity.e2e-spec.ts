@@ -1328,4 +1328,6 @@ describe('Case Activity', () => {
         await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
 
     }, 160 * 1000);
+
+    
 })
