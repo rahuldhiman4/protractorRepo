@@ -131,20 +131,9 @@ export class Util {
         return await $(this.selectors.errorMsg).isDisplayed();
     }
 
-    async isPopUpMessagePresent(value: string): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
-        // await browser.wait(this.EC.or(async () => {
-        //     let count = await $$(this.selectors.popUpMsgLocator).count();
-        //     return count >= 1;
-        // }), 2000);
-        // let allMessages = await $$(this.selectors.popUpMsgLocator);
-        // let allMessageList = [];        
-        // for(let i: number =0; i < allMessages.length; i++){
-        //     allMessageList.push(await allMessages[i].getText());
-        // }
-        // console.log(allMessageList);
-        let option: boolean = await element(by.cssContainingText(this.selectors.popUpMsgLocator, value)).isDisplayed();
-        return option;
+    async isPopUpMessagePresent(expectedMsg: string): Promise<boolean> {
+        let arr: string[] = await this.getAllPopupMsg();
+        return arr.includes(expectedMsg);
     }
 
     async selectDropDownWithName(name: string, value: string): Promise<void> {

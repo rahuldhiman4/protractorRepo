@@ -202,11 +202,11 @@ class ActivityTabPage {
         await $(this.selectors.refreshButton).click();
     }
 
-    async getemailContent(): Promise<string> {
+    async getEmailContent(): Promise<string> {
         //        await browser.sleep(2000);
         //        await utilCommon.waitUntilSpinnerToHide();
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailContent)), 5000);
-        let emailBody = await element(by.xpath('(//div[@class="log-item__content"]/email)[1]')).getText();
+        let emailBody = await $$('email .content-wrapper').first().getText();
         return emailBody;
     }
 

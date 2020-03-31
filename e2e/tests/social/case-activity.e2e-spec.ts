@@ -18,8 +18,6 @@ import { default as activityTabPage, default as activityTabPo } from '../../page
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
-
 describe('Case Activity', () => {
 
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1337,4 +1335,5 @@ describe('Case Activity', () => {
         await activityTabPage.clickAndDownloadAttachmentFile('bwfJson5.json')
         await expect(await utilCommon.isFileDownloaded('bwfJson5.json')).toBeTruthy('FailureMsg41: bwfJson5.json File is not downloaded.');
     }, 160 * 1000);
+
 })
