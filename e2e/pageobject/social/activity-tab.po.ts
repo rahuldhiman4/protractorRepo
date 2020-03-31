@@ -59,7 +59,67 @@ class ActivityTabPage {
         emailBodyImage: '.email-body img',
         publicCheckbox: '.activity-feed-note-external .d-checkbox__item',
         logTitle: '.title[ux-bind-html="title"]',
+        showLessLink: '.general-notes .less',
+        showMoreLinkForAttachment: '.rx-attachment-show-text[aria-label="Show more attachments"]',
+        showLessLinkForAttachment: '.rx-attachment-show-text[aria-label="Show less attachments"]',
     }
+
+    async isaddNoteTextDisplayedInFirstActivity(bodyText: string): Promise<boolean> {
+        return await $$('.content-wrapper').get(0).element(by.cssContainingText('.activity-general-note', bodyText)).isDisplayed().then(async (result) => {
+            if (result) return true;
+            else return false;
+        });
+    }
+
+    async isShowMoreLinkDisplayedForNoteTextInFirstActivity(): Promise<boolean> {
+        return await $$('.content-wrapper').get(0).$$(this.selectors.showMoreLink).first().isDisplayed().then(async (result) => {
+            if (result) return true;
+            else return false;
+        });
+    }
+
+    async isShowMoreLinkForAttachmentDisplayedInFirstActivity(): Promise<boolean> {
+        try {
+            let showMoreLink = await $$('.content-wrapper').get(0).$(this.selectors.showMoreLinkForAttachment).isDisplayed()
+            if (showMoreLink == true) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (error) {
+            return false;
+        }
+    }
+
+    async isShowLessLinkDisplayedForNoteTextInFirstActivity(): Promise<boolean> {
+        try {
+            let showMoreLink = await $$('.content-wrapper').get(0).$$(this.selectors.showLessLink).first().isDisplayed();
+            if (showMoreLink == true) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (error) {
+            return false;
+        }
+    }
+
+    async clickOnShowMoreLinkForNoteTextInFirstActivity(): Promise<void> {
+        return await $$('.content-wrapper').get(0).$$(this.selectors.showMoreLink).first().click();
+    }
+
+    async clickOnShowLessLinkForNoteTextInFirstActivity(): Promise<void> {
+        return await $$('.content-wrapper').get(0).$$(this.selectors.showLessLink).first().click();
+    }
+
+    async clickOnShowMoreLinkForAttachmentInFirstActivity(): Promise<void> {
+        return await $$('.content-wrapper').get(0).$(this.selectors.showMoreLinkForAttachment).click();
+    }
+
+    async clickOnShowLessLinkForAttachmentInFirstActivity(): Promise<void> {
+        return await $$('.content-wrapper').get(0).$(this.selectors.showLessLinkForAttachment).click();
+    }
+
 
     async clickOnShowMore(): Promise<void> {
         await $$(this.selectors.showMoreLink).first().click();
@@ -370,11 +430,20 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText('[.activity-general-note]', bodyText)).isDisplayed().then(async (result) => {
+        return await element(by.cssContainingText('.activity-general-note', bodyText)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });
     }
+
+    async getBodyTextRowsCount(bodyText: string): Promise<number> {
+        let getTextOfBody: string = await element(by.cssContainingText('[.activity-general-note]', bodyText)).getText();
+        let splitbodyText = getTextOfBody.split('\n');
+        let boodyTextRows = splitbodyText.length;
+        return boodyTextRows;
+    }
+
+
 
     async getCaseViewCount(TitleText: string): Promise<number> {
         return await element.all(by.cssContainingText(this.selectors.logTitle, TitleText)).count();
