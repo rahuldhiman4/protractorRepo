@@ -18,6 +18,8 @@ import { default as activityTabPage, default as activityTabPo } from '../../page
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import utilCommon from '../../utils/util.common';
+
+
 describe('Case Activity', () => {
 
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1142,7 +1144,6 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isAttachedFileNameDisplayed('articleStatus.png')).toBeTruthy(`FailureMsg9: ${filePath1} is missing`);
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy(`FailureMsg10: ${filePath2} is missing`);
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg1.jpg')).toBeTruthy(`FailureMsg11: ${filePath3} is missing`);
-        // await expect(await activityTabPage.isShowMoreLinkForAttachmentDisplayedInFirstActivity()).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
         await expect(await activityTabPage.isaddNoteTextDisplayedInFirstActivity(addNoteBodyText1)).toBeTruthy('FailureMsg13: BodyText is missing');
         await expect(await activityTabPage.isShowMoreLinkDisplayedForNoteTextInFirstActivity()).toBeFalsy('FailureMsg14: Show more link is displayed');
         // Verify logs with more than 5 lines  with 3 attachment
@@ -1209,7 +1210,7 @@ describe('Case Activity', () => {
     }, 150 * 1000);
 
     //kgaikwad
-    it('[DRDMV-16765]:Show More/Less option in CaValidate Show More/Less option in KA Activity Tab', async () => {
+    it('[DRDMV-16765]:Validate Show More/Less option in KA Activity Tab', async () => {
         let randomValues1 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues2 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues3 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1218,7 +1219,7 @@ describe('Case Activity', () => {
         let randomValues6 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let addNoteBodyText1 = `${randomValues1} \n ${randomValues2} \n ${randomValues3} \n ${randomValues4} \n ${randomValues5}`;
         let addNoteBodyText2 = `${randomValues1} \n ${randomValues2} \n ${randomValues3} \n ${randomValues4} \n ${randomValues5} \n ${randomValues6}`;
-       
+
         let filePath1 = '../../data/ui/attachment/articleStatus.png';
         let filePath2 = '../../data/ui/attachment/bwfJpg.jpg';
         let filePath3 = '../../data/ui/attachment/bwfJpg1.jpg';
@@ -1230,7 +1231,7 @@ describe('Case Activity', () => {
         let filePath9 = '../../data/ui/attachment/bwfJson3.json';
         let filePath10 = '../../data/ui/attachment/bwfJson4.json';
         let filePath11 = '../../data/ui/attachment/bwfJson5.json';
-       
+
         // Create KA
         await navigationPage.gotoCreateKnowledge();
         await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge Article title is missing';
@@ -1271,7 +1272,6 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isAttachedFileNameDisplayed('articleStatus.png')).toBeTruthy(`FailureMsg9: ${filePath1} is missing`);
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy(`FailureMsg10: ${filePath2} is missing`);
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg1.jpg')).toBeTruthy(`FailureMsg11: ${filePath3} is missing`);
-        // await expect(await activityTabPage.isShowMoreLinkForAttachmentDisplayedInFirstActivity()).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
         await expect(await activityTabPage.isaddNoteTextDisplayedInFirstActivity(addNoteBodyText1)).toBeTruthy('FailureMsg13: BodyText is missing');
         await expect(await activityTabPage.isShowMoreLinkDisplayedForNoteTextInFirstActivity()).toBeFalsy('FailureMsg14: Show more link is displayed');
         // Verify logs with more than 5 lines  with 3 attachment
@@ -1335,5 +1335,4 @@ describe('Case Activity', () => {
         await activityTabPage.clickAndDownloadAttachmentFile('bwfJson5.json')
         await expect(await utilCommon.isFileDownloaded('bwfJson5.json')).toBeTruthy('FailureMsg41: bwfJson5.json File is not downloaded.');
     }, 160 * 1000);
-
 })
