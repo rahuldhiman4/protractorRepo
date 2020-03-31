@@ -19,6 +19,13 @@ import viewCasePo from '../../pageobject/case/view-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import requesterResponseBladePo from '../../pageobject/case/requester-response-blade.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
+import { isArray } from 'util';
+import utilGrid from '../../utils/util.grid';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
+import dynamicFieldsPo from '../../pageobject/common/dynamic-fields.po';
+import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
+import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template-cases.po';
+import casePreviewPo from 'e2e/pageobject/case/case-preview.po';
 
 describe('Case Data Store', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -266,5 +273,181 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    },180*1000);
+    }, 180 * 1000);
+
+    it('[DRDMV-13136]:[-ve] [Dynamic Data] - Case with large no. of Dynamic fields', async () => {
+        try {
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            let caseTemplateName = randomStr + 'caseTemplateDRDMV-13136';
+            let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13136';
+            let casetemplateData = {
+                "templateName": `${caseTemplateName}`,
+                "templateSummary": `${caseTemaplateSummary}`,
+                "templateStatus": "Active",
+            }
+            await apiHelper.apiLogin('fritz');
+            let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_EACH_15_FIELD');
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('qkatawazi');
+            await quickCasePo.selectCaseTemplate(caseTemplateName);
+            await quickCasePo.createCaseButton();
+            await quickCasePo.gotoCaseButton();
+            //verify fields shoule be empty values on case view
+            let arr: string[] = ['text1', 'text2', 'text3', 'text3', 'text4', 'text5', 'text6', 'text7', 'text8', 'text9', 'text10', 'text11', 'text12', 'text13', 'text14', 'attachment1', 'attachment2', 'attachment3', 'attachment4', 'attachment5', 'attachment6', 'attachment7', 'attachment8', 'attachment9', 'attachment10', 'boolean1', 'boolean2', 'boolean3', 'boolean4', 'boolean4', 'boolean5', 'boolean6', 'boolean7', 'boolean8', 'boolean9', 'boolean10', 'date1', 'date2', 'date3', 'date4', 'date5', 'date6', 'date7', 'date8', 'date9', 'date10', 'date11', 'date12', 'date13', 'date14', 'date15', 'datetime1', 'datetime2', 'datetime3', 'datetime4', 'datetime5', 'datetime6', 'datetime7', 'datetime8', 'datetime9', 'datetime10', 'datetime11', 'datetime12', 'datetime13', 'datetime14', 'datetime15', 'time1', 'time2', 'time3', 'time4', 'time5', 'time6', 'time7', 'time8', 'time9', 'time10', 'number1', 'number2', 'number3', 'number4', 'number5', 'number6', 'number7', 'number8', 'number9', 'number10', 'number11', 'number12', 'number13', 'number14', 'number15', 'attachment1', 'attachment2', 'attachment3', 'attachment4', 'attachment5', 'attachment6', 'attachment7', 'attachment8', 'attachment9', 'attachment10', 'attachment11', 'attachment12', 'attachment13', 'attachment14', 'attachment15', 'dynamicList', 'datetime1', 'datetime2', 'datetime3', 'datetime4', 'datetime5', 'datetime6', 'datetime7', 'datetime8', 'datetime9', 'datetime10', 'datetime11', 'datetime12', 'datetime13', 'datetime14', 'datetime15'];
+            for (let i = 0; i < arr.length; i++) {
+                expect(await viewCasePo.getValueOfDynamicFields(arr[i])).toBeTruthy('field not present');
+            }
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.setDynamicFieldValue('text1', 'newtemp1');
+            await editCasePo.setDynamicFieldValue('number1', '33');
+            await editCasePo.setDynamicFieldValue('text2', 'newtemp2');
+            await editCasePo.setDynamicFieldValue('number2', '3330');
+            await editCasePo.setDynamicFieldValue('text3', 'newtemp3');
+            await editCasePo.setDynamicFieldValue('number3', '3331');
+            await editCasePo.setDynamicFieldValue('text4', 'newtemp4');
+            await editCasePo.setDynamicFieldValue('number4', '3332');
+            await editCasePo.setDynamicFieldValue('text5', 'newtemp5');
+            await editCasePo.setDynamicFieldValue('number5', '3334');
+            await editCasePo.clickSaveCase();
+            //verify field fill data on case profile.
+            expect(await viewCasePo.getValueOfDynamicFields('text1')).toBe('newtemp1');
+            expect(await viewCasePo.getValueOfDynamicFields('text2')).toBe('newtemp2');
+            expect(await viewCasePo.getValueOfDynamicFields('text3')).toBe('newtemp3');
+            expect(await viewCasePo.getValueOfDynamicFields('text4')).toBe('newtemp4');
+            expect(await viewCasePo.getValueOfDynamicFields('text5')).toBe('newtemp5');
+            expect(await viewCasePo.getValueOfDynamicFields('number1')).toBe('33');
+            expect(await viewCasePo.getValueOfDynamicFields('number2')).toBe('3330');
+            expect(await viewCasePo.getValueOfDynamicFields('number3')).toBe('3331');
+            expect(await viewCasePo.getValueOfDynamicFields('number4')).toBe('3332');
+            expect(await viewCasePo.getValueOfDynamicFields('number5')).toBe('3334');
+            let arr1: string[] = ['text6', 'text7', 'text8', 'text9', 'text10', 'text11', 'text12', 'text13', 'text14', 'attachment1', 'attachment2', 'attachment3', 'attachment4', 'attachment5', 'attachment6', 'attachment7', 'attachment8', 'attachment9', 'attachment10', 'boolean1', 'boolean2', 'boolean3', 'boolean4', 'boolean4', 'boolean5', 'boolean6', 'boolean7', 'boolean8', 'boolean9', 'boolean10', 'date1', 'date2', 'date3', 'date4', 'date5', 'date6', 'date7', 'date8', 'date9', 'date10', 'date11', 'date12', 'date13', 'date14', 'date15', 'datetime1', 'datetime2', 'datetime3', 'datetime4', 'datetime5', 'datetime6', 'datetime7', 'datetime8', 'datetime9', 'datetime10', 'datetime11', 'datetime12', 'datetime13', 'datetime14', 'datetime15', 'time1', 'time2', 'time3', 'time4', 'time5', 'time6', 'time7', 'time8', 'time9', 'time10', 'number6', 'number7', 'number8', 'number9', 'number10', 'number11', 'number12', 'number13', 'number14', 'number15', 'attachment1', 'attachment2', 'attachment3', 'attachment4', 'attachment5', 'attachment6', 'attachment7', 'attachment8', 'attachment9', 'attachment10', 'attachment11', 'attachment12', 'attachment13', 'attachment14', 'attachment15', 'dynamicList', 'datetime1', 'datetime2', 'datetime3', 'datetime4', 'datetime5', 'datetime6', 'datetime7', 'datetime8', 'datetime9', 'datetime10', 'datetime11', 'datetime12', 'datetime13', 'datetime14', 'datetime15'];
+            for (let i = 0; i < arr1.length; i++) {
+                expect(await viewCasePo.getValueOfDynamicFields(arr1[i])).toBeTruthy('field not present');
+            }
+        } catch (e) { throw e }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        }
+    }, 220 * 1000);
+
+    //ptidke
+    it('[DRDMV-13115]:[Dynamic Data] - Update Dynamic fields in Existing Case Template by replacing old fields with new Fields', async () => {
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateName = 'caseTemplateName13115' + randomStr;
+        let casTemplateSummary = 'CaseSummarySummary13115' + randomStr;
+        let templateData = {
+            "templateName": `${caseTemplateName}`,
+            "templateSummary": `${casTemplateSummary}`,
+            "templateStatus": "Draft",
+            "resolveCaseonLastTaskCompletion": "1",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
+        await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_REMOVE_FIELDS');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+        await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+        //field in right section
+        expect(await dynamicFieldsPo.isFieldDisplayedInFieldSection('temp')).toBeTruthy();
+        expect(await dynamicFieldsPo.isFieldDisplayedInFieldSection('temp1')).toBeTruthy();
+        expect(await dynamicFieldsPo.isFieldDisplayedInFieldSection('temp2')).toBeTruthy();
+        //remove field
+        await dynamicFieldsPo.removeField('temp');
+        await dynamicFieldsPo.removeField('temp1');
+        await dynamicFieldsPo.removeField('temp2');
+        await dynamicFieldsPo.clickSaveButton();
+        //add new fields
+        await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+        await dynamicFieldsPo.clickOnDynamicField();
+        await dynamicFieldsPo.setFieldName('news12' + randomStr);
+        await dynamicFieldsPo.setDescriptionName('newDescri12' + randomStr);
+        await dynamicFieldsPo.clickOnDynamicField();
+        await dynamicFieldsPo.setFieldName('news13' + randomStr);
+        await dynamicFieldsPo.setDescriptionName('newDescri13' + randomStr);
+        await dynamicFieldsPo.clickOnDynamicField();
+        await dynamicFieldsPo.setFieldName('news14' + randomStr);
+        await dynamicFieldsPo.setDescriptionName('newDescri14' + randomStr);
+        await dynamicFieldsPo.clickSaveButton();
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri12' + randomStr)).toBeTruthy();
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri13' + randomStr)).toBeTruthy();
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri14' + randomStr)).toBeTruthy();
+    }, 180 * 1000);
+
+    //ptidke
+    it('[DRDMV-13118]:[Dynamic Data] - Case Template and Case UI with dynamic fields and groups having long title', async () => {
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateName = 'caseTemplateName13118' + randomStr;
+        let casTemplateSummary = 'CaseSummarySummary13118' + randomStr;
+        let groupName = 'GroupLocalCaseTemplateGroupLocalCaseTemplateLocalCaseTemplate';
+        let field1InGroup = 'LocalNonConfidentialDescLocalNonConfidentialDescLocalNonConfidentialDesc';
+        let field2InGroup = 'LocalConfidentialDescLocalConfidentialDescLocalNonConfidentialDesc';
+        let field1OutSideGroup = 'theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered';
+        let field2OutSideGroup = 'theSecondautomatedDynamicFieldsIsgettingMouseOveredMouseOvered';
+        let field3OutSideGroup = 'theThirdDynamicautomatedFieldsIsgettingMouseOveredMouseOvered';
+        let field4OutSideGroup = 'temp1theNewautomatedDynamicFieldsIsgettingMouseOveredMouseOvered';
+        let templateData = {
+            "templateName": `${caseTemplateName}`,
+            "templateSummary": `${casTemplateSummary}`,
+            "templateStatus": "Draft",
+            "resolveCaseonLastTaskCompletion": "1",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
+        await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_LONG_FIELDS');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+        expect(await viewCasetemplatePo.isGroupDisplayed(groupName)).toBeTruthy('Group Not found');
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field1InGroup)).toBeTruthy();
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field2InGroup)).toBeTruthy();
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field1OutSideGroup)).toBeTruthy();
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field2OutSideGroup)).toBeTruthy();
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field3OutSideGroup)).toBeTruthy();
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field4OutSideGroup)).toBeTruthy();
+        //active template 
+        await viewCasetemplatePo.clickEditTemplateMetaData();
+        await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
+        await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+        await navigationPage.gotoQuickCase();
+        await quickCasePo.selectRequesterName('qtao');
+        await quickCasePo.selectCaseTemplate(caseTemplateName);
+        await quickCasePo.createCaseButton();
+        await quickCasePo.gotoCaseButton();
+        //edit case
+        await viewCasePo.clickEditCaseButton();
+        await editCasePo.setDynamicFieldValue(field1InGroup, field2InGroup);
+        await editCasePo.setDynamicFieldValue(field2InGroup, '88888888899');
+        await editCasePo.clickOnTrueValueOfDynamicField();
+        await editCasePo.setDynamicFieldValue(field1OutSideGroup, field2InGroup);
+        await editCasePo.setDynamicFieldValue(field2OutSideGroup, '8888545888');
+        await editCasePo.clickSaveCase();
+        //field on case profile
+        expect(await viewCasePo.getValueOfDynamicFields(field4OutSideGroup)).toBeTruthy('field not present');
+        expect(await viewCasePo.getValueOfDynamicFields(field3OutSideGroup)).toBeTruthy('field not present');
+        expect(await viewCasePo.getValueOfDynamicFields(field2OutSideGroup)).toBeTruthy('field not present');
+        expect(await viewCasePo.getValueOfDynamicFields(field1OutSideGroup)).toBeTruthy('field not present');
+        expect(await viewCasePo.isGroupNameDisplayed(groupName)).toBeTruthy('group not present');
+        expect(await viewCasePo.getValueOfDynamicFields(field1InGroup)).toBeTruthy('field not present');
+        expect(await viewCasePo.getValueOfDynamicFields(field2InGroup)).toBeTruthy('field not present');
+        //entered field validation
+        expect(await viewCasePo.getValueOfDynamicFields(field1InGroup)).toBe(field2InGroup);
+        expect(await viewCasePo.getValueOfDynamicFields(field2InGroup)).toBe('88888888899');
+        expect(await viewCasePo.getValueOfDynamicFields(field4OutSideGroup)).toBe('Yes');
+        expect(await viewCasePo.getValueOfDynamicFields(field1OutSideGroup)).toBe(field2InGroup);
+        expect(await viewCasePo.getValueOfDynamicFields(field2OutSideGroup)).toBe('8888545888');
+    }, 150 * 1000);
 })

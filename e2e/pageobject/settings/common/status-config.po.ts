@@ -29,7 +29,7 @@ class StatusConfigPage {
         await $(this.selectors.mandatoryCheckBox).click();
     }
 
-    async setStatusReason(newStatus:string): Promise<void> {
+    async setStatusReason(newStatus: string): Promise<void> {
         await $(this.selectors.manageLink).click();
         await $(this.selectors.addStatusReason).click();
         await $(this.selectors.addStatusReason).click();
@@ -39,6 +39,11 @@ class StatusConfigPage {
         await $$(this.selectors.settingPanelButtons).first().click();
 
     }
+
+    async saveSetting(): Promise<void> {
+        await $$(this.selectors.settingPanelButtons).first().click();
+    }
+
 
     async selectFlowset(flowset: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.flowsetGuid, flowset);
@@ -79,7 +84,7 @@ class StatusConfigPage {
         return await $(`[rx-view-component-id="${companyGuid}"] span`).getText();
     }
 
-    async clickonEditStatus(status: string): Promise<void> {
+    async clickEditStatus(status: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.status, status)).click();
     }
 
