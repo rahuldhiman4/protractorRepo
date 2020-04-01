@@ -1,5 +1,5 @@
 import { $,element,by, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../utils/util.grid';
+import utilGrid from '../../../utils/util.grid';
 
 class ConsoleProcessLibrary {
 
