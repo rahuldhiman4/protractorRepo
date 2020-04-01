@@ -146,7 +146,7 @@ describe('Document Library', () => {
         expect(await editDocumentLibraryPo.isRegionDropDownDisabled()).toBeTruthy('Region Drop Down field is enabled');
         expect(await editDocumentLibraryPo.isSiteDropDownDisabled()).toBeTruthy('Site Drop Down field is enabled');
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
-        expect(await editDocumentLibraryPo.isSupportGroupAccessButtonDisabled()).toBeTruthy('Support Group Access Group Button is enabled');
+        expect(await editDocumentLibraryPo.isSupportGroupAccessButtonDisplayed()).toBeFalsy('Support Group Access Group Button is enabled');
         expect(await editDocumentLibraryPo.isAddCompanyDropDownDisabled()).toBeTruthy('Add Compnay Drop Down is enabled');
         expect(await editDocumentLibraryPo.isAddCompanyAddButtonDisabled()).toBeTruthy('Add Company Add Button is enabled');
         expect(await editDocumentLibraryPo.isAddBussinessUnitDropDownDisabled()).toBeTruthy('Add Bussiness Unit Drop Down is enabled');
@@ -618,5 +618,39 @@ describe('Document Library', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
         await expect(documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeTruthy("Document not visible");
-    }, 240 * 1000);
+},240*1000);
+
+it('[DRDMV-12954]: Verify Create view of Document library', async () => {
+    await navigationPage.gotoSettingsPage();
+    await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+    await utilCommon.waitUntilSpinnerToHide();
+    await createDocumentLibraryPo.openAddNewDocumentBlade();
+    await expect(createDocumentLibraryPo.attachmentTextPresent('Attachment')).toBeTruthy("Attachment text not present");
+    await expect(createDocumentLibraryPo.titleTextPresent('Title')).toBeTruthy("Title text not present");
+    await expect(createDocumentLibraryPo.descriptionTextPresent('Description')).toBeTruthy("Description text not present");
+    await expect(createDocumentLibraryPo.companyTextPresent('Company')).toBeTruthy("Company text not present");
+    await expect(createDocumentLibraryPo.departmentTextPresent('Department')).toBeTruthy("Department text not present");
+    await expect(createDocumentLibraryPo.buisnessUnitTextPresent('Business Unit')).toBeTruthy("Business Unit text not present");
+    await expect(createDocumentLibraryPo.OwnerGroupTextPresent('Owner Group')).toBeTruthy("Owner Group text not present");
+    await expect(createDocumentLibraryPo.keyWordTextPresent('Keywords')).toBeTruthy("Keywords text not present");
+    await expect(createDocumentLibraryPo.categoryTier1TextPresent('Category Tier 1')).toBeTruthy("Category Tier 1 text not present");
+    await expect(createDocumentLibraryPo.categoryTier2TextPresent('Category Tier 2')).toBeTruthy("Category Tier 2 text not present");
+    await expect(createDocumentLibraryPo.categoryTier3TextPresent('Category Tier 3')).toBeTruthy("Category Tier 3 text not present");
+    await expect(createDocumentLibraryPo.categoryTier4TextPresent('Category Tier 4')).toBeTruthy("Category Tier 4 text not present");
+    await expect(createDocumentLibraryPo.regionTextPresent('Region')).toBeTruthy("Attachment text not present");
+    await expect(createDocumentLibraryPo.siteTextPresent('Site')).toBeTruthy("Site text not present");
+
+    await expect(createDocumentLibraryPo.attachmentLinkEnable()).toBeTruthy("Link is not enabled");
+    await expect(createDocumentLibraryPo.isSaveButtonDisplayed()).toBeTruthy("Save button is not Displayed");
+    await expect(createDocumentLibraryPo.isCancelButtonDisplayed()).toBeTruthy("cancel button is not Displayed");
+    await expect(createDocumentLibraryPo.isCancelButtonDisplayed()).toBeFalsy("delete button is Displayed");
+    
+    await createDocumentLibraryPo.selectCompany('Petramco');
+    await createDocumentLibraryPo.selectOwnerGroup("Compensation and Benefits");
+    await createDocumentLibraryPo.selectCategoryTier1("Applications");
+    await createDocumentLibraryPo.selectCategoryTier2('Social');
+    await createDocumentLibraryPo.selectCategoryTier3('chatter');
+    await createDocumentLibraryPo.selectRegion('Australia');
+    await createDocumentLibraryPo.selectSite('Canberra');
+	}, 240 * 1000);
 })

@@ -17,9 +17,20 @@ class EditTask {
         categoryTier2: '49d231d9-ee81-4d7c-90af-d7ca785a32d4',
         categoryTier3: 'c8858fb5-5b21-4e0d-a947-c0130a72b51a',
         categoryTier4: 'ff1636f8-4efe-4447-9c04-f32799904f2b',
-        
+        dynamicDate:'[class="input-group"] input[ng-model="date"]',
+        dynamicDateTime:'input[ng-model="datetime"]',
+        taskSummary:'[rx-view-component-id="1261e01e-00fb-4e2c-b2ac-72e837f9fcea"] input',
     }
 
+    async setDateValueInDynamicField(value:string):Promise<void>{
+        await $(this.selectors.dynamicDate).clear();
+        await $(this.selectors.dynamicDate).sendKeys(value);
+    }
+
+    async setDateTimeDynamicFieldValue(value:string):Promise<void>{
+        await $(this.selectors.dynamicDateTime).clear();
+        await $(this.selectors.dynamicDateTime).sendKeys(value);
+    }
 
     async addAttachment(fileToUpload: string): Promise<void> {
         const absolutePath = resolve(__dirname, fileToUpload);
@@ -73,20 +84,39 @@ class EditTask {
         await $(this.selectors.attachButton).click();
     }
 
-    async selectTaskCategoryTier1(categoryTier1:string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier1,categoryTier1);
+    async selectTaskCategoryTier1(categoryTier1: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.categoryTier1, categoryTier1);
     }
 
-    async selectTaskCategoryTier2(categoryTier2:string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier2,categoryTier2);
+    async selectTaskCategoryTier2(categoryTier2: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.categoryTier2, categoryTier2);
     }
 
-    async selectTaskCategoryTier3(categoryTier3:string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier3,categoryTier3);
+    async selectTaskCategoryTier3(categoryTier3: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.categoryTier3, categoryTier3);
     }
 
-    async selectTaskCategoryTier4(categoryTier4:string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier4,categoryTier4);
+    async selectTaskCategoryTier4(categoryTier4: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.categoryTier4, categoryTier4);
+    }
+
+    async isDynamicFieldDisplayed(value: string): Promise<boolean> {
+        return await $(`span[title=${value}]`).isDisplayed();
+    }
+
+    async addAttachmentInDynamicField(attachmentField: string, fileToUpload: string): Promise<void> {
+        const absolutePath = resolve(__dirname, fileToUpload);
+        let attachmentLocator = `input[name=${attachmentField}]`;
+        await $(attachmentLocator).sendKeys(absolutePath);
+    }
+
+    async setDynamicFieldValue(fieldName:string,fieldValue:string):Promise<void>{
+        await $(`input[name=${fieldName}]`).sendKeys(fieldValue);
+    }
+
+    async updateTaskSummary(summary: string): Promise<void> {
+        await $(this.selectors.taskSummary).clear();
+        await $(this.selectors.taskSummary).sendKeys(summary);
     }
 }
 

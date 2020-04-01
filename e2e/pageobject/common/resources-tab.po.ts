@@ -1,4 +1,4 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
+import { $, $$, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from 'protractor';
 
 export class Resources {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -20,7 +20,8 @@ export class Resources {
         configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
         headingName: '.km-group__header span',
         recommendedKnowledgeNo: 'h3[class="km-group__header ng-binding"]:nth-last-child(3) span',
-        advancedSearchButton: 'button.d-icon-left-search'
+        advancedSearchButton: 'button.d-icon-left-search',
+        backBuuton: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .rx-adv-search-back-btn',
     }
 
     async isKnowledgeArticlesEmpty(): Promise<boolean> {
@@ -29,7 +30,7 @@ export class Resources {
 
     async clickOnAdvancedSearchOptions(searchArea: string): Promise<void> {
         let advancedSearchButton = await $('button.d-icon-left-search');
-//        await browser.wait(this.EC.elementToBeClickable(advancedSearchButton));
+        //        await browser.wait(this.EC.elementToBeClickable(advancedSearchButton));
         await advancedSearchButton.click();
     }
 

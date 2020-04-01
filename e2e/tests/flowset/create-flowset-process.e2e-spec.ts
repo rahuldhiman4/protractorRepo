@@ -4,9 +4,9 @@ import apiHelper from '../../api/api.helper';
 import { CASE_MANAGEMENT_LIB_PROCESS, SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import consoleFlowsetProcessLibrary from '../../pageobject/flowset/console-process-library-config.po';
-import createFlowsetProcessLibrary from '../../pageobject/flowset/create-register-process-config.po';
-import editFlowsetProcessLibrary from '../../pageobject/flowset/edit-register-process-config.po';
+import consoleFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/console-process-library-config.po';
+import createFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/create-register-process-config.po';
+import editFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/edit-register-process-config.po';
 
 describe('Create Process in Flowset', () => {
     beforeAll(async () => {

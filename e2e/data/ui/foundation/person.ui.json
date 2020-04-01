@@ -28,5 +28,45 @@
         "firstName": "fnPerson2004",
         "lastName": "lnPerson2004",
         "userId": "idPerson2004"
+    },
+    "PhylumCaseAgent1": {
+        "firstName": "phylumfn1",
+        "lastName": "phylumln1",
+        "userId": "idphylum1",
+        "company": "Phylum"
+    },
+    "PhylumCaseAgent2": {
+        "firstName": "phylumfn2",
+        "lastName": "phylumln2",
+        "userId": "idphylum2",
+        "company": "Phylum"
+    },
+    "PhylumCaseAgent3": {
+        "firstName": "phylumfn3",
+        "lastName": "phylumln3",
+        "userId": "idphylum3",
+        "company": "Phylum"
+    },
+    "PhylumKnowledgeUser1": {
+        "firstName": "phylumfnk1",
+        "lastName": "phylumlnk1",
+        "userId": "idphylumkuser",
+        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
+    },
+    "PhylumKnowledgeUser2": {
+        "firstName": "phylumfnk2",
+        "lastName": "phylumlnk2",
+        "userId": "idphylumkuser2",
+        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
+    },
+    "PersonData11825":{
+        "firstName": "fnPerson11825",
+        "lastName": "lnPerson11825",
+        "userId": "idphylum311825"
+    },
+    "PersonData12080":{
+        "firstName": "fnPerson12080",
+        "lastName": "lnPerson12080",
+        "userId": "idphylum312080"
     }
 }

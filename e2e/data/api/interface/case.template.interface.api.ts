@@ -11,6 +11,7 @@ export interface ICaseTemplate {
     categoryTier3?: string;
     supportGroup?: string;
     assignee?: string;
+    description?: string;
     resolutionCode?: boolean;
     resolutionDescription?: boolean,
     caseStatus?: string,

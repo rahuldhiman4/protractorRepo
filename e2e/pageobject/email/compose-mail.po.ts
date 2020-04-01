@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, Key } from "protractor";
+import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 class ComposeMail {
@@ -44,8 +44,8 @@ class ComposeMail {
         colorIcon: '.cke_button__textcolor',
         fontType: '.cke_combo__font',
         fontSize: '.cke_combo__fontsize',
-        numberIcon:'.cke_button__numberedlist_icon',
-        attachmentView:'.rx-attachment-view-name'
+        numberIcon: '.cke_button__numberedlist_icon',
+        attachmentView: '.rx-attachment-view-name'
     }
 
     async clickOnTableIcon(): Promise<void> {
@@ -204,7 +204,7 @@ class ComposeMail {
         return await $(this.selectors.discardButton).isPresent();
     }
 
-    async getFileDisplayedFileName():Promise<string>{
+    async getFileDisplayedFileName(): Promise<string> {
         return await $(this.selectors.attachmentView).getText();
     }
 
@@ -249,14 +249,13 @@ class ComposeMail {
         await $(this.selectors.emailBody).sendKeys(value);
         await browser.actions().sendKeys(protractor.Key.chord(protractor.Key.CONTROL, protractor.Key.END)).sendKeys(Key.ENTER);
         await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);     
+        await browser.waitForAngularEnabled(true);
     }
 
     async setEmailBody(value: string): Promise<void> {
         await browser.waitForAngularEnabled(false);
-        let elem = await $('iframe.cke_wysiwyg_frame');
-        await browser.switchTo().frame(elem.getWebElement());
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)),4000);
+        await browser.switchTo().frame(await $$('iframe.cke_wysiwyg_frame').first().getWebElement());
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 4000);
         await $(this.selectors.emailBody).click();
         await browser.actions().sendKeys(protractor.Key.chord(protractor.Key.CONTROL, protractor.Key.END)).sendKeys(Key.ENTER);
         await $(this.selectors.emailBody).sendKeys(value);
@@ -374,40 +373,40 @@ class ComposeMail {
         //        await browser.wait(this.EC.invisibilityOf($(this.selectors.popupInfo)));
         return countOfPersons;
     }
-    async isImageDisplayedComposeEmail(value:string):Promise<boolean>{
+    async isImageDisplayedComposeEmail(value: string): Promise<boolean> {
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
         let locator = `img[src='${value}']`;
-        let imageIsDisplayed:boolean= await $(locator).isDisplayed();
+        let imageIsDisplayed: boolean = await $(locator).isDisplayed();
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
         return imageIsDisplayed;
     }
 
-    async isLinkDisplayedComposeEmail(value:string):Promise<boolean>{
+    async isLinkDisplayedComposeEmail(value: string): Promise<boolean> {
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
         let locator = `[href='${value}']`;
-        let islinkDisplayed:boolean = await $(locator).isDisplayed();
+        let islinkDisplayed: boolean = await $(locator).isDisplayed();
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
         return islinkDisplayed;
     }
 
-    async getColorOrFontOfTextComposeEmail(value:string):Promise<string>{
+    async getColorOrFontOfTextComposeEmail(value: string): Promise<string> {
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
         let locator = `td span[style='${value}']`;
-        let isColorDisplayed=await $(locator).getText();
+        let isColorDisplayed = await $(locator).getText();
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
         return isColorDisplayed;
     }
 
-    async setSubject(value:string):Promise<void>{
+    async setSubject(value: string): Promise<void> {
         await $(this.selectors.subjectInput).clear();
         await $(this.selectors.subjectInput).sendKeys(value);
     }

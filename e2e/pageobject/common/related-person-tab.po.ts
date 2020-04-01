@@ -1,5 +1,5 @@
-import { $, $$, browser, protractor, ProtractorExpectedConditions, by } from "protractor";
-import utilCommon from '../../utils/util.common'
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../utils/util.common';
 
 class RelatedPersonPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -18,8 +18,13 @@ class RelatedPersonPage {
         site: ' .ac-text-site-value',
         phoneNumber: ' .ac-link-person-phone',
         removePersonCrossIcon: ' .close.close-button',
+        caseSummary: '.case-summary__name-adhoc .case-summary__name-adhoc__name',
     }
 
+    async clickOnCaseSummaryLink(caseSummary:string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.caseSummary,caseSummary)).click();
+    }
+        
     async addRelatedPerson(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addRelatedPerson)));
         await $(this.selectors.addRelatedPerson).click();

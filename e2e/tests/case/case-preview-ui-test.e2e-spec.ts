@@ -32,8 +32,10 @@ describe("Case Preview", () => {
         await quickCasePo.selectRequesterName('qkatawazi');
         await quickCasePo.setCaseSummary(caseSummary);
         await quickCasePo.saveCase();
-        await casePreviewPo.clickOnViewCaseButton();
+        await casePreviewPo.clickOnViewCaseLink();
+        await utilCommon.switchToNewWidnow(1);
         expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy('On View Case page edit button not present');
+        await utilCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
     //kgaikwad
@@ -95,6 +97,7 @@ describe("Case Preview", () => {
     it('[DRDMV-13642,DRDMV-13641]: Create a Case from console with Template and check Case Preview', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotCreateCase();
+        browser.sleep(10000);
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary(caseSummary);
         await createCasePo.clickSelectCaseTemplateButton();
@@ -127,7 +130,7 @@ describe("Case Preview", () => {
         await quickCasePo.selectRequesterName('qkatawazi');
         await quickCasePo.setCaseSummary(caseSummary);
         await quickCasePo.saveCase();
-        await expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully');
+        await expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Case save message not matched');
         await casePreviewPo.clickOncreateNewCaseButton();
         await expect(await quickCasePo.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
     });

@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, protractor, ProtractorExpectedConditions, $$ } from "protractor";
 
 class CasePreview {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -11,6 +11,7 @@ class CasePreview {
         priority: '[rx-view-component-id="6934b23e-3403-4b21-b4aa-a7a10283c8eb"] .selection-field',
         caseStatus: '[rx-view-component-id="6bbd4072-3626-49a4-8813-b1a456674fc7"] .status-transition',
         requesterName: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"]  a[title]',
+        contactName: '[rx-view-component-id="2b74f7f4-7a02-4662-a3be-80b246568c7b"]  a[title]',
         requestPhoneNumber: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"] .ac-link-person-phone',
         requesterEmailId: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"] .ac-link-person-email-disabled',
         requesterSite: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"] .ac-text-site-value',
@@ -28,9 +29,11 @@ class CasePreview {
         source: '[rx-view-component-id="669b71fd-6e23-4625-91f6-139208e47538"] .d-textfield__rx-value',
         label: '[rx-view-component-id="ab146574-d991-43bd-8a7b-0be34019164c"] .d-textfield__rx-value',
         caseSite: '[rx-view-component-id="974e5fdd-5992-4f87-a640-267c4cc3daae"] .d-textfield__rx-value',
+        dynamicFieldsName:'[rx-view-component-id="3fdd9f39-e9f7-4c9f-888e-16038ed76f5f"] span',
+        backButton:'[rx-view-component-id="1483f92a-0736-4316-b2e5-084927069d38"] button'
     }
 
-    async clickOnViewCaseButton(): Promise<void> {
+    async clickOnViewCaseLink(): Promise<void> {
         await $(this.selectors.viewCaseButton).click();
     }
 
@@ -73,6 +76,10 @@ class CasePreview {
 
     async isRequesterNameDisplayed(requesterName: string): Promise<boolean> {
         return await $(this.selectors.requesterName).getText() == requesterName ? true : false;
+    }
+
+    async isContactNameDisplayed(contactName: string): Promise<boolean> {
+        return await $(this.selectors.contactName).getText() == contactName ? true : false;
     }
 
     async isRequesterPhoneDisplayed(requestPhoneNumber: string): Promise<boolean> {
@@ -142,6 +149,25 @@ class CasePreview {
     async isCreateNewCaseButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.viewCaseButton).isDisplayed();
     }
+    
+    async isGroupDisplayed(groupName:string):Promise<boolean>{
+        return await $(`[rx-view-component-id="3fdd9f39-e9f7-4c9f-888e-16038ed76f5f"] .group-container__name div[title=${groupName}]`).isDisplayed();
+    }
+
+    async isDynamicFieldDisplayed(fieldName:string):Promise<boolean>{
+        let dynamicFields:number= await $$(this.selectors.dynamicFieldsName).count();
+        for(let i=0; i<dynamicFields;i++){
+           let field= await $$(this.selectors.dynamicFieldsName).get(i).getText();
+           if(fieldName==field){
+             return true;
+           }
+        }
+        return false;
+     }
+
+     async clickBackButton():Promise<void>{
+        await $(this.selectors.backButton).click();
+     }
 }
 
 export default new CasePreview();

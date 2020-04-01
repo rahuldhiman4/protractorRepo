@@ -4,9 +4,10 @@ import apiHelper from '../../api/api.helper';
 import { CASE_MANAGEMENT_LIB_PROCESS, SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import consoleFlowset from '../../pageobject/flowset/console-flowset-config.po';
-import createFlowset from '../../pageobject/flowset/create-flowset-config.po';
-import editFlowset from '../../pageobject/flowset/edit-flowset-config.po';
+import consoleFlowset from '../../pageobject/settings/manage-flowset/console-flowset-config.po';
+import createFlowset from '../../pageobject/settings/manage-flowset/create-flowset-config.po';
+import editFlowset from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
+import utilGrid from '../../utils/util.grid';
 
 describe('Create Flowset', () => {
     beforeAll(async () => {
@@ -232,5 +233,52 @@ describe('Create Flowset', () => {
         await consoleFlowset.clearSearcBox();
         await consoleFlowset.clickGridRefreshButton();
         await expect(consoleFlowset.getSortedValuesFromColumn("Flowset Name")).toBeTruthy("Sorted not possible");
+    });
+
+    
+    //ankagraw
+    it('[DRDMV-6214]: [Flowsets] Filter menu verification on Define Flowsets Console	', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomStr1 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let availableValues: string[] = ['Company', 'Description', 'Display ID', 'Flowset Name', 'ID', 'Status'];
+
+        //API call to create the flowset
+        await apiHelper.apiLogin('qkatawazi');
+        let flowsetData = require('../../data/ui/case/flowset.ui.json');
+        let flowsetName: string = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
+        flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
+        let flowset=await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+        let id =flowset.id;
+        let Display = flowset.displayId;
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+        await consoleFlowset.addColumn(["ID", 'Display ID']);
+        await expect(consoleFlowset.isAllVisibleColumnPresent(availableValues)).toBeTruthy("Available value is not present");
+       
+        await utilGrid.addFilter("Flowset Name",flowsetName,"text");
+        expect(await utilGrid.isGridRecordPresent(flowsetName)).toBeTruthy('flowsetName not present');
+        await utilGrid.clearFilter();
+
+        await utilGrid.addFilter("Description","Test Flowset name description","text");
+        expect(await utilGrid.isGridRecordPresent('Test Flowset name description')).toBeTruthy('Test Flowset name description not present');
+        await utilGrid.clearFilter();
+
+        await utilGrid.addFilter("Company","Petramco","text");
+        expect(await utilGrid.isGridRecordPresent('Petramco')).toBeTruthy('Petramco not present');
+        await utilGrid.clearFilter();
+
+        await utilGrid.addFilter("Status","Active","checkbox");
+        expect(await utilGrid.isGridRecordPresent(flowsetName)).toBeTruthy('Active not present');
+        await utilGrid.clearFilter();
+
+        await utilGrid.addFilter("Display ID",Display,"text");
+        expect(await utilGrid.isGridRecordPresent(Display)).toBeTruthy(Display+' not present');
+        await utilGrid.clearFilter();
+
+        await utilGrid.addFilter("ID",id,"text");
+        expect(await utilGrid.isGridRecordPresent(id)).toBeTruthy(id+' not present');
+        await utilGrid.clearFilter();
+        
+        await consoleFlowset.removeColumn(["ID", 'Display ID']);
     });
 });

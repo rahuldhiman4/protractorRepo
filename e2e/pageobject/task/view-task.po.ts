@@ -44,6 +44,15 @@ class ViewTask {
         saveAdhocTask: '[rx-view-component-id="a19228d0-81a9-4b19-9cb3-b5bd9550966f"] button',
         attachmentFile: '.rx-attachment-view-name',
         attachmentpath: '.rx-attachment-view .d-icon-cross',
+        showMore:'.rx-attachment-show-text',
+        dynamicFieldsName:'[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] span',
+        dynamicFieldsValue:'[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] p',
+        assignedGroupValue:'[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] .d-textfield__rx-value',
+        assignedCompanyValue:'[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] .d-textfield__rx-value',
+        businessUnitValue:'[rx-view-component-id="4ad9dc88-aa95-4fb7-8128-7df004dfca8f"] .d-textfield__rx-value', 
+        departmentValue:'[rx-view-component-id="411571a0-2577-4403-bcf2-3999dc84f5df"] .d-textfield__rx-value',
+        assigneeNameValue:'[rx-view-component-id="1801d8c6-4997-4253-b716-809b39909598"] .person-main a',
+        manageDynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] button'
     }
 
     async isAttachedDocumentPresent(fileName: string): Promise<boolean> {
@@ -201,6 +210,10 @@ class ViewTask {
         return await $(this.selectors.assignGroupText).isDisplayed();
     }
 
+    async clickOnTab(tabName: string): Promise<void> {
+        await element(by.linkText(tabName)).click();
+    }
+
     async clickOnViewCase(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewCaseLink)),2000);
         await $(this.selectors.viewCaseLink).click();
@@ -297,7 +310,64 @@ class ViewTask {
         await $(this.selectors.saveAdhocTask).click();
     }
 
+    async getShowMoreLessAttachmentsLinkText():Promise<string>{
+        return await $(this.selectors.showMore).getText();
+    }
 
+    async clickShowMoreLink():Promise<void>{
+        return await $(this.selectors.showMore).click();
+    }
+
+    async isFileDisplayed(fileName:string):Promise<boolean>{
+        return await $(`.rx-attachment-view-thumbnail [alt=${fileName}]`).isDisplayed();
+    }
+
+    async getDynamicFieldName(fieldName:string):Promise<string>{
+        return await $(`span[title=${fieldName}]`).getText();
+    }
+
+    async getDynamicFieldValue(fieldValue:string):Promise<string>{
+        return await $(`p[title='${fieldValue}']`).getText();
+    }
+
+    async getValueOfDynamicFields(fieldName:string):Promise<string>{
+        let dynamicFields:number= await $$(this.selectors.dynamicFieldsName).count();
+        for(let i=0; i<dynamicFields;i++){
+           let field= await $$(this.selectors.dynamicFieldsName).get(i).getText();
+           if(fieldName==field){
+             return await $$(this.selectors.dynamicFieldsValue).get(i).getText();
+           }
+        }
+        return null;
+     }
+
+    async getAssigneeText(): Promise<string> {
+        return await $(this.selectors.assigneeNameValue).getText();
+    }
+
+    async getAssignedGroupText(): Promise<string> {
+        return await $(this.selectors.assignedGroupValue).getText();
+    }
+
+    async getDepartmentText(): Promise<string> {
+        return await $(this.selectors.departmentValue).getText();
+    }
+
+    async getBusinessUnitText(): Promise<string> {
+        return await $(this.selectors.businessUnitValue).getText();
+    }
+
+    async getAssignedCompanyText(): Promise<string> {
+        return await $(this.selectors.assignedCompanyValue).getText();
+    }
+       
+    async isManageDynamicFieldLinkDisplayed(): Promise<boolean> {
+        return await $(this.selectors.manageDynamicField).isDisplayed();
+    }
+
+    async isDynamicFieldPresent(): Promise<boolean> {
+        return await $(this.selectors.dynamicFieldsName).isPresent();
+    }
 }
 
 export default new ViewTask();

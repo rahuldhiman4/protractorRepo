@@ -50,13 +50,61 @@ class ActivityTabPage {
         logItems: '.log-item__body',
         body: '.log-item__body .body',
         AttachedfileName: '.log-item__body .rx-attachment-view-name',
-        refreshButton: '.d-icon-left-refresh',
+        refreshButton: '.activity-log-wrapper .d-icon-left-refresh',
         attachmentField: '.activity-feed-note-buttons__left input[type="file"]',
         showMoreEmailActivity: '.email .more',
         allTaskActivity: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .fields .value',
+        taskActivity: '.fields .value',
         showMoreLink: '.log-item__content .more',
         emailBodyImage: '.email-body img',
         publicCheckbox: '.activity-feed-note-external .d-checkbox__item',
+        logTitle: '.title[ux-bind-html="title"]',
+        showLessLink: '.general-notes .less',
+        showMoreLinkForAttachment: '.rx-attachment-show-text[aria-label="Show more attachments"]',
+        showLessLinkForAttachment: '.rx-attachment-show-text[aria-label="Show less attachments"]',
+    }
+
+    async isAddNoteTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).element(by.cssContainingText('.activity-general-note', bodyText)).isDisplayed().then(async (result) => {
+            if (result) return true;
+            else return false;
+        });
+    }
+
+    async clickShowMoreLinkInActivity(activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLink).isDisplayed().then(async (link) => {
+            if (link) {
+                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLink).click();
+                return true;
+            } else return false;
+        });
+    }
+
+    async clickShowLessLinkInActivity(activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLink).isDisplayed().then(async (link) => {
+            if (link) {
+                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLink).click();
+                return true;
+            } else return false;
+        });
+    }
+
+    async clickShowMoreLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).isPresent().then(async (link) => {
+            if (link) {
+                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).click();
+                return true;
+            } else return false;
+        });
+    }
+
+    async clickShowLessLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLinkForAttachment).isPresent().then(async (link) => {
+            if (link) {
+                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLinkForAttachment).click();
+                return true;
+            } else return false;
+        });
     }
 
     async clickOnShowMore(): Promise<void> {
@@ -101,6 +149,7 @@ class ActivityTabPage {
     }
 
     async isAttachedFileNameDisplayed(fileName: string): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.AttachedfileName)), 3000);
         return await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
@@ -115,6 +164,9 @@ class ActivityTabPage {
         return await element(by.cssContainingText(this.selectors.allTaskActivity, fileName)).getText();
     }
 
+    async getAllTaskActivity(fileName: string): Promise<string> {
+        return await element(by.cssContainingText(this.selectors.taskActivity, fileName)).getText();
+    }
 
     async clickOnReply(): Promise<void> {
         //        await utilCommon.waitUntilSpinnerToHide();
@@ -136,11 +188,11 @@ class ActivityTabPage {
         await $(this.selectors.refreshButton).click();
     }
 
-    async getemailContent(): Promise<string> {
+    async getEmailContent(): Promise<string> {
         //        await browser.sleep(2000);
         //        await utilCommon.waitUntilSpinnerToHide();
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailContent)), 5000);
-        let emailBody = await element(by.xpath('(//div[@class="log-item__content"]/email)[1]')).getText();
+        let emailBody = await $$('email .content-wrapper').first().getText();
         return emailBody;
     }
 
@@ -364,10 +416,14 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText('.activity-general-note',bodyText)).isDisplayed().then(async (result) => {
+        return await element(by.cssContainingText('.activity-general-note', bodyText)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });
+    }
+
+    async getCaseViewCount(TitleText: string): Promise<number> {
+        return await element.all(by.cssContainingText(this.selectors.logTitle, TitleText)).count();
     }
 
     async clickOnHyperlinkFromActivity(bodyText: string, authorText: string): Promise<void> {
@@ -393,10 +449,6 @@ class ActivityTabPage {
 
     async isPersonLinkPresent(): Promise<boolean> {
         return await $(this.selectors.activityLog).isDisplayed();
-    }
-
-    async isActivityTextPresent(): Promise<boolean> {
-        return await $(this.selectors.activityText).isDisplayed();
     }
 
     async getIconOfActivity(caseActivityLogText: string): Promise<string> {
@@ -522,7 +574,7 @@ class ActivityTabPage {
     }
 
     async isAttachmentInActivity(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText('.rx-attachment-view-name',bodyText)).isDisplayed().then(async (result) => {
+        return await element(by.cssContainingText('.rx-attachment-view-name', bodyText)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });

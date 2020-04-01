@@ -1,5 +1,5 @@
 import utilCommon from '../../../utils/util.common';
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions, $$ } from "protractor";
 
 class PreviewCaseTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -24,7 +24,7 @@ class PreviewCaseTemplateBlade {
         supportCompany: 'a6a721e0-4a98-4d1f-85a8-27c7075a5a2a',
         assignee: '.person-main label',
         backButton: '[rx-view-component-id="83c4c73b-86b4-4894-b4c2-4d0525bed20d"] button',
-
+        dynamicFieldsName:'[rx-view-component-id="313a405e-5bc2-4a7a-98eb-6aeaab59b6aa"] span'
     }
 
     async clickOnBackButton(): Promise<void> {
@@ -114,6 +114,21 @@ class PreviewCaseTemplateBlade {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignee)));
         return await $(this.selectors.assignee).isDisplayed();
     }
+
+    async isGroupDisplayed(groupName:string):Promise<boolean>{
+        return await $(`[rx-view-component-id="313a405e-5bc2-4a7a-98eb-6aeaab59b6aa"] .group-container__name div[title=${groupName}]`).isDisplayed();
+    }
+
+    async isDynamicFieldDisplayed(fieldName:string):Promise<boolean>{
+        let dynamicFields:number= await $$(this.selectors.dynamicFieldsName).count();
+        for(let i=0; i<dynamicFields;i++){
+           let field= await $$(this.selectors.dynamicFieldsName).get(i).getText();
+           if(fieldName==field){
+             return true;
+           }
+        }
+        return false;
+     }
 }
 
 export default new PreviewCaseTemplateBlade();

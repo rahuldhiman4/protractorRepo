@@ -1,4 +1,4 @@
-import { $, $$, browser, by, By, element, ElementFinder, Key, protractor, ProtractorExpectedConditions, until, ElementHelper } from 'protractor';
+import { $, $$, browser, by, By, element, ElementFinder, Key, protractor, ProtractorExpectedConditions, until, ElementHelper, ElementArrayFinder } from 'protractor';
 import utilCommon, { Util } from './util.common';
 
 export class GridOperation {
@@ -30,6 +30,11 @@ export class GridOperation {
         filterIcon: '.rx-search-filter button',
         filterItems: '.search-filter-dropdown .d-accordion__item',
         applyButton: '.rx-search-filter-heading__apply',
+        dateFrom: 'input[max-date="option.toDatePicker.date"]',
+        dateTo: 'input[min-date="option.fromDatePicker.date"]',
+        datePickerApplyButton: '.dropdown-item_range .d-button_small',
+        presetFilter: '.rx-filter-preset__title span',
+        appliedFilterName: '.d-tag-label'
     }
 
     async clickOnGridRefreshButton(): Promise<void> {
@@ -53,6 +58,7 @@ export class GridOperation {
     }
 
     async isGridRecordPresent(searchRecord: string): Promise<boolean> {
+        await this.clearGridSearchBox();
         await this.searchOnGridConsole(searchRecord);
         //        await browser.sleep(5000);
         return await $(this.selectors.gridRecordPresent).isPresent();
@@ -361,23 +367,71 @@ export class GridOperation {
         if (guid) {
             guidId = `[rx-view-component-id="${guid}"] `
         }
-        //        await browser.wait(this.EC.elementToBeClickable($(guidId + this.selectors.filterIcon)));
+
+        // await browser.wait(this.EC.elementToBeClickable($(guidId + this.selectors.filterIcon)));
         await $(guidId + this.selectors.filterIcon).click();
         let fldLocator = await element(by.cssContainingText(guidId + this.selectors.filterItems, fieldName));
-        //        await browser.wait(this.EC.elementToBeClickable(fldLocator));
+        // await browser.wait(this.EC.elementToBeClickable(fldLocator));
         await fldLocator.click();
-        if (type == 'checkbox') {
-            let cbox = `.rx-search-filter-option[title='${textValue}']`
-            //            await browser.wait(this.EC.elementToBeClickable($(cbox)));
-            await $(cbox).click();
-        } else {
-            let txtFieldLocator = fldLocator.$('label.d-textfield__label');
-            //            await browser.wait(this.EC.elementToBeClickable(txtFieldLocator));
-            await txtFieldLocator.sendKeys(textValue + Key.ENTER);
+
+        switch (type) {
+            case "checkbox": {
+                let cbox = `.rx-search-filter-option[title='${textValue}']`
+                // await browser.wait(this.EC.elementToBeClickable($(cbox)));
+                await $(cbox).click();
+                break;
+            }
+            case "date": {
+                let date = textValue.split(":");
+                await $(this.selectors.dateFrom).clear();
+                await $(this.selectors.dateFrom).sendKeys(date[0]);
+                await $(this.selectors.dateTo).clear();
+                await $(this.selectors.dateTo).sendKeys(date[1]);
+                await $(this.selectors.datePickerApplyButton).click();
+                break;
+            }
+            default: {
+                let txtFieldLocator = fldLocator.$('label.d-textfield__label');
+                // await browser.wait(this.EC.elementToBeClickable(txtFieldLocator));
+                await txtFieldLocator.sendKeys(textValue + Key.ENTER);
+                break;
+            }
         }
-        //        await browser.wait(this.EC.elementToBeClickable($(guidId + this.selectors.applyButton)));
         await $(guidId + this.selectors.applyButton).click();
-        //        await utilCommon.waitUntilSpinnerToHide();
+        // await utilCommon.waitUntilSpinnerToHide();
+    }
+
+    async applyPresetFilter(filterName: string): Promise<void> {
+        await $(this.selectors.filterPreset).click();
+        await element(by.cssContainingText(this.selectors.presetFilter, filterName)).click();
+    }
+
+    async getAppliedFilterName(): Promise<string> {
+        return await $(this.selectors.appliedFilterName).getText();
+    }
+
+    async isTableColumnSorted(allelementLocator: string, isDescendingOrder?: boolean): Promise<boolean> {
+        let allElements = $$(allelementLocator);
+        let originalArray: string[] = [], i = 0, processedArray: string[] = [];
+        for (i = 0; i < (await allElements).length; i++) {
+            await allElements.get(i).getText().then(async (text) => {
+                originalArray.push(text);
+            });
+        }
+        processedArray = originalArray.slice();
+        if (isDescendingOrder) {
+            // Descending         
+            processedArray.sort((a, b) => 0 - (a > b ? 1 : -1));
+        }
+        else {
+            // Ascending
+            originalArray.sort((a, b) => 0 - (a > b ? -1 : 1));
+        }
+        console.log("UI column values: ", originalArray);
+        console.log("Sorted array: ", processedArray);
+        return processedArray.length === originalArray.length && processedArray.every(
+            (value, index) => (value === originalArray[index])
+        );
     }
 }
 export default new GridOperation();

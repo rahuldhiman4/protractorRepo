@@ -14,6 +14,7 @@ class DocumentLibraryPage {
         attachmentGuid: 'd9a66a3a-d637-45d7-bb1c-bd60a50c5914',
         companyFieldGuid: 'cc6775d9-040f-4fde-bddf-7ab2334d6881',
         ownerGroupFieldGuid: '001ddea2-b59d-49dc-ac5e-628f3a75e9fa',
+        deleteButton: '[rx-view-component-id="6e44c878-cc4a-4de1-8626-c786b5d309d7"] button',
         saveButton: '[rx-view-component-id="2ddf1845-1e5a-48f9-b6fd-1497f9be0daf"] button',
         saveButtonGuid: '2ddf1845-1e5a-48f9-b6fd-1497f9be0daf',
         companyField: '[rx-view-component-id="cc6775d9-040f-4fde-bddf-7ab2334d6881"]',
@@ -181,6 +182,11 @@ class DocumentLibraryPage {
     async isSaveButtonDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
        return await $(this.selectors.saveButton).isDisplayed();
+    }
+
+    async isDeleteButtonDisplayed(): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+       return await $(this.selectors.deleteButton).isDisplayed();
     }
 
     async isCancelButtonDisplayed(): Promise<boolean> {

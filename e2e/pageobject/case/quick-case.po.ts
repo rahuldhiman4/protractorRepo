@@ -4,6 +4,8 @@ class QuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
+        drpdownHeader: '.dropdown-input__button',
+        startOver: '.smart-recorder__footer button[ng-click="clear()"]',
         smartSearchTextBox: '.smart-recorder-textarea',
         confirmedItemSelection: '.smart-recorder-confirmedItem_header',
         searchResult: '.smart-recorder__popup-item-email',
@@ -12,6 +14,7 @@ class QuickCasePage {
         validateButton: '[rx-view-component-id="390a77cd-518e-4d67-abb4-bc4d410ce3df"] button',
         pinValidateInput: '[rx-view-component-id="bfe9a8e0-26e7-43a5-9561-1c92539bdda3"] input',
         pinOk: '[rx-view-component-id="ea1b7291-a0de-47d6-9239-cccf6b850a86"] button',
+        quickCaseGuid: 'dbfca64c-b020-43ee-bb30-de8f8c1c8e6e',
         popUpMsgLocator: '.rx-growl-item__message',
         inputBox: '.smart-recorder-textarea',
         smartSearchText: '.smart-recorder-highlightPerfectMatch',
@@ -22,6 +25,14 @@ class QuickCasePage {
         requester: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .ac-person-full-name',
         arrowFirstRecommendedCase: '[role="listitem"] .km-group-list-item__preview-icon',
         arrowFirstRecommendedKnowledge: '.km-group [role="listitem"] .km-group-list-item__preview-icon',
+        roleDropDown: '.smart-recorder-confirmedItem-selection button',
+        sourceValue: '.ui-select-toggle .ui-select-match-text',
+        roleValue: '.smart-recorder-selectionItem li a',
+        descriptionText: '.smart-input-label_big',
+        resources: '.smart-search-placeholder-text',
+        advancedSearchFields: '.ui-select-placeholder',
+        startOverButton: '.smart-recorder__footer button.d-button_secondary',
+        RecommendedKnowledge: 'km-group-list-item__description',
     }
 
     async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
@@ -42,13 +53,28 @@ class QuickCasePage {
 
     async isCaseSummaryPresentInRecommendedCases(caseSummary: string): Promise<boolean> {
         return await $$('.km-group').get(2).$$(`div[title="${caseSummary}"]`).isPresent();
-      
+    }
+
+    async clickOnCaseSummaryInRecommendedCases(caseSummary: string): Promise<void> {
+        await $(`.km-group div[title="${caseSummary}"]`).click();
+    }
+
+    async getDrpDownValueByIndex(indexValue: number): Promise<string> {
+        return await $$(this.selectors.drpdownHeader).get(indexValue - 1).getText();
+    }
+
+    async selectDrpDownValueByIndex(value: string, indexValue: number): Promise<void> {
+        await $$(this.selectors.drpdownHeader).get(indexValue - 1).click();
+        let option = await element(by.cssContainingText('.dropdown-item', value));
+        await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async () => {
+            await option.click();
+        });
     }
 
     async selectRequesterName(name: string): Promise<void> {
-        let namenew = "@" + name;
-        // await browser.wait(this.EC.visibilityOf($(this.selectors.inputBox)));
-        await $(this.selectors.inputBox).sendKeys(namenew);
+        //await $(this.selectors.inputBox).clear();
+        //await browser.wait(this.EC.visibilityOf($(this.selectors.inputBox)));
+        await $(this.selectors.inputBox).sendKeys(`@${name}`);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesters)), 3000);
         await $$(this.selectors.requesters).first().click();
     }
@@ -58,6 +84,11 @@ class QuickCasePage {
         await $(this.selectors.smartSearchTextBox).sendKeys(summary);
     }
 
+    async clearInputBox(): Promise<void> {
+        //await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
+        await $(this.selectors.inputBox).clear();
+    }
+
     async getRequester(): Promise<string> {
         //await browser.wait(this.EC.visibilityOf($$(this.selectors.smartSearchText).first()));
         return await $$(this.selectors.smartSearchText).first().getText();
@@ -65,6 +96,7 @@ class QuickCasePage {
 
     async validatePersonAndHisRelation(relationType: string): Promise<string> {
         let employee: string;
+        await browser.sleep(1000); // required because UI renders after get call used before calling this method
         let elementCount = await $$(this.selectors.confirmedItemSelection).count();
         for (let i = 0; i < elementCount; i++) {
             let actualRelationType = await $$(this.selectors.confirmedItemSelection).get(i).$('button').getText();
@@ -129,21 +161,27 @@ class QuickCasePage {
         // await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton__preview)));
     }
 
-    async selectCaseTemplate(templateName: string): Promise<void> {
-        await $(this.selectors.inputBox).sendKeys('!');
-        await $(this.selectors.inputBox).sendKeys(templateName);
-        await browser.wait(this.EC.or(async () => {
-            let count = await $$(this.selectors.caseTemplate).count();
-            return count >= 1;
-        }), 2000);
-        await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).click();
-    }
-
-    async isCaseTemplatePresent(templateName: string): Promise<boolean> {
-        await $(this.selectors.inputBox).sendKeys('!');
-        await $(this.selectors.inputBox).sendKeys(templateName);
-        return await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).isPresent();
-
+    async selectCaseTemplate(templateName: string): Promise<boolean> {
+        let success: boolean = false;
+        for (let i: number = 0; i <= 10; i++) {
+            browser.sleep(5 * 1000);
+            let template: string = "!" + templateName;
+            await $(this.selectors.inputBox).sendKeys(template);
+            success = await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).isPresent().then(async (result) => {
+                if (result) {
+                    await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).click();
+                    return true;
+                } else false;
+            });
+            if (success) break;
+            else {
+                for (let j: number = 0; j < template.length; j++) {
+                    await $(this.selectors.inputBox).sendKeys(protractor.Key.BACK_SPACE);
+                }
+                continue;
+            }
+        }
+        return success;
     }
 
     async validatePin(): Promise<void> {
@@ -154,6 +192,66 @@ class QuickCasePage {
         await $(this.selectors.pinOk).click();
 
     }
-}
 
+    async getDescriptionDetails(): Promise<string> {
+        return await $(this.selectors.descriptionText).getAttribute('aria-label');
+    }
+
+    async getResourcesText(): Promise<string> {
+        return await $(this.selectors.resources).getText();
+    }
+
+    async selectRoleValue(value: string): Promise<void> {
+        await $(this.selectors.roleDropDown).click();
+        await browser.element(by.cssContainingText(this.selectors.roleValue, value)).click();
+    }
+
+    async isValuePresentInSourceDropDown(value: string): Promise<boolean> {
+        await $(this.selectors.sourceValue).click();
+        let dropdownValues: number = await $(this.selectors.sourceValue).count();
+        for (let i = 0; i < dropdownValues; i++) {
+            let souceValue = await $(this.selectors.sourceValue).get(i).getText();
+            if (souceValue == value) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    async selectSourceValue(value: string): Promise<void> {
+        await $(this.selectors.sourceValue).click();
+        await browser.element(by.cssContainingText(this.selectors.sourceValue, value)).click();
+    }
+
+    async getSelectedSourceValue(): Promise<string> {
+        return await $(this.selectors.sourceValue).getText();
+    }
+
+    async clickStartOverButton(): Promise<void> {
+        await $(this.selectors.startOverButton).click();
+    }
+
+    async getKnowledgeArticleInfo(articleNumeber: number): Promise<string> {
+        return await $$('.km-group-list-item__info').get(articleNumeber - 1).getText();
+    }
+
+    async isFilterAvailable(filterText: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.advancedSearchFields, filterText)).isPresent();
+    }
+
+    async clickOnCaseTemplate(templateName: string): Promise<void> {
+        await $(`div[title=${templateName}]`).click();
+    }
+
+    async clickOnRecommandedCase(caseID:string):Promise<void>{
+        let recommandedCount:number= await $$('.km-group-list-item__title').count();
+        for(let i=0;i<recommandedCount;i++)
+        {
+            let value=await $$('.km-group-list-item__title').get(i).getText();
+            if(value==caseID){
+                await $$('.km-group-list-item__title').get(i).click();
+            }
+        } 
+    }
+}
 export default new QuickCasePage();

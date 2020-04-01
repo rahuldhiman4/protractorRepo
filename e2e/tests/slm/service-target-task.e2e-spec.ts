@@ -11,7 +11,6 @@ import apiHelper from '../../api/api.helper';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
-import caseTaskTab from '../../pageobject/case/case-task-tab.po';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -187,7 +186,7 @@ describe('Service Target Tests for Tasks', () => {
             await viewCasePage.setStatusReason('Successful');
             await viewTask.clickOnSaveStatus();
             await viewTask.clickOnViewCase();
-            await caseTaskTab.clickoncasetaskArrowtab();
+            await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLinkOnManageTask(automatedTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(false);
         }
@@ -280,7 +279,7 @@ describe('Service Target Tests for Tasks', () => {
             await browser.refresh();
             await viewTask.getTaskTypeValue();
             await viewTask.clickOnViewCase();
-            await caseTaskTab.clickoncasetaskArrowtab();
+            await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLinkOnManageTask(manualTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(false);
         }

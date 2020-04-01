@@ -57,7 +57,16 @@ class ViewCasePage {
         emailLink: '[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
         addedTaskFromCaseTemplate: '.task-list__task-card a',
         taskCardArrow: '.icon-angle_right.task-list__task-card__preview-icon',
-        attachmentFile: '.rx-attachment-view-name'
+        attachmentFile: '.rx-attachment-view-name',
+        caseTemplate: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .d-textfield__rx-value',
+        sourceValue: '[rx-view-component-id="8abd013f-26cd-4aa5-a3bb-63b063d3a7ec"] .d-textfield__rx-value',
+        showMore: '.rx-attachment-show-text',
+        dynamicFieldsName: '[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] span',
+        dynamicFieldsValue: '[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] p',
+    }
+
+    async isGroupNameDisplayed(groupName:string):Promise<boolean>{
+        return await $(`[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] .group-container div[title=${groupName}]}`).isDisplayed(); 
     }
 
     async isAttachedDocumentPresent(fileName: string): Promise<boolean> {
@@ -369,10 +378,53 @@ class ViewCasePage {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
-        await $(`.runtime-view-item-holder a[title='${tabName}']`).click();
+        await element(by.linkText(tabName)).click();
     }
 
+    async getCaseTemplateText(): Promise<string> {
+        return await $(this.selectors.caseTemplate).getText();
+    }
 
+    async getSourceValue(): Promise<string> {
+        return await $(this.selectors.sourceValue).getText();
+    }
+    async getShowMoreLessAttachmentsLinkText(): Promise<string> {
+        return await $(this.selectors.showMore).getText();
+    }
+
+    async clickShowMoreLink(): Promise<void> {
+        return await $(this.selectors.showMore).click();
+    }
+
+    async isFileDisplayed(fileName: string): Promise<boolean> {
+        return await $(`.rx-attachment-view-thumbnail [alt=${fileName}]`).isDisplayed();
+    }
+
+    async clickOnDownloadFile(fileName: string): Promise<void> {
+        await $(`div[aria-label="Download attachment ${fileName}"]`).click();
+    }
+
+    async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
+        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
+        for (let i = 0; i < dynamicFields; i++) {
+            let field = await $$(this.selectors.dynamicFieldsName).get(i).getText();
+            if (fieldName == field) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    async getValueOfDynamicFields(fieldName: string): Promise<string> {
+        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
+        for (let i = 0; i < dynamicFields; i++) {
+            let field = await $$(this.selectors.dynamicFieldsName).get(i).getText();
+            if (fieldName == field) {
+                return await $$(this.selectors.dynamicFieldsValue).get(i).getText();
+            }
+        }
+        return null;
+    }
 }
 
 export default new ViewCasePage();

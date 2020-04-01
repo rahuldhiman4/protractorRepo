@@ -462,7 +462,7 @@ describe('Notes template', () => {
         await createKnowlegePo.clickOnviewArticleLinkButton();
         // View Knowledege Page
         await utilCommon.switchToNewWidnow(1);
-        await viewKnowledgeArticlePo.clickOnActivityTab();
+        await viewKnowledgeArticlePo.clickOnTab('Activity');
         await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
         await activityTabPo.clickOnPostButton();
         await expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();

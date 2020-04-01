@@ -314,4 +314,3 @@ describe('Case Bulk Operation', () => {
         await utilCommon.closePopUpMessage();
     });
 })
-
