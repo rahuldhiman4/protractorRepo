@@ -17,9 +17,20 @@ class EditTask {
         categoryTier2: '49d231d9-ee81-4d7c-90af-d7ca785a32d4',
         categoryTier3: 'c8858fb5-5b21-4e0d-a947-c0130a72b51a',
         categoryTier4: 'ff1636f8-4efe-4447-9c04-f32799904f2b',
+        priority:'0cf493f2-9e6b-4f23-bf3e-ba210c2baef8',
         dynamicDate:'[class="input-group"] input[ng-model="date"]',
         dynamicDateTime:'input[ng-model="datetime"]',
         taskSummary:'[rx-view-component-id="1261e01e-00fb-4e2c-b2ac-72e837f9fcea"] input',
+        automatedTaskType:'[rx-view-component-id="cee6d303-5db9-4b3a-98e1-3096ffebf363"] .ui-select-container',
+        processName:'[rx-view-component-id="880bd8d5-1b16-4c74-a377-4135919c362a"] input'
+    }
+
+    async isAutomatedTaskTypeDisabled():Promise<boolean>{
+        return await $(this.selectors.automatedTaskType).getAttribute('disabled')=='true'? true: false;
+    }
+
+    async isProcessNameDisabled():Promise<boolean>{
+        return await $(this.selectors.processName).getAttribute('readOnly')=='true' ? true:false;
     }
 
     async setDateValueInDynamicField(value:string):Promise<void>{
@@ -84,6 +95,10 @@ class EditTask {
         await $(this.selectors.attachButton).click();
     }
 
+    async selectPriorityValue(priority:string):Promise<void>{
+        await utilCommon.selectDropDown(this.selectors.priority, priority);
+    }
+    
     async selectTaskCategoryTier1(categoryTier1: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.categoryTier1, categoryTier1);
     }

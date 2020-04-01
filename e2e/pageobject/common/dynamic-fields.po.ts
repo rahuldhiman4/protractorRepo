@@ -8,7 +8,10 @@ class DynamicField {
         dynamicField: '[ng-click="addEmptyField()"]',
         fieldName: '.ac-input-field-name',
         fieldDescription: '.ac-input-description',
-        saveButton: '.ac-button-save'
+        saveButton: '.ac-button-save',
+        fieldValueType:'div[aria-label="Field Value Type"]',
+        informationSource:'.ui-select-container',
+        
     }
 
     async clickOnDynamicField(): Promise<void> {
@@ -42,6 +45,16 @@ class DynamicField {
         await $(`[aria-label=${fieldName}] .remove-button-text`).click();
     }
 
+    async selectFieldValueType(dataType:string):Promise<void>{
+        await $$(this.selectors.fieldValueType).last().click();
+        await $(`div[title=${dataType}]`).click();
+    }
+
+    async selectInfromationSource(sourceValue:string):Promise<void>{
+        await $$(this.selectors.informationSource).last().click();
+        await $(`div[title=${sourceValue}]`).click();
+    }
+    
    }
 
 export default new DynamicField();
