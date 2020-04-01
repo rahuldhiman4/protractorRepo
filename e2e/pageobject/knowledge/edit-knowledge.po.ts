@@ -31,7 +31,13 @@ class EditKnowledgePage {
         articleEditOption: '[rx-view-component-id="1592eebc-8777-48cc-ae6c-d2b82a60a972"] button',
         articleMinorEditOptionHelpText: '[rx-view-component-id="27c1d328-8b58-4f1f-9b78-61d99f18dcc6"] p',
         articleMajorEditOptionHelpText: '[rx-view-component-id="3ba9e93b-6d48-4e15-ab0a-ca19f12b5a41"] p',
-        articleCancelButton: '[rx-view-component-id="b7af03ad-d6dd-4db5-86f6-b459ca1fed71"] button'
+        articleCancelButton: '[rx-view-component-id="b7af03ad-d6dd-4db5-86f6-b459ca1fed71"] button',
+        articleTitle: '[rx-view-component-id="cd9b041b-6a82-4322-8a07-165a370ad0dd"] input',
+        articleDescription: '[rx-view-component-id="52856b97-e17e-444d-a556-fa0ad35eb3c8"] .doc-editor__section-content',
+        articleMajorEditSaveButton: '[rx-view-component-id="8173a0e5-75f9-48bf-aeec-b5e9cef72de9"] button',
+        knowledgeMetadataSaveButton: '[rx-view-component-id="15dcacfb-8cb2-49b7-a5db-fe0e16b311dc"] button',
+        selectIsExternalGUID: '660f2cd8-9439-4954-9638-0064fbcb0e28',
+        keywordValue: '[rx-view-component-id="51e52d59-3acd-49b3-8291-e10558985fa1"] input'
     }
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
@@ -183,7 +189,7 @@ class EditKnowledgePage {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButtonONKA)));
         await $(this.selectors.saveButtonONKA).click();
     }
-    
+
     async changeKnowledgeTitle(value: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeTitle)));
         await $(this.selectors.knowledgeTitle).click();
@@ -241,6 +247,50 @@ class EditKnowledgePage {
     async clickArticleCancelButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButtonOnKA)));
         await $(this.selectors.articleCancelButton).click();
+    }
+
+    async updateKnowledgeArticleTitle(articleTitle: string): Promise<void> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleTitle)));
+        await $(this.selectors.articleTitle).clear();
+        await $(this.selectors.articleTitle).sendKeys(articleTitle);
+    }
+    async updateKnowledgeArticleDescription(articleDesc: string): Promise<void> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleDescription)));
+        await $(this.selectors.articleDescription).clear();
+        await $(this.selectors.articleDescription).sendKeys(articleDesc);
+    }
+
+    async clickArticleMajorEditSaveButton(): Promise<void> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleMajorEditSaveButton)));
+        await $(this.selectors.articleMajorEditSaveButton).click();
+    }
+
+    async clickSaveKnowledgeMetadata(): Promise<void> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeMetadataSaveButton)));
+        await $(this.selectors.knowledgeMetadataSaveButton).click();
+    }
+
+    async selectIsExternalOption(isExternalOption: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.selectIsExternalGUID, isExternalOption);
+    }
+
+    async enterKeyword(keyword: string): Promise<void> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.keywordValue)));
+        await $(this.selectors.keywordValue).clear();
+        await $(this.selectors.keywordValue).sendKeys(keyword);
+        await $(this.selectors.keywordValue).sendKeys(protractor.Key.ENTER);
+    }
+
+    async isMinorEditSaveButtonEnabled(): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButtonONKA)));
+        return await $(this.selectors.saveButtonONKA).getAttribute("disabled") == 'true';
+
+    }
+
+    async isMajorEditSaveButtonEnabled(): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier1Drpbox)));
+        return await $(this.selectors.articleMajorEditSaveButton).getAttribute("disabled") == 'true';
+
     }
 
 
