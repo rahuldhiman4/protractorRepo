@@ -62,6 +62,27 @@ class ActivityTabPage {
         showLessLink: '.general-notes .less',
         showMoreLinkForAttachment: '.rx-attachment-show-text[aria-label="Show more attachments"]',
         showLessLinkForAttachment: '.rx-attachment-show-text[aria-label="Show less attachments"]',
+        lockIcon: '.log-item .d-icon-lock',
+    }
+    async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.lockIcon).isDisplayed().then(async (result) => {
+            if (result) return true;
+            else return false;
+        });
+    }
+
+    async isTitleTextDisplayedInActivity(caseActivityLogTitleText: string, activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).element(by.cssContainingText(this.selectors.logTitle, caseActivityLogTitleText)).isDisplayed().then(async (result) => {
+            if (result) return true;
+            else return false;
+        });
+    }
+
+    async isBodyDisplayedInActivity(caseActivityLogTitleText: string, activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).element(by.cssContainingText('.body', caseActivityLogTitleText)).isDisplayed().then(async (result) => {
+            if (result) return true;
+            else return false;
+        });
     }
 
     async isAddNoteTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
@@ -69,6 +90,55 @@ class ActivityTabPage {
             if (result) return true;
             else return false;
         });
+    }
+
+    async isLogIconDisplayedInActivity(iconName: string, activityNumber: number): Promise<boolean> {
+        switch (iconName) {
+            case "note_pencil": {
+                return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-note_pencil').isDisplayed().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+                break;
+            }
+
+            case "pencil": {
+                return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-pencil').isDisplayed().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+                break;
+            }
+
+            case "comments": {
+                return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-comments').isDisplayed().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+                break;
+            }
+
+            case "unflag": {
+                return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-flag_o').isDisplayed().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+                break;
+            }
+
+            case "flag": {
+                return await $$('.content-wrapper').get(activityNumber - 1).$('d-icon-flag').isDisplayed().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+                break;
+            }
+
+            default: {
+                console.log('No such a match');
+                break;
+            }
+        }
     }
 
     async clickShowMoreLinkInActivity(activityNumber: number): Promise<boolean> {
@@ -461,10 +531,7 @@ class ActivityTabPage {
         return $('.activity_logs [role="listitem"] .title a').getText();
     }
 
-    async getTitleTextOfActivity(caseActivityLogText: string): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .title')));
-        return $('.activity_logs [role="listitem"] .title').getText();
-    }
+
 
     async getLinkedTextFromBodyOfActivity(caseActivityLogText: string): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .body')));
