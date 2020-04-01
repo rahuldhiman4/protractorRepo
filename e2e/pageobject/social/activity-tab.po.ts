@@ -131,8 +131,13 @@ class ActivityTabPage {
                     if (result) return true;
                     else return false;
                 });
-            }
                 break;
+            }
+
+            default: {
+                console.log('No such a match');
+                break;
+            }
         }
     }
 
