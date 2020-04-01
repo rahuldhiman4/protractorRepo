@@ -4,9 +4,9 @@ import apiHelper from '../../api/api.helper';
 import { CASE_MANAGEMENT_LIB_PROCESS, SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import consoleFlowset from '../../pageobject/flowset/console-flowset-config.po';
-import createFlowset from '../../pageobject/flowset/create-flowset-config.po';
-import editFlowset from '../../pageobject/flowset/edit-flowset-config.po';
+import consoleFlowset from '../../pageobject/settings/manage-flowset/console-flowset-config.po';
+import createFlowset from '../../pageobject/settings/manage-flowset/create-flowset-config.po';
+import editFlowset from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
 import utilGrid from '../../utils/util.grid';
 
 describe('Create Flowset', () => {
