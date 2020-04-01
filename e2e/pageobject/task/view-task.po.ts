@@ -52,7 +52,17 @@ class ViewTask {
         businessUnitValue:'[rx-view-component-id="4ad9dc88-aa95-4fb7-8128-7df004dfca8f"] .d-textfield__rx-value', 
         departmentValue:'[rx-view-component-id="411571a0-2577-4403-bcf2-3999dc84f5df"] .d-textfield__rx-value',
         assigneeNameValue:'[rx-view-component-id="1801d8c6-4997-4253-b716-809b39909598"] .person-main a',
-        manageDynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] button'
+        manageDynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] button',
+        getTaskSummary:'[rx-view-component-id="e1aaa2da-51a0-41a0-a806-6a935fa27d94"] .d-textfield__rx-value',
+        priorityValue:'span.selection-field'
+    }
+
+    async getTaskSummaryValue():Promise<string>{
+        return await $(this.selectors.getTaskSummary).getText();
+    }
+
+    async getPriorityValue():Promise<string>{
+        return await $(this.selectors.priorityValue).getText();
     }
 
     async isAttachedDocumentPresent(fileName: string): Promise<boolean> {
@@ -360,7 +370,7 @@ class ViewTask {
     async getAssignedCompanyText(): Promise<string> {
         return await $(this.selectors.assignedCompanyValue).getText();
     }
-       
+              
     async isManageDynamicFieldLinkDisplayed(): Promise<boolean> {
         return await $(this.selectors.manageDynamicField).isDisplayed();
     }
