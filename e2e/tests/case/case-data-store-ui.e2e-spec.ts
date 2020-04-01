@@ -25,7 +25,7 @@ import viewCasetemplatePo from '../../pageobject/settings/case-management/view-c
 import dynamicFieldsPo from '../../pageobject/common/dynamic-fields.po';
 import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template-cases.po';
-import casePreviewPo from 'e2e/pageobject/case/case-preview.po';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 describe('Case Data Store', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -450,4 +450,241 @@ describe('Case Data Store', () => {
         expect(await viewCasePo.getValueOfDynamicFields(field1OutSideGroup)).toBe(field2InGroup);
         expect(await viewCasePo.getValueOfDynamicFields(field2OutSideGroup)).toBe('8888545888');
     }, 150 * 1000);
+
+    //ptidke
+    it('[DRDMV-13140]:[Dynamic Data] [UI] -Dynamic Fields display on Task Template Edit view UI', async () => {
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let arr: string[] = ['temp', 'temp1', 'temp2', 'temp3', 'temp4', 'temp5', 'attachment1', 'attachment2', 'attachment3']
+        //Draft to active
+        let taskTemplateNameDraft = 'ManualtaskDraftDRDMV-13940' + randomStr;
+        let manualTaskSummaryDraft = 'ManualSummaryDraftDRDMV-13940' + randomStr;
+        let templateData = {
+            "templateName": `${taskTemplateNameDraft}`,
+            "templateSummary": `${manualTaskSummaryDraft}`,
+            "templateStatus": "Draft",
+        }
+        let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
+        await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
+        //Inactive
+        let taskTemplateNameOne = 'ManualtaskInactiveDRDMV-13940' + randomStr;
+        let manualTaskSummaryOne = 'ManualSummaryInactiveDRDMV-13940' + randomStr;
+        let templateDataInactive = {
+            "templateName": `${taskTemplateNameOne}`,
+            "templateSummary": `${manualTaskSummaryOne}`,
+            "templateStatus": "Inactive",
+        }
+        let tasktemplateInactive = await apiHelper.createManualTaskTemplate(templateDataInactive);
+        await apiHelper.createDynamicDataOnTemplate(tasktemplateInactive.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
+        //Draft only
+        let taskTemplateNameDraftOnly = 'ManualtaskDraftOnlyDRDMV-13940' + randomStr;
+        let manualTaskSummaryDraftOnly = 'ManualSummaryDraftOnlyDRDMV-13940' + randomStr;
+        let templateDataDraft = {
+            "templateName": `${taskTemplateNameDraftOnly}`,
+            "templateSummary": `${manualTaskSummaryDraftOnly}`,
+            "templateStatus": "Draft",
+        }
+        let tasktemplateDraft = await apiHelper.createManualTaskTemplate(templateDataDraft);
+        await apiHelper.createDynamicDataOnTemplate(tasktemplateDraft.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
+        //active
+        let taskTemplateName = 'ManualtaskActiveDRDMV-13940' + randomStr;
+        let manualTaskSummary = 'ManualSummaryActiveDRDMV-13940' + randomStr;
+        let templateDataActive = {
+            "templateName": `${taskTemplateName}`,
+            "templateSummary": `${manualTaskSummary}`,
+            "templateStatus": "Active",
+        }
+        await apiHelper.createManualTaskTemplate(templateDataActive);
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await utilGrid.searchAndOpenHyperlink(taskTemplateName);
+        expect(await viewTaskPo.isDynamicFieldPresent()).toBeFalsy('fields are present');
+        //draft to active
+        await navigationPage.gotoCaseConsole();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await utilGrid.searchAndOpenHyperlink(taskTemplateNameDraft);
+        await viewTaskTemplate.clickOnEditMetaData();
+        await editTaskTemplate.selectTemplateStatus('Active');
+        await editTaskTemplate.clickOnSaveMetadata();
+        for (let i = 0; i < arr.length; i++) {
+            expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
+        }
+        expect(await viewTaskPo.isManageDynamicFieldLinkDisplayed()).toBeFalsy('Link is present');
+        //draft only
+        await navigationPage.gotoCaseConsole();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await utilGrid.searchAndOpenHyperlink(taskTemplateNameDraftOnly);
+        for (let i = 0; i < arr.length; i++) {
+            expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
+        }
+        expect(await viewTaskPo.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link is not present');
+        //edit
+        await viewTaskTemplate.clickOnEditLink();
+        expect(await editTaskTemplate.isMangeDynamicFieldLinkDisplayed()).toBeTruthy('link not present');
+        for (let i = 0; i < arr.length; i++) {
+            expect(await editTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
+        }
+        //Inactive
+        await navigationPage.gotoCaseConsole();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await utilGrid.searchAndOpenHyperlink(taskTemplateNameOne);
+        for (let i = 0; i < arr.length; i++) {
+            expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
+        }
+        expect(await viewTaskPo.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link is not present');
+        //edit
+        await viewTaskTemplate.clickOnEditLink();
+        expect(await editTaskTemplate.isMangeDynamicFieldLinkDisplayed()).toBeTruthy('link not present');
+        for (let i = 0; i < arr.length; i++) {
+            expect(await editTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
+        }
+    }, 190 * 1000);
+
+    //ptidke
+    it('[DRDMV-13122]:[Dynamic Data] [UI] - Dynamic fields and groups display on Case Template preview', async () => {
+        try {
+            let group1 = 'GroupLocalCaseTemplate';
+            let group2 = 'PulishCaseTemplateData';
+            let dynamicFields: string[] = ['LocalNonConfidentialDesc', 'LocalConfidentialDesc', 'nonConfidentialPulicDesc', 'confidentialPublicDesc', 'OuterNonConfidentialDesc', 'ListOfDataNameDesc', 'OuterConfidentialDesc'];
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            let caseTemplateName = randomStr + 'caseTemplateDRDMV-13122';
+            let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13122';
+            let casetemplateData = {
+                "templateName": `${caseTemplateName}`,
+                "templateSummary": `${caseTemaplateSummary}`,
+                "templateStatus": "Active",
+            }
+            await apiHelper.apiLogin('fritz');
+            let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_WITH_CONFIDENTIAL');
+            //qucik case preview
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('qkatawazi');
+            await quickCasePo.selectCaseTemplate(caseTemplateName);
+            await quickCasePo.clickOnCaseTemplate(caseTemplateName);
+            expect(await previewCaseTemplateCasesPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
+            expect(await previewCaseTemplateCasesPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');
+            for (let i = 0; i < dynamicFields.length; i++) {
+                expect(await previewCaseTemplateCasesPo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
+            }
+            await previewCaseTemplateCasesPo.clickOnBackButton();
+            await navigationPage.gotCreateCase();
+            await createCasePo.selectRequester('qkatawazi');
+            await createCasePo.setSummary(caseTemaplateSummary);
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.clickOnCaseTemplate(caseTemplateName);
+            //verify dynmaic groups and fields
+            expect(await previewCaseTemplateCasesPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
+            expect(await previewCaseTemplateCasesPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');
+            for (let i = 0; i < dynamicFields.length; i++) {
+                expect(await previewCaseTemplateCasesPo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
+            }
+            await previewCaseTemplateCasesPo.clickOnBackButton();
+            await selectCasetemplateBladePo.clickOnAllTemplateTab();
+            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+            //verify dynmaic groups and fields
+            expect(await previewCaseTemplateCasesPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
+            expect(await previewCaseTemplateCasesPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');
+            for (let i = 0; i < dynamicFields.length; i++) {
+                expect(await previewCaseTemplateCasesPo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
+            }
+            await previewCaseTemplateCasesPo.clickOnBackButton();
+            await selectCasetemplateBladePo.clickOnCancelButton();
+            await navigationPage.gotoCaseConsole();
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        }
+    }, 160 * 1000);
+
+    //ptidke
+    it('[DRDMV-13131]:[Dynamic Data] [UI] - Dynamic Fields and Groups display on Case and Similar Cases preview', async () => {
+        try {
+            let group1 = 'GroupLocalCaseTemplate';
+            let group2 = 'PulishCaseTemplateData';
+            let dynamicFields: string[] = ['LocalNonConfidentialDesc', 'LocalConfidentialDesc', 'nonConfidentialPulicDesc', 'confidentialPublicDesc', 'OuterNonConfidentialDesc', 'ListOfDataNameDesc', 'OuterConfidentialDesc'];
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            let caseTemplateName = randomStr + 'caseTemplateDRDMV-13131';
+            let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13131';
+            let casetemplateData = {
+                "templateName": `${caseTemplateName}`,
+                "templateSummary": `${caseTemaplateSummary}`,
+                "templateStatus": "Active",
+            }
+            await apiHelper.apiLogin('fritz');
+            let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_WITH_CONFIDENTIAL');
+            //qucik case preview
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('qkatawazi');
+            await quickCasePo.selectCaseTemplate(caseTemplateName);
+            await quickCasePo.createCaseButton();
+            //case preview
+            await utilCommon.waitUntilSpinnerToHide();
+            expect(await casePreviewPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
+            expect(await casePreviewPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');
+            for (let i = 0; i < dynamicFields.length; i++) {
+                expect(await casePreviewPo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
+            }
+            await quickCasePo.gotoCaseButton();
+            let caseID = await viewCasePo.getCaseID();
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('qkatawazi');
+            await quickCasePo.selectCaseTemplate(caseTemplateName);
+            await quickCasePo.clickOnRecommandedCase(caseID);
+            //case preview
+            await utilCommon.waitUntilSpinnerToHide();
+            expect(await casePreviewPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
+            expect(await casePreviewPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');
+            for (let i = 0; i < dynamicFields.length; i++) {
+                expect(await casePreviewPo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
+            }
+            await casePreviewPo.clickBackButton();
+            // requester case template
+            let caseTemplateNameWithRequester = randomStr + 'caseTemplateReqDRDMV-13131';
+            let caseTemaplateSummaryRequester = randomStr + 'caseTemplateReqDRDMV-13131';
+            let casetemplateDataRequester = {
+                "templateName": `${caseTemplateNameWithRequester}`,
+                "templateSummary": `${caseTemaplateSummaryRequester}`,
+                "templateStatus": "Active",
+            }
+            await apiHelper.apiLogin('fritz');
+            let newCaseTemplateReq = await apiHelper.createCaseTemplate(casetemplateDataRequester);
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplateReq.id, 'CASE_TEMPLATE_WITH_REQUESTER');
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('qkatawazi');
+            await quickCasePo.selectCaseTemplate(caseTemplateNameWithRequester);
+            await quickCasePo.createCaseButton();
+            expect(await requesterResponseBladePo.getBladeHeading()).toContain("Requester's Response");
+            expect(requesterResponseBladePo.isDynamicGroupDisplayed(group1));
+            expect(requesterResponseBladePo.isDynamicGroupDisplayed(group2));
+            for (let i = 0; i < dynamicFields.length; i++) {
+                expect(await requesterResponseBladePo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present');
+            }
+            await requesterResponseBladePo.clickOkButton();
+            await utilCommon.waitUntilSpinnerToHide();
+            //requester case preview
+            expect(await casePreviewPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
+            expect(await casePreviewPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');
+            for (let i = 0; i < dynamicFields.length; i++) {
+                expect(await casePreviewPo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
+            }
+            await quickCasePo.gotoCaseButton();
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        }
+    }, 160 * 1000);
 })

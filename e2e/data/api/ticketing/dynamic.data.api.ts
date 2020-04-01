@@ -1435,3 +1435,84 @@ export const CASE_TEMPLATE_LONG_FIELDS = {
         }
     ]
 };
+export const CASE_TEMPLATE_WITH_REQUESTER={
+    "templateRecordDefinition": "com.bmc.dsm.case-lib:Case Template",
+    "templateId": " ",
+    "name": "casetemplate",
+    "status": 0,
+    "processName": null,
+    "processDocumentDefinitionId": null,
+    "attributeDefinitions": [
+        {
+            "name": "GroupLocalCaseTemplate",
+            "description": "GroupLocalCaseTemplate",
+            "externalId": "",
+            "type": "GROUP_FIELD",
+            "active": true,
+            "published": false,
+            "shouldPublish": false,
+            "attributes": [
+                {
+                    "name": "LocalNonConfidential",
+                    "description": "LocalNonConfidentialDesc",
+                    "dataType": "TEXT",
+                    "required": false,
+                    "confidential": false,
+                    "dataProviderUserRole": "Requester"
+                },
+                {
+                    "name": "LocalConfidentail",
+                    "description": "LocalConfidentialDesc",
+                    "dataType": "NUMBER",
+                    "required": false,
+                    "confidential": false,
+                    "dataProviderUserRole": "Requester",
+                    "type": "SIMPLE_FIELD"
+                }
+            ]
+        },
+        {
+            "name": "PulishCaseTemplateData",
+            "description": "PulishCaseTemplateData",
+            "externalId": "",
+            "type": "GROUP_FIELD",
+            "active": true,
+            "attributes": [
+                {
+                    "name": "nonConfidentialPulic",
+                    "description": "nonConfidentialPulicDesc",
+                    "dataType": "BOOLEAN",
+                    "required": false,
+                    "confidential": false,
+                    "dataProviderUserRole": "Requester"
+                },
+                {
+                    "name": "confidentialPublic",
+                    "description": "confidentialPublicDesc",
+                    "dataType": "DATE",
+                    "required": false,
+                    "confidential": false,
+                    "dataProviderUserRole": "Requester"
+                }
+            ],
+            "published": false,
+            "shouldPublish": true
+        },
+        {
+            "name": "OuterNonConfidential",
+            "description": "OuterNonConfidentialDesc",
+            "dataType": "TIME",
+            "required": false,
+            "confidential": false,
+            "dataProviderUserRole": "Requester"
+        },
+        {
+            "name": "OuterConfidential",
+            "description": "OuterConfidentialDesc",
+            "dataType": "TEXT",
+            "required": false,
+            "confidential": false,
+            "dataProviderUserRole": "Requester"
+        }
+    ]
+};
