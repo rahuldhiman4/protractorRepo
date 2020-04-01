@@ -32,6 +32,10 @@ import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../d
 import { UPDATE_PERSON_AS_VIP } from '../data/api/foundation/update.person.data.api';
 import { SERVICE_TARGET_PAYLOAD } from '../data/api/slm/serviceTarget.api';
 import { ADHOC_TASK_PAYLOAD, UPDATE_TASK_STATUS, TASK_CREATION_FROM_TEMPLATE } from '../data/api/task/task.creation.api';
+import { KNOWLEDGE_APPROVAL_CONFIG, KNOWLEDGE_APPROVAL_FLOW_CONFIG } from '../data/api/knowledge/knowledge-approvals-config.api';
+import { APPROVAL_ACTION } from "../data/api/approval/approval.action.api";
+import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge-article-external.api";
+
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -840,7 +844,6 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : knowledgeArticleData.fieldInstances[1000000065].value;
             knowledgeArticleData.fieldInstances[200000007].value = data.region ? await apiCoreUtil.getRegionGuid(data.region) : knowledgeArticleData.fieldInstances[200000007].value;
             knowledgeArticleData.fieldInstances[260000001].value = data.site ? await apiCoreUtil.getSiteGuid(data.site) : knowledgeArticleData.fieldInstances[260000001].value;
-            knowledgeArticleData.fieldInstances[302300513].value = data.assignee ? await apiCoreUtil.getPersonGuid(data.assignee) : knowledgeArticleData.fieldInstances[302300513].value;
             knowledgeArticleData.fieldInstances[450000157].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[450000157].value;
             if (data.assigneeSupportGroup) {
                 let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.assigneeSupportGroup);
@@ -849,6 +852,14 @@ class ApiHelper {
                     "value": `${assigneeSupportGroup}`
                 }
                 knowledgeArticleData.fieldInstances["302300512"] = assineeSupportGroupData;
+                if (data.assignee) {
+                    let assigneeGuid = await coreApi.getPersonGuid(data.assignee);
+                    let assigneeData = {
+                        "id": 302300513,
+                        "value": `${assigneeGuid}`
+                    }
+                    knowledgeArticleData.fieldInstances["302300513"] = assigneeData;
+                }
             }
             let articleData = {
                 recordInstance: knowledgeArticleData,
@@ -865,7 +876,6 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : knowledgeArticleData.fieldInstances[1000000065].value;
             knowledgeArticleData.fieldInstances[200000007].value = data.region ? await apiCoreUtil.getRegionGuid(data.region) : knowledgeArticleData.fieldInstances[200000007].value;
             knowledgeArticleData.fieldInstances[260000001].value = data.site ? await apiCoreUtil.getSiteGuid(data.site) : knowledgeArticleData.fieldInstances[260000001].value;
-            knowledgeArticleData.fieldInstances[302300513].value = data.assignee ? await apiCoreUtil.getPersonGuid(data.assignee) : knowledgeArticleData.fieldInstances[302300513].value;
             knowledgeArticleData.fieldInstances[450000157].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[450000157].value;
             if (data.assigneeSupportGroup) {
                 let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.assigneeSupportGroup);
@@ -874,6 +884,14 @@ class ApiHelper {
                     "value": `${assigneeSupportGroup}`
                 }
                 knowledgeArticleData.fieldInstances["302300512"] = assineeSupportGroupData;
+            }
+            if (data.assignee) {
+                let assigneeGuid = await coreApi.getPersonGuid(data.assignee);
+                let assigneeData = {
+                    "id": 302300513,
+                    "value": `${assigneeGuid}`
+                }
+                knowledgeArticleData.fieldInstances["302300513"] = assigneeData;
             }
             knowledgeArticleResponse = await coreApi.createRecordInstance(knowledgeArticleData);
             console.log('Create Knowledge Article API Status =============>', knowledgeArticleResponse.status);
@@ -892,6 +910,8 @@ class ApiHelper {
         let knowledgeArticleData = await knowledgeArticleFile.UpdateKnowledgeArticleData;
         knowledgeArticleData.id = articleGuid;
         knowledgeArticleData.fieldInstances[302300500].value = constants.Knowledge[articleStatus];
+        knowledgeArticleData.fieldInstances[536870913].value = await coreApi.getStatusGuid('com.bmc.dsm.knowledge', constants.Knowledge[articleStatus], articleStatus);
+
         if (reviewer) {
             let reviewerSGGuid = await apiCoreUtil.getSupportGroupGuid(reviewerGroup);
             let reviewerSGPayload = {
@@ -912,6 +932,7 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[302309801] = reviewerPayload;
             knowledgeArticleData.fieldInstances[450000300] = reviewerCompanyPayload;
         }
+
         let knowledgeArticleResponse: AxiosResponse = await coreApi.updateRecordInstance("com.bmc.dsm.knowledge:Knowledge Article Template", articleGuid, knowledgeArticleData);
         console.log("Status", knowledgeArticleResponse.status);
         return knowledgeArticleResponse.status == 204;
@@ -1485,6 +1506,78 @@ class ApiHelper {
             id: taskId,
             displayId: taskDisplayId
         };
+    }
+
+    async createKnowledgeApprovalMapping(data: any): Promise<boolean> {
+        KNOWLEDGE_APPROVAL_CONFIG.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
+        KNOWLEDGE_APPROVAL_CONFIG.fieldInstances[1000001437].value = data.configName;
+        KNOWLEDGE_APPROVAL_CONFIG.fieldInstances[302300500].value = constants.Knowledge[data.status1];
+        if (data.status2) {
+            KNOWLEDGE_APPROVAL_CONFIG.fieldInstances[302300500].value = KNOWLEDGE_APPROVAL_CONFIG.fieldInstances[302300500].value + ';' + constants.Knowledge[data.status2];
+        }
+        if (data.status3) {
+            KNOWLEDGE_APPROVAL_CONFIG.fieldInstances[302300500].value = KNOWLEDGE_APPROVAL_CONFIG.fieldInstances[302300500].value + ';' + constants.Knowledge[data.status3];
+        }
+
+        let knowledgeApproval: AxiosResponse = await coreApi.createRecordInstance(KNOWLEDGE_APPROVAL_CONFIG);
+        console.log('Knowledge Approvals Status =============>', knowledgeApproval.status);
+        return knowledgeApproval.status == 201;
+    }
+
+    async createKnowledgeApprovalFlow(data: any): Promise<boolean> {
+        KNOWLEDGE_APPROVAL_FLOW_CONFIG.approvalFlowConfigurationList[0].flowName = data.flowName;
+        KNOWLEDGE_APPROVAL_FLOW_CONFIG.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
+        KNOWLEDGE_APPROVAL_FLOW_CONFIG.approvalFlowConfigurationList[0].qualification = data.qualification;
+
+        let response = await axios.put(
+            "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.knowledge:Knowledge Article Template/flowGroupName/Default Article Approval Flow Group",
+            KNOWLEDGE_APPROVAL_FLOW_CONFIG,
+        )
+        console.log('Knowledge Approval Flow Status =============>', response.status);
+        return response.status == 204;
+    }
+
+    async deleteKnowledgeApprovalMapping(approvalMappingName?: string): Promise<boolean> {
+        if (approvalMappingName) {
+            let allRecords = await coreApi.getGuid("com.bmc.dsm.knowledge:Knowledge Approval Mapping");
+            let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+                return obj[1000001437] === approvalMappingName;
+            });
+            let approvalMapGuid = entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
+            if (approvalMapGuid) {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.knowledge:Knowledge Approval Mapping', approvalMapGuid);
+            }
+        } else {
+            let allApprovalMapRecords = await coreApi.getGuid("com.bmc.dsm.knowledge:Knowledge Approval Mapping");
+            let allApprovalMapArrayMap = allApprovalMapRecords.data.data.map(async (obj: string) => {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.knowledge:Knowledge Approval Mapping', obj[379]);
+            });
+            return await Promise.all(allApprovalMapArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
+        }
+    }
+
+    async approverAction(recordGuid: string, action: string): Promise<boolean> {
+        APPROVAL_ACTION.commands[0].command = action;
+        APPROVAL_ACTION.commands[0].requestID = await coreApi.getSignatureInstanceId(recordGuid);
+
+        await browser.sleep(20000);
+        let response = await axios.post(
+            commandUri,
+            APPROVAL_ACTION
+        );
+        console.log('Approver Action API Status =============>', response.status);
+        return response.status == 200;
+    }
+
+    async updateKnowledgeArticleExternalFlag(articleGuid: string, isExternal: boolean): Promise<boolean>{
+        KNOWLEDGE_ARTICLE_EXTERNAL_FLAG.id = articleGuid;
+        isExternal? KNOWLEDGE_ARTICLE_EXTERNAL_FLAG.fieldInstances[302312186].value = 0: KNOWLEDGE_ARTICLE_EXTERNAL_FLAG.fieldInstances[302312186].value = 1;
+        let response = await coreApi.updateRecordInstance('com.bmc.dsm.knowledge:Knowledge Article Template', articleGuid, KNOWLEDGE_ARTICLE_EXTERNAL_FLAG);
+        
+        console.log('Update Knowledge Article External Flag API Status =============>', response.status);
+        return response.status == 204;
     }
 
 }

@@ -700,10 +700,45 @@ export const SERVICE_TARGET_AFTERCOMPLETED_TASK = {
     "svtName": "SVT AfterCompleted to Closed"
 };
 
-export const ARTICLE_DATA = {
-    "knowledgeSet": "HR",
+export const ARTICLE_DATA_ASSIGNTOME = {
+    "knowledgeSet": "Phylum Knowledge Set",
     "title": "KnowledgeArticle",
     "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
     "assignee": "idphylumkuser",
     "assigneeSupportGroup": "Phylum Support Group1"
 };
+
+export const ARTICLE_DATA_ASSIGNTOGROUP = {
+    "knowledgeSet": "Phylum Knowledge Set",
+    "title": "KnowledgeArticle",
+    "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+    "assigneeSupportGroup": "Phylum Support Group1"
+};
+
+export const ARTICLE_DATA_ASSIGNTOANOTHERUSER = {
+    "knowledgeSet": "Phylum Knowledge Set",
+    "title": "KnowledgeArticle",
+    "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+    "assignee": "idphylumkuser2",
+    "assigneeSupportGroup": "Phylum Support Group1"
+};
+
+export const KNOWLEDGE_SET_DATA = {
+    "knowledgeSetTitle": "Phylum Knowledge Set",
+    "knowledgeSetDesc": "Phylum Knowledge Description",
+    "company": "Phylum"
+};
+
+export const KNOWLEDGE_APPROVAL_MAPPING_DATA = {
+    "configName": "Approval Config Name",
+    "company": "Phylum",
+    "status1": "CancelApproval",
+    "status2": "PublishApproval",
+    "status3": "RetireApproval"
+};
+
+export const KNOWLEDGE_APPROVAL_FLOW_DATA = {
+    "flowName": "Preset Filter",
+    "approver": "idphylumkuser",
+    "qualification": "'Operational Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c.304405421}"
+}

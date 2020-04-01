@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import * as uuid from 'uuid';
+import { browser } from 'protractor';
 
 const recordInstanceUri = "api/rx/application/record/recordinstance";
-const templateUri = "api/rx/application/command";
 const dynamicDataUri = "api/com.bmc.dsm.ticketing-lib/dynamicdata/definition";
 let FormData = require('form-data');
 let fs = require('fs');
@@ -55,10 +55,21 @@ class ApiCoreUtil {
         return allRecords;
     }
 
-    async getEmailTemplateGuid(emailTemplateName: string,company?:string): Promise<string> {
+    async getSignatureInstanceId(guid: string): Promise<string> {
+        let dataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.approval.application.datapage.SignatureDetailDataPageQuery&pageSize=-1&startIndex=0&status=Pending&requestGUID="
+            + guid;
+        await browser.sleep(10000);
+        let allRecords = await axios.get(
+            dataPageUri
+        );
+        console.log('Get SignatureInstance ID API Status =============>', allRecords.status);
+        return allRecords.data.data.length >= 1 ? allRecords.data.data[0]['signatureInstanceID'] || null : null;
+    }
+
+    async getEmailTemplateGuid(emailTemplateName: string, company?: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.notification-lib:NotificationTemplate");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-            if(company) return obj[304412071] === emailTemplateName && obj[301566300] === company;
+            if (company) return obj[304412071] === emailTemplateName && obj[301566300] === company;
             else return obj[304412071] === emailTemplateName;
         });
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
@@ -149,7 +160,6 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
-
     async getBusinessUnitGuid(orgName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Business Unit");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
@@ -222,6 +232,20 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getStatusGuid(applicationBundleId: string, statusValue: string, statusName?: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.shared-services-lib:Status");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[61001] === applicationBundleId && obj[302259063] == statusValue;
+        });
+        if (entityObj.length >= 1) {return entityObj[0]['179'];}
+        else {
+            let entityObj1: any = allRecords.data.data.filter(function (obj1: string[]) {
+                return obj1[302307031] === statusName && obj1[302259063] == statusValue;
+            });
+            return entityObj1.length >= 1 ? entityObj1[0]['179'] || null : null;
+        }
+    }
+
     async associateFoundationElements(associationName: string, entity1: string, entity2: string): Promise<void> {
         const associateEntities = await axios.post(
             "api/rx/application/command",
@@ -284,13 +308,13 @@ class ApiCoreUtil {
         for (let i: number = 0; i < Object.keys(parameters).length; i++) {
             let key: string = Object.keys(parameters)[i].toString();
             let value: any = Object.values(parameters)[i];
-            if(key == 'recordInstance' || key == 'associationOperations'){
+            if (key == 'recordInstance' || key == 'associationOperations') {
                 bodyFormData.append(key, JSON.stringify(value));
             } else if (key == '1000000351' || key == '302302781') {
                 bodyFormData.append(key, fs.createReadStream(value.toString()));
             } else bodyFormData.append(key, value);
         }
-        
+
         const headers = {
             ...bodyFormData.getHeaders(),
         };
