@@ -1362,7 +1362,6 @@ describe('Case Activity', () => {
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "SMEReview", "KMills", "GB Support 2", "Petramco")).toBeTruthy("Article with SME Review status not updated.");
-            console.log('>>>>>>>>>>>>>>>>>>>>>', KADetails.displayId);
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
 
