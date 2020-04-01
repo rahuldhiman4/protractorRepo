@@ -1,8 +1,8 @@
 import { resolve } from "path";
-import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions} from "protractor";
 import utilCommon from '../../utils/util.common';
-
-
+import selectCasetemplateBladePo from './select-casetemplate-blade.po';
+import utilGrid from '../../utils/util.grid';
 class CreateCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -52,6 +52,8 @@ class CreateCasePage {
         assignedGroupGuid: '79750d81-d8e5-447e-b923-94c54f2d3310',
         labelGuid: '47f29467-cdd3-4e04-a7f2-ceb795e8b6e5',
         attachmentField: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] input[type="file"]',
+        clearRequesterButton: '[rx-view-component-id="be946309-c359-40fe-a579-1a0e0d04bb01"] button',
+        templateValue: '.ui-grid__link',
     }
 
     async addDescriptionAttachment(fileToUpload: string): Promise<void> {
@@ -297,6 +299,16 @@ class CreateCasePage {
 
     async getAssigneeTitle(assignee: string): Promise<void> {
         await utilCommon.isFieldLabelDisplayed(this.selectors.assigneGuid, assignee);
+    }
+
+    async clickClearRequesterButton(): Promise<void> {
+        await $(this.selectors.clearRequesterButton).click();
+    }
+
+    async isTemplateNamePresent(templateName: string) :Promise<boolean>{    
+        await selectCasetemplateBladePo.clickOnAllTemplateTab();
+        await utilGrid.searchOnGridConsole(templateName);
+        return await element(by.cssContainingText(this.selectors.templateValue,templateName)).isPresent();
     }
 }
 
