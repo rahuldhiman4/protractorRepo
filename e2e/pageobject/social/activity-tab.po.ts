@@ -59,6 +59,52 @@ class ActivityTabPage {
         emailBodyImage: '.email-body img',
         publicCheckbox: '.activity-feed-note-external .d-checkbox__item',
         logTitle: '.title[ux-bind-html="title"]',
+        showLessLink: '.general-notes .less',
+        showMoreLinkForAttachment: '.rx-attachment-show-text[aria-label="Show more attachments"]',
+        showLessLinkForAttachment: '.rx-attachment-show-text[aria-label="Show less attachments"]',
+    }
+
+    async isAddNoteTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).element(by.cssContainingText('.activity-general-note', bodyText)).isDisplayed().then(async (result) => {
+            if (result) return true;
+            else return false;
+        });
+    }
+
+    async clickShowMoreLinkInActivity(activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLink).isDisplayed().then(async (link) => {
+            if (link) {
+                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLink).click();
+                return true;
+            } else return false;
+        });
+    }
+
+    async clickShowLessLinkInActivity(activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLink).isDisplayed().then(async (link) => {
+            if (link) {
+                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLink).click();
+                return true;
+            } else return false;
+        });
+    }
+
+    async clickShowMoreLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).isPresent().then(async (link) => {
+            if (link) {
+                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).click();
+                return true;
+            } else return false;
+        });
+    }
+
+    async clickShowLessLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
+        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLinkForAttachment).isPresent().then(async (link) => {
+            if (link) {
+                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLinkForAttachment).click();
+                return true;
+            } else return false;
+        });
     }
 
     async clickOnShowMore(): Promise<void> {
@@ -370,7 +416,7 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText('[.activity-general-note]', bodyText)).isDisplayed().then(async (result) => {
+        return await element(by.cssContainingText('.activity-general-note', bodyText)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });

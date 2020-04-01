@@ -238,5 +238,20 @@ class QuickCasePage {
     async isFilterAvailable(filterText: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.advancedSearchFields, filterText)).isPresent();
     }
+
+    async clickOnCaseTemplate(templateName: string): Promise<void> {
+        await $(`div[title=${templateName}]`).click();
+    }
+
+    async clickOnRecommandedCase(caseID:string):Promise<void>{
+        let recommandedCount:number= await $$('.km-group-list-item__title').count();
+        for(let i=0;i<recommandedCount;i++)
+        {
+            let value=await $$('.km-group-list-item__title').get(i).getText();
+            if(value==caseID){
+                await $$('.km-group-list-item__title').get(i).click();
+            }
+        } 
+    }
 }
 export default new QuickCasePage();

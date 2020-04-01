@@ -65,6 +65,10 @@ class ViewCasePage {
         dynamicFieldsValue: '[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] p',
     }
 
+    async isGroupNameDisplayed(groupName:string):Promise<boolean>{
+        return await $(`[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] .group-container div[title=${groupName}]}`).isDisplayed(); 
+    }
+
     async isAttachedDocumentPresent(fileName: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.attachmentFile, fileName)).isPresent();
     }
@@ -410,7 +414,7 @@ class ViewCasePage {
         }
         return false;
     }
-
+    
     async getValueOfDynamicFields(fieldName: string): Promise<string> {
         let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
         for (let i = 0; i < dynamicFields; i++) {

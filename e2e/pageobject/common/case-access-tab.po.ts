@@ -1,5 +1,4 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-
+import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 class CaseAccessTab {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -13,11 +12,15 @@ class CaseAccessTab {
         dropdownList: '.options li',
         searchSupportGroup: '[placeholder="Search for Support Groups"]',
         searchOrganizationName: '[placeholder="Search Organizations"]',
+        searchBusinessUnit: '[placeholder="Search for Business Unit"]',
+        searchDepartment: '[placeholder="Search for Departments"]',
+        businessUnit: '.flex-item .ac-business-unit-field button',
+        department: '.flex-item .ac-support-department-field button',
         agentAssignWriteAccess: '.ac-assign-person-write-label',
     }
     
     async clickOnSupportGroupAccessORAgentAccessButton(agentName: string): Promise<void> {
-        await $(this.selectors.agentAccess).click();
+        //await $(this.selectors.agentAccess).click();
         await element(by.cssContainingText(this.selectors.agentAccess, agentName)).click();
     }
 
@@ -51,6 +54,20 @@ class CaseAccessTab {
         await $(this.selectors.supportGroup).click();
         await $(this.selectors.searchSupportGroup).sendKeys(SupportValue);
         let option = await element(by.cssContainingText(this.selectors.dropdownList, SupportValue));
+        await option.click();
+    }
+    
+    async selectBusinessUnit(businessUnitValue: string): Promise<void> {
+        await $(this.selectors.businessUnit).click();
+        await $(this.selectors.searchBusinessUnit).sendKeys(businessUnitValue);
+        let option = await element(by.cssContainingText(this.selectors.dropdownList, businessUnitValue));
+        await option.click();
+    }
+
+    async selectDepartment(DepartmentValue: string): Promise<void> {
+        await $(this.selectors.department).click();
+        await $(this.selectors.searchDepartment).sendKeys(DepartmentValue);
+        let option = await element(by.cssContainingText(this.selectors.dropdownList, DepartmentValue));
         await option.click();
     }
 

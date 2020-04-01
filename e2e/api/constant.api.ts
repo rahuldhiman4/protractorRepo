@@ -22,7 +22,12 @@ export enum Knowledge {
     Retired = 6000,
     Closed = 9000,
     Canceled = 7000,
-}
+    PublishApproval = 4000,
+    RetireApproval = 5500,
+    CancelApproval = 6500,
+    BeforePublished = 3500,
+    AfterPublished = 5250
+}   
 export enum MenuItemStatus {
     Active = 0,
     Inactive = 5,

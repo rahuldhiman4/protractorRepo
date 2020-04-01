@@ -1,4 +1,4 @@
-import { $, element, by, $$, protractor, ElementFinder, browser, ProtractorExpectedConditions } from "protractor";
+import { $, $$, protractor,ElementFinder, browser, ProtractorExpectedConditions, element, by } from "protractor";
 import utilCommon from "../../../utils/util.common";
 
 class StatusConfigPage {
@@ -29,7 +29,7 @@ class StatusConfigPage {
         await $(this.selectors.mandatoryCheckBox).click();
     }
 
-    async setStatusReason(newStatus:string): Promise<void> {
+    async setStatusReason(newStatus: string): Promise<void> {
         await $(this.selectors.manageLink).click();
         await $(this.selectors.addStatusReason).click();
         await $(this.selectors.addStatusReason).click();
@@ -39,6 +39,11 @@ class StatusConfigPage {
         await $$(this.selectors.settingPanelButtons).first().click();
 
     }
+
+    async saveSetting(): Promise<void> {
+        await $$(this.selectors.settingPanelButtons).first().click();
+    }
+
 
     async selectFlowset(flowset: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.flowsetGuid, flowset);
@@ -79,7 +84,7 @@ class StatusConfigPage {
         return await $(`[rx-view-component-id="${companyGuid}"] span`).getText();
     }
 
-    async clickonEditStatus(status: string): Promise<void> {
+    async clickEditStatus(status: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.status, status)).click();
     }
 
@@ -179,10 +184,12 @@ class StatusConfigPage {
         }
         if (!status) {
             let modelId: string = undefined;
+            let label: string = undefined;
             let statusesLineLocator = $$('.joint-type-standard');
             for (let i: number = 0; i < await statusesLineLocator.count(); i++) {
                 let lineElement = await statusesLineLocator.get(i);
-                let label: string = await lineElement.$('path[joint-selector="line"]').getAttribute('data-label');
+                try{ label = await lineElement.$('path[joint-selector="line"]').getAttribute('data-label'); }
+                catch(ex){console.log('Searching for the Status Locator');}
                 if (label == `${status1}--${status2}`) {
                     modelId = await lineElement.getAttribute('model-id');
                     break;

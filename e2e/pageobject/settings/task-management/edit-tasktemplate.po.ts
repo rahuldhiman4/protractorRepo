@@ -1,4 +1,4 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class EditTaskTemplate {
@@ -24,6 +24,8 @@ class EditTaskTemplate {
         cancelMetadata: '[rx-view-component-id="209049eb-ef6d-4ddd-8ee4-257ff7a878e5"] button',
         label: '6df27c33-b3bf-400c-98f7-a76b2e848374',
         templateStatusAttribute: '[rx-view-component-id="279fd957-576d-4428-b503-a1330cbd9498"] .btn-default',
+        mangeDynamicField:'[rx-view-component-id="60aedaf2-92a3-433f-8024-34e26e71350c"] .edit-link',
+        dynamicField:'[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] .d-textfield__item',
     }
 
     async selectTaskCategoryTier1(category1: string): Promise<void> {
@@ -129,6 +131,21 @@ class EditTaskTemplate {
     async clickOnCancelMetadataButton() {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelMetadata)));
         await $(this.selectors.cancelMetadata).click();
+    }
+
+    async isMangeDynamicFieldLinkDisplayed():Promise<boolean>{
+        return await $(this.selectors.mangeDynamicField).isDisplayed();
+    }
+
+    async isDynamicFieldPresent(dynamic:string):Promise<boolean>{
+        return await element(by.cssContainingText(this.selectors.dynamicField, dynamic)).isPresent().then(async (result) => {
+            if (result) {
+                return await element(by.cssContainingText(this.selectors.dynamicField, dynamic)).getText() == dynamic ? true : false;
+            } else {
+                console.log("dynamic data not present");
+                return false;
+            }
+        });
     }
 }
 
