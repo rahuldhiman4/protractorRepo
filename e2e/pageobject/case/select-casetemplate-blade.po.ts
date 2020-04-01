@@ -62,6 +62,10 @@ class SelectCaseTemplateBlade {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
+
+    async clickOnCaseTemplate(templateName: string): Promise<void> {
+        await $(`div[title=${templateName}]`).click();
+    }
 }
 
 export default new SelectCaseTemplateBlade();

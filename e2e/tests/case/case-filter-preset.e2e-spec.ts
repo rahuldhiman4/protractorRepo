@@ -3,11 +3,10 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import apiHelper from "../../api/api.helper";
 import utilGrid from "../../utils/util.grid";
-import utilCommon from "../../utils/util.common";
 import statusConfig from "../../pageobject/settings/common/status-config.po";
 import * as caseData  from "../../data/ui/case/presetFilter.data.ui"
 
-xdescribe('Case Console Preset Filter', () => {
+describe('Case Console Preset Filter', () => {
 
     let userId1 = "idphylum1@petramco.com";
 

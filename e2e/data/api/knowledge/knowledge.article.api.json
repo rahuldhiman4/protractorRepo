@@ -35,14 +35,15 @@
                 "id": 260000001,
                 "value": "0e3cfe8c958e46bd54722d6cc274399504633acb02011b950228abcf10d02cb59145466d4ac3512155204ac6849562c049c9a719e1f961c4a010eb62dc983a8c"
             },
-            "302300513": {
-                "id": 302300513,
-                "value": "890ef250889afe888fb2bfea5c7254414d4e4c19ded522843cbf4862a43011affe797cbb448b322598fac393d817c4436eabab018cef3f03f3a3fcd8f35b6d7e"
-            },
+            
             "450000157": {
                 "id": 450000157,
                 "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
-            }
+            },
+            "302311201": {
+              "id": 302311201,
+              "value": "<p>article versioning test description</p>"
+            }        
         }
     },
     "UpdateKnowledgeArticleData": {
@@ -53,7 +54,11 @@
             "302300500": {
                 "id": 302300500,
                 "value": "2000"
-            }
+            },
+            "536870913": {
+                "id": 536870913,
+                "value": "AGGAA5V0HGYAQAOKPE1VO9TJUKFF44"
+              }
         }
     }
 }

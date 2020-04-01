@@ -26,5 +26,8 @@ class RequesterResponseBlade {
     async clickOkButton():Promise<void>{    
         await $(this.selectors.okButton).click();
     }
+    async isDynamicGroupDisplayed(groupName:string):Promise<boolean>{
+        return await $(`[rx-view-component-id="4142c923-6eb9-4cae-9fe4-8ca8bde92702"] .group-container div[title=${groupName}]`).isDisplayed();
+    }
 }
 export default new RequesterResponseBlade();

@@ -45,7 +45,8 @@ class ViewTaskTemplate {
         dynamicField: '[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] .d-textfield__item',
         assigneeNameValue: '[rx-view-component-id="bb18eb5c-ba9c-47e1-8593-cd79aefac190"] .person-main a',
         assigneeBusinessUnitValue: '[rx-view-component-id="e4548927-a25e-439e-8e9c-d495c7c87378"] p',
-        assigneeDepartmentValue: '[rx-view-component-id="ea7695f8-ebd3-41e6-b85f-ebd800e9c913"] p',     
+        assigneeDepartmentValue: '[rx-view-component-id="ea7695f8-ebd3-41e6-b85f-ebd800e9c913"] p',  
+        editMetaData:'[rx-view-component-id="8b8bfec6-0ee2-42a3-be4b-ac4f37d060f1"] .edit-link'   
     }
 
 
@@ -273,6 +274,9 @@ class ViewTaskTemplate {
         return await $(this.selectors.assigneeDepartmentValue).getText();
     }
 
+    async clickOnEditMetaData():Promise<void>{
+        await $(this.selectors.editMetaData).click();
+    }
 }
 
 export default new ViewTaskTemplate();

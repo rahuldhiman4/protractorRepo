@@ -110,5 +110,33 @@
 	"qcolumbcille": {
 		"userName": "qcolumbcille@petramco.com",
 		"userPassword": "Password_1234"
+	},
+	"qgeorge": {
+		"userName": "qgeorge@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"kwilson": {
+		"userName": "kwilson@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"kdiva": {
+		"userName": "kdiva@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"kjenner": {
+		"userName": "kjenner@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"kbell": {
+		"userName": "kbell@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"kwethington": {
+		"userName": "kwethington@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"kwilliams": {
+		"userName": "kwilliams@petramco.com",
+		"userPassword": "Password_1234"
 	}
 }

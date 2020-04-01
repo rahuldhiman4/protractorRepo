@@ -99,6 +99,20 @@ class KnowledgeArticlesGridConsole {
         return await $(this.selectors.getAccessText).getText();
     }
 
+    async isFilterValueOnGridDisplayed(columnField:string,fieldValue: string): Promise<boolean> {
+        let arr: string[] = await utilGrid.getAllValuesFromColoumn((this.selectors.knowledgeArticleGridConsoleGuid), columnField);
+        let unique = arr.filter(function (elem, index, self) {
+            return index === self.indexOf(elem);
+        });
+        return unique.length === 1 && unique[0] === fieldValue;
+    }
+
+    async applyFilter(fieldName: string, textValue: string,type:string): Promise<void> {
+        await utilGrid.addFilter(fieldName,textValue,type);
+    }
+
+
+
 }
 
 export default new KnowledgeArticlesGridConsole();
