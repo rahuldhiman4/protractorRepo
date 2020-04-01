@@ -93,44 +93,48 @@ class ActivityTabPage {
     }
 
     async isLogIconDisplayedInActivity(iconName: string, activityNumber: number): Promise<boolean> {
-        if (iconName == 'note_pencil') {
-            return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-note_pencil').isDisplayed().then(async (result) => {
-                if (result) return true;
-                else return false;
-            });
-        }
+        switch (iconName) {
+            case "note_pencil": {
+                return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-note_pencil').isDisplayed().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+                break;
+            }
 
-        else if (iconName == 'pencil') {
-            return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-pencil').isDisplayed().then(async (result) => {
-                if (result) return true;
-                else return false;
-            });
-        }
+            case "pencil": {
+                return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-pencil').isDisplayed().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+                break;
+            }
 
-        else if (iconName == 'comments') {
-            return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-comments').isDisplayed().then(async (result) => {
-                if (result) return true;
-                else return false;
-            });
-        }
-        else if (iconName == 'unflag') {
-            return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-flag_o').isDisplayed().then(async (result) => {
-                if (result) return true;
-                else return false;
-            });
-        }
+            case "comments": {
+                return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-comments').isDisplayed().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+                break;
+            }
 
-        else if (iconName == 'flag') {
-            return await $$('.content-wrapper').get(activityNumber - 1).$('d-icon-flag').isDisplayed().then(async (result) => {
-                if (result) return true;
-                else return false;
-            });
-        }
-        else{
-            return false;
+            case "unflag": {
+                return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-flag_o').isDisplayed().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+                break;
+            }
+
+            case "flag": {
+                return await $$('.content-wrapper').get(activityNumber - 1).$('d-icon-flag').isDisplayed().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+            }
+                break;
         }
     }
-
 
     async clickShowMoreLinkInActivity(activityNumber: number): Promise<boolean> {
         return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLink).isDisplayed().then(async (link) => {
