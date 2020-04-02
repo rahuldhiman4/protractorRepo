@@ -5,41 +5,43 @@ import utilCommon from '../../utils/util.common';
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        addNoteBox: 'ux-activity-feed-add-note input[placeholder]',
-        addNoteBoxEdit: '.activity-feed-note-text',
+        addNoteBox: '.textfield__wrapper .form-control',
+        addNoteBoxEdit: '.textfield__wrapper textarea[id="adapt-textfield-4_textarea"]',
         personPopup: '.popup-person',
-        addNotePostButton: '.activity-feed-note-buttons__right .d-button.d-button_primary',
-        addNoteCancelButton: '.activity-feed-note-buttons__right .d-button_secondary',
-        addNoteAttachLink: '.ux-document-library .d-button',
-        addNoteNotesTemplate: '.d-button.d-button_link.d-icon-note_pencil.social-attach-template.ac-template-button',
+        addNotePostButton: '.activity-feed-note-buttons__right .btn-primary',
+        addNoteCancelButton: '.activity-feed-note-buttons__right .btn-secondary',
+        addNoteAttachLink: '.activity-note .bwf-button-link',
+        addNoteNotesTemplate: '.activity-note .d-icon-note_pencil',
         activityLog: '.log-item__body div[class]',
-        personLink: '.title a',
+        personLink: 'bwf-activity-title a[href].ng-star-inserted',
         filterButton: '.d-icon-filter',
-        filterCheckbox: '.filter-content-box .d-checkbox__item',
-        filterAuthor: '.person-input[placeholder="Enter name, email, or login ID"]',
-        filterPopupApplyOrClearButton: '.filter-options .d-button',
-        activityText: '[rx-view-component-id="34167059-11d4-4e85-8a58-e501544e2461"] [title="Activity"]',
-        FilterTask: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .d-tag-label',
-        FilterPopUp: '.filter-button button',
-        filterApplyButtonEnableDisabled: '.filter-options button[disabled="disabled"]',
-        filterLists: '.d-tag-label',
-        nMoreButton: '.show__more-toggle',
-        closeNmoreLink: '.activity-log-filter',
-        removeIconFilterList: '.tag-pill-item .d-tag-remove-button',
-        activityTab: '.ui-tab-wrapper',
-        appliedActivityFilter: '.tag-pill-item',
-        authorCloseButton: '.d-textfield__action[aria-hidden="false"]',
-        imgPersonProfilePopUp: '.dropdown-menu img[ng-src]',
+        filterCheckbox: '.dropdown-menu .ng-star-inserted .checkbox__input',
+        filterAuthor: '.dropdown input[placeholder="Enter name, email, or login ID"]',
+        filterPopupApplyOrClearButton: '.filter-options button span',
+        // activityText: '[rx-view-component-id="34167059-11d4-4e85-8a58-e501544e2461"] [title="Activity"]',
+        // FilterTask: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .d-tag-label',
+        FilterPopUp: '.bwf-activity-log-filter button[aria-expanded]',
+        
+        filterApplyButtonEnableDisabled: '.filter-options .btn-primary[disabled="disabled"]',
+        filterLists: '.a-tag-active .bwf-text-overflow-ellipsis',
+        nMoreButton: '.bwf-show-more .dropdown-toggle span',
+        // closeNmoreLink: '.activity-log-filter',
+        removeIconFilterList: '.d-flex .close-inverse',
+        activityTab: '.nav-link-wrapper',
+        appliedActivityFilter: '.a-tag .bwf-text-overflow-ellipsis',
+        authorCloseButton: '.bwf-flexi-type-ahead .d-icon-cross',
+        imgPersonProfilePopUp: '.person-image img[src]',
         namePersonProfilePopUp: '.popup-info .popup-person',
         companyPersonProfilePopUp: '.popup-info .popup-organization',
         emailPersonProfilePopUp: '.popup-info .popup-email',
         phoneNumberPersonProfilePopUp: '.popup-info .popup-phone-number',
-        authorFieldEmpty: '.d-textfield__label .ng-not-empty',
-        attachmentLink: '.ac-attachment-button',
-        emailContent: '.log-item__content email',
-        emailAttachmentFileName: '.log-item__content email .rx-attachment-view-name',
-        emailReply: '.log-item__content email .d-icon-reply',
-        emailReplyAll: '.log-item__content email .d-icon-arrow_u',
+        // authorFieldEmpty: '.d-textfield__label .ng-not-empty',
+        attachmentLink: '.bwf-attachment-button button',
+
+        // emailContent: '.log-item__content email',
+        emailReply: '.bwf-button-link[aria-label="Reply"]',
+        emailReplyAll: '.bwf-button-link[aria-label="Reply"]',
+
         dwpSurveyText: '.dwp_survey .log-item__body div',
         viewSurveyBtn: '.dwp_survey .d-button_link',
         dwpQuestions: '.dwp_question',
@@ -48,45 +50,47 @@ class ActivityTabPage {
         dwpIcon: '.dwp_survey .log-item__icon',
         dwpFeedback: '.rx-content.dwp-comment',
         logItems: '.log-item__body',
-        body: '.log-item__body .body',
-        AttachedfileName: '.log-item__body .rx-attachment-view-name',
-        refreshButton: '.activity-log-wrapper .d-icon-left-refresh',
+        // body: '.log-item__body .body',
+        
+        AttachedfileName: '.activity__wrapper .bwf-attachment-container__file-name',
+        refreshButton: '.tab-content .bwf-button-link[aria-label="Refresh"]',
         attachmentField: '.activity-feed-note-buttons__left input[type="file"]',
-        showMoreEmailActivity: '.email .more',
+        showMoreEmailActivity: '.activity__wrapper button[aria-label="Show more"]',
         allTaskActivity: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .fields .value',
         taskActivity: '.fields .value',
-        showMoreLink: '.log-item__content .more',
+        showMoreLink: 'button[aria-label="Show more"]',
         emailBodyImage: '.email-body img',
-        publicCheckbox: '.activity-feed-note-external .d-checkbox__item',
-        logTitle: '.title[ux-bind-html="title"]',
-        showLessLink: '.general-notes .less',
+        publicCheckbox: '.bwf-activity-add-note .checkbox__input',
+        logTitle: '.activity-title',
+        showLessLink: 'button[aria-label="Show less"]',
         showMoreLinkForAttachment: '.rx-attachment-show-text[aria-label="Show more attachments"]',
         showLessLinkForAttachment: '.rx-attachment-show-text[aria-label="Show less attachments"]',
-        lockIcon: '.log-item .d-icon-lock',
+        lockIcon: '.d-icon-lock',
+        activityLogList:'.activity__wrapper',
     }
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
-        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.lockIcon).isDisplayed().then(async (result) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });
     }
 
     async isTitleTextDisplayedInActivity(caseActivityLogTitleText: string, activityNumber: number): Promise<boolean> {
-        return await $$('.content-wrapper').get(activityNumber - 1).element(by.cssContainingText(this.selectors.logTitle, caseActivityLogTitleText)).isDisplayed().then(async (result) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText(this.selectors.logTitle, caseActivityLogTitleText)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });
     }
 
     async isBodyDisplayedInActivity(caseActivityLogTitleText: string, activityNumber: number): Promise<boolean> {
-        return await $$('.content-wrapper').get(activityNumber - 1).element(by.cssContainingText('.body', caseActivityLogTitleText)).isDisplayed().then(async (result) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.body', caseActivityLogTitleText)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });
     }
 
     async isAddNoteTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
-        return await $$('.content-wrapper').get(activityNumber - 1).element(by.cssContainingText('.activity-general-note', bodyText)).isDisplayed().then(async (result) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.collapse-block div div[style="position: relative;"]', bodyText)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });
@@ -95,7 +99,7 @@ class ActivityTabPage {
     async isLogIconDisplayedInActivity(iconName: string, activityNumber: number): Promise<boolean> {
         switch (iconName) {
             case "note_pencil": {
-                return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-note_pencil').isDisplayed().then(async (result) => {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-note_pencil').isDisplayed().then(async (result) => {
                     if (result) return true;
                     else return false;
                 });
@@ -103,7 +107,7 @@ class ActivityTabPage {
             }
 
             case "pencil": {
-                return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-pencil').isDisplayed().then(async (result) => {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-pencil').isDisplayed().then(async (result) => {
                     if (result) return true;
                     else return false;
                 });
@@ -111,7 +115,7 @@ class ActivityTabPage {
             }
 
             case "comments": {
-                return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-comments').isDisplayed().then(async (result) => {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-comments').isDisplayed().then(async (result) => {
                     if (result) return true;
                     else return false;
                 });
@@ -119,7 +123,7 @@ class ActivityTabPage {
             }
 
             case "unflag": {
-                return await $$('.content-wrapper').get(activityNumber - 1).$('.d-icon-flag_o').isDisplayed().then(async (result) => {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-flag_o').isDisplayed().then(async (result) => {
                     if (result) return true;
                     else return false;
                 });
@@ -127,7 +131,7 @@ class ActivityTabPage {
             }
 
             case "flag": {
-                return await $$('.content-wrapper').get(activityNumber - 1).$('d-icon-flag').isDisplayed().then(async (result) => {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('d-icon-flag').isDisplayed().then(async (result) => {
                     if (result) return true;
                     else return false;
                 });
@@ -142,36 +146,36 @@ class ActivityTabPage {
     }
 
     async clickShowMoreLinkInActivity(activityNumber: number): Promise<boolean> {
-        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLink).isDisplayed().then(async (link) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLink).isDisplayed().then(async (link) => {
             if (link) {
-                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLink).click();
+                await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLink).click();
                 return true;
             } else return false;
         });
     }
 
     async clickShowLessLinkInActivity(activityNumber: number): Promise<boolean> {
-        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLink).isDisplayed().then(async (link) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showLessLink).isDisplayed().then(async (link) => {
             if (link) {
-                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLink).click();
+                await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showLessLink).click();
                 return true;
             } else return false;
         });
     }
 
     async clickShowMoreLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
-        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).isPresent().then(async (link) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).isPresent().then(async (link) => {
             if (link) {
-                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).click();
+                await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).click();
                 return true;
             } else return false;
         });
     }
 
     async clickShowLessLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
-        return await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLinkForAttachment).isPresent().then(async (link) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showLessLinkForAttachment).isPresent().then(async (link) => {
             if (link) {
-                await $$('.content-wrapper').get(activityNumber - 1).$(this.selectors.showLessLinkForAttachment).click();
+                await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showLessLinkForAttachment).click();
                 return true;
             } else return false;
         });
@@ -240,7 +244,8 @@ class ActivityTabPage {
 
     async clickOnReply(): Promise<void> {
         //        await utilCommon.waitUntilSpinnerToHide();
-        await element(by.xpath("(//div[contains(@class,'d-icon-reply')])[1]")).click();
+        // await element(by.xpath("(//div[contains(@class,'d-icon-reply')])[1]")).click();
+        await $$(this.selectors.emailReply).first().click();
     }
 
     async clickOnReplyAll(): Promise<void> {
@@ -276,7 +281,7 @@ class ActivityTabPage {
 
     async getemailAttachmentFileName(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailAttachmentFileName)), 5000);
-        let fileName = await $(this.selectors.emailAttachmentFileName).getText();
+        let fileName = await $(this.selectors.AttachedfileName).getText();
         return fileName;
     }
 
@@ -286,6 +291,7 @@ class ActivityTabPage {
         var value = await elem.getText();
         //        await utilCommon.waitUntilSpinnerToHide();
         return value.includes(textToMatch) ? true : false;
+        
     }
 
     async removeFilterList(): Promise<void> {
@@ -326,6 +332,7 @@ class ActivityTabPage {
 
     async isFilterPopUpDisplayed(): Promise<string> {
         return await $(this.selectors.FilterPopUp).getAttribute('aria-expanded');
+        
     }
 
     async clickActivityNoteTextBox(): Promise<void> {
@@ -423,6 +430,7 @@ class ActivityTabPage {
 
     async isAuthorBoxEmpty(): Promise<boolean> {
         return await $(this.selectors.filterAuthor).getAttribute('value') == "" ? true : false;
+        
     }
 
     async searchAuthorOnFilter(AuthorName: string): Promise<void> {
@@ -519,28 +527,6 @@ class ActivityTabPage {
 
     async isPersonLinkPresent(): Promise<boolean> {
         return await $(this.selectors.activityLog).isDisplayed();
-    }
-
-    async getIconOfActivity(caseActivityLogText: string): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .log-item__icon')));
-        return $('.activity_logs [role="listitem"] .log-item__icon').getAttribute('class');
-    }
-
-    async getAuthorOfActivity(caseActivityLogText: string): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .title a')));
-        return $('.activity_logs [role="listitem"] .title a').getText();
-    }
-
-
-
-    async getLinkedTextFromBodyOfActivity(caseActivityLogText: string): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .body')));
-        return $('.activity_logs [role="listitem"] .body a[title]').getText();
-    }
-
-    async getTimeOfActivity(caseActivityLogText: string): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($('.activity_logs [role="listitem"] .time-ago')));
-        return $('.activity_logs [role="listitem"] .time-ago').getAttribute('title');
     }
 
     async isLinkedTextPresentInBodyOfFirstActivity(value: string): Promise<boolean> {
