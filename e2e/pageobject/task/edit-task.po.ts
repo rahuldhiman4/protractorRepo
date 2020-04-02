@@ -5,7 +5,7 @@ import utilCommon from '../../utils/util.common';
 class EditTask {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        taskTypeValue: '[rx-view-component-id="057f2521-313b-40c9-be56-829827512abf"] .ui-select-toggle',
+        taskTypeValue: '[rx-view-component-id="057f2521-313b-40c9-be56-829827512abf"] .dropdown-toggle',
         cancelButton: '[rx-view-component-id="705c3907-a82e-4de4-a8b0-32fe00483403"] button',
         processNameValue: '[rx-view-component-id="7260c238-9e41-4d31-90de-2d46443117b4"] input',
         assignToMe: '.d-icon-left-user_plus',
@@ -21,16 +21,14 @@ class EditTask {
         dynamicDate:'[class="input-group"] input[ng-model="date"]',
         dynamicDateTime:'input[ng-model="datetime"]',
         taskSummary:'[rx-view-component-id="1261e01e-00fb-4e2c-b2ac-72e837f9fcea"] input',
-        automatedTaskType:'[rx-view-component-id="cee6d303-5db9-4b3a-98e1-3096ffebf363"] .ui-select-container',
-        processName:'[rx-view-component-id="880bd8d5-1b16-4c74-a377-4135919c362a"] input'
     }
 
     async isAutomatedTaskTypeDisabled():Promise<boolean>{
-        return await $(this.selectors.automatedTaskType).getAttribute('disabled')=='true'? true: false;
+        return await $(this.selectors.taskTypeValue).getAttribute('disabled')=='true'? true: false;
     }
 
     async isProcessNameDisabled():Promise<boolean>{
-        return await $(this.selectors.processName).getAttribute('readOnly')=='true' ? true:false;
+        return await $(this.selectors.processNameValue).getAttribute('readOnly')=='true' ? true:false;
     }
 
     async setDateValueInDynamicField(value:string):Promise<void>{
