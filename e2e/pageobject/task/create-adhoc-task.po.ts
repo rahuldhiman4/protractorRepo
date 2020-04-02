@@ -11,7 +11,7 @@ class CreateAdhocTaskTemplatePage {
         description: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] textarea',
         taskSummary: '[rx-view-component-id="76b6b259-a085-4d9f-91ac-8c5cbb2bc725"] input',
         priority: 'fe14bbd7-3b72-4e88-b224-b58d3a0eb132',
-        label: '45c4b123-8873-4195-a7db-643f30fd8e50',
+        label: '156b3220-56a1-4349-b595-670961ff215c',
         categoryTier1: '67d80ff1-f2b1-4ebc-ba87-8f60c8b56213',
         categoryTier2: 'de41a8b5-6db3-4ae9-b8f1-5268dfd464b3',
         categoryTier3: 'f6c05c79-5859-4651-8d44-56e83670944a',
@@ -20,17 +20,16 @@ class CreateAdhocTaskTemplatePage {
         changeAssignmentButton: '[rx-view-component-id="1b94ca7a-b3e0-49b7-94a3-70c1aff3c8a4"] button',
         saveAdhocTask: '[rx-view-component-id="e971ed74-8ded-44a4-945f-338067be3df9"] button',
         canceladhocTask: '[rx-view-component-id="73fcc0fa-3282-42a2-bf5d-0e4e4de5fcac"] button',
-        status: '[rx-view-component-id="5c6f476e-c95c-4b24-b202-b4029c94ec02"] .ui-select-toggle',
+        status: '[rx-view-component-id="5c6f476e-c95c-4b24-b202-b4029c94ec02"] .dropdown-toggle',
         attachmentLink: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] button',
-        assignCompany: '[rx-view-component-id="359f0c65-e48c-458d-8f14-3c2fc85c5cf6"] .ui-select-toggle',
-        buisnessUnit: '[rx-view-component-id="d290526a-893e-40c8-bbce-0a8e30c934c0"] .ui-select-toggle',
-        assignee: '[rx-view-component-id="58085538-2875-4bf0-a880-f977bdeb842a"] .ui-select-toggle',
-        department: '[rx-view-component-id="0cfce715-9fa8-4f61-b670-5aff2b0540f3"] .ui-select-toggle',
-        assignedGroup: '[rx-view-component-id="6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d"] .ui-select-toggle',
+        assignCompany: '[rx-view-component-id="359f0c65-e48c-458d-8f14-3c2fc85c5cf6"] .dropdown-toggle',
+        buisnessUnit: '[rx-view-component-id="d290526a-893e-40c8-bbce-0a8e30c934c0"] .dropdown-toggle',
+        assignee: '[rx-view-component-id="58085538-2875-4bf0-a880-f977bdeb842a"] .dropdown-toggle',
+        department: '[rx-view-component-id="0cfce715-9fa8-4f61-b670-5aff2b0540f3"] .dropdown-toggle',
+        assignedGroup: '[rx-view-component-id="6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d"] .dropdown-toggle',
         taskSummaryRequiredText: '76b6b259-a085-4d9f-91ac-8c5cbb2bc725',
         assignedCompanyRequiredText: '359f0c65-e48c-458d-8f14-3c2fc85c5cf6',
         assignedGroupRequiredText: '6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d',
-        attachButton: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] button',
         attachmentField: 'input[type="file"]',
     }
 
@@ -182,7 +181,7 @@ class CreateAdhocTaskTemplatePage {
         }
     }
     async isAttachmentButtonEnabled(): Promise<boolean> {
-        return $(this.selectors.attachButton).isEnabled();
+        return $(this.selectors.attachmentLink).isEnabled();
     }
 
     async addAttachmentInDescription(fileToUpload: string): Promise<void> {
