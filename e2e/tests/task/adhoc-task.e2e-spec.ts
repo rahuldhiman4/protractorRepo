@@ -17,6 +17,7 @@ import { default as manageTask, default as manageTaskBladePo } from "../../pageo
 import viewTask from "../../pageobject/task/view-task.po";
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 describe('Create Adhoc task', () => {
     beforeAll(async () => {
@@ -201,8 +202,8 @@ describe('Create Adhoc task', () => {
         //Add Manual task and Automation Task in Case
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplate);
         await manageTaskBladePo.clickOnCloseButton();
-        await viewCasePage.changeCaseStatus('In Progress');
-        await viewCasePage.clickSaveStatus();
+        await updateStatusBladePo.changeCaseStatus('In Progress');
+        await updateStatusBladePo.clickSaveStatus();
 
 
         //different user

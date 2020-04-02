@@ -11,6 +11,7 @@ import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import apiHelper from '../../api/api.helper';
 import viewCasePo from '../../pageobject/case/view-case.po';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -311,14 +312,14 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
 
             //Change the case status to pending
-            await viewCasePage.changeCaseStatus('Pending');
-            await viewCasePage.setStatusReason('Customer Response');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Pending');
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
 
             //Update the case status to In Progress
-            await viewCasePage.changeCaseStatus('In Progress');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             browser.sleep(95000);
 
@@ -326,27 +327,27 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
 
             //Update the case status to Pending
-            await viewCasePage.changeCaseStatus('Pending');
-            await viewCasePage.setStatusReason('Customer Response');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Pending');
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
 
             //Wait until SLA progress missed goal
             browser.sleep(40000);
-            await viewCasePage.changeCaseStatus('In Progress');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
 
             //Update the case status to Pending
-            await viewCasePage.changeCaseStatus('Pending');
-            await viewCasePage.setStatusReason('Customer Response');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Pending');
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
 
             //Update the case status to Resolved
-            await viewCasePage.changeCaseStatus('Resolved');
-            await viewCasePage.setStatusReason('Auto Resolved');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true);
         }
         catch (error) {
@@ -545,25 +546,25 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickSaveCaseButton();
             await createCasePage.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
-            await viewCasePage.changeCaseStatus('In Progress');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
             await slmProgressBar.clickOnSLAProgressBarInProcessIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationInProcessIconDisplayed()).toBeTruthy('SVT In Process Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('InProcess');
             await serviceTargetInfoPage.clickOnCloseButton();
-            await viewCasePage.changeCaseStatus('Pending');
-            await viewCasePage.setStatusReason('Customer Response');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Pending');
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Pending Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Pending');
             await serviceTargetInfoPage.clickOnCloseButton();
-            await viewCasePage.changeCaseStatus('Assigned');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             await slmProgressBar.clickOnSLAProgressBarInProcessIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
@@ -573,24 +574,24 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(80000);
             await browser.refresh();
             await expect(slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SLA Warning bar is not displayed');
-            await viewCasePage.changeCaseStatus('Pending');
-            await viewCasePage.setStatusReason('Customer Response');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Pending');
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Warning Pending Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Warning Pending');
             await serviceTargetInfoPage.clickOnCloseButton();
-            await viewCasePage.changeCaseStatus('Assigned');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             await browser.sleep(60000);
             await browser.refresh();
             await expect(slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBeTruthy('SLA Missed Goal bar is not displayed');
-            await viewCasePage.changeCaseStatus('Pending');
-            await viewCasePage.setStatusReason('Customer Response');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Pending');
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
@@ -663,17 +664,17 @@ describe('Service Target Tests for Cases', () => {
             await browser.refresh();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
-            await viewCasePage.changeCaseStatus('Pending');
-            await viewCasePage.setStatusReason('Customer Response');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Pending');
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Pending Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Missed Goal Pending');
             await serviceTargetInfoPage.clickOnCloseButton();
-            await viewCasePage.changeCaseStatus('Assigned');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
@@ -742,9 +743,9 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
-            await viewCasePage.changeCaseStatus('Pending');
-            await viewCasePage.setStatusReason('Customer Response');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Pending');
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
@@ -812,8 +813,8 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
-            await viewCasePage.changeCaseStatus('In Progress');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarSVTMetIconDisplayed()).toBeTruthy('Service Target Complete (Met) Icon is not displayed.');
             await slmProgressBar.clickOnSLAProgressBarSVTMetIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
@@ -821,39 +822,39 @@ describe('Service Target Tests for Cases', () => {
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Met');
             await serviceTargetInfoPage.clickOnCloseButton();
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
-            await viewCasePage.changeCaseStatus('Pending');
-            await viewCasePage.setStatusReason('Customer Response');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Pending');
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Pending Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Pending');
             await serviceTargetInfoPage.clickOnCloseButton();
-            await viewCasePage.changeCaseStatus('Assigned');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             await browser.sleep(190000);
             await browser.refresh();
             await expect(slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SLA Warning bar is not displayed');
-            await viewCasePage.changeCaseStatus('Pending');
-            await viewCasePage.setStatusReason('Customer Response');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Pending');
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Warning Pending Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Warning Pending');
             await serviceTargetInfoPage.clickOnCloseButton();
-            await viewCasePage.changeCaseStatus('Assigned');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             await browser.sleep(80000);
             await browser.refresh();
             await expect(slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBeTruthy('SLA Missed Goal bar is not displayed');
-            await viewCasePage.changeCaseStatus('Pending');
-            await viewCasePage.setStatusReason('Customer Response');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Pending');
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
@@ -905,9 +906,9 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
-            await viewCasePage.changeCaseStatus('Pending');
-            await viewCasePage.setStatusReason('Customer Response');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Pending');
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
@@ -960,9 +961,9 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
-            await viewCasePage.changeCaseStatus('Resolved');
-            await viewCasePage.setStatusReason('Auto Resolved');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
             await slmProgressBar.clickOnSLAProgressBarSVTMetIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
@@ -1018,9 +1019,9 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(130000);
             await browser.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SVT Warning Icon is not attached to case.');
-            await viewCasePage.changeCaseStatus('Resolved');
-            await viewCasePage.setStatusReason('Auto Resolved');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
             await slmProgressBar.clickOnSLAProgressBarSVTMetIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
@@ -1179,24 +1180,24 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : InProcess');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
-            await viewCasePage.changeCaseStatus('Pending');
-            await viewCasePage.setStatusReason('Customer Response');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Pending');
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : Pending');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Paused on');
-            await viewCasePage.changeCaseStatus('Assigned');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : InProcess');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
-            await viewCasePage.changeCaseStatus('Resolved');
-            await viewCasePage.setStatusReason('Auto Resolved');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
             expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');

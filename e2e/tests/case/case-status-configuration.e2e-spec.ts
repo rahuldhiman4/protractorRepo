@@ -11,6 +11,7 @@ import utilCommon from '../../utils/util.common';
 describe('Case Status Configuration', () => {
     let flowsetData;
     let flowsetName: string;
+    
 
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');

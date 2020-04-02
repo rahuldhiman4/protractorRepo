@@ -12,6 +12,7 @@ import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import viewCasePo from '../../pageobject/case/view-case.po';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -83,8 +84,8 @@ describe('Service Target Tests for Tasks', () => {
             await adhoctaskTemplate.clickOnSaveAdhoctask();
             //Update the case status to In Progress
             await manageTaskBladePo.clickOnCloseButton();
-            await viewCasePage.changeCaseStatus('In Progress');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
             await manageTask.clickTaskLinkOnManageTask(summary);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
@@ -172,8 +173,8 @@ describe('Service Target Tests for Tasks', () => {
             await manageTaskBladePo.clickOnCloseButton();
 
             //Update the case status to In Progress
-            await viewCasePage.changeCaseStatus('In Progress');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
             await manageTask.clickTaskLinkOnManageTask(manualTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
@@ -184,7 +185,7 @@ describe('Service Target Tests for Tasks', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Completed');
-            await viewCasePage.setStatusReason('Successful');
+            await updateStatusBladePo.setStatusReason('Successful');
             await viewTask.clickOnSaveStatus();
             await viewTask.clickOnViewCase();
             await viewCasePage.openTaskCard(1);
