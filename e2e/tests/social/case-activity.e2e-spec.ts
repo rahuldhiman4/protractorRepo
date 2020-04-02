@@ -12,6 +12,7 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfilePo from '../../pageobject/common/person-profile.po';
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
+import relatedCaseTab from '../../pageobject/common/related-case-tab.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
 import feedbackBladeKnowledgeArticlePo from '../../pageobject/knowledge/feedback-blade-Knowledge-article.po';
 import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
@@ -977,7 +978,7 @@ describe('Case Activity', () => {
             await loginPage.login('elizabeth');
             await navigationPage.goToPersonProfile();
             await personProfilePo.clickOnTab('Related Cases');
-            await relatedTabPage.clickOnCaseSummaryLink(caseData.Summary);
+            await relatedCaseTab.clickOnCaseSummaryLink(caseData.Summary);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing');
             await activityTabPage.clickOnRefreshButton();
             await utilCommon.waitUntilSpinnerToHide();
