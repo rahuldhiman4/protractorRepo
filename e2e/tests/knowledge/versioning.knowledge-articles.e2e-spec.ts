@@ -1,6 +1,7 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import editCasePage from '../../pageobject/case/edit-case.po';
 import quickCase from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
@@ -490,7 +491,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await createCasePage.setSummary(articleInDraftStatus);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab(resourcesTabStr);
 
             //Search with knowledge article with published status and different versions
@@ -522,7 +523,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await createCasePage.setSummary(articleInDraftStatus);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab(resourcesTabStr);
 
             //Search with knowledge article with published status and different versions
@@ -554,7 +555,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await createCasePage.setSummary(articleInDraftStatus);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab(resourcesTabStr);
 
             //Search with knowledge article with published status and different versions
