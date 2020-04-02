@@ -1,8 +1,16 @@
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
+import caseConsolePo from '../../pageobject/case/case-console.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
+import createCasePage from '../../pageobject/case/create-case.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import viewCasePage from "../../pageobject/case/view-case.po";
+import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import consoleCasetemplatePage from '../../pageobject/settings/case-management/console-casetemplate.po';
 import createCaseTemplate from '../../pageobject/settings/case-management/create-casetemplate.po';
 import viewCaseTemplate from '../../pageobject/settings/case-management/view-casetemplate.po';
@@ -10,26 +18,19 @@ import selectTaskTemplate from "../../pageobject/settings/task-management/consol
 import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
-import utilCommon from '../../utils/util.common';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
+import taskConsole from "../../pageobject/task/console-task.po";
+import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
-import createCasePage from '../../pageobject/case/create-case.po';
-import previewCasePo from '../../pageobject/case/case-preview.po';
-import viewCasePage from "../../pageobject/case/view-case.po";
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
-import editTaskPo from '../../pageobject/task/edit-task.po';
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import taskConsole from "../../pageobject/task/console-task.po";
-import caseConsolePo from '../../pageobject/case/case-console.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 let filePath = '../../data/ui/attachment/bwfPdf.pdf';
 
 describe('Create Task Template', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
     });
 
@@ -363,7 +364,7 @@ describe('Create Task Template', () => {
         //Create a Case
         await navigationPage.signOut();
         await loginPage.login('qtao');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + randomStr);
         await createCasePage.clickAssignToMeButton();
@@ -408,7 +409,7 @@ describe('Create Task Template', () => {
         //Create a Case
         await navigationPage.signOut();
         await loginPage.login('qtao');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary DRDMV-5326' + randomStr);
         await createCasePage.clickChangeAssignmentButton();
@@ -524,8 +525,8 @@ describe('Create Task Template', () => {
         await selectTaskTemplate.addColumn(addColoumn);
         await utilGrid.addFilter("Support Group", 'Compensation and Benefits', 'text');
         expect(await utilGrid.isGridRecordPresent('Compensation and Benefits')).toBeTruthy('Compensation and Benefits not present');
-        await utilGrid.clearFilter();        
-        await utilGrid.addFilter("Modified Date", dateFormate+":"+modifiedDateFormate, 'date');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter("Modified Date", dateFormate + ":" + modifiedDateFormate, 'date');
         expect(await utilGrid.isGridRecordPresent(`${taskTemplateName}`)).toBeTruthy(`${taskTemplateName}`);
         await utilGrid.clearFilter();
         await utilGrid.addFilter("Template Name", 'Code of Conduct', 'text');

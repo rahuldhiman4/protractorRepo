@@ -1,17 +1,18 @@
 import { browser } from "protractor";
+import apiHelper from "../../api/api.helper";
+import * as taskData from "../../data/ui/case/presetFilter.data.ui";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import apiHelper from "../../api/api.helper";
-import utilGrid from "../../utils/util.grid";
 import statusConfig from "../../pageobject/settings/common/status-config.po";
-import * as taskData from "../../data/ui/case/presetFilter.data.ui"
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilGrid from "../../utils/util.grid";
 
 describe('Task Console Preset Filter', () => {
 
     let randomString: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteServiceTargets();
         const personDataFile = require('../../data/ui/foundation/person.ui.json');
@@ -50,7 +51,7 @@ describe('Task Console Preset Filter', () => {
         taskData.FAILED_TASK_TEMPLATE.templateName = taskData.FAILED_TASK_TEMPLATE.templateName + randomString;
         await apiHelper.createAutomatedTaskTemplate(taskData.FAILED_TASK_TEMPLATE);
         await navigationPage.gotoTaskConsole();
-    },200*1000);
+    }, 200 * 1000);
 
     afterAll(async () => {
         await navigationPage.signOut();
@@ -538,12 +539,12 @@ describe('Task Console Preset Filter', () => {
         await apiHelper.updateCaseStatus(response1.id, 'InProgress');
         await apiHelper.updateTaskStatus(response2.id, 'Completed', 'Successful');
 
-         //Creating the task with Assignee as support group
-         let response3 = await apiHelper.createCase(taskData.NEW_CRITICALPRIORITY_DRDMV_20878_5);
-         let response4 = await apiHelper.createAdhocTask(response3.id, taskData.TASK_DATA_ASSIGNTOLOGGEDINUSERGROUP);
-         taskId.push(response4.displayId);
+        //Creating the task with Assignee as support group
+        let response3 = await apiHelper.createCase(taskData.NEW_CRITICALPRIORITY_DRDMV_20878_5);
+        let response4 = await apiHelper.createAdhocTask(response3.id, taskData.TASK_DATA_ASSIGNTOLOGGEDINUSERGROUP);
+        taskId.push(response4.displayId);
 
-         //Creating the task with Assignee as another user
+        //Creating the task with Assignee as another user
         let response5 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
         let response6 = await apiHelper.createAdhocTask(response5.id, taskData.TASK_DATA_ASSIGNTOANOTHERUSER);
         taskId.push(response6.displayId);

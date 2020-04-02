@@ -7,13 +7,14 @@ import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 
 describe("Case Preview", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login("qtao");
     });
 
@@ -96,7 +97,7 @@ describe("Case Preview", () => {
     //kgaikwad
     it('[DRDMV-13642,DRDMV-13641]: Create a Case from console with Template and check Case Preview', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         browser.sleep(10000);
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary(caseSummary);
@@ -147,7 +148,7 @@ describe("Case Preview", () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
 
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setLabel(label);
         await createCasePo.setSummary(caseSummary);

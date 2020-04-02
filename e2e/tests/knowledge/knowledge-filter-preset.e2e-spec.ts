@@ -1,10 +1,11 @@
 import { browser } from "protractor";
+import apiHelper from "../../api/api.helper";
+import { ARTICLE_DATA_ASSIGNTOANOTHERUSER, ARTICLE_DATA_ASSIGNTOGROUP, ARTICLE_DATA_ASSIGNTOME, KNOWLEDGE_APPROVAL_FLOW_DATA, KNOWLEDGE_APPROVAL_MAPPING_DATA, KNOWLEDGE_SET_DATA } from "../../data/ui/case/presetFilter.data.ui";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import apiHelper from "../../api/api.helper";
-import utilGrid from "../../utils/util.grid";
 import statusConfigPO from "../../pageobject/settings/common/status-config.po";
-import { ARTICLE_DATA_ASSIGNTOME, KNOWLEDGE_SET_DATA, KNOWLEDGE_APPROVAL_MAPPING_DATA, KNOWLEDGE_APPROVAL_FLOW_DATA, ARTICLE_DATA_ASSIGNTOGROUP, ARTICLE_DATA_ASSIGNTOANOTHERUSER } from "../../data/ui/case/presetFilter.data.ui";
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilGrid from "../../utils/util.grid";
 
 xdescribe('Knowledge Console Preset Filter', () => {
 
@@ -13,7 +14,7 @@ xdescribe('Knowledge Console Preset Filter', () => {
     let knowledgeSetTitle = undefined;
 
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
 
         //Create the Phylum users
         await apiHelper.apiLogin('tadmin');

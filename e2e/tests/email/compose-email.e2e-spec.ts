@@ -8,6 +8,7 @@ import linkPropertiesPo from '../../pageobject/common/ck-editor/link-properties.
 import tablePropertiesPo from '../../pageobject/common/ck-editor/table-properties.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import composeMail from '../../pageobject/email/compose-mail.po';
 import { default as emailTemplateBladePo, default as selectEmailTemplateBladePo } from '../../pageobject/email/select-email-template-blade.po';
 import imagePropertiesPo from '../../pageobject/settings/common/image-properties.po';
@@ -18,9 +19,9 @@ import copyNotificationTemplatePo from '../../pageobject/settings/notification-c
 import editMessageTextBladePo from '../../pageobject/settings/notification-config/edit-Message-Text-Blade.po';
 import editNotificationTemplatePo from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from "../../utils/util.common";
 import utilGrid from '../../utils/util.grid';
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 let emailTemplateData = require('../../data/ui/email/email.template.api.json');
 let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -45,7 +46,7 @@ describe("Compose Email", () => {
 
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login("qtao");
         await apiHelper.apiLogin('tadmin');
         emailGuid = await apiHelper.createEmailConfiguration();

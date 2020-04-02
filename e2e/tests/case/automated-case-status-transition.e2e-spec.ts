@@ -7,12 +7,13 @@ import notificationPo from '../../pageobject/notification/notification.po';
 import automatedStatusTransitionConsole from "../../pageobject/settings/case-management/automated-status-transition-console.po";
 import automatedStatusTransitionCreatePage from "../../pageobject/settings/case-management/create-automated-status-config.po";
 import automatedStatusTransitionEditPage from "../../pageobject/settings/case-management/edit-automated-status-config.po";
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 
 describe('Automated Case Status Transition', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
@@ -246,7 +247,7 @@ describe('Automated Case Status Transition', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
         await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
-        
+
         expect(await automatedStatusTransitionCreatePage.isNameRequiredText()).toBeTruthy("Name Required text not present");
         expect(await automatedStatusTransitionCreatePage.isCompanyRequiredText()).toBeTruthy("Company Required text not present");
         expect(await automatedStatusTransitionCreatePage.isFromStatusRequiredText()).toBeTruthy("From Status Required text not present");
@@ -268,6 +269,6 @@ describe('Automated Case Status Transition', () => {
         await automatedStatusTransitionCreatePage.setCategoryTier4Value('Failure');
         await automatedStatusTransitionCreatePage.setLabelValue(label);
         await automatedStatusTransitionCreatePage.saveConfig();
-    },180*1000);
+    }, 180 * 1000);
 
 })

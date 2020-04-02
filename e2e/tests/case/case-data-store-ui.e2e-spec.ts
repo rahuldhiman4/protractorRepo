@@ -1,38 +1,34 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
-import createCasePage from '../../pageobject/case/create-case.po';
-import viewCasePage from "../../pageobject/case/view-case.po";
-import dynamicFieldsPage from '../../pageobject/common/dynamic-fields.po';
+import { default as casePreviewPo, default as previewCasePo } from '../../pageobject/case/case-preview.po';
+import { default as createCasePage, default as createCasePo } from '../../pageobject/case/create-case.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
+import requesterResponseBladePo from '../../pageobject/case/requester-response-blade.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import { default as viewCasePage, default as viewCasePo } from "../../pageobject/case/view-case.po";
+import { default as dynamicFieldsPage, default as dynamicFieldsPo } from '../../pageobject/common/dynamic-fields.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
+import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template-cases.po';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import createTaskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
-import manageTask from "../../pageobject/task/manage-task-blade.po";
 import taskConsole from "../../pageobject/task/console-task.po";
-import utilCommon from '../../utils/util.common';
-import viewTaskPo from '../../pageobject/task/view-task.po';
-import createCasePo from '../../pageobject/case/create-case.po';
-import previewCasePo from '../../pageobject/case/case-preview.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import requesterResponseBladePo from '../../pageobject/case/requester-response-blade.po';
-import quickCasePo from '../../pageobject/case/quick-case.po';
-import { isArray } from 'util';
-import utilGrid from '../../utils/util.grid';
-import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
-import dynamicFieldsPo from '../../pageobject/common/dynamic-fields.po';
-import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
-import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template-cases.po';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
 import editTaskPo from '../../pageobject/task/edit-task.po';
+import manageTask from "../../pageobject/task/manage-task-blade.po";
+import viewTaskPo from '../../pageobject/task/view-task.po';
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 
 describe('Case Data Store', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
     });
 
@@ -131,7 +127,7 @@ describe('Case Data Store', () => {
 
             await navigationPage.signOut();
             await loginPage.login('qtao');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary ' + manualTaskSummary);
             await createCasePage.clickAssignToMeButton();
@@ -176,7 +172,7 @@ describe('Case Data Store', () => {
             await apiHelper.apiLogin('fritz');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qkatawazi');
             await createCasePo.setSummary('new cases');
             await createCasePo.clickSelectCaseTemplateButton();
@@ -575,7 +571,7 @@ describe('Case Data Store', () => {
                 expect(await previewCaseTemplateCasesPo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
             }
             await previewCaseTemplateCasesPo.clickOnBackButton();
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qkatawazi');
             await createCasePo.setSummary(caseTemaplateSummary);
             await createCasePo.clickSelectCaseTemplateButton();

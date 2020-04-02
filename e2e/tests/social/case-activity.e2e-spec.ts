@@ -3,16 +3,16 @@ import apiHelper from "../../api/api.helper";
 import { ITaskTemplate } from '../../data/api/interface/task.template.interface.api';
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
-import createCase from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
+import createCase from '../../pageobject/case/create-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfilePo from '../../pageobject/common/person-profile.po';
-import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import relatedCaseTab from '../../pageobject/common/related-case-tab.po';
+import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
 import feedbackBladeKnowledgeArticlePo from '../../pageobject/knowledge/feedback-blade-Knowledge-article.po';
 import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
@@ -22,16 +22,16 @@ import notificationPo from '../../pageobject/notification/notification.po';
 import { default as activityTabPage, default as activityTabPo } from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-
 
 describe('Case Activity', () => {
 
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
     });
 
@@ -128,7 +128,7 @@ describe('Case Activity', () => {
     it('[DRDMV-18141]: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
         let caseBodyText = `CaseBody${randomStr}`;
         // 2nd Step :Open Case from pre condition and inspect its activities
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-18141');
         await createCase.clickSaveCaseButton();
@@ -214,7 +214,7 @@ describe('Case Activity', () => {
             let taskBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let knowledgeBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             // 2nd Step :Open Case from pre condition and inspect its activities
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCase.selectRequester('Al Allbrook');
             await createCase.setSummary('test case for DRDMV-16773');
             await createCase.clickSaveCaseButton();
@@ -257,7 +257,7 @@ describe('Case Activity', () => {
     //kgaikwad
     it('[DRDMV-16733]: Case Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16733');
         await createCase.clickSaveCaseButton();
@@ -333,7 +333,7 @@ describe('Case Activity', () => {
     //kgaikwad
     it('[DRDMV-16760]: From Task Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Logged in successfully and Task profile gets opened
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16760');
         await createCase.clickSaveCaseButton();
@@ -391,7 +391,7 @@ describe('Case Activity', () => {
     //kgaikwad
     it('[DRDMV-16734]: From Case Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Login to BWF with Case agent and open case from pre condition
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16734');
         await createCase.clickSaveCaseButton();
@@ -432,7 +432,7 @@ describe('Case Activity', () => {
     //kgaikwad
     it('[DRDMV-16759]: Task Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('manual task test case for DRDMV-16759');
         await createCase.clickSaveCaseButton();
@@ -537,7 +537,7 @@ describe('Case Activity', () => {
         console.log("Automated task Template created===", autoTaskTemplate.id);
 
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('auto task template test case for DRDMV-16759');
         await createCase.clickSaveCaseButton();
@@ -635,7 +635,7 @@ describe('Case Activity', () => {
         let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTemplateData);
         console.log("External Task Template is created===", externalTaskTemplate.id);
 
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('external task test case for DRDMV-16759');
         await createCase.clickSaveCaseButton();
@@ -725,7 +725,7 @@ describe('Case Activity', () => {
 
     //kgaikwad
     it('[DRDMV-18048]: While adding a note on Case one or more agent can be tagged in Comment', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setContactName('Angelina Jolie');
         await createCase.setSummary('test case for DRDMV-18048');
@@ -750,7 +750,7 @@ describe('Case Activity', () => {
             let caseBodyText = "This is unique caseActivity text " + Math.floor(Math.random() * 1000000);
             let taskBodyText = "This is unique TaskActivity text " + Math.floor(Math.random() * 1000000);
             let knowledgeBodyText = "This is unique KnowledgeActivity text " + Math.floor(Math.random() * 1000000);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCase.selectRequester('Al Allbrook');
             await createCase.setSummary('test case for DRDMV-16754');
             await createCase.clickSaveCaseButton();
@@ -833,7 +833,7 @@ describe('Case Activity', () => {
         let filePath = '../../data/ui/attachment/bwfPdf.pdf';
 
         let taskBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16773');
         await createCase.clickSaveCaseButton();
@@ -902,7 +902,7 @@ describe('Case Activity', () => {
             await browser.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
-            await navigationPage.goToPersonProfile();
+            await navigationPage.gotoPersonProfile();
             await utilCommon.waitUntilSpinnerToHide();
             await expect(await personProfilePo.getCaseViewCount('Viewed the ' + caseId)).toEqual(1);
         } catch (e) {
@@ -976,7 +976,7 @@ describe('Case Activity', () => {
 
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await navigationPage.goToPersonProfile();
+            await navigationPage.gotoPersonProfile();
             await personProfilePo.clickOnTab('Related Cases');
             await relatedCaseTab.clickOnCaseSummaryLink(caseData.Summary);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing');
@@ -1433,5 +1433,5 @@ describe('Case Activity', () => {
 
 
 
-    
+
 })

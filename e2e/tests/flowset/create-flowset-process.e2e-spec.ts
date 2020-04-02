@@ -7,10 +7,11 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import consoleFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/console-process-library-config.po';
 import createFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/create-register-process-config.po';
 import editFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/edit-register-process-config.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 
 describe('Create Process in Flowset', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
     });
 

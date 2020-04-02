@@ -1,19 +1,19 @@
 import { browser } from "protractor";
-import createCasePage from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
-import caseEditPage from '../../pageobject/case/edit-case.po';
+import createCasePage from '../../pageobject/case/create-case.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
 import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
-import viewCasePo from '../../pageobject/case/view-case.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 
 let caseBAUser = 'qkatawazi';
 
 describe('Service Target - Second Level Association Tests', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
     });
 
@@ -82,7 +82,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
         await serviceTargetConfig.clickOnSaveSVTButton();
         browser.sleep(3000);
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('Qiang');
         await createCasePage.setSummary('Case for SVT creation');
         await createCasePage.selectCategoryTier1('Employee Relations');
@@ -120,7 +120,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
         await serviceTargetConfig.clickOnSaveSVTButton();
         browser.sleep(3000);
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('Qiang');
         await createCasePage.setSummary('Case for SVT creation');
         await createCasePage.selectCategoryTier1('Employee Relations');
@@ -159,7 +159,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
         await serviceTargetConfig.clickOnSaveSVTButton();
         browser.sleep(3000);
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('Qiang');
         await createCasePage.setSummary('Case for SVT creation');
         await createCasePage.selectCategoryTier1('Employee Relations');
@@ -199,7 +199,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
         await serviceTargetConfig.clickOnSaveSVTButton();
         browser.sleep(3000);
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('Qiang');
         await createCasePage.setSummary('Case for SVT creation');
         await createCasePage.selectCategoryTier1('Employee Relations');
@@ -237,7 +237,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
         await serviceTargetConfig.clickOnSaveSVTButton();
         browser.sleep(3000);
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('Qiang');
         await createCasePage.setSummary('Case for SVT creation');
         await createCasePage.selectCategoryTier1('Employee Relations');
@@ -276,7 +276,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
         await serviceTargetConfig.clickOnSaveSVTButton();
         browser.sleep(3000);
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('Qiang');
         await createCasePage.setSummary('Case for SVT creation');
         await createCasePage.selectCategoryTier1('Employee Relations');
@@ -314,7 +314,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
         await serviceTargetConfig.clickOnSaveSVTButton();
         browser.sleep(3000);
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('Qiang');
         await createCasePage.setSummary('Case for SVT creation');
         await createCasePage.selectCategoryTier1('Employee Relations');

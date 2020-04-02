@@ -1,29 +1,26 @@
 import { browser } from "protractor";
+import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
-import createCasePage from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
-import editCasePage from '../../pageobject/case/edit-case.po';
+import createCasePage from '../../pageobject/case/create-case.po';
 import quickCase from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
+import editKnowledgeAccessPage from '../../pageobject/knowledge/edit-knowledge-access.po';
 import editKnowledgePage from '../../pageobject/knowledge/edit-knowledge.po';
+import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
 import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
+import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
-import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
-import apiCoreUtil from '../../api/api.core.util';
-import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
-import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
-import activityTabPo from '../../pageobject/social/activity-tab.po';
-import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
-import consoleTaskPo from 'e2e/pageobject/task/console-task.po';
-import editKnowledgeAccessPage from '../../pageobject/knowledge/edit-knowledge-access.po';
-
-
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
 let caseManagerUser = 'qdu';
@@ -83,7 +80,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     const majorEditHelpTextForUpdatedVersion = `Submitting your changes will create Version 3`;
 
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin(knowledgeCoachUser);
         let knowledgeSetData = {
@@ -132,7 +129,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             let actualVersion = await viewKnowledgeArticlePo.getArticleVersion();
             let actualDate = await viewKnowledgeArticlePo.formatDate();
             console.log(actualDate);
-            
+
             let expectedVersion = "Version " + "1" + " - " + actualDate;
             expect(actualVersion).toBe(expectedVersion);
         }
@@ -153,7 +150,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         let articleAccessPermission: string[] = ['GB Support 2', 'Petramco'];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
-        let updatedArticleTitle = "updated article title"+ "_" + randomStr;
+        let updatedArticleTitle = "updated article title" + "_" + randomStr;
         let updatedArticleDesc = "updated article description";
 
         await apiHelper.apiLogin(caseAgentUser);
@@ -303,7 +300,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         try {
             let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
-    
+
             await apiHelper.apiLogin(caseAgentUser);
             let articleData = {
                 "knowledgeSet": `${knowledgeSetTitleStr}`,
@@ -320,7 +317,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
                 "articleDesc": `${knowledgeTitleStr} Desc`
             }
 
-            let articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);    
+            let articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
 
             let versionFieldColumn: string[] = ["Version"];
             let knowledgeGridColumnFields: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged", "Version"];
@@ -468,7 +465,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    },400*1000);
+    }, 400 * 1000);
 
     //skhobrag
     it('[DRDMV-20754]: Verify the search functionality of articles with versions from Case Edit > Resources screen', async () => {
@@ -486,7 +483,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
 
             //Navigate to Create case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
             await createCasePage.clickAssignToMeButton();
@@ -518,7 +515,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
 
             //Navigate to Create case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
             await createCasePage.clickAssignToMeButton();
@@ -550,7 +547,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
 
             //Navigate to Create case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
             await createCasePage.clickAssignToMeButton();
@@ -586,7 +583,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         let articleAccessPermission: string[] = ['GB Support 2', 'Petramco'];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
-        let updatedArticleTitle = "updated article title"+ "_" + randomStr;
+        let updatedArticleTitle = "updated article title" + "_" + randomStr;
         let updatedArticleDesc = "updated article description";
 
         await apiHelper.apiLogin(caseAgentUser);
@@ -779,7 +776,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     it('[DRDMV-20744]: Verify the article status of previous version articles when the new versioned article is moved to Published status', async () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
-        let updatedArticleTitle = "updated article title"+ "_" + randomStr;
+        let updatedArticleTitle = "updated article title" + "_" + randomStr;
 
         await apiHelper.apiLogin(caseAgentUser);
         let articleData = {
@@ -885,7 +882,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     it('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
-        let updatedArticleTitle = "updated article title"+ "_" + randomStr;
+        let updatedArticleTitle = "updated article title" + "_" + randomStr;
 
         await apiHelper.apiLogin(caseAgentUser);
         let articleData = {
@@ -980,8 +977,8 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgeAccessPage.clickCloseKnowledgeAccessBlade();
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
-            
-            await loginPage.login('qgeorge');            
+
+            await loginPage.login('qgeorge');
             await navigationPage.gotoKnowledgeConsole();
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
@@ -989,7 +986,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
             await editKnowledgePage.selectArticleEditOption(majorEditOption);
-            await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle+"_updated version");
+            await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle + "_updated version");
             await editKnowledgePage.clickArticleMajorEditSaveButton();
             expect(await utilCommon.getPopUpMessage()).toContain('ERROR (170250): Draft version already created.', 'Already Draft version is present message is not displayed.');
             await browser.sleep(4000);
@@ -1011,7 +1008,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     it('[DRDMV-20718]: Verify that the newly created article with version displays on knowledge grid console', async () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
-        let updatedArticleTitle = "updated article title"+ "_" + randomStr;
+        let updatedArticleTitle = "updated article title" + "_" + randomStr;
         let versionFieldColumns: string[] = ["Version"];
         let knowledgeGridColumnFields: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged", "Version"];
         let expectedPreviousVersionNum = '1';
@@ -1095,12 +1092,12 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             console.log(updatedVersion);
             console.log(await viewKnowledgeArticlePo.getArticleVersion());
-            
+
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
-            await loginPage.login('elizabeth');            
+            await loginPage.login('elizabeth');
             await navigationPage.gotoKnowledgeConsole();
             await utilGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumns);
@@ -1132,10 +1129,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
         let articleAccessPermission: string[] = ['GB Support 2', 'Petramco'];
-        let updatedArticleAccessPermission: string[] = ['Employee Relations','GB Support 2', 'Petramco'];
+        let updatedArticleAccessPermission: string[] = ['Employee Relations', 'GB Support 2', 'Petramco'];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
-        let updatedArticleTitle = "updated article title"+ "_" + randomStr;
+        let updatedArticleTitle = "updated article title" + "_" + randomStr;
         let updatedArticleDesc = "updated article description";
 
         await apiHelper.apiLogin(caseAgentUser);
@@ -1305,14 +1302,14 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
             await editKnowledgePage.selectArticleEditOption(majorEditOption);
-            await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle+"_for Version 3");
-            await editKnowledgePage.updateKnowledgeArticleDescription(updatedArticleDesc+"_for Version 3");
+            await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle + "_for Version 3");
+            await editKnowledgePage.updateKnowledgeArticleDescription(updatedArticleDesc + "_for Version 3");
             await editKnowledgePage.clickArticleMajorEditSaveButton();
             updatedVersion = "Version " + "3" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Published status.');
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle+"_for Version 3");
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc+"_for Version 3");
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle + "_for Version 3");
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc + "_for Version 3");
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');

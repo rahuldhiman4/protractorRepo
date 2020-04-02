@@ -1,17 +1,18 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
+import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfile from "../../pageobject/common/person-profile.po";
-import activityTabPage from '../../pageobject/social/activity-tab.po';
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
-import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
+import activityTabPage from '../../pageobject/social/activity-tab.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 
 describe('Person Profile test', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('elizabeth');
-        await navigationPage.goToPersonProfile();
+        await navigationPage.gotoPersonProfile();
     });
 
     afterAll(async () => {
@@ -94,7 +95,7 @@ describe('Person Profile test', () => {
 
     //asahitya
     it('[DRDMV-17019]: Check agent cannot view notes to own Person profile in agent work history tab', async () => {
-        await navigationPage.goToPersonProfile();
+        await navigationPage.gotoPersonProfile();
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Qiang Du', 'Former Manager');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(2);
@@ -104,7 +105,7 @@ describe('Person Profile test', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login("qdu");
-            await navigationPage.goToPersonProfile();
+            await navigationPage.gotoPersonProfile();
             expect(await activityTabPage.isTextPresentInActivityLog("DRDMV-17019")).toBeFalsy("Notes are avaialble on Hannah's Profile");
         }
         catch (e) {
@@ -118,7 +119,7 @@ describe('Person Profile test', () => {
 
     //asahitya
     it('[DRDMV-14028]: Verify Requested Cases tab of My Profile console', async () => {
-        await navigationPage.goToPersonProfile();
+        await navigationPage.gotoPersonProfile();
         await personProfile.clickOnTab("Requested Cases");
         //let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin("qtao");
@@ -146,7 +147,7 @@ describe('Person Profile test', () => {
 
     //asahitya
     it('[DRDMV-14029]: Verify Assigned Cases tab of My Profile console', async () => {
-        await navigationPage.goToPersonProfile();
+        await navigationPage.gotoPersonProfile();
         await personProfile.clickOnTab("Assigned Cases");
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin("qtao");
