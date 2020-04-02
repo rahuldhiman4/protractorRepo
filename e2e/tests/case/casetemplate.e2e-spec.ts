@@ -606,7 +606,7 @@ describe('Case Template', () => {
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(updatedCaseTemplateName);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
         } catch (e) {
             throw e;
         } finally {
@@ -656,7 +656,7 @@ describe('Case Template', () => {
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateNamePetramco);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getPriorityValue()).toBe('Low');
             expect(await viewCasePo.getCategoryTier1Value()).toBe('Purchasing Card');
             expect(await viewCasePo.getCategoryTier2Value()).toBe('Policies');
@@ -676,7 +676,7 @@ describe('Case Template', () => {
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateNamePsilon);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseTemplateText()).toBe(caseTemplateNamePsilon);
         } catch (e) {
             throw e;
@@ -711,7 +711,7 @@ describe('Case Template', () => {
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateName);
             await navigationPage.signOut();
             await loginPage.login('gderuno');
@@ -772,7 +772,7 @@ describe('Case Template', () => {
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getPriorityValue()).toBe('Low');
             expect(await viewCasePo.getCategoryTier1Value()).toBe('Purchasing Card');
             expect(await viewCasePo.getCategoryTier2Value()).toBe('Policies');
