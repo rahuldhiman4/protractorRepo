@@ -6,23 +6,19 @@ class CaseConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         guid: "d628a20f-e852-4a84-87e6-f5191f77ddf6",
-        searchCase: '[rx-id="search-text-input"]',
-        recommendedCaseLink: '.ui-grid__link',
-        recommendedCaseCheckBox: '.ui-grid-icon-ok',
-        filter: '.rx-search-filter__trigger',
-        availableFilterDrpDown: '.d-accordion__title',
-        applyFilter: '.rx-search-filter-heading__apply',
-        removeFilter: '..d-tag-remove-button',
-        tableValue: '.ui-grid-cell-contents',
+        searchCase: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] .adapt-search-field-ellipsis',
+        recommendedCaseLink: '.ui-table-tbody tr td:nth-of-type(2) button',
+        recommendedCaseCheckBox: '.ui-chkbox-box',
+        filter: '.d-icon-left-filter',
+        availableFilterDrpDown: '.card-title',
         addToWatchlist: '[rx-view-component-id="10a1551f-f216-4af7-8d62-cc79ad19f8c3"] button',
         watchlistIcon: '[rx-view-component-id="deafbff6-199a-46f5-b7bf-642cda73c5f1"] button',
         caseTitle: '[rx-view-component-id="72f24e08-7a88-4479-8eb1-d254dde49c6c"] span',
         changeAssignment: '[rx-view-component-id="da845b85-4dba-4fb2-90b1-93d6f6d94058"] button',
-        allCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] .ui-grid-selection-row-header-buttons',
-        selectAllrows: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] div[aria-label="Select all rows"]',
+        allCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] .ui-chkbox-box',
+        selectAllrows: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] .checkbox__input',
         selectedCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] div[aria-checked="true"]',
         unselectedCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] div[aria-checked="false"]',
-        requestedCaseGuid: '934faa1d-0932-4141-9a6e-7f6ac1726427'
     }
 
     async setCaseSearchBoxValue(input: string): Promise<void> {

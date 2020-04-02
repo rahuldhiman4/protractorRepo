@@ -4,28 +4,24 @@ import utilGrid from '../../utils/util.grid';
 class CaseWatchlistBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        watchlistEvents: '[rx-view-component-id="99e01ff6-3123-436a-85f4-405994271b33"] .rx-multiselect-list span',
+        watchlistEvents: '[rx-view-component-id="99e01ff6-3123-436a-85f4-405994271b33"] .a-select-inline__item span',
         saveButton: '[rx-view-component-id="fe442bdb-1c1e-47b7-8f47-cfcf61505b45"] button',
         closeButton: '[rx-view-component-id="7a0cb1ff-c0a5-4571-a2dc-6670842db2c6"] button',
         guid: '60bc2700-9909-4b0f-8de4-edb02443b62f',
-        selectAllrows: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] div[aria-label="Select all rows"]',
+        selectAllrows: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] div.checkbox__item',
         selectedCheckboxes: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] div[aria-checked="true"]',
         unselectedCheckboxes: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] div[aria-checked="false"]',
         allCheckboxes: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .ui-grid-selection-row-header-buttons',
         backButton: '[rx-view-component-id="e109c9be-4093-4c82-9e20-8bc98347c984"] button',
-        searchInput: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] [rx-id="search-text-input"]',
-        searchIcon: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] [rx-id="submit-search-button"]',
-        filterIcon: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .rx-search-filter button',
-        filterItems: '.search-filter-dropdown .d-accordion__item',
-        applyButton: '.rx-search-filter-heading__apply',
+        searchInput: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .adapt-search-field-ellipsis',
+        searchIcon: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .adapt-search-button',
         removeBtn: '[rx-view-component-id="fdc9b3f0-3baa-48f4-b404-11f6441e676a"] button',
         updateWatchlistEventsButton: '[rx-view-component-id="36e39eb7-fc47-45d3-b435-4b1a4311383d"] button',
         filterPreset: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .rx-filter-presets-dropdown__trigger',
         clearFilterButton: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] button[rx-id="clear-button"]',
         filterDropdown: '.show__more-tags',
-        caseLinks: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .ui-grid__link',
-        clearSearchicon: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .d-icon-cross',
-        watchListModal: '.modal-dialog'
+        caseLinks: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] tr td:nth-of-type(2) button',
+        clearSearchicon: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .adapt-search-clear',
     }
 
     async addWatchlistEvent(eventName: string): Promise<void> {

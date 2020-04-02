@@ -6,12 +6,11 @@ class SelectCaseTemplateBlade {
     selectors = {
         recommendedTemplate: 'Recommended Templates',
         allTemplates: 'All Templates',
-        searchTextbox: '[rx-id="search-text-input"]',
+        searchTextbox: '[rx-view-component-id="c61478d4-1d46-4d0d-9450-c90885aab77e"] .adapt-search-field-ellipsis',
         refreshbutton: '[rx-id="refresh-button"]',
-        checkBox: 'ui-grid-icon-ok',
         applyButton: '[rx-view-component-id="f348e681-ac02-452c-b37f-009ac4434053"] button',
         caseTemplateCheckBox: '.ui-grid-icon-ok',
-        caseTemplateLink: '.ui-grid__link',
+        caseTemplateLink: '.radio__item',
         cancelButton: '[rx-view-component-id="161ed2e2-ea43-4db5-9f9c-149f82a74db2"] button',
     }
 
