@@ -1,14 +1,13 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
 
 class LoginPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        loginForm: 'form[name="loginForm"]',
-        userName: 'input[rx-id="username"]',
+        loginForm: 'form.form',
+        userName: 'input[name="username"]',
         password: 'input[type="password"]',
-        signInButton: 'button.login__submit',
-        settingsButton: 'rx-shell .d-n-action__settings',
+        signInButton: 'button[rx-id="sign-in-button"]',
+        settingsButton: 'button.d-icon-gear',
     }
 
     async login(user: string): Promise<void> {
