@@ -4,39 +4,37 @@ import utilCommon from '../../utils/util.common';
 class ViewTask {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        changeStatusButton: '.status-transition',
         statusDropDown: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"]',
         saveStatus: '[rx-view-component-id="6759ba60-df0d-4d5e-8eb9-5101490fd4d4"] button',
         cancleStatus: '[rx-view-component-id="debcdc88-fb42-4003-96d6-1eeb807206b7"] button',
-        allStatus: '.ui-select-choices-row-inner',
+        allStatus: '.dropdown_select__menu .dropdown-item',
         updateStatusDropDown: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"] .form-control',
-        taskTypeValue: '[rx-view-component-id="057f2521-313b-40c9-be56-829827512abf"] p',
-        editButton: '.edit-link ',
-        categoryTier1Value: '[rx-view-component-id="909ad3ad-6706-4d46-bb5a-bc48fa6ca98e"] p',
-        categoryTier2Value: '[rx-view-component-id="49d231d9-ee81-4d7c-90af-d7ca785a32d4"] p',
-        categoryTier3Value: '[rx-view-component-id="c8858fb5-5b21-4e0d-a947-c0130a72b51a"] p',
-        categoryTier4Value: '[rx-view-component-id="ff1636f8-4efe-4447-9c04-f32799904f2b"] p',
-        labelValue: '[rx-view-component-id="4c2784af-c080-4630-8f16-d9e6b07e87a2"] p',
-        descriptionValue: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] .show-less-wrapper',
-        processnameValue: '[rx-view-component-id="7260c238-9e41-4d31-90de-2d46443117b4"] p',
-        statusReason: '[rx-view-component-id="7cdf9e18-c230-4098-8872-ddce9f005373"] .d-textfield__rx-value',
+        taskTypeValue: '[rx-view-component-id="057f2521-313b-40c9-be56-829827512abf"] .read-only-content',
+        editButton: '.float-right',
+        categoryTier1Value: '[rx-view-component-id="909ad3ad-6706-4d46-bb5a-bc48fa6ca98e"] .read-only-content',
+        categoryTier2Value: '[rx-view-component-id="49d231d9-ee81-4d7c-90af-d7ca785a32d4"] .read-only-content',
+        categoryTier3Value: '[rx-view-component-id="c8858fb5-5b21-4e0d-a947-c0130a72b51a"] .read-only-content',
+        categoryTier4Value: '[rx-view-component-id="ff1636f8-4efe-4447-9c04-f32799904f2b"] .read-only-content',
+        labelValue: '[rx-view-component-id="4c2784af-c080-4630-8f16-d9e6b07e87a2"] .read-only-content',
+        descriptionValue: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] .bwf-description-textarea-read',
+        processnameValue: '[rx-view-component-id="7260c238-9e41-4d31-90de-2d46443117b4"] .read-only-content',
+        statusReason: '[rx-view-component-id="7cdf9e18-c230-4098-8872-ddce9f005373"] .read-only-content',
         taskIdText: '[rx-view-component-id="75371088-cfeb-4554-a939-2fe7b2aa098b"] .text-field',
         viewCaseLink: '[rx-view-component-id="036a7325-43e3-47e6-bb50-7f8d9fe8d118"] button',
-        taskIcon: '[rx-view-component-id="75371088-cfeb-4554-a939-2fe7b2aa098b"] [ng-if="icon"]',
+        taskIcon: '[rx-view-component-id="75371088-cfeb-4554-a939-2fe7b2aa098b"] i',
         taskPriority: '[rx-view-component-id="75371088-cfeb-4554-a939-2fe7b2aa098b"] .selection-field',
         taskTimeDetails: '[rx-view-component-id="75371088-cfeb-4554-a939-2fe7b2aa098b"] .date-info',
         caseIdText: '.rx-record-preview-card__field .rx-record-preview-card__value',
-        caseSummary: '.ng-enter-prepare',
-        taskSummary: '[rx-view-component-id="fa66e566-757c-4d10-a850-9ea3bd037707"] p',
+        caseSummary: '.rx-record-preview-card__field .rx-record-preview-card__value',
+        taskSummary: '[rx-view-component-id="fa66e566-757c-4d10-a850-9ea3bd037707"] span',
         taskStatus: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] .status-transition',
-        requesterName: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-link    a',
-        requesterContact: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .ac-link-person-phone',
-        requesterMail: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .ac-link-person-email',
+        requesterName: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-name .person-link',
+        requesterContact: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-phone-link',
+        requesterMail: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .bwf-person-email button',
         assigneeName: '[rx-view-component-id="1801d8c6-4997-4253-b716-809b39909598"] .person-main',
         assignGroupText: '[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] .d-textfield__label',
         assignCompany: '[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] .d-textfield__label',
         taskStatusGuid: 'aea81ee2-85d9-4bb6-adb4-08c29028d45d',
-        requesterEmailLink: '[rx-view-component-id="71cbebcb-9fd6-44dc-8039-20d3178f7143"] .ac-link-person-email',
         attachedfileName: '.rx-attachment-view-item div:nth-child(2) >div.rx-attachment-view-name',
         attachmentName: 'div.rx-attachment-view-item div:nth-child(2) > div.rx-attachment-view-name',
         showAttachmentLink: '.rx-attachment-show-text',
@@ -47,22 +45,19 @@ class ViewTask {
         showMore:'.rx-attachment-show-text',
         dynamicFieldsName:'[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] span',
         dynamicFieldsValue:'[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] p',
-        assignedGroupValue:'[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] .d-textfield__rx-value',
-        assignedCompanyValue:'[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] .d-textfield__rx-value',
-        businessUnitValue:'[rx-view-component-id="4ad9dc88-aa95-4fb7-8128-7df004dfca8f"] .d-textfield__rx-value', 
-        departmentValue:'[rx-view-component-id="411571a0-2577-4403-bcf2-3999dc84f5df"] .d-textfield__rx-value',
-        assigneeNameValue:'[rx-view-component-id="1801d8c6-4997-4253-b716-809b39909598"] .person-main a',
+        assignedGroupValue:'[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] .read-only-content',
+        assignedCompanyValue:'[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] .read-only-content',
+        businessUnitValue:'[rx-view-component-id="4ad9dc88-aa95-4fb7-8128-7df004dfca8f"] .read-only-content', 
+        departmentValue:'[rx-view-component-id="411571a0-2577-4403-bcf2-3999dc84f5df"] .read-only-content',
         manageDynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] button',
-        getTaskSummary:'[rx-view-component-id="e1aaa2da-51a0-41a0-a806-6a935fa27d94"] .d-textfield__rx-value',
-        priorityValue:'span.selection-field'
     }
 
     async getTaskSummaryValue():Promise<string>{
-        return await $(this.selectors.getTaskSummary).getText();
+        return await $(this.selectors.taskSummary).getText();
     }
 
     async getPriorityValue():Promise<string>{
-        return await $(this.selectors.priorityValue).getText();
+        return await $(this.selectors.taskPriority).getText();
     }
 
     async isAttachedDocumentPresent(fileName: string): Promise<boolean> {
@@ -74,7 +69,7 @@ class ViewTask {
     }
     async clickOnRequesterEmail(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesterEmailLink)));
-        await $(this.selectors.requesterEmailLink).click();
+        await $(this.selectors.requesterMail).click();
     }
 
     async allTaskOptionsPresent(list: string[]): Promise<boolean> {
@@ -83,7 +78,7 @@ class ViewTask {
 
     async clickOnChangeStatus(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeStatusButton)));
-        await $(this.selectors.changeStatusButton).click();
+        await $(this.selectors.taskStatus).click();
     }
 
     async clickOnSaveStatus(): Promise<void> {
@@ -144,7 +139,7 @@ class ViewTask {
 
     async isCaseSummaryDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
-        return await $(this.selectors.caseSummary).isDisplayed();
+        return await $$(this.selectors.caseSummary).get(1).isDisplayed();
     }
 
     async isCaseViewLinkDisplayed(): Promise<boolean> {
@@ -351,12 +346,12 @@ class ViewTask {
         return null;
      }
 
-    async getAssigneeText(): Promise<string> {
-        return await $(this.selectors.assigneeNameValue).getText();
-    }
-
     async getAssignedGroupText(): Promise<string> {
         return await $(this.selectors.assignedGroupValue).getText();
+    }
+
+    async getAssigneeText(): Promise<string> {
+        return await $(this.selectors.assigneeName).getText();
     }
 
     async getDepartmentText(): Promise<string> {
