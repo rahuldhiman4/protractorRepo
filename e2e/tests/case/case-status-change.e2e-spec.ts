@@ -182,7 +182,7 @@ describe('Case Status Change', () => {
         await viewCasePage.clickSaveStatus(statusClosed);
         expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed);
         await viewCasePage.clickOnStatus();
-        expect(await $(viewCasePage.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
+        expect(await $(updateStatusBlade.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
     });
 
     //kgaikwad
@@ -306,7 +306,7 @@ describe('Case Status Change', () => {
         await viewCasePage.clickSaveStatus(statusCanceled);
         expect(await viewCasePage.getTextOfStatus()).toBe(statusCanceled);
         await viewCasePage.clickOnStatus();
-        expect(await $(viewCasePage.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
+        expect(await $(updateStatusBlade.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
     });
 
     //kgaikwad

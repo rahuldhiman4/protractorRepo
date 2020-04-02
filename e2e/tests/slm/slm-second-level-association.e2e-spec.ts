@@ -6,6 +6,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
 import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
 
 let caseBAUser = 'qkatawazi';
 
@@ -88,7 +89,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
         await browser.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
@@ -96,7 +97,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await browser.sleep(40000);
         await browser.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
 
         //Create another SVT with second level association
         await navigationPage.gotoSettingsPage();
@@ -126,7 +127,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
         await browser.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
@@ -134,7 +135,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await browser.sleep(40000);
         await browser.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
 
     }, 600 * 1000);
 
@@ -165,7 +166,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
         await browser.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
@@ -173,7 +174,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await browser.sleep(40000);
         await browser.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
 
     }, 600 * 1000);
 
@@ -205,7 +206,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
         await browser.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
@@ -213,7 +214,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await browser.sleep(40000);
         await browser.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     }, 600 * 1000);
 
     it('[DRDMV-19663]:SVT created for Assigned Company associations and SVT get links to a Case', async () => {
@@ -243,7 +244,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
         await browser.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
@@ -251,7 +252,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await browser.sleep(40000);
         await browser.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
 
     }, 600 * 1000);
 
@@ -282,7 +283,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
         await browser.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
@@ -290,7 +291,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await browser.sleep(40000);
         await browser.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     }, 600 * 1000);
 
     it('[DRDMV-19668]:Check SVT is attached to a Case and later Associations are updated', async () => {
@@ -320,7 +321,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickSaveCaseButton();
         await createCasePage.clickGoToCaseButton();
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
         await browser.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
@@ -328,7 +329,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await browser.sleep(40000);
         await browser.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
-        expect(await caseEditPage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     }, 600 * 1000);
 
 
