@@ -57,7 +57,7 @@ describe('Case Status Change', () => {
         let statuses: string[] = ["New", "Assigned", "In Progress", "Pending", "Canceled"];
         let boln: boolean = await updateStatusBladePo.allStatusOptionsPresent(statuses);
         expect(boln).toBeTruthy('Status does not match On view case');
-        await viewCasePage.clickOnCancelButtonOfUpdateStatus();
+        await updateStatusBladePo.clickCancelButton();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
         await navigationPage.gotoCaseConsole();
         await caseConsole.searchCase(caseId1);
@@ -258,7 +258,7 @@ describe('Case Status Change', () => {
         await previewCasePo.clickGoToCaseButton();
         await updateStatusBladePo.changeCaseStatus(statusInProgress);
         expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
-        await viewCasePage.clickOnCancelButtonOfUpdateStatus();
+        await updateStatusBladePo.clickCancelButton();
         await utilCommon.clickOnWarningOk();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
 
@@ -273,7 +273,7 @@ describe('Case Status Change', () => {
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
         await updateStatusBladePo.changeCaseStatus(statusInProgress);
         expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
-        await viewCasePage.clickOnCancelButtonOfUpdateStatus();
+        await updateStatusBladePo.clickCancelButton();
         await utilCommon.clickOnWarningOk();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
 
@@ -439,7 +439,7 @@ describe('Case Status Change', () => {
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickOnStatus();
             expect(await updateStatusBladePo.allStatusOptionsPresent(statusOptions)).toBeTruthy("Status Options is not present");
-            await viewCasePage.clickOnCancelButtonOfUpdateStatus();
+            await updateStatusBladePo.clickCancelButton();
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(manualTask);
             await manageTask.clickOnCloseButton();
@@ -532,7 +532,7 @@ describe('Case Status Change', () => {
             await caseConsole.searchAndOpenCase(caseId4);
             await viewCasePage.clickOnStatus();
             expect(await updateStatusBladePo.allStatusOptionsPresent(statusOptions)).toBeTruthy("Status Options is not present");
-            await viewCasePage.clickOnCancelButtonOfUpdateStatus();
+            await updateStatusBladePo.clickCancelButton();
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBlade.isStatusReasonRequiredTextPresent();
             await updateStatusBladePo.setStatusReason('Third Party');
@@ -771,7 +771,7 @@ describe('Case Status Change', () => {
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickOnStatus();
             expect(await updateStatusBladePo.allStatusOptionsPresent(statusOptions)).toBeTruthy("Status Options is not present");
-            await viewCasePage.clickOnCancelButtonOfUpdateStatus();
+            await updateStatusBladePo.clickCancelButton();
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBlade.isStatusReasonRequiredTextPresent();
             await updateStatusBladePo.setStatusReason('Auto Resolved');
@@ -863,7 +863,7 @@ describe('Case Status Change', () => {
             await caseConsole.searchAndOpenCase(caseId2);
             await viewCasePage.clickOnStatus();
             await updateStatusBladePo.changeCaseStatus('In Progress');
-            await viewCasePage.clickOnCancelButtonOfUpdateStatus();
+            await updateStatusBladePo.clickCancelButton();
             expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');          
             await utilCommon.clickOnWarningOk();
         } catch (e) {

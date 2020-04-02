@@ -199,12 +199,12 @@ class CaseEditPage {
 
     async getRequesterPhoneNo(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.personPhoneLink)));
-        return await $(this.selectors.personPhoneLink).getText();
+        return await (await $(this.selectors.personPhoneLink).getText()).trim();
     }
 
     async getRequesterEmail(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.personEmailLink)));
-        return await $(this.selectors.personEmailLink).getText();
+        return await (await $(this.selectors.personEmailLink).getText()).trim();
     }
 
     async isSummaryRequiredText(): Promise<boolean> {
