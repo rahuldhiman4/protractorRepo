@@ -3,6 +3,7 @@ import apiHelper from '../../api/api.helper';
 import attachmentBladePo from '../../pageobject/attachment/attachment-blade.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import createCasePo from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
@@ -255,7 +256,7 @@ describe('Document Library Consume UI', () => {
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickOnTaskLink(taskTemplateSummaryYesValue);
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.clickOnAttachButton();
@@ -344,7 +345,7 @@ describe('Document Library Consume UI', () => {
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
 
@@ -435,7 +436,7 @@ describe('Document Library Consume UI', () => {
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnAttachLink();
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
@@ -525,7 +526,7 @@ describe('Document Library Consume UI', () => {
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
 
             await activityTabPo.addActivityNote(addNoteText);
             await activityTabPo.clickOnAttachLink();
@@ -619,7 +620,7 @@ describe('Document Library Consume UI', () => {
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
 
             await activityTabPo.addActivityNote(addNoteText);
             await activityTabPo.clickOnAttachLink();
@@ -708,7 +709,7 @@ describe('Document Library Consume UI', () => {
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnAttachLink();
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
@@ -798,7 +799,7 @@ describe('Document Library Consume UI', () => {
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
 
@@ -894,7 +895,7 @@ describe('Document Library Consume UI', () => {
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
 
             await activityTabPo.addActivityNote(addNoteText);
             await activityTabPo.clickOnAttachLink();
@@ -984,7 +985,7 @@ describe('Document Library Consume UI', () => {
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnAttachLink();
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
@@ -1151,7 +1152,7 @@ describe('Document Library Consume UI', () => {
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
 
             await viewCasePo.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
@@ -1264,7 +1265,7 @@ describe('Document Library Consume UI', () => {
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
 
@@ -1345,7 +1346,7 @@ describe('Document Library Consume UI', () => {
         await createCasePo.selectRequester('qtao');
         await createCasePo.setSummary(caseSummary);
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
 
         await activityTabPo.addActivityNote(addNoteText);
         await activityTabPo.clickOnAttachLink();
@@ -1417,7 +1418,7 @@ describe('Document Library Consume UI', () => {
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary('drdmv-13536' + caseSummary);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             let caseId = await viewCasePo.getCaseID();
             await activityTabPo.addActivityNote(addNoteText);
             await activityTabPo.addAttachment(excelFile);
@@ -1528,7 +1529,7 @@ describe('Document Library Consume UI', () => {
             await changeAssignmentBladePo.selectAssignee('Quin Strong');
             await changeAssignmentBladePo.clickOnAssignButton();
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             caseId = await viewCasePo.getCaseID();
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnAttachLink();

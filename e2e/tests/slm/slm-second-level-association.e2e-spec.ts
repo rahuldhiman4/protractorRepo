@@ -1,5 +1,6 @@
 import { browser } from "protractor";
 import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import caseEditPage from '../../pageobject/case/edit-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -87,7 +88,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.selectCategoryTier1('Employee Relations');
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
@@ -125,7 +126,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.selectCategoryTier1('Employee Relations');
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
@@ -164,7 +165,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.selectCategoryTier1('Employee Relations');
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
@@ -204,7 +205,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.selectCategoryTier1('Employee Relations');
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
@@ -242,7 +243,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.selectCategoryTier1('Employee Relations');
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
@@ -281,7 +282,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.selectCategoryTier1('Employee Relations');
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
@@ -319,7 +320,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.selectCategoryTier1('Employee Relations');
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);

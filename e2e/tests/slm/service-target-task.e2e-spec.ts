@@ -1,5 +1,6 @@
 import { browser } from "protractor";
 import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import caseEditPage from '../../pageobject/case/edit-case.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -70,7 +71,7 @@ describe('Service Target Tests for Tasks', () => {
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
@@ -159,7 +160,7 @@ describe('Service Target Tests for Tasks', () => {
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
 
             let manualTaskTemp = `manualTaskTemplateActive ${randomStr}`;
@@ -256,7 +257,7 @@ describe('Service Target Tests for Tasks', () => {
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
 
             let manualTaskTemp = `manualTaskTemplateActive ${randomStr}`;

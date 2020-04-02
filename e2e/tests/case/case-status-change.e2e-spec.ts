@@ -2,6 +2,7 @@ import { $, browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import caseConsole from '../../pageobject/case/case-console.po';
 import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import editCasePage from '../../pageobject/case/edit-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import loginPage from "../../pageobject/common/login.po";
@@ -12,8 +13,6 @@ import utilCommon from '../../utils/util.common';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import updateStatusBlade from '../../pageobject/common/update.status.blade.po';
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
-import viewCasePo from '../../pageobject/case/view-case.po';
-
 
 describe('Case Status Change', () => {
     let statusNew: string = "New";
@@ -139,7 +138,7 @@ describe('Case Status Change', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         console.log(await viewCasePage.getCaseID());
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
         await updateStatusBladePo.changeCaseStatus(statusResolved);
@@ -174,7 +173,7 @@ describe('Case Status Change', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         console.log(await viewCasePage.getCaseID());
         await updateStatusBladePo.changeCaseStatus(statusResolved);
         await updateStatusBladePo.setStatusReason('Customer Follow-Up Required');
@@ -196,7 +195,7 @@ describe('Case Status Change', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await updateStatusBladePo.changeCaseStatus(statusPending);
         let pendingStatusReasons: string[] = [' ', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
         expect(await updateStatusBladePo.allStatusReasonOptionsPresent(pendingStatusReasons)).toBeTruthy('Pending status reason options mismatch');
@@ -213,7 +212,7 @@ describe('Case Status Change', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await updateStatusBladePo.changeCaseStatus(statusResolved);
         let resolvedStatusReasons: string[] = [' ', 'Auto Resolved', 'Customer Follow-Up Required', 'No Further Action Required'];
         expect(await updateStatusBladePo.allStatusReasonOptionsPresent(resolvedStatusReasons)).toBeTruthy('Resolved status reason options mismatch');
@@ -230,7 +229,7 @@ describe('Case Status Change', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await updateStatusBladePo.changeCaseStatus(statusInProgress);
         await updateStatusBladePo.clickSaveStatus(statusInProgress);
         expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress);
@@ -256,7 +255,7 @@ describe('Case Status Change', () => {
         await createCasePage.setSummary('Summary ' + summary);
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await updateStatusBladePo.changeCaseStatus(statusInProgress);
         expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
         await viewCasePage.clickOnCancelButtonOfUpdateStatus();
@@ -268,7 +267,7 @@ describe('Case Status Change', () => {
         await createCasePage.setSummary('Summary ' + summary);
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await updateStatusBladePo.changeCaseStatus(statusAssigned);
         await updateStatusBladePo.clickSaveStatus(statusAssigned);
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
@@ -283,7 +282,7 @@ describe('Case Status Change', () => {
         await createCasePage.setSummary('Summary ' + summary);
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await updateStatusBladePo.changeCaseStatus(statusPending);
         await updateStatusBladePo.setStatusReason('Customer Response');
         await updateStatusBladePo.clickSaveStatus(statusPending);
@@ -301,7 +300,7 @@ describe('Case Status Change', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         console.log(await viewCasePage.getCaseID());
         await updateStatusBladePo.changeCaseStatus(statusCanceled);
         await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -320,7 +319,7 @@ describe('Case Status Change', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         console.log(await viewCasePage.getCaseID());
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
         await viewCasePage.clickEditCaseButton();
@@ -352,7 +351,7 @@ describe('Case Status Change', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         console.log(await viewCasePage.getCaseID());
         await updateStatusBladePo.changeCaseStatus(statusPending);
         await updateStatusBladePo.setStatusReason('Customer Response');
@@ -633,7 +632,7 @@ describe('Case Status Change', () => {
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(caseTemplateName1);
             await quickCasePo.saveCase();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();   
