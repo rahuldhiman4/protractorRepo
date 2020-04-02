@@ -1,5 +1,6 @@
 import { browser } from "protractor";
 import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import caseEditPage from '../../pageobject/case/edit-case.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -62,7 +63,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.selectCategoryTier1('Applications');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
             await browser.sleep(100000);
@@ -109,7 +110,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.selectCategoryTier1('Employee Relations');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
             await browser.sleep(100000);
@@ -157,7 +158,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.selectCategoryTier1('Employee Relations');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
             await browser.sleep(100000);
@@ -194,7 +195,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.selectCategoryTier1('Employee Relations');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
             expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         }
@@ -252,7 +253,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.selectCategoryTier1('Employee Relations');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
             expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
@@ -304,7 +305,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.selectCategoryTier1('Employee Relations');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
@@ -403,7 +404,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.selectCategoryTier1('Employee Relations');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isMultipleSVTAttached()).toBe(true);
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true); //green
             expect(await slmProgressBar.getDueInTime()).toBe("Due in 2 min"); //green
@@ -448,7 +449,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.selectCategoryTier1('Employee Relations');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             await slmProgressBar.clickOnSLAProgressBarInProcessIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
@@ -500,7 +501,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeFalsy('SVT is attached to case created by different company user.');
         }
         catch (error) {
@@ -542,7 +543,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             await viewCasePage.changeCaseStatus('In Progress');
             await viewCasePage.clickSaveStatus();
@@ -653,7 +654,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             browser.sleep(130000);
@@ -738,7 +739,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             await viewCasePage.changeCaseStatus('Pending');
@@ -808,7 +809,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             await viewCasePage.changeCaseStatus('In Progress');
@@ -900,7 +901,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
@@ -955,7 +956,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
@@ -1010,7 +1011,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
@@ -1068,7 +1069,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
@@ -1118,7 +1119,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
@@ -1170,7 +1171,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
@@ -1210,7 +1211,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');

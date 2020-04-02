@@ -1,6 +1,7 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import createCasePo from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import requesterResponseBladePo from '../../pageobject/case/requester-response-blade.po';
@@ -394,7 +395,7 @@ describe('Dynamic data', () => {
         await createCasePo.clickSelectCaseTemplateButton();
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickEditCaseButton();
         //dynamic fields
         expect(await editCasePo.isDynamicFieldDisplayed('temp')).toBeTruthy('field is not present');
@@ -446,7 +447,7 @@ describe('Dynamic data', () => {
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary('new cases');
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
@@ -505,7 +506,7 @@ describe('Dynamic data', () => {
         await createCasePo.clickSelectCaseTemplateButton();
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickEditCaseButton();
         //dynamic fields
         expect(await editCasePo.isDynamicFieldDisplayed('temp')).toBeTruthy('field is not present');
@@ -625,7 +626,7 @@ describe('Dynamic data', () => {
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary('new cases');
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
         await manageTaskBladePo.addTaskFromTaskTemplate(automatedTask);
@@ -810,7 +811,7 @@ describe('Dynamic data', () => {
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary('new cases');
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
         await manageTaskBladePo.addTaskFromTaskTemplate(automatedTask);
@@ -1019,7 +1020,7 @@ describe('Dynamic data', () => {
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
         await createCasePo.clickSaveCaseButton();
         expect(await requesterResponseBladePo.isRequesterBladePresent()).toBeFalsy('requester Blade is not present');
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await utilCommon.waitUntilSpinnerToHide();
         expect(await viewCasePo.isDynamicFieldDisplayed('temp')).toBeTruthy('dynamic fields not present');
         expect(await viewCasePo.isDynamicFieldDisplayed('temp1')).toBeTruthy('dynamic fields not present');

@@ -31,7 +31,7 @@ describe('create case', () => {
     it('should create case without template', async () => {
         await navigationPage.gotCreateCase();
         await createCasePage.selectRequester('adam');
-        await createCasePage.selectContact('adam');
+        await createCasePage.setContactName('adam');
         await createCasePage.setSummary('set summary');
         await createCasePage.setDescription('my desc');
         await createCasePage.selectCategoryTier1('Accounts Payable');

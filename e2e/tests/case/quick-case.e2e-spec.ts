@@ -1,6 +1,6 @@
 import { browser, protractor, ProtractorExpectedConditions, $$, element, by, ElementFinder } from "protractor";
 import apiHelper from '../../api/api.helper';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import { default as quickCase, default as quickCasePo } from "../../pageobject/case/quick-case.po";
 import viewCasePo from '../../pageobject/case/view-case.po';
@@ -139,7 +139,7 @@ describe("Quick Case", () => {
         await createCasePo.setSummary(caseSummary771);
         await createCasePo.setDescription(caseDescription771);
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
     }
 
     //kgaikwad
@@ -247,8 +247,8 @@ describe("Quick Case", () => {
         expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Contact');
         await quickCase.setCaseSummary('address');
         await quickCase.saveCase();
-        expect(await casePreviewPo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy();
-        expect(await casePreviewPo.isContactNameDisplayed('Al Allbrook')).toBeTruthy();
+        expect(await previewCasePo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy();
+        expect(await previewCasePo.isContactNameDisplayed('Al Allbrook')).toBeTruthy();
     });
 
     it('[DRDMV-1205]: [Quick Case] People search', async () => {
@@ -344,7 +344,7 @@ describe("Quick Case", () => {
             expect(await quickCasePo.selectCaseTemplate(caseTemplateName)).toBeTruthy("Active Template is Not founded");
             await quickCasePo.selectCaseTemplate(caseTemplateName);
             await quickCasePo.saveCase();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
         } catch (e) {
             throw e;
         }
@@ -416,13 +416,13 @@ describe("Quick Case", () => {
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(caseTemplateName1);
             await quickCasePo.saveCase();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('New');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(caseTemplateName2);
             await quickCasePo.saveCase();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('Assigned');
 
             await navigationPage.signOut();
@@ -431,13 +431,13 @@ describe("Quick Case", () => {
             await quickCasePo.selectRequesterName("fritz");
             await quickCasePo.selectCaseTemplate(caseTemplateName4);
             await quickCasePo.saveCase();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("fritz");
             await quickCasePo.selectCaseTemplate(caseTemplateName3);
             await quickCasePo.saveCase();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
         } catch (e) {
             throw e;
@@ -515,12 +515,12 @@ describe("Quick Case", () => {
         await previewKnowledgePo.clickOnBackButton();
         await quickCase.createCaseButton();
         expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully');
-        expect(await casePreviewPo.isRequesterNameDisplayed('Person1 Person1')).toBeTruthy();
-        expect(await casePreviewPo.isCaseSummaryDisplayed(`${caseTemplateName}`)).toBeTruthy();
-        expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();
-        expect(await casePreviewPo.isRequesterEmailIdDisplayed('test@petramco.com')).toBeTruthy();
-        expect(await casePreviewPo.isDescriptionDisplayed('Person1 Person1 2bvfcaseTemplateName')).toBeTruthy();
-        await casePreviewPo.clickOncreateNewCaseButton();
+        expect(await previewCasePo.isRequesterNameDisplayed('Person1 Person1')).toBeTruthy();
+        expect(await previewCasePo.isCaseSummaryDisplayed(`${caseTemplateName}`)).toBeTruthy();
+        expect(await previewCasePo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();
+        expect(await previewCasePo.isRequesterEmailIdDisplayed('test@petramco.com')).toBeTruthy();
+        expect(await previewCasePo.isDescriptionDisplayed('Person1 Person1 2bvfcaseTemplateName')).toBeTruthy();
+        await previewCasePo.clickOncreateNewCaseButton();
         expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
     }, 480 * 1000);
 
@@ -672,7 +672,7 @@ describe("Quick Case", () => {
             await quickCasePo.saveCase();
             await utilCommon.waitUntilSpinnerToHide();
             await utilCommon.waitUntilPopUpDisappear();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await utilCommon.waitUntilSpinnerToHide();
             expect(await viewCasePage.getCaseSummary()).toBe(`${caseTemplateName}`, "Template is not Found");
             expect(await viewCasePage.getCategoryTier1Value()).toBe('Purchasing Card', "Category is not displaying");
@@ -830,7 +830,7 @@ describe("Quick Case", () => {
             await editCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName[i]}`);
         }
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await activityTabPo.addActivityNote(activityNoteText);
         let fileName1: string[] = ['bwfWord1.rtf', 'bwfWord2.rtf', 'demo.txt','bwfJson1.json','bwfJson2.json'];
         for (let i: number = 0; i < fileName1.length; i++) {

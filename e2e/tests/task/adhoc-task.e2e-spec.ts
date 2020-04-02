@@ -4,6 +4,7 @@ import attachmentBladePo from '../../pageobject/attachment/attachment-blade.po';
 import attachmentInformationBladePo from '../../pageobject/attachment/attachment-information-blade.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import { default as viewCasePage, default as viewCasePo } from "../../pageobject/case/view-case.po";
 import changeAssignmentBlade from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -40,7 +41,7 @@ describe('Create Adhoc task', () => {
         await createCasePage.setSummary('Summary ' + summary);
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
 
         //Adhoc task validation
         await viewCasePage.clickAddTaskButton();
@@ -77,7 +78,7 @@ describe('Create Adhoc task', () => {
         await createCasePage.setSummary('Summary ' + summary);
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
 
         //Adhoc task validation
         await viewCasePage.clickAddTaskButton();
@@ -118,7 +119,7 @@ describe('Create Adhoc task', () => {
         await createCasePage.setSummary('Summary ' + summary);
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
 
         //Adhoc task validation
         await viewCasePage.clickAddTaskButton();
@@ -140,7 +141,7 @@ describe('Create Adhoc task', () => {
         await createCasePage.setSummary('Summary ' + summary);
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
 
         //Adhoc task validation
         await viewCasePage.clickAddTaskButton();
@@ -195,7 +196,7 @@ describe('Create Adhoc task', () => {
         await createCasePage.setSummary('Summary ' + manualTaskSummary);
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePage.clickAddTaskButton();
 
         //Add Manual task and Automation Task in Case

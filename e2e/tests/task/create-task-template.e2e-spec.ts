@@ -15,6 +15,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
@@ -366,7 +367,7 @@ describe('Create Task Template', () => {
         await createCasePage.setSummary('Summary ' + randomStr);
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePage.clickAddTaskButton();
 
         //Add Automation Task templates in Case
@@ -415,7 +416,7 @@ describe('Create Task Template', () => {
         await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Employee Relations');
         await changeAssignmentBladePo.clickOnAssignButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         let caseId = await viewCasePage.getCaseID();
         //await viewCasePage.clickAddTaskButton();
 

@@ -1,6 +1,7 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import dynamicField from "../../pageobject/common/dynamic-fields.po";
 import loginPage from "../../pageobject/common/login.po";
@@ -69,7 +70,7 @@ describe('Copy Task Template', () => {
             await createCasePage.setSummary('Summary' + automatedTaskTemplate2);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
 
             //Add Automation Task templates in Case
@@ -412,7 +413,7 @@ describe('Copy Task Template', () => {
             await createCasePage.setSummary('Summary ' + taskTemplate);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
 
             //Add Automation Task templates in Case

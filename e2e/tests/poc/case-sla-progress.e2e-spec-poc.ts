@@ -1,5 +1,6 @@
 import { browser, protractor } from "protractor";
 import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import caseEditPage from '../../pageobject/case/edit-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -38,7 +39,7 @@ describe('SLA progress bar testing', () => {
         await createCasePage.selectCategoryTier1('Accounts Payable');
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         //        browser.sleep(20000);
         expect(await caseEditPage.getSlaBarColor()).toBe('rgba(161, 206, 106, 1)'); //green
         /*        browser.sleep(30000);

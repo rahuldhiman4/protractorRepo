@@ -1,5 +1,6 @@
 import { $, browser } from "protractor";
 import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import caseEditPage from '../../pageobject/case/edit-case.po';
 import caseViewPage from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -22,7 +23,7 @@ describe('Case Status Change', () => {
         await createCasePage.setSummary("new case");
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await caseViewPage.changeCaseStatus('In Progress');
         await caseViewPage.clickSaveStatus();
         expect(await $(caseEditPage.selectors.statusChange).getText()).toBe('In Progress');

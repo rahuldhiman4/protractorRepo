@@ -4,6 +4,7 @@ import { ALL_FIELD, MANDATORY_FIELD } from '../../data/ui/case/casetemplate.data
 import createCasePo from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -306,7 +307,7 @@ describe('Case Template', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             //await utilCommon.waitUntilPopUpDisappear();
             await expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy();
             await navigationPage.gotoQuickCase();
@@ -314,7 +315,7 @@ describe('Case Template', () => {
             await browser.sleep(3000);
             await quickCasePo.selectCaseTemplate(caseTemplateName);
             await quickCasePo.saveCase();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             //await utilCommon.waitUntilPopUpDisappear();
             await expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy();
         } catch (e) {
@@ -411,7 +412,7 @@ describe('Case Template', () => {
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
         await createCasePo.clickAssignToMeButton();
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.isEditLinkDisplay();
         await expect(await viewCasePo.isCoreTaskPresent(taskTemplateSummaryYesValue)).toBeTruthy();
         await viewCasePo.clickEditCaseButton();
@@ -436,7 +437,7 @@ describe('Case Template', () => {
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
         await createCasePo.clickAssignToMeButton();
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.isEditLinkDisplay();
         await expect(await viewCasePo.isCoreTaskPresent(taskTemplateSummaryYesValue)).toBeTruthy();
         await viewCasePo.changeCaseStatus('In Progress');
@@ -496,7 +497,7 @@ describe('Case Template', () => {
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePo.isEditLinkDisplay();
             await viewCasePo.changeCaseStatus('In Progress');
             await viewCasePo.clickSaveStatus();
@@ -527,7 +528,7 @@ describe('Case Template', () => {
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePo.isEditLinkDisplay();
             await viewCasePo.changeCaseStatus('Pending');
             await viewCasePo.setStatusReason('Customer Response');

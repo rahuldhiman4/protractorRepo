@@ -14,6 +14,7 @@ import taskConsole from "../../pageobject/task/console-task.po";
 import utilCommon from '../../utils/util.common';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import createCasePo from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
@@ -134,7 +135,7 @@ describe('Case Data Store', () => {
             await createCasePage.setSummary('Summary ' + manualTaskSummary);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
 
             //Add Manual task and Automation Task in Case
@@ -180,7 +181,7 @@ describe('Case Data Store', () => {
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
             await createCasePo.clickSaveCaseButton();
-            await createCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await utilCommon.waitUntilSpinnerToHide();
             expect(await viewCasePo.isDynamicFieldDisplayed('temp')).toBeTruthy('dynamic fields not present');
             expect(await viewCasePo.isDynamicFieldDisplayed('temp1')).toBeTruthy('dynamic fields not present');
