@@ -5,12 +5,14 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import consoleEmailTemplatePo from '../../pageobject/settings/email/console-email-template.po';
 import createEmailTemplatePo from '../../pageobject/settings/email/create-email-template.po';
 import editEmailTemplatePo from '../../pageobject/settings/email/edit-email-template.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+
 describe('EmailTemplate', () => {
     let label: string
     let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

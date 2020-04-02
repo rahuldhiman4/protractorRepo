@@ -3,6 +3,7 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import notificationTempGridPage from "../../pageobject/settings/notification-config/console-notification-template.po";
 import editNotificationTemplate from "../../pageobject/settings/notification-config/edit-notification-template.po";
+import { BWF_BASE_URL } from '../../utils/constants';
 
 describe("Notification Template", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -10,7 +11,7 @@ describe("Notification Template", () => {
     const notifTempGridPageTitle = 'Manage Notification Template - Business Workflows';
 
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
     });
 

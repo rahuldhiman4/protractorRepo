@@ -12,3 +12,5 @@ export enum type {
     user = "USER",
     group = "GROUP"
 }
+
+export const BWF_BASE_URL = '/helix/index.html#/com.bmc.dsm.bwfa';

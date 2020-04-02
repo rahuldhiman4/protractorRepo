@@ -3,12 +3,13 @@ import apiHelper from '../../api/api.helper';
 import attachmentBladePo from '../../pageobject/attachment/attachment-blade.po';
 import attachmentInformationBladePo from '../../pageobject/attachment/attachment-information-blade.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
-import createCasePage from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
+import createCasePage from '../../pageobject/case/create-case.po';
 import { default as viewCasePage, default as viewCasePo } from "../../pageobject/case/view-case.po";
 import changeAssignmentBlade from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import taskConsole from "../../pageobject/task/console-task.po";
@@ -16,13 +17,13 @@ import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTask from "../../pageobject/task/edit-task.po";
 import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 describe('Create Adhoc task', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qtao');
     });
 
@@ -37,7 +38,7 @@ describe('Create Adhoc task', () => {
     it('[DRDMV-3820,DRDMV-1239]: Adhoc Task Create view (UI verification)', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         //Create Case
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + summary);
         await createCasePage.clickAssignToMeButton();
@@ -74,7 +75,7 @@ describe('Create Adhoc task', () => {
 
     it('[DRDMV-3821]: Adhoc Task details view (UI verification))', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + summary);
         await createCasePage.clickAssignToMeButton();
@@ -115,7 +116,7 @@ describe('Create Adhoc task', () => {
 
     it('[DRDMV-7130]: [Automatic Task] - Create Ad hoc Task', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + summary);
         await createCasePage.clickAssignToMeButton();
@@ -137,7 +138,7 @@ describe('Create Adhoc task', () => {
 
     it('[DRDMV-1580,DRDMV-12243]: Adhoc Task details view (UI verification))', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + summary);
         await createCasePage.clickAssignToMeButton();
@@ -192,7 +193,7 @@ describe('Create Adhoc task', () => {
         await taskTemplate.clickOnSaveTaskTemplate();
         await utilCommon.waitUntilPopUpDisappear();
 
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + manualTaskSummary);
         await createCasePage.clickAssignToMeButton();

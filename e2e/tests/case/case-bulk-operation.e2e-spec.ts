@@ -8,7 +8,7 @@ import loginPage from '../../pageobject/common/login.po';
 import navigationPage from '../../pageobject/common/navigation.po';
 import notificationPo from '../../pageobject/notification/notification.po';
 import activityPo from '../../pageobject/social/activity-tab.po';
-import { operation, security, type } from '../../utils/constants';
+import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 
@@ -19,7 +19,7 @@ describe('Case Bulk Operation', () => {
     let compensationAndBenefitsStr = 'Compensation and Benefits';
 
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login(qtaoStr);
         await utilGrid.clearFilter();
         await apiHelper.apiLogin("tadmin");

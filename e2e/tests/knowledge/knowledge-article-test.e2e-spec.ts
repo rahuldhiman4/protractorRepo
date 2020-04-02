@@ -1,23 +1,22 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import { default as createKnowledgePage, default as createKnowlegePo } from "../../pageobject/knowledge/create-knowlege.po";
+import { default as createKnowledgePage } from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePage from "../../pageobject/knowledge/edit-knowledge.po";
-import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
+import feedbackBladeKnowledgeArticlePo from '../../pageobject/knowledge/feedback-blade-Knowledge-article.po';
+import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
+import { default as knowledgeArticlesConsolePo, default as knowledgeConsolePo } from '../../pageobject/knowledge/knowledge-articles-console.po';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import consoleKnowledgeTemplatePo from '../../pageobject/settings/knowledge-management/console-knowledge-template.po';
 import createKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledge-management/create-knowledge-article-template.po';
+import editKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledge-management/edit-knowledge-article-template.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import editKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledge-management/edit-knowledge-article-template.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
-import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
-import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
-import feedbackBladeKnowledgeArticlePo from '../../pageobject/knowledge/feedback-blade-Knowledge-article.po';
-import knowledgeConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
-
 
 describe('Knowledge Article', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -28,7 +27,7 @@ describe('Knowledge Article', () => {
     var knowledgeManagementApp = "Knowledge Management";
     var knowledgeArticlesTitleStr = "Knowledge Articles";
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('peter');
     });
 
@@ -662,7 +661,7 @@ describe('Knowledge Article', () => {
         expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitle, 'expected Value not present');
         await createKnowledgePage.clickOnDiscardButton();
         await utilCommon.clickOnWarningOk();
-        expect(await navigationPage.isKnowledgeConsoleTitleDisplayed()).toBeTruthy('Knowledge Console not present');
+        expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
         await utilGrid.clearFilter();
         await utilGrid.searchRecord(knowledgeTitle);
         expect(await knowledgeConsolePo.isValueDisplayedInGrid('Title') == knowledgeTitle).toBeFalsy('KA is present');

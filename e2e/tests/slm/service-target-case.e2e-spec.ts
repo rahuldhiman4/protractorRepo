@@ -1,27 +1,25 @@
 import { browser } from "protractor";
-import createCasePage from '../../pageobject/case/create-case.po';
+import apiHelper from '../../api/api.helper';
 import previewCasePo from '../../pageobject/case/case-preview.po';
-import caseEditPage from '../../pageobject/case/edit-case.po';
-import viewCasePage from '../../pageobject/case/view-case.po';
+import createCasePage from '../../pageobject/case/create-case.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import { default as viewCasePage, default as viewCasePo } from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
-import serviceTargetInfoPage from '../../pageobject/slm/service-target-info.po';
-import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
-import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import apiHelper from '../../api/api.helper';
-import viewCasePo from '../../pageobject/case/view-case.po';
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
+import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
+import serviceTargetInfoPage from '../../pageobject/slm/service-target-info.po';
+import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
 let caseAgentUserPsilon = 'werusha';
 
-
 describe('Service Target Tests for Cases', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping();
@@ -59,7 +57,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(3000);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Mary');
             await createCasePage.setSummary('Case for SVT creation');
             await createCasePage.selectCategoryTier1('Applications');
@@ -105,7 +103,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(3000);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Mary');
             await createCasePage.setPriority('High');
             await createCasePage.setSummary('Case for SVT creation');
@@ -153,7 +151,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(3000);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qianru Tao');
             await createCasePage.setPriority('High');
             await createCasePage.setSummary('Case for SVT creation');
@@ -190,7 +188,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(3000);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qianru Tao');
             await createCasePage.setPriority('High');
             await createCasePage.setSummary('Case for SVT creation');
@@ -248,7 +246,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
 
             await browser.sleep(3000);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qianru Tao');
             await createCasePage.setPriority('High');
             await createCasePage.setSummary('Case for SVT creation');
@@ -300,7 +298,7 @@ describe('Service Target Tests for Cases', () => {
 
             browser.sleep(3000);
             //Create a Case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qianru Tao');
             await createCasePage.setPriority('Critical');
             await createCasePage.setSummary('Case for SVT creation');
@@ -399,7 +397,7 @@ describe('Service Target Tests for Cases', () => {
 
             browser.sleep(3000);
             //Create a Case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qianru Tao');
             await createCasePage.setPriority('Critical');
             await createCasePage.setSummary('Case for SVT creation');
@@ -444,7 +442,7 @@ describe('Service Target Tests for Cases', () => {
 
             //Create a Case
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('Critical');
             await createCasePage.setSummary('Case for SVT creation');
@@ -497,7 +495,7 @@ describe('Service Target Tests for Cases', () => {
 
             //Create a Case
             await loginPage.login(caseAgentUserPsilon);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Doomi Bomei');
             await createCasePage.setPriority('Critical');
             await createCasePage.setSummary('Case for SVT creation');
@@ -539,7 +537,7 @@ describe('Service Target Tests for Cases', () => {
 
             //Create a Case
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('High');
             await createCasePage.setSummary('Case for SVT creation');
@@ -650,7 +648,7 @@ describe('Service Target Tests for Cases', () => {
 
             //Create a Case
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('High');
             await createCasePage.setSummary('Case for SVT creation');
@@ -735,7 +733,7 @@ describe('Service Target Tests for Cases', () => {
 
             //Create a Case
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('High');
             await createCasePage.setSummary('Case for SVT creation');
@@ -805,7 +803,7 @@ describe('Service Target Tests for Cases', () => {
 
             // Create a Case
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('High');
             await createCasePage.setSummary('Case for SVT creation');
@@ -897,7 +895,7 @@ describe('Service Target Tests for Cases', () => {
 
             // Create a Case
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('Critical');
             await createCasePage.setSummary('Case for SVT creation');
@@ -952,7 +950,7 @@ describe('Service Target Tests for Cases', () => {
 
             // Create a Case
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('Critical');
             await createCasePage.setSummary('Case for SVT creation');
@@ -1007,7 +1005,7 @@ describe('Service Target Tests for Cases', () => {
 
             // Create a Case
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('Critical');
             await createCasePage.setSummary('Case for SVT creation');
@@ -1065,7 +1063,7 @@ describe('Service Target Tests for Cases', () => {
 
             // Create a Case
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('Critical');
             await createCasePage.setSummary('Case for SVT creation');
@@ -1115,7 +1113,7 @@ describe('Service Target Tests for Cases', () => {
 
             // Create a Case
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('Critical');
             await createCasePage.setSummary('Case for SVT creation');
@@ -1167,7 +1165,7 @@ describe('Service Target Tests for Cases', () => {
 
             // Create a Case
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('Critical');
             await createCasePage.setSummary('Case for SVT creation');
@@ -1207,7 +1205,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('met on');
 
             // Create a Case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('Critical');
             await createCasePage.setSummary('Case for SVT creation');

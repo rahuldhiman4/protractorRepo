@@ -14,7 +14,7 @@ class LoginPage {
         let loginJson = require('../../data/userdata.json');
         let username: string = loginJson[user].userName;
         let password: string = loginJson[user].userPassword;
-        await browser.wait(this.EC.visibilityOf($(this.selectors.loginForm)), 10000);
+        await browser.wait(this.EC.visibilityOf($(this.selectors.loginForm)), 30000);
         await $(this.selectors.userName).sendKeys(username);
         await $(this.selectors.password).sendKeys(password);
         await $(this.selectors.signInButton).click();
@@ -24,7 +24,7 @@ class LoginPage {
         let tasksConsole = this.EC.titleContains('Tasks - Business Workflows');
         let innovationStudio = this.EC.titleContains('Workspace - Innovation Studio');
         let noAccess = this.EC.titleContains('No Access');
-        await browser.wait(this.EC.or(caseConsole, knowledgeConsole, tasksConsole, innovationStudio, noAccess), 10000);
+        await browser.wait(this.EC.or(caseConsole, knowledgeConsole, tasksConsole, innovationStudio, noAccess), 30000);
 //        await utilCommon.waitUntilPopUpDisappear();
     }
 
@@ -39,7 +39,7 @@ class LoginPage {
         let tasksConsole = this.EC.titleContains('Tasks - Business Workflows');
         let innovationStudio = this.EC.titleContains('Workspace - Innovation Studio');
         let noAccess = this.EC.titleContains('No Access');
-        await browser.wait(this.EC.or(caseConsole, knowledgeConsole, tasksConsole, innovationStudio, noAccess), 10000);
+        await browser.wait(this.EC.or(caseConsole, knowledgeConsole, tasksConsole, innovationStudio, noAccess), 30000);
 //        await utilCommon.waitUntilPopUpDisappear();
     }
 }

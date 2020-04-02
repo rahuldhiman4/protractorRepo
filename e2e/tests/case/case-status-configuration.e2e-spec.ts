@@ -1,21 +1,22 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import caseConsolePo from '../../pageobject/case/case-console.po';
-import createCasePo from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
+import createCasePo from '../../pageobject/case/create-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import statusConfigPo from '../../pageobject/settings/common/status-config.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 
 describe('Case Status Configuration', () => {
     let flowsetData;
     let flowsetName: string;
-    
+
 
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         flowsetData = require('../../data/ui/case/flowset.ui.json');
@@ -120,7 +121,7 @@ describe('Case Status Configuration', () => {
 
     //ankagraw
     it('[DRDMV-13899]:Verify case created prior to label change will reflect new status label changes', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary("DRDMV-13899 before configuration");
         await createCasePo.clickSaveCaseButton();
@@ -134,7 +135,7 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.clickEditStatus("Assigned");
         await statusConfigPo.renameExistingStatus('Staged');
 
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary("DRDMV-13899 after configuration");
         await createCasePo.clickSaveCaseButton();

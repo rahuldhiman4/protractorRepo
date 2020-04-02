@@ -5,11 +5,12 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import createMenuItems from '../../pageobject/settings/application-config/create-menu-items-blade.po';
 import editMenuItemsConfigPo from '../../pageobject/settings/application-config/edit-menu-items-config.po';
 import menuItemsConfigConsolePo from '../../pageobject/settings/application-config/menu-items-config-console.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 
 describe('Menu Item', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
     });
 

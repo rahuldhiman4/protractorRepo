@@ -3,8 +3,8 @@ import apiHelper from '../../api/api.helper';
 import attachmentBladePo from '../../pageobject/attachment/attachment-blade.po';
 import attachmentInformationBladePo from '../../pageobject/attachment/attachment-information-blade.po';
 import caseConsole from '../../pageobject/case/case-console.po';
-import createCasePo from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
+import createCasePo from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -15,12 +15,14 @@ import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import { default as manageTask } from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+
 describe("Attachment", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login("qtao");
     });
 
@@ -36,7 +38,7 @@ describe("Attachment", () => {
     //kgaikwad
     it('[DRDMV-11697]: All attachments grid verification', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
         await createCasePo.clickSaveCaseButton();
@@ -55,7 +57,7 @@ describe("Attachment", () => {
     it('[DRDMV-11707,DRDMV-11703,DRDMV-11704]: Upload attachment while creating case via BWF & verify all attachments Grid	', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let filePath = '../../data/ui/attachment/bwfJpg.jpg';
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
         await createCasePo.addDescriptionAttachment(filePath);
@@ -181,7 +183,7 @@ describe("Attachment", () => {
         await activityTabPo.clickOnHyperlinkFromActivity(caseBodyText, 'Qianru Tao');
         expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is delete sucessfully');
-        await navigationPage.goToPersonProfile();
+        await navigationPage.gotoPersonProfile();
         expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
     }, 140 * 1000);
 
@@ -247,14 +249,14 @@ describe("Attachment", () => {
         await expect(await utilCommon.isFileDownloaded('bwfWord1.rtf')).toBeTruthy('File is not downloaded.');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.clickOnCloseButton();
-        await navigationPage.goToPersonProfile();
+        await navigationPage.gotoPersonProfile();
         await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
     });
 
     //kgaikwad
     it('[DRDMV-11718,DRDMV-11720]: Large number of attachments verification', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf', 'bwfXlsx.xlsx', 'demo.txt'];
@@ -349,7 +351,7 @@ describe("Attachment", () => {
     //kgaikwad
     it('[DRDMV-11701,DRDMV-11706]: Pagination on all attachments grid', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
         let fileName1: string[] = ['articleStatus.png', 'articleStatus.png', 'articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf'];
@@ -370,7 +372,7 @@ describe("Attachment", () => {
     //kgaikwad
     it('[DRDMV-11714,DRDMV-11705]: Remove attachment which is added via case console & verify all attachments grid', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
         let fileName1: string[] = ['bwfJpg.jpg', 'articleStatus.png'];
@@ -397,7 +399,7 @@ describe("Attachment", () => {
     //kgaikwad
     it('[DRDMV-11702]: Multiple attachments download', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg'];
@@ -424,7 +426,7 @@ describe("Attachment", () => {
     //kgaikwad
     it('[DRDMV-11722]: Multiple attachments selection from different pages', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf'];

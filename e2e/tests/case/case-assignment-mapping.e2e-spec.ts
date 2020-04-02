@@ -1,37 +1,37 @@
 import { browser, protractor, ProtractorExpectedConditions } from "protractor";
+import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import caseConsolePage from "../../pageobject/case/case-console.po";
-import createCasePage from "../../pageobject/case/create-case.po";
 import previewCasePo from '../../pageobject/case/case-preview.po';
+import createCasePage from "../../pageobject/case/create-case.po";
 import QuickCasePage from "../../pageobject/case/quick-case.po";
-import viewCasePage from "../../pageobject/case/view-case.po";
+import { default as viewCasePage, default as viewCasePo } from "../../pageobject/case/view-case.po";
+import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import AssignmentConfigConsolePage from "../../pageobject/settings/case-management/assignments-config-console.po";
-import AssignmentConfigCreatePage from "../../pageobject/settings/case-management/create-assignments-config.po";
-import AssignmentConfigEditPage from "../../pageobject/settings/case-management/edit-assignments-config.po";
-import utilCommon from '../../utils/util.common';
-import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
-import apiCoreUtil from '../../api/api.core.util';
 import consoleCasetemplatePage from '../../pageobject/settings/case-management/console-casetemplate.po';
+import AssignmentConfigCreatePage from "../../pageobject/settings/case-management/create-assignments-config.po";
 import createCaseTemplate from '../../pageobject/settings/case-management/create-casetemplate.po';
+import AssignmentConfigEditPage from "../../pageobject/settings/case-management/edit-assignments-config.po";
 import viewCaseTemplate from '../../pageobject/settings/case-management/view-casetemplate.po';
+import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
+import editTaskPo from '../../pageobject/task/edit-task.po';
 import { default as manageTask } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
-import editTaskPo from '../../pageobject/task/edit-task.po';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
-import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
 
 describe("Create Case Assignment Mapping", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await foundationData("Petramco");
     });
@@ -46,7 +46,7 @@ describe("Create Case Assignment Mapping", () => {
 
     //radhiman
     it('[DRDMV-15014]: Verify Case agent can change the Site field once it is populated according to requesters primary location on create case view', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('qtao');
         await createCasePage.selectSite('Berlin');
         await createCasePage.setSummary('DRDMV-15014 summary');
@@ -58,7 +58,7 @@ describe("Create Case Assignment Mapping", () => {
 
     //radhiman
     it('[DRDMV-1210]: Case Workspace table columns', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('apavlik');
         await createCasePage.setSummary('DRDMV-1210 summary');
         await createCasePage.clickAssignToMeButton();
@@ -219,7 +219,7 @@ describe("Create Case Assignment Mapping", () => {
         await AssignmentConfigCreatePage.clickonSaveButton();
         await AssignmentConfigConsolePage.searchAssignmentConfig(companyAssignmentMappingName);
         expect(await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Assignment Name")).toBe(companyAssignmentMappingName);
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary("DRDMV-12034 Case Summary");
         await createCasePage.setPriority("Low");
@@ -254,7 +254,7 @@ describe("Create Case Assignment Mapping", () => {
             await AssignmentConfigCreatePage.clickonSaveButton();
             await AssignmentConfigConsolePage.searchAssignmentConfig(assignmentMappingName);
             expect(await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Assignment Name")).toBe(assignmentMappingName);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("gderuno");
             await createCasePage.setSummary("DRDMV-12033 Case Summary");
             await createCasePage.setPriority("Medium");
@@ -345,7 +345,7 @@ describe("Create Case Assignment Mapping", () => {
         let departmentData = departmentDataFile['DepartmentData11825'];
         let suppGrpData = supportGrpDataFile['SuppGrpData11825'];
         //Case
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary("DRDMV-11825 Case Summary");
         await createCasePage.setPriority("Medium");
@@ -382,7 +382,7 @@ describe("Create Case Assignment Mapping", () => {
         await editTaskPo.updateTaskSummary(summary);
         await editTaskPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
-        await utilCommon.scrollUpOrDownTillElement(viewTask.selectors.assignedGroupValue);  
+        await utilCommon.scrollUpOrDownTillElement(viewTask.selectors.assignedGroupValue);
         expect(await viewTask.getAssignedGroupText()).toBe(suppGrpData.orgName, "Support Group Not Populated");
         expect(await viewTask.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
         expect(await viewTask.getBusinessUnitText()).toBe(businessData.orgName, "Buisness Unit is not available");
@@ -402,7 +402,7 @@ describe("Create Case Assignment Mapping", () => {
         await createCaseTemplate.clickOnChangeAssignmentButton();
         await changeAssignmentPage.selectBusinessUnit(businessData.orgName);
         await changeAssignmentPage.selectDepartment(departmentData.orgName);
-        await changeAssignmentPage.selectSupportGroup(suppGrpData.orgName); 
+        await changeAssignmentPage.selectSupportGroup(suppGrpData.orgName);
         await changeAssignmentPage.selectAssignee('fnPerson11825 lnPerson11825');
         await changeAssignmentPage.clickOnAssignButton();
         await createCaseTemplate.clickSaveCaseTemplate();
@@ -422,7 +422,7 @@ describe("Create Case Assignment Mapping", () => {
         await taskTemplate.selectOwnerCompany("Petramco");
         await taskTemplate.selectBuisnessUnit(businessData.orgName);
         await taskTemplate.selectDepartment(departmentData.orgName);
-        await taskTemplate.selectOwnerGroup("Compensation and Benefits");  
+        await taskTemplate.selectOwnerGroup("Compensation and Benefits");
         await taskTemplate.clickOnAssignment();
         await changeAssignmentPage.selectBusinessUnit(businessData.orgName);
         await changeAssignmentPage.selectDepartment(departmentData.orgName);
@@ -432,9 +432,9 @@ describe("Create Case Assignment Mapping", () => {
         await taskTemplate.clickOnSaveTaskTemplate();
         expect(await viewTaskTemplate.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
         await expect(viewTaskTemplate.getAssigneeBusinessUnitValue()).toBe(businessData.orgName);
-        await expect(viewTaskTemplate.getAssigneeDepartmentValue()).toBe(departmentData.orgName);    
+        await expect(viewTaskTemplate.getAssigneeDepartmentValue()).toBe(departmentData.orgName);
         await expect(viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
-        await expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);    
+        await expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
     }, 400 * 1000);
 
     it('[DRDMV-12080]: Verify Company and Support Group selection hierarchy.', async () => {
@@ -444,8 +444,8 @@ describe("Create Case Assignment Mapping", () => {
         let businessData = businessDataFile['BusinessUnitData12080'];
         let departmentData = departmentDataFile['DepartmentData12080'];
         let suppGrpData = supportGrpDataFile['SuppGrpData12080'];
-        
-        await navigationPage.gotCreateCase();
+
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary("DRDMV-12080 Case Summary");
         await createCasePage.setPriority("Medium");
@@ -463,17 +463,17 @@ describe("Create Case Assignment Mapping", () => {
         await caseAccessTabPo.selectCompany('Petramco');
         await caseAccessTabPo.selectBusinessUnit(businessData.orgName);
         await caseAccessTabPo.selectDepartment(departmentData.orgName);
-        await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Department');        
+        await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Department');
         await utilCommon.waitUntilSpinnerToHide();
         await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
         await caseAccessTabPo.selectCompany('Petramco');
         await caseAccessTabPo.selectBusinessUnit(businessData.orgName);
-        await caseAccessTabPo.selectDepartment(departmentData.orgName);      
+        await caseAccessTabPo.selectDepartment(departmentData.orgName);
         await caseAccessTabPo.selectSupportGroup(suppGrpData.orgName);
         await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
         await utilCommon.waitUntilSpinnerToHide();
         await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
         await caseAccessTabPo.selectAndAddAgent('fnPerson12080 lnPerson1182512080');
-        await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('fnPerson11825 lnPerson11825')).toBeTruthy('Failuer: Quanah George Agent Name is missing');         
+        await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('fnPerson11825 lnPerson11825')).toBeTruthy('Failuer: Quanah George Agent Name is missing');
     }, 300 * 1000);
 });

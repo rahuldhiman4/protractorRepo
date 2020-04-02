@@ -1,8 +1,8 @@
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
-import createCasePage from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
+import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePage from '../../pageobject/case/edit-case.po';
 import quickCase from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
@@ -17,6 +17,7 @@ import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-ar
 import createDocumentLibraryPage from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryConsolePage from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPage from '../../pageobject/settings/document-management/edit-document-library.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
 
@@ -72,7 +73,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
     const domainTagDataFile = require('../../data/ui/foundation/domainTag.ui.json');
 
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin(knowledgePublisherUser);
         let articleData = {
@@ -446,7 +447,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
 
             //Navigate to Create case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
             await createCasePage.clickAssignToMeButton();
@@ -559,7 +560,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
 
             //Navigate to Create case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
             await createCasePage.clickAssignToMeButton();
@@ -672,7 +673,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
 
             //Navigate to Create case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
             await createCasePage.clickAssignToMeButton();
@@ -766,7 +767,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
             //Login with Case Manager
             await loginPage.login(caseManagerUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(title);
             await createCasePage.clickAssignToMeButton();
@@ -786,7 +787,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
             //Login with Case Agent
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(title);
             await createCasePage.clickAssignToMeButton();
@@ -805,7 +806,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
 
             await loginPage.login(caseBAUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(title);
             await createCasePage.clickAssignToMeButton();
