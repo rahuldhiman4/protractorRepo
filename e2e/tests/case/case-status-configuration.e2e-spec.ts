@@ -2,6 +2,7 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import createCasePo from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -11,6 +12,7 @@ import utilCommon from '../../utils/util.common';
 describe('Case Status Configuration', () => {
     let flowsetData;
     let flowsetName: string;
+    
 
     beforeAll(async () => {
         await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
@@ -122,7 +124,7 @@ describe('Case Status Configuration', () => {
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary("DRDMV-13899 before configuration");
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         let caseId1 = await viewCasePo.getCaseID();
 
         await navigationPage.gotoSettingsPage();
@@ -136,7 +138,7 @@ describe('Case Status Configuration', () => {
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary("DRDMV-13899 after configuration");
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         expect(await viewCasePo.getTextOfStatus()).toBe("Staged");
 
         await navigationPage.gotoCaseConsole();

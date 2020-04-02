@@ -2,6 +2,7 @@ import { browser, protractor, ProtractorExpectedConditions } from "protractor";
 import apiHelper from '../../api/api.helper';
 import caseConsolePage from "../../pageobject/case/case-console.po";
 import createCasePage from "../../pageobject/case/create-case.po";
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import QuickCasePage from "../../pageobject/case/quick-case.po";
 import viewCasePage from "../../pageobject/case/view-case.po";
 import loginPage from "../../pageobject/common/login.po";
@@ -51,7 +52,7 @@ describe("Create Case Assignment Mapping", () => {
         await createCasePage.setSummary('DRDMV-15014 summary');
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         expect(await viewCasePage.getCaseSite()).toBe('Berlin');
     })
 
@@ -62,7 +63,7 @@ describe("Create Case Assignment Mapping", () => {
         await createCasePage.setSummary('DRDMV-1210 summary');
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await navigationPage.gotoCaseConsole();
         await caseConsolePage.setCaseSearchBoxValue('DRDMV-1210 summary');
         let defaultCaseColumns: string[] = ["Case ID", "Request ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee", "Requester", "Modified Date", "SLM Status"];
@@ -224,7 +225,7 @@ describe("Create Case Assignment Mapping", () => {
         await createCasePage.setPriority("Low");
         await createCasePage.selectCategoryTier1("Facilities");
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         expect(await viewCasePage.getAssignedGroupText()).toBe("AU Support 2");
     }, 150 * 1000);
 
@@ -260,7 +261,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectCategoryTier1("Projectors");
             await createCasePage.selectCategoryTier2("Repair");
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePage.getAssignedGroupText()).toBe("Psilon Support Group2");
         }
         catch (error) {
@@ -357,7 +358,7 @@ describe("Create Case Assignment Mapping", () => {
         await changeAssignmentPage.selectAssignee('fnPerson11825 lnPerson11825');
         await changeAssignmentPage.clickOnAssignButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         expect(await viewCasePage.getAssignedGroupText()).toBe(suppGrpData.orgName, "Support Group Not Populated");
         expect(await viewCasePage.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
         expect(await viewCasePage.getBusinessUnitText()).toBe(businessData.orgName, "Buisness Unit is not available");
@@ -451,7 +452,7 @@ describe("Create Case Assignment Mapping", () => {
         await createCasePage.selectCategoryTier1("Projectors");
         await createCasePage.selectCategoryTier2("Repair");
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickOnTab('Case Access');
         await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
         await caseAccessTabPo.selectCompany('Petramco');

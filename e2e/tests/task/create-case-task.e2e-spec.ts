@@ -1,6 +1,7 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import loginPage from "../../pageobject/common/login.po";
 import { SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
@@ -67,7 +68,7 @@ describe('Create Case Task', () => {
             await createCasePage.setSummary('Summary ' + manualTaskSummary);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
 
             //Add Manual task and Automation Task in Case
@@ -155,7 +156,7 @@ describe('Create Case Task', () => {
             await createCasePage.setSummary('Summary ' + automationTaskSummaryWithallField);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(autmationTaskTemplateWithRequiredData);
             await manageTask.addTaskFromTaskTemplate(automationTaskTemplateWithallField);
@@ -357,7 +358,7 @@ describe('Create Case Task', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.selectCategoryTier1(globalCategName);
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await expect(viewCasePage.getCategoryTier1Value()).toBe(globalCategName, "Global Category Not Present");
 
             //Got To Another Case
@@ -366,7 +367,7 @@ describe('Create Case Task', () => {
             await createCasePage.setSummary('Summary 123 ' + manualSummary);
             await createCasePage.selectCategoryTier1('Applications');
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await expect(viewCasePage.getCategoryTier1Value()).toBe('Applications', "Applications Category Not Present");
         } catch (e) {
             throw e;
@@ -521,14 +522,14 @@ describe('Create Case Task', () => {
             await createCasePage.setSummary('Summary ' + createCase);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(templateData.templateName);
             await manageTask.clickOnCloseButton();
 
             //validate Automation Template With Required Field
-            await viewCasePage.changeCaseStatus("In Progress");
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.clickSaveStatus();
             // await utilCommon.waitUntilPopUpDisappear();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLinkOnManageTask(templateData.templateSummary);
@@ -641,7 +642,7 @@ describe('Create Case Task', () => {
         await createCasePage.setSummary('set summary');
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickAddTaskFromTemplateButton();
         await utilGrid.clearFilter();
@@ -785,7 +786,7 @@ describe('Create Case Task', () => {
         await createCasePage.clickSelectCaseTemplateButton();
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Completed");
 
@@ -820,16 +821,16 @@ describe('Create Case Task', () => {
         await createCasePage.setSummary('Summary' + randomStr);
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
         await manageTask.clickOnCloseButton();
-        await viewCasePage.changeCaseStatus('Pending');
-        await viewCasePage.setStatusReason('Customer Response');
-        await viewCasePage.clickSaveStatus();
-        await viewCasePage.changeCaseStatus('Canceled');
-        await viewCasePage.setStatusReason('Customer Canceled');
-        await viewCasePage.clickSaveStatus();
+        await updateStatusBladePo.changeCaseStatus('Pending');
+        await updateStatusBladePo.setStatusReason('Customer Response');
+        await updateStatusBladePo.clickSaveStatus();
+        await updateStatusBladePo.changeCaseStatus('Canceled');
+        await updateStatusBladePo.setStatusReason('Customer Canceled');
+        await updateStatusBladePo.clickSaveStatus();
         await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Canceled");
     });
@@ -868,7 +869,7 @@ describe('Create Case Task', () => {
         await createCasePage.setSummary('Summary' + randomStr);
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`FirstAutomatedTaskTemplateActive ${randomStr}`);
         await manageTask.addTaskFromTaskTemplate(`SecondAutomatedTaskTemplateActive1 ${randomStr}`);
@@ -881,8 +882,8 @@ describe('Create Case Task', () => {
         await manageTask.clickTaskLinkOnManageTask(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
         await viewTask.clickOnViewCase();
-        await viewCasePage.changeCaseStatus('In Progress');
-        await viewCasePage.clickSaveStatus();
+        await updateStatusBladePo.changeCaseStatus('In Progress');
+        await updateStatusBladePo.clickSaveStatus();
         await viewCasePage.openTaskCard(1);
         await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Completed");
@@ -923,7 +924,7 @@ describe('Create Case Task', () => {
         await createCasePage.setSummary('Summary' + randomStr);
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
         await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate2 ${randomStr}`);
@@ -941,8 +942,8 @@ describe('Create Case Task', () => {
         await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary3 ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
         await viewTask.clickOnViewCase();
-        await viewCasePage.changeCaseStatus('In Progress');
-        await viewCasePage.clickSaveStatus();
+        await updateStatusBladePo.changeCaseStatus('In Progress');
+        await updateStatusBladePo.clickSaveStatus();
         await viewCasePage.openTaskCard(1);
         await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary1 ${randomStr}`);
         await viewTask.clickOnChangeStatus();
@@ -1044,7 +1045,7 @@ describe('Create Case Task', () => {
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary("New case" + randomStr);
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
@@ -1059,7 +1060,7 @@ describe('Create Case Task', () => {
         await createCasePage.setSummary("Assigned case" + randomStr);
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);

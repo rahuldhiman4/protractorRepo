@@ -15,6 +15,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
@@ -23,6 +24,7 @@ import utilGrid from '../../utils/util.grid';
 import taskConsole from "../../pageobject/task/console-task.po";
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 let filePath = '../../data/ui/attachment/bwfPdf.pdf';
 
 describe('Create Task Template', () => {
@@ -366,7 +368,7 @@ describe('Create Task Template', () => {
         await createCasePage.setSummary('Summary ' + randomStr);
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePage.clickAddTaskButton();
 
         //Add Automation Task templates in Case
@@ -374,11 +376,11 @@ describe('Create Task Template', () => {
         await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
         await expect(viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed")
         await viewTask.clickOnViewCase();
-        await viewCasePage.changeCaseStatus('In Progress');
-        await viewCasePage.clickSaveStatus();
-        await viewCasePage.changeCaseStatus('Resolved');
-        await viewCasePage.setStatusReason('Auto Resolved');
-        await viewCasePage.clickSaveStatus();
+        await updateStatusBladePo.changeCaseStatus('In Progress');
+        await updateStatusBladePo.clickSaveStatus();
+        await updateStatusBladePo.changeCaseStatus('Resolved');
+        await updateStatusBladePo.setStatusReason('Auto Resolved');
+        await updateStatusBladePo.clickSaveStatus();
         await viewCasePage.openTaskCard(1);
         await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
         await activityTabPo.getFirstPostContent();
@@ -415,7 +417,7 @@ describe('Create Task Template', () => {
         await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Employee Relations');
         await changeAssignmentBladePo.clickOnAssignButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         let caseId = await viewCasePage.getCaseID();
         //await viewCasePage.clickAddTaskButton();
 
@@ -431,8 +433,8 @@ describe('Create Task Template', () => {
         await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
         await expect(viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed")
         await viewTask.clickOnViewCase();
-        await viewCasePage.changeCaseStatus('In Progress');
-        await viewCasePage.clickSaveStatus();
+        await updateStatusBladePo.changeCaseStatus('In Progress');
+        await updateStatusBladePo.clickSaveStatus();
         await viewCasePage.openTaskCard(1);
         await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
         await activityTabPo.getFirstPostContent();

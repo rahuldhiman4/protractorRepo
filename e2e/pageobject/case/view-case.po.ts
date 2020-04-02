@@ -6,21 +6,15 @@ class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        categoryTier1Value: '[rx-view-component-id="593784cc-6bce-4bfd-82e1-7ca55aa28517"] p',
-        categoryTier2Value: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] p',
-        categoryTier3Value: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] p',
-        categoryTier4Value: '[rx-view-component-id="aa75da42-eeb4-4a6f-946b-74d5316b7641"] p',
+        categoryTier1Value: '[rx-view-component-id="593784cc-6bce-4bfd-82e1-7ca55aa28517"] .read-only-content',
+        categoryTier2Value: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] .read-only-content',
+        categoryTier3Value: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] .read-only-content',
+        categoryTier4Value: '[rx-view-component-id="aa75da42-eeb4-4a6f-946b-74d5316b7641"] .read-only-content',
         reOpenCase: '[rx-view-component-id="2d51cf41-f176-4e20-bc48-f2741bcbbcb0"] button',
         saveUpdateStatus: '[rx-view-component-id="ee5dd503-a10e-4d22-9ac5-99c400892bb7"] button',
         cancelUpdateStatus: '[rx-view-component-id="7cffd3f8-5b84-4e7f-a4b3-6c0a3dd27855"] button',
         stopWatching: '[rx-view-component-id="a62c849f-5bb0-480f-9811-50def59d82d0"] button',
         statusChange: '[rx-view-component-id="48bbcbbf-564c-4d46-8dc2-1e7670c187ff"] .status-transition',
-        statusChangeReason: '[rx-view-component-id="049c43a1-4cbd-482d-980d-5db4ed78f295"]',
-        statusDropDown: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"]',
-        statusDropDownGuid: '3c8d9278-fc1f-430c-b866-cdc9d217318b',
-        statusChangeReasonGuid: '049c43a1-4cbd-482d-980d-5db4ed78f295',
-        statusList: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"] .ui-select__rx-choice',
-        statusDisplay: '[aria-label="Status activate"]',
         addTaskButton: '[rx-view-component-id="db1c57fc-c332-40fa-b1c0-759e21d9ad5c"] button',
         addTaskButtonGuid: '[rx-view-component-id="db1c57fc-c332-40fa-b1c0-759e21d9ad5c"]',
         editLink: '.edit-link',
@@ -63,6 +57,7 @@ class ViewCasePage {
         showMore: '.rx-attachment-show-text',
         dynamicFieldsName: '[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] span',
         dynamicFieldsValue: '[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] p',
+        slaProgressBar: '.d-progress__bar',
     }
 
     async isGroupNameDisplayed(groupName:string):Promise<boolean>{
@@ -188,60 +183,14 @@ class ViewCasePage {
         return await $(this.selectors.addToWatchlist).getText();
     }
 
-    async clickSaveStatus(expectedStatus?: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveUpdateStatus)));
-        await $(this.selectors.saveUpdateStatus).click();
-        //        if (expectedStatus) {
-        //            await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.statusChange, expectedStatus))));
-        //        }
-        //        await utilCommon.waitUntilPopUpDisappear();
-    }
-
     async isEditLinkDisplay(): Promise<boolean> {
         return await $(this.selectors.editLink).getAttribute("aria-hidden") == "false";
-    }
-
-    async clickOnstatusReason(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
-        await $(this.selectors.statusChangeReason).click();
-    }
-
-    async changeCaseStatus(statusValue: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
-        await $(this.selectors.statusChange).click();
-        await updateStatusBlade.changeStatus(statusValue);
-    }
-
-    async allStatusOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusDropDownGuid, list);
     }
 
     async clickEditCaseButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
         await $(this.selectors.editLink).click();
         //        await browser.wait(this.EC.visibilityOf($(editCasePage.selectors.cancelBtn)));
-    }
-
-    async setStatusReason(statusReasonValue: string): Promise<void> {
-        await updateStatusBlade.setStatusReason(statusReasonValue);
-    }
-
-    async allStatusReasonOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusChangeReasonGuid, list);
-    }
-
-    async isStatusReasonOptionDisplayed(statusValue: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
-        await $(this.selectors.statusChangeReason).click();
-        const statusReason = $(this.selectors.statusChangeReason);
-        //        await browser.wait(this.EC.elementToBeClickable(statusReason.$(this.selectors.searchInput)));
-        await (statusReason.$(this.selectors.searchInput)).sendKeys(statusValue);
-        return await element(by.cssContainingText((this.selectors.statusChangeReason + ' .ui-select__rx-choice'), statusValue)).isDisplayed();
-    }
-
-    async clearStatusReason(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
-        await $(this.selectors.statusChangeReason + " " + this.selectors.searchInput).clear();
     }
 
     async clickAddTaskButton(): Promise<void> {
@@ -400,6 +349,11 @@ class ViewCasePage {
         return await $(`.rx-attachment-view-thumbnail [alt=${fileName}]`).isDisplayed();
     }
 
+    async getSlaBarColor(): Promise<string> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBar)));
+        return await $(this.selectors.slaProgressBar).getCssValue('background-color');
+    }
+
     async clickOnDownloadFile(fileName: string): Promise<void> {
         await $(`div[aria-label="Download attachment ${fileName}"]`).click();
     }
@@ -414,7 +368,7 @@ class ViewCasePage {
         }
         return false;
     }
-    
+
     async getValueOfDynamicFields(fieldName: string): Promise<string> {
         let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
         for (let i = 0; i < dynamicFields; i++) {

@@ -11,40 +11,23 @@ class CaseEditPage {
         selectCaseTemplate: '[rx-view-component-id="702fa086-4ddb-4741-b2cf-f16e22a49826"] button',
         assignToMe: '[rx-view-component-id="094f8581-1f5f-4e45-ad67-fd92d81c8e94"] button',
         changeAssignment: '[rx-view-component-id="459e6f41-abd3-4726-8dc2-25bab758877f"] button',
-        assignmentDropDownList: '.rx-assignment_modal_filters .rx-assignment-select',
-        selectOptions: '.options-box .options li',
-        searchAsignee: '.d-icon-search input',
-        assignee: '.rx-assignment-person-fullName',
-        assignButton: '.rx-assignment-modal-footer button.d-button_primary',
         saveCaseButton: '[rx-view-component-id="518308c0-34ea-4e75-a3a8-b4b07fc91de9"] button',
-        statusChange: '[rx-view-component-id="48bbcbbf-564c-4d46-8dc2-1e7670c187ff"] .status-transition',
-        statusDropDown: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"]',
-        statusChangeReason: '[rx-view-component-id="049c43a1-4cbd-482d-980d-5db4ed78f295"]',
-        addTaskFromTemplateButton: '[rx-view-component-id="d02d64d8-5a76-4cdc-8263-1d45b2da4dd1"] button',
-        taskTemplateGridId: "da1ffbb0-567a-4199-b94f-413bee7f149b",
-        templateGridSaveButton: '[rx-view-component-id="b7f9f666-5c22-463a-bc86-4cb66e26fa35"] button',
-        taskFromManageTasks: '[draggable] a',
-        taskStatusChange: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] .status-transition',
-        taskStatusDropDown: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"]',
-        taskStatusChangeReason: '[rx-view-component-id="baf69b56-c37b-4a0b-9e68-f18558738ebb"]',
-        saveUpdateTaskStatus: '[rx-view-component-id="6759ba60-df0d-4d5e-8eb9-5101490fd4d4"] button',
-        slaProgressBar: '.d-progress__bar',
-        summary: '[rx-view-component-id="244ffab2-bf04-4769-a5ac-c2a1f430e393"] .d-textfield__input',
+        summary: '[rx-view-component-id="244ffab2-bf04-4769-a5ac-c2a1f430e393"] input',
         summaryGuid: '244ffab2-bf04-4769-a5ac-c2a1f430e393',
-        caseDescription: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .rx-description-textarea-edit',
+        caseDescription: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] textarea',
         priorityGuid: 'add23d12-52e7-4c43-aa78-2aa0c6125bb5',
-        priorityRequiredText: '[rx-view-component-id="add23d12-52e7-4c43-aa78-2aa0c6125bb5"] .ui-select-container',
-        clearContactButton: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] button',
-        categoryTier1Guid: 'b144d2ce-fd89-4977-9b3f-136a4b984efe',
+        priorityRequiredText: '[rx-view-component-id="add23d12-52e7-4c43-aa78-2aa0c6125bb5"] .btn-secondary',
+        clearContactButton: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .d-icon-cross',
+        categoryTier1Guid: '593784cc-6bce-4bfd-82e1-7ca55aa28517',
         categoryTier2Guid: '7beae951-8345-4f97-9cac-48933083928f',
         categoryTier3Guid: '68d56b74-b9ad-444e-8dfc-ddec1e16897f',
         categoryTier4Guid: 'aa75da42-eeb4-4a6f-946b-74d5316b7641',
-        categoryTier1Drpbox: '[rx-view-component-id="593784cc-6bce-4bfd-82e1-7ca55aa28517"] .ui-select-toggle',
-        categoryTier2Drpbox: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] .ui-select-toggle',
-        categoryTier3Drpbox: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] .ui-select-toggle',
+        categoryTier1Drpbox: '[rx-view-component-id="593784cc-6bce-4bfd-82e1-7ca55aa28517"] adapt-select',
+        categoryTier2Drpbox: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] adapt-select',
+        categoryTier3Drpbox: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] adapt-select',
         labelGuid: 'd9b7ead5-02e4-4af4-b87e-9103439922b7',
         siteGuid: '664af3b6-dde6-47a7-84f9-4a5ad721e993',
-        clearSiteField: '[rx-view-component-id="664af3b6-dde6-47a7-84f9-4a5ad721e993"] .ui-select-toggle .caret',
+        clearSiteField: '[rx-view-component-id="664af3b6-dde6-47a7-84f9-4a5ad721e993"] .btn-secondary',
         resolutionCodeGuid: '32eeffe4-f5c1-4fc8-9c91-25946cc86d66',
         siteChangeReason: '[rx-view-component-id="54d1727e-1b2d-4f4f-8fb4-a3174746ee1d"] input',
         targetDateDate: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] .ng-valid-date',
@@ -53,39 +36,32 @@ class CaseEditPage {
         targetDateMeredian: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] button.d-timepicker__input',
         resolutionDescription: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] textarea',
         attachLink: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] button',
-        requesterPersonImage: '.ac-link-profile',
-        requesterText: '[class="person-main"] .d-textfield__item',
-        siteText: '.site_label',
-        requesterPersonNameLink: '.person-link a',
-        personEmailLink: '.ac-link-person-email',
-        personPhoneLink: 'a.ac-link-person-phone',
+        requesterPersonImage: '.d-icon-user_circle',
+        requesterText: '.person-main .text-field',
+        siteText: '.person-location span',
+        requesterPersonNameLink: '.person-name a',
+        personEmailLink: '.bwf-person-email button',
+        personPhoneLink: '.bwf-person-phone .person-phone-link',
         contact: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] input',
-        contactNameLink: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] a',
+        contactNameLink: '.dropdown-item .flexi-type-ahead-person-card-item',
         cancelBtn: '[rx-view-component-id="f535ec30-5892-4150-a4a2-ffa74c9135cb"] button',
         caseTitle: '[rx-view-component-id="8ebc1637-af05-4a08-b873-4f810c4981b9"] span',
-        sourceText: '[rx-view-component-id="8abd013f-26cd-4aa5-a3bb-63b063d3a7ec"] .d-textfield__rx-value',
-        categoryTier1Text: '[rx-view-component-id="b144d2ce-fd89-4977-9b3f-136a4b984efe"] .d-textfield__rx-value',
-        categoryTier2Text: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] .d-textfield__rx-value',
-        categoryTier3Text: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] .d-textfield__rx-value',
-        categoryTier4Text: '[rx-view-component-id="aa75da42-eeb4-4a6f-946b-74d5316b7641"] .d-textfield__rx-value',
-        caseTemplateText: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .d-textfield__rx-value',
-        assigneeCompany: '[rx-view-component-id="196878af-30b3-4ae2-ae7f-4c65baa5d951"] .ui-select-container',
+        assigneeCompany: '[rx-view-component-id="196878af-30b3-4ae2-ae7f-4c65baa5d951"] adapt-select',
         assigneeCompanyGuid: '196878af-30b3-4ae2-ae7f-4c65baa5d951',
-        department: '[rx-view-component-id="3265d389-cd00-45ca-b65a-8335c67582b7"] .ui-select-container',
-        assigneee: '[rx-view-component-id="7f1c67bf-9c39-4c46-b9ff-8d21ebaff4cb"] .ui-select-container',
-        buisnessUnit: '[rx-view-component-id="54e4d84f-daca-4988-b064-d79084ab9421"] .ui-select-container',
-        assignedGroup: '[rx-view-component-id="116edc77-c040-42db-8a32-dc836e4cb254"] .ui-select-container',
+        department: '[rx-view-component-id="3265d389-cd00-45ca-b65a-8335c67582b7"] adapt-select',
+        assigneee: '[rx-view-component-id="7f1c67bf-9c39-4c46-b9ff-8d21ebaff4cb"] adapt-select',
+        buisnessUnit: '[rx-view-component-id="54e4d84f-daca-4988-b064-d79084ab9421"] adapt-select',
+        assignedGroup: '[rx-view-component-id="116edc77-c040-42db-8a32-dc836e4cb254"] adapt-select',
         assignedGroupGuid: '116edc77-c040-42db-8a32-dc836e4cb254',
-        activityFeed: '[author="feedItem.author"]',
-        activityChangeFile: '.d-icon-files_change_o',
-        getCaseDisplayId: 'span.text-field',
-        closedTip: '[class="rx-attachment-view-item ng-scope"] .d-icon-cross',
-        attachmentField: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] input',
-        dynamicFieldDate:'[class="input-group"] input[ng-model="date"]',
-        dynamicBooleanValue:'button[aria-label="True"]',
-        dynamicFieldDateTime:'input[ng-model="datetime"]',
-        dynamicFieldTime:'.dynamic-time-field input[ng-model="hours"]',
-        dynamicFieldsName:'[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] .label-wrapper'
+        activityFeed: '.activity__wrapper  .activity__body a',
+        activityChangeFile: '.d-icon-file_plus_o',
+        closedTip: '.bwf-attachment-container__remove .d-icon-cross',
+        attachmentField: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .bwf-attachment-button input',
+        dynamicFieldDate: '[class="input-group"] input[ng-model="date"]',
+        dynamicBooleanValue: 'button[aria-label="True"]',
+        dynamicFieldDateTime: 'input[ng-model="datetime"]',
+        dynamicFieldTime: '.dynamic-time-field input[ng-model="hours"]',
+        dynamicFieldsName: '[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] .label-wrapper'
     }
 
     async removeAttachment(): Promise<void> {
@@ -107,36 +83,6 @@ class CaseEditPage {
         await $(this.selectors.changeAssignment).click();
     }
 
-    async selectSupportGroup(supportGroup: string): Promise<void> {
-        const lastDropDown = await $$(this.selectors.assignmentDropDownList).last();
-        //        await browser.wait(this.EC.elementToBeClickable(lastDropDown.$('button')));
-        await lastDropDown.$('button').click();
-        //        await browser.wait(this.EC.visibilityOf(lastDropDown.$('input')));
-        await lastDropDown.$('input').sendKeys(supportGroup);
-        //        await browser.wait(this.EC.or(async () => {
-        //            let count = await lastDropDown.$$(this.selectors.selectOptions).count();
-        //            return count == 1;
-        //        }));
-        await expect(await lastDropDown.$$(this.selectors.selectOptions).first().getText()).toBe(supportGroup);
-        await lastDropDown.$$(this.selectors.selectOptions).first().click();
-    }
-
-    async selectAssignee(name: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchAsignee)));
-        await $(this.selectors.searchAsignee).sendKeys(name);
-        await browser.actions().sendKeys(protractor.Key.ENTER).perform();
-        //        await browser.wait(this.EC.or(async () => {
-        //            let count = await $$(this.selectors.assignee).count();
-        //            return count >= 2;
-        //        }));
-        await element(by.cssContainingText(this.selectors.assignee, name)).click();
-    }
-
-    async clickAssignButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignButton)));
-        await $(this.selectors.assignButton).click();
-    }
-
     async clickSaveCase(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
         await $(this.selectors.saveCaseButton).click();
@@ -151,44 +97,6 @@ class CaseEditPage {
     async clickOnCancelCaseButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelBtn)));
         await $(this.selectors.cancelBtn).click();
-    }
-
-    async setStatusReason(statusValue: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
-        await $(this.selectors.statusChangeReason).click();
-        const statusReason = $(this.selectors.statusChangeReason);
-        //        await browser.wait(this.EC.elementToBeClickable(statusReason.$('input[type="search"]')));
-        await (statusReason.$('input[type="search"]')).sendKeys(statusValue);
-        var option = await element(by.cssContainingText((this.selectors.statusChangeReason + ' .ui-select__rx-choice'), statusValue));
-        //        await browser.wait(this.EC.visibilityOf(option));
-        await option.click();
-    }
-    async changeTaskStatus(statusValue: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskStatusChange)));
-        await $(this.selectors.taskStatusChange).click();
-        const statusUpdate = await $(this.selectors.taskStatusDropDown);
-        //        await browser.wait(this.EC.elementToBeClickable(statusUpdate.$('[aria-label="Status activate"]')));
-        await (statusUpdate.$('[aria-label="Status activate"]')).click();
-        await element(by.cssContainingText(this.selectors.taskStatusDropDown + ' .ui-select__rx-choice', statusValue)).click();
-    }
-
-    async setTaskStatusReason(statusValue: string): Promise<void> {
-        const statusUpdate = await $(this.selectors.taskStatusChangeReason);
-        //        await browser.wait(this.EC.elementToBeClickable(statusUpdate.$('.ui-select-toggle')));
-        await (statusUpdate.$('.ui-select-toggle')).click();
-        //        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.taskStatusChangeReason + ' .ui-select__rx-choice', statusValue))));
-        await element(by.cssContainingText(this.selectors.taskStatusChangeReason + ' .ui-select__rx-choice', statusValue)).click();
-    }
-
-    async clickTaskSaveStatus(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveUpdateTaskStatus)));
-        await $(this.selectors.saveUpdateTaskStatus).click();
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
-    }
-
-    async getSlaBarColor(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBar)));
-        return await $(this.selectors.slaProgressBar).getCssValue('background-color');
     }
 
     async clearCaseSummary(): Promise<void> {
@@ -282,36 +190,6 @@ class CaseEditPage {
     async clickOnAttachLink(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachLink)));
         await $((this.selectors.attachLink)).click();
-    }
-
-    async getSourceText(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.sourceText)));
-        return await $(this.selectors.sourceText).getText();
-    }
-
-    async getCategoryTier1Text(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier1Text)));
-        return await $(this.selectors.categoryTier1Text).getText();
-    }
-
-    async getCategoryTier2Text(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier2Text)));
-        return await $(this.selectors.categoryTier2Text).getText();
-    }
-
-    async getCategoryTier3Text(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3Text)));
-        return await $(this.selectors.categoryTier3Text).getText();
-    }
-
-    async getCategoryTier4Text(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier4Text)));
-        return await $(this.selectors.categoryTier4Text).getText();
-    }
-
-    async getCaseTemplateText(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseTemplateText)));
-        return await $(this.selectors.caseTemplateText).getText();
     }
 
     async getRequesterName(): Promise<string> {
@@ -520,28 +398,28 @@ class CaseEditPage {
         await $(this.selectors.attachmentField).sendKeys(absolutePath);
     }
 
-    async setDynamicFieldValue(fieldName:string,fieldValue:string):Promise<void>{
+    async setDynamicFieldValue(fieldName: string, fieldValue: string): Promise<void> {
         await $(`input[name=${fieldName}]`).sendKeys(fieldValue);
     }
 
-    async setDateValueInDynamicField(value:string):Promise<void>{
+    async setDateValueInDynamicField(value: string): Promise<void> {
         await $(this.selectors.dynamicFieldDate).sendKeys(value);
     }
 
-    async clickOnTrueValueOfDynamicField():Promise<void>{
+    async clickOnTrueValueOfDynamicField(): Promise<void> {
         await $(this.selectors.dynamicBooleanValue).click();
     }
 
-    async setDateTimeDynamicFieldValue(value:string):Promise<void>{
+    async setDateTimeDynamicFieldValue(value: string): Promise<void> {
         await $(this.selectors.dynamicFieldDateTime).sendKeys(value);
     }
 
-    async selectValueFromList(fieldName:string,value:string):Promise<void>{
+    async selectValueFromList(fieldName: string, value: string): Promise<void> {
         await $(`[ng-title=${fieldName}] div.ui-select-match`).click();
         await $(`div[title=${value}]`).click();
     }
 
-    async setTimeInDynamicField(value:string):Promise<void>{
+    async setTimeInDynamicField(value: string): Promise<void> {
         await $(this.selectors.dynamicFieldTime).sendKeys(value);
     }
 }

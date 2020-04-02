@@ -1,6 +1,7 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import dynamicField from "../../pageobject/common/dynamic-fields.po";
 import loginPage from "../../pageobject/common/login.po";
@@ -13,6 +14,7 @@ import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import utilCommon from '../../utils/util.common';
 import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 describe('Copy Task Template', () => {
     beforeAll(async () => {
@@ -69,14 +71,14 @@ describe('Copy Task Template', () => {
             await createCasePage.setSummary('Summary' + automatedTaskTemplate2);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
 
             //Add Automation Task templates in Case
             await manageTask.addTaskFromTaskTemplate(automatedTaskSummary2);
             await manageTask.clickOnCloseButton();
-            await viewCasePage.changeCaseStatus("In Progress");
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLinkOnManageTask(automatedTaskSummary2);
             await expect(await viewTask.getTaskStatusValue()).toBe('Completed');
@@ -412,15 +414,15 @@ describe('Copy Task Template', () => {
             await createCasePage.setSummary('Summary ' + taskTemplate);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
 
             //Add Automation Task templates in Case
             await manageTask.addTaskFromTaskTemplate(updatedTaskTemplate);
             //await browser.sleep(2000);
             await manageTask.clickOnCloseButton();
-            await viewCasePage.changeCaseStatus("In Progress");
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLinkOnManageTask(updatedTaskSummary);
             await expect(await viewTask.getTaskStatusValue()).toBe('Completed');

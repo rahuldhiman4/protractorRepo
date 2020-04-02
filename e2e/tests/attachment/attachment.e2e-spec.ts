@@ -4,6 +4,7 @@ import attachmentBladePo from '../../pageobject/attachment/attachment-blade.po';
 import attachmentInformationBladePo from '../../pageobject/attachment/attachment-information-blade.po';
 import caseConsole from '../../pageobject/case/case-console.po';
 import createCasePo from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -39,7 +40,7 @@ describe("Attachment", () => {
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
 
         expect(await attachmentBladePo.isDownloadButtonDisplayed()).toBeTruthy('Download button is missing');
@@ -59,7 +60,7 @@ describe("Attachment", () => {
         await createCasePo.setSummary(caseSummary);
         await createCasePo.addDescriptionAttachment(filePath);
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('bwfJpg');
@@ -262,7 +263,7 @@ describe("Attachment", () => {
             await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
         }
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
 
         let fileName2: string[] = ['articleStatus', 'bwfJpg', 'bwfJpg1', 'bwfJpg2', 'bwfJpg3', 'bwfJpg4', 'bwfJson1', 'bwfJson2', 'bwfJson3', 'bwfJson4', 'bwfJson5', 'bwfPdf', 'bwfPdf1', 'bwfPdf2', 'bwfPdf3', 'bwfPdf4', 'bwfWord1', 'bwfWord2', 'bwfXlsx', 'demo'];
@@ -356,7 +357,7 @@ describe("Attachment", () => {
             await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
         }
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
         await expect(await attachmentBladePo.getAttachmentNameCount('articleStatus')).toEqual(3);
         await expect(await attachmentBladePo.getAttachmentSize()).toBe('1 - 10 of 20');
@@ -377,7 +378,7 @@ describe("Attachment", () => {
             await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
         }
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
         await expect(await attachmentBladePo.isAttachmentPresent('bwfJpg')).toBeTruthy('bwfJpg Attachment is missing on grid');
         await expect(await attachmentBladePo.isAttachmentPresent('articleStatus')).toBeTruthy('articleStatus.png Attachment is missing on grid');
@@ -404,7 +405,7 @@ describe("Attachment", () => {
             await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
         }
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
         await attachmentBladePo.clickOnAllCheckboxButton();
         await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[0]}`)).toBeTruthy('File is delete sucessfully');
@@ -431,7 +432,7 @@ describe("Attachment", () => {
             await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
         }
         await createCasePo.clickSaveCaseButton();
-        await createCasePo.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
         await attachmentBladePo.clickOnAllCheckboxButton();
         await expect(await attachmentBladePo.getCountOfSelectedCheckBox()).toBe('10/10 files selected', 'selected checkbox count is missing for page1');

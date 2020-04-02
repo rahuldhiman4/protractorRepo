@@ -3,6 +3,7 @@ import apiHelper from '../../api/api.helper';
 import attachmentBladePage from "../../pageobject/attachment/attachment-blade.po";
 import caseConsolePage from '../../pageobject/case/case-console.po';
 import createCasePage from "../../pageobject/case/create-case.po";
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import editCasePage from '../../pageobject/case/edit-case.po';
 import { default as selectCaseTemplateBlade } from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
@@ -31,6 +32,7 @@ import taskConsolepage from "../../pageobject/task/console-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 describe("Create Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -120,17 +122,17 @@ describe("Create Case", () => {
             //await utilCommon.waitUntilSpinnerToHide();
             expect(await viewCasePage.getResolutionCodeValue()).toBe(randVal);
             expect(await viewCasePage.getResolutionDescription()).toBe(randVal);
-            await viewCasePage.changeCaseStatus('Resolved');
-            await viewCasePage.setStatusReason('Customer Follow-Up Required');
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.setStatusReason('Customer Follow-Up Required');
             await viewCasePage.selectResolutionCodeDropDown(randVal);
             expect(await viewCasePage.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             //await utilCommon.waitUntilPopUpDisappear();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
-            await viewCasePage.changeCaseStatus('Closed');
+            await updateStatusBladePo.changeCaseStatus('Closed');
             await viewCasePage.selectResolutionCodeDropDown(randVal);
             expect(await viewCasePage.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             //await utilCommon.waitUntilPopUpDisappear();
             expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
         } catch (error) {
@@ -253,14 +255,14 @@ describe("Create Case", () => {
             await createCasePage.clickAssignToMeButton();
 
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
-            await viewCasePage.changeCaseStatus('In Progress');
-            await viewCasePage.clickSaveStatus();
-            await viewCasePage.changeCaseStatus('Resolved');
-            await viewCasePage.setStatusReason('Auto Resolved');
-            await viewCasePage.clickSaveStatus();
-            await viewCasePage.changeCaseStatus('Closed');
-            await viewCasePage.clickSaveStatus();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Closed');
+            await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickOnReopenCaseLink();
 
             //add second case template
@@ -268,13 +270,13 @@ describe("Create Case", () => {
             await editCasePage.clickOnChangeCaseTemplate();
             await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate2);
             await editCasePage.clickSaveCase();
-            await viewCasePage.changeCaseStatus('In Progress');
-            await viewCasePage.clickSaveStatus();
-            await viewCasePage.changeCaseStatus('Resolved');
-            await viewCasePage.setStatusReason('Auto Resolved');
-            await viewCasePage.clickSaveStatus();
-            await viewCasePage.changeCaseStatus('Closed');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Closed');
+            await updateStatusBladePo.clickSaveStatus();
             await expect(viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
         } catch (error) {
             throw error;
@@ -301,7 +303,7 @@ describe("Create Case", () => {
         expect(await createCasePage.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         expect(await viewCasePage.getPriorityValue()).toBe('Medium');
         await navigationPage.gotoCaseConsole();
         await caseConsolePage.setCaseSearchBoxValue(caseSummary);
@@ -342,7 +344,7 @@ describe("Create Case", () => {
             await createCasePage.addDescriptionAttachment('../../data/ui/attachment/demo.txt');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePage.getCaseSummary()).toBe(caseSummary);
             expect(await viewCasePage.getCategoryTier1Value()).toBe('Applications');
             expect(await viewCasePage.getCategoryTier2Value()).toBe('Social');
@@ -386,7 +388,7 @@ describe("Create Case", () => {
             await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate1);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await expect(viewCasePage.getCaseSummary()).toBe(caseTemplate1);
         } catch (e) {
             throw e;
@@ -441,14 +443,14 @@ describe("Create Case", () => {
             await createCasePage.clickAssignToMeButton();
 
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
-            await viewCasePage.changeCaseStatus('In Progress');
-            await viewCasePage.clickSaveStatus();
-            await viewCasePage.changeCaseStatus('Resolved');
-            await viewCasePage.setStatusReason('Auto Resolved');
-            await viewCasePage.clickSaveStatus();
-            await viewCasePage.changeCaseStatus('Closed');
-            await viewCasePage.clickSaveStatus();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Closed');
+            await updateStatusBladePo.clickSaveStatus();
             await expect(viewCasePage.isCaseReopenLinkPresent()).toBeTruthy();
 
             //add second case template
@@ -460,14 +462,14 @@ describe("Create Case", () => {
             await createCasePage.clickAssignToMeButton();
 
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
-            await viewCasePage.changeCaseStatus('In Progress');
-            await viewCasePage.clickSaveStatus();
-            await viewCasePage.changeCaseStatus('Resolved');
-            await viewCasePage.setStatusReason('Auto Resolved');
-            await viewCasePage.clickSaveStatus();
-            await viewCasePage.changeCaseStatus('Closed');
-            await viewCasePage.clickSaveStatus();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Closed');
+            await updateStatusBladePo.clickSaveStatus();
             await expect(viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
         } catch (e) {
             throw e;
@@ -597,7 +599,7 @@ describe("Create Case", () => {
 
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddTaskFromTemplateButton();
             await manageTask.searchTaskAndClickOnLink(templateData.templateName);
@@ -666,7 +668,7 @@ describe("Create Case", () => {
             await createCasePage.setSummary('Summary1212');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddTaskFromTemplateButton();
             await manageTask.setTaskSearchBoxValue(TaskSummary);
@@ -689,7 +691,7 @@ describe("Create Case", () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddTaskFromTemplateButton();
             await manageTask.setTaskSearchBoxValue(TaskSummary);
@@ -734,18 +736,18 @@ describe("Create Case", () => {
             await createCasePage.clickAssignToMeButton();
 
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
-            await viewCasePage.changeCaseStatus('In Progress');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
-            await viewCasePage.changeCaseStatus('Pending');
-            await viewCasePage.setStatusReason('Error');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Pending');
+            await updateStatusBladePo.setStatusReason('Error');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
-            await viewCasePage.changeCaseStatus('Canceled');
-            await viewCasePage.setStatusReason('Approval Rejected');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Canceled');
+            await updateStatusBladePo.setStatusReason('Approval Rejected');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
 
             //create case
@@ -756,20 +758,20 @@ describe("Create Case", () => {
             await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate1);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
-            await viewCasePage.changeCaseStatus('In Progress');
-            await viewCasePage.clickSaveStatus();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
-            await viewCasePage.changeCaseStatus('Pending');
-            await viewCasePage.setStatusReason('Error');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Pending');
+            await updateStatusBladePo.setStatusReason('Error');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
-            await viewCasePage.changeCaseStatus('Resolved');
-            await viewCasePage.setStatusReason('Auto Resolved');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
-            await viewCasePage.changeCaseStatus('Closed');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Closed');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy();
             await viewCasePage.clickOnReopenCaseLink();
             expect(await viewCasePage.getTextOfStatus()).toBe('New');
@@ -808,7 +810,7 @@ describe("Create Case", () => {
             await changeAssignmentPage.clickOnAssignButton();
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePage.getAssignedGroupText()).toBe('Compensation and Benefits');
             expect(await viewCasePage.getAssigneeText()).toBe('Qianru Tao');
         } catch (e) {
@@ -894,7 +896,7 @@ describe("Create Case", () => {
             //await utilCommon.waitUntilPopUpDisappear();
             await createCasePage.setSummary(caseSummary);
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             await expect(await viewCasePage.getCaseStatusValue()).toBe('New');
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
@@ -963,9 +965,9 @@ describe("Create Case", () => {
             await selectCaseTemplateBlade.selectCaseTemplate('Change My Legal Name');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
-            await createCasePage.clickGoToCaseButton();
-            await viewCasePage.changeCaseStatus('In Progress');
-            await viewCasePage.clickSaveStatus();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
             await utilCommon.waitUntilSpinnerToHide();
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
             await viewCasePage.clickEditCaseButton();
