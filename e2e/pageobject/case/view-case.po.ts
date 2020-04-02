@@ -11,37 +11,33 @@ class ViewCasePage {
         categoryTier3Value: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] .read-only-content',
         categoryTier4Value: '[rx-view-component-id="aa75da42-eeb4-4a6f-946b-74d5316b7641"] .read-only-content',
         reOpenCase: '[rx-view-component-id="2d51cf41-f176-4e20-bc48-f2741bcbbcb0"] button',
-        saveUpdateStatus: '[rx-view-component-id="ee5dd503-a10e-4d22-9ac5-99c400892bb7"] button',
-        cancelUpdateStatus: '[rx-view-component-id="7cffd3f8-5b84-4e7f-a4b3-6c0a3dd27855"] button',
         stopWatching: '[rx-view-component-id="a62c849f-5bb0-480f-9811-50def59d82d0"] button',
         statusChange: '[rx-view-component-id="48bbcbbf-564c-4d46-8dc2-1e7670c187ff"] .status-transition',
         addTaskButton: '[rx-view-component-id="db1c57fc-c332-40fa-b1c0-759e21d9ad5c"] button',
         addTaskButtonGuid: '[rx-view-component-id="db1c57fc-c332-40fa-b1c0-759e21d9ad5c"]',
-        editLink: '.edit-link',
-        searchInput: 'input[type="search"]',
+        editLink: '.float-right [class="btn btn-link btn-sm ng-star-inserted"]',
         caseIdText: '[rx-view-component-id="7b47ca08-e9d4-4656-8f96-3bc751c098b0"] .title',
         requesterName: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .person-main a',
-        requesterPhoneNo: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .ac-link-person-phone',
-        requesterEmail: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .ac-link-person-email',
-        contactPersonDrpDwn: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] strong span',
+        requesterPhoneNo: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .person-phone-link',
+        requesterEmail: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .bwf-button-link',
+        contactPersonDrpDwn: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .d-icon-angle_down',
         contactPersonName: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .person-main a',
-        contactPersonContact: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .ac-link-person-phone',
-        contactPersonEmail: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .ac-link-person-email',
-        flowsetText: '[rx-view-component-id="73fb70b0-2992-4dc5-b7ed-3d3d13cc4d6b"] .d-textfield__rx-value',
-        descriptionText: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] div[ng-transclude]',
-        assigneeText: '[rx-view-component-id="dfe65f6f-7aea-476c-8042-f3aa34e3fb04"] .person-link a',
-        assignedGroupText: '[rx-view-component-id="66c1bbab-901d-42ed-b5e6-a04cb54d559f"] .d-textfield__rx-value',
-        departmentText: '[rx-view-component-id="795da3b4-6442-4b07-b6e1-7ce7c9987352"] .d-textfield__rx-value',
-        businessUnitText: '[rx-view-component-id="f14326b0-0c70-4827-8a02-95e82527409a"] .d-textfield__rx-value',
-        assignedCompanyText: '[rx-view-component-id="8b4d78f0-fbda-420c-928f-3dee49fde4fc"] .d-textfield__rx-value',
+        contactPersonContact: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .person-phone-link',
+        contactPersonEmail: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .bwf-button-link',
+        descriptionText: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .bwf-read-only-content',
+        assigneeText: '[rx-view-component-id="dfe65f6f-7aea-476c-8042-f3aa34e3fb04"] .person-link',
+        assignedGroupText: '[rx-view-component-id="66c1bbab-901d-42ed-b5e6-a04cb54d559f"] .read-only-content',
+        departmentText: '[rx-view-component-id="795da3b4-6442-4b07-b6e1-7ce7c9987352"] .read-only-content',
+        businessUnitText: '[rx-view-component-id="f14326b0-0c70-4827-8a02-95e82527409a"] .read-only-content',
+        assignedCompanyText: '[rx-view-component-id="8b4d78f0-fbda-420c-928f-3dee49fde4fc"] .read-only-content',
         attachmentsLink: '[rx-view-component-id="43357d0a-a8ec-497a-a7e6-f77e45dad719"] button',
         addToWatchlist: '[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button',
         caseSummary: '[rx-view-component-id="8ebc1637-af05-4a08-b873-4f810c4981b9"] p',
-        caseSite: '[rx-view-component-id="4a58cc3b-e699-4357-a68a-482163d6cbbe"] p',
+        caseSite: '[rx-view-component-id="4a58cc3b-e699-4357-a68a-482163d6cbbe"] .read-only-content',
         inprogressErrorMsg: '[rx-view-component-id="dd40ce76-9d16-4c6a-b1a1-16fe6aa6721f"] p',
-        label: '[rx-view-component-id="2415f5bb-1b76-4359-a034-ff16f8e26f7b"] p',
-        resolutionCodeText: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] .d-textfield__item',
-        resolutionDescriptionText: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .d-textfield__item',
+        label: '[rx-view-component-id="2415f5bb-1b76-4359-a034-ff16f8e26f7b"] .read-only-content',
+        resolutionCodeText: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] button',
+        resolutionDescriptionText: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .bwf-read-only-content',
         resolutionCodeValue: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] .ui-select-match-text',
         resolutionDescriptionValue: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .rx-description-textarea-read div div',
         resolutionCodeSelect: '.ui-select__rx-choice',
@@ -114,11 +110,6 @@ class ViewCasePage {
         //     await browser.wait(this.EC.visibilityOf($(this.selectors.reOpenCase)), 5000);
         // }
         // return presentInDom;
-    }
-
-    async clickOnCancelButtonOfUpdateStatus(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelUpdateStatus)));
-        await $(this.selectors.cancelUpdateStatus).click();
     }
 
     async clickOnReopenCaseLink(): Promise<void> {
@@ -219,12 +210,12 @@ class ViewCasePage {
 
     async getRequesterPhoneNo(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterPhoneNo)));
-        return await $(this.selectors.requesterPhoneNo).getText();
+        return (await $(this.selectors.requesterPhoneNo).getText()).trim();
     }
 
     async getRequesterEmail(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterEmail)));
-        return await $(this.selectors.requesterEmail).getText();
+        return await (await $(this.selectors.requesterEmail).getText()).trim();
     }
 
     async getContactPersonName(): Promise<string> {
@@ -244,12 +235,12 @@ class ViewCasePage {
 
     async getContactPersonerPhoneNo(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.contactPersonContact)));
-        return await $(this.selectors.contactPersonContact).getText();
+        return await (await $(this.selectors.contactPersonContact).getText()).trim();
     }
 
     async getContactPersonalEmail(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.contactPersonEmail)));
-        return await $(this.selectors.contactPersonEmail).getText();
+        return await (await $(this.selectors.contactPersonEmail).getText()).trim();
     }
 
     async clickStopWatchingLink(): Promise<void> {
@@ -272,14 +263,9 @@ class ViewCasePage {
         await $(this.selectors.attachmentsLink).click();
     }
 
-    async getFlowsetText(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.flowsetText)));
-        return await $(this.selectors.flowsetText).getText();
-    }
-
     async getCaseDescriptionText(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.descriptionText)));
-        return await $(this.selectors.descriptionText).getText();
+        return await (await $(this.selectors.descriptionText).getText()).trim();
     }
 
     async getAssigneeText(): Promise<string> {
