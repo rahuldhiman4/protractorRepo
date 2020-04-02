@@ -6,13 +6,13 @@ class TaskGridPage {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        searchTemplate: '[rx-id="search-text-input"]',
+        searchTemplate: '.adapt-search-triggerable input[type="search"]',
         recommendedTemplateLink: '.ui-grid__link',
         recommendedTemplateCheckBox: '.ui-grid-icon-ok',
         filter: '.rx-search-filter__trigger',
         availableFilterDrpDown: '.d-accordion__title',
         applyFilter: '.rx-search-filter-heading__apply',
-        removeFilter: '..d-tag-remove-button',
+        removeFilter: '.d-tag-remove-button',
         tableValue: '.ui-grid-cell-contents',
         taskTitle: '[rx-view-component-id="3ebf9e95-a77a-47f7-a531-c4c549e42333"] span',
         taskGuid: '9e02c1c1-6544-4d92-9114-823a9ff9fdcd',

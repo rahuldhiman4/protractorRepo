@@ -20,6 +20,7 @@ import editNotificationTemplatePo from '../../pageobject/settings/notification-c
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import utilCommon from "../../utils/util.common";
 import utilGrid from '../../utils/util.grid';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 let emailTemplateData = require('../../data/ui/email/email.template.api.json');
 let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -743,8 +744,8 @@ describe("Compose Email", () => {
             let newCase = await apiHelper.createCase(caseData);
             await utilGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
-            await viewCasePo.changeCaseStatus('In Progress');
-            await viewCasePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
             await browser.sleep(8000);
             let subject = `Fritz Schulz changed the status of '${newCase.displayId}' to In Progress`;
             await apiHelper.apiLogin('tadmin');
@@ -780,8 +781,8 @@ describe("Compose Email", () => {
             let newCaseOne = await apiHelper.createCase(caseDataOne);
             await utilGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCaseOne.displayId);
-            await viewCasePo.changeCaseStatus('In Progress');
-            await viewCasePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
             let subjectOne = `Fritz Schulz changed the status of '${newCaseOne.displayId}' to In Progress`;
             await apiHelper.apiLogin('tadmin');
             await browser.sleep(8000);

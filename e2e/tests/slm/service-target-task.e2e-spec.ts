@@ -11,6 +11,8 @@ import apiHelper from '../../api/api.helper';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
+import viewCasePo from '../../pageobject/case/view-case.po';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -82,12 +84,12 @@ describe('Service Target Tests for Tasks', () => {
             await adhoctaskTemplate.clickOnSaveAdhoctask();
             //Update the case status to In Progress
             await manageTaskBladePo.clickOnCloseButton();
-            await viewCasePage.changeCaseStatus('In Progress');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
             await manageTask.clickTaskLinkOnManageTask(summary);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-            expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
+            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
             expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : InProcess');
@@ -171,19 +173,19 @@ describe('Service Target Tests for Tasks', () => {
             await manageTaskBladePo.clickOnCloseButton();
 
             //Update the case status to In Progress
-            await viewCasePage.changeCaseStatus('In Progress');
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
             await manageTask.clickTaskLinkOnManageTask(manualTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-            expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
+            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
             expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : InProcess');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Completed');
-            await viewCasePage.setStatusReason('Successful');
+            await updateStatusBladePo.setStatusReason('Successful');
             await viewTask.clickOnSaveStatus();
             await viewTask.clickOnViewCase();
             await viewCasePage.openTaskCard(1);
@@ -271,7 +273,7 @@ describe('Service Target Tests for Tasks', () => {
             await manageTask.clickTaskLinkOnManageTask(automatedTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-            expect(await caseEditPage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
+            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
             expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : InProcess');
