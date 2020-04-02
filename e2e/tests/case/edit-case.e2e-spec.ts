@@ -1,5 +1,6 @@
 import { browser } from "protractor";
 import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import editCasePage from '../../pageobject/case/edit-case.po';
 import caseTemplatePage from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
@@ -37,7 +38,7 @@ describe('Edit Case', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
 
         await expect(viewCasePage.getRequesterName()).toBe('Adam Pavlik');
         await expect(viewCasePage.getRequesterPhoneNo()).toBe('+19254694006');
@@ -117,7 +118,7 @@ describe('Edit Case', () => {
         await createCasePage.setSummary('Summary ' + Summary);
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickOnAssignToMe();
         await editCasePage.clickChangeAssignmentButton();

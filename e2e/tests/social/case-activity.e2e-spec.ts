@@ -4,6 +4,7 @@ import { ITaskTemplate } from '../../data/api/interface/task.template.interface.
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import createCase from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
@@ -130,7 +131,7 @@ describe('Case Activity', () => {
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-18141');
         await createCase.clickSaveCaseButton();
-        await createCase.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await activityTabPage.addActivityNote(caseBodyText);
         await activityTabPage.addPersonInActivityNote('Elizabeth Jeffries');
         await activityTabPage.clickOnPostButton();
@@ -216,7 +217,7 @@ describe('Case Activity', () => {
             await createCase.selectRequester('Al Allbrook');
             await createCase.setSummary('test case for DRDMV-16773');
             await createCase.clickSaveCaseButton();
-            await createCase.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
 
             await activityTabPage.addActivityNote(caseBodyText);
             await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
@@ -259,7 +260,7 @@ describe('Case Activity', () => {
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16733');
         await createCase.clickSaveCaseButton();
-        await createCase.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         // 2nd Step: Inspect Case Activity UI - Click on Filter       
         await activityTabPage.clickOnFilterButton();
         // 3rd Step: Inspect Filter Panel UI
@@ -335,7 +336,7 @@ describe('Case Activity', () => {
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16760');
         await createCase.clickSaveCaseButton();
-        await createCase.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate('File Report');
         await manageTaskBladePo.clickTaskLinkOnManageTask('File Report');
@@ -393,7 +394,7 @@ describe('Case Activity', () => {
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16734');
         await createCase.clickSaveCaseButton();
-        await createCase.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         // 2nd Step: From Case Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Case
         // i) Verify User is able to search for any user
         await activityTabPage.clickOnFilterButton();
@@ -434,7 +435,7 @@ describe('Case Activity', () => {
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('manual task test case for DRDMV-16759');
         await createCase.clickSaveCaseButton();
-        await createCase.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
 
         // On view case page.
         await viewCasePo.clickAddTaskButton();
@@ -539,7 +540,7 @@ describe('Case Activity', () => {
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('auto task template test case for DRDMV-16759');
         await createCase.clickSaveCaseButton();
-        await createCase.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
 
         // On view case page.
         await viewCasePo.clickAddTaskButton();
@@ -637,7 +638,7 @@ describe('Case Activity', () => {
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('external task test case for DRDMV-16759');
         await createCase.clickSaveCaseButton();
-        await createCase.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
 
         // On view case page.
         await viewCasePo.clickAddTaskButton();
@@ -725,10 +726,10 @@ describe('Case Activity', () => {
     it('[DRDMV-18048]: While adding a note on Case one or more agent can be tagged in Comment', async () => {
         await navigationPage.gotCreateCase();
         await createCase.selectRequester('Al Allbrook');
-        await createCase.selectContact('Angelina Jolie');
+        await createCase.setContactName('Angelina Jolie');
         await createCase.setSummary('test case for DRDMV-18048');
         await createCase.clickSaveCaseButton();
-        await createCase.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await expect(await activityTabPage.getPersonCount('Hi hello @Allen')).toBeGreaterThan(3);
         await activityTabPage.clearActivityNote();
         await activityTabPage.addPersonInActivityNote('Angelina');//FirstName
@@ -752,7 +753,7 @@ describe('Case Activity', () => {
             await createCase.selectRequester('Al Allbrook');
             await createCase.setSummary('test case for DRDMV-16754');
             await createCase.clickSaveCaseButton();
-            await createCase.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton();
 
             // On view case page.
             // 2nd step verification From Case Activities, click on Different person names and inspect behavior
@@ -835,7 +836,7 @@ describe('Case Activity', () => {
         await createCase.selectRequester('Al Allbrook');
         await createCase.setSummary('test case for DRDMV-16773');
         await createCase.clickSaveCaseButton();
-        await createCase.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateName);
         await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);

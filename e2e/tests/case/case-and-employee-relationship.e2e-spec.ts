@@ -3,6 +3,7 @@ import apiHelper from '../../api/api.helper';
 import addRelatedCasespopup from '../../pageobject/case/add-related-cases-pop.po';
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import quickCase from '../../pageobject/case/quick-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -35,7 +36,7 @@ describe('Case And Employee Relationship', () => {
         await createCasePage.setSummary("DRDMV-16241");
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         // This validation is not required as tab click is happening based on Tab text
         // expect(await caseEditPage.getRelatedPersonTabText()).toBe("Related Persons");
         await viewCasePo.clickOnTab('Related Persons');
@@ -68,7 +69,7 @@ describe('Case And Employee Relationship', () => {
         await createCasePage.setSummary("DRDMV-16896");
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Qianru Tao', 'Inspector');
@@ -91,7 +92,7 @@ describe('Case And Employee Relationship', () => {
         await createCasePage.setSummary("DRDMV-16248");
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Brad Pitt', 'Inspector');
@@ -115,7 +116,7 @@ describe('Case And Employee Relationship', () => {
         await createCasePage.setSummary("DRDMV-17037");
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         let caseId: string = await viewCasePo.getCaseID();
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.addRelatedPerson();
@@ -139,7 +140,7 @@ describe('Case And Employee Relationship', () => {
         await createCasePage.setSummary("DRDMV-17035_1");
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         let caseId1: string = await viewCasePo.getCaseID();
 
         //create case 2
@@ -148,7 +149,7 @@ describe('Case And Employee Relationship', () => {
         await createCasePage.setSummary("DRDMV-17035_2");
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         let caseId2: string = await viewCasePo.getCaseID();
 
         //create case 3
@@ -157,7 +158,7 @@ describe('Case And Employee Relationship', () => {
         await createCasePage.setSummary("DRDMV-17035_3");
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
-        await createCasePage.clickGoToCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         let caseId3: string = await viewCasePo.getCaseID();
 
         //Add case 1 and case 2 in related cases
