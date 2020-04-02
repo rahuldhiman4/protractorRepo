@@ -13,12 +13,16 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import personProfilePo from '../../pageobject/common/person-profile.po';
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
+import feedbackBladeKnowledgeArticlePo from '../../pageobject/knowledge/feedback-blade-Knowledge-article.po';
+import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
+import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import notificationPo from '../../pageobject/notification/notification.po';
 import { default as activityTabPage, default as activityTabPo } from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 
 
 describe('Case Activity', () => {
@@ -1329,6 +1333,104 @@ describe('Case Activity', () => {
         await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
 
     }, 160 * 1000);
+
+    //kgaikwad
+    it('[DRDMV-16764]:Validate all type of social activities are displayed correctly in KA Activity tab', async () => {
+        try {
+            let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let flag = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let unFlag = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let reviewPending = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let feedback = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let addNoteBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let knowledgePublisherUser = 'kmills';
+            let knowledgeTitile = 'knowledge16764' + randomStr;
+
+            await navigationPage.signOut();
+            await loginPage.login(knowledgePublisherUser);
+            await navigationPage.switchToAnotherApplication('Knowledge Management');
+            await utilCommon.switchToNewWidnow(1);
+
+            await apiHelper.apiLogin(knowledgePublisherUser);
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitile}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignee": "KMills",
+                "assigneeSupportGroup": "GB Support 2",
+                "company": "Petramco"
+            }
+            let KADetails = await apiHelper.createKnowledgeArticle(articleData);
+            expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
+            expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "SMEReview", "KMills", "GB Support 2", "Petramco")).toBeTruthy("Article with SME Review status not updated.");
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+
+            await viewKnowledgeArticlePo.clickOnFlagButton();
+            await flagUnflagKnowledgePo.setTextInTellUsMore(flag);
+            await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
+
+            await utilCommon.waitUntilPopUpDisappear();
+            await viewKnowledgeArticlePo.clickOnUnFlagButton();
+            await flagUnflagKnowledgePo.setTextInTellUsMore(unFlag);
+            await flagUnflagKnowledgePo.clickOnUnFlageButtonOnBlade();
+
+            await utilCommon.waitUntilPopUpDisappear();
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(feedback);
+            await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
+
+            await utilCommon.waitUntilPopUpDisappear();
+            await viewKnowledgeArticlePo.clickReviewPendingLink();
+            await reviewCommentsPo.setTextInTellUsMore(reviewPending);
+            await reviewCommentsPo.clickApprovedButton();
+
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            await activityTabPage.clickOnPostButton();
+            await utilCommon.waitUntilSpinnerToHide();
+
+            // verify flag in activity
+            await expect(await activityTabPage.isLogIconDisplayedInActivity('flag', 5)).toBeTruthy('FailureMsg: Note pencil icon is missing')
+            await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills flagged the article', 5));
+            await expect(await activityTabPage.isBodyDisplayedInActivity(flag, 5)).toBeTruthy('FailureMsg: Kyle Mills flagged the article is missing');
+            await expect(await activityTabPage.isLockIconDisplayedInActivity(5)).toBeTruthy('FailureMsg1: LockIcon is missing');
+
+            // verify unflag in activity
+            await expect(await activityTabPage.isLogIconDisplayedInActivity('unflag', 4)).toBeTruthy('FailureMsg: Note pencil icon is missing')
+            await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills unflagged the article', 4));
+            await expect(await activityTabPage.isBodyDisplayedInActivity(unFlag, 4)).toBeTruthy('FailureMsg: Kyle Mills unflagged the article is missing');
+            await expect(await activityTabPage.isLockIconDisplayedInActivity(4)).toBeTruthy('FailureMsg1: LockIcon is missing');
+
+            // verify feedback in activity
+            await expect(await activityTabPage.isLogIconDisplayedInActivity('comments', 3)).toBeTruthy('FailureMsg: Note pencil icon is missing')
+            await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills has provided the feedback for the article', 3));
+            await expect(await activityTabPage.isBodyDisplayedInActivity(feedback, 3)).toBeTruthy('FailureMsg: Kyle Mills has provided the feedback for the article is missing');
+            await expect(await activityTabPage.isLockIconDisplayedInActivity(3)).toBeTruthy('FailureMsg1: LockIcon is missing');
+
+            // verify Review in activity
+            await expect(await activityTabPage.isLogIconDisplayedInActivity('pencil', 2)).toBeTruthy('FailureMsg: Note pencil icon is missing')
+            await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills reviewed this article and provided this comment', 2));
+            await expect(await activityTabPage.isBodyDisplayedInActivity(reviewPending, 2)).toBeTruthy('FailureMsg: Kyle Mills reviewed this article and provided this comment is missing');
+            await expect(await activityTabPage.isLockIconDisplayedInActivity(2)).toBeTruthy('FailureMsg1: LockIcon is missing');
+
+            // Verify KA comment
+            await expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg: Note pencil icon is missing')
+            await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills added a note', 1));
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg: Kyle Mills added a note');
+            await expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg1: LockIcon is missing');
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await utilCommon.waitUntilSpinnerToHide();
+        }
+    }, 220 * 1000);
+
+
 
     
 })

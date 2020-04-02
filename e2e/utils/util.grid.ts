@@ -34,7 +34,9 @@ export class GridOperation {
         dateTo: 'input[min-date="option.fromDatePicker.date"]',
         datePickerApplyButton: '.dropdown-item_range .d-button_small',
         presetFilter: '.rx-filter-preset__title span',
-        appliedFilterName: '.d-tag-label'
+        appliedFilterName: '.d-tag-label',
+        counterFrom: 'input.d-counter__input',
+        counterApplyBtn: `[ng-if="option.type === 'number'"] button`
     }
 
     async clickOnGridRefreshButton(): Promise<void> {
@@ -388,6 +390,14 @@ export class GridOperation {
                 await $(this.selectors.dateTo).clear();
                 await $(this.selectors.dateTo).sendKeys(date[1]);
                 await $(this.selectors.datePickerApplyButton).click();
+                break;
+            }
+            case "counter": {
+                await $$(this.selectors.counterFrom).first().clear();
+                await $$(this.selectors.counterFrom).first().sendKeys(textValue);
+                await $$(this.selectors.counterFrom).last().clear();
+                await $$(this.selectors.counterFrom).last().sendKeys(textValue);
+                await $(this.selectors.counterApplyBtn).click();
                 break;
             }
             default: {

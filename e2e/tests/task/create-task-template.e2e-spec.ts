@@ -24,6 +24,7 @@ import utilGrid from '../../utils/util.grid';
 import taskConsole from "../../pageobject/task/console-task.po";
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 let filePath = '../../data/ui/attachment/bwfPdf.pdf';
 
 describe('Create Task Template', () => {
@@ -375,11 +376,11 @@ describe('Create Task Template', () => {
         await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
         await expect(viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed")
         await viewTask.clickOnViewCase();
-        await viewCasePage.changeCaseStatus('In Progress');
-        await viewCasePage.clickSaveStatus();
-        await viewCasePage.changeCaseStatus('Resolved');
-        await viewCasePage.setStatusReason('Auto Resolved');
-        await viewCasePage.clickSaveStatus();
+        await updateStatusBladePo.changeCaseStatus('In Progress');
+        await updateStatusBladePo.clickSaveStatus();
+        await updateStatusBladePo.changeCaseStatus('Resolved');
+        await updateStatusBladePo.setStatusReason('Auto Resolved');
+        await updateStatusBladePo.clickSaveStatus();
         await viewCasePage.openTaskCard(1);
         await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
         await activityTabPo.getFirstPostContent();
@@ -432,8 +433,8 @@ describe('Create Task Template', () => {
         await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
         await expect(viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed")
         await viewTask.clickOnViewCase();
-        await viewCasePage.changeCaseStatus('In Progress');
-        await viewCasePage.clickSaveStatus();
+        await updateStatusBladePo.changeCaseStatus('In Progress');
+        await updateStatusBladePo.clickSaveStatus();
         await viewCasePage.openTaskCard(1);
         await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
         await activityTabPo.getFirstPostContent();

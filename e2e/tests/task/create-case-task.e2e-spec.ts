@@ -528,8 +528,8 @@ describe('Create Case Task', () => {
             await manageTask.clickOnCloseButton();
 
             //validate Automation Template With Required Field
-            await viewCasePage.changeCaseStatus("In Progress");
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.clickSaveStatus();
             // await utilCommon.waitUntilPopUpDisappear();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLinkOnManageTask(templateData.templateSummary);
@@ -825,12 +825,12 @@ describe('Create Case Task', () => {
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
         await manageTask.clickOnCloseButton();
-        await viewCasePage.changeCaseStatus('Pending');
-        await viewCasePage.setStatusReason('Customer Response');
-        await viewCasePage.clickSaveStatus();
-        await viewCasePage.changeCaseStatus('Canceled');
-        await viewCasePage.setStatusReason('Customer Canceled');
-        await viewCasePage.clickSaveStatus();
+        await updateStatusBladePo.changeCaseStatus('Pending');
+        await updateStatusBladePo.setStatusReason('Customer Response');
+        await updateStatusBladePo.clickSaveStatus();
+        await updateStatusBladePo.changeCaseStatus('Canceled');
+        await updateStatusBladePo.setStatusReason('Customer Canceled');
+        await updateStatusBladePo.clickSaveStatus();
         await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Canceled");
     });
@@ -882,8 +882,8 @@ describe('Create Case Task', () => {
         await manageTask.clickTaskLinkOnManageTask(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
         await viewTask.clickOnViewCase();
-        await viewCasePage.changeCaseStatus('In Progress');
-        await viewCasePage.clickSaveStatus();
+        await updateStatusBladePo.changeCaseStatus('In Progress');
+        await updateStatusBladePo.clickSaveStatus();
         await viewCasePage.openTaskCard(1);
         await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Completed");
@@ -942,8 +942,8 @@ describe('Create Case Task', () => {
         await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary3 ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
         await viewTask.clickOnViewCase();
-        await viewCasePage.changeCaseStatus('In Progress');
-        await viewCasePage.clickSaveStatus();
+        await updateStatusBladePo.changeCaseStatus('In Progress');
+        await updateStatusBladePo.clickSaveStatus();
         await viewCasePage.openTaskCard(1);
         await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary1 ${randomStr}`);
         await viewTask.clickOnChangeStatus();

@@ -14,6 +14,7 @@ import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import utilCommon from '../../utils/util.common';
 import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 describe('Copy Task Template', () => {
     beforeAll(async () => {
@@ -76,8 +77,8 @@ describe('Copy Task Template', () => {
             //Add Automation Task templates in Case
             await manageTask.addTaskFromTaskTemplate(automatedTaskSummary2);
             await manageTask.clickOnCloseButton();
-            await viewCasePage.changeCaseStatus("In Progress");
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLinkOnManageTask(automatedTaskSummary2);
             await expect(await viewTask.getTaskStatusValue()).toBe('Completed');
@@ -420,8 +421,8 @@ describe('Copy Task Template', () => {
             await manageTask.addTaskFromTaskTemplate(updatedTaskTemplate);
             //await browser.sleep(2000);
             await manageTask.clickOnCloseButton();
-            await viewCasePage.changeCaseStatus("In Progress");
-            await viewCasePage.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLinkOnManageTask(updatedTaskSummary);
             await expect(await viewTask.getTaskStatusValue()).toBe('Completed');

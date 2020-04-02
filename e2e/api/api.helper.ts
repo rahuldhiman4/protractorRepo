@@ -845,6 +845,8 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[200000007].value = data.region ? await apiCoreUtil.getRegionGuid(data.region) : knowledgeArticleData.fieldInstances[200000007].value;
             knowledgeArticleData.fieldInstances[260000001].value = data.site ? await apiCoreUtil.getSiteGuid(data.site) : knowledgeArticleData.fieldInstances[260000001].value;
             knowledgeArticleData.fieldInstances[450000157].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[450000157].value;
+            knowledgeArticleData.fieldInstances[302311201].value = data.articleDesc ? data.articleDesc : knowledgeArticleData.fieldInstances[302311201].value;
+
             if (data.assigneeSupportGroup) {
                 let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.assigneeSupportGroup);
                 let assineeSupportGroupData = {
@@ -877,6 +879,8 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[200000007].value = data.region ? await apiCoreUtil.getRegionGuid(data.region) : knowledgeArticleData.fieldInstances[200000007].value;
             knowledgeArticleData.fieldInstances[260000001].value = data.site ? await apiCoreUtil.getSiteGuid(data.site) : knowledgeArticleData.fieldInstances[260000001].value;
             knowledgeArticleData.fieldInstances[450000157].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[450000157].value;
+            knowledgeArticleData.fieldInstances[302311201].value = data.articleDesc ? data.articleDesc : knowledgeArticleData.fieldInstances[302311201].value;
+
             if (data.assigneeSupportGroup) {
                 let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.assigneeSupportGroup);
                 let assineeSupportGroupData = {

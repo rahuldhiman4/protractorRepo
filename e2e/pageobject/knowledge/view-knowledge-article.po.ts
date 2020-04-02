@@ -14,6 +14,7 @@ class ViewKnowledgePage {
         kAUsefulYesButton: '[rx-view-component-id="9d4c48c9-fbd8-4e91-bc61-0e395f52bbe7"] button',
         kAUsefulNoButton: '[rx-view-component-id="21f93bfd-53e2-4983-9b15-162e7dd12a31"] button',
         percentageValue: '[rx-view-component-id="5cc2757f-7a22-4827-82c0-1e7dee2e12a2"] p',
+        activityTab: '[rx-view-component-id="3982f4ea-16a0-41aa-982e-879143a19b00"] .rx-tab a',
         feedbackFlag: '8eb31993-888c-4a17-be30-4d91cbcdb10b',
         statusChnageBlade: '.modal-content',
         reviewPending: '[rx-view-component-id="f0cf7f67-da22-4149-a54d-ec3b95fe05e6"] button',
@@ -44,7 +45,11 @@ class ViewKnowledgePage {
         articleLastReviewDate: '[rx-view-component-id="bccc3ffb-8be9-4332-8f7f-fef96b43c3b9"] .d-textfield__rx-value',
         articleNextReviewDate: '[rx-view-component-id="7529ddbb-6ef2-46ab-9f66-c85639c3b490"] .d-textfield__rx-value',
         articleTitle: '[rx-view-component-id="4a5abb06-d6fb-4aa3-81a8-2d5e80c78acf"] p',
-        articleDescription: '[rx-view-component-id="52856b97-e17e-444d-a556-fa0ad35eb3c8"] p'
+        articleDescription: '[rx-view-component-id="52856b97-e17e-444d-a556-fa0ad35eb3c8"] .doc-editor__section-content div',
+        articleIsExternal: '[rx-view-component-id="660f2cd8-9439-4954-9638-0064fbcb0e28"] p',
+        flaggedOption: '[rx-view-component-id="89dd2264-1895-4a7b-a0a4-01a4834a403b"]',
+        unflagOption: '[rx-view-component-id="b54365bf-0ead-4c54-8c8b-42aced61690e"] span',
+        editKnowledgeAccess: '[rx-view-component-id="cbdd812c-4899-4503-84ab-412020d820df"] button'
     }
 
     async clickOnKAUsefulYesButton(): Promise<void> {
@@ -103,6 +108,8 @@ class ViewKnowledgePage {
     }
 
 
+
+
     async clickOnUnFlagButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.unflagButton)));
         await $(this.selectors.unflagButton).click();
@@ -115,8 +122,18 @@ class ViewKnowledgePage {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.flagBlade)));
     }
 
+
     async isUnFlagButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.unflagButton).isDisplayed();
+    }
+
+    async clickOnActivityTab(): Promise<void> {
+        //        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.activityTab).last()));
+        await $$(this.selectors.activityTab).last().click();
+    }
+
+    async clickOnInformationTab(): Promise<void> {
+        await $$(this.selectors.activityTab).first().click();
     }
 
     async clickOnTab(tabName: string): Promise<void> {
@@ -137,7 +154,7 @@ class ViewKnowledgePage {
     }
 
     async getArticleVersion(): Promise<string> {
-        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleVersion)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleVersion)),3000);
         return await $(this.selectors.articleVersion).getText();
     }
 
@@ -160,6 +177,7 @@ class ViewKnowledgePage {
             let articleVersion: string = await $$(this.selectors.articleVersionDropDown).get(i).getText();
             if (articleVersion.includes(versionNum)) {
                 await $$(this.selectors.articleVersionDropDown).get(i).click();
+                break;
             }
             console.log("Selected Knowledge Article Version is :" + articleVersion);
         }
@@ -174,6 +192,10 @@ class ViewKnowledgePage {
         let month: string = new Number(numMonth).toString();
         let numDate: number = objDate.getDate();
         let date: string = new Number(numDate).toString();
+        if(numDate> 0 && numDate <10)
+        {
+            date = "0"+date;
+        }
         let formatted_date: string = months[month] + " " + date + ", " + year;
         return formatted_date;
     }
@@ -286,6 +308,23 @@ class ViewKnowledgePage {
         return await $(this.selectors.articleNextReviewDate).getText();
     }
 
+    async isArticleReviewerUserDisplayed(): Promise<void> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleReviewer)));
+        await $(this.selectors.articleReviewer).isDisplayed();
+    }
+    async isArticleReviewerGroupDisplayed(): Promise<void> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleReviewerGroup)));
+        await $(this.selectors.articleReviewerGroup).isDisplayed();
+    }
+    async isArticleLastReviewDateDisplayed(): Promise<void> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleLastReviewDate)));
+        await $(this.selectors.articleLastReviewDate).isDisplayed();
+    }
+    async isArticleNextReviewDateDisplayed(): Promise<void> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleNextReviewDate)));
+        await $(this.selectors.articleNextReviewDate).isDisplayed();
+    }
+
     async getKnowledgeArticleTitle(): Promise<string> {
         // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleTitle)));
         return await $(this.selectors.articleTitle).getText();
@@ -294,8 +333,6 @@ class ViewKnowledgePage {
         // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleDescription)));
         return await $(this.selectors.articleDescription).getText();
     }
-
-
 
     async getKnowledgeArticleAccessPermissionUsersDetails(): Promise<string[]> {
         let accessPermissionArr: string[] = [];
@@ -308,8 +345,30 @@ class ViewKnowledgePage {
         return accessPermissionArr;
     }
 
+    async getArticleIsExternalValue(): Promise<string> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleIsExternal)));
+        return await $(this.selectors.articleIsExternal).getText();
+    }
 
+    async isArticleIsExternalValueDisplayed(): Promise<boolean> {
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleIsExternal)));
+        return await $(this.selectors.articleIsExternal).isDisplayed();
+    }
 
+    async isFlagArticleOptionDisplayed():Promise<boolean>{
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleIsExternal)));
+        return await $(this.selectors.flaggedOption).isDisplayed();
+    }
+
+    async isUnFlagArticleOptionDisplayed():Promise<boolean>{
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleIsExternal)));
+        return await $(this.selectors.unflagOption).isDisplayed();
+    }
+
+    async clickEditKnowledgeAccess():Promise<void>{
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.editKnowledgeAccess)));
+        await $(this.selectors.editKnowledgeAccess).click();
+    }
 
 
 }

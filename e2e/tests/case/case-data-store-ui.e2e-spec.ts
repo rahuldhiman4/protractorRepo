@@ -27,6 +27,7 @@ import dynamicFieldsPo from '../../pageobject/common/dynamic-fields.po';
 import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template-cases.po';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
+import editTaskPo from '../../pageobject/task/edit-task.po';
 
 describe('Case Data Store', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -675,6 +676,7 @@ describe('Case Data Store', () => {
             await requesterResponseBladePo.clickOkButton();
             await utilCommon.waitUntilSpinnerToHide();
             //requester case preview
+    
             expect(await casePreviewPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
             expect(await casePreviewPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');
             for (let i = 0; i < dynamicFields.length; i++) {
@@ -688,4 +690,83 @@ describe('Case Data Store', () => {
             await loginPage.login("qkatawazi");
         }
     }, 160 * 1000);
+
+    //ptidke
+    it('[DRDMV-13114]:[Dynamic Data] - Add all type of dynamic fields in Case Template', async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDynamicFieldAndGroup();
+        let caseTemplateName = randomStr + 'caseTemplateDRDMV-13131';
+        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13131';
+        let casetemplateData = {
+            "templateName": `${caseTemplateName}`,
+            "templateSummary": `${caseTemaplateSummary}`,
+            "templateStatus": "Draft",
+        }
+        await apiHelper.apiLogin('fritz');
+        await apiHelper.createCaseTemplate(casetemplateData);
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+        await utilCommon.waitUntilSpinnerToHide();
+        await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+        await dynamicFieldsPo.clickOnDynamicField();
+        await dynamicFieldsPo.setFieldName('news16' + randomStr);
+        await dynamicFieldsPo.setDescriptionName('newDescri16' + randomStr);
+        await dynamicFieldsPo.selectFieldValueType('DATE');
+        await dynamicFieldsPo.selectInfromationSource('Requester');
+        await dynamicFieldsPo.clickOnDynamicField();
+        await dynamicFieldsPo.setFieldName('news17' + randomStr);
+        await dynamicFieldsPo.setDescriptionName('newDescri17' + randomStr);
+        await dynamicFieldsPo.selectFieldValueType('NUMBER');
+        await dynamicFieldsPo.selectInfromationSource('System');
+        await dynamicFieldsPo.clickOnDynamicField();
+        await dynamicFieldsPo.setFieldName('news18' + randomStr);
+        await dynamicFieldsPo.setDescriptionName('newDescri18' + randomStr);
+        await dynamicFieldsPo.selectFieldValueType('BOOLEAN');
+        await dynamicFieldsPo.selectInfromationSource('Task Assignee');
+        await dynamicFieldsPo.clickOnDynamicField();
+        await dynamicFieldsPo.setFieldName('news19' + randomStr);
+        await dynamicFieldsPo.setDescriptionName('newDescri19' + randomStr);
+        await dynamicFieldsPo.selectFieldValueType('ATTACHMENT');
+        await dynamicFieldsPo.selectInfromationSource('Agent');
+        await dynamicFieldsPo.clickOnDynamicField();
+        await dynamicFieldsPo.setFieldName('news20' + randomStr);
+        await dynamicFieldsPo.setDescriptionName('newDescri20' + randomStr);
+        await dynamicFieldsPo.selectFieldValueType('TEXT');
+        await dynamicFieldsPo.selectInfromationSource('Agent');
+        await dynamicFieldsPo.clickSaveButton();
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri16' + randomStr)).toBeTruthy('field not present');
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri17' + randomStr)).toBeTruthy('field not present');
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri18' + randomStr)).toBeTruthy('field not present');
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri19' + randomStr)).toBeTruthy('field not present');
+        expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri20' + randomStr)).toBeTruthy('field not present');
+    }, 240 * 1000);
+
+    //ptidke
+    it('[DRDMV-13610]:[UI] [-ve] Update Automated Task Template Process and Task Type', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData = {
+            "templateName": `Automate13610${randomStr}`,
+            "templateSummary": `Automate13610${randomStr}`,
+            "templateStatus": "Draft",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": `Case Process 1 ${randomStr}`,
+        }
+        console.log( `Automate13610${randomStr}`);
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createAutomatedTaskTemplate(templateData);
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await utilGrid.searchAndOpenHyperlink(`Automate13610${randomStr}`);
+        await viewTaskPo.clickOnEditTask();
+        expect(await editTaskPo.isAutomatedTaskTypeDisabled()).toBeTruthy('not disabled');
+        expect(await editTaskPo.isProcessNameDisabled()).toBeTruthy('not disabled');
+        await editTaskPo.selectTaskCategoryTier1('Accounts Receivable');
+        await editTaskPo.updateTaskSummary('update'+randomStr);
+        await editTaskPo.selectPriorityValue('High');
+        await editTaskPo.clickOnSaveButton();
+        expect(await viewTaskPo.getCategoryTier1Value()).toBe('Accounts Receivable');
+        expect(await viewTaskPo.getTaskSummaryValue()).toBe('update'+randomStr);
+        expect(await viewTaskPo.getPriorityValue()).toBe('High');
+    }, 240 * 1000);
 })

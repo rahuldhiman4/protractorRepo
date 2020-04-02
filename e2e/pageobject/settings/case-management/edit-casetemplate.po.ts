@@ -49,6 +49,11 @@ class EditCaseTemplate {
         tier1ValueOnCaseTemplate: '[rx-view-component-id="241f0e58-3106-4f8a-a1cc-43554414bb7c"] .d-textfield__rx-value',
         tier2ValueOnCaseTemplate: '[rx-view-component-id="4f950be7-d968-41a4-8bb9-018674e53f88"] .d-textfield__rx-value',
         tier3ValueOnCaseTemplate: '[rx-view-component-id="a7fbc4bc-23c6-4f92-818a-5554107d04c0"] .d-textfield__rx-value',
+        summaryGuid: 'e3cb1a92-1e94-477d-93fa-b63b29c1c129',
+        priorityGuid: 'c933ab70-9004-4347-9537-3ae65ec633b9',
+        companyGuid: '39db6cc5-79ae-4934-a4bc-74765278fcda',
+        saveTemplateData: '[rx-view-component-id="16f6e232-26f8-4c72-a30a-b4e765fd09b6"] button',
+        caseStatusValue: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .ui-select-toggle', 
     }
 
     async clickOnCopyCaseTemplate(): Promise<void> {
@@ -257,7 +262,32 @@ class EditCaseTemplate {
     async isResolveCaseOnLastTaskCompletion(value: boolean): Promise<void> {
         await commonUtils.selectToggleButton(this.selectors.resolveCaseOnLastTaskCompletion, value);
     }
+    
+    async isPriorityRequiredTextPresent(): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.priorityRequiredText)));
+        return await utilCommon.isRequiredTagToField(this.selectors.priorityGuid);
+    }
 
+    async isSummaryRequiredTextPresent(): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.summary)));
+        return await utilCommon.isRequiredTagToField(this.selectors.summaryGuid);
+    }
+
+    async isCompanyRequiredTextPresent(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
+    }
+
+    async isTemplateStatusRequiredTextPresent(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.templateStatusDropdown);
+    }
+
+    async isOwnerGroupRequiredTextPresent(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.ownerGroupDropdown);
+    }
+
+    async isOwnerCompanyRequiredTextPresent(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.ownerCompany);
+    }
 }
 
 export default new EditCaseTemplate();

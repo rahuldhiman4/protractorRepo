@@ -26,6 +26,7 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 describe('Dynamic data', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -875,8 +876,8 @@ describe('Dynamic data', () => {
         await editCasePo.clickOnAssignToMe();
         await editCasePo.clickSaveCase();
         await utilCommon.waitUntilPopUpDisappear();
-        await viewCasePo.changeCaseStatus('In Progress');
-        await viewCasePo.clickSaveStatus('In Progress');
+        await updateStatusBladePo.changeCaseStatus('In Progress');
+        await updateStatusBladePo.clickSaveStatus('In Progress');
         await utilCommon.waitUntilPopUpDisappear();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.clickTaskLinkOnManageTask(automatedTaskSummary);

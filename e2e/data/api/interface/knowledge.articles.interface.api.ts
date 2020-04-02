@@ -12,4 +12,5 @@ export interface IKnowledgeArticles{
     assignee?:string;
     company?:string;
     assigneeSupportGroup?:string;
+    articleDesc?:string;
 }
