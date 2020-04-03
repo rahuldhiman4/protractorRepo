@@ -42,6 +42,13 @@ class CaseAccessTab {
         
     }
 
+    async selectCompany(companyValue: string): Promise<void> {
+        // await $(this.selectors.company).click();
+        // await $(this.selectors.searchOrganizationName).sendKeys(companyValue);
+        // let option = await element(by.cssContainingText(this.selectors.dropdownList, companyValue));
+        // await option.click();
+    }
+
     async selectSupportGroup(SupportValue: string): Promise<void> {
         // await $(this.selectors.supportGroup).click();
         // await $(this.selectors.searchSupportGroup).sendKeys(SupportValue);
