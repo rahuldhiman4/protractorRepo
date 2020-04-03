@@ -1,28 +1,20 @@
 import { browser } from "protractor";
-import createCasePage from '../../pageobject/case/create-case.po';
-import caseEditPage from '../../pageobject/case/edit-case.po';
-import viewCasePage from '../../pageobject/case/view-case.po';
+import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
-import serviceTargetInfoPage from '../../pageobject/slm/service-target-info.po';
+import { default as serviceTargetBladePo, default as serviceTargetConfig } from '../../pageobject/settings/slm/service-target-blade.po';
 import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
-import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import apiHelper from '../../api/api.helper';
 import utilGrid from '../../utils/util.grid';
-import serviceTargetBladePo from '../../pageobject/settings/slm/service-target-blade.po';
-import slmExpressionbuilderPopPo from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 
 var caseBAUser = 'qkatawazi';
 var caseAgentUser = 'qtao';
 var caseAgentUserPsilon = 'werusha';
 
-
 describe('Service Target Tests', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping();

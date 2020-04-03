@@ -7,13 +7,14 @@ import consoleCasetemplatePo from '../../pageobject/settings/case-management/con
 import copyCaseTemplate from "../../pageobject/settings/case-management/copy-casetemplate.po";
 import createCaseTemplate from "../../pageobject/settings/case-management/create-casetemplate.po";
 import editCaseTemplate from "../../pageobject/settings/case-management/edit-casetemplate.po";
+import { BWF_BASE_URL } from '../../utils/constants';
 
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
 
 describe('Copy Case Template', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
     });
 

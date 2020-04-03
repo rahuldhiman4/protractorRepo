@@ -1,35 +1,30 @@
-import { browser, protractor, ProtractorExpectedConditions, $$, element, by, ElementFinder } from "protractor";
+import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import attachmentBladePage from "../../pageobject/attachment/attachment-blade.po";
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
 import { default as quickCase, default as quickCasePo } from "../../pageobject/case/quick-case.po";
-import viewCasePo from '../../pageobject/case/view-case.po';
+import { default as viewCasePage, default as viewCasePo } from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import resources from '../../pageobject/common/resources-tab.po';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import editCaseTemplate from "../../pageobject/settings/case-management/edit-casetemplate.po";
 import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template-cases.po';
+import { default as activityPo, default as activityTabPo } from '../../pageobject/social/activity-tab.po';
+import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
+import { default as manageTask } from "../../pageobject/task/manage-task-blade.po";
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import resources from '../../pageobject/common/resources-tab.po';
-import viewCasePage from '../../pageobject/case/view-case.po';
-import activityPo from '../../pageobject/social/activity-tab.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import attachmentBladePo from '../../pageobject/attachment/attachment-information-blade.po';
-import activityTabPo from '../../pageobject/social/activity-tab.po';
-import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
-import caseConsole from '../../pageobject/case/case-console.po';
-import attachmentBladePage from "../../pageobject/attachment/attachment-blade.po";
-import { default as manageTask } from "../../pageobject/task/manage-task-blade.po";
 
 let RecommendedKnowledgeStr = "Recommended Knowledge ";
 let applyBtn = "Apply";
 describe("Quick Case", () => {
-    const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     const requester = "Requester";
     const contact = "Contact";
-    let loginId = 'caseagentbwf';
     let caseSummary771 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let caseDescription771 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let templateName797 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -37,7 +32,7 @@ describe("Quick Case", () => {
     let caseTemplateId797 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await testData771();
         await testData797();
@@ -134,7 +129,7 @@ describe("Quick Case", () => {
     });
 
     async function testData771() {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester("Adam Pavlik");
         await createCasePo.setSummary(caseSummary771);
         await createCasePo.setDescription(caseDescription771);
@@ -822,7 +817,7 @@ describe("Quick Case", () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseSummary = 'DRDMV-11700' + summary;
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary(caseSummary);
         let fileName: string[] = ['bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf'];
@@ -832,7 +827,7 @@ describe("Quick Case", () => {
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await activityTabPo.addActivityNote(activityNoteText);
-        let fileName1: string[] = ['bwfWord1.rtf', 'bwfWord2.rtf', 'demo.txt','bwfJson1.json','bwfJson2.json'];
+        let fileName1: string[] = ['bwfWord1.rtf', 'bwfWord2.rtf', 'demo.txt', 'bwfJson1.json', 'bwfJson2.json'];
         for (let i: number = 0; i < fileName1.length; i++) {
             await adhoctaskTemplate.addAttachmentInDescription(`../../data/ui/attachment/${fileName1[i]}`);
         }
@@ -845,7 +840,7 @@ describe("Quick Case", () => {
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeTruthy('Attachment button is disabled');
-        let fileName2: string[] = [ 'bwfXsl.xsl', 'bwfXml.xml','bwfJson3.json','bwfJson4.json','bwfJson5.json'];
+        let fileName2: string[] = ['bwfXsl.xsl', 'bwfXml.xml', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
         for (let i: number = 0; i < fileName2.length; i++) {
             await adhoctaskTemplate.addAttachmentInDescription(`../../data/ui/attachment/${fileName2[i]}`);
         }
@@ -864,13 +859,13 @@ describe("Quick Case", () => {
         await attachmentBladePage.clickOnPaginationNextButton();
         await attachmentBladePage.clickOnColumnHeader('Attached to');
         expect(await attachmentBladePage.isAttachTableColumnSorted('Attached to')).toBeTruthy("Attached to Not Sorted Ascending");
-        
+
         await attachmentBladePage.clickOnColumnHeader('Media type');
         expect(await attachmentBladePage.isAttachTableColumnSorted('Media type', true)).toBeTruthy("Media type Not Sorted Desecnding");
         await attachmentBladePage.clickOnPaginationNextButton();
         await attachmentBladePage.clickOnColumnHeader('Media type');
         expect(await attachmentBladePage.isAttachTableColumnSorted('Media type')).toBeTruthy("Media type Not Sorted Ascending");
-       
+
         await attachmentBladePage.clickOnColumnHeader('Created date');
         expect(await attachmentBladePage.isAttachTableColumnSorted('Created date', true)).toBeTruthy("Created date Not Sorted Desecnding");
         await attachmentBladePage.clickOnPaginationNextButton();

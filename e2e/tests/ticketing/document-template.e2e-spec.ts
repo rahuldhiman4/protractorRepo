@@ -7,11 +7,12 @@ import imagePropertiesPo from '../../pageobject/settings/common/image-properties
 import createDocumentTemplatePo from '../../pageobject/settings/document-management/create-document-template.po';
 import documentTemplateConsolePo from '../../pageobject/settings/document-management/document-template-console.po';
 import editDocumentTemplatePo from '../../pageobject/settings/document-management/edit-document-template.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 
 describe('Document Template', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
     });
 

@@ -1,24 +1,24 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
-import createCasePage from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
+import createCasePage from '../../pageobject/case/create-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import dynamicField from "../../pageobject/common/dynamic-fields.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import copyTemplatePage from "../../pageobject/settings/task-management/copy-tasktemplate.po";
 import taskTemplatePage from "../../pageobject/settings/task-management/create-tasktemplate.po";
-import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
+import { default as viewTaskTemplate, default as viewTasktemplatePo } from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 describe('Copy Task Template', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
     });
 
@@ -66,7 +66,7 @@ describe('Copy Task Template', () => {
 
             await navigationPage.signOut();
             await loginPage.login('qtao');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary' + automatedTaskTemplate2);
             await createCasePage.clickAssignToMeButton();
@@ -409,7 +409,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
 
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary ' + taskTemplate);
             await createCasePage.clickAssignToMeButton();

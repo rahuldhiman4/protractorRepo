@@ -6,15 +6,16 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePage from "../../pageobject/knowledge/edit-knowledge.po";
-import utilCommon from '../../utils/util.common';
-import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import feedbackBladeKnowledgeArticlePo from '../../pageobject/knowledge/feedback-blade-Knowledge-article.po';
-import activityTabPo from '../../pageobject/social/activity-tab.po';
-import utilGrid from '../../utils/util.grid';
 import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
 import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
-import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 
 describe('Knowledge Article', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -31,7 +32,7 @@ describe('Knowledge Article', () => {
     var knowledgeArticlesTitleStr = "Knowledge Articles";
 
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('peter');
         await foundationData('Petramco');
         await foundationData19501('Petramco');

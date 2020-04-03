@@ -2,19 +2,24 @@ import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import flowsetConsole from "../../pageobject/settings/manage-flowset/console-flowset-config.po";
-import flowsetEditPage from "../../pageobject/settings/manage-flowset/edit-flowset-config.po";
 import menuItemEditPage from "../../pageobject/settings/application-config/edit-menu-items-config.po";
 import menuItemsConfigConsole from "../../pageobject/settings/application-config/menu-items-config-console.po";
 import assignmentConfigConsole from "../../pageobject/settings/case-management/assignments-config-console.po";
-import statusConfig from "../../pageobject/settings/common/status-config.po";
 import assignmentConfigEditPage from "../../pageobject/settings/case-management/edit-assignments-config.po";
 import caseReadAccessConfigEditPage from "../../pageobject/settings/case-management/edit-read-access-config.po";
 import caseReadAccessConfigConsole from "../../pageobject/settings/case-management/read-access-console.po";
 import notesTemplateConsole from "../../pageobject/settings/common/console-notestemplate.po";
 import editNotesTemplateConfig from "../../pageobject/settings/common/edit-notestemplate.po";
+import statusConfig from "../../pageobject/settings/common/status-config.po";
+import acknowledgementTemplateConsolePage from "../../pageobject/settings/email/console-acknowledgment-template.po";
+import emailTemplateConsolePage from "../../pageobject/settings/email/console-email-template.po";
+import editAcknowledementTemplatePage from "../../pageobject/settings/email/edit-acknowledgment-template.po";
+import editEmailTemplatePage from "../../pageobject/settings/email/edit-email-template.po";
+import flowsetConsole from "../../pageobject/settings/manage-flowset/console-flowset-config.po";
+import flowsetEditPage from "../../pageobject/settings/manage-flowset/edit-flowset-config.po";
 import processLibraryEditPage from "../../pageobject/settings/manage-flowset/edit-process-library-config.po";
 import processLibraryConfigConsole from "../../pageobject/settings/manage-flowset/process-library-config-console.po";
+import relationshipsConfigsPage from "../../pageobject/settings/relationship/relationships-configs.po";
 import businessTimeSegmentConfigConsole from "../../pageobject/settings/slm/business-time-segment-console.po";
 import businessTimeSharedEntityConfigConsole from "../../pageobject/settings/slm/business-time-shared-entity-console.po";
 import configureDataSourceConfigConsole from "../../pageobject/settings/slm/configure-data-source-config-console.po";
@@ -23,16 +28,12 @@ import businessTimeEntityConfigEditPage from "../../pageobject/settings/slm/edit
 import configureDataSourceEditPage from "../../pageobject/settings/slm/edit-configure-data-source-config.po";
 import goalTypeEditPage from "../../pageobject/settings/slm/edit-goal-type.po";
 import goalTypeConfigConsole from "../../pageobject/settings/slm/goal-type-config-console.po";
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilGrid from "../../utils/util.grid";
-import relationshipsConfigsPage from "../../pageobject/settings/relationship/relationships-configs.po";
-import emailTemplateConsolePage from "../../pageobject/settings/email/console-email-template.po"
-import editEmailTemplatePage from "../../pageobject/settings/email/edit-email-template.po"
-import acknowledgementTemplateConsolePage from "../../pageobject/settings/email/console-acknowledgment-template.po";
-import editAcknowledementTemplatePage from "../../pageobject/settings/email/edit-acknowledgment-template.po";
 
 describe('Case Manager Read-only Config', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qdu');
     });
 
@@ -62,7 +63,7 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18037]: Check Case manager is not able to perform Create Update Delete operation on Read Access mapping', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
         expect(await caseReadAccessConfigConsole.isAddButtonDisabled()).toBeTruthy();
@@ -78,7 +79,7 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18072]: Check Case manager is not able to perform Create Update operation on Process Library configuration', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
         expect(await processLibraryConfigConsole.isRegisterProcessBtnDisabled()).toBeTruthy();
@@ -91,7 +92,7 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18069]: Check Case manager is not able to perform Create Update operation on Menu Items', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
         expect(await menuItemsConfigConsole.isAddButtonDisabled()).toBeTruthy();
@@ -104,7 +105,7 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18038]: Check Case manager is not able to perform Create Update Delete operation on Case-> Status Configuration', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
         await statusConfig.setCompanyDropdown("Petramco", 'case');
@@ -122,7 +123,7 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18169]: Check Case manager is not able to perform Create Update operation on Goal Type', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type - Business Workflows');
         expect(await goalTypeConfigConsole.isAddGoalTypeBtnDisabled()).toBeTruthy("Add button is enabled");
@@ -134,7 +135,7 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18095]: Check Case manager is not able to perform Create Update operation on Configure Data Source', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', 'Configure Data Source - Administration - Business Workflows');
         console.log("bbb");
@@ -150,7 +151,7 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18093]: Check Case manager is not able to perform Create Update operation on Business Time Shared Entity', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Business Time Shared Entity', 'Business Time Shared Entity Console - Business Workflows');
         expect(await businessTimeSharedEntityConfigConsole.isAddBtnDisabled()).toBeTruthy("Add button is enabled");
@@ -165,7 +166,7 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18083]: Check Case manager is not able to perform Create Update operation on Business Time Segment', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Business Time Segment', 'Business Time Segment Console - Business Workflows');
         expect(await businessTimeSegmentConfigConsole.isAddBusinessSegmentBtnDisabled()).toBeTruthy("Add Business Time Segment button is enabled");
@@ -186,7 +187,7 @@ describe('Case Manager Read-only Config', () => {
         notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
         await apiHelper.createNotesTemplate("Case", notesTemplateData['notesTemplateWithMandatoryField']);
 
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
@@ -209,7 +210,7 @@ describe('Case Manager Read-only Config', () => {
         notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
         await apiHelper.createNotesTemplate("Task", notesTemplateData['notesTemplateWithMandatoryField']);
 
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
@@ -232,7 +233,7 @@ describe('Case Manager Read-only Config', () => {
         notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
         await apiHelper.createNotesTemplate("People", notesTemplateData['notesTemplateWithMandatoryField']);
 
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
@@ -255,7 +256,7 @@ describe('Case Manager Read-only Config', () => {
         flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
         await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
 
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
         expect(await flowsetConsole.isAddFlowsetButtonDisabled()).toBeTruthy("Add button is enabled");
@@ -277,7 +278,7 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18077]: Check Case manager is not able to perform Create Update operation on Case to Case Relationship', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Case to Case', 'Case to Case Relationship Console - Business Workflows');
         expect(await relationshipsConfigsPage.isAddRelationButtonEnabled()).toBeFalsy('Add Button is enabled');
@@ -287,7 +288,7 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18078]: Check Case manager is not able to perform Create Update operation on Case to Person Relationship', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Case to Person', 'Case To Person Relationship Console - Business Workflows');
         expect(await relationshipsConfigsPage.isAddRelationButtonEnabled()).toBeFalsy('Add Button is enabled');
@@ -297,7 +298,7 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18079]: Check Case manager is not able to perform Create Update operation on Person to Person Relationship', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
         expect(await relationshipsConfigsPage.isAddRelationButtonEnabled()).toBeFalsy('Add Button is enabled');
@@ -314,7 +315,7 @@ describe('Case Manager Read-only Config', () => {
         emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
 
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
         expect(await emailTemplateConsolePage.isAddEmailTemplateButtonEnabled()).toBeFalsy('Add Email Template Button is enabled');
@@ -342,7 +343,7 @@ describe('Case Manager Read-only Config', () => {
         emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
         await apiHelper.createEmailAcknowledgementTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
 
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
         expect(await acknowledgementTemplateConsolePage.isAddAcknowledgeTemplateButtonEnabled()).toBeFalsy('Add Email Template Button is enabled');

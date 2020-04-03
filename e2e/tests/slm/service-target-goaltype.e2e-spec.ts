@@ -1,17 +1,18 @@
 import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import createGoalType from '../../pageobject/settings/slm/create-goal-type.po';
 import editGoalType from '../../pageobject/settings/slm/edit-goal-type.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import apiHelper from '../../api/api.helper';
 import utilGrid from '../../utils/util.grid';
 
 var caseBAUser = 'qkatawazi';
 
 describe('Service Level Management - Goal Type Tests', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping();

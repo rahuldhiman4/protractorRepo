@@ -4,12 +4,13 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import articleTemplateStylePo from '../../pageobject/settings/knowledge-management/article-template-style.po';
 import consoleKnowledgeTemplatePo from '../../pageobject/settings/knowledge-management/console-knowledge-template.po';
 import createKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledge-management/create-knowledge-article-template.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 describe('KnowledgeArticlestyle', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     var knowledgeCoachUser = 'kWilliamson';
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('peter');
     });
 
