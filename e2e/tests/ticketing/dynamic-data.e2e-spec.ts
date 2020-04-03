@@ -1,7 +1,7 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import createCasePo from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
+import createCasePo from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import requesterResponseBladePo from '../../pageobject/case/requester-response-blade.po';

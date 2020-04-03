@@ -2,8 +2,8 @@ import { $, browser, protractor, ProtractorExpectedConditions } from "protractor
 import apiHelper from '../../api/api.helper';
 import attachmentBladePage from "../../pageobject/attachment/attachment-blade.po";
 import caseConsolePage from '../../pageobject/case/case-console.po';
-import createCasePage from "../../pageobject/case/create-case.po";
 import previewCasePo from '../../pageobject/case/case-preview.po';
+import createCasePage from "../../pageobject/case/create-case.po";
 import editCasePage from '../../pageobject/case/edit-case.po';
 import { default as selectCaseTemplateBlade } from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";

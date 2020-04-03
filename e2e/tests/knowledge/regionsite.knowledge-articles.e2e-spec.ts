@@ -1,8 +1,8 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import { Knowledge } from '../../api/constant.api';
-import createCasePage from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
+import createCasePage from '../../pageobject/case/create-case.po';
 import quickCase from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import loginPage from "../../pageobject/common/login.po";
