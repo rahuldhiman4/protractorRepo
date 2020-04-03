@@ -6,13 +6,15 @@ class CaseAccessTab {
         agents: '.dropdown-menu .dropdown-item.active',
         searchInput: '.flex-row input.form-control',
         agentAddButton: '.input-group-btn .btn-secondary',
-        // supportGroup: '.flex-item .ac-support-group-field button',
-        // dropdownList: '.options li',
-        // searchSupportGroup: '[placeholder="Search for Support Groups"]',
-        // searchBusinessUnit: '[placeholder="Search for Business Unit"]',
-        // searchDepartment: '[placeholder="Search for Departments"]',
-        // businessUnit: '.flex-item .ac-business-unit-field button',
-        // department: '.flex-item .ac-support-department-field button',
+        company: '.flex-item .ac-company-field button',
+        supportGroup: '.flex-item .ac-support-group-field button',
+        dropdownList: '.options li',
+        searchSupportGroup: '[placeholder="Search for Support Groups"]',
+        searchOrganizationName: '[placeholder="Search Organizations"]',
+        searchBusinessUnit: '[placeholder="Search for Business Unit"]',
+        searchDepartment: '[placeholder="Search for Departments"]',
+        businessUnit: '.flex-item .ac-business-unit-field button',
+        department: '.flex-item .ac-support-department-field button',
         agentAssignWriteAccess: '.access-group-checkbox .checkbox__input',
     }
     
@@ -43,31 +45,31 @@ class CaseAccessTab {
     }
 
     async selectCompany(companyValue: string): Promise<void> {
-        // await $(this.selectors.company).click();
-        // await $(this.selectors.searchOrganizationName).sendKeys(companyValue);
-        // let option = await element(by.cssContainingText(this.selectors.dropdownList, companyValue));
-        // await option.click();
+        await $(this.selectors.company).click();
+        await $(this.selectors.searchOrganizationName).sendKeys(companyValue);
+        let option = await element(by.cssContainingText(this.selectors.dropdownList, companyValue));
+        await option.click();
     }
 
     async selectSupportGroup(SupportValue: string): Promise<void> {
-        // await $(this.selectors.supportGroup).click();
-        // await $(this.selectors.searchSupportGroup).sendKeys(SupportValue);
-        // let option = await element(by.cssContainingText(this.selectors.dropdownList, SupportValue));
-        // await option.click();
+        await $(this.selectors.supportGroup).click();
+        await $(this.selectors.searchSupportGroup).sendKeys(SupportValue);
+        let option = await element(by.cssContainingText(this.selectors.dropdownList, SupportValue));
+        await option.click();
     }
     
     async selectBusinessUnit(businessUnitValue: string): Promise<void> {
-        // await $(this.selectors.businessUnit).click();
-        // await $(this.selectors.searchBusinessUnit).sendKeys(businessUnitValue);
-        // let option = await element(by.cssContainingText(this.selectors.dropdownList, businessUnitValue));
-        // await option.click();
+        await $(this.selectors.businessUnit).click();
+        await $(this.selectors.searchBusinessUnit).sendKeys(businessUnitValue);
+        let option = await element(by.cssContainingText(this.selectors.dropdownList, businessUnitValue));
+        await option.click();
     }
 
     async selectDepartment(DepartmentValue: string): Promise<void> {
-        // await $(this.selectors.department).click();
-        // await $(this.selectors.searchDepartment).sendKeys(DepartmentValue);
-        // let option = await element(by.cssContainingText(this.selectors.dropdownList, DepartmentValue));
-        // await option.click();
+        await $(this.selectors.department).click();
+        await $(this.selectors.searchDepartment).sendKeys(DepartmentValue);
+        let option = await element(by.cssContainingText(this.selectors.dropdownList, DepartmentValue));
+        await option.click();
     }
 
 }

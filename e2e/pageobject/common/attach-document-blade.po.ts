@@ -5,7 +5,6 @@ class AttachDocumentBlade {
     selectors = {
         bladeTitle: '.dp-header .dp-title',
         advanceSearchButton: '.bwf-search-result .btn-secondary span',
-        clickSearchBox: '.text-left[name="advanceSearch"] .adapt-search',
         searchBox: '.adapt-search-field-wrapper  input.adapt-search-field[placeholder="Search"]',
         iconCircle: '.search-item__unpin-icon .adapt-icon',
         attachButton: '[rx-view-component-id="9d41c65a-85a9-4316-bd64-8fa8ed68dfde"] button',
@@ -73,7 +72,6 @@ class AttachDocumentBlade {
     }
 
     async searchRecord(documentName: string): Promise<void> {
-        await $(this.selectors.clickSearchBox).click();
         await $(this.selectors.searchBox).clear();
         await $(this.selectors.searchBox).sendKeys(documentName + protractor.Key.ENTER);
         let i: number;
@@ -81,7 +79,6 @@ class AttachDocumentBlade {
             let bolnVal: boolean = await $(this.selectors.iconCircle).isPresent();
             if (bolnVal == false) {
                 await browser.sleep(3000);
-                await $(this.selectors.clickSearchBox).click();
                 await $(this.selectors.searchBox).clear();
                 await $(this.selectors.searchBox).sendKeys(documentName + protractor.Key.ENTER);
             } else {
