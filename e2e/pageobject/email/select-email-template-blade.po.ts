@@ -5,14 +5,13 @@ import utilGrid from '../../utils/util.grid';
 class SelectEmailTemplateBlad {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        emptyGridNoCheckBox: '.ui-grid-icon-ok',
+        emptyGridNoCheckBox: '[rx-view-component-id="092ad269-6be6-4240-a867-8af4c8c6e2c9"] .radio__label input',
         title: '.modal-title',
         gridId: '[rx-view-component-id="092ad269-6be6-4240-a867-8af4c8c6e2c9"]',
         gridGuid: '092ad269-6be6-4240-a867-8af4c8c6e2c9',
         applyButton: '[rx-view-component-id="05732013-6207-4a3f-864b-be482cdffa6b"] button',
         cancelButton: '[rx-view-component-id="84e2938d-2e78-4b3a-bbe5-7ffba7e7ebfb"] button',
-        gridColumnHeaders: ' .ui-grid-header-cell-label',
-        addColumnIcon: 'rx-record-grid-menu.rx-record-grid-toolbar__item_visible-columns .d-icon-ellipsis',
+        gridColumnHeaders: '[rx-view-component-id="092ad269-6be6-4240-a867-8af4c8c6e2c9"] .c-header-name'
     }
 
     async clickOnApplyButton(): Promise<void> {

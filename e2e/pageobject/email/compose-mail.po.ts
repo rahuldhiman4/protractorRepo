@@ -6,20 +6,17 @@ class ComposeMail {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         title: '.modal-title',
-        crossIcon: '.dialog-header-confirm .close',
+        crossIcon: '.close-inverse',
         commonId: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"]',
         selectEmailTemplateLink: '.select-template-button',
         messageBodyFontPannelBar: '.cke_inner .cke_reset_all',
         attachLink: '.attachment-button button',
         sendButton: '[rx-view-component-id="58d8a41f-6c8f-4f23-b986-6a94d35b0fbe"] button',
         discardButton: '[rx-view-component-id="038eaa3f-f2ff-4c6d-a5d1-351449671b76"] button',
-        getTextOfWarningMsg: '.d-modal__content-item',
-        emailIcon: '.d-icon-left-envelope',
         composeEmailUI: '[rx-view-definition-guid="a69ea993-2e45-4ae7-9435-25ba53cbad88"]',
-        selectEmailTemplate: '.select-template-button',
-        popupEmail: '.popup-email',
-        popupInfo: '.popup-info',
-        attachButton: '[rx-view-definition-guid="a69ea993-2e45-4ae7-9435-25ba53cbad88"] .ac-attachment-button',
+        popupEmail: '.dropdown-item .popup-email',
+        popupInfo: '..dropdown-item .popup-info',
+        attachButton: '.attachment-button button',
         emailBody: '.cke_editable_themed',
         firstClickInEmail: '.cke_editable_themed br',
         email: 'iframe[class="cke_wysiwyg_frame cke_reset"]',
@@ -27,11 +24,9 @@ class ComposeMail {
         getsubject: '.subject-name span',
         attachmentField: '.attachment-button input',
         selectTemplateButton: '.select-template-button',
-        toEmailgetText: 'rx-person-group-drop-down-list-multi-select[ng-model="toList"]  .personContainer .padTop3',
-        ccEmailgetText: 'rx-person-group-drop-down-list-multi-select[ng-model="ccList"]  .personContainer .padTop3',
+        toOrCcEmailgetText: 'div.adapt-mt-field-wrapper .flexi-type-ahead-person-tag',
         subjectInput: '.subject-name input',
-        templateNameHeader: '.template-seperator',
-        popupTemplate: '.popup-template',
+        templateNameHeader: '.select-email-container .template-seperator',
         tableIcon: '.cke_toolbar .cke_button__table_icon',
         imageIcon: '.cke_toolbar .cke_button__image_icon',
         linkIcon: '.cke_toolbar .cke_button__link_icon',
@@ -45,7 +40,7 @@ class ComposeMail {
         fontType: '.cke_combo__font',
         fontSize: '.cke_combo__fontsize',
         numberIcon: '.cke_button__numberedlist_icon',
-        attachmentView: '.rx-attachment-view-name'
+        attachmentView: 'span.bwf-attachment-container__file-name',
     }
 
     async clickOnTableIcon(): Promise<void> {
@@ -149,7 +144,6 @@ class ComposeMail {
     }
 
     async getTextOfDiscardButtonWarningMessage(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.getTextOfWarningMsg)), 2000);
         return await utilCommon.getWarningDialogMsg();
     }
 
@@ -214,24 +208,19 @@ class ComposeMail {
         await $(this.selectors.attachmentField).sendKeys(absolutePath);
     }
 
-    async clickOnEmailIconLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailIcon)),3000);
-        await $(this.selectors.emailIcon).click();
-    }
-
-    async clickOnSelectTempalteButton(): Promise<void> {
+  async clickOnSelectTempalteButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectTemplateButton)));
         await $(this.selectors.selectTemplateButton).click();
     }
 
     async getToEmailPerson(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.toEmailgetText)));
-        return await $(this.selectors.toEmailgetText).getText();
+        return await (await $$(this.selectors.toOrCcEmailgetText).first().getText()).trim();
     }
 
     async getCcEmailPerson(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.ccEmailgetText)));
-        return await $(this.selectors.ccEmailgetText).getText();
+        return await (await $$(this.selectors.toOrCcEmailgetText).last().getText()).trim();
     }
 
     async setBulletPointAndNumer(value: string): Promise<void> {
