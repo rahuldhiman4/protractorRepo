@@ -1,114 +1,80 @@
-import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
 
 const fs = require('fs');
 
 
-export class Util {
+export class Utility {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        dropdownBox: '.ui-select-toggle',
-        dropDownInput: 'input[type="search"]',
-        dropDownOption: '.ui-select-choices-row-inner *',
-        popUpMsgLocator: '.rx-growl-item__message',
-        warningOk: '.modal-footer button[class*="d-button d-button_primary"], .d-modal__footer button[class*="d-button d-button_primary"]',
-        warningCancel: '.modal-footer button[class*="d-button d-button_secondary"], .d-modal__footer button[class*="d-button d-button_secondary"]',
-        warningDialog: '.modal-content .modal-dialog, .modal-content .d-modal__dialog',
+        dropdownBox: '.dropdown-toggle',
+        dropDownInput: 'input.form-control',
+        dropDownNoneOpt: '.dropdown_select__btn',
+        dropDownOption: '.dropdown_select__menu-content button',
+        warningOk: '.modal-content .btn-primary, .d-modal__footer button[class*="d-button d-button_primary"]',
+        warningCancel: '.modal-content .btn-secondary, .d-modal__footer button[class*="d-button d-button_secondary"]',
+        warningDialog: '.modal-content .modal-title, .modal-content .d-modal__title',
         warningDialogMsg: '.modal-content .modal-body, .modal-content .d-modal__content-item',
-        closeTipMsg: '.close.rx-growl-close',
-        errorMsg: '.rx-alert-error',
-        advancedSearchInput: 'input.rx-adv-search-textField',
-        advancedSearchSettingsBtn: 'button.d-icon-adjust_settings',
-        advancedSearchSettingsBtnClose: 'button[ng-hide="showAdvOptions"]',
-        advancedSearchResult: '.km-group-list-item__description',
-        dropDownChoice: '.ui-select__rx-choice',
-        warningMsgText: '.modal-content .modal-title-message, .modal-content .d-modal__title',
-        warningMsgTextKnowledgeStyle: '.d-modal__content .d-modal__content-item',
-        configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
-    }
-
-    async isConfigurationOptionMessageDisplayed(errorMessage): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.configurationOptionsErrorMessage)));
-        return await element(by.cssContainingText(this.selectors.configurationOptionsErrorMessage, errorMessage)).isDisplayed();
-
+        popUpMsgLocator: '.a-toast__details div',
+        popupMsgTitle: '.a-toast__summary',
+        closeTipMsg: '.a-toast__close_button',
+        dropDownChoice: '.dropdown-item',
     }
 
     async isWarningDialogBoxDisplayed(): Promise<boolean> {
-        //await browser.wait(this.EC.visibilityOf($(this.selectors.warningDialog)), 2000);
         return await $(this.selectors.warningDialog).isPresent();
     }
 
     async getWarningDialogTitle(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.warningMsgText)));
-        return await $(this.selectors.warningMsgText).getText();
+        return await $(this.selectors.warningDialog).getText();
     }
 
     async getWarningMessageTextKnowledgeStyle(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.warningMsgText)));
-        return await $(this.selectors.warningMsgTextKnowledgeStyle).getText();
+        return await $(this.selectors.warningDialogMsg).getText();
     }
 
     async selectDropDown(guid: string, value: string): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
         const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
-        //        await browser.wait(this.EC.elementToBeClickable(dropDownBoxElement));
         await dropDownBoxElement.click();
-        //        await browser.wait(this.EC.visibilityOf(dropDownInputElement));
-        await dropDownInputElement.sendKeys(value);
-        //        await browser.wait(this.EC.or(async () => {
-        //            let count = await dropDown.$$(this.selectors.dropDownOption).count();
-        //            return count >= 1;
-        //        }));
-        var optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
-        //        await browser.sleep(1000);
+        await browser.wait(this.EC.elementToBeClickable(dropDownInputElement),3000).then(async function(){
+            await dropDownInputElement.sendKeys(value);
+        });
+        
+        let optionCss: string = `[rx-view-component-id="${guid}"] .dropdown_select__menu-content button`;
         let option = await element(by.cssContainingText(optionCss, value));
         await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
             await option.click();
         });
     }
 
-    async selectDropDown2(dropDownElementFinder: ElementFinder, value: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable(dropDownElementFinder));
-        await dropDownElementFinder.click();
-        //        await browser.wait(this.EC.or(async () => {
-        //            await browser.wait(this.EC.invisibilityOf(element(by.cssContainingText(this.selectors.dropDownChoice, 'Loading data...'))));
-        //            let count = await $$(this.selectors.dropDownChoice).count();
-        //            return count >= 1;
-        //        }));
-        let option = await element(by.cssContainingText(this.selectors.dropDownChoice, value));
-        //        await browser.sleep(1000);
-        //        await browser.wait(this.EC.elementToBeClickable(option), 2000).then(async function () {
-        await option.click();
-        //        });
+    async clearDropDown(guid: string): Promise<void> {
+        const dropDown = await $(`[rx-view-component-id="${guid}"]`);
+        const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+        const dropDownSelectNoneItem = await dropDown.$(this.selectors.dropDownNoneOpt);
+        await dropDownBoxElement.click();
+        await dropDownSelectNoneItem.click();
+        await dropDownBoxElement.click();
     }
 
     async isValuePresentInDropDown(guid: string, value: string): Promise<boolean> {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
         const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
-        //        await browser.wait(this.EC.elementToBeClickable(dropDownBoxElement));
         await dropDownBoxElement.click();
-        //        await browser.wait(this.EC.visibilityOf(dropDownInputElement));
         await dropDownInputElement.sendKeys(value);
-        //        await this.waitUntilSpinnerToHide();
         let count = await dropDown.$$(this.selectors.dropDownOption).count();
         if (count >= 1) { return true; } else { return false; }
     }
 
-    async isDrpDownvalueDisplayed(guid: string, data: string[]): Promise<boolean> {
+    async isDropDownValueDisplayed(guid: string, data: string[]): Promise<boolean> {
         let arr: string[] = [];
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-        //        await browser.wait(this.EC.elementToBeClickable(dropDownBoxElement));
         await dropDownBoxElement.click();
-        //        await browser.wait(this.EC.or(async () => {
-        //            await browser.wait(this.EC.invisibilityOf(element(by.cssContainingText(this.selectors.dropDownOption, 'Loading data...'))), 2000);
-        //            let count = await dropDown.$$(this.selectors.dropDownOption).count();
-        //            return count >= 1;
-        //        }),3000);
         let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
-        for (var i = 0; i < drpDwnvalue; i++) {
-            var ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
             arr[i] = ab;
         }
         arr = arr.sort();
@@ -118,17 +84,16 @@ export class Util {
         );
     }
 
-    async getPopUpMessage(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
-        return await $(this.selectors.popUpMsgLocator).getText();
-    }
-
     async scrollUpOrDownTillElement(element: string): Promise<void> {
         await browser.executeScript("arguments[0].scrollIntoView();", $(`${element}`).getWebElement());
     }
 
-    async isErrorMsgPresent(): Promise<boolean> {
-        return await $(this.selectors.errorMsg).isDisplayed();
+    async isSuccessMsgAppeared(): Promise<boolean> {
+        return await $(this.selectors.popupMsgTitle).getText()=='Success';
+    }
+
+    async isErrorMsgAppeared(): Promise<boolean> {
+        return await $(this.selectors.popupMsgTitle).getText()=='Script Error';
     }
 
     async isPopUpMessagePresent(expectedMsg: string): Promise<boolean> {
@@ -136,31 +101,11 @@ export class Util {
         return arr.includes(expectedMsg);
     }
 
-    async selectDropDownWithName(name: string, value: string): Promise<void> {
-        const dropDown = await $(`[title="${name}"]`);
-        const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-        const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
-        //        await browser.wait(this.EC.elementToBeClickable(dropDownBoxElement));
-        await dropDownBoxElement.click();
-        //        await browser.wait(this.EC.visibilityOf(dropDownInputElement));
-        await dropDownInputElement.sendKeys(value);
-        //        await browser.wait(this.EC.or(async () => {
-        //            let count = await dropDown.$$(this.selectors.dropDownOption).count();
-        //            return count >= 1;
-        //        }));
-        var optionCss: string = `[title="${name}"] .ui-select-choices-row-inner *`;
-        //        await browser.sleep(1000);
-        var option = await element(by.cssContainingText(optionCss, value));
-        //        await browser.wait(this.EC.visibilityOf(option));
-        await option.click();
-    }
-
     async waitUntilPopUpDisappear(): Promise<void> {
         await browser.wait(this.EC.invisibilityOf($(this.selectors.popUpMsgLocator)), 5000);
     }
 
     async closePopUpMessage(): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
         await $$(this.selectors.closeTipMsg).then(async function (popups) {
             for (let i = 0; i < popups.length; i++) {
                 await popups[i].click();
@@ -251,14 +196,12 @@ export class Util {
 
     async getSelectedFieldValue(fieldName: string): Promise<string> {
         let metadataField = `//span[@class='d-textfield__item'][text()='${fieldName}']/following-sibling::*//span[contains(@class,'ui-select-match-text')]`;
-        //        await browser.wait(this.EC.visibilityOf(element(by.xpath(metadataField))));
         let actualFieldVal: string = await element(by.xpath(metadataField)).getText();
         return actualFieldVal;
     }
 
     async isFieldLabelDisplayed(guid: string, fieldName: string): Promise<boolean> {
         let fieldLabel = `[rx-view-component-id='${guid}'] .d-textfield__item`;
-        //        await browser.wait(this.EC.visibilityOf($(fieldLabel)));
         return await element(by.cssContainingText(fieldLabel, fieldName)).isPresent().then(async (result) => {
             if (result) {
                 return await element(by.cssContainingText(fieldLabel, fieldName)).getText() == fieldName ? true : false;
@@ -270,7 +213,6 @@ export class Util {
     }
 
     async isRequiredAttributePresent(locator: any): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(locator)));
         return (await $(locator).getAttribute("required")) == 'required';
     }
 
@@ -324,7 +266,7 @@ export class Util {
         return date + '/' + month + '/' + year;
     }
 
-    async isPopupMsgsMatches(msgs: string[]): Promise<boolean> {
+    async isAllPopupMsgsMatches(msgs: string[]): Promise<boolean> {
         let arr: string[] = await this.getAllPopupMsg();
         msgs.sort();
         return arr.length === msgs.length && arr.every(
@@ -346,4 +288,4 @@ export class Util {
 
 }
 
-export default new Util();
+export default new Utility();
