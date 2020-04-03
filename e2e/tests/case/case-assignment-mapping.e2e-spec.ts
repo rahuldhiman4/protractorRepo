@@ -2,7 +2,6 @@ import { browser, protractor, ProtractorExpectedConditions } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import caseConsolePage from "../../pageobject/case/case-console.po";
-import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from "../../pageobject/case/create-case.po";
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import QuickCasePage from "../../pageobject/case/quick-case.po";

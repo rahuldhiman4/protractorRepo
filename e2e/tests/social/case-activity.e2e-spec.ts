@@ -3,7 +3,6 @@ import apiHelper from "../../api/api.helper";
 import { ITaskTemplate } from '../../data/api/interface/task.template.interface.api';
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
-import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCase from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';

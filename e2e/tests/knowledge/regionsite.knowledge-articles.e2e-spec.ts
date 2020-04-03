@@ -1,7 +1,6 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import { Knowledge } from '../../api/constant.api';
-import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import quickCase from '../../pageobject/case/quick-case.po';

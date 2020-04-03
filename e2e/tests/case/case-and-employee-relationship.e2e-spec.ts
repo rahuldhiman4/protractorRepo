@@ -2,7 +2,6 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import addRelatedCasespopup from '../../pageobject/case/add-related-cases-pop.po';
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
-import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import quickCase from '../../pageobject/case/quick-case.po';
