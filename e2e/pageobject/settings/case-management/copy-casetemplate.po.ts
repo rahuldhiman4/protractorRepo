@@ -1,6 +1,6 @@
 import { ICaseTemplate } from 'e2e/data/ui/interface/caseTemplate.interface';
 import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import commonUtils from "../../../utils/util.common";
+import utilCommon from "../../../utils/util.common";
 
 class CopyCaseTemplate {
 
@@ -54,7 +54,7 @@ class CopyCaseTemplate {
     }
 
     async setOwnerGroupDropdownValue(caseTemplate: ICaseTemplate): Promise<void> {
-        await commonUtils.selectDropDown(this.selectors.ownerGroupDropdown, caseTemplate.ownerGroup);
+        await utilCommon.selectDropDown(this.selectors.ownerGroupDropdown, caseTemplate.ownerGroup);
     }
 
     async clickSaveCaseTemplate(): Promise<void> {

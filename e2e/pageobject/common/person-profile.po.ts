@@ -5,18 +5,18 @@ class PersonProfilePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         personName: '[rx-view-component-id="bfa03a3b-cc7c-4d33-95d5-2c63a882aaeb"] .ac-person-full-name',
-        personImage: '.d-n-nav__profile img',
+        personImage: 'button[aria-label="Profile menu"] span.a-profile__avatar',
         managerImage: '[rx-view-component-id="6f4a19be-2c96-4c58-b9c7-a49e2beb0c7b"] img',
         companyName: '[rx-view-component-id="bfa03a3b-cc7c-4d33-95d5-2c63a882aaeb"] .person-organization',
-        phone: '[rx-view-component-id="d8be57c9-ee7c-4b08-84af-90c9a552b919"] .ac-link-person-phone',
-        email: '[rx-view-component-id="d8be57c9-ee7c-4b08-84af-90c9a552b919"] .ac-link-person-email-disabled',
-        site: '[rx-view-component-id="d8be57c9-ee7c-4b08-84af-90c9a552b919"] .ac-text-site-value',
+        phone: '[rx-view-component-id="d8be57c9-ee7c-4b08-84af-90c9a552b919"] .person-phone-link',
+        email: '[rx-view-component-id="d8be57c9-ee7c-4b08-84af-90c9a552b919"] .person-link button',
+        site: '[rx-view-component-id="d8be57c9-ee7c-4b08-84af-90c9a552b919"] .person-site-text',
         managerName: '[rx-view-component-id="6f4a19be-2c96-4c58-b9c7-a49e2beb0c7b"] .person-name a',
-        activityNotes: '.activity-feed-note input[title]',
+        activityNotes: '.activity-feed-note textarea',
         requestedCasesGuid: 'cdba89ff-683c-42ba-9c2a-3adf4322504c',
         assignedCasesGuid: '08bd2811-37eb-43a3-a1fe-de845fe6c5a6',
         requestedCaseGuid: '934faa1d-0932-4141-9a6e-7f6ac1726427',
-        logTitle: '.title[ux-bind-html="title"]',
+        logTitle: '.activity-title',
     }
 
     async getCaseViewCount(TitleText: string): Promise<number> {

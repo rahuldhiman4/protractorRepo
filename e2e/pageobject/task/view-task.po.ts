@@ -50,8 +50,13 @@ class ViewTask {
         businessUnitValue:'[rx-view-component-id="4ad9dc88-aa95-4fb7-8128-7df004dfca8f"] .read-only-content', 
         departmentValue:'[rx-view-component-id="411571a0-2577-4403-bcf2-3999dc84f5df"] .read-only-content',
         manageDynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] button',
+        emailLink:'[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button'
     }
 
+    async clickEmailLink():Promise<void>{
+        await $(this.selectors.emailLink).click();
+    }
+    
     async getTaskSummaryValue():Promise<string>{
         return await $(this.selectors.taskSummary).getText();
     }
