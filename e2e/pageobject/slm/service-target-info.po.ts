@@ -4,18 +4,18 @@ class ServiceTargetInfo {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        serviceTargetInformationBlade: 'form[name="svtInfo"]',
-        serviceTargetInformationHeader: 'div.modal-header',
-        serviceTargetInformationCloseButton: 'div.action-blade__button-container button',
-        serviceTargeDetails: '.info-bar span.d-textfield__item',
-        serviceTargetStatus: 'div.status-container .marginleft5',
-        serviceTargetInformationInProceessIcon: 'div.status-container .d-icon-right-triangle_right_circle_o',
-        serviceTargetInformationWarningIcon: 'div.status-container .d-icon-right-exclamation_circle',
-        serviceTargetInformationMissedGoalIcon: 'div.status-container .d-icon-right-cross_circle_o',
+        serviceTargetInformationBlade: 'fieldset[role="document"]',
+        serviceTargetInformationHeader: 'fieldset[role="document"] .dp-header',
+        serviceTargetInformationCloseButton: '.dp-footer > button',
+        serviceTargeDetails: '.progress-bar-info__details-label strong',
+        serviceTargetStatus: 'adapt-icon[role="img"] + span',
+        serviceTargetInformationInProceessIcon: 'svg#triangle_right_circle_o',
+        serviceTargetInformationWarningIcon: 'svg#exclamation_circle_o',
+        serviceTargetInformationMissedGoalIcon: 'svg#cross_circle_o',
         serviceTargetInformationDualSVTIcon: 'div.status-container .d-icon-right-circle_o',
-        serviceTargetInformationPausedIcon: 'div.status-container .d-icon-right-pause_circle_o',
-        serviceTargetInformationSVTMetIcon: 'div.status-container .d-icon-right-check_circle_o',
-        serviceTargetDueDate: '.due-date-time-container .d-textfield__item',
+        serviceTargetInformationPausedIcon: 'svg#pause_circle_o',
+        serviceTargetInformationSVTMetIcon: 'svg#check_circle_o',
+        serviceTargetDueDate: '.progress-bar-info__details-label',
     }
 
     async isServiceTargetInformationBladeDisplayed(): Promise<boolean> {
