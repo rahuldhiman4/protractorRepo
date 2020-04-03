@@ -543,7 +543,7 @@ describe('Knowledge Article', () => {
         await createKnowledgeArticleTemplatePo.setSectionTitle('First' + randomStr);
         await editKnowledgeArticleTemplatePo.clickOnCancelButton();
         expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
-        expect(await utilCommon.getWarningMessagegText()).toBe('Warning!');
+        expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
         expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
         await utilCommon.clickOnWarningOk();
         await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();

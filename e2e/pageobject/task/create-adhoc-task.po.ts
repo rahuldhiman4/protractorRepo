@@ -1,6 +1,5 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
-import util from "../../utils/util.common";
 import utilCommon from '../../utils/util.common';
 import { resolve } from "path";
 
@@ -84,27 +83,27 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async selectPriority(priority: string): Promise<void> {
-        await util.selectDropDown(this.selectors.priority, priority);
+        await utilCommon.selectDropDown(this.selectors.priority, priority);
     }
 
     async selectLabel(label: string): Promise<void> {
-        await util.selectDropDown(this.selectors.label, label);
+        await utilCommon.selectDropDown(this.selectors.label, label);
     }
 
     async selectCategoryTier1(categoryTier1: string): Promise<void> {
-        await util.selectDropDown(this.selectors.categoryTier1, categoryTier1);
+        await utilCommon.selectDropDown(this.selectors.categoryTier1, categoryTier1);
     }
 
     async selectCategoryTier2(categoryTier2: string): Promise<void> {
-        await util.selectDropDown(this.selectors.categoryTier2, categoryTier2);
+        await utilCommon.selectDropDown(this.selectors.categoryTier2, categoryTier2);
     }
 
     async selectCategoryTier3(categoryTier3: string): Promise<void> {
-        await util.selectDropDown(this.selectors.categoryTier3, categoryTier3);
+        await utilCommon.selectDropDown(this.selectors.categoryTier3, categoryTier3);
     }
 
     async selectCategoryTier4(categoryTier4: string): Promise<void> {
-        await util.selectDropDown(this.selectors.categoryTier4, categoryTier4);
+        await utilCommon.selectDropDown(this.selectors.categoryTier4, categoryTier4);
     }
 
     async getStatusAttribute(): Promise<string> {
