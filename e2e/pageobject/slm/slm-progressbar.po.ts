@@ -4,16 +4,16 @@ class SlmProgressBar {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        slaProgressBar: '.slm_sla_position',
-        slaProgressBarInProceess: '.d-icon-right-triangle_right_circle_o',
-        slaProgressBarWarning: '.d-icon-right-exclamation_circle',
-        slaProgressBarMissedGoal: '.d-icon-right-cross_circle_o',
-        slaProgressBarDualSVT: '.d-icon-right-circle_o',
-        slaProgressBarPaused: '.d-icon-right-pause_circle_o',
-        slaProgressBarComplete: '.d-icon-right-check_circle_o',
-        slaDueTime: 'div.d-sla__item',
-        slaIcons: '.d-sla__icon',
-        svtToolTipText: 'div.tooltip-inner',
+        slaProgressBar: '.progress-container__bar .progress-sla',
+        slaProgressBarInProceess: 'div.progress-sla div.sla-icon-triangle_right',
+        slaProgressBarWarning: 'div.progress-sla div.sla-icon-exclamation',
+        slaProgressBarMissedGoal: 'div.progress-sla .sla-icon-cross',
+        slaProgressBarDualSVT: 'div.progress-sla div.sla-icon-circle_o',
+        slaProgressBarPaused: 'div.progress-sla div.sla-icon-pause',
+        slaProgressBarComplete: 'div.progress-sla div.sla-icon-check',
+        slaDueTime: '.progress-due-time span',
+        slaIcons: 'div.progress-sla div.sla-icon',
+        svtToolTipText: '.adapt-tooltip-inner',
     }
 
     async isSLAProgressBarDisplayed(): Promise<boolean> {

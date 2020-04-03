@@ -127,13 +127,13 @@ describe("Create Case", () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Customer Follow-Up Required');
             await viewCasePage.selectResolutionCodeDropDown(randVal);
-            expect(await viewCasePage.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
+            expect(await updateStatusBladePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
             await updateStatusBladePo.clickSaveStatus();
             //await utilCommon.waitUntilPopUpDisappear();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
             await updateStatusBladePo.changeCaseStatus('Closed');
             await viewCasePage.selectResolutionCodeDropDown(randVal);
-            expect(await viewCasePage.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
+            expect(await updateStatusBladePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
             await updateStatusBladePo.clickSaveStatus();
             //await utilCommon.waitUntilPopUpDisappear();
             expect(await viewCasePage.getTextOfStatus()).toBe('Closed');

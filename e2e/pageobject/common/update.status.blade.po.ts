@@ -13,23 +13,13 @@ class UpdateStatus {
         cancelUpdateStatus: '[rx-view-component-id="7cffd3f8-5b84-4e7f-a4b3-6c0a3dd27855"] button',  
         statusChange: '[rx-view-component-id="48bbcbbf-564c-4d46-8dc2-1e7670c187ff"] .status-transition',
         statusChangeReason: '[rx-view-component-id="049c43a1-4cbd-482d-980d-5db4ed78f295"]',
-        statusChangeReasonGuid: '049c43a1-4cbd-482d-980d-5db4ed78f295',
-        statusList: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"] .ui-select__rx-choice',
         searchInput: 'input[type="search"]', 
         statusDropDownGuid: '3c8d9278-fc1f-430c-b866-cdc9d217318b',  
+        resolutionDescriptionTextBoxId:'[rx-view-component-id="d98df37c-7a96-43c3-bf69-2e6e735031ae"] textarea',
     }
 
     async allStatusReasonOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusChangeReasonGuid, list);
-    }
-
-    async isStatusReasonOptionDisplayed(statusValue: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChangeReason)));
-        await $(this.selectors.statusChangeReason).click();
-        const statusReason = $(this.selectors.statusChangeReason);
-        //        await browser.wait(this.EC.elementToBeClickable(statusReason.$(this.selectors.searchInput)));
-        await (statusReason.$(this.selectors.searchInput)).sendKeys(statusValue);
-        return await element(by.cssContainingText((this.selectors.statusChangeReason + ' .ui-select__rx-choice'), statusValue)).isDisplayed();
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusReasonGuid, list);
     }
 
     async clearStatusReason(): Promise<void> {
@@ -61,6 +51,14 @@ class UpdateStatus {
         await this.changeStatus(statusValue);
     }
 
+    async isResolutionDescriptionTextBoxEmpty(): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.resolutionDescriptionTextBoxId)));
+        let statusstr = await $(this.selectors.resolutionDescriptionTextBoxId).getAttribute('value');
+        if(statusstr==''){
+            return true
+        }
+        else return  false;
+    }
 
     async selectResolutionCode(resolutionCode: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.resolutionCodeDropDownGuid, resolutionCode);
