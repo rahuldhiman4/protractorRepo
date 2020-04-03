@@ -5,8 +5,8 @@ import changeAssignmentBladePo from '../common/change-assignment-blade.po';
 class StatusBladKnowledgeArticle {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        statusChange: '.status-transition',
-        statusSaveBtn: '[rx-view-component-id="e45ca390-e752-4bd5-97c7-69618d609d59"] .d-button',
+        statusChange: '.adapt-counter-label-wrapper .status-transition',
+        statusSaveBtn: '[rx-view-component-id="e45ca390-e752-4bd5-97c7-69618d609d59"] button',
         changeReviwerButton: '[rx-view-component-id="6b2b2601-811e-4774-b09e-255fab00e547"] button',
         saveButtonOnReviewer: '[rx-view-component-id="e45ca390-e752-4bd5-97c7-69618d609d59"] button',
     }

@@ -3,7 +3,7 @@ import { $, browser, protractor, ProtractorExpectedConditions } from "protractor
 class InformationTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        editKnowledgeMetadata: '[rx-view-component-id="56cc9627-6ef9-46f8-9b76-728349193ed2"] .edit-link',
+        editKnowledgeMetadata: '[rx-view-component-id="cbdd812c-4899-4503-84ab-412020d820df"] button',
         attachmentField: '[rx-view-component-id="1f42f6d7-99cc-4c07-9249-94172d98d526"] .d-icon-paperclip',
     }
 
