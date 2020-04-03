@@ -2,11 +2,10 @@ import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser }
 class CaseAccessTab {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        agentAccess: '.row .d-icon-right-angle_down span',
-        agents: '.dropdown-menu .uib-typeahead-match',
-        searchInput: '.flex-container .d-textfield__label input',
-        agentAddButton: '.ac-person-add',
-        agentNameOrSupportGroupName: '.rx-case-access-name',
+        agentAccess: '.bwf-access-manager .access-group .btn-title',
+        agents: '.dropdown-menu .dropdown-item.active',
+        searchInput: '.flex-row input.form-control',
+        agentAddButton: '.input-group-btn .btn-secondary',
         company: '.flex-item .ac-company-field button',
         supportGroup: '.flex-item .ac-support-group-field button',
         dropdownList: '.options li',
@@ -16,11 +15,11 @@ class CaseAccessTab {
         searchDepartment: '[placeholder="Search for Departments"]',
         businessUnit: '.flex-item .ac-business-unit-field button',
         department: '.flex-item .ac-support-department-field button',
-        agentAssignWriteAccess: '.ac-assign-person-write-label',
+        agentAssignWriteAccess: '.access-group-checkbox .checkbox__input',
     }
     
     async clickOnSupportGroupAccessORAgentAccessButton(agentName: string): Promise<void> {
-        //await $(this.selectors.agentAccess).click();
+        // await $(this.selectors.agentAccess).click();
         await element(by.cssContainingText(this.selectors.agentAccess, agentName)).click();
     }
 
@@ -28,19 +27,21 @@ class CaseAccessTab {
         await $$(this.selectors.searchInput).first().clear();
         await $$(this.selectors.searchInput).first().sendKeys(agentName);
         await $$(this.selectors.agents).first().click();
-        await $$(this.selectors.agentAddButton).first().click();
+        await $$(this.selectors.agentAddButton).get(3).click();
     }
 
     async selectAgentWithWriteAccess(agentName: string): Promise<void> {
         await $$(this.selectors.searchInput).first().clear();
         await $$(this.selectors.searchInput).first().sendKeys(agentName);
         await $$(this.selectors.agents).first().click();
-        await $$(this.selectors.agentAssignWriteAccess).first().click();
-        await $$(this.selectors.agentAddButton).first().click();
+        await $$(this.selectors.agentAssignWriteAccess).get(1).click();
+        await $$(this.selectors.agentAddButton).get(3).click();
     }
 
     async isAgentNameOrSupportGroupNameDisplayed(agentNameOrSupportGroupName: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.agentNameOrSupportGroupName, agentNameOrSupportGroupName)).isDisplayed();
+        // return await element(by.cssContainingText(this.selectors.agentNameOrSupportGroupName, agentNameOrSupportGroupName)).isDisplayed();
+        return await $(`.bfw-badge .mr-2[aria-label="${agentNameOrSupportGroupName}"]`).isDisplayed();
+        
     }
 
     async selectCompany(companyValue: string): Promise<void> {

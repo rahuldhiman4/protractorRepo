@@ -3,19 +3,18 @@ import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions }
 class AttachDocumentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        bladeTitle: '.modal-title',
-        advanceSearchButton: '.km-group__header .d-icon-left-search',
-        searchBox: '[rx-view-component-id="6b6c2401-1732-4a8f-b746-0b3ab3d9df8a"] .rx-adv-search-textField',
-        iconCircle: '.icon-circle_thin_o',
+        bladeTitle: '.dp-header .dp-title',
+        advanceSearchButton: '.bwf-search-result .btn-secondary span',
+        searchBox: '.adapt-search-field-wrapper  input.adapt-search-field[placeholder="Search"]',
+        iconCircle: '.search-item__unpin-icon .adapt-icon',
         attachButton: '[rx-view-component-id="9d41c65a-85a9-4316-bd64-8fa8ed68dfde"] button',
         cancelButton: '[rx-view-component-id="0a24a406-071f-4818-ab29-7b8fb80a202e"] button',
         attachFromLocalDriveButton: '[rx-view-component-id="703c693f-068a-4cd3-9283-dd9b9cdf2714"] button',
-        documentLibTitle: '.km-group-list-item__description',
-        docDetails: '.padding-top-4 span',
-        headerName: '.km-group__header',
-        listHeading: '.km-group__header[id="km-group__knowledge-header"]',
-        pagination: '.rkm-pagination',
-        filterApplyButton: '.padding-top-10  .d-button_primary',
+        documentLibTitle: '.bwf-text-overflow-ellipsis .bwf-search-fields__title-text span',
+        docDetails: '.bwf-text-overflow-ellipsis .bwf-search-fields span',
+        listHeading: '[rx-view-component-id="6b6c2401-1732-4a8f-b746-0b3ab3d9df8a"] .bwf-search-result h1',
+        pagination: '.content-outlet .justify-content-center nav[aria-label="Page navigation"]',
+        filterApplyButton: '.justify-content-end .btn-primary',
 
     }
 
@@ -87,7 +86,6 @@ class AttachDocumentBlade {
             }
         }
     }
-
 
     async isDocumentLibaryPresent(documentName: string): Promise<boolean> {
         return await $(`.km-group-list-item__description[title="${documentName}"]`).isPresent();
