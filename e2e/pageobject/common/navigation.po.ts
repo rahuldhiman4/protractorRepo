@@ -4,10 +4,9 @@ import utilCommon from '../../utils/util.common';
 class NavigationPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        mainMenu: '.a-menu__link',
-        subMenu: '.a-menu__text',
+        menu: '.a-menu__text',
         settingsButton: 'div.d-icon-gear',
-        profileMenu: '.adapt-profile .menu-profile__name',
+        profileMenu: '.adapt-profile .menu-profile__username',
         helpIcon: '//*[@class="d-n-menu__link d-icon-left-question_circle"]',
         knowledgeConsoleFromKM: '[rx-view-component-id="3313266f-6ed4-47ee-ab90-54aab5bf3e99"] a',
         knowledgeConsoleTitle: '[rx-view-component-id="11f37569-5ecd-4239-aaa7-075d1874b1d1"] span',
@@ -28,8 +27,8 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return createCase;
         } else {
-            await element(by.cssContainingText(this.selectors.mainMenu, 'Create')).click();
-            return await element(by.cssContainingText(this.selectors.subMenu, 'Case')).isDisplayed();
+            await element(by.cssContainingText(this.selectors.menu, 'Create')).click();
+            return await element(by.cssContainingText(this.selectors.menu, 'Case')).isDisplayed();
         }
     }
 
@@ -40,7 +39,7 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(0).click();
             return quickCase;
         } else {
-            await element(by.cssContainingText(this.selectors.mainMenu, 'Quick Case')).isDisplayed();
+            await $$('button.a-menu__link').first().isDisplayed();
         }
     }
 
@@ -52,8 +51,8 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return createKnowledge;
         } else {
-            await element(by.cssContainingText(this.selectors.mainMenu, 'Create')).click();
-            return await element(by.cssContainingText(this.selectors.subMenu, 'Knowledge')).isDisplayed();
+            await element(by.cssContainingText(this.selectors.menu, 'Create')).click();
+            return await element(by.cssContainingText(this.selectors.menu, 'Knowledge')).isDisplayed();
         }
     }
 
@@ -65,8 +64,8 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return caseConsole;
         } else {
-            await element(by.cssContainingText(this.selectors.mainMenu, 'Workspace')).click();
-            return await element(by.cssContainingText(this.selectors.subMenu, 'Case')).isDisplayed();
+            await element(by.cssContainingText(this.selectors.menu, 'Workspace')).click();
+            return await element(by.cssContainingText(this.selectors.menu, 'Case')).isDisplayed();
         }
     }
 
@@ -78,8 +77,8 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return knowledgeConsole;
         } else {
-            await element(by.cssContainingText(this.selectors.mainMenu, 'Workspace')).click();
-            return await element(by.cssContainingText(this.selectors.subMenu, 'Knowledge')).isDisplayed();
+            await element(by.cssContainingText(this.selectors.menu, 'Workspace')).click();
+            return await element(by.cssContainingText(this.selectors.menu, 'Knowledge')).isDisplayed();
         }
     }
 
@@ -91,8 +90,8 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return taskConsole;
         } else {
-            await element(by.cssContainingText(this.selectors.mainMenu, 'Workspace')).click();
-            return await element(by.cssContainingText(this.selectors.subMenu, 'Task')).isDisplayed();
+            await element(by.cssContainingText(this.selectors.menu, 'Workspace')).click();
+            return await element(by.cssContainingText(this.selectors.menu, 'Task')).isDisplayed();
         }
     }
 
@@ -122,8 +121,8 @@ class NavigationPage {
             await element(by.linkText('Workspace')).click();
             await element(by.buttonText('Case ')).click();
         } else {
-            await element(by.cssContainingText(this.selectors.mainMenu, 'Workspace')).click();
-            await element(by.cssContainingText(this.selectors.subMenu, 'Case')).click();
+            await element(by.cssContainingText(this.selectors.menu, 'Workspace')).click();
+            await element(by.cssContainingText(this.selectors.menu, 'Case')).click();
         }
         await browser.wait(this.EC.titleContains('Cases - Business Workflows'), 10000);
     }
@@ -134,8 +133,8 @@ class NavigationPage {
             await element(by.linkText('Workspace')).click();
             await element(by.buttonText('Knowledge ')).click();
         } else {
-            await element(by.cssContainingText(this.selectors.mainMenu, 'Workspace')).click();
-            await element(by.cssContainingText(this.selectors.subMenu, 'Knowledge')).click();
+            await element(by.cssContainingText(this.selectors.menu, 'Workspace')).click();
+            await element(by.cssContainingText(this.selectors.menu, 'Knowledge')).click();
         }
         await browser.wait(this.EC.titleContains('Knowledge Articles - Business Workflows'), 10000);
     }
@@ -146,8 +145,8 @@ class NavigationPage {
             await element(by.linkText('Workspace')).click();
             await element(by.buttonText('Task ')).click();
         } else {
-            await element(by.cssContainingText(this.selectors.mainMenu, 'Workspace')).click();
-            await element(by.cssContainingText(this.selectors.subMenu, 'Task')).click();
+            await element(by.cssContainingText(this.selectors.menu, 'Workspace')).click();
+            await element(by.cssContainingText(this.selectors.menu, 'Task')).click();
         }
         await browser.wait(this.EC.titleContains('Tasks - Business Workflows'), 10000);
     }
@@ -158,8 +157,8 @@ class NavigationPage {
             await element(by.linkText('Create')).click();
             await element(by.buttonText('Case ')).click();
         } else {
-            await element(by.cssContainingText(this.selectors.mainMenu, 'Create')).click();
-            await element(by.cssContainingText(this.selectors.subMenu, 'Case')).click();
+            await element(by.cssContainingText(this.selectors.menu, 'Create')).click();
+            await element(by.cssContainingText(this.selectors.menu, 'Case')).click();
         }
         await browser.wait(this.EC.titleContains('Case Create - Business Workflows'), 10000);
     }
@@ -169,7 +168,7 @@ class NavigationPage {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.buttonText('Quick Case ')).click();
         } else {
-            await element(by.cssContainingText(this.selectors.mainMenu, 'Quick Case')).click();
+            await $$('button.a-menu__link').first().isDisplayed();
         }
         await browser.wait(this.EC.titleContains('Case Create - Quick Case - Business Workflows'), 10000);
     }
@@ -180,8 +179,8 @@ class NavigationPage {
             await element(by.linkText('Create')).click();
             await element(by.buttonText('Knowledge ')).click();
         } else {
-            await element(by.cssContainingText(this.selectors.mainMenu, 'Create')).click();
-            await element(by.cssContainingText(this.selectors.subMenu, 'Knowledge')).click();
+            await element(by.cssContainingText(this.selectors.menu, 'Create')).click();
+            await element(by.cssContainingText(this.selectors.menu, 'Knowledge')).click();
         }
         await browser.wait(this.EC.titleContains('Knowledge Article Templates Preview'), 10000);
     }
@@ -258,6 +257,8 @@ class NavigationPage {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.buttonText(' Sign Out ')).click();
         } else {
+            console.log("trying to click....");
+            await browser.wait(this.EC.elementToBeClickable($(this.selectors.profileMenu)), 10000);
             await $(this.selectors.profileMenu).click();
             await element(by.buttonText('Sign Out ')).click();
         }
@@ -267,8 +268,8 @@ class NavigationPage {
     }
 
     async switchToAnotherApplication(applicationName: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.mainMenu, ' Business Workflows ')).click();
-        await element(by.cssContainingText(this.selectors.subMenu, applicationName)).click();
+        await element(by.cssContainingText(this.selectors.menu, ' Business Workflows ')).click();
+        await element(by.cssContainingText(this.selectors.menu, applicationName)).click();
     }
 }
 
