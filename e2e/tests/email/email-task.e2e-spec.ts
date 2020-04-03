@@ -11,12 +11,13 @@ import { default as activityTabPo, default as socialActivity } from '../../pageo
 import editTask from "../../pageobject/task/edit-task.po";
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTask from "../../pageobject/task/view-task.po";
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 
 describe('Email', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         loginPage.login("fritz");
     });
 

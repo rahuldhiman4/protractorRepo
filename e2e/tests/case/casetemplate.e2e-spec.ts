@@ -1,6 +1,7 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import { ALL_FIELD, MANDATORY_FIELD } from '../../data/ui/case/casetemplate.data.ui';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
@@ -16,7 +17,7 @@ import createCaseTemplate from "../../pageobject/settings/case-management/create
 import { default as editCaseTemplate, default as editCasetemplatePo } from "../../pageobject/settings/case-management/edit-casetemplate.po";
 import viewCaseTemplate from "../../pageobject/settings/case-management/view-casetemplate.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
-import utilCommon from '../../utils/util.common';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilGrid from '../../utils/util.grid';
 
 let caseTemplateAllFields = ALL_FIELD;
@@ -24,7 +25,7 @@ let caseTemplateRequiredFields = MANDATORY_FIELD;
 
 describe('Case Template', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
     });
 
@@ -300,7 +301,7 @@ describe('Case Template', () => {
             console.log("active case Template is created===", newCaseTemplate.displayId);
             await navigationPage.signOut();
             await loginPage.login('qtao');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('fritz');
             await createCasePo.setSummary('Summary');
             await createCasePo.clickSelectCaseTemplateButton();
@@ -405,7 +406,7 @@ describe('Case Template', () => {
         }
         let manualTaskTemplateOne = await apiHelper.createManualTaskTemplate(taskTemplateData);
         await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplateOne.displayId, manualTaskTemplateOne.displayId);
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('fritz');
         await createCasePo.setSummary('Summary');
         await createCasePo.clickSelectCaseTemplateButton();
@@ -430,7 +431,7 @@ describe('Case Template', () => {
         await viewTaskPo.clickOnSaveStatus();
         await viewTaskPo.clickOnViewCase();
         await expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('fritz');
         await createCasePo.setSummary('Summary');
         await createCasePo.clickSelectCaseTemplateButton();
@@ -491,7 +492,7 @@ describe('Case Template', () => {
                 "supportGroup": "Facilities"
             }
             await apiHelper.apiLogin('fritz');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await apiHelper.createCaseTemplate(templateData);
             await createCasePo.selectRequester('fritz');
             await createCasePo.clickSelectCaseTemplateButton();
@@ -523,7 +524,7 @@ describe('Case Template', () => {
             await editCasePo.clickOnCancelCaseButton();
             await viewCasePo.isEditLinkDisplay();
             //new case created 
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('fritz');
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
@@ -572,7 +573,7 @@ describe('Case Template', () => {
                 "supportGroup": "Facilities"
             }
             await apiHelper.apiLogin('fritz');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await apiHelper.createCaseTemplate(casetemplateData);
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
@@ -601,7 +602,7 @@ describe('Case Template', () => {
             await editCaseTemplate.clickOnEditCaseTemplateMetadata();
             await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('fritz');
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(updatedCaseTemplateName);
@@ -650,7 +651,7 @@ describe('Case Template', () => {
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(casetemplatePsilon);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('fritz');
             await createCasePo.setSummary(caseTemplateNamePetramco);
             await createCasePo.clickSelectCaseTemplateButton();
@@ -664,14 +665,14 @@ describe('Case Template', () => {
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
             await navigationPage.signOut();
             await loginPage.login('fritz');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('fritz');
             await createCasePo.setSummary(caseTemplateNamePsilon);
             await createCasePo.clickSelectCaseTemplateButton();
             expect(await createCasePo.isTemplateNamePresent(caseTemplateNamePsilon)).toBeFalsy();
             await selectCasetemplateBladePo.clickOnCancelButton();
             await createCasePo.clickClearRequesterButton();
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('Glit');
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateNamePsilon);
@@ -705,7 +706,7 @@ describe('Case Template', () => {
             await apiHelper.createCaseTemplate(casetemplateData);
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('fritz');
             await createCasePo.setSummary(caseTemplateName);
             await createCasePo.clickSelectCaseTemplateButton();
@@ -715,7 +716,7 @@ describe('Case Template', () => {
             expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateName);
             await navigationPage.signOut();
             await loginPage.login('gderuno');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('Glit');
             await createCasePo.setSummary(caseTemplateName);
             await createCasePo.clickSelectCaseTemplateButton();
@@ -766,7 +767,7 @@ describe('Case Template', () => {
             expect(await viewCaseTemplate.getCategoryTier3()).toBe("Card Issuance");
             expect(await viewCaseTemplate.getCategoryTier1()).toBe("Purchasing Card");
             expect(await viewCaseTemplate.getOwnerCompanyValue()).toBe("Petramco");
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('fritz');
             await createCasePo.setSummary(caseTemplateName);
             await createCasePo.clickSelectCaseTemplateButton();

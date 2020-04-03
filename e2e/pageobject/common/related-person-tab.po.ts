@@ -7,23 +7,18 @@ class RelatedPersonPage {
         addRelatedPerson: '[rx-view-component-id="024990d7-6511-4839-a2eb-3479acf62505"], [rx-view-component-id="e5d26a5b-f2d1-40ab-bd30-22252beebf77"] button',
         relatedPersonName: '[rx-view-component-id="6bfe26e7-5065-4db7-a317-18e14a37cd30"] .person-name a',
         personRelationship: '[rx-view-component-id="6bfe26e7-5065-4db7-a317-18e14a37cd30"] .person-relationship .person-info',
-        relatedPersons: 'person in persons',
-        relatedPersonsName: ' .person-name a',
-        relatedPersonRelationship: '.person-relationship p',
-        allRelatedPersons: '.person-info-card.person-list',
+        relatedPersonsName: '.person-name a',
+        allRelatedPersons: '.list-group-item',
         relatedPersonNames: ' .person-name a',
         relations: ' .person-relationship p',
         personOrganization: ' .person-organization',
         emailLink: ' .list-email, [rx-view-component-id="6bfe26e7-5065-4db7-a317-18e14a37cd30"] .ac-link-person-email',
-        site: ' .ac-text-site-value',
-        phoneNumber: ' .ac-link-person-phone',
+        site: ' .bwf-person-site',
+        phoneNumber: ' .bwf-person-phone',
         removePersonCrossIcon: ' .close.close-button',
-        caseSummary: '.case-summary__name-adhoc .case-summary__name-adhoc__name',
     }
 
-    async clickOnCaseSummaryLink(caseSummary:string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.caseSummary,caseSummary)).click();
-    }
+    
         
     async addRelatedPerson(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addRelatedPerson)));

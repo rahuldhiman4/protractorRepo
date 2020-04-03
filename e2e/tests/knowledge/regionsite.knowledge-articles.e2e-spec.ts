@@ -1,6 +1,7 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import { Knowledge } from '../../api/constant.api';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import quickCase from '../../pageobject/case/quick-case.po';
@@ -17,6 +18,7 @@ import createDocumentLibraryPage from '../../pageobject/settings/document-manage
 import documentLibraryPage from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
 let caseBAUser = 'qkatawazi';
@@ -68,7 +70,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
     const canceled: any = Knowledge.Canceled;
     const filePath = '../../../data/ui/attachment/articleStatus.png';
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin(knowledgePublisherUser);
         var articleData = {
@@ -685,7 +687,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await browser.sleep(30000);
 
             //Navigate to Create case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(caseSummary);
             await createCasePage.clickAssignToMeButton();
@@ -725,7 +727,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
             //Navigate to Create case
             await loginPage.login(caseManagerUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(caseSummary);
             await createCasePage.clickAssignToMeButton();
@@ -765,7 +767,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
             //Navigate to Create case
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(caseSummary);
             await createCasePage.clickAssignToMeButton();
@@ -916,7 +918,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
 
             //Navigate to Create case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
             await createCasePage.clickAssignToMeButton();
@@ -1106,7 +1108,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
 
             //Navigate to Create case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
             await createCasePage.clickAssignToMeButton();
@@ -1296,7 +1298,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
 
             //Navigate to Create case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
             await createCasePage.clickAssignToMeButton();

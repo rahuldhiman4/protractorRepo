@@ -1,4 +1,4 @@
-import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
 import util from '../../utils/util.common';
 
 class RelatedCasePage {
@@ -13,8 +13,12 @@ class RelatedCasePage {
         assignee: ' .assignee__field a',
         caseSummary: ' .case-summary__name-adhoc a',
         removeCaseButton: ' .close.close-button',
-        allRelatedCases: '.case-list',
+        allRelatedCases: '.bwf-case-list .case-card',
         addRelatedCasesButton: '[rx-view-component-id="98f12394-dfb7-4018-82db-0f607011950e"] button'
+    }
+
+    async clickOnCaseSummaryLink(caseSummary:string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.caseSummary,caseSummary)).click();
     }
 
     async getRelatedCasePriority(caseId: string): Promise<string> {

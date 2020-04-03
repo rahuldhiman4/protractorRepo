@@ -1,33 +1,32 @@
 import { browser } from "protractor";
+import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from "../../api/api.helper";
-import createCasePage from '../../pageobject/case/create-case.po';
+import { CASE_MANAGEMENT_LIB_PROCESS, SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
+import caseConsolePage from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
+import createCasePage from '../../pageobject/case/create-case.po';
+import quickCase from "../../pageobject/case/quick-case.po";
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import loginPage from "../../pageobject/common/login.po";
-import { SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
 import navigationPage from "../../pageobject/common/navigation.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
-import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
+import { default as viewTaskTemplate, default as viewTasktemplatePage } from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import consoleTask from "../../pageobject/task/console-task.po";
 import editTask from "../../pageobject/task/edit-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import caseConsolePage from '../../pageobject/case/case-console.po';
 import utilGrid from '../../utils/util.grid';
-import quickCase from "../../pageobject/case/quick-case.po";
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import { CASE_MANAGEMENT_LIB_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
-import apiCoreUtil from '../../api/api.core.util';
-import viewTasktemplatePage from '../../pageobject/settings/task-management/view-tasktemplate.po';
 let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
 
 describe('Create Case Task', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
     });
 
@@ -63,7 +62,7 @@ describe('Create Case Task', () => {
             //case create
             await navigationPage.signOut();
             await loginPage.login('qtao');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary ' + manualTaskSummary);
             await createCasePage.clickAssignToMeButton();
@@ -151,7 +150,7 @@ describe('Create Case Task', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('qtao');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary ' + automationTaskSummaryWithallField);
             await createCasePage.clickAssignToMeButton();
@@ -352,7 +351,7 @@ describe('Create Case Task', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('qtao');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary ' + manualSummary);
             await createCasePage.clickAssignToMeButton();
@@ -362,7 +361,7 @@ describe('Create Case Task', () => {
             await expect(viewCasePage.getCategoryTier1Value()).toBe(globalCategName, "Global Category Not Present");
 
             //Got To Another Case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary 123 ' + manualSummary);
             await createCasePage.selectCategoryTier1('Applications');
@@ -517,7 +516,7 @@ describe('Create Case Task', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('qtao');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary ' + createCase);
             await createCasePage.clickAssignToMeButton();
@@ -637,7 +636,7 @@ describe('Create Case Task', () => {
         await apiHelper.createAutomatedTaskTemplate(templateData2);
         await apiHelper.createManualTaskTemplate(templateData1);
 
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('adam');
         await createCasePage.setSummary('set summary');
         await createCasePage.clickAssignToMeButton();
@@ -669,21 +668,21 @@ describe('Create Case Task', () => {
         let notificationConfigurationList: string[] = ['', 'Notification Configuration', 'Manage Events', 'Manage Templates'];
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.isSettingsSubMenu("Case Management", caseManagementList);
-        await navigationPage.isSettingsSubMenu("Manage Flowsets", manageFlowsetList);
-        await navigationPage.isSettingsSubMenu("Service Level Management", serviceLevelManagementList);
-        await navigationPage.isSettingsSubMenu("Task Management", taskManagementList);
-        await navigationPage.isSettingsSubMenu("Email", emailtList);
-        await navigationPage.isSettingsSubMenu("Notification Configuration", notificationConfigurationList);
+        await navigationPage.isSettingSubMenusMatches("Case Management", caseManagementList);
+        await navigationPage.isSettingSubMenusMatches("Manage Flowsets", manageFlowsetList);
+        await navigationPage.isSettingSubMenusMatches("Service Level Management", serviceLevelManagementList);
+        await navigationPage.isSettingSubMenusMatches("Task Management", taskManagementList);
+        await navigationPage.isSettingSubMenusMatches("Email", emailtList);
+        await navigationPage.isSettingSubMenusMatches("Notification Configuration", notificationConfigurationList);
 
         try {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.isSettingsSubMenu("Case Management", caseManagementList);
-            await navigationPage.isSettingsSubMenu("Manage Flowsets", manageFlowsetList);
-            await navigationPage.isSettingsSubMenu("Service Level Management", serviceLevelManagementList);
-            await navigationPage.isSettingsSubMenu("Task Management", taskManagementList);
+            await navigationPage.isSettingSubMenusMatches("Case Management", caseManagementList);
+            await navigationPage.isSettingSubMenusMatches("Manage Flowsets", manageFlowsetList);
+            await navigationPage.isSettingSubMenusMatches("Service Level Management", serviceLevelManagementList);
+            await navigationPage.isSettingSubMenusMatches("Task Management", taskManagementList);
 
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -780,7 +779,7 @@ describe('Create Case Task', () => {
         console.log("active case Template is created===", newCaseTemplate.id);
         console.log("active case Template is created===", newCaseTemplate.displayId);
         await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automationTaskTemplate.displayId);
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('fritz');
         await createCasePage.setSummary('SummaryAnkush');
         await createCasePage.clickSelectCaseTemplateButton();
@@ -816,7 +815,7 @@ describe('Create Case Task', () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createAutomatedTaskTemplate(templateData);
 
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('fritz');
         await createCasePage.setSummary('Summary' + randomStr);
         await createCasePage.clickAssignToMeButton();
@@ -864,7 +863,7 @@ describe('Create Case Task', () => {
         await apiHelper.createAutomatedTaskTemplate(templateData);
         await apiHelper.createAutomatedTaskTemplate(templateData1);
 
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('fritz');
         await createCasePage.setSummary('Summary' + randomStr);
         await createCasePage.clickAssignToMeButton();
@@ -919,7 +918,7 @@ describe('Create Case Task', () => {
         await apiHelper.createManualTaskTemplate(templateData2);
         await apiHelper.createManualTaskTemplate(templateData3);
 
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('fritz');
         await createCasePage.setSummary('Summary' + randomStr);
         await createCasePage.clickAssignToMeButton();
@@ -1041,7 +1040,7 @@ describe('Create Case Task', () => {
         var canceled: string = CanceledCase.displayId;
 
         //Verify New Case
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary("New case" + randomStr);
         await createCasePage.clickSaveCaseButton();
@@ -1055,7 +1054,7 @@ describe('Create Case Task', () => {
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
 
         //Verify Assigned Case
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary("Assigned case" + randomStr);
         await createCasePage.clickAssignToMeButton();

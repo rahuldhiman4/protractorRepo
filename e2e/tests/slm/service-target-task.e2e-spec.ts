@@ -1,26 +1,25 @@
 import { browser } from "protractor";
-import createCasePage from '../../pageobject/case/create-case.po';
+import apiHelper from '../../api/api.helper';
 import previewCasePo from '../../pageobject/case/case-preview.po';
-import caseEditPage from '../../pageobject/case/edit-case.po';
-import viewCasePage from '../../pageobject/case/view-case.po';
+import createCasePage from '../../pageobject/case/create-case.po';
+import { default as viewCasePage, default as viewCasePo } from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
 import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
-import apiHelper from '../../api/api.helper';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
-import viewCasePo from '../../pageobject/case/view-case.po';
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
 
 describe('Service Target Tests for Tasks', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping();
@@ -65,7 +64,7 @@ describe('Service Target Tests for Tasks', () => {
 
             // Create a Case
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('Critical');
             await createCasePage.setSummary('Case for SVT creation');
@@ -154,7 +153,7 @@ describe('Service Target Tests for Tasks', () => {
 
             // Create a Case
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('Critical');
             await createCasePage.setSummary('Case for SVT creation');
@@ -251,7 +250,7 @@ describe('Service Target Tests for Tasks', () => {
 
             // Create a Case
             await loginPage.login(caseAgentUser);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('Critical');
             await createCasePage.setSummary('Case for SVT creation');

@@ -37,7 +37,7 @@ class UpdateStatus {
         await $(this.selectors.statusChangeReason + " " + this.selectors.searchInput).clear();
     }
 
-    async clickOnCancelButtonOfUpdateStatus(): Promise<void> {
+    async clickCancelButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelUpdateStatus)));
         await $(this.selectors.cancelUpdateStatus).click();
     }

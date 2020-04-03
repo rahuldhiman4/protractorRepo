@@ -2,6 +2,7 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import addRelatedCasespopup from '../../pageobject/case/add-related-cases-pop.po';
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import quickCase from '../../pageobject/case/quick-case.po';
@@ -11,13 +12,13 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import personProfilePage from '../../pageobject/common/person-profile.po';
 import relatedCasePage from '../../pageobject/common/related-case-tab.po';
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
-import { operation, security, type } from '../../utils/constants';
+import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import { default as gridUtil, default as utilGrid } from '../../utils/util.grid';
 
 describe('Case And Employee Relationship', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qtao');
     });
 
@@ -31,7 +32,7 @@ describe('Case And Employee Relationship', () => {
 
     //asahitya
     it('[DRDMV-16241,DRDMV-16242,DRDMV-16240]: Add person with different relations', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("Allen");
         await createCasePage.setSummary("DRDMV-16241");
         await createCasePage.clickAssignToMeButton();
@@ -64,7 +65,7 @@ describe('Case And Employee Relationship', () => {
 
     //asahitya
     it('[DRDMV-16896]: Multiple people can be added by same Relationship', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("Allen");
         await createCasePage.setSummary("DRDMV-16896");
         await createCasePage.clickAssignToMeButton();
@@ -87,7 +88,7 @@ describe('Case And Employee Relationship', () => {
 
     //asahitya
     it('[DRDMV-16248]: Related Persons tab is available on Person Profile check UI', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("Allen");
         await createCasePage.setSummary("DRDMV-16248");
         await createCasePage.clickAssignToMeButton();
@@ -111,7 +112,7 @@ describe('Case And Employee Relationship', () => {
 
     //asahitya
     it('[DRDMV-17037]: Related Case tab is available on Person Profile', async () => {
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("Allen");
         await createCasePage.setSummary("DRDMV-17037");
         await createCasePage.clickAssignToMeButton();
@@ -135,7 +136,7 @@ describe('Case And Employee Relationship', () => {
     //asahitya
     it('[DRDMV-17035]: Remove Related Case from Case', async () => {
         //create case 1
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("Allen");
         await createCasePage.setSummary("DRDMV-17035_1");
         await createCasePage.clickAssignToMeButton();
@@ -144,7 +145,7 @@ describe('Case And Employee Relationship', () => {
         let caseId1: string = await viewCasePo.getCaseID();
 
         //create case 2
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("Allen");
         await createCasePage.setSummary("DRDMV-17035_2");
         await createCasePage.clickAssignToMeButton();
@@ -153,7 +154,7 @@ describe('Case And Employee Relationship', () => {
         let caseId2: string = await viewCasePo.getCaseID();
 
         //create case 3
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("Allen");
         await createCasePage.setSummary("DRDMV-17035_3");
         await createCasePage.clickAssignToMeButton();
@@ -235,7 +236,7 @@ describe('Case And Employee Relationship', () => {
 
     //asahitya
     it('[DRDMV-16245]: Remove the Person from Case Related People tab and Person Profile Related People tab', async () => {
-        await navigationPage.goToPersonProfile();
+        await navigationPage.gotoPersonProfile();
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Brain Adams', 'Parent');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(2);
@@ -272,7 +273,7 @@ describe('Case And Employee Relationship', () => {
         await viewCasePo.clickOnTab('Case Access');
         expect(await relatedTabPage.isRelatedPersonPresent("Harry Potter")).toBeFalsy("Harry Potter is still related to Case: " + caseId);
 
-        await navigationPage.goToPersonProfile();
+        await navigationPage.gotoPersonProfile();
         expect(await relatedTabPage.isRelatedPersonPresent("Brain Adams")).toBeFalsy("Brain Adams is still related to Person Profile");
         expect(await relatedTabPage.isRemoveRelatedPersonIconPresent("Qiang Du")).toBeFalsy("Cross icon is available");
     });

@@ -4,11 +4,10 @@ class AttachmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        values: '.case-details div',
-        download: '.case-details-footer .d-button_primary',
-        close: '.case-details-footer .d-button_secondary',
-        title: '.case-attachments-details .modal-title'
-
+        values: '.attachment-details__information  .row div',
+        download: '.dp-footer .btn-primary',
+        close: '.dp-footer .btn-secondary',
+        title: '.dp-header .dp-title'
     }
 
     async getValuesOfInformation(value: any): Promise<string> {

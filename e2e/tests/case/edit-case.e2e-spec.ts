@@ -1,4 +1,5 @@
 import { browser } from "protractor";
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import editCasePage from '../../pageobject/case/edit-case.po';
@@ -9,12 +10,13 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfilePage from '../../pageobject/common/person-profile.po';
 import composemailPage from '../../pageobject/email/compose-mail.po';
-import utilCommon from '../../utils/util.common';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
 
 describe('Edit Case', () => {
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
     });
 
@@ -32,7 +34,7 @@ describe('Edit Case', () => {
 
         await navigationPage.signOut();
         await loginPage.login('qtao');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + Summary);
         await createCasePage.clickAssignToMeButton();
@@ -113,7 +115,7 @@ describe('Edit Case', () => {
 
         await navigationPage.signOut();
         await loginPage.login('qtao');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + Summary);
         await createCasePage.clickAssignToMeButton();
@@ -157,5 +159,5 @@ describe('Edit Case', () => {
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
 
-},150*1000);
+    }, 150 * 1000);
 });

@@ -2,6 +2,7 @@ import { $, browser, protractor, ProtractorExpectedConditions } from "protractor
 import apiHelper from '../../api/api.helper';
 import attachmentBladePage from "../../pageobject/attachment/attachment-blade.po";
 import caseConsolePage from '../../pageobject/case/case-console.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from "../../pageobject/case/create-case.po";
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import editCasePage from '../../pageobject/case/edit-case.po';
@@ -11,6 +12,7 @@ import changeAssignmentPage from '../../pageobject/common/change-assignment-blad
 import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import KnowledgeConsolePage from "../../pageobject/knowledge/knowledge-articles-console.po";
 import createMenuItems from '../../pageobject/settings/application-config/create-menu-items-blade.po';
@@ -30,9 +32,9 @@ import viewTasktemplatePage from '../../pageobject/settings/task-management/view
 import { default as activityPo, default as activityTabPo } from '../../pageobject/social/activity-tab.po';
 import taskConsolepage from "../../pageobject/task/console-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 describe("Create Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -40,7 +42,7 @@ describe("Create Case", () => {
     const contact = "Contact";
 
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
     });
 
@@ -70,7 +72,7 @@ describe("Create Case", () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('qtao')
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('set summary');
             await createCasePage.selectCategoryTier1(categName1);
@@ -247,7 +249,7 @@ describe("Create Case", () => {
             //create case
             await navigationPage.signOut();
             await loginPage.login('qtao');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
             await createCasePage.clickSelectCaseTemplateButton();
@@ -292,7 +294,7 @@ describe("Create Case", () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseSummary = 'Case Summary ' + randomStr;
 
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
         await createCasePage.selectRequester('adam');
         expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy();
@@ -318,7 +320,7 @@ describe("Create Case", () => {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseSummary = 'Summary ' + randomStr;
 
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             expect(await createCasePage.isRequesterRequiredTextPresent()).toBeTruthy("required text present in Request");
             expect(await createCasePage.isSummaryRequiredTextPresent()).toBeTruthy("required text present in Summary");
             expect(await createCasePage.isPriorityRequiredTextPresent()).toBeTruthy("required text present in Priority");
@@ -381,7 +383,7 @@ describe("Create Case", () => {
             await createCaseTemplate.clickSaveCaseTemplate();
 
             //create case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary(caseTemplate1);
             await createCasePage.clickSelectCaseTemplateButton();
@@ -435,7 +437,7 @@ describe("Create Case", () => {
             await createCaseTemplate.clickSaveCaseTemplate();
 
             //create case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
             await createCasePage.clickSelectCaseTemplateButton();
@@ -454,7 +456,7 @@ describe("Create Case", () => {
             await expect(viewCasePage.isCaseReopenLinkPresent()).toBeTruthy();
 
             //add second case template
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary 2');
             await createCasePage.clickSelectCaseTemplateButton();
@@ -492,7 +494,7 @@ describe("Create Case", () => {
             await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
             await navigationPage.gotoKnowledgeConsole();
             await expect((await KnowledgeConsolePage.getKnowledgeArticleTitle()).trim()).toBe('Knowledge Articles', "Knowledge title is not displayed in Knowledge Console Page");
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await expect((await createCasePage.getCreateCaseTitle()).trim()).toBe('Create Case', "Create Case title is not displayed in Create Case Page");
             await navigationPage.gotoCreateKnowledge();
             await expect((await createKnowledgePage.getCreateKnowledgeTitle()).trim()).toBe('Create Knowledge', "Create Knowledge title is not displayed in Create knowledge Page");
@@ -512,7 +514,7 @@ describe("Create Case", () => {
         await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
         await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
         await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
-        await expect(navigationPage.isCreateKnowledge()).toBeTruthy("Create knowledge is not displayed ");
+        await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
         await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
         await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
         //        browser.sleep(3000);
@@ -524,7 +526,7 @@ describe("Create Case", () => {
             await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
             await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
             await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
-            await expect(navigationPage.isCreateKnowledge()).toBeTruthy("Create knowledge is not displayed ");
+            await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
             await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
             await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
             // await navigationPage.gotoSettingsPage();
@@ -536,7 +538,7 @@ describe("Create Case", () => {
             await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
             await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
             await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
-            await expect(navigationPage.isCreateKnowledge()).toBeTruthy("Create knowledge is not displayed ");
+            await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
             await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
             await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
             //await navigationPage.gotoSettingsPage();
@@ -570,7 +572,7 @@ describe("Create Case", () => {
         try {
             await navigationPage.signOut();
             await loginPage.login("qtao");
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickSelectCaseTemplateButton();
@@ -663,7 +665,7 @@ describe("Create Case", () => {
             //Create Case
             await navigationPage.signOut();
             await loginPage.login('qtao');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary1212');
             await createCasePage.clickAssignToMeButton();
@@ -687,7 +689,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
             //Create Case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
             await createCasePage.clickSaveCaseButton();
@@ -728,7 +730,7 @@ describe("Create Case", () => {
             await createCaseTemplate.clickSaveCaseTemplate();
 
             //add first case 
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary 2');
             await createCasePage.clickSelectCaseTemplateButton();
@@ -751,7 +753,7 @@ describe("Create Case", () => {
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
 
             //create case
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
             await createCasePage.clickSelectCaseTemplateButton();
@@ -788,7 +790,7 @@ describe("Create Case", () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('qtao');
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             expect(await createCasePage.isAssigneToMeEnabled()).toBeFalsy();
             expect(createCasePage.isChangeAssignmentButtonEnabled()).toBeFalsy();
             await createCasePage.selectRequester('adam');
@@ -880,7 +882,7 @@ describe("Create Case", () => {
             let caseSummary = 'Case Summary ' + randomStr;
             await navigationPage.signOut();
             await loginPage.login("qtao");
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             expect(await createCasePage.isRequesterRequiredTextPresent()).toBeTruthy("Requester Reqired text not present");
             expect(await createCasePage.isSummaryRequiredTextPresent()).toBeTruthy("Summary Reqired text not present");
             expect(await createCasePage.isSourceRequiredTextPresent()).toBeTruthy("Source Reqired text not present");
@@ -958,7 +960,7 @@ describe("Create Case", () => {
         try {
             await navigationPage.signOut();
             await loginPage.login("qtao");
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickSelectCaseTemplateButton();

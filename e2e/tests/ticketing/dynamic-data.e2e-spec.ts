@@ -1,5 +1,6 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
@@ -11,6 +12,7 @@ import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
 import dynamicFieldsPo from '../../pageobject/common/dynamic-fields.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import consoleNotestemplatePo from '../../pageobject/settings/common/console-notestemplate.po';
 import createNotestemplatePo from '../../pageobject/settings/common/create-notestemplate.po';
@@ -24,16 +26,16 @@ import editNotificationTemplatePo from '../../pageobject/settings/notification-c
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 describe('Dynamic data', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
     const notifTempGridPageTitle = 'Manage Notification Template - Business Workflows';
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('fritz');
     });
 
@@ -390,7 +392,7 @@ describe('Dynamic data', () => {
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
         await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary('new cases');
         await createCasePo.clickSelectCaseTemplateButton();
@@ -444,7 +446,7 @@ describe('Dynamic data', () => {
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary('new cases');
         await createCasePo.clickSaveCaseButton();
@@ -501,7 +503,7 @@ describe('Dynamic data', () => {
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
         await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary('new cases');
         await createCasePo.clickSelectCaseTemplateButton();
@@ -623,7 +625,7 @@ describe('Dynamic data', () => {
         await apiHelper.apiLogin('qkatawazi');
         let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automationTemplateData);
         await apiHelper.createDynamicDataOnTemplate(autoTaskTemplate.id, 'AUTOMATED_TASK_TEMPLATE_LONG__DYNAMIC');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary('new cases');
         await createCasePo.clickSaveCaseButton();
@@ -808,7 +810,7 @@ describe('Dynamic data', () => {
         await apiHelper.apiLogin('qkatawazi');
         let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automationTemplateData);
         await apiHelper.createDynamicDataOnTemplate(autoTaskTemplate.id, 'AUTOMATED_TASK_TEMPLATE__DYNAMIC_FIELDS');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary('new cases');
         await createCasePo.clickSaveCaseButton();
@@ -995,9 +997,9 @@ describe('Dynamic data', () => {
         expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
         await editCasePo.clickOnCancelCaseButton();
         await utilCommon.clickOnWarningOk();
-        expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('','field should be empty');
-        expect(await viewCasePo.getValueOfDynamicFields('temp2')).toBe('','field should be empty');
-        expect(await viewCasePo.getValueOfDynamicFields('temp4')).toBe('','field should be empty');
+        expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('', 'field should be empty');
+        expect(await viewCasePo.getValueOfDynamicFields('temp2')).toBe('', 'field should be empty');
+        expect(await viewCasePo.getValueOfDynamicFields('temp4')).toBe('', 'field should be empty');
     }, 180 * 1000);
 
     //ptidke
@@ -1014,7 +1016,7 @@ describe('Dynamic data', () => {
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
         await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary('new cases');
         await createCasePo.clickSelectCaseTemplateButton();

@@ -2,6 +2,7 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import attachmentBladePo from '../../pageobject/attachment/attachment-blade.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
@@ -22,8 +23,8 @@ import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import { default as manageTask } from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-
 
 describe('Document Library Consume UI', () => {
     let filePath1 = 'e2e/data/ui/attachment/bwfJpg.jpg';
@@ -34,7 +35,7 @@ describe('Document Library Consume UI', () => {
     let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let loginId = 'caseagentbwf';
     beforeAll(async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa');
+        await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         // Create User and assigned Document Manager Permission to agent
         await apiHelper.apiLogin('tadmin');
@@ -250,7 +251,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login(loginId);
 
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSelectCaseTemplateButton();
@@ -341,7 +342,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login(loginId);
 
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
@@ -432,7 +433,7 @@ describe('Document Library Consume UI', () => {
 
             await navigationPage.signOut();
             await loginPage.login(loginId);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
@@ -522,7 +523,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login(loginId);
 
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
@@ -616,7 +617,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
 
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
@@ -705,7 +706,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
 
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
@@ -795,7 +796,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
 
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
@@ -891,7 +892,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
 
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
@@ -981,7 +982,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
 
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
@@ -1146,7 +1147,7 @@ describe('Document Library Consume UI', () => {
             await apiHelper.apiLogin(loginId);
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
 
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSelectCaseTemplateButton();
@@ -1261,7 +1262,7 @@ describe('Document Library Consume UI', () => {
 
             await navigationPage.signOut();
             await loginPage.loginWithCredentials(username, password);
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSaveCaseButton();
@@ -1342,7 +1343,7 @@ describe('Document Library Consume UI', () => {
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
         //Create Case
-        await navigationPage.gotCreateCase();
+        await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qtao');
         await createCasePo.setSummary(caseSummary);
         await createCasePo.clickSaveCaseButton();
@@ -1414,7 +1415,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login(loginId);
 
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary('drdmv-13536' + caseSummary);
             await createCasePo.clickSaveCaseButton();
@@ -1520,7 +1521,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login(loginId);
 
-            await navigationPage.gotCreateCase();
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickChangeAssignmentButton();
