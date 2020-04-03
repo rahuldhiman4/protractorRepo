@@ -8,12 +8,14 @@ export class Utility {
     selectors = {
         dropdownBox: '.dropdown-toggle',
         dropDownInput: 'input.form-control',
+        dropDownNoneOpt: '.dropdown_select__btn',
         dropDownOption: '.dropdown_select__menu-content button',
         warningOk: '.modal-content .btn-primary, .d-modal__footer button[class*="d-button d-button_primary"]',
         warningCancel: '.modal-content .btn-secondary, .d-modal__footer button[class*="d-button d-button_secondary"]',
         warningDialog: '.modal-content .modal-title, .modal-content .d-modal__title',
         warningDialogMsg: '.modal-content .modal-body, .modal-content .d-modal__content-item',
         popUpMsgLocator: '.a-toast__details div',
+        popupMsgTitle: '.a-toast__summary',
         closeTipMsg: '.a-toast__close_button',
         dropDownChoice: '.dropdown-item',
     }
@@ -51,6 +53,17 @@ export class Utility {
         await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
             await option.click();
         });
+    }
+
+    async clearDropDown(guid: string): Promise<void> {
+        const dropDown = await $(`[rx-view-component-id="${guid}"]`);
+        const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+        const dropDownSelectNoneItem = await dropDown.$(this.selectors.dropDownNoneOpt);
+        //        await browser.wait(this.EC.elementToBeClickable(dropDownBoxElement));
+        await dropDownBoxElement.click();
+        //        await browser.wait(this.EC.elementToBeClickable(dropDownSelectNoneItem));
+        await dropDownSelectNoneItem.click();
+        await dropDownBoxElement.click();
     }
 
     async selectDropDown2(dropDownElementFinder: ElementFinder, value: string): Promise<void> {
@@ -113,8 +126,12 @@ export class Utility {
         await browser.executeScript("arguments[0].scrollIntoView();", $(`${element}`).getWebElement());
     }
 
-    async isErrorMsgPresent(): Promise<boolean> {
-        return await $(this.selectors.errorMsg).isDisplayed();
+    async isSuccessMsgAppeared(): Promise<boolean> {
+        return await $(this.selectors.popupMsgTitle).getText()=='Success';
+    }
+
+    async isErrorMsgAppeared(): Promise<boolean> {
+        return await $(this.selectors.popupMsgTitle).getText()=='Script Error';
     }
 
     async isPopUpMessagePresent(expectedMsg: string): Promise<boolean> {
