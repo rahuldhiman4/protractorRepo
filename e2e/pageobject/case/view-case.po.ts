@@ -38,22 +38,19 @@ class ViewCasePage {
         label: '[rx-view-component-id="2415f5bb-1b76-4359-a034-ff16f8e26f7b"] .read-only-content',
         resolutionCodeText: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] button',
         resolutionDescriptionText: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .bwf-read-only-content',
-        resolutionCodeValue: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] .ui-select-match-text',
-        resolutionDescriptionValue: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .rx-description-textarea-read div div',
-        resolutionCodeSelect: '.ui-select__rx-choice',
-        resolutionDescriptionTextBoxId: '[rx-view-component-id="d98df37c-7a96-43c3-bf69-2e6e735031ae"]',
-        emptyResolutionDescriptionTextBox: '.d-textfield__label .ng-empty',
-        priority: '.selection-field',
+        resolutionCodeValue: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] button',
+        resolutionDescriptionValue: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .bwf-read-only-content',
+        priority: '[rx-view-component-id="7b47ca08-e9d4-4656-8f96-3bc751c098b0"] .selection-field',
         emailLink: '[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
         addedTaskFromCaseTemplate: '.task-list__task-card a',
         taskCardArrow: '.icon-angle_right.task-list__task-card__preview-icon',
-        attachmentFile: '.rx-attachment-view-name',
-        caseTemplate: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .d-textfield__rx-value',
-        sourceValue: '[rx-view-component-id="8abd013f-26cd-4aa5-a3bb-63b063d3a7ec"] .d-textfield__rx-value',
+        attachmentFile: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .bwf-attachment-container__file-name',
+        caseTemplate: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .read-only-content',
+        sourceValue: '[rx-view-component-id="8abd013f-26cd-4aa5-a3bb-63b063d3a7ec"] .read-only-content',
         showMore: '.rx-attachment-show-text',
         dynamicFieldsName: '[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] span',
         dynamicFieldsValue: '[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] p',
-        slaProgressBar: '.d-progress__bar',
+        slaProgressBar: '.progress-bar',
     }
 
     async isGroupNameDisplayed(groupName:string):Promise<boolean>{
@@ -82,12 +79,6 @@ class ViewCasePage {
     async isEmailLinkPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
         return await $(this.selectors.emailLink).isPresent();
-    }
-
-    async isResolutionDescriptionTextBoxEmpty(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.resolutionDescriptionTextBoxId)));
-        let statusstr = $(this.selectors.resolutionDescriptionTextBoxId);
-        return await (statusstr.$(this.selectors.emptyResolutionDescriptionTextBox)).isPresent();
     }
 
     async selectResolutionCodeDropDown(resolutionCode: string): Promise<void> {
