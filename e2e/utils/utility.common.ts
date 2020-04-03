@@ -3,33 +3,19 @@ import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpec
 const fs = require('fs');
 
 
-export class Util {
+export class Utility {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        dropdownBox: '.ui-select-toggle',
-        dropDownInput: 'input[type="search"]',
-        dropDownOption: '.ui-select-choices-row-inner *',
-        popUpMsgLocator: '.rx-growl-item__message',
-        warningOk: '.modal-footer button[class*="d-button d-button_primary"], .d-modal__footer button[class*="d-button d-button_primary"]',
-        warningCancel: '.modal-footer button[class*="d-button d-button_secondary"], .d-modal__footer button[class*="d-button d-button_secondary"]',
-        warningDialog: '.modal-content .modal-dialog, .modal-content .d-modal__dialog',
+        dropdownBox: '.dropdown-toggle',
+        dropDownInput: 'input.form-control',
+        dropDownOption: '.dropdown_select__menu-content button',
+        warningOk: '.modal-content .btn-primary, .d-modal__footer button[class*="d-button d-button_primary"]',
+        warningCancel: '.modal-content .btn-secondary, .d-modal__footer button[class*="d-button d-button_secondary"]',
+        warningDialog: '.modal-content .modal-title, .modal-content .d-modal__title',
         warningDialogMsg: '.modal-content .modal-body, .modal-content .d-modal__content-item',
-        closeTipMsg: '.close.rx-growl-close',
-        errorMsg: '.rx-alert-error',
-        advancedSearchInput: 'input.rx-adv-search-textField',
-        advancedSearchSettingsBtn: 'button.d-icon-adjust_settings',
-        advancedSearchSettingsBtnClose: 'button[ng-hide="showAdvOptions"]',
-        advancedSearchResult: '.km-group-list-item__description',
-        dropDownChoice: '.ui-select__rx-choice',
-        warningMsgText: '.modal-content .modal-title-message, .modal-content .d-modal__title',
-        warningMsgTextKnowledgeStyle: '.d-modal__content .d-modal__content-item',
-        configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
-    }
-
-    async isConfigurationOptionMessageDisplayed(errorMessage): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.configurationOptionsErrorMessage)));
-        return await element(by.cssContainingText(this.selectors.configurationOptionsErrorMessage, errorMessage)).isDisplayed();
-
+        popUpMsgLocator: '.a-toast__details div',
+        closeTipMsg: '.a-toast__close_button',
+        dropDownChoice: '.dropdown-item',
     }
 
     async isWarningDialogBoxDisplayed(): Promise<boolean> {
@@ -38,13 +24,13 @@ export class Util {
     }
 
     async getWarningDialogTitle(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.warningMsgText)));
-        return await $(this.selectors.warningMsgText).getText();
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.warningDialog)));
+        return await $(this.selectors.warningDialog).getText();
     }
 
     async getWarningMessageTextKnowledgeStyle(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.warningMsgText)));
-        return await $(this.selectors.warningMsgTextKnowledgeStyle).getText();
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.warningDialog)));
+        return await $(this.selectors.warningDialogMsg).getText();
     }
 
     async selectDropDown(guid: string, value: string): Promise<void> {
@@ -59,7 +45,7 @@ export class Util {
         //            let count = await dropDown.$$(this.selectors.dropDownOption).count();
         //            return count >= 1;
         //        }));
-        var optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
+        var optionCss: string = `[rx-view-component-id="${guid}"] .dropdown_select__menu-content button`;
         //        await browser.sleep(1000);
         let option = await element(by.cssContainingText(optionCss, value));
         await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
@@ -346,4 +332,4 @@ export class Util {
 
 }
 
-export default new Util();
+export default new Utility();

@@ -55,7 +55,7 @@ describe('Service Target Tests', () => {
         expect(await serviceTargetConfig.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
         await serviceTargetConfig.clickCloseButton();
         expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
-        expect(await utilCommon.getWarningMessagegText()).toBe('Warning!');
+        expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
         expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
         await utilCommon.clickOnWarningOk();
         expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
@@ -104,7 +104,7 @@ describe('Service Target Tests', () => {
         expect(await serviceTargetConfig.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
         await serviceTargetConfig.clickCloseButton();
         expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
-        expect(await utilCommon.getWarningMessagegText()).toBe('Warning!');
+        expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
         expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
         await utilCommon.clickOnWarningOk();
         expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
