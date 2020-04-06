@@ -3,25 +3,15 @@ import { $, $$, by, element, protractor, ProtractorExpectedConditions, ElementFi
 export class Resources {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        dropdownBox: '.ui-select-toggle',
-        dropDownInput: 'input[type="search"]',
-        dropDownOption: '.ui-select-choices-row-inner *',
-        popUpMsgLocator: '.rx-growl-item__message',
-        warningOk: '.d-modal__footer button[class*="d-button d-button_primary d-button_small"]',
-        warningCancel: '.d-modal__footer button[class*="d-button d-button_secondary d-button_small"]',
-        closeTipMsg: '.close.rx-growl-close',
-        errorMsg: '.rx-growl-item__message',
-        advancedSearchInput: 'input.rx-adv-search-textField',
-        advancedSearchSettingsBtn: 'button.d-icon-adjust_settings',
-        advancedSearchSettingsBtnClose: 'button[ng-hide="showAdvOptions"]',
-        advancedSearchResult: '.km-group-list-item__description',
-        dropDownChoice: '.ui-select__rx-choice',
-        warningMsgText: '.d-modal__content-item',
-        configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
+        dropDownOption: '.dropdown_select__menu-content .dropdown-item *',
+        advancedSearchInput: 'input.adapt-search-field[placeholder="Search"]',
+        advancedSearchSettingsBtn: 'span.d-icon-adjust_settings',
+        advancedSearchSettingsBtnClose: 'button.opened-advance-search-option',
+        advancedSearchResult: 'div.sr-search-result-components .bwf-search-fields__title-text',
         headingName: '.km-group__header span',
         recommendedKnowledgeNo: 'h3[class="km-group__header ng-binding"]:nth-last-child(3) span',
-        advancedSearchButton: 'button.d-icon-left-search',
-        backBuuton: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .rx-adv-search-back-btn',
+        advancedSearchButton: 'span.d-icon-search',
+        backBuuton: 'span.d-icon-angle_left',
     }
 
     async isKnowledgeArticlesEmpty(): Promise<boolean> {
@@ -29,7 +19,7 @@ export class Resources {
     }
 
     async clickOnAdvancedSearchOptions(searchArea: string): Promise<void> {
-        let advancedSearchButton = await $('button.d-icon-left-search');
+        let advancedSearchButton = await $('span.d-icon-search');
         //        await browser.wait(this.EC.elementToBeClickable(advancedSearchButton));
         await advancedSearchButton.click();
     }

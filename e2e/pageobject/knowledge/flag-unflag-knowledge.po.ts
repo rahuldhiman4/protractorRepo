@@ -6,7 +6,6 @@ class FlagUnflagKABlade {
         unflagButtonOnBlade:'[rx-view-component-id="5707f17e-63f2-41f7-ac55-13a6937c83b9"] button',
         flagButtonOnBlade:'[rx-view-component-id="bd9d6e7a-1875-4299-9b63-5dc89eb2bfe9"] button',
         tellUsComment:'[rx-view-component-id="2b192056-a661-49b7-948f-4c75dbc4ffea"] textarea',
-        flagBlade:'.modal-content',
     }
 
      async setTextInTellUsMore(value:string):Promise<void>{

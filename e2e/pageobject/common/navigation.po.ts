@@ -1,12 +1,11 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
 
 class NavigationPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         menu: '.a-menu__text',
         settingsButton: 'div.d-icon-gear',
-        profileMenu: '.adapt-profile .menu-profile__username',
+        profileMenu: 'rx-shell adapt-profile button',
         helpIcon: '//*[@class="d-n-menu__link d-icon-left-question_circle"]',
         knowledgeConsoleFromKM: '[rx-view-component-id="3313266f-6ed4-47ee-ab90-54aab5bf3e99"] a',
         knowledgeConsoleTitle: '[rx-view-component-id="11f37569-5ecd-4239-aaa7-075d1874b1d1"] span',
@@ -168,7 +167,7 @@ class NavigationPage {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.buttonText('Quick Case ')).click();
         } else {
-            await $$('button.a-menu__link').first().isDisplayed();
+            await $$('button.a-menu__link').first().click();
         }
         await browser.wait(this.EC.titleContains('Case Create - Quick Case - Business Workflows'), 10000);
     }
@@ -187,7 +186,6 @@ class NavigationPage {
 
     async gotoPersonProfile(): Promise<void> {
         await browser.refresh();
-        await utilCommon.waitUntilSpinnerToHide();
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.buttonText('My Profile ')).click();
@@ -252,15 +250,12 @@ class NavigationPage {
 
     async signOut(): Promise<void> {
         await browser.refresh();
-        //await utilCommon.waitUntilSpinnerToHide();
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
-            await element(by.buttonText(' Sign Out ')).click();
+            await element(by.buttonText(' Sign Out')).click();
         } else {
-            console.log("trying to click....");
-            await browser.wait(this.EC.elementToBeClickable($(this.selectors.profileMenu)), 10000);
             await $(this.selectors.profileMenu).click();
-            await element(by.buttonText('Sign Out ')).click();
+            await element(by.buttonText('Sign Out')).click();
         }
         let noAccess = this.EC.titleContains('No Access');
         let bwfLogin = this.EC.titleContains('Login - Business Workflows');
