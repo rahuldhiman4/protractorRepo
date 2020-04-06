@@ -25,7 +25,7 @@ node('Protractor'){
   ])
 
   stage('Clone Sources') {
-    git branch: '20.08_AngularJS',
+    git branch: 'master',
     credentialsId: '807c8e4d-6d6c-47e1-a62e-ef2de91d6dce',
     url: 'https://github.bmc.com/DSM-Apps/bwf-e2e-protractor.git'
   }
