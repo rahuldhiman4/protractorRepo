@@ -1,23 +1,22 @@
-import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 
 class ChangeAssignmentBlade {
         EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
         selectors = {
                 changeAssignmentButton: '[rx-view-component-id="6041cce1-05bd-458d-b097-eb310507cae3"] button',
-                assignButton: '.rx-assignment-modal-footer button.d-button_primary',
-                assignmentDropDownList: '.rx-assignment_modal_filters .rx-assignment-select',
-                selectOptions: '.options-box .options li',
-                cancelButton: '.rx-assignment-modal-footer button.d-button_secondary',
+                assignButton: '.modal-footer .btn-primary',
+                assignmentDropDownList: '.flex-wrap bwf-select-with-pagination',
+                selectOptions: '.dropdown-item span',
+                cancelButton: '.modal-footer .btn-secondary',
                 multipleSuppGrpMsg: '.manual-select-sg-msg',
-                assignToMeCheckBox: '.rx-assignment_assignToMe span',
-                searchAsignee: '.d-icon-search input',
-                assignee: '.rx-assignment-person-fullName',
+                assignToMeCheckBox: '.checkbox__input',
+                searchAsignee: '[class="search-input"] .adapt-search-field-wrapper input',
+                assignee: '.person__info .name',
                 company: 'selectedOrganizationId',
                 businessUnit: 'selectedBusinessUnitId',
                 supportGroupName: '.rx-assignment-person-info',
                 department: 'selectedDepartmentId',
                 supportGroup: 'selectedSupportGroupId',
-                search: '.d-icon-search input'
         }
 
         async isAssignToMeCheckBoxSelected(): Promise<boolean> {
@@ -42,7 +41,7 @@ class ChangeAssignmentBlade {
 
         async isSearchInputBoxPresent(): Promise<boolean> {
                 //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeCheckBox)));
-                return await $(this.selectors.search).isDisplayed();
+                return await $(this.selectors.searchAsignee).isDisplayed();
         }
 
         async isCompanyDrpDwnDisplayed(): Promise<boolean> {
