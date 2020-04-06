@@ -14,6 +14,7 @@ import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import viewTaskPo from '../../pageobject/task/view-task.po';
 
 describe('Email', () => {
     beforeAll(async () => {
@@ -79,21 +80,21 @@ describe('Email', () => {
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
         await manageTaskBladePo.clickTaskLinkOnManageTask(automatedTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
-        await emailPo.clickOnEmailIconLink();
+        await viewTaskPo.clickEmailLink();
         await emailPo.clickOnDiscardButton();
         await utilCommon.clickOnWarningOk();
         await viewTask.clickOnViewCase();
         await viewCasePage.clickAddTaskButton();
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
-        await emailPo.clickOnEmailIconLink();
+        await viewTaskPo.clickEmailLink();
         await emailPo.clickOnDiscardButton();
         await utilCommon.clickOnWarningOk();
         await viewTask.clickOnViewCase();
         await viewCasePage.clickAddTaskButton();
         await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
-        await emailPo.clickOnEmailIconLink();
+        await viewTaskPo.clickEmailLink();
         await emailPo.clickOnDiscardButton();
         await utilCommon.clickOnWarningOk();
     });
@@ -137,7 +138,7 @@ describe('Email', () => {
         await browser.sleep(2000);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         let ManualtaskID = await viewTask.getTaskID();
-        await emailPo.clickOnEmailIconLink();
+        await viewTaskPo.clickEmailLink();
         expect(await emailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
         await expect(await emailPo.getEmailBody()).toContain('Regards');
         await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
@@ -162,7 +163,7 @@ describe('Email', () => {
         await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         let ExternaltaskID = await viewTask.getTaskID();
-        await emailPo.clickOnEmailIconLink();
+        await viewTaskPo.clickEmailLink();
         expect(await emailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
         await expect(await emailPo.getEmailBody()).toContain('Regards');
         await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
@@ -232,7 +233,7 @@ describe('Email', () => {
             await editTask.clickOnSaveButton();
             await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
             let ManualtaskID = await viewTask.getTaskID();
-            await emailPo.clickOnEmailIconLink();
+            await viewTaskPo.clickEmailLink();
             expect(await emailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
             await emailPo.clickOnDiscardButton();
             await utilCommon.clickOnWarningOk();
@@ -248,7 +249,7 @@ describe('Email', () => {
             await editTask.clickOnSaveButton();
             await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
             let ExternaltaskID = await viewTask.getTaskID();
-            await emailPo.clickOnEmailIconLink();
+            await viewTaskPo.clickEmailLink();
             expect(await emailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
             await emailPo.clickOnDiscardButton();
             await utilCommon.clickOnWarningOk();
@@ -257,13 +258,13 @@ describe('Email', () => {
             await navigationPage.gotoTaskConsole();
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(ExternaltaskID);
-            await emailPo.clickOnEmailIconLink();
+            await viewTaskPo.clickEmailLink();
             expect(await emailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
             await emailPo.clickOnDiscardButton();
             await utilCommon.clickOnWarningOk();
             await navigationPage.gotoTaskConsole();
             await utilGrid.searchAndOpenHyperlink(ManualtaskID);
-            await emailPo.clickOnEmailIconLink();
+            await viewTaskPo.clickEmailLink();
             expect(await emailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
             await emailPo.clickOnDiscardButton();
             await utilCommon.clickOnWarningOk();
@@ -349,7 +350,7 @@ describe('Email', () => {
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         await browser.sleep(2000);
         var ManualtaskID = await viewTask.getTaskID();
-        await emailPo.clickOnEmailIconLink();
+        await viewTaskPo.clickEmailLink();
         await emailPo.addAttachment();
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
         await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com')
@@ -377,7 +378,7 @@ describe('Email', () => {
         await viewCasePage.clickAddTaskButton();
         await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
         var externaltaskID = await viewTask.getTaskID();
-        await emailPo.clickOnEmailIconLink();
+        await viewTaskPo.clickEmailLink();
         await emailPo.addAttachment();
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
         await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com')
@@ -417,7 +418,7 @@ describe('Email', () => {
         var displayId: string = newCaseTemplate.displayId;
         await utilGrid.clearFilter();
         await utilGrid.searchAndOpenHyperlink(displayId);
-        await emailPo.clickOnEmailIconLink();
+        await viewCasePo.clickOnEmailLink();
         await emailPo.addAttachment();
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
         await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com')

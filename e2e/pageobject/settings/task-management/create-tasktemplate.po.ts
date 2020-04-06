@@ -1,5 +1,4 @@
 import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import util from "../../../utils/util.common";
 import utilCommon from '../../../utils/util.common';
 
 class CreateTaskTemplatePage {
@@ -76,67 +75,67 @@ class CreateTaskTemplatePage {
     }
 
     async selectCompanyByName(companyName: string): Promise<void> {
-        await util.selectDropDown(this.selectors.taskCompny, companyName);
+        await utilCommon.selectDropDown(this.selectors.taskCompny, companyName);
     }
 
     async isProcessTitlePresent(newProcess: string): Promise<boolean> {
-        return await util.isFieldLabelDisplayed(this.selectors.newprocessGuid, newProcess);
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.newprocessGuid, newProcess);
     }
 
     async selectTaskPriority(priority: string): Promise<void> {
-        await util.selectDropDown(this.selectors.taskPriority, priority);
+        await utilCommon.selectDropDown(this.selectors.taskPriority, priority);
     }
 
     async selectLabel(label: string): Promise<void> {
-        await util.selectDropDown(this.selectors.label, label);
+        await utilCommon.selectDropDown(this.selectors.label, label);
     }
 
     async selectTaskCategoryTier1(category1: string): Promise<void> {
-        await util.selectDropDown(this.selectors.taskCategoryDrpDown1, category1);
+        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown1, category1);
     }
 
     async selectTaskCategoryTier2(category2: string): Promise<void> {
-        await util.selectDropDown(this.selectors.taskCategoryDrpDown2, category2);
+        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown2, category2);
     }
 
     async selectTaskCategoryTier3(category3: string): Promise<void> {
-        await util.selectDropDown(this.selectors.taskCategoryDrpDown3, category3);
+        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown3, category3);
     }
 
     async selectTaskCategoryTier4(category4: string): Promise<void> {
-        await util.selectDropDown(this.selectors.taskCategoryDrpDown4, category4);
+        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown4, category4);
     }
 
     async selectTemplateStatus(status: string): Promise<void> {
-        await util.selectDropDown(this.selectors.templateStatus, status);
+        await utilCommon.selectDropDown(this.selectors.templateStatus, status);
     }
 
     async selectOwnerCompany(company: string): Promise<void> {
-        await util.selectDropDown(this.selectors.ownerCompany, company);
+        await utilCommon.selectDropDown(this.selectors.ownerCompany, company);
     }
 
     async selectBuisnessUnit(buisnessunit: string): Promise<void> {
-        await util.selectDropDown(this.selectors.buisnessUnit, buisnessunit);
+        await utilCommon.selectDropDown(this.selectors.buisnessUnit, buisnessunit);
     }
 
     async selectDepartment(departmentname: string): Promise<void> {
-        await util.selectDropDown(this.selectors.department, departmentname);
+        await utilCommon.selectDropDown(this.selectors.department, departmentname);
     }
 
     async selectOwnerGroup(ownergroup: string): Promise<void> {
-        await util.selectDropDown(this.selectors.ownerGroup, ownergroup);
+        await utilCommon.selectDropDown(this.selectors.ownerGroup, ownergroup);
     }
 
     async setNewProcessName(bundle: string, inputValue: string): Promise<void> {
-        await util.selectToggleButton(this.selectors.toggleBox, true);
-        await util.selectDropDown(this.selectors.processBundleIdDrpDownForNewProcess, bundle);
+        await utilCommon.selectToggleButton(this.selectors.toggleBox, true);
+        await utilCommon.selectDropDown(this.selectors.processBundleIdDrpDownForNewProcess, bundle);
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.newProcessName)));
         await $(this.selectors.newProcessName).clear();
         await $(this.selectors.newProcessName).sendKeys(inputValue);
     }
 
     async setExistingProcessName(processName: string): Promise<void> {
-        await util.selectToggleButton(this.selectors.toggleBox, false);
+        await utilCommon.selectToggleButton(this.selectors.toggleBox, false);
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.processBundleIdDrpDownForExistingProcess)));
         await $(this.selectors.processBundleIdDrpDownForExistingProcess).click();
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchProcess)));
@@ -150,7 +149,7 @@ class CreateTaskTemplatePage {
     }
 
     async setcreateNewProcess(processName: boolean): Promise<void> {
-        await util.selectToggleButton(this.selectors.toggleBox, processName);
+        await utilCommon.selectToggleButton(this.selectors.toggleBox, processName);
     }
     async isTemplateNameRequiredText(): Promise<boolean> {
         return await utilCommon.isRequiredTagToField(this.selectors.templateNameGuid);
