@@ -1,28 +1,22 @@
-import { ProtractorExpectedConditions, protractor, browser, $, $$, element, by, ElementFinder, Key } from "protractor"
-import { TestObject } from 'protractor/built/driverProviders';
+import { $, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from "../../utils/util.grid";
-import utilCommon from '../../utils/util.common';
 
 class KnowledgeArticlesGridConsole {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        guid: '0df18e99-4315-457c-aef0-3abc96fb08ee',
         knowledgeArticleConsoleTitle: '[rx-view-component-id="11f37569-5ecd-4239-aaa7-075d1874b1d1"] span',
-        searchInput: '[rx-id="search-text-input"]',
-        searchIcon: '[rx-id="submit-search-button"]',
-        selectFilterOption: '.d-dropdown__menu-options-item a',
+        searchInput: '.adapt-search-triggerable input[type="search"]',
+        searchIcon: '.input-group-append button',
         gridColumnHeader: '.ui-grid-header-cell-label',
         hamburgerFilterIcon: '[rx-view-component-id="a9dfa448-2900-4a2b-a230-503f4a0ac12e"] .rx-record-grid-toolbar__item .d-icon-ellipsis',
         removeAssignedToMeFilter: '.d-tag-remove-button',
         knowledgeArticleGridConsoleGuid: '0df18e99-4315-457c-aef0-3abc96fb08ee',
-        recommendedArticleLink: '.ui-grid__link',
-        filter: '.rx-search-filter__trigger',
-        availableFilterDrpDown: '.d-accordion__title',
-        applyFilter: '.rx-search-filter-heading__apply',
-        removeFilter: '..d-tag-remove-button',
-        tableValue: '.ui-grid-cell-contents',
-        searchFilterOptions: '.search-filter__option-item_search',
+        recommendedArticleLink: '.at-data-cell button',
+        filter: '.d-icon-left-filter',
+        applyFilter: '.advanced-filter__actions-buttons .m-start-4',
+        removeFilter: '.advanced-filter__actions-buttons button',
+        tableValue: '.c-header-container [class="c-header-name"]',
         getAccessText:'[rx-view-component-id="234d397b-5a98-400a-8c72-9de75e6659d9"]',
     }
 
@@ -92,7 +86,7 @@ class KnowledgeArticlesGridConsole {
     }
 
     async getNumberOfRecordsInGrid(): Promise<number>{
-        return await utilGrid.getNumberOfRecordsInGrid(this.selectors.guid);
+        return await utilGrid.getNumberOfRecordsInGrid(this.selectors.knowledgeArticleGridConsoleGuid);
     }
 
     async getMessageOfAccess():Promise<string>{

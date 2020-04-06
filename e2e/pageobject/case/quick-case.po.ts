@@ -4,35 +4,32 @@ class QuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        drpdownHeader: '.dropdown-input__button',
-        startOver: '.smart-recorder__footer button[ng-click="clear()"]',
-        smartSearchTextBox: '.smart-recorder-textarea',
-        confirmedItemSelection: '.smart-recorder-confirmedItem_header',
-        searchResult: '.smart-recorder__popup-item-email',
-        caseTemplate: '.smart-recorder__popup-item-col .smart-recorder__popup-item-highlight',
+        drpdownHeader: '.sr-preview-item .dropdown-toggle',
+        startOver: '.text-muted .btn-secondary',
+        smartSearchTextBox: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .sr-input',
+        confirmedItemSelection: '.sr-preview-pane .sr-preview-item-header',
+        caseTemplate: '.bwf-selectable-list-item .sr-template-name',
         gotoCaseButton: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
         validateButton: '[rx-view-component-id="390a77cd-518e-4d67-abb4-bc4d410ce3df"] button',
         pinValidateInput: '[rx-view-component-id="bfe9a8e0-26e7-43a5-9561-1c92539bdda3"] input',
         pinOk: '[rx-view-component-id="ea1b7291-a0de-47d6-9239-cccf6b850a86"] button',
-        quickCaseGuid: 'dbfca64c-b020-43ee-bb30-de8f8c1c8e6e',
-        popUpMsgLocator: '.rx-growl-item__message',
-        inputBox: '.smart-recorder-textarea',
+        quickCaseGuid: 'ac36dcad-30f0-4ab0-86a4-11fee7195051',
+        popUpMsgLocator: '.rx-growl-item__message', 
         smartSearchText: '.smart-recorder-highlightPerfectMatch',
-        gotoCaseButton__preview: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
-        createCaseButton: '.smart-recorder__footer button.d-button_primary',
-        requesters: '.smart-recorder__popup-item',
-        pinFirstRecommendedCase: '(//*[contains(text(), "Recommended Cases")]/..//i)[1]',
+        createCaseButton: '[rx-view-component-id="8b88c054-4445-43e4-90f0-72f829571fd5"] button',
+        requesters: '.bwf-select-list .bwf-selectable-list-item',
+        pinFirstRecommendedCase: '[class="bwf-search-result ng-tns-c36-9 ng-star-inserted"] .adapt-icon',
         requester: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .ac-person-full-name',
-        arrowFirstRecommendedCase: '[role="listitem"] .km-group-list-item__preview-icon',
-        arrowFirstRecommendedKnowledge: '.km-group [role="listitem"] .km-group-list-item__preview-icon',
-        roleDropDown: '.smart-recorder-confirmedItem-selection button',
-        sourceValue: '.ui-select-toggle .ui-select-match-text',
-        roleValue: '.smart-recorder-selectionItem li a',
-        descriptionText: '.smart-input-label_big',
-        resources: '.smart-search-placeholder-text',
-        advancedSearchFields: '.ui-select-placeholder',
-        startOverButton: '.smart-recorder__footer button.d-button_secondary',
-        RecommendedKnowledge: 'km-group-list-item__description',
+        arrowFirstRecommendedCase: '[class="bwf-search-result ng-tns-c36-9 ng-star-inserted"] .list__item__preview-icon',
+        arrowFirstRecommendedKnowledge: '[class="bwf-search-result ng-tns-c36-8 ng-star-inserted"] .list__item__preview-icon',
+        roleDropDown: '.sr-preview-pane .sr-preview-item-header .btn-secondary',
+        sourceValue: '.sr-select-bar .btn-xs',
+        roleValue: '.select_option_container span',
+        descriptionText: '.sr-input-wrapper .large',
+        resources: 'bwf-smart-recorder-results .d-icon-infinity',
+        advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select button',
+        startOverButton: '.sr-footer .text-muted .btn-secondary',
+        RecommendedKnowledge: 'bwf-search-result-fields .bwf-search-fields__title-text',
     }
 
     async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
@@ -74,7 +71,7 @@ class QuickCasePage {
     async selectRequesterName(name: string): Promise<void> {
         //await $(this.selectors.inputBox).clear();
         //await browser.wait(this.EC.visibilityOf($(this.selectors.inputBox)));
-        await $(this.selectors.inputBox).sendKeys(`@${name}`);
+        await $(this.selectors.smartSearchTextBox).sendKeys(`@${name}`);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesters)), 3000);
         await $$(this.selectors.requesters).first().click();
     }
@@ -86,7 +83,7 @@ class QuickCasePage {
 
     async clearInputBox(): Promise<void> {
         //await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
-        await $(this.selectors.inputBox).clear();
+        await $(this.selectors.smartSearchTextBox).clear();
     }
 
     async getRequester(): Promise<string> {
@@ -166,7 +163,7 @@ class QuickCasePage {
         for (let i: number = 0; i <= 10; i++) {
             browser.sleep(5 * 1000);
             let template: string = "!" + templateName;
-            await $(this.selectors.inputBox).sendKeys(template);
+            await $(this.selectors.smartSearchTextBox).sendKeys(template);
             success = await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).isPresent().then(async (result) => {
                 if (result) {
                     await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).click();
@@ -176,7 +173,7 @@ class QuickCasePage {
             if (success) break;
             else {
                 for (let j: number = 0; j < template.length; j++) {
-                    await $(this.selectors.inputBox).sendKeys(protractor.Key.BACK_SPACE);
+                    await $(this.selectors.smartSearchTextBox).sendKeys(protractor.Key.BACK_SPACE);
                 }
                 continue;
             }
