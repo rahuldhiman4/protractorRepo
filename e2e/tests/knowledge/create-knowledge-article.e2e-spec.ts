@@ -86,7 +86,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickAssignToMeButton();
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await previewKnowledgePo.clickOnViewArticleLink();
             await utilCommon.switchToNewWidnow(1);
             await editKnowledgePage.verifyKnowledgeMetadata('Assignee', 'Qadim Katawazi');
             await editKnowledgePage.verifyKnowledgeMetadata('Assigned Group', 'Compensation and Benefits');
@@ -117,7 +117,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await previewKnowledgePo.clickOnViewArticleLink();
             await utilCommon.switchToNewWidnow(1);
             await editKnowledgePage.setKnowledgeStatus(knowledgeData.DraftStatus);
             await utilCommon.waitUntilPopUpDisappear();
@@ -163,7 +163,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await previewKnowledgePo.clickOnViewArticleLink();
             await utilCommon.switchToNewWidnow(1);
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.clickChangeAssignmentButton();
@@ -201,7 +201,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await previewKnowledgePo.clickOnViewArticleLink();
             await utilCommon.switchToNewWidnow(1);
             await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.DraftStatus);
             await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.PublishedStatus);
@@ -325,8 +325,8 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
             await createKnowledgePage.selectKnowledgeSet('HR');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            var knowledgeIdValue: string = await createKnowledgePage.getKnowledgeId();
-            await createKnowledgePage.clickBackButton();
+            var knowledgeIdValue: string = await previewKnowledgePo.getKnowledgeArticleID();
+            await previewKnowledgePo.clickOnBackButton();
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeArticlesConsolePo.searchKnowledgeArticle(knowledgeTitle);
             await expect(knowledgeArticlesConsolePo.isArticleIdDisplayed(knowledgeIdValue.trim())).toBeTruthy("Knowledge Article is not displayed");
@@ -783,7 +783,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.selectRegionDropDownOption('Australia');
             await createKnowledgePage.selectSiteDropDownOption('Melbourne');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await previewKnowledgePo.clickOnViewArticleLink();
             await utilCommon.switchToNewWidnow(1);
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
             expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Melbourne');
@@ -808,7 +808,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.selectKnowledgeSet('HR');
             await createKnowledgePage.selectRegionDropDownOption('Australia');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await previewKnowledgePo.clickOnViewArticleLink();
             await utilCommon.switchToNewWidnow(1);
             await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA();
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');

@@ -25,6 +25,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 
 describe('Case Activity', () => {
 
@@ -54,7 +55,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16767');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await createKnowlegePo.clickOnviewArticleLinkButton();
+            await previewKnowledgePo.clickOnViewArticleLink();
             await utilCommon.switchToNewWidnow(1);
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             // // 2nd Step: Inspect Case Activity UI - Click on Filter       
@@ -152,7 +153,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16768');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await createKnowlegePo.clickOnviewArticleLinkButton();
+            await previewKnowledgePo.clickOnViewArticleLink();
             await utilCommon.switchToNewWidnow(1);
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             // 2nd step: From Task Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Task
@@ -240,7 +241,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16773');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await createKnowlegePo.clickOnviewArticleLinkButton();
+            await previewKnowledgePo.clickOnViewArticleLink();
             await utilCommon.switchToNewWidnow(1);
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(knowledgeBodyText);
@@ -797,7 +798,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('Knowledge Article for DRDMV-16754');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await createKnowlegePo.clickOnviewArticleLinkButton();
+            await previewKnowledgePo.clickOnViewArticleLink();
 
             // View Knowledege Page
             await utilCommon.switchToNewWidnow(1);
@@ -1242,7 +1243,7 @@ describe('Case Activity', () => {
         await createKnowlegePo.addTextInKnowlegeTitleField('test_KA_for_DRDMV-16765');
         await createKnowlegePo.selectKnowledgeSet('HR');
         await createKnowlegePo.clickOnSaveKnowledgeButton();
-        await createKnowlegePo.clickOnviewArticleLinkButton();
+        await previewKnowledgePo.clickOnViewArticleLink();
         await utilCommon.switchToNewWidnow(1);
         await viewKnowledgeArticlePo.clickOnTab('Activity');
         // Verify logs with 5 lines or less than 5 lines

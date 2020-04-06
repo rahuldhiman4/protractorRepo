@@ -13,6 +13,7 @@ import editDocumentLibraryPo from '../../pageobject/settings/document-management
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 
 describe('Document Library', () => {
     beforeAll(async () => {
@@ -282,7 +283,7 @@ describe('Document Library', () => {
         await createKnowlegePo.selectKnowledgeSet('HR');
         expect(await createKnowlegePo.isAttachDocumentBladeDisplayed()).toBeFalsy('Attach Document Blade is displayed');
         await createKnowlegePo.clickOnSaveKnowledgeButton();
-        await createKnowlegePo.clickOnviewArticleLinkButton();
+        await previewKnowledgePo.clickOnViewArticleLink();
 
         await utilCommon.switchToNewWidnow(1);
         await informationTabPo.clickOnEditButton();
