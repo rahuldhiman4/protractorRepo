@@ -20,6 +20,7 @@ import editDocumentLibraryPage from '../../pageobject/settings/document-manageme
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -875,7 +876,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await createKnowledgePage.selectCategoryTier2Option(categoryTier2FieldVal);
             await createKnowledgePage.selectCategoryTier3Option(categoryTier3FieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await createKnowledgePage.clickOnviewArticleLinkButton();
+            await previewKnowledgePo.clickOnViewArticleLink();
             await utilCommon.switchToNewWidnow(1);
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePage.getCategoryTier1SelectedValue(categoryTier1)).toBe(categoryTier1FieldVal);
