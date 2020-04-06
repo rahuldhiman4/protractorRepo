@@ -9,7 +9,7 @@ class PreviewKnowledge {
         knowledgeArticleID: '.d-icon-lightbulb_o',
         viewArticle: '[rx-view-component-id="57f95ac6-4144-400f-a591-657ea98316dd"] button',
         backButton: '[rx-view-component-id="88ec72f0-2c65-4640-9455-54b6db3517f2"] button',
-        statusOfKA: '.status-transition'
+        statusOfKA: '[rx-view-component-id="09044fe7-3bcd-48e9-98f3-96c482b37b77"] .status-transition'
 
     }
     async getKnowledgeArticleTitle(): Promise<string> {
