@@ -496,7 +496,7 @@ describe("Create Case", () => {
             await navigationPage.gotoCreateCase();
             await expect((await createCasePage.getCreateCaseTitle()).trim()).toBe('Create Case', "Create Case title is not displayed in Create Case Page");
             await navigationPage.gotoCreateKnowledge();
-            await expect((await createKnowledgePage.getCreateKnowledgeTitle()).trim()).toBe('Create Knowledge', "Create Knowledge title is not displayed in Create knowledge Page");
+            await expect((await createKnowledgePage.getCreateKnowledgeHeader()).trim()).toContain('Create Knowledge', "Create Knowledge title is not displayed in Create knowledge Page");
         } catch (e) {
             throw e;
         } finally {

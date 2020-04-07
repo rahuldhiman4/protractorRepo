@@ -17,6 +17,7 @@ import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 
 describe('Notes template', () => {
     beforeAll(async () => {
@@ -460,7 +461,7 @@ describe('Notes template', () => {
         await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16754');
         await createKnowlegePo.selectKnowledgeSet('HR');
         await createKnowlegePo.clickOnSaveKnowledgeButton();
-        await createKnowlegePo.clickOnviewArticleLinkButton();
+        await previewKnowledgePo.clickOnViewArticleLink();
         // View Knowledege Page
         await utilCommon.switchToNewWidnow(1);
         await viewKnowledgeArticlePo.clickOnTab('Activity');
