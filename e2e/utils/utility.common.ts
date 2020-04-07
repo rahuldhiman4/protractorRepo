@@ -18,6 +18,17 @@ export class Utility {
         popupMsgTitle: '.a-toast__summary',
         closeTipMsg: '.a-toast__close_button',
         dropDownChoice: '.dropdown-item',
+        dateFieldPicker: 'input.i-date-time',
+        yearDate: 'div.a3t-calendar--controls-line[aria-label="Choose year"]',
+        monthDate: 'div.a3t-calendar--controls-line[aria-label="Choose month"]',
+        rightNavigation: 'button:nth-of-type(2)',
+        leftNavigation: 'button:nth-of-type(1)',
+        calendarDays: '.a3t-calendar--table tr td.a3t-calendar--table-day[aria-disabled="false"]',
+        selectTimeArrow: '.a3t-datetime--time-picker-summary-toggle',
+        activeMeridiemClock: '.a3t-clock--control-item[class*=active]',
+        meridiemClock: '.a3t-clock--control-item',
+        okDateTimePicker: '.btn-primary',
+        clearDateTimePicker: '.btn-secondary'
     }
 
     async isWarningDialogBoxDisplayed(): Promise<boolean> {
@@ -264,6 +275,84 @@ export class Utility {
             date = date1.toString();
         }
         return date + '/' + month + '/' + year;
+    }
+
+    async setDateField(guid: string, dateValue: string): Promise<void> {
+        //expects dateValue as format 04-01-2023 06:11 PM  -  DD-MM-YYYY HH:MM PM/AM
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth()+1;      //incrementing 1 because getmonth() function returns 0 for jan and 11 for dec
+        let arr = dateValue.split(" ");
+        let date = arr[0].split("-");
+        let time = arr[1].split(":");
+        let meridiem = arr[2];
+        let day: number = +date[0];
+        let month: number = +date[1];
+        let year: number = +date[2];
+        let hour: number = +time[0];
+        let minutes: number = +time[1];
+        let yearDifference = year - currentDate.getFullYear();
+        let monthDifference = month - currentMonth;                
+        let dateFieldGuid = await $(`[rx-view-component-id='${guid}']`);
+        let dateFieldElement = await dateFieldGuid.$(this.selectors.dateFieldPicker);
+        await dateFieldElement.click();
+        if (yearDifference > 0) {
+            for (let i = 0; i < yearDifference; i++) {
+                await dateFieldGuid.$(this.selectors.yearDate).$(this.selectors.rightNavigation).click();
+            }
+        }
+        else if (yearDifference < 0) {
+            for (let i = 0; i < (currentDate.getFullYear() - year); i++) {
+                await dateFieldGuid.$(this.selectors.yearDate).$(this.selectors.leftNavigation).click();
+            }
+        }
+
+        if (monthDifference > 0) {
+            for (let i = 0; i < monthDifference; i++) {
+                await dateFieldGuid.$(this.selectors.monthDate).$(this.selectors.rightNavigation).click();
+            }
+        }
+        else if (monthDifference < 0) {
+            for (let i = 0; i < (currentMonth - month); i++) {
+                await dateFieldGuid.$(this.selectors.monthDate).$(this.selectors.leftNavigation).click();
+            }
+        }
+
+        await browser.sleep(2000);
+        let numberOfDays = await dateFieldGuid.$$(this.selectors.calendarDays).count();
+        let dayToCompare:string = day + ", " + year;
+        for(let i=0;i<numberOfDays;i++){
+            let activeDayElement:string = await dateFieldGuid.$$(this.selectors.calendarDays).get(i).getAttribute('aria-label');
+            if(activeDayElement.search(dayToCompare)!=-1){
+                await dateFieldGuid.$$(this.selectors.calendarDays).get(i).click();
+                break;
+            }
+        }
+
+        await dateFieldGuid.$(this.selectors.selectTimeArrow).click();
+        let degrees = hour*30;
+        await dateFieldGuid.$(`.a3t-clock--tick-label[style="transform: rotate(-${degrees}deg);"]`).click();
+        degrees = minutes*6;
+        await dateFieldGuid.$(`.a3t-clock--tick-label[style="transform: rotate(-${degrees}deg);"]`).click();
+        let isActive=false;
+        let activeCounter = await dateFieldGuid.$$(this.selectors.activeMeridiemClock).count();
+        for(let i=0;i<activeCounter;i++){
+            if(await dateFieldGuid.$$(this.selectors.activeMeridiemClock).get(i).getText()==meridiem){
+                isActive=true;
+                break;
+            }
+        }
+
+        if(isActive==false)
+        {
+            let counter = await dateFieldGuid.$$(this.selectors.meridiemClock).count();
+            for(let i=0;i<counter;i++){
+                if(await dateFieldGuid.$$(this.selectors.meridiemClock).get(i).getText()==meridiem){
+                    await dateFieldGuid.$$(this.selectors.meridiemClock).get(i).click();
+                }
+            } 
+        }
+
+        await dateFieldGuid.$(this.selectors.okDateTimePicker).click();
     }
 
     async isAllPopupMsgsMatches(msgs: string[]): Promise<boolean> {
