@@ -4,14 +4,14 @@ class RequesterResponseBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         bladeHeading: 'h3.modal-title',
-        dynamicFieldsName: '[rx-view-component-id="4142c923-6eb9-4cae-9fe4-8ca8bde92702"] .label-wrapper',
+        dynamicFieldsName: '[rx-view-component-id="795026f0-f441-46b7-81c4-736511c800e0"] .form-control-label',
         okButton:'[rx-view-component-id="d459dabe-1ccb-4776-b121-874ed4ded902"] button',
     }
 
     async isDynamicFieldDisplayed(fieldName:string):Promise<boolean>{
         let fieldsNameCount= await $$(this.selectors.dynamicFieldsName).count(); 
         for(let i=0;i<fieldsNameCount;i++){
-           let field=await $$(this.selectors.dynamicFieldsName).get(i).getText();
+           let field = await (await $$(this.selectors.dynamicFieldsName).get(i).getText()).trim();
            if(field==fieldName) return true;
         }  
         return false;
@@ -27,7 +27,7 @@ class RequesterResponseBlade {
         await $(this.selectors.okButton).click();
     }
     async isDynamicGroupDisplayed(groupName:string):Promise<boolean>{
-        return await $(`[rx-view-component-id="4142c923-6eb9-4cae-9fe4-8ca8bde92702"] .group-container div[title=${groupName}]`).isDisplayed();
+        return await $(`[rx-view-component-id="11234e45-37d9-45a5-b77e-11217a3133d0"] .group-container__name__title[title=${groupName}]`).isDisplayed();
     }
 }
 export default new RequesterResponseBlade();

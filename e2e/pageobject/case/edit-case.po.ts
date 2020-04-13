@@ -61,7 +61,9 @@ class CaseEditPage {
         dynamicBooleanValue: 'button[aria-label="True"]',
         dynamicFieldDateTime: 'input[ng-model="datetime"]',
         dynamicFieldTime: '.dynamic-time-field input[ng-model="hours"]',
-        dynamicFieldsName: '[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] .label-wrapper'
+        dynamicFieldsName: '[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] .label-wrapper',
+        dynamicFieldInput: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] input',
+        dynamicAttachmentField:'[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .bwf-attachment-button input'
     }
 
     async removeAttachment(): Promise<void> {
@@ -388,8 +390,13 @@ class CaseEditPage {
 
     async addAttachment(attachmentField: string, fileToUpload: string): Promise<void> {
         const absolutePath = resolve(__dirname, fileToUpload);
-        let attachmentLocator = `input[name=${attachmentField}]`;
-        await $(attachmentLocator).sendKeys(absolutePath);
+        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
+        for (let i = 0; i < dynamicFields; i++) {
+            let field = await $$(this.selectors.dynamicFieldsName).get(i).getText();
+            if (attachmentField == field) {
+                await $$(this.selectors.dynamicAttachmentField).get(i).sendKeys(absolutePath);
+            }
+        }
     }
 
     async addDescriptionAttachment(fileToUpload: string): Promise<void> {
@@ -399,7 +406,13 @@ class CaseEditPage {
     }
 
     async setDynamicFieldValue(fieldName: string, fieldValue: string): Promise<void> {
-        await $(`input[name=${fieldName}]`).sendKeys(fieldValue);
+        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
+        for (let i = 0; i < dynamicFields; i++) {
+            let field = await $$(this.selectors.dynamicFieldsName).get(i).getText();
+            if (fieldName == field) {
+                await $$(this.selectors.dynamicFieldInput).get(i).sendKeys(fieldValue);
+            }
+        }
     }
 
     async setDateValueInDynamicField(value: string): Promise<void> {
