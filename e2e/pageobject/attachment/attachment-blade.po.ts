@@ -30,13 +30,6 @@ class AttachmentBlade {
         createdDateColoumnHeader: 'table thead tr th:nth-of-type(5) div',
     }
 
-    async test(): Promise<void> {
-        await $(this.selectors.attachmentSize).click();
-        await $(this.selectors.selectedCheckBoxCount).click();
-        await $(this.selectors.selectedCheckBoxCount).click();
-        await $(this.selectors.selectedCheckBoxCount).click();
-    }
-
     async getCountOfSelectedCheckBox(): Promise<string> {
         return await $(this.selectors.selectedCheckBoxCount).getText();
     }
