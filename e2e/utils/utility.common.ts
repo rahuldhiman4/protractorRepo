@@ -157,16 +157,13 @@ export class Utility {
         }
     }
 
-    async switchToNewWidnow(windowNum: number): Promise<void> {
-        await browser.sleep(5000);
+    async switchToNewTab(tabNum: number): Promise<void> {
         await browser.getAllWindowHandles().then(async function (handles) {
-            await browser.switchTo().window(handles[windowNum]);
+            await browser.switchTo().window(handles[tabNum]);
         });
-        await browser.sleep(2000);
     }
 
     async switchToDefaultWindowClosingOtherTabs(): Promise<void> {
-        await browser.sleep(5000);
         await browser.getAllWindowHandles().then(async function (handles) {
             for (let i = handles.length; i > 1; i--) {
                 await browser.switchTo().window(handles[i - 1]);
@@ -174,7 +171,6 @@ export class Utility {
             }
             await browser.switchTo().window(handles[0]);
         });
-        await browser.sleep(2000);
     }
 
     async waitUntilSpinnerToHide(): Promise<void> {
