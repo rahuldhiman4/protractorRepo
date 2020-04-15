@@ -28,9 +28,10 @@ export class Utility {
         activeMeridiemClock: '.a3t-clock--control-item[class*=active]',
         meridiemClock: '.a3t-clock--control-item',
         okDateTimePicker: '.btn-primary',
-        clearDateTimePicker: '.btn-secondary'
+        clearDateTimePicker: '.btn-secondary',
     }
 
+    
     async isWarningDialogBoxDisplayed(): Promise<boolean> {
         return await $(this.selectors.warningDialog).isPresent();
     }

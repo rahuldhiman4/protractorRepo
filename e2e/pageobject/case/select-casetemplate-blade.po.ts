@@ -1,11 +1,11 @@
 import { $, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
-import utilGrid from '../../utils/util.grid';
+import utilGrid from '../../utils/utility.grid';
 
 class SelectCaseTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         recommendedTemplate: 'Recommended Templates',
-        allTemplates: 'All Templates',
+        allTemplates: '.nav-link-wrapper',
         searchTextbox: '[rx-view-component-id="c61478d4-1d46-4d0d-9450-c90885aab77e"] .adapt-search-field-ellipsis',
         refreshbutton: '[rx-id="refresh-button"]',
         applyButton: '[rx-view-component-id="f348e681-ac02-452c-b37f-009ac4434053"] button',
@@ -16,7 +16,7 @@ class SelectCaseTemplateBlade {
 
     async clickOnRecommendedTemplateTab(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplate)));
-        await element(by.linkText(this.selectors.recommendedTemplate)).click();
+        await element(by.cssContainingText(this.selectors.allTemplates,'Recommended Templates')).click();    
     }
 
     async clickOnCaseTemplateCheckbox(): Promise<void> {
@@ -32,7 +32,7 @@ class SelectCaseTemplateBlade {
     async clickOnAllTemplateTab(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.allTemplates)));
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.allTemplates)));
-        await element(by.linkText(this.selectors.allTemplates)).click();
+        await element(by.cssContainingText(this.selectors.allTemplates,'All Templates')).click();
     }
 
     async searchAndOpenCaseTemplate(input: string): Promise<void> {

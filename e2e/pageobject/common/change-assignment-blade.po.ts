@@ -1,4 +1,4 @@
-import { $, $$, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
 
 class ChangeAssignmentBlade {
         EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -12,7 +12,7 @@ class ChangeAssignmentBlade {
                 assignToMeCheckBox: '.checkbox__input',
                 searchAsignee: '[class="search-input"] .adapt-search-field-wrapper input',
                 assignee: '.person__info .name',
-                company: 'selectedOrganizationId',
+                filterDropdowns: '[rx-view-component-id="f95c0ee2-cc2f-4c9e-975a-449f71aeba83"] button.dropdown-toggle',
                 businessUnit: 'selectedBusinessUnitId',
                 supportGroupName: '.rx-assignment-person-info',
                 department: 'selectedDepartmentId',
@@ -26,12 +26,12 @@ class ChangeAssignmentBlade {
 
         async getCompanyDefaultValue(): Promise<string> {
                 //        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.company))));
-                return await element(by.model(this.selectors.company)).getText();
+             return await $$(this.selectors.filterDropdowns).get(0).getText();
         }
 
         async getSupportGroupDefaultValue(): Promise<string> {
                 //        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.company))));
-                return await element(by.model(this.selectors.supportGroup)).getText();
+                return await $$(this.selectors.filterDropdowns).get(3).getText();
         }
 
         async isAssignToMeCheckBoxPresent(): Promise<boolean> {
@@ -46,22 +46,22 @@ class ChangeAssignmentBlade {
 
         async isCompanyDrpDwnDisplayed(): Promise<boolean> {
                 //        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.company))));
-                return await element(by.model(this.selectors.company)).isDisplayed();
+                return await $$(this.selectors.filterDropdowns).get(0).isDisplayed();
         }
 
         async isBuisnessUnitDrpDwnDisplayed(): Promise<boolean> {
                 //       await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.businessUnit))));
-                return await element(by.model(this.selectors.businessUnit)).isDisplayed();
+                return await $$(this.selectors.filterDropdowns).get(1).isDisplayed();
         }
 
         async isDepartmentDrpDwnDisplayed(): Promise<boolean> {
                 //        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.department))));
-                return await element(by.model(this.selectors.department)).isDisplayed();
+                return await $$(this.selectors.filterDropdowns).get(2).isDisplayed();
         }
 
         async isSupportGroupDrpDwnDisplayed(): Promise<boolean> {
                 //        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.supportGroup))));
-                return await element(by.model(this.selectors.supportGroup)).isDisplayed();
+                return await $$(this.selectors.filterDropdowns).get(3).isDisplayed();
         }
 
         async isAssigneeListPresent(): Promise<boolean> {
@@ -175,6 +175,8 @@ class ChangeAssignmentBlade {
 
         async selectAssignee(name: string): Promise<void> {
                 //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchAsignee)));
+                await $(this.selectors.searchAsignee).click();
+
                 await $(this.selectors.searchAsignee).sendKeys(name + Key.ENTER);
                 //        await browser.wait(this.EC.or(async () => {
                 //            let count = await $$(this.selectors.assignee).count();
@@ -208,6 +210,7 @@ class ChangeAssignmentBlade {
         async selectAssigneeAsSupportGroup(name: string): Promise<void> {
                 //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchAsignee)));
                 //        await $(this.selectors.searchAsignee).sendKeys(name);
+                browser.sleep(1000);
                 await element(by.cssContainingText(this.selectors.assignee, 'Assign to Support Group')).click();
                 //        await browser.wait(this.EC.visibilityOf(option));
                 //        await browser.wait(this.EC.elementToBeClickable(option));
