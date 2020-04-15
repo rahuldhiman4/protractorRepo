@@ -121,7 +121,6 @@ describe('Person Profile test', () => {
     it('[DRDMV-14028]: Verify Requested Cases tab of My Profile console', async () => {
         await navigationPage.gotoPersonProfile();
         await personProfile.clickOnTab("Requested Cases");
-        //let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
         for (let i: number = 0; i < 4; i++) {
@@ -149,13 +148,12 @@ describe('Person Profile test', () => {
     it('[DRDMV-14029]: Verify Assigned Cases tab of My Profile console', async () => {
         await navigationPage.gotoPersonProfile();
         await personProfile.clickOnTab("Assigned Cases");
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
         for (let i: number = 0; i < 4; i++) {
             let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             caseData['DRDMV-14088'].summary = "DRDMV-14029 " + randomStr;
-            let response = await apiHelper.createCase(caseData['DRDMV-14088']);
+            await apiHelper.createCase(caseData['DRDMV-14088']);
         }
 
         //Verifying default column matching

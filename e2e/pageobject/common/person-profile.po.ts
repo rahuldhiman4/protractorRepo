@@ -1,5 +1,6 @@
-import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions, promise, browser } from "protractor";
 import utilGrid from "../../utils/util.grid";
+import utilityGrid from '../../utils/utility.grid';
 
 class PersonProfilePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -13,116 +14,141 @@ class PersonProfilePage {
         site: '[rx-view-component-id="d8be57c9-ee7c-4b08-84af-90c9a552b919"] .person-site-text',
         managerName: '[rx-view-component-id="6f4a19be-2c96-4c58-b9c7-a49e2beb0c7b"] .person-name a',
         activityNotes: '.activity-feed-note textarea',
-        requestedCasesGuid: 'cdba89ff-683c-42ba-9c2a-3adf4322504c',
         assignedCasesGuid: '08bd2811-37eb-43a3-a1fe-de845fe6c5a6',
         requestedCaseGuid: '934faa1d-0932-4141-9a6e-7f6ac1726427',
         logTitle: '.activity-title',
+        tabLocator: 'button.nav-link',
     }
 
     async getCaseViewCount(TitleText: string): Promise<number> {
-        return await element.all(by.cssContainingText (this.selectors.logTitle,TitleText)).count();
+        return await element.all(by.cssContainingText(this.selectors.logTitle, TitleText)).count();
     }
 
     async clickOnTab(tabName: string): Promise<void> {
-        await element(by.linkText(tabName)).click();
+        switch (tabName) {
+            case "Related Persons": {
+                await $$(this.selectors.tabLocator).get(0).click();
+                break;
+            }
+            case "Requested Cases": {
+                await $$(this.selectors.tabLocator).get(1).click();
+                break;
+            }
+            case "Assigned Cases": {
+                await $$(this.selectors.tabLocator).get(2).click();
+                break;
+            }
+            case "Support Groups": {
+                await $$(this.selectors.tabLocator).get(3).click();
+                break;
+            }
+            case "Related Cases": {
+                await $$(this.selectors.tabLocator).get(4).click();
+                break;
+            }
+            default: {
+                console.log(tabName, ' is not a valid tab name');
+                break;
+            }
+        }
     }
 
     async getPersonName(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.personName)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.personName)));
         return await $(this.selectors.personName).getText();
     }
 
     async isPersonProfileImageDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personImage)));
-        let len: string = await $(this.selectors.personImage).getAttribute("src");
-        return len.length - 34 > 0;
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personImage)));
+        let len: string = await $(this.selectors.personImage).getAttribute("style");
+        return await len.includes('url');
     }
 
     async isPersonManagerImageDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.managerImage)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.managerImage)));
         let len: string = await $(this.selectors.managerImage).getAttribute("src");
         return len.length - 34 > 0;
     }
 
     async getCompany(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
         return await $(this.selectors.companyName).getText();
     }
 
     async getContactNumber(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
         return await $(this.selectors.phone).getText();
     }
 
     async getEmail(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
         return await $(this.selectors.email).getText();
     }
 
     async getManagerName(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.managerName)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.managerName)));
         return await $(this.selectors.managerName).getText();
     }
 
     async getSite(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
         return await $(this.selectors.site).getText();
     }
 
     async clickOnManagerLink(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.managerName)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.managerName)));
         await $(this.selectors.managerName).click();
     }
 
     async isActivityNotesDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phone)));
         return await $(this.selectors.activityNotes).isPresent();
     }
 
     async isCasePresentOnRequestedCases(caseId: string): Promise<boolean> {
-        await utilGrid.clearFilter();
-        await utilGrid.searchOnGridConsole(caseId);
-        return caseId == await utilGrid.getSelectedGridRecordValue(this.selectors.requestedCasesGuid, "Case ID");
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchRecord(caseId);
+        return caseId == await utilityGrid.getFirstGridRecordColumnValue("Case ID", this.selectors.requestedCaseGuid);
     }
 
     async isCasePresentOnAssignedCases(caseId: string): Promise<boolean> {
-        await utilGrid.clearFilter();
-        await utilGrid.searchOnGridConsole(caseId);
-        return caseId == await utilGrid.getSelectedGridRecordValue(this.selectors.assignedCasesGuid, "Case ID");
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchRecord(caseId);
+        return caseId == await utilityGrid.getFirstGridRecordColumnValue("Case ID", this.selectors.assignedCasesGuid);
     }
 
     async addRequestedCaseGridColumn(columnNames: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.requestedCaseGuid, columnNames);
+        await utilityGrid.addGridColumn(columnNames, this.selectors.requestedCaseGuid);
     }
 
     async removeRequestedCaseGridColumn(columnNames: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.requestedCaseGuid, columnNames);
+        await utilityGrid.removeGridColumn(columnNames, this.selectors.requestedCaseGuid);
     }
 
     async addAssignedCaseGridColumn(columnNames: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.assignedCasesGuid, columnNames);
+        await utilityGrid.addGridColumn(columnNames, this.selectors.assignedCasesGuid);
     }
 
     async removeAssignedCaseGridColumn(columnNames: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.assignedCasesGuid, columnNames);
+        await utilityGrid.removeGridColumn(columnNames, this.selectors.assignedCasesGuid);
     }
 
     async areRequestedCaseColumnMatches(columnNames: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.requestedCaseGuid, columnNames);
+        return await utilityGrid.areColumnHeaderMatches(columnNames, this.selectors.requestedCaseGuid);
     }
 
     async areAssignedCaseColumnMatches(columnNames: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.assignedCasesGuid, columnNames);
+        return await utilityGrid.areColumnHeaderMatches(columnNames, this.selectors.assignedCasesGuid);
     }
 
-    async isRequestedCasesColumnsSortedAscending(columnName: string): Promise<boolean>{
-        await utilGrid.clearFilter();
-        return await utilGrid.isGridColumnSorted(columnName, "ascending", this.selectors.requestedCaseGuid);
+    async isRequestedCasesColumnsSortedAscending(columnName: string): Promise<boolean> {
+        await utilityGrid.clearFilter();
+        return await utilityGrid.isGridColumnSorted(columnName, "asc", this.selectors.requestedCaseGuid);
     }
 
-    async isAssignedCasesColumnsSortedAscending(columnName: string): Promise<boolean>{
-        await utilGrid.clearFilter();
-        return await utilGrid.isGridColumnSorted(columnName, "ascending", this.selectors.assignedCasesGuid);
+    async isAssignedCasesColumnsSortedAscending(columnName: string): Promise<boolean> {
+        await utilityGrid.clearFilter();
+        return await utilityGrid.isGridColumnSorted(columnName, "asc", this.selectors.assignedCasesGuid);
     }
 
 }

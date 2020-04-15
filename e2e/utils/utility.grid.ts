@@ -12,7 +12,7 @@ export class GridOperations {
         gridCheckbox: '.ui-chkbox-box',
         appliedPresetFilter: '.a-tag-active span',
         filterPresetBtn: 'button.d-icon-left-filter',
-        clearBtn: '.advanced-filter__actions-buttons',
+        clearBtn: '.advanced-filter__actions-buttons button',
         addVisibleColumnsIcon: 'button.d-icon-left-lines_vertical',
         gridColumnSelect: '.dropdown-item .checkbox__input',
         gridHeaders: '.c-header-container .c-header-name',
@@ -22,7 +22,8 @@ export class GridOperations {
         filterTab: '.nav-item button',
         visibleColumnButton: '.d-icon-left-lines_vertical',
         selectCheckbox: '.ui-chkbox-box',
-        selectRadioButton: '.radio__label input'
+        selectRadioButton: '.radio__label input',
+        refreshIcon: 'button[rx-id="refresh-button"]'
     }
 
     async searchRecord(searchValue: string, guid?: string): Promise<void> {
@@ -66,11 +67,13 @@ export class GridOperations {
             this.selectors.appliedPresetFilter = gridGuid + this.selectors.appliedPresetFilter;
             this.selectors.filterPresetBtn = gridGuid + this.selectors.filterPresetBtn;
             this.selectors.clearBtn = gridGuid + this.selectors.clearBtn;
+            this.selectors.refreshIcon = gridGuid + this.selectors.refreshIcon;
         }
         await $(this.selectors.appliedPresetFilter).isPresent().then(async (result) => {
             if (result) {
                 await $(this.selectors.filterPresetBtn).click();
-                await $(this.selectors.clearBtn).click();
+                await $$(this.selectors.clearBtn).first().click();
+                await $(this.selectors.refreshIcon).click();
             } else {
                 console.log("Filters are already cleared");
             }
@@ -88,7 +91,7 @@ export class GridOperations {
     async addOrRemoveGridColumn(columnNameList: string[], removeColumn: string, guid?: string): Promise<void> {
         let guidComponent = '';
         if (guid) {
-            guidComponent = `[rx-view-component-id="${guid}"]`;
+            guidComponent = `[rx-view-component-id="${guid}"] `;
         }
         await $(guidComponent + this.selectors.visibleColumnButton).click();
 
@@ -119,7 +122,7 @@ export class GridOperations {
     async searchAndOpenHyperlink(id: string, guid?: string): Promise<void> {
         if (guid) {
             await this.searchRecord(id, guid);
-            await $$(`[rx-view-compone=nt-id='${guid}'] ` + this.selectors.gridRowLinks).first().click();
+            await $$(`[rx-view-component-id='${guid}'] ` + this.selectors.gridRowLinks).first().click();
         }
         else {
             await this.searchRecord(id);
@@ -130,8 +133,8 @@ export class GridOperations {
     async getFirstGridRecordColumnValue(columnName: string, guid?: string): Promise<string> {
         let count: number = 0;
         if (guid) {
-            this.selectors.gridHeaders = `[rx-view-compone=nt-id='${guid}'] ` + this.selectors.gridHeaders;
-            this.selectors.gridCellData = `[rx-view-compone=nt-id='${guid}'] ` + this.selectors.gridCellData;
+            this.selectors.gridHeaders = `[rx-view-component-id='${guid}'] ` + this.selectors.gridHeaders;
+            this.selectors.gridCellData = `[rx-view-component-id='${guid}'] ` + this.selectors.gridCellData;
         }
         let headersLocator = await $$(this.selectors.gridHeaders);
         for (let i: number = 0; i < await headersLocator.length; i++) {
@@ -146,7 +149,7 @@ export class GridOperations {
         let allElement = this.selectors.gridCellData;
         let gridColumnHeaderList = await $$(this.selectors.gridHeaders);
         if (guid) {
-            gridColumnHeaderList = await $$(`[rx-view-compone=nt-id='${guid}'] ` + this.selectors.gridHeaders);
+            gridColumnHeaderList = await $$(`[rx-view-component-id='${guid}'] ` + this.selectors.gridHeaders);
             allElement = `[rx-view-component-id='${guid}'] ` + this.selectors.gridCellData;
         }
         let columnPosition = 0;
