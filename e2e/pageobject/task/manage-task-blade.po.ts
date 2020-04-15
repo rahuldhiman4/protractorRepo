@@ -1,5 +1,6 @@
 import { $, $$, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
 
 class ManageTaskBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -109,7 +110,7 @@ class ManageTaskBlade {
 
     async addTaskFromTaskTemplate(templateSummary: string): Promise<void> {
         await this.clickAddTaskFromTemplateButton();
-        await utilGrid.searchAndSelectGridRecord(templateSummary);
+        await utilityGrid.searchAndSelectGridRecord(templateSummary);
         await this.clickOnTaskGridSaveButton();
     }
 }

@@ -11,6 +11,7 @@ class Copytaskpage {
         newProcessName: '[rx-view-component-id="85c0b484-4b35-4c68-955b-73f6949b56d2"] input',
         templateStatus: '09db292a-212a-433e-8c20-a92f8c4e5168',
         saveCopyTemplate: '[rx-view-component-id="5001f6ea-4438-4485-bdd2-c952a12a1a34"] button',
+        cancelCopyTemplate: '[rx-view-component-id="3f760e5f-70e9-4fbf-8b05-cd7d460f8818"] button',
         templateName: '[rx-view-component-id="2e4ef0dc-9b73-4c8f-afe6-221ddf0594c7"] input',
         taskSummary: '[rx-view-component-id="c19d336e-7339-4970-b69a-100108d672fd"] input',
         sourceProcessNameValue: '[rx-view-component-id="9f29e10e-dedf-4bab-8372-5b40002d999a"] input',
@@ -22,15 +23,15 @@ class Copytaskpage {
     }
 
     async unSelectCopyExistingProcess(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.sourceProcessNameValue)));
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.toggleBox)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.sourceProcessNameValue)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.toggleBox)));
         await $(this.selectors.toggleBox).click();
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.processName)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.processName)));
         return await $(this.selectors.processName).getAttribute('disabled');
     }
 
     async setTemplateName(input: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
         await $(this.selectors.templateName).clear();
         await $(this.selectors.templateName).sendKeys(input);
     }
@@ -44,30 +45,35 @@ class Copytaskpage {
     }
 
     async setTaskSummary(input: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummary)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummary)));
         await $(this.selectors.taskSummary).clear();
         await $(this.selectors.taskSummary).sendKeys(input);
     }
 
     async setNewProcessName(input: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.newProcessName)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.newProcessName)));
         await $(this.selectors.newProcessName).clear();
         await $(this.selectors.newProcessName).sendKeys(input);
     }
 
     async getProcessName(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.processName)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.processName)));
         return await $(this.selectors.processName).getText();
     }
 
     async getSourceProcessName(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.sourceProcessname)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.sourceProcessname)));
         return await $(this.selectors.sourceProcessname).getAttribute('value');
     }
 
     async clickSaveCopytemplate(): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveCopyTemplate)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveCopyTemplate)));
         await $(this.selectors.saveCopyTemplate).click();
+    }
+
+    async clickCancelCopytemplate(): Promise<void> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveCopyTemplate)));
+        await $(this.selectors.cancelCopyTemplate).click();
     }
 
     async selectTemplateStatus(status: string): Promise<void> {

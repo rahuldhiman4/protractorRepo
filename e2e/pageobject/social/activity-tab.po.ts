@@ -6,13 +6,13 @@ class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         addNoteBox: '.textfield__wrapper .form-control',
-        addNoteBoxEdit: '.textfield__wrapper textarea',
+        addNoteBoxEdit: '.bwf-activity-add-note textarea',
         personPopup: '.popup-person',
         addNotePostButton: '.activity-feed-note-buttons__right .btn-primary',
         addNoteCancelButton: '.activity-feed-note-buttons__right .btn-secondary',
         addNoteAttachLink: '.activity-note .bwf-button-link',
         addNoteNotesTemplate: '.activity-note .d-icon-note_pencil',
-        activityLog: '.log-item__body div[class]',
+        activityLog: '.activity__body .activity-title, .activity__body [style="position: relative;"], .activity__body .field, .activity__body .value',
         personLink: 'bwf-activity-title a[href].ng-star-inserted',
         filterButton: '.d-icon-filter',
         filterCheckbox: '.dropdown-menu .ng-star-inserted .checkbox__input',
