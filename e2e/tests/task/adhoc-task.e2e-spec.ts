@@ -53,7 +53,7 @@ describe('Create Adhoc task', () => {
         expect(await adhoctaskTemplate.isAssignedCompanyRequiredTextPresent()).toBeTruthy();
         expect(await adhoctaskTemplate.isAssignedGroupRequiredTextPresent()).toBeTruthy();
 
-        expect(await adhoctaskTemplate.getSaveButtonAttribute('ng-disabled')).toBeTruthy();
+        expect(await adhoctaskTemplate.getSaveButtonAttribute('disabled')).toBeFalsy();
         expect(await adhoctaskTemplate.getStatusAttribute()).toBeTruthy();
         expect(await adhoctaskTemplate.getAssignCompanyAttribute()).toBeTruthy();
         expect(await adhoctaskTemplate.getBuisnessUnitAttribute()).toBeTruthy();
