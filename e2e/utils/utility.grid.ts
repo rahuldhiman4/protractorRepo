@@ -258,7 +258,7 @@ export class GridOperations {
             this.selectors.selectCheckbox = `[rx-view-component-id="${guid}"] ` + this.selectors.selectCheckbox;
             this.selectors.selectRadioButton = `[rx-view-component-id="${guid}"] ` + this.selectors.selectRadioButton;
         }
-        else this.searchRecord(recordName);
+        else await this.searchRecord(recordName);
         let checkboxLocator = await $(this.selectors.selectCheckbox);
         let radioButtonLocator = await $(this.selectors.selectRadioButton);
         if (await checkboxLocator.isPresent()) await checkboxLocator.click();

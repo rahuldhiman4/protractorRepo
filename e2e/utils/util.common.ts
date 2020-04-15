@@ -24,6 +24,11 @@ export class Util {
         warningMsgText: '.modal-content .modal-title-message, .modal-content .d-modal__title',
         warningMsgTextKnowledgeStyle: '.d-modal__content .d-modal__content-item',
         configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
+        backArrow: '[class="d-button d-icon-left-undo d-button_link d-button_small"]',
+    }
+
+    async clickOnBackArrow(): Promise<void> {
+        await $(this.selectors.backArrow).click();
     }
 
     async isConfigurationOptionMessageDisplayed(errorMessage): Promise<boolean> {
