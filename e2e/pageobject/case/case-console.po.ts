@@ -1,6 +1,6 @@
-import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
+import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
 import gridUtil from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
 
 class CaseConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -53,8 +53,8 @@ class CaseConsolePage {
     }
 
     async searchAndOpenCase(caseId: string): Promise<void> {
-        await gridUtil.clearFilter();
-        await gridUtil.searchAndOpenHyperlink(caseId);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(caseId);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
