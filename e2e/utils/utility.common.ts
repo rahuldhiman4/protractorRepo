@@ -225,9 +225,13 @@ export class Utility {
     }
 
     async isRequiredTagToField(guid: string): Promise<boolean> {
-        let nameElement = await $(`[rx-view-component-id="${guid}"] span`);
-        let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
-        return value.trim().substring(3, value.length - 2) === 'required';
+        let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent();
+        if (!isRequired) {
+            let nameElement = await $(`[rx-view-component-id="${guid}"] label`);
+            let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+            isRequired = value.trim().substring(3, value.length - 2) === 'required';
+        }
+        return isRequired;
     }
 
     async deleteAlreadyDownloadedFile(fileName: string): Promise<boolean> {
