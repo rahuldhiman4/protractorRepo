@@ -47,8 +47,8 @@ node("Protractor"){
             url: 'https://github.bmc.com/DSM-Apps/bwf-e2e-protractor.git'
           }
           bat """if exist "./${dirName}/e2e/reports" RMDIR /S /Q "./${dirName}/e2e/reports" """
-          bat """npm --prefix ./${dirName}/ install ./${dirName}/"""
-          bat """npm --prefix ./${dirName}/ run webdriver-update -- --gecko=false"""
+          //bat """npm --prefix ./${dirName}/ install ./${dirName}/"""
+          //bat """npm --prefix ./${dirName}/ run webdriver-update"""
         }
 
         try {
