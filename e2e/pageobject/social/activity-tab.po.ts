@@ -6,7 +6,7 @@ class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         addNoteBox: '.textfield__wrapper .form-control',
-        addNoteBoxEdit: '.textfield__wrapper textarea[id="adapt-textfield-4_textarea"]',
+        addNoteBoxEdit: '.textfield__wrapper textarea',
         personPopup: '.popup-person',
         addNotePostButton: '.activity-feed-note-buttons__right .btn-primary',
         addNoteCancelButton: '.activity-feed-note-buttons__right .btn-secondary',
@@ -16,6 +16,7 @@ class ActivityTabPage {
         personLink: 'bwf-activity-title a[href].ng-star-inserted',
         filterButton: '.d-icon-filter',
         filterCheckbox: '.dropdown-menu .ng-star-inserted .checkbox__input',
+        filterCheckBoxLabel: '.checkbox__label span',
         filterAuthor: '.dropdown input[placeholder="Enter name, email, or login ID"]',
         filterPopupApplyOrClearButton: '.filter-options button span',
         // activityText: '[rx-view-component-id="34167059-11d4-4e85-8a58-e501544e2461"] [title="Activity"]',
@@ -397,7 +398,7 @@ class ActivityTabPage {
 
     async getTextTaskFilterOption(filterCheckBox: string): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
-        return await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBox)).getText();
+        return await element(by.cssContainingText(this.selectors.filterCheckBoxLabel, filterCheckBox)).getText();
     }
 
     async isAuthorSearchBoxVisible(): Promise<boolean> {
@@ -412,7 +413,7 @@ class ActivityTabPage {
 
     async selectFilterCheckBox(filterCheckBoxText: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
-        await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBoxText)).click();
+        await element(by.cssContainingText(this.selectors.filterCheckBoxLabel, filterCheckBoxText)).click();
     }
 
     async addAuthorOnFilter(AuthorName: string): Promise<void> {
@@ -421,6 +422,11 @@ class ActivityTabPage {
         await $(this.selectors.filterAuthor).sendKeys(AuthorName);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)), 2000);
         await $(this.selectors.personPopup).click();
+    }
+
+    async clearAuthorSearchBoxOnFilter(): Promise<void> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
+        await $(this.selectors.filterAuthor).clear();
     }
 
     async removeAuthorFromFilter(): Promise<void> {
