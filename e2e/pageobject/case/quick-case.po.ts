@@ -16,7 +16,7 @@ class QuickCasePage {
         quickCaseGuid: 'ac36dcad-30f0-4ab0-86a4-11fee7195051',
         popUpMsgLocator: '.rx-growl-item__message', 
         smartSearchText: '.smart-recorder-highlightPerfectMatch',
-        createCaseButton: '[rx-view-component-id="8b88c054-4445-43e4-90f0-72f829571fd5"] button',
+        createCaseButton: '.d-inline-block [rx-view-component-id="8b88c054-4445-43e4-90f0-72f829571fd5"] button',
         requesters: '.bwf-select-list .bwf-selectable-list-item',
         pinFirstRecommendedCase: '[class="bwf-search-result ng-tns-c36-9 ng-star-inserted"] .adapt-icon',
         requester: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .ac-person-full-name',
@@ -27,7 +27,7 @@ class QuickCasePage {
         roleValue: '.select_option_container span',
         descriptionText: '.sr-input-wrapper .large',
         resources: 'bwf-smart-recorder-results .d-icon-infinity',
-        advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select button',
+        advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select label',
         startOverButton: '.sr-footer .text-muted .btn-secondary',
         RecommendedKnowledge: 'bwf-search-result-fields .bwf-search-fields__title-text',
     }
@@ -96,9 +96,9 @@ class QuickCasePage {
         await browser.sleep(1000); // required because UI renders after get call used before calling this method
         let elementCount = await $$(this.selectors.confirmedItemSelection).count();
         for (let i = 0; i < elementCount; i++) {
-            let actualRelationType = await $$(this.selectors.confirmedItemSelection).get(i).$('button').getText();
-            if (actualRelationType == relationType) {
-                employee = await $$(this.selectors.confirmedItemSelection).get(i).$('.smart-recorder-confirmedItem-selection+div').getText();
+        let actualRelationType = await $$(this.selectors.confirmedItemSelection).get(i).$('button').getText();
+           if (actualRelationType == relationType) {
+                employee = await $$(this.selectors.confirmedItemSelection).get(i).$('.sr-header-display-name').getText();
                 break;
             }
         }
@@ -119,7 +119,7 @@ class QuickCasePage {
 
     async isCreateButtonDisabled(): Promise<boolean> {
         //await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseButton)));
-        return await $(this.selectors.createCaseButton).getAttribute("disabled") == "true";
+        return await $(this.selectors.createCaseButton).getAttribute("disabled") == "disabled";
     }
 
     async createCaseButton(): Promise<void> {

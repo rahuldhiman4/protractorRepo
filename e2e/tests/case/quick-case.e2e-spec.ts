@@ -23,7 +23,7 @@ import utilGrid from '../../utils/util.grid';
 let RecommendedKnowledgeStr = "Recommended Knowledge ";
 let applyBtn = "Apply";
 describe("Quick Case", () => {
-    const requester = "Requester";
+    const requester = "The requester of the case";
     const contact = "Contact";
     let caseSummary771 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let caseDescription771 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -157,7 +157,7 @@ describe("Quick Case", () => {
         let templateData = {
             "templateName": templateName797,
             "templateSummary": templateSummary797,
-            "templateStatus": "Active",
+            "templateStatus": 'Active',
             "company": 'Petramco'
         }
         await apiHelper.apiLogin('qkatawazi');
@@ -211,7 +211,7 @@ describe("Quick Case", () => {
         await apiHelper.createNewUser(userData4);
 
         await navigationPage.gotoQuickCase();
-        await quickCase.selectRequesterName('Person1');
+        await quickCase.selectRequesterName('Person1 Person1');
         await quickCase.setCaseSummary('caseSummary');
         await quickCase.createCaseButton();
         expect(await utilCommon.isPopupMsgsMatches(['Saved successfully'])).toBeTruthy('Success message not validated');
@@ -219,6 +219,7 @@ describe("Quick Case", () => {
         expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
     });
 
+    //pending contact bug
     it('[DRDMV-794]: [Quick Case] Requester, Contact, Subject Employee people selection', async () => {
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('allen');
@@ -232,14 +233,14 @@ describe("Quick Case", () => {
         await quickCase.selectDrpDownValueByIndex('Target', 1);
         expect(await quickCase.isCreateButtonDisabled()).toBeTruthy('Save button Enabled');
         await quickCase.selectRequesterName('kye');
-        expect(await quickCase.getDrpDownValueByIndex(5)).toBe('Requester');
+        expect(await quickCase.getDrpDownValueByIndex(5)).toBe('The requester of the case');
         expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Target');
         await quickCase.selectDrpDownValueByIndex('The requester of the case', 1);
-        expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Requester');
-        expect(await quickCase.getDrpDownValueByIndex(5)).toBe('Contact');
+        expect(await quickCase.getDrpDownValueByIndex(1)).toBe('The requester of the case');
+        expect(await quickCase.getDrpDownValueByIndex(5)).toBe('Another person contacting on behalf of the requester');
         await quickCase.selectDrpDownValueByIndex('Another person contacting on behalf of the requester', 1);
-        expect(await quickCase.getDrpDownValueByIndex(5)).toBe('Requester');
-        expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Contact');
+        expect(await quickCase.getDrpDownValueByIndex(5)).toBe('The requester of the case');
+        expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Another person contacting on behalf of the requester');
         await quickCase.setCaseSummary('address');
         await quickCase.saveCase();
         expect(await previewCasePo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy();
@@ -250,20 +251,20 @@ describe("Quick Case", () => {
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('Allen');
         expect(await quickCase.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
-        await quickCase.clearInputBox();
-        await quickCase.selectRequesterName('@Allbrook');
+        await quickCase.clickStartOverButton();
+        await quickCase.selectRequesterName('Allbrook');
         expect(await quickCase.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
-        await quickCase.clearInputBox();
-        await quickCase.selectRequesterName('@all');
+        await quickCase.clickStartOverButton();
+        await quickCase.selectRequesterName('all');
         expect(await quickCase.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
-        await quickCase.clearInputBox();
-        await quickCase.selectRequesterName('@aallbrook');
+        await quickCase.clickStartOverButton();
+        await quickCase.selectRequesterName('aallbrook');
         expect(await quickCase.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
-        await quickCase.clearInputBox();
-        await quickCase.selectRequesterName('@Al Allbrook');
+        await quickCase.clickStartOverButton();
+        await quickCase.selectRequesterName('Al Allbrook');
         expect(await quickCase.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
-        await quickCase.clearInputBox();
-        await quickCase.selectRequesterName('@allen.allbrook@petramco.com');
+        await quickCase.clickStartOverButton();
+        await quickCase.selectRequesterName('allen.allbrook@petramco.com');
         expect(await quickCase.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
     });
 
