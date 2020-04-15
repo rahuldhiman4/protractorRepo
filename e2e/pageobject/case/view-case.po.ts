@@ -191,7 +191,7 @@ class ViewCasePage {
 
     async getCaseID(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseIdText)));
-        return await $(this.selectors.caseIdText).getText();
+        return await (await $(this.selectors.caseIdText).getText()).trim();
     }
 
     async getRequesterName(): Promise<string> {
