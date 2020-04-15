@@ -12,8 +12,8 @@ class ViewKnowledgePage {
         kAUsefulYesButton: '[rx-view-component-id="9d4c48c9-fbd8-4e91-bc61-0e395f52bbe7"] button',
         kAUsefulNoButton: '[rx-view-component-id="21f93bfd-53e2-4983-9b15-162e7dd12a31"] button',
         percentageValue: '[rx-view-component-id="5cc2757f-7a22-4827-82c0-1e7dee2e12a2"] p',
-        activityTab: '[rx-view-component-id="3982f4ea-16a0-41aa-982e-879143a19b00"] .rx-tab a', 
-        statusChnageBlade: '.modal-content', 
+        activityTab: '[rx-view-component-id="3982f4ea-16a0-41aa-982e-879143a19b00"] .rx-tab a',
+        statusChnageBlade: '.modal-content',
         reviewPending: '[rx-view-component-id="f0cf7f67-da22-4149-a54d-ec3b95fe05e6"] button',
         KnwoledgeArticleReviewMessage: '[rx-view-component-id="d2dbea0a-503e-47d8-b4ed-b6dcc9dcf555"] span',
         regionValue: '[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"] .read-only-content',
@@ -46,7 +46,8 @@ class ViewKnowledgePage {
         articleIsExternal: '[rx-view-component-id="660f2cd8-9439-4954-9638-0064fbcb0e28"] .read-only-content',
         flaggedOption: '[rx-view-component-id="89dd2264-1895-4a7b-a0a4-01a4834a403b"]',
         unflagOption: '[rx-view-component-id="b54365bf-0ead-4c54-8c8b-42aced61690e"] span',
-        editKnowledgeAccess: '[rx-view-component-id="cbdd812c-4899-4503-84ab-412020d820df"] button'
+        editKnowledgeAccess: '[rx-view-component-id="cbdd812c-4899-4503-84ab-412020d820df"] button',
+        tab: 'button[role="tab"] span.nav-link-wrapper',
     }
 
     async clickOnKAUsefulYesButton(): Promise<void> {
@@ -134,7 +135,7 @@ class ViewKnowledgePage {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
-        await element(by.linkText(tabName)).click();
+        await element(by.cssContainingText(this.selectors.tab, tabName)).click();
     }
 
     async getPercentageValue(): Promise<string> {
@@ -151,7 +152,7 @@ class ViewKnowledgePage {
     }
 
     async getArticleVersion(): Promise<string> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleVersion)),3000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleVersion)), 3000);
         return await $(this.selectors.articleVersion).getText();
     }
 
@@ -189,9 +190,8 @@ class ViewKnowledgePage {
         let month: string = new Number(numMonth).toString();
         let numDate: number = objDate.getDate();
         let date: string = new Number(numDate).toString();
-        if(numDate> 0 && numDate <10)
-        {
-            date = "0"+date;
+        if (numDate > 0 && numDate < 10) {
+            date = "0" + date;
         }
         let formatted_date: string = months[month] + " " + date + ", " + year;
         return formatted_date;
@@ -352,17 +352,17 @@ class ViewKnowledgePage {
         return await $(this.selectors.articleIsExternal).isDisplayed();
     }
 
-    async isFlagArticleOptionDisplayed():Promise<boolean>{
+    async isFlagArticleOptionDisplayed(): Promise<boolean> {
         // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleIsExternal)));
         return await $(this.selectors.flaggedOption).isDisplayed();
     }
 
-    async isUnFlagArticleOptionDisplayed():Promise<boolean>{
+    async isUnFlagArticleOptionDisplayed(): Promise<boolean> {
         // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleIsExternal)));
         return await $(this.selectors.unflagOption).isDisplayed();
     }
 
-    async clickEditKnowledgeAccess():Promise<void>{
+    async clickEditKnowledgeAccess(): Promise<void> {
         // await browser.wait(this.EC.elementToBeClickable($(this.selectors.editKnowledgeAccess)));
         await $(this.selectors.editKnowledgeAccess).click();
     }

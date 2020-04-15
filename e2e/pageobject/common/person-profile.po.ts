@@ -18,6 +18,7 @@ class PersonProfilePage {
         requestedCaseGuid: '934faa1d-0932-4141-9a6e-7f6ac1726427',
         logTitle: '.activity-title',
         tabLocator: 'button.nav-link',
+        tab: 'button[role="tab"] span.nav-link-wrapper',
     }
 
     async getCaseViewCount(TitleText: string): Promise<number> {
@@ -25,32 +26,7 @@ class PersonProfilePage {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
-        switch (tabName) {
-            case "Related Persons": {
-                await $$(this.selectors.tabLocator).get(0).click();
-                break;
-            }
-            case "Requested Cases": {
-                await $$(this.selectors.tabLocator).get(1).click();
-                break;
-            }
-            case "Assigned Cases": {
-                await $$(this.selectors.tabLocator).get(2).click();
-                break;
-            }
-            case "Support Groups": {
-                await $$(this.selectors.tabLocator).get(3).click();
-                break;
-            }
-            case "Related Cases": {
-                await $$(this.selectors.tabLocator).get(4).click();
-                break;
-            }
-            default: {
-                console.log(tabName, ' is not a valid tab name');
-                break;
-            }
-        }
+        await element(by.cssContainingText(this.selectors.tab, tabName)).click();
     }
 
     async getPersonName(): Promise<string> {
