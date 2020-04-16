@@ -22,6 +22,8 @@ import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
+
 let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
 
 describe('Create Case Task', () => {
@@ -35,7 +37,7 @@ describe('Create Case Task', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //ankagraw

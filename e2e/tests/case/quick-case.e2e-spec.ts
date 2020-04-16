@@ -19,6 +19,7 @@ import { default as manageTask } from "../../pageobject/task/manage-task-blade.p
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 let RecommendedKnowledgeStr = "Recommended Knowledge ";
 let applyBtn = "Apply";
@@ -39,7 +40,7 @@ describe("Quick Case", () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     afterAll(async () => {
@@ -143,7 +144,7 @@ describe("Quick Case", () => {
         let categoryvalues: string[] = [caseSummary771, caseDescription771];
         for (let i = 0; i < categoryvalues.length; i++) {
             let result;
-            await browser.refresh();
+            await utilityCommon.refresh();
             await quickCasePo.selectRequesterName('Adam Pavlik');
             await quickCasePo.setCaseSummary(categoryvalues[i]);
             await utilCommon.waitUntilSpinnerToHide();

@@ -8,6 +8,7 @@ import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-a
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe('AcknowledgmentTemplate', () => {
     let label: string;
@@ -28,7 +29,7 @@ describe('AcknowledgmentTemplate', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //kgaikwad

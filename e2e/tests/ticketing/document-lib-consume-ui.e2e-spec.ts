@@ -24,6 +24,7 @@ import { default as manageTask } from "../../pageobject/task/manage-task-blade.p
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Document Library Consume UI', () => {
     let filePath1 = 'e2e/data/ui/attachment/bwfJpg.jpg';
@@ -54,7 +55,7 @@ describe('Document Library Consume UI', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //kgaikwad

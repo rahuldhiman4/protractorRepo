@@ -31,7 +31,7 @@ export class Utility {
         clearDateTimePicker: '.btn-secondary',
     }
 
-    
+
     async isWarningDialogBoxDisplayed(): Promise<boolean> {
         return await $(this.selectors.warningDialog).isPresent();
     }
@@ -50,7 +50,7 @@ export class Utility {
         const dropDownInputElement: ElementFinder = await dropDown.$(this.selectors.dropDownInput);
         await dropDownBoxElement.click();
         let isSearchPresent: boolean = await dropDownInputElement.isPresent();
-        if(isSearchPresent) await dropDownInputElement.sendKeys(value);
+        if (isSearchPresent) await dropDownInputElement.sendKeys(value);
 
         let optionCss: string = `[rx-view-component-id="${guid}"] .dropdown_select__menu-content button`;
         let option = await element(by.cssContainingText(optionCss, value));
@@ -374,6 +374,23 @@ export class Utility {
         return arr;
     }
 
+    async refresh(): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.navigate().refresh();
+        await browser.switchTo().alert().then((alert) => {
+            alert.accept();
+        }, () => { });
+        await browser.waitForAngularEnabled(true);
+    }
+
+    async acceptOrRejectBrowserPopup(accept: boolean): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().alert().then((alert) => {
+            if (accept) alert.accept();
+            else alert.dismiss();
+        }, () => { });
+        await browser.waitForAngularEnabled(true);
+    }
 }
 
 export default new Utility();

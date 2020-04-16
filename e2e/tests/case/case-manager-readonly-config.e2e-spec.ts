@@ -30,6 +30,7 @@ import goalTypeEditPage from "../../pageobject/settings/slm/edit-goal-type.po";
 import goalTypeConfigConsole from "../../pageobject/settings/slm/goal-type-config-console.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilGrid from "../../utils/util.grid";
+import utilityCommon from '../../utils/utility.common';
 
 describe('Case Manager Read-only Config', () => {
     beforeAll(async () => {
@@ -42,7 +43,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -53,12 +54,12 @@ describe('Case Manager Read-only Config', () => {
         expect(await assignmentConfigConsole.isAddAssignmentsBtnDisabled()).toBeTruthy();
         await utilGrid.searchAndSelectAllCheckBoxWOGrid("Benefits Assignment");
         expect(await assignmentConfigConsole.isDeleteAssignmentConfigBtnDisabled()).toBeTruthy();
-        await browser.refresh();
+        await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink("Benefits Assignment");
         expect(await assignmentConfigEditPage.isEditAssignmentNameDisabled()).toBeTruthy();
         expect(await assignmentConfigEditPage.isDefaultToggleBtnDisabled()).toBeTruthy();
         expect(await assignmentConfigEditPage.isSaveBtnDisabled()).toBeTruthy();
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -69,12 +70,12 @@ describe('Case Manager Read-only Config', () => {
         expect(await caseReadAccessConfigConsole.isAddButtonDisabled()).toBeTruthy();
         await utilGrid.searchAndSelectAllCheckBoxWOGrid("Relocation - Facilities Access Mapping");
         expect(await caseReadAccessConfigConsole.isDeleteButtonDisabled()).toBeTruthy();
-        await browser.refresh();
+        await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink("Relocation - Facilities Access Mapping");
         expect(await caseReadAccessConfigEditPage.isAccessMappingNameDisabled()).toBeTruthy();
         expect(await caseReadAccessConfigEditPage.isDefaultToggleBtnDisabled()).toBeTruthy();
         expect(await caseReadAccessConfigEditPage.isSaveBtnDisabled()).toBeTruthy();
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -87,7 +88,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await processLibraryEditPage.isDescriptionDisabled()).toBeTruthy("Description field is enabled");
         expect(await processLibraryEditPage.isStatusDisabled()).toBeTruthy("Status field is enabled");
         expect(await processLibraryEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -100,7 +101,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await menuItemEditPage.isMenuItemsStatusDisabled()).toBeTruthy("Status field is enabled");
         expect(await menuItemEditPage.isDefaultToggleBtnDisabled()).toBeTruthy("Default Toggle is enabled");
         expect(await menuItemEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -146,7 +147,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await configureDataSourceEditPage.isAssociationNameDisabled()).toBeTruthy("Association Name is enabled");
         expect(await configureDataSourceEditPage.isBuildExpressionBtnDisabled()).toBeTruthy("Build Expression button is enabled");
         expect(await configureDataSourceEditPage.isSaveBtnDisabled()).toBeTruthy("Save button is enabled");
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -161,7 +162,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await businessTimeEntityConfigEditPage.isAddBusinessSegmentBtnDisabled()).toBeTruthy("Add business time segment button is enabled");
         await businessTimeEntityConfigEditPage.selectAllShortDescription();
         expect(await businessTimeEntityConfigEditPage.isRemoveBtnDisabled()).toBeTruthy("Remove button is enabled");
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -174,7 +175,7 @@ describe('Case Manager Read-only Config', () => {
         await businessTimeSegmentConfigEditPage.updateStatus("Draft");
         await businessTimeSegmentConfigEditPage.clickNextButton();
         expect(await businessTimeSegmentConfigEditPage.isFinishButtonDisabled()).toBeTruthy("Finish button is enabled");
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -193,11 +194,11 @@ describe('Case Manager Read-only Config', () => {
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
         await utilGrid.clickCheckBoxOfValueInGrid(notesTemplateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
-        await browser.refresh();
+        await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink(notesTemplateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -216,11 +217,11 @@ describe('Case Manager Read-only Config', () => {
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
         await utilGrid.clickCheckBoxOfValueInGrid(notesTemplateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
-        await browser.refresh();
+        await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink(notesTemplateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -239,11 +240,11 @@ describe('Case Manager Read-only Config', () => {
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
         await utilGrid.clickCheckBoxOfValueInGrid(notesTemplateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
-        await browser.refresh();
+        await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink(notesTemplateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -273,7 +274,7 @@ describe('Case Manager Read-only Config', () => {
         await flowsetEditPage.navigateToResolutionCodesTab();
         expect(await flowsetEditPage.isAddResolutionCodeBtnDisabled()).toBeTruthy("Add Resolution Code button is enabled");
         expect(await flowsetEditPage.isAssociateResolutionCodeBtnDisabled()).toBeTruthy("Associate Resolution Code button is enabled");
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -322,7 +323,7 @@ describe('Case Manager Read-only Config', () => {
         await utilGrid.searchRecord(emailTemplateName);
         await utilGrid.clickCheckBoxOfValueInGrid(emailTemplateName);
         expect(await emailTemplateConsolePage.isDeleteEmailTemplateButtonEnabled()).toBeFalsy('Delete Template Button is enabled');
-        await browser.refresh();
+        await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink(emailTemplateName);
         expect(await editEmailTemplatePage.isTemplateNameEnabled()).toBeFalsy('Template Name is enabled');
         expect(await editEmailTemplatePage.isStatusFieldEnabled()).toBeFalsy('Status field is enabled');
@@ -331,7 +332,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await editEmailTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Body button is enabled');
         await editEmailTemplatePage.clickOnSubjectCheckbox();
         expect(await editEmailTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Subject button is enabled');
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //asahitya
@@ -350,7 +351,7 @@ describe('Case Manager Read-only Config', () => {
         await utilGrid.searchRecord(emailTemplateName);
         await utilGrid.clickCheckBoxOfValueInGrid(emailTemplateName);
         expect(await acknowledgementTemplateConsolePage.isDeleteAcknowledgementTemplateButtonEnabled()).toBeFalsy('Delete Template Button is enabled');
-        await browser.refresh();
+        await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink(emailTemplateName);
         expect(await editAcknowledementTemplatePage.isTemplateNameEnabled()).toBeFalsy('Template Name is enabled');
         expect(await editAcknowledementTemplatePage.isStatusFieldEnabled()).toBeFalsy('Status field is enabled');
@@ -359,7 +360,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Body button is enabled');
         await editAcknowledementTemplatePage.clickOnSubjectCheckbox();
         expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Subject button is enabled');
-        await browser.refresh();
+        await utilityCommon.refresh();
     }, 150 * 1000);
 
 })

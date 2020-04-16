@@ -238,7 +238,7 @@ export class GridOperations {
                 break;
             }
         }
-        await browser.refresh();
+        await utilityCommon.refresh();
     }
 
     async applyPresetFilter(filterName: string, guid?: string): Promise<void> {
@@ -247,7 +247,7 @@ export class GridOperations {
         await $(guidId + this.selectors.filterPresetBtn).click();
         await $$(this.selectors.filterTab).get(1).click();
         await element(by.cssContainingText('.radio__item', filterName)).click();
-        await browser.refresh();
+        await utilityCommon.refresh();
     }
 
     async getAppliedFilterName(guid?: string): Promise<string> {

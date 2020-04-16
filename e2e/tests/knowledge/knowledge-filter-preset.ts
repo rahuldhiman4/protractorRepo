@@ -6,6 +6,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import statusConfigPO from "../../pageobject/settings/common/status-config.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilGrid from "../../utils/util.grid";
+import utilityCommon from '../../utils/utility.common';
 
 xdescribe('Knowledge Console Preset Filter', () => {
 
@@ -50,7 +51,7 @@ xdescribe('Knowledge Console Preset Filter', () => {
         await statusConfigPO.setCompanyDropdown('Phylum', 'knowledge');
         await statusConfigPO.clickEditLifeCycleLink();
         await statusConfigPO.addCustomStatus('SME Review', 'Publish Approval', 'BeforePublished');
-        await browser.refresh();
+        await utilityCommon.refresh();
         await statusConfigPO.setCompanyDropdown('Phylum', 'knowledge');
         await statusConfigPO.clickEditLifeCycleLink();
         await statusConfigPO.addCustomStatus('Published', 'Retire Approval', 'AfterPublished');
@@ -61,7 +62,7 @@ xdescribe('Knowledge Console Preset Filter', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     it('[DRDMV-20894]: Validate the My Open Articles filter after applying and removing the filter', async () => {
