@@ -211,7 +211,7 @@ class ChangeAssignmentBlade {
                 //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchAsignee)));
                 //        await $(this.selectors.searchAsignee).sendKeys(name);
                 browser.sleep(1000);
-                await element(by.cssContainingText(this.selectors.assignee, 'Assign to Support Group')).click();
+                await element(by.cssContainingText(this.selectors.assignee, "Assign to support group")).click();
                 //        await browser.wait(this.EC.visibilityOf(option));
                 //        await browser.wait(this.EC.elementToBeClickable(option));
         }

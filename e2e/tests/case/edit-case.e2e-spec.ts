@@ -11,8 +11,7 @@ import personProfilePage from '../../pageobject/common/person-profile.po';
 import composemailPage from '../../pageobject/email/compose-mail.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import caseConsolePo from 'e2e/pageobject/case/case-console.po';
+import utilCommon from '../../utils/utility.common';
 import utilityCommon from '../../utils/utility.common';
 
 describe('Edit Case', () => {
@@ -126,7 +125,7 @@ describe('Edit Case', () => {
         expect(await changeAssignmentPage.getCompanyDefaultValue()).toBe('Petramco');
         expect(await changeAssignmentPage.getSupportGroupDefaultValue()).toBe('Compensation and Benefits');
         expect(await changeAssignmentPage.isSupportGroupDrpDwnDisplayed()).toBeTruthy();
-         await changeAssignmentPage.selectAssignee('Qadim Katawazi');
+        await changeAssignmentPage.selectAssignee('Qadim Katawazi');
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
         expect(await viewCasePage.getAssigneeText()).toBe('Qadim Katawazi');
@@ -138,24 +137,24 @@ describe('Edit Case', () => {
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
         expect(await viewCasePage.getAssignedGroupText()).toBe('Employee Relations');
-        expect(await activityTabPo.getAllTaskActivity('Employee Relations')).toBe('Employee Relations');
+        expect(await activityTabPo.getAllTaskActivity('Employee Relations')).toBe(' Employee Relations ');
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickChangeAssignmentButton();
         await changeAssignmentPage.selectSupportGroup('Facilities');
         await changeAssignmentPage.selectAssignee('Fritz Schulz');
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
-        expect(await activityTabPo.getAllTaskActivity('Facilities')).toBe('Facilities');
+        expect(await activityTabPo.getAllTaskActivity('Facilities')).toBe(' Facilities ');
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickOnAssignToMe();
         await editCasePage.clickSaveCase();
-        expect(await activityTabPo.getAllTaskActivity('Compensation and Benefits')).toBe('Compensation and Benefits');
+        expect(await activityTabPo.getAllTaskActivity('Compensation and Benefits')).toBe(' Compensation and Benefits ');
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickChangeAssignmentButton();
         await changeAssignmentPage.selectSupportGroup('Compensation and Benefits');
         await changeAssignmentPage.selectAssigneeAsSupportGroup('Compensation and Benefits');
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
-
+        await utilCommon.waitUntilPopUpDisappear();
     }, 150 * 1000);
 });
