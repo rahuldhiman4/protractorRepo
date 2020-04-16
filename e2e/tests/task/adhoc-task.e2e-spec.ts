@@ -6,7 +6,7 @@ import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import { default as viewCasePage, default as viewCasePo } from "../../pageobject/case/view-case.po";
-import changeAssignmentBlade from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentOldBlade from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
@@ -183,11 +183,10 @@ describe('Create Adhoc task', () => {
         await taskTemplate.setTaskDescription('Description in manual task');
         await taskTemplate.selectCompanyByName('Petramco');
         await taskTemplate.clickOnAssignment();
-        await changeAssignmentBlade.selectCompany('Petramco');
-        await changeAssignmentBlade.selectSupportGroup('Employee Relations');
-        await changeAssignmentBlade.selectAssignee('Qiwei Liu');
-        await changeAssignmentBlade.clickOnAssignButton();
-        await browser.sleep(2000);
+        await changeAssignmentOldBlade.selectCompany('Petramco');
+        await changeAssignmentOldBlade.selectSupportGroup('Employee Relations');
+        await changeAssignmentOldBlade.selectAssignee('Qiwei Liu');
+        await changeAssignmentOldBlade.clickOnAssignButton();
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.selectOwnerGroup('Employee Relations');
         await taskTemplate.clickOnSaveTaskTemplate();
@@ -206,7 +205,6 @@ describe('Create Adhoc task', () => {
         await manageTaskBladePo.clickOnCloseButton();
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus();
-
 
         //different user
         await navigationPage.signOut();
