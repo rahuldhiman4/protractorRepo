@@ -11,6 +11,7 @@ import activityPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Case Bulk Operation', () => {
 
@@ -57,7 +58,7 @@ describe('Case Bulk Operation', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
         await navigationPage.gotoCaseConsole();
     });
 
@@ -69,7 +70,7 @@ describe('Case Bulk Operation', () => {
             let response = await apiHelper.createCase(caseData['bulkCaseAssignee_New']);
             caseId[i] = response.displayId;
         }
-        await browser.refresh();
+        await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
             await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -99,7 +100,7 @@ describe('Case Bulk Operation', () => {
             let response = await apiHelper.createCase(caseData['bulkCaseAssignee_New']);
             caseId[i] = response.displayId;
         }
-        await browser.refresh();
+        await utilityCommon.refresh();
         await utilGrid.clickCheckBoxOfValueInGrid(caseId[0]);
         await utilGrid.clickCheckBoxOfValueInGrid(caseId[1]);
         await caseConsolePage.clickOnChangeAssignmentButton();
@@ -183,7 +184,7 @@ describe('Case Bulk Operation', () => {
             let response = await apiHelper.createCase(caseData['bulkCaseAssignee_New'])
             caseId[i] = response.displayId;
         }
-        await browser.refresh();
+        await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
             await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -210,7 +211,7 @@ describe('Case Bulk Operation', () => {
         caseId[0] = (await apiHelper.createCase(caseData['bulkCaseAssignee_Assigned'])).displayId;
         caseId[1] = (await apiHelper.createCase(caseData['bulkCaseAssignee_InProgress'])).displayId;
         caseId[2] = (await apiHelper.createCase(caseData['bulkCaseAssignee_Resolved'])).displayId;
-        await browser.refresh();
+        await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
             await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -234,7 +235,7 @@ describe('Case Bulk Operation', () => {
             let response = await apiHelper.createCase(caseData['bulkCaseAssignee_New'])
             caseId[i] = response.displayId;
         }
-        await browser.refresh();
+        await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
             await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -267,7 +268,7 @@ describe('Case Bulk Operation', () => {
             let response = await apiHelper.createCase(caseData['bulkCaseAssigneeWithAllAssigneeFields'])
             caseId[i] = response.displayId;
         }
-        await browser.refresh();
+        await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
             await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -303,7 +304,7 @@ describe('Case Bulk Operation', () => {
         await apiHelper.updateCaseStatus(caseGuid, "Resolved", "Customer Follow-Up Required");
         await apiHelper.updateCaseStatus(caseGuid, "Closed");
 
-        await browser.refresh();
+        await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
             await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }

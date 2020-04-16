@@ -1,7 +1,7 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
-import utilCommon from '../../utils/util.common';
 import { resolve } from "path";
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../utils/utility.common';
+import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
 
 class CreateAdhocTaskTemplatePage {
 
@@ -83,27 +83,27 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async selectPriority(priority: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.priority, priority);
+        await utilityCommon.selectDropDown(this.selectors.priority, priority);
     }
 
     async selectLabel(label: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.label, label);
+        await utilityCommon.selectDropDown(this.selectors.label, label);
     }
 
     async selectCategoryTier1(categoryTier1: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier1, categoryTier1);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier1, categoryTier1);
     }
 
     async selectCategoryTier2(categoryTier2: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier2, categoryTier2);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier2, categoryTier2);
     }
 
     async selectCategoryTier3(categoryTier3: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier3, categoryTier3);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier3, categoryTier3);
     }
 
     async selectCategoryTier4(categoryTier4: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier4, categoryTier4);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier4, categoryTier4);
     }
 
     async getStatusAttribute(): Promise<string> {
@@ -143,23 +143,23 @@ class CreateAdhocTaskTemplatePage {
 
     async isTaskSummaryRequiredTextPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummaryRequiredText)));
-        return await utilCommon.isRequiredTagToField(this.selectors.taskSummaryRequiredText);
+        return await utilityCommon.isRequiredTagToField(this.selectors.taskSummaryRequiredText);
     }
 
     async isPriorityRequiredTextPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.piorityRequiredText)));
-        return await utilCommon.isRequiredTagToField(this.selectors.priority);
+        return await utilityCommon.isRequiredTagToField(this.selectors.priority);
     }
 
     async isAssignedCompanyRequiredTextPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedCompanyRequiredText)));
-        return await utilCommon.isRequiredTagToField(this.selectors.assignedCompanyRequiredText);
+        return await utilityCommon.isRequiredTagToField(this.selectors.assignedCompanyRequiredText);
 
     }
 
     async isAssignedGroupRequiredTextPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroupRequiredText)));
-        return await utilCommon.isRequiredTagToField(this.selectors.assignedGroupRequiredText);
+        return await utilityCommon.isRequiredTagToField(this.selectors.assignedGroupRequiredText);
     }
 
     async isAssignToMeButtonDisplayd(): Promise<boolean> {

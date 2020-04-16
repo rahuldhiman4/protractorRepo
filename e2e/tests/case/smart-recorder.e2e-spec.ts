@@ -7,6 +7,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import composeMail from '../../pageobject/email/compose-mail.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 
 describe("Quick Case", () => {
 
@@ -16,7 +17,7 @@ describe("Quick Case", () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     afterAll(async () => {

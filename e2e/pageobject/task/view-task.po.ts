@@ -32,8 +32,8 @@ class ViewTask {
         requesterContact: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-phone-link',
         requesterMail: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .bwf-person-email button',
         assigneeName: '[rx-view-component-id="1801d8c6-4997-4253-b716-809b39909598"] .person-main',
-        assignGroupText: '[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] .d-textfield__label',
-        assignCompany: '[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] .d-textfield__label',
+        assignGroupText: '[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] label',
+        assignCompany: '[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] label',
         taskStatusGuid: 'aea81ee2-85d9-4bb6-adb4-08c29028d45d',
         attachedfileName: '.rx-attachment-view-item div:nth-child(2) >div.rx-attachment-view-name',
         attachmentName: 'div.rx-attachment-view-item div:nth-child(2) > div.rx-attachment-view-name',
@@ -50,7 +50,8 @@ class ViewTask {
         businessUnitValue:'[rx-view-component-id="4ad9dc88-aa95-4fb7-8128-7df004dfca8f"] .read-only-content', 
         departmentValue:'[rx-view-component-id="411571a0-2577-4403-bcf2-3999dc84f5df"] .read-only-content',
         manageDynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] button',
-        emailLink:'[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button'
+        emailLink:'[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button',
+        tab: 'button[role="tab"] span.nav-link-wrapper',
     }
 
     async clickEmailLink():Promise<void>{
@@ -221,7 +222,7 @@ class ViewTask {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
-        await element(by.linkText(tabName)).click();
+        await element(by.cssContainingText(this.selectors.tab, tabName)).click();
     }
 
     async clickOnViewCase(): Promise<void> {

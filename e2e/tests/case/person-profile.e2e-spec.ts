@@ -7,6 +7,7 @@ import personProfile from "../../pageobject/common/person-profile.po";
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import activityTabPage from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Person Profile test', () => {
     beforeAll(async () => {
@@ -20,7 +21,7 @@ describe('Person Profile test', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //asahitya

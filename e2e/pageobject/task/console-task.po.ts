@@ -61,17 +61,6 @@ class TaskGridPage {
         return await $(this.selectors.taskTitle).getText();
     }
 
-    async clickFirstLinkInTaskTemplateSearchGrid(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateLink)));
-        //        await browser.sleep(3000);
-        await $$(this.selectors.recommendedTemplateLink).first().click();
-    }
-
-    async isCaseIdLinkIsPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf(element(by.xpath("(//*[@role='gridcell'])[2]//a"))));
-        var caseId: string = await element(by.xpath("(//*[@role='gridcell'])[2]//a")).getText();
-        return caseId.includes('CASE');
-    }
     async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateCheckBox)));
         //        await browser.sleep(3000);

@@ -1,4 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../utils/utility.common';
 
 class NavigationPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -193,7 +194,7 @@ class NavigationPage {
 
     async gotoPersonProfile(): Promise<void> {
         await this.switchToAngularTab();
-        await browser.refresh();
+        await utilityCommon.refresh();
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.buttonText('My Profile ')).click();
@@ -259,7 +260,7 @@ class NavigationPage {
 
     async signOut(): Promise<void> {
         await this.switchToAngularTab();
-        await browser.refresh();
+        await utilityCommon.refresh();
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.buttonText(' Sign Out')).click();

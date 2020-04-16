@@ -14,6 +14,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Document Library', () => {
     beforeAll(async () => {
@@ -26,7 +27,7 @@ describe('Document Library', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //kgaikwad

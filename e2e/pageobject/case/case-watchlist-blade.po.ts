@@ -1,5 +1,6 @@
 import { $, $$, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
 
 class CaseWatchlistBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -8,7 +9,7 @@ class CaseWatchlistBlade {
         saveButton: '[rx-view-component-id="fe442bdb-1c1e-47b7-8f47-cfcf61505b45"] button',
         closeButton: '[rx-view-component-id="7a0cb1ff-c0a5-4571-a2dc-6670842db2c6"] button',
         guid: '60bc2700-9909-4b0f-8de4-edb02443b62f',
-        selectAllrows: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] div.checkbox__item',
+        selectAllrows: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .checkbox__label input',
         selectedCheckboxes: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] div[aria-checked="true"]',
         unselectedCheckboxes: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] div[aria-checked="false"]',
         allCheckboxes: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .ui-grid-selection-row-header-buttons',
@@ -37,7 +38,7 @@ class CaseWatchlistBlade {
     }
 
     async isCasePresent(caseId: string): Promise<boolean> {
-        await this.searchCase(caseId);
+        await utilityGrid.searchRecord(caseId, this.selectors.guid);
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         let status = element(by.cssContainingText(this.selectors.caseLinks, caseId)).isPresent();
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.clearSearchicon)));
@@ -75,34 +76,35 @@ class CaseWatchlistBlade {
     }
 
     async isCaseSearchGiveCorrectResult(caseId: string): Promise<boolean> {
-        await this.searchCase(caseId);
+        await utilityGrid.searchRecord(caseId, this.selectors.guid);
+        //await this.searchCase(caseId);
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseLinks)));
-        let count: number = await $$(this.selectors.caseLinks).count();
+        let count: number =  await $$(this.selectors.caseLinks).count();
         return count==1 && await $$(this.selectors.caseLinks).first().getText()==caseId;
     }
 
     async isColumnSorted(columnHeader: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(columnHeader, "ascending", this.selectors.guid);
+        return await utilityGrid.isGridColumnSorted(columnHeader, "asc", this.selectors.guid);
     }
 
     async areWatchlistColumnMatches(columnNames: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.guid, columnNames);
+        return await utilityGrid.areColumnHeaderMatches(columnNames, this.selectors.guid);
     }
 
     async addWatchlistGridColumn(columnNames: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.guid, columnNames);
+        await utilityGrid.addGridColumn(columnNames, this.selectors.guid);
     }
 
     async removeWatchlistGridColumn(columnNames: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.guid, columnNames);
+        await utilityGrid.removeGridColumn(columnNames, this.selectors.guid);
     }
 
     async addFilter(fieldName: string, textValue: string,type: string): Promise<void> {
-        await utilGrid.addFilter(fieldName, textValue, type, this.selectors.guid);
+        await utilityGrid.addFilter(fieldName, textValue, type, this.selectors.guid);
     }
 
     async isEntireColumnContainsValue(columnName: string, value: string): Promise<boolean> {
-        let allValues: string[] = await utilGrid.getAllValuesFromColoumn(this.selectors.guid, columnName);
+        let allValues: string[] = await utilityGrid.getAllValuesFromColumn(columnName, this.selectors.guid);
         let filteredValues: string[] = allValues.filter(function (ele) {
             return ele == value;
         });
@@ -111,13 +113,13 @@ class CaseWatchlistBlade {
 
     async selectCase(caseId: string): Promise<void> {
         await this.sortDescendingByCaseId();
-        await utilGrid.clickCheckBoxOfValueInGrid(caseId, this.selectors.guid);
+        await utilityGrid.clickCheckBoxOfValueInGrid(caseId, this.selectors.guid);
     }
 
     async selectTwoCases(caseId1: string, caseId2: string): Promise<void>{
         await this.sortDescendingByCaseId();
-        await utilGrid.clickCheckBoxOfValueInGrid(caseId1, this.selectors.guid);
-        await utilGrid.clickCheckBoxOfValueInGrid(caseId2, this.selectors.guid);
+        await utilityGrid.clickCheckBoxOfValueInGrid(caseId1, this.selectors.guid);
+        await utilityGrid.clickCheckBoxOfValueInGrid(caseId2, this.selectors.guid);
     }
 
     async clickOnRemoveBtn(): Promise<void> {
@@ -192,7 +194,7 @@ class CaseWatchlistBlade {
     }
 
     async openCase(caseId: string): Promise<void> {
-        await this.searchCase(caseId);
+        await this.sortDescendingByCaseId();
         let locator = await element(by.cssContainingText(this.selectors.caseLinks, caseId));
 //        await browser.wait(this.EC.elementToBeClickable(locator));
         await locator.click();
@@ -209,16 +211,17 @@ class CaseWatchlistBlade {
     }
 
 async sortDescendingByCaseId(): Promise<void>{
-            let headerText = await $$('[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .sortable');
-            for(let i:number=0; i<(await headerText.length); i++){
-                let columnName = await headerText[i].$('span');
-                if(await columnName.getText()=='Case ID'){
-                    await headerText[i].$('.ui-grid-icon-angle-down').click();
-                    break;
-                }
-            }
-            let descendingSign: ElementFinder = await element.all(by.repeater('item in menuItems')).get(1);
-            await descendingSign.click();
+    let headerText = await $$('[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .at-header-data-cell');
+    for(let i:number=0; i<(await headerText.length); i++){
+        let columnName = await headerText[i].$('.c-header-name');
+        if(await columnName.getText()=='Case ID'){
+            await headerText[i].$('adapt-table-header-cell-menu').click();
+            break;
+        }
+    }
+    let descendingSign: ElementFinder = await $$('.adapt-table-sort-menu__btn').get(1);
+    await descendingSign.click();
+    await $$('.d-icon-refresh').last().click();
         }
 
 }

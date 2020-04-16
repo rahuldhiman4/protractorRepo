@@ -1,5 +1,4 @@
-import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
+import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
 import gridUtil from '../../utils/util.grid';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -54,7 +53,11 @@ class CaseConsolePage {
     }
 
     async searchAndOpenCase(caseId: string): Promise<void> {
+<<<<<<< HEAD
         // await utilityGrid.clearFilter();
+=======
+        await utilityGrid.clearFilter();
+>>>>>>> b97b812c872e880fbd76b80534ef7bdd2b462508
         await utilityGrid.searchAndOpenHyperlink(caseId);
 //        await utilCommon.waitUntilSpinnerToHide();
     }

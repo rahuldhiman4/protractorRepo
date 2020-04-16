@@ -25,6 +25,8 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
+import quickCasePo from '../../pageobject/case/quick-case.po';
 
 describe('Case Activity', () => {
 
@@ -40,7 +42,7 @@ describe('Case Activity', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //kgaikwad
@@ -944,34 +946,34 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await caseConsolePo.searchAndOpenCase(caseId);
-            // // Open Task
-            // await viewCasePo.clickAddTaskButton();
-            // await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
-            // await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskTemplateData.templateSummary);
-            // await viewTaskPo.clickOnViewCase();
-            // // Goto case   
-            // await utilCommon.waitUntilSpinnerToHide();
-            // await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
-            // // Goto Quick Case
-            // await navigationPage.gotoQuickCase();
-            // await quickCasePo.selectRequesterName('qtao');
+            // Open Task
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
+            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskTemplateData.templateSummary);
+            await viewTaskPo.clickOnViewCase();
+            // Goto case   
+            await utilCommon.waitUntilSpinnerToHide();
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
+            // Goto Quick Case
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('qtao');
 
-            // await quickCasePo.setCaseSummary(caseData.Summary);
-            // await utilCommon.waitUntilSpinnerToHide();
-            // await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
-            // await quickCasePo.gotoCaseButton();
-            // await utilCommon.waitUntilSpinnerToHide();
-            // await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
-            // await navigationPage.gotoQuickCase();
-            // await browser.refresh();
-            // await quickCasePo.selectRequesterName('qtao');
-            // await quickCasePo.setCaseSummary(caseData.Summary);
-            // await quickCasePo.saveCase();
-            // await quickCasePo.gotoCaseButton();
-            // await navigationPage.gotoCaseConsole();
-            // await caseConsolePo.searchAndOpenCase(caseId);
-            // await expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('FailuerMsg: Email Link is not present');
-            // await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+            await quickCasePo.setCaseSummary(caseData.Summary);
+            await utilCommon.waitUntilSpinnerToHide();
+            await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
+            await quickCasePo.gotoCaseButton();
+            await utilCommon.waitUntilSpinnerToHide();
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+            await navigationPage.gotoQuickCase();
+            await browser.refresh();
+            await quickCasePo.selectRequesterName('qtao');
+            await quickCasePo.setCaseSummary(caseData.Summary);
+            await quickCasePo.saveCase();
+            await quickCasePo.gotoCaseButton();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('FailuerMsg: Email Link is not present');
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
 
             await viewCasePo.clickOnTab('Related Persons');
             await relatedTabPage.addRelatedPerson();
@@ -1022,7 +1024,7 @@ describe('Case Activity', () => {
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('Fabian');
             await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Fabian Krause')).toBeTruthy('Failuer:Fabian Krause Agent Name is missing');
-            await browser.refresh();
+            await utilityCommon.refresh();
             //Write Access Agent
             await viewCasePo.clickOnTab('Case Access');
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
@@ -1128,23 +1130,23 @@ describe('Case Activity', () => {
         let caseId: string = newCase.displayId;
         await caseConsolePo.searchAndOpenCase(caseId);
         // Verify logs with 5 lines or less than 5 lines
-        // await activityTabPage.addActivityNote(addNoteBodyText1);
-        // await activityTabPage.clickOnPostButton();
-        // await utilCommon.waitUntilSpinnerToHide();
-        // await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg1: BodyText is missing');
-        // await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg2: Show more link is displayed');
+        await activityTabPage.addActivityNote(addNoteBodyText1);
+        await activityTabPage.clickOnPostButton();
+        await utilCommon.waitUntilSpinnerToHide();
+        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg1: BodyText is missing');
+        await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg2: Show more link is displayed');
         // Verify logs with more than 5 lines
-        // await activityTabPage.addActivityNote(addNoteBodyText2);
-        // await activityTabPage.clickOnPostButton();
-        // await utilCommon.waitUntilSpinnerToHide();
-        // await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
-        // await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
-        // await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
-        // await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg6: Show less missing for body text');
-        // await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg7: Show more link is displayed');
-        // await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg8: BodyText is missing');
+        await activityTabPage.addActivityNote(addNoteBodyText2);
+        await activityTabPage.clickOnPostButton();
+        await utilCommon.waitUntilSpinnerToHide();
+        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
+        await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
+        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
+        await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg6: Show less missing for body text');
+        await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg7: Show more link is displayed');
+        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg8: BodyText is missing');
         // Verify logs with 5 lines  with 3 attachment
-        // await activityTabPage.addActivityNote(addNoteBodyText1);
+        await activityTabPage.addActivityNote(addNoteBodyText1);
         await activityTabPage.addActivityNote('Tushar');
         await activityTabPage.addAttachment(filePath1);
         await browser.sleep(5000);
@@ -1152,71 +1154,70 @@ describe('Case Activity', () => {
         // await activityTabPage.addAttachment(filePath3);
         await activityTabPage.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
-        await browser.sleep(10000);
-        // await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
-        // await expect(await activityTabPage.isAttachedFileNameDisplayed('articleStatus.png')).toBeTruthy(`FailureMsg9: ${filePath1} is missing`);
-        // await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy(`FailureMsg10: ${filePath2} is missing`);
-        // await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg1.jpg')).toBeTruthy(`FailureMsg11: ${filePath3} is missing`);
-        // await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg13: BodyText is missing');
-        // await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg14: Show more link is displayed');
-        // // Verify logs with more than 5 lines  with 3 attachment
-        // await activityTabPage.addActivityNote(addNoteBodyText2);
-        // await activityTabPage.addAttachment(filePath4);
-        // await activityTabPage.addAttachment(filePath5);
-        // await activityTabPage.addAttachment(filePath6);
-        // await activityTabPage.clickOnPostButton();
-        // await utilCommon.waitUntilSpinnerToHide();
-        // await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
-        // await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy(`FailureMsg15: ${filePath4} is missing`);
-        // await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg3.jpg')).toBeTruthy(`FailureMsg16: ${filePath5} is missing`);
-        // await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg4.jpg')).toBeTruthy(`FailureMsg17: ${filePath6} is missing`);
-        // await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg19: Show more link is displayed');
-        // await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg20: BodyText is missing');
-        // await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg21: Show less missing for body text');
-        // // Verify logs with more than 5 lines  with more than 4 attachment
-        // await activityTabPage.addActivityNote(addNoteBodyText2);
-        // await activityTabPage.addAttachment(filePath7);
-        // await activityTabPage.addAttachment(filePath8);
-        // await activityTabPage.addAttachment(filePath9);
-        // await activityTabPage.addAttachment(filePath10);
-        // await activityTabPage.addAttachment(filePath11);
-        // await activityTabPage.clickOnPostButton();
-        // await utilCommon.waitUntilSpinnerToHide();
-        // await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
-        // await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
-        // await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
-        // await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg25: BodyText is missing');
-        // await expect(activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg43: ShowLess link is missing')
-        // await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg26: BodyText is missing');
+        await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('articleStatus.png')).toBeTruthy(`FailureMsg9: ${filePath1} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy(`FailureMsg10: ${filePath2} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg1.jpg')).toBeTruthy(`FailureMsg11: ${filePath3} is missing`);
+        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg13: BodyText is missing');
+        await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg14: Show more link is displayed');
+        // Verify logs with more than 5 lines  with 3 attachment
+        await activityTabPage.addActivityNote(addNoteBodyText2);
+        await activityTabPage.addAttachment(filePath4);
+        await activityTabPage.addAttachment(filePath5);
+        await activityTabPage.addAttachment(filePath6);
+        await activityTabPage.clickOnPostButton();
+        await utilCommon.waitUntilSpinnerToHide();
+        await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy(`FailureMsg15: ${filePath4} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg3.jpg')).toBeTruthy(`FailureMsg16: ${filePath5} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg4.jpg')).toBeTruthy(`FailureMsg17: ${filePath6} is missing`);
+        await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg19: Show more link is displayed');
+        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg20: BodyText is missing');
+        await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg21: Show less missing for body text');
+        // Verify logs with more than 5 lines  with more than 4 attachment
+        await activityTabPage.addActivityNote(addNoteBodyText2);
+        await activityTabPage.addAttachment(filePath7);
+        await activityTabPage.addAttachment(filePath8);
+        await activityTabPage.addAttachment(filePath9);
+        await activityTabPage.addAttachment(filePath10);
+        await activityTabPage.addAttachment(filePath11);
+        await activityTabPage.clickOnPostButton();
+        await utilCommon.waitUntilSpinnerToHide();
+        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
+        await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
+        await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
+        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg25: BodyText is missing');
+        await expect(activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg43: ShowLess link is missing')
+        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg26: BodyText is missing');
 
-        // await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson1.json')).toBeTruthy(`FailureMsg27: ${filePath7} is missing`);
-        // await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson2.json')).toBeTruthy(`FailureMsg28: ${filePath8} is missing`);
-        // await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson3.json')).toBeTruthy(`FailureMsg29: ${filePath9} is missing`);
-        // await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson4.json')).toBeTruthy(`FailureMsg30: ${filePath10} is missing`);
-        // await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson5.json')).toBeTruthy(`FailureMsg31: ${filePath11} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson1.json')).toBeTruthy(`FailureMsg27: ${filePath7} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson2.json')).toBeTruthy(`FailureMsg28: ${filePath8} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson3.json')).toBeTruthy(`FailureMsg29: ${filePath9} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson4.json')).toBeTruthy(`FailureMsg30: ${filePath10} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson5.json')).toBeTruthy(`FailureMsg31: ${filePath11} is missing`);
 
-        // // Download Attachments Files
-        // await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJson1.json')).toBeTruthy('FailureMsg32: bwfJson1.json File is delete sucessfully');
-        // await activityTabPage.clickAndDownloadAttachmentFile('bwfJson1.json')
-        // await expect(await utilCommon.isFileDownloaded('bwfJson1.json')).toBeTruthy('FailureMsg33.json File is not downloaded.');
+        // Download Attachments Files
+        await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJson1.json')).toBeTruthy('FailureMsg32: bwfJson1.json File is delete sucessfully');
+        await activityTabPage.clickAndDownloadAttachmentFile('bwfJson1.json')
+        await expect(await utilCommon.isFileDownloaded('bwfJson1.json')).toBeTruthy('FailureMsg33.json File is not downloaded.');
 
-        // await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJson2.json')).toBeTruthy('FailureMsg34: bwfJson2.json File is delete sucessfully');
-        // await activityTabPage.clickAndDownloadAttachmentFile('bwfJson2.json')
-        // await expect(await utilCommon.isFileDownloaded('bwfJson2.json')).toBeTruthy('FailureMsg35: bwfJson2.json File is not downloaded.');
+        await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJson2.json')).toBeTruthy('FailureMsg34: bwfJson2.json File is delete sucessfully');
+        await activityTabPage.clickAndDownloadAttachmentFile('bwfJson2.json')
+        await expect(await utilCommon.isFileDownloaded('bwfJson2.json')).toBeTruthy('FailureMsg35: bwfJson2.json File is not downloaded.');
 
-        // await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJson3.json')).toBeTruthy('FailureMsg36: bwfJson3.json File is delete sucessfully');
-        // await activityTabPage.clickAndDownloadAttachmentFile('bwfJson3.json')
-        // await expect(await utilCommon.isFileDownloaded('bwfJson3.json')).toBeTruthy('FailureMsg37: bwfJson3.json File is not downloaded.');
+        await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJson3.json')).toBeTruthy('FailureMsg36: bwfJson3.json File is delete sucessfully');
+        await activityTabPage.clickAndDownloadAttachmentFile('bwfJson3.json')
+        await expect(await utilCommon.isFileDownloaded('bwfJson3.json')).toBeTruthy('FailureMsg37: bwfJson3.json File is not downloaded.');
 
-        // await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJson4.json')).toBeTruthy('FailureMsg38: bwfJson4.json File is delete sucessfully');
-        // await activityTabPage.clickAndDownloadAttachmentFile('bwfJson4.json')
-        // await expect(await utilCommon.isFileDownloaded('bwfJson4.json')).toBeTruthy('FailureMsg39: bwfJson4.json File is not downloaded.');
+        await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJson4.json')).toBeTruthy('FailureMsg38: bwfJson4.json File is delete sucessfully');
+        await activityTabPage.clickAndDownloadAttachmentFile('bwfJson4.json')
+        await expect(await utilCommon.isFileDownloaded('bwfJson4.json')).toBeTruthy('FailureMsg39: bwfJson4.json File is not downloaded.');
 
-        // await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJson5.json')).toBeTruthy('FailureMsg40: bwfJson5.json File is delete sucessfully');
-        // await activityTabPage.clickAndDownloadAttachmentFile('bwfJson5.json')
-        // await expect(await utilCommon.isFileDownloaded('bwfJson5.json')).toBeTruthy('FailureMsg41: bwfJson5.json File is not downloaded.');
+        await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJson5.json')).toBeTruthy('FailureMsg40: bwfJson5.json File is delete sucessfully');
+        await activityTabPage.clickAndDownloadAttachmentFile('bwfJson5.json')
+        await expect(await utilCommon.isFileDownloaded('bwfJson5.json')).toBeTruthy('FailureMsg41: bwfJson5.json File is not downloaded.');
 
-        // await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
+        await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
 
     }, 300 * 1000);
 

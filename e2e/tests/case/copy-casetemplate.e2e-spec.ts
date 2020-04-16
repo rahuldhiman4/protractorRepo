@@ -8,6 +8,7 @@ import copyCaseTemplate from "../../pageobject/settings/case-management/copy-cas
 import createCaseTemplate from "../../pageobject/settings/case-management/create-casetemplate.po";
 import editCaseTemplate from "../../pageobject/settings/case-management/edit-casetemplate.po";
 import { BWF_BASE_URL } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
 
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
@@ -23,7 +24,7 @@ describe('Copy Case Template', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //ptidke

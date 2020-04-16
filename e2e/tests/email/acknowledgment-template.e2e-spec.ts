@@ -8,6 +8,7 @@ import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-a
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe('AcknowledgmentTemplate', () => {
     let label: string;
@@ -28,7 +29,7 @@ describe('AcknowledgmentTemplate', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //kgaikwad
@@ -38,14 +39,12 @@ describe('AcknowledgmentTemplate', () => {
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let subject = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let body = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
         let label: string = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
         menuItemDataFile['sampleMenuItem'].menuItemName = label;
         await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
-
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
@@ -58,19 +57,16 @@ describe('AcknowledgmentTemplate', () => {
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
-
         let arr: string[] = ["Label"];
         await consoleAcknowledgmentTemplatePo.addColumnOnGrid(arr);
         let arr2: string[] = ['Template Name', 'Subject', "Company", "Status", "Label"];
         expect(await consoleAcknowledgmentTemplatePo.areGridColumnHeaderMatches(arr2)).toBeTruthy('Column header not matches');
-
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole(templateName);
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName, 'Private template name is missing');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Private template subject is missing');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Private template company name is missing');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Status')).toBe('Active', 'Private template status is missing');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Label')).toBe(label, 'Private template label is missing');
-
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
         await createAcknowledgmentTemplatesPo.setTemplateName(templateName2);
         await createAcknowledgmentTemplatesPo.selectCompanyDropDown('- Global -');
@@ -81,7 +77,6 @@ describe('AcknowledgmentTemplate', () => {
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
-
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole(templateName2);
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Public template name is missing');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Public template subject is missing');
@@ -89,13 +84,11 @@ describe('AcknowledgmentTemplate', () => {
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Status')).toBe('Active', 'Public template status is missing');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Label')).toBe(label, 'Public template label is missing');
         await consoleAcknowledgmentTemplatePo.removeColumnOnGrid(arr);
-
         await consoleAcknowledgmentTemplatePo.clearGridSearchBox();
         await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord(templateName);
         await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
         await utilCommon.waitUntilSpinnerToHide();
-        expect(await consoleAcknowledgmentTemplatePo.isGridRecordPresent(templateName)).toBeFalsy('Public template name is preset on grid')
-
+        expect(await consoleAcknowledgmentTemplatePo.isGridRecordPresent(templateName)).toBeFalsy('Private template name is preset on grid')
         await consoleAcknowledgmentTemplatePo.clearGridSearchBox();
         await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord(templateName2);
         await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
@@ -104,12 +97,10 @@ describe('AcknowledgmentTemplate', () => {
     }, 200 * 1000);
 
     //kgaikwad
-    it('[DRDMV-10902,DRDMV-10900,DRDMV-10924,DRDMV-10923]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
+    it('[DRDMV-10900,DRDMV-10924,DRDMV-10923]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
         let templateName = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName2 = 'Public' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName3 = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateName4 = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateName5 = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let subject = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -160,13 +151,11 @@ describe('AcknowledgmentTemplate', () => {
         await editAcknowledgmentTemplatePo.updateEditMessageTextBladeBody(body2);
         await editAcknowledgmentTemplatePo.clickOnEditMessageTextBladeSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
-
         await editAcknowledgmentTemplatePo.searchAndSelectGridRecord('subject');
         await editAcknowledgmentTemplatePo.clickOnGridEditButton();
         await editAcknowledgmentTemplatePo.updateEditMessageTextBladeSubject(subject2);
         await editAcknowledgmentTemplatePo.clickOnEditMessageTextBladeSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
-
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('body');
         expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toContain(body2, 'body not updated correctly');
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('subject');
@@ -198,8 +187,18 @@ describe('AcknowledgmentTemplate', () => {
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Search Subject is missing in column');
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('Petramco');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Search Company is missing in column');
+    }, 220 * 1000);
 
-        // DRDMV-10902
+    //ptidke
+    it('[DRDMV-10902]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
+        //defect -DRDMV-21387
+        let templateName4 = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateName5 = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let subject = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let body = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
         await createAcknowledgmentTemplatesPo.setTemplateName(templateName4);
         await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
@@ -249,5 +248,5 @@ describe('AcknowledgmentTemplate', () => {
         await utilCommon.closePopUpMessage();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-    }, 300 * 1000);
+    });
 })

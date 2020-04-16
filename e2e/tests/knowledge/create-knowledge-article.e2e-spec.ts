@@ -16,6 +16,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Knowledge Article', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -50,7 +51,7 @@ describe('Knowledge Article', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     async function foundationData(company: string) {
@@ -96,7 +97,7 @@ describe('Knowledge Article', () => {
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login('peter');

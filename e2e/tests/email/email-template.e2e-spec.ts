@@ -7,6 +7,7 @@ import createEmailTemplatePo from '../../pageobject/settings/email/create-email-
 import editEmailTemplatePo from '../../pageobject/settings/email/edit-email-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 
 describe('EmailTemplate', () => {
     let label: string
@@ -26,7 +27,7 @@ describe('EmailTemplate', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //kgaikwad

@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from 'protractor';
 
 const fs = require('fs');
 
@@ -31,7 +31,7 @@ export class Utility {
         clearDateTimePicker: '.btn-secondary',
     }
 
-    
+
     async isWarningDialogBoxDisplayed(): Promise<boolean> {
         return await $(this.selectors.warningDialog).isPresent();
     }
@@ -47,11 +47,10 @@ export class Utility {
     async selectDropDown(guid: string, value: string): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-        const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
+        const dropDownInputElement: ElementFinder = await dropDown.$(this.selectors.dropDownInput);
         await dropDownBoxElement.click();
-        await browser.wait(this.EC.elementToBeClickable(dropDownInputElement), 3000).then(async function () {
-            await dropDownInputElement.sendKeys(value);
-        });
+        let isSearchPresent: boolean = await dropDownInputElement.isPresent();
+        if (isSearchPresent) await dropDownInputElement.sendKeys(value);
 
         let optionCss: string = `[rx-view-component-id="${guid}"] .dropdown_select__menu-content button`;
         let option = await element(by.cssContainingText(optionCss, value));
@@ -225,9 +224,13 @@ export class Utility {
     }
 
     async isRequiredTagToField(guid: string): Promise<boolean> {
-        let nameElement = await $(`[rx-view-component-id="${guid}"] span`);
-        let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
-        return value.trim().substring(3, value.length - 2) === 'required';
+        let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent();
+        if (!isRequired) {
+            let nameElement = await $(`[rx-view-component-id="${guid}"] label`);
+            let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+            isRequired = value.trim().substring(3, value.length - 2) === 'required';
+        }
+        return isRequired;
     }
 
     async deleteAlreadyDownloadedFile(fileName: string): Promise<boolean> {
@@ -371,6 +374,23 @@ export class Utility {
         return arr;
     }
 
+    async refresh(): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.navigate().refresh();
+        await browser.switchTo().alert().then((alert) => {
+            alert.accept();
+        }, () => { });
+        await browser.waitForAngularEnabled(true);
+    }
+
+    async acceptOrRejectBrowserPopup(accept: boolean): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().alert().then((alert) => {
+            if (accept) alert.accept();
+            else alert.dismiss();
+        }, () => { });
+        await browser.waitForAngularEnabled(true);
+    }
 }
 
 export default new Utility();

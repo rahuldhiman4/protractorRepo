@@ -13,6 +13,7 @@ import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Case Status Change', () => {
     let statusNew: string = "New";
@@ -33,7 +34,7 @@ describe('Case Status Change', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //kgaikwad

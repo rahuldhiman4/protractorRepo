@@ -6,6 +6,8 @@ import consoleKnowledgeTemplatePo from '../../pageobject/settings/knowledge-mana
 import createKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledge-management/create-knowledge-article-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
+
 describe('KnowledgeArticlestyle', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     var knowledgeCoachUser = 'kWilliamson';
@@ -19,7 +21,7 @@ describe('KnowledgeArticlestyle', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     it('[DRDMV-5013]: [Template Styles] Availability of default styles on OOB templates', async () => {
