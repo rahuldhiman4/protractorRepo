@@ -1,6 +1,5 @@
-import { ElementFinder, $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import updateStatusBlade from '../../pageobject/common/update.status.blade.po';
-import utilCommon from '../../utils/util.common';
 
 class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -51,11 +50,7 @@ class ViewCasePage {
         dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] label',
         dynamicFieldsValue: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .read-only-content',
         slaProgressBar: '.progress-bar',
-<<<<<<< HEAD
         tabName: '.nav-item button',
-=======
-        tab:'button[role="tab"] span.nav-link-wrapper',
->>>>>>> b97b812c872e880fbd76b80534ef7bdd2b462508
     }
 
     async isGroupNameDisplayed(groupName: string): Promise<boolean> {
@@ -309,7 +304,6 @@ class ViewCasePage {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
-<<<<<<< HEAD
         switch (tabName) {
             case "Tasks": {
                 await $$(this.selectors.tabName).get(0).click();
@@ -340,9 +334,6 @@ class ViewCasePage {
                 break;
             }
         }
-=======
-        await element(by.cssContainingText(this.selectors.tab, tabName)).click();
->>>>>>> b97b812c872e880fbd76b80534ef7bdd2b462508
     }
 
     async getCaseTemplateText(): Promise<string> {
