@@ -5,7 +5,6 @@ import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCase from '../../pageobject/case/create-case.po';
-import quickCasePo from '../../pageobject/case/quick-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -16,6 +15,7 @@ import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
 import feedbackBladeKnowledgeArticlePo from '../../pageobject/knowledge/feedback-blade-Knowledge-article.po';
 import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import notificationPo from '../../pageobject/notification/notification.po';
@@ -25,7 +25,6 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 
 describe('Case Activity', () => {
 
@@ -45,8 +44,6 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    // Ok
-    // Not able to tag person in add note
     it('[DRDMV-16767]: KA Activity Filter UI validation', async () => {
         try {
             // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
@@ -129,7 +126,6 @@ describe('Case Activity', () => {
     }, 150 * 1000);
 
     //kgaikwad
-    // Not able to tag person in add note
     it('[DRDMV-18141]: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
         let caseBodyText = `CaseBody${randomStr}`;
         console.log(10000);
@@ -148,8 +144,6 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    // Ok
-    // Create knowledeg page not able to open
     it('[DRDMV-16768]: From KA Activity Filters > Person search behavior in Author field', async () => {
         try {
             // 1st step: Logged in successfully and Task profile gets opened
@@ -216,7 +210,6 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    // Not able to tag person in add note
     it('[DRDMV-16773]: [-ve] - Person details displayed in Activity who have long name', async () => {
         try {
             let caseBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -264,8 +257,6 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    // Ok
-    // Done
     it('[DRDMV-16733]: Case Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotoCreateCase();
@@ -342,7 +333,6 @@ describe('Case Activity', () => {
     }, 140 * 1000);
 
     //kgaikwad
-    // Task is Not able to add
     it('[DRDMV-16760]: From Task Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Logged in successfully and Task profile gets opened
         await navigationPage.gotoCreateCase();
@@ -401,8 +391,6 @@ describe('Case Activity', () => {
     }, 140 * 1000);
 
     //kgaikwad
-    // Ok
-    // Done
     it('[DRDMV-16734]: From Case Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Login to BWF with Case agent and open case from pre condition
         await navigationPage.gotoCreateCase();
@@ -445,8 +433,6 @@ describe('Case Activity', () => {
     }, 160 * 1000);
 
     //kgaikwad
-    // Ok
-    // Done
     it('[DRDMV-16759]: Task Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotoCreateCase();
@@ -741,8 +727,6 @@ describe('Case Activity', () => {
     }, 900 * 1000);
 
     //kgaikwad
-    // Ok
-    // Not able to tag person in add note
     it('[DRDMV-18048]: While adding a note on Case one or more agent can be tagged in Comment', async () => {
         await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -832,8 +816,7 @@ describe('Case Activity', () => {
     }, 250 * 1000);
 
     // ptidke
-    // Ok
-    xit('[DRDMV-7152]: [Automatic Task] - Automatic Task: Social: Manual Comments', async () => {
+    it('[DRDMV-7152]: [Automatic Task] - Automatic Task: Social: Manual Comments', async () => {
         // Create automated task template
         let autoTemplateData = {
             "templateName": "auto task DRDMV-7152 template",
@@ -895,13 +878,11 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.getFirstPostContent()).toContain(textWithMultipleAttachment);
-        await expect (await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('Show more button for attachment is missing');
+        await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('Show more button for attachment is missing');
         expect(await activityTabPage.getCountAttachedFiles('demo.txt')).toBe(6);
     }, 140 * 1000);
 
     //kgaikwad
-    // Ok
-    // Done
     it('[DRDMV-16582]: Check case view count log is displayed on the activity feed of case along with name of user and time', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1080,8 +1061,6 @@ describe('Case Activity', () => {
     }, 210 * 1000);
 
     //kgaikwad
-    // Ok
-    // Not able to tag person in add note
     it('[DRDMV-18052]: Alert Notification should be send to tagged persons other than Assignee and Requester', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1114,8 +1093,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    // Ok
-    fit('[DRDMV-16730]:Show More/Less option in Case Activity Tab with Attachments', async () => {
+    it('[DRDMV-16730]:Show More/Less option in Case Activity Tab with Attachments', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues1 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues2 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1243,8 +1221,6 @@ describe('Case Activity', () => {
     }, 300 * 1000);
 
     //kgaikwad
-    // Ok
-    // Knowledge Article is not working
     it('[DRDMV-16765]:Validate Show More/Less option in KA Activity Tab', async () => {
         let randomValues1 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues2 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1369,8 +1345,6 @@ describe('Case Activity', () => {
     }, 160 * 1000);
 
     //kgaikwad
-    // OK
-    // Create Knowledge article page is not working
     it('[DRDMV-16764]:Validate all type of social activities are displayed correctly in KA Activity tab', async () => {
         try {
             let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
