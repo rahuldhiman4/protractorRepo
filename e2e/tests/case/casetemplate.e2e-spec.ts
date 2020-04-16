@@ -160,8 +160,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('franz');
             await navigationPage.gotoSettingsPage();
-            await browser.sleep(1000);
-            expect(await createCaseTemplate.getPanelHeading()).toContain('Configuration options not created for these settings.');
+            expect(await createCaseTemplate.isPanelHeadingPresent('Configuration options not created for these settings.')).toBeTruthy('Expected heading not present');
         } catch (e) {
             throw e;
         } finally {
@@ -309,15 +308,14 @@ describe('Case Template', () => {
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            //await utilCommon.waitUntilPopUpDisappear();
+            await utilityCommon.waitUntilPopUpDisappear();
             await expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('fritz');
-            await browser.sleep(3000);
             await quickCasePo.selectCaseTemplate(caseTemplateName);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
-            //await utilCommon.waitUntilPopUpDisappear();
+            await utilityCommon.waitUntilPopUpDisappear();
             await expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy();
         } catch (e) {
             throw e;

@@ -1,5 +1,6 @@
-import { $, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
+import { $, by, element, protractor, ProtractorExpectedConditions, browser, $$ } from "protractor";
 import utilGrid from '../../utils/utility.grid';
+import utilityGrid from '../../utils/utility.grid';
 
 class SelectCaseTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -32,7 +33,7 @@ class SelectCaseTemplateBlade {
     async clickOnAllTemplateTab(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.allTemplates)));
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.allTemplates)));
-        await element(by.cssContainingText(this.selectors.allTemplates,'All Templates')).click();
+        await $$(this.selectors.allTemplates).last().click();
     }
 
     async searchAndOpenCaseTemplate(input: string): Promise<void> {
@@ -47,7 +48,7 @@ class SelectCaseTemplateBlade {
 
     async selectCaseTemplate(templateName: string): Promise<void> {
         await this.clickOnAllTemplateTab();
-        await utilGrid.searchAndSelectGridRecord(templateName);
+        await utilityGrid.searchAndSelectGridRecord(templateName);
         await this.clickOnApplyButton();
         //        await browser.wait(this.EC.invisibilityOf($('.modal-content')));
     }

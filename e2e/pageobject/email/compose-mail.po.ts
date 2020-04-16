@@ -1,6 +1,5 @@
 import { resolve } from 'path';
 import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
 
 class ComposeMail {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -15,7 +14,7 @@ class ComposeMail {
         discardButton: '[rx-view-component-id="038eaa3f-f2ff-4c6d-a5d1-351449671b76"] button',
         composeEmailUI: '[rx-view-definition-guid="a69ea993-2e45-4ae7-9435-25ba53cbad88"]',
         popupEmail: '.dropdown-item .popup-email',
-        popupInfo: '..dropdown-item .popup-info',
+        popupInfo: '.dropdown-item .popup-info',
         attachButton: '.attachment-button button',
         emailBody: '.cke_editable_themed',
         firstClickInEmail: '.cke_editable_themed br',
@@ -41,6 +40,8 @@ class ComposeMail {
         fontSize: '.cke_combo__fontsize',
         numberIcon: '.cke_button__numberedlist_icon',
         attachmentView: 'span.bwf-attachment-container__file-name',
+        warningMessage:'.modal-content .modal-body, .modal-content .d-modal__content-item',
+        toCcInput:'.adapt-mt-input-container',
     }
 
     async clickOnTableIcon(): Promise<void> {
@@ -144,7 +145,7 @@ class ComposeMail {
     }
 
     async getTextOfDiscardButtonWarningMessage(): Promise<string> {
-        return await utilCommon.getWarningDialogMsg();
+        return await $$(this.selectors.warningMessage).last().getText();
     }
 
     async clickOnDiscardButton(): Promise<void> {
@@ -170,7 +171,7 @@ class ComposeMail {
 
     async getSubject(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.getsubject)),2000);
-        return await $(this.selectors.getsubject).getText();
+        return await (await $(this.selectors.getsubject).getText()).trim();
     }
 
     async isSelectEmailTemplateLinkPresent(): Promise<boolean> {
@@ -300,16 +301,22 @@ class ComposeMail {
     }
 
     async isToOrCCInputTetxboxPresent(value: String): Promise<boolean> {
-        let element = await $(`input[aria-label="${value}"]`);
-        return await element.isDisplayed();
+        let countNum:number=await $$(`.adapt-mt-input-container`).count();
+        if(value=='To' && countNum==2){
+        return await $$(`.adapt-mt-input-container`).get(0).isDisplayed();
+        }else if(countNum==2){
+            return await $$(`.adapt-mt-input-container`).get(1).isDisplayed();
+        }
     }
 
     async setToOrCCInputTetxbox(value: String, emailIdForToOrCc: string): Promise<void> {
-        let element = await $(`input[aria-label="${value}"]`);
-        await browser.wait(this.EC.elementToBeClickable(element), 3000);
-        await element.click();
-        await element.clear();
-        await element.sendKeys(emailIdForToOrCc);
+        if(value=='To'){
+            await $$(this.selectors.toCcInput).get(0).clear();
+            await $$(this.selectors.toCcInput).get(0).sendKeys(emailIdForToOrCc);
+        }else{
+            await $$(this.selectors.toCcInput).get(1).clear();
+            await $$(this.selectors.toCcInput).get(1).sendKeys(emailIdForToOrCc);
+        }
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.popupEmail)), 4000);
         await $(this.selectors.popupEmail).click();
     }
