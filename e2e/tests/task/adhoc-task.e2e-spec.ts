@@ -19,7 +19,7 @@ import { default as manageTask, default as manageTaskBladePo } from "../../pageo
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
 
 describe('Create Adhoc task', () => {
@@ -199,6 +199,7 @@ describe('Create Adhoc task', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        let newCaseID: string = await viewCasePage.getCaseID();
         await viewCasePage.clickAddTaskButton();
 
         //Add Manual task and Automation Task in Case
@@ -211,22 +212,22 @@ describe('Create Adhoc task', () => {
         await navigationPage.signOut();
         await loginPage.login('qliu');
         await navigationPage.gotoTaskConsole();
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
-        expect(await taskConsole.isCaseIdLinkIsPresent()).toBeFalsy(" Case Id Displayed in Task console");
-        await taskConsole.clickFirstLinkInTaskTemplateSearchGrid();
+        expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe("", " Case Id Displayed in Task console");
+        await utilityGrid.searchAndOpenHyperlink(manualTaskSummary);
         expect(await viewTask.isCaseViewLinkDisplayed()).toBeFalsy('Case View Link is displayed');
 
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
         await navigationPage.gotoTaskConsole();
         await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
-        expect(await taskConsole.isCaseIdLinkIsPresent()).toBeTruthy('Case Id is not Displayed in Task console');
-        await taskConsole.clickFirstLinkInTaskTemplateSearchGrid();
+        expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCaseID, " Case Id NOT displayed in Task console");
+        await utilityGrid.searchAndOpenHyperlink(manualTaskSummary);
         expect(await viewTask.isCaseViewLinkDisplayed()).toBeTruthy('Case View Link is not displayed');
         await navigationPage.signOut();
         await loginPage.login('qtao');
-    }, 240 * 1000);
+    }, 260 * 1000);
 
     it('[DRDMV-12249,DRDMV-12244]: Verify task creation with attachments & Verify attachment grid from case', async () => {
         let filePath = '../../data/ui/attachment/demo.txt';
