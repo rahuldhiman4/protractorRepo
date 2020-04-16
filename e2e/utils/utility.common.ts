@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from 'protractor';
 
 const fs = require('fs');
 
@@ -47,11 +47,10 @@ export class Utility {
     async selectDropDown(guid: string, value: string): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-        const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
+        const dropDownInputElement: ElementFinder = await dropDown.$(this.selectors.dropDownInput);
         await dropDownBoxElement.click();
-        await browser.wait(this.EC.elementToBeClickable(dropDownInputElement), 3000).then(async function () {
-            await dropDownInputElement.sendKeys(value);
-        });
+        let isSearchPresent: boolean = await dropDownInputElement.isPresent();
+        if(isSearchPresent) await dropDownInputElement.sendKeys(value);
 
         let optionCss: string = `[rx-view-component-id="${guid}"] .dropdown_select__menu-content button`;
         let option = await element(by.cssContainingText(optionCss, value));

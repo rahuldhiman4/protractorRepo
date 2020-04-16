@@ -1,25 +1,27 @@
-import { $, protractor, ProtractorExpectedConditions, element,by } from "protractor";
-import utilCommon from '../../utils/util.common';
+import { $, protractor, ProtractorExpectedConditions, element, by } from "protractor";
+import utilityCommon from '../../utils/utility.common';
 
 class UpdateStatus {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        statusDropDown: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"], [rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"]',
-        statusReasonDropDown: '[rx-view-component-id="049c43a1-4cbd-482d-980d-5db4ed78f295"], [rx-view-component-id="baf69b56-c37b-4a0b-9e68-f18558738ebb"]',
+        caseStatusDropDownGuid: '3c8d9278-fc1f-430c-b866-cdc9d217318b',
+        taskStatusDropDownGuid: '8b4cef48-0a4c-4ec1-bc4c-cce47179c964',
+        caseStatusReasonDropDownGuid: '049c43a1-4cbd-482d-980d-5db4ed78f295',
+        taskStatusReasonDropDownGuid: 'baf69b56-c37b-4a0b-9e68-f18558738ebb',
+        caseStatusDropDown: '[rx-view-component-id="3c8d9278-fc1f-430c-b866-cdc9d217318b"] button',
+        caseStatusReasonDropDown: '[rx-view-component-id="7128b36c-5d4f-4333-8ee4-2a5163258a45"] button',
         resolutionCodeDropDownGuid: 'fb07b5ff-3c9b-454a-8b0c-a1dfd9987856',
-        statusReasonGuid: '049c43a1-4cbd-482d-980d-5db4ed78f295',
         saveUpdateStatus: '[rx-view-component-id="ee5dd503-a10e-4d22-9ac5-99c400892bb7"] button',
-        cancelUpdateStatus: '[rx-view-component-id="7cffd3f8-5b84-4e7f-a4b3-6c0a3dd27855"] button',  
+        cancelUpdateStatus: '[rx-view-component-id="7cffd3f8-5b84-4e7f-a4b3-6c0a3dd27855"] button',
         statusChange: '[rx-view-component-id="48bbcbbf-564c-4d46-8dc2-1e7670c187ff"] .status-transition',
         statusChangeReason: '[rx-view-component-id="049c43a1-4cbd-482d-980d-5db4ed78f295"]',
-        searchInput: 'input[type="search"]', 
-        statusDropDownGuid: '3c8d9278-fc1f-430c-b866-cdc9d217318b',  
-        resolutionDescriptionTextBoxId:'[rx-view-component-id="d98df37c-7a96-43c3-bf69-2e6e735031ae"] textarea',
+        searchInput: 'input[type="search"]',
+        resolutionDescriptionTextBoxId: '[rx-view-component-id="d98df37c-7a96-43c3-bf69-2e6e735031ae"] textarea',
     }
 
     async allStatusReasonOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusReasonGuid, list);
+        return await utilityCommon.isDropDownValueDisplayed(this.selectors.caseStatusReasonDropDownGuid, list);
     }
 
     async clearStatusReason(): Promise<void> {
@@ -33,11 +35,17 @@ class UpdateStatus {
     }
 
     async changeStatus(statusValue: string): Promise<void> {
-        await utilCommon.selectDropDown2($(this.selectors.statusDropDown), statusValue);
+        let isCaseStatusBlade: boolean = await element(by.css(this.selectors.caseStatusDropDown)).isPresent();
+        if (isCaseStatusBlade) {
+            await utilityCommon.selectDropDown(this.selectors.caseStatusDropDownGuid, statusValue);
+        } else await utilityCommon.selectDropDown(this.selectors.taskStatusDropDownGuid, statusValue);
     }
 
     async setStatusReason(statusReasonValue: string): Promise<void> {
-        await utilCommon.selectDropDown2($(this.selectors.statusReasonDropDown), statusReasonValue);
+        let isCaseStatusBlade: boolean = await element(by.css(this.selectors.caseStatusDropDown)).isPresent();
+        if (isCaseStatusBlade) {
+            await utilityCommon.selectDropDown(this.selectors.caseStatusReasonDropDownGuid, statusReasonValue);
+        } else await utilityCommon.selectDropDown(this.selectors.taskStatusReasonDropDownGuid, statusReasonValue);
     }
 
     async clickOnstatusReason(): Promise<void> {
@@ -54,27 +62,27 @@ class UpdateStatus {
     async isResolutionDescriptionTextBoxEmpty(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.resolutionDescriptionTextBoxId)));
         let statusstr = await $(this.selectors.resolutionDescriptionTextBoxId).getAttribute('value');
-        if(statusstr==''){
+        if (statusstr == '') {
             return true
         }
-        else return  false;
+        else return false;
     }
 
     async selectResolutionCode(resolutionCode: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.resolutionCodeDropDownGuid, resolutionCode);
+        await utilityCommon.selectDropDown(this.selectors.resolutionCodeDropDownGuid, resolutionCode);
     }
 
     async isStatusReasonRequiredTextPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.summary)));
-        return await utilCommon.isRequiredTagToField(this.selectors.statusReasonGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.caseStatusReasonDropDownGuid);
     }
 
     async isChangeStatusFieldPresent(): Promise<boolean> {
-        return await element(by.css(this.selectors.statusDropDown)).isPresent();
+        return await element(by.css(this.selectors.caseStatusDropDown)).isPresent();
     }
 
     async isStatusReasonFieldPresent(): Promise<boolean> {
-        return await element(by.css(this.selectors.statusReasonDropDown)).isPresent();
+        return await element(by.css(this.selectors.caseStatusReasonDropDown)).isPresent();
     }
 
     async isSaveUpdateStatusButtonPresent(): Promise<boolean> {
@@ -94,7 +102,7 @@ class UpdateStatus {
         //        await utilCommon.waitUntilPopUpDisappear();
     }
     async allStatusOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusDropDownGuid, list);
+        return await utilityCommon.isDropDownValueDisplayed(this.selectors.caseStatusDropDownGuid, list);
     }
 
 }
