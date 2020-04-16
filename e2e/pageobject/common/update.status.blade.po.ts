@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions, element, by } from "protractor";
+import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 
 class UpdateStatus {
@@ -36,16 +36,14 @@ class UpdateStatus {
 
     async changeStatus(statusValue: string): Promise<void> {
         let isCaseStatusBlade: boolean = await element(by.css(this.selectors.caseStatusDropDown)).isPresent();
-        if (isCaseStatusBlade) {
-            await utilityCommon.selectDropDown(this.selectors.caseStatusDropDownGuid, statusValue);
-        } else await utilityCommon.selectDropDown(this.selectors.taskStatusDropDownGuid, statusValue);
+        if (isCaseStatusBlade) await utilityCommon.selectDropDown(this.selectors.caseStatusDropDownGuid, statusValue);
+        else await utilityCommon.selectDropDown(this.selectors.taskStatusDropDownGuid, statusValue);
     }
 
     async setStatusReason(statusReasonValue: string): Promise<void> {
         let isCaseStatusBlade: boolean = await element(by.css(this.selectors.caseStatusDropDown)).isPresent();
-        if (isCaseStatusBlade) {
-            await utilityCommon.selectDropDown(this.selectors.caseStatusReasonDropDownGuid, statusReasonValue);
-        } else await utilityCommon.selectDropDown(this.selectors.taskStatusReasonDropDownGuid, statusReasonValue);
+        if (isCaseStatusBlade) await utilityCommon.selectDropDown(this.selectors.caseStatusReasonDropDownGuid, statusReasonValue);
+        else await utilityCommon.selectDropDown(this.selectors.taskStatusReasonDropDownGuid, statusReasonValue);
     }
 
     async clickOnstatusReason(): Promise<void> {
@@ -94,13 +92,13 @@ class UpdateStatus {
     }
 
     async clickSaveStatus(expectedStatus?: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveUpdateStatus)));
         await $(this.selectors.saveUpdateStatus).click();
-        //        if (expectedStatus) {
-        //            await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.statusChange, expectedStatus))));
-        //        }
-        //        await utilCommon.waitUntilPopUpDisappear();
+        await browser.wait(this.EC.invisibilityOf($(this.selectors.saveUpdateStatus)), 3000);
+        if (expectedStatus) {
+            await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.statusChange, expectedStatus))), 3000);
+        }
     }
+
     async allStatusOptionsPresent(list: string[]): Promise<boolean> {
         return await utilityCommon.isDropDownValueDisplayed(this.selectors.caseStatusDropDownGuid, list);
     }
