@@ -22,7 +22,7 @@ class ActivityTabPage {
         // activityText: '[rx-view-component-id="34167059-11d4-4e85-8a58-e501544e2461"] [title="Activity"]',
         // FilterTask: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .d-tag-label',
         FilterPopUp: '.bwf-activity-log-filter button[aria-expanded]',
-        
+
         filterApplyButtonEnableDisabled: '.filter-options .btn-primary[disabled="disabled"]',
         filterLists: '.a-tag-active .bwf-text-overflow-ellipsis',
         nMoreButton: '.bwf-show-more .dropdown-toggle span',
@@ -50,12 +50,12 @@ class ActivityTabPage {
         closeButton: '.modal-dialog button',
         dwpIcon: '.dwp_survey .log-item__icon',
         dwpFeedback: '.rx-content.dwp-comment',
-        logItems: '.log-item__body',
+        logItems: '.activity  .activity__body',
         // body: '.log-item__body .body',
-        
+
         AttachedfileName: '.activity__wrapper .bwf-attachment-container__file-name',
         refreshButton: '.tab-content .bwf-button-link[aria-label="Refresh"]',
-        attachmentField: '.activity-feed-note-buttons__left input[type="file"]',
+        attachmentField: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] input[type="file"]',
         showMoreEmailActivity: '.activity__wrapper button[aria-label="Show more"]',
         allTaskActivity: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .fields .value',
         taskActivity: '.fields .value',
@@ -64,10 +64,10 @@ class ActivityTabPage {
         publicCheckbox: '.bwf-activity-add-note .checkbox__input',
         logTitle: '.activity-title',
         showLessLink: 'button[aria-label="Show less"]',
-        showMoreLinkForAttachment: '.rx-attachment-show-text[aria-label="Show more attachments"]',
-        showLessLinkForAttachment: '.rx-attachment-show-text[aria-label="Show less attachments"]',
+        showMoreLinkForAttachment: '.bwf-show-more button',
+        showLessLinkForAttachment: '.bwf-show-more button',
         lockIcon: '.d-icon-lock',
-        activityLogList:'.activity__wrapper',
+        activityLogList: '.activity__wrapper',
     }
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
         return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isDisplayed().then(async (result) => {
@@ -147,12 +147,16 @@ class ActivityTabPage {
     }
 
     async clickShowMoreLinkInActivity(activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLink).isDisplayed().then(async (link) => {
-            if (link) {
-                await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLink).click();
-                return true;
-            } else return false;
-        });
+        try {
+            return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLink).isDisplayed().then(async (link) => {
+                if (link) {
+                    await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLink).click();
+                    return true;
+                } else return false;
+            });
+        } catch (error) {
+            return false;
+        }
     }
 
     async clickShowLessLinkInActivity(activityNumber: number): Promise<boolean> {
@@ -165,12 +169,17 @@ class ActivityTabPage {
     }
 
     async clickShowMoreLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).isPresent().then(async (link) => {
-            if (link) {
-                await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).click();
-                return true;
-            } else return false;
-        });
+        try {
+            return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).isDisplayed().then(async (link) => {
+                if (link) {
+                    await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).click();
+                    return true;
+                } else return false;
+            });
+        } catch (error) {
+            return false;
+        }
+
     }
 
     async clickShowLessLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
@@ -214,9 +223,10 @@ class ActivityTabPage {
     }
 
     async addAttachment(fileToUpload: string): Promise<void> {
-        const absolutePath = resolve(__dirname, fileToUpload);
+        let absolutePath:string = resolve(__dirname, fileToUpload);
         console.log(absolutePath);
-        await $(this.selectors.attachmentField).sendKeys(absolutePath);
+        await $(this.selectors.attachmentField).sendKeys(resolve(__dirname, fileToUpload));
+        absolutePath='';
     }
 
     async isFileAttachedOnActivity(): Promise<boolean> {
@@ -292,7 +302,7 @@ class ActivityTabPage {
         var value = await elem.getText();
         //        await utilCommon.waitUntilSpinnerToHide();
         return value.includes(textToMatch) ? true : false;
-        
+
     }
 
     async removeFilterList(): Promise<void> {
@@ -333,7 +343,7 @@ class ActivityTabPage {
 
     async isFilterPopUpDisplayed(): Promise<string> {
         return await $(this.selectors.FilterPopUp).getAttribute('aria-expanded');
-        
+
     }
 
     async clickActivityNoteTextBox(): Promise<void> {
@@ -436,7 +446,7 @@ class ActivityTabPage {
 
     async isAuthorBoxEmpty(): Promise<boolean> {
         return await $(this.selectors.filterAuthor).getAttribute('value') == "" ? true : false;
-        
+
     }
 
     async searchAuthorOnFilter(AuthorName: string): Promise<void> {

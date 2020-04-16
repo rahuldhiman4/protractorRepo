@@ -4,6 +4,7 @@ class QuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
+        recommendedTitle: '.bwf-search-result .bwf-search-fields__title-text span',
         drpdownHeader: '.sr-preview-item .dropdown-toggle',
         startOver: '.text-muted .btn-secondary',
         smartSearchTextBox: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .sr-input',
@@ -53,7 +54,9 @@ class QuickCasePage {
     }
 
     async clickOnCaseSummaryInRecommendedCases(caseSummary: string): Promise<void> {
-        await $(`.km-group div[title="${caseSummary}"]`).click();
+        // await $(`.km-group div[title="${caseSummary}"]`).click();
+        await element(by.cssContainingText(this.selectors.recommendedTitle, caseSummary)).click(); 
+
     }
 
     async getDrpDownValueByIndex(indexValue: number): Promise<string> {

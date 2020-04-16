@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { ElementFinder, $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import updateStatusBlade from '../../pageobject/common/update.status.blade.po';
 import utilCommon from '../../utils/util.common';
 
@@ -51,10 +51,11 @@ class ViewCasePage {
         dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] label',
         dynamicFieldsValue: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .read-only-content',
         slaProgressBar: '.progress-bar',
+        tabName: '.nav-item button',
     }
 
-    async isGroupNameDisplayed(groupName:string):Promise<boolean>{
-        return await $(`[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .group-container__name__title[title=${groupName}]}`).isDisplayed(); 
+    async isGroupNameDisplayed(groupName: string): Promise<boolean> {
+        return await $(`[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .group-container__name__title[title=${groupName}]}`).isDisplayed();
     }
 
     async isAttachedDocumentPresent(fileName: string): Promise<boolean> {
@@ -304,7 +305,36 @@ class ViewCasePage {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
-        await element(by.linkText(tabName)).click();
+        switch (tabName) {
+            case "Tasks": {
+                await $$(this.selectors.tabName).get(0).click();
+                break;
+            }
+            case "Related Cases": {
+                await $$(this.selectors.tabName).get(1).click();
+                break;
+            }
+            case "Related Persons": {
+                await $$(this.selectors.tabName).get(2).click();
+                break;
+            }
+            case "Case Access": {
+                await $$(this.selectors.tabName).get(3).click();
+                break;
+            }
+            case "Activity": {
+                await $$(this.selectors.tabName).get(4).click();
+                break;
+            }
+            case "Resources": {
+                await $$(this.selectors.tabName).get(5).click();
+                break;
+            }
+            default: {
+                console.log(tabName, '  is not a valid tab name');
+                break;
+            }
+        }
     }
 
     async getCaseTemplateText(): Promise<string> {
