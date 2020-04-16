@@ -27,6 +27,7 @@ import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
+import changeAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
 
 describe("Create Case Assignment Mapping", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -350,8 +351,6 @@ describe("Create Case Assignment Mapping", () => {
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary("DRDMV-11825 Case Summary");
         await createCasePage.setPriority("Medium");
-        await createCasePage.selectCategoryTier1("Projectors");
-        await createCasePage.selectCategoryTier2("Repair");
         await createCasePage.clickChangeAssignmentButton();
         await changeAssignmentPage.selectBusinessUnit(businessData.orgName);
         await changeAssignmentPage.selectDepartment(departmentData.orgName);
@@ -359,6 +358,7 @@ describe("Create Case Assignment Mapping", () => {
         await changeAssignmentPage.selectAssignee('fnPerson11825 lnPerson11825');
         await changeAssignmentPage.clickOnAssignButton();
         await createCasePage.clickSaveCaseButton();
+        await utilityCommon.waitUntilPopUpDisappear();
         await previewCasePo.clickGoToCaseButton();
         expect(await viewCasePage.getAssignedGroupText()).toBe(suppGrpData.orgName, "Support Group Not Populated");
         expect(await viewCasePage.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
@@ -385,7 +385,7 @@ describe("Create Case Assignment Mapping", () => {
         await utilCommon.waitUntilPopUpDisappear();
         await utilCommon.scrollUpOrDownTillElement(viewTask.selectors.assignedGroupValue);
         expect(await viewTask.getAssignedGroupText()).toBe(suppGrpData.orgName, "Support Group Not Populated");
-        expect(await viewTask.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
+        expect(await viewTask.getAssigneeText()).toContain('fnPerson11825 lnPerson11825', "assignee is not available");
         expect(await viewTask.getBusinessUnitText()).toBe(businessData.orgName, "Buisness Unit is not available");
         expect(await viewTask.getDepartmentText()).toBe(departmentData.orgName, "Department is not available");
         expect(await viewTask.getAssignedCompanyText()).toBe("Petramco", "Company is not available");
@@ -399,19 +399,20 @@ describe("Create Case Assignment Mapping", () => {
         await createCaseTemplate.setOwnerCompanyValue("Petramco");
         await createCaseTemplate.setBusinessUnitDropdownValue(businessData.orgName);
         await createCaseTemplate.setDepartmentDropdownValue(departmentData.orgName);
-        await createCaseTemplate.setOwnerGroupDropdownValue("Compensation and Benefits");
+        await createCaseTemplate.setOwnerGroupDropdownValue(suppGrpData.orgName);
         await createCaseTemplate.clickOnChangeAssignmentButton();
-        await changeAssignmentPage.selectBusinessUnit(businessData.orgName);
-        await changeAssignmentPage.selectDepartment(departmentData.orgName);
-        await changeAssignmentPage.selectSupportGroup(suppGrpData.orgName);
-        await changeAssignmentPage.selectAssignee('fnPerson11825 lnPerson11825');
-        await changeAssignmentPage.clickOnAssignButton();
+        await changeAssignmentOldPage.selectBusinessUnit(businessData.orgName);
+        await changeAssignmentOldPage.selectDepartment(departmentData.orgName);
+        await changeAssignmentOldPage.selectSupportGroup(suppGrpData.orgName);
+        await changeAssignmentOldPage.selectAssignee('fnPerson11825 lnPerson11825');
+        await changeAssignmentOldPage.clickOnAssignButton();
         await createCaseTemplate.clickSaveCaseTemplate();
-        expect(await viewCaseTemplate.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
+        expect(await viewCaseTemplate.getAssigneeText()).toContain('fnPerson11825 lnPerson11825', "assignee is not available");
         expect(await viewCaseTemplate.getAssigneeBusinessUnitValue()).toBe(businessData.orgName);
         expect(await viewCaseTemplate.getAssigneeDepartmentValue()).toBe(departmentData.orgName);
         expect(await viewCaseTemplate.getBuisnessUnitValue()).toBe(businessData.orgName);
         expect(await viewCaseTemplate.getDepartmentValue()).toBe(departmentData.orgName);
+        await utilCommon.switchToDefaultWindowClosingOtherTabs();
         //Manual task Template
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
@@ -423,19 +424,20 @@ describe("Create Case Assignment Mapping", () => {
         await taskTemplate.selectOwnerCompany("Petramco");
         await taskTemplate.selectBuisnessUnit(businessData.orgName);
         await taskTemplate.selectDepartment(departmentData.orgName);
-        await taskTemplate.selectOwnerGroup("Compensation and Benefits");
+        await taskTemplate.selectOwnerGroup(suppGrpData.orgName);
         await taskTemplate.clickOnAssignment();
-        await changeAssignmentPage.selectBusinessUnit(businessData.orgName);
-        await changeAssignmentPage.selectDepartment(departmentData.orgName);
-        await changeAssignmentPage.selectSupportGroup(suppGrpData.orgName);
-        await changeAssignmentPage.selectAssignee('fnPerson11825 lnPerson11825');
-        await changeAssignmentPage.clickOnAssignButton();
+        await changeAssignmentOldPage.selectBusinessUnit(businessData.orgName);
+        await changeAssignmentOldPage.selectDepartment(departmentData.orgName);
+        await changeAssignmentOldPage.selectSupportGroup(suppGrpData.orgName);
+        await changeAssignmentOldPage.selectAssignee('fnPerson11825 lnPerson11825');
+        await changeAssignmentOldPage.clickOnAssignButton();
         await taskTemplate.clickOnSaveTaskTemplate();
         expect(await viewTaskTemplate.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
         await expect(viewTaskTemplate.getAssigneeBusinessUnitValue()).toBe(businessData.orgName);
         await expect(viewTaskTemplate.getAssigneeDepartmentValue()).toBe(departmentData.orgName);
         await expect(viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
         await expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
+        await utilCommon.switchToDefaultWindowClosingOtherTabs();
     }, 400 * 1000);
 
     it('[DRDMV-12080]: Verify Company and Support Group selection hierarchy.', async () => {
