@@ -49,7 +49,6 @@ describe('Case Activity', () => {
     it('[DRDMV-16767]: KA Activity Filter UI validation', async () => {
         try {
             // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
-            await browser.sleep(10000);
             await navigationPage.gotoCreateKnowledge();
             await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge Article title is missing';
             await createKnowlegePo.clickOnTemplate('Reference');
@@ -846,32 +845,32 @@ describe('Case Activity', () => {
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateName);
         await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
-        // //single line comment
-        // await activityTabPage.addActivityNote(taskBodyText);
-        // await activityTabPage.clickOnPostButton();
-        // expect(await activityTabPage.getFirstPostContent()).toContain(taskBodyText);
-        // //one file and commnet
-        // await activityTabPage.addActivityNote('step 2nd added ' + taskBodyText);
-        // await activityTabPage.addAttachment(filePath);
-        // await activityTabPage.clickOnPostButton();
-        // await utilCommon.waitUntilSpinnerToHide();
-        // expect(await activityTabPage.getFirstPostContent()).toContain('step 2nd added ' + taskBodyText);
-        // expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('file is not present');
-        // expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is not deleted.');
-        // await activityTabPage.clickAttachedFile('bwfPdf.pdf');
-        // expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
-        // //multiple line
-        // let newline: string = "this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things";
-        // await activityTabPage.addActivityNote(newline);
-        // await activityTabPage.clickOnPostButton();
-        // await activityTabPage.clickOnShowMore();
-        // expect(await activityTabPage.getFirstPostContent()).toContain(newline);
-        // //html with text
-        // let withHTML: string = "this is text for new line and add new things this is text for new line <p><img alt=''>new link<a>Google</a> New things</p> <p>This is new test<span>Font 72Font 72this is newly added text</span></p> <td><span style='color:#3498db;'>SettingColor</span></td>";
-        // await activityTabPage.addActivityNote(withHTML);
-        // await activityTabPage.clickOnPostButton();
-        // await activityTabPage.clickOnShowMore();
-        // expect(await activityTabPage.getFirstPostContent()).toContain(withHTML);
+        //single line comment
+        await activityTabPage.addActivityNote(taskBodyText);
+        await activityTabPage.clickOnPostButton();
+        expect(await activityTabPage.getFirstPostContent()).toContain(taskBodyText);
+        //one file and commnet
+        await activityTabPage.addActivityNote('step 2nd added ' + taskBodyText);
+        await activityTabPage.addAttachment(filePath);
+        await activityTabPage.clickOnPostButton();
+        await utilCommon.waitUntilSpinnerToHide();
+        expect(await activityTabPage.getFirstPostContent()).toContain('step 2nd added ' + taskBodyText);
+        expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('file is not present');
+        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is not deleted.');
+        await activityTabPage.clickAttachedFile('bwfPdf.pdf');
+        expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
+        //multiple line
+        let newline: string = "this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things";
+        await activityTabPage.addActivityNote(newline);
+        await activityTabPage.clickOnPostButton();
+        await activityTabPage.clickOnShowMore();
+        expect(await activityTabPage.getFirstPostContent()).toContain(newline);
+        //html with text
+        let withHTML: string = "this is text for new line and add new things this is text for new line <p><img alt=''>new link<a>Google</a> New things</p> <p>This is new test<span>Font 72Font 72this is newly added text</span></p> <td><span style='color:#3498db;'>SettingColor</span></td>";
+        await activityTabPage.addActivityNote(withHTML);
+        await activityTabPage.clickOnPostButton();
+        await activityTabPage.clickOnShowMore();
+        expect(await activityTabPage.getFirstPostContent()).toContain(withHTML);
         let textWithMultipleAttachment: string = "new values with attachments";
         await activityTabPage.addActivityNote(textWithMultipleAttachment);
         for (let i = 0; i <= 5; i++) {
