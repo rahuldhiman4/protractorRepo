@@ -22,6 +22,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from "../../utils/util.common";
 import utilGrid from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
 
 let emailTemplateData = require('../../data/ui/email/email.template.api.json');
@@ -74,12 +75,12 @@ describe("Compose Email", () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
-        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
         let caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
@@ -97,7 +98,6 @@ describe("Compose Email", () => {
         expect(await composeMail.isDiscardButtonPresent()).toBeTruthy('Discard Button is missing');
         await composeMail.closeComposeEmail();
         await viewCasePo.isEmailLinkPresent();
-
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
         await quickCase.setCaseSummary('new case');
@@ -125,12 +125,12 @@ describe("Compose Email", () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
-        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
         let caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
@@ -146,12 +146,12 @@ describe("Compose Email", () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
-        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
         let caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
@@ -168,19 +168,18 @@ describe("Compose Email", () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
-        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
         let caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnSelectEmailTemplateLink();
-        await utilCommon.waitUntilSpinnerToHide();
         let columns: string[] = ["ID", "Display ID", "Company", "Description", "Label", "Template Id",];
         await selectEmailTemplateBladePo.addGridColumn(columns);
         let columnHeaders: string[] = ["Template Name", "Message Subject", "Locale", "ID", "Display ID", "Company", "Description", "Label", "Template Id"];
@@ -194,12 +193,12 @@ describe("Compose Email", () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
-        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
         let caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
@@ -220,7 +219,7 @@ describe("Compose Email", () => {
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-10394 RandVal" + summary,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
@@ -228,12 +227,12 @@ describe("Compose Email", () => {
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
         let caseId: string = newCase.displayId;
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnSelectEmailTemplateLink();
-        await utilCommon.waitUntilSpinnerToHide();
+        await utilityCommon.waitUntilSpinnerToHide();
         await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
         await emailTemplateBladePo.clickOnApplyButton();
         await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
@@ -259,7 +258,7 @@ describe("Compose Email", () => {
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-10401 RandVal" + summary,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
@@ -267,7 +266,7 @@ describe("Compose Email", () => {
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
         let caseId: string = newCase.displayId;
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
@@ -307,7 +306,7 @@ describe("Compose Email", () => {
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
         let caseId: string = newCase.displayId;
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnRequestersEmail();
@@ -323,8 +322,8 @@ describe("Compose Email", () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteEmailOrNotificationTemplate(emailTemplateName);
         await composeMail.clickOnSelectEmailTemplateLink();
-        await utilCommon.waitUntilSpinnerToHide();
-        await utilGrid.searchRecord(emailTemplateName);
+        await utilityCommon.waitUntilSpinnerToHide();
+        await utilityGrid.searchRecord(emailTemplateName);
         expect(await emailTemplateBladePo.isEmailTemplateGridEmpty(emailTemplateName)).toBeFalsy('Email template grid is not empty');
         await emailTemplateBladePo.clickOnCancelButton();
         await composeMail.clickOnSendButton();
@@ -350,7 +349,7 @@ describe("Compose Email", () => {
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
         let caseId: string = newCase.displayId;
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await caseConsole.searchAndOpenCase(caseId);
         await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnSelectEmailTemplateLink();
@@ -387,12 +386,12 @@ describe("Compose Email", () => {
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
         let caseId: string = newCase.displayId;
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
         await composeMail.isSelectEmailTemplateButtonPresent();
-        await utilCommon.waitUntilSpinnerToHide();
+        await utilityCommon.waitUntilSpinnerToHide();
         expect(await composeMail.isUserPopulatedInToOrCc('To', 'xyxd')).toBeFalsy();
         await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
         expect(await composeMail.getToEmailPerson()).toContain('Fritz Schulz');
@@ -417,7 +416,7 @@ describe("Compose Email", () => {
             }
             await apiHelper.apiLogin('fritz');
             let newCase = await apiHelper.createCase(caseData);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
             await composeMail.setEmailBody('new execution');
@@ -632,7 +631,7 @@ describe("Compose Email", () => {
             }
             await apiHelper.apiLogin('fritz');
             let newCase = await apiHelper.createCase(caseData);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
@@ -744,7 +743,7 @@ describe("Compose Email", () => {
             }
             await apiHelper.apiLogin('fritz');
             let newCase = await apiHelper.createCase(caseData);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
@@ -781,7 +780,7 @@ describe("Compose Email", () => {
             }
             await apiHelper.apiLogin('fritz');
             let newCaseOne = await apiHelper.createCase(caseDataOne);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCaseOne.displayId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
@@ -897,7 +896,7 @@ describe("Compose Email", () => {
             }
             await apiHelper.apiLogin('fritz');
             let newCase = await apiHelper.createCase(caseData);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
@@ -935,7 +934,7 @@ describe("Compose Email", () => {
             }
             await apiHelper.apiLogin('fritz');
             let newCaseOne = await apiHelper.createCase(caseDataOne);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCaseOne.displayId);
             await viewCasePo.clickOnEmailLink();
             await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
@@ -975,7 +974,7 @@ describe("Compose Email", () => {
         }
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await caseConsole.searchAndOpenCase(newCase.displayId);
         await viewCasePo.clickOnEmailLink();
         await composeMail.addAttachment();
@@ -997,7 +996,7 @@ describe("Compose Email", () => {
         }
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await caseConsole.searchAndOpenCase(newCase.displayId);
         await viewCasePo.clickOnEmailLink();
         await composeMail.addAttachment();
@@ -1026,7 +1025,7 @@ describe("Compose Email", () => {
         }
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await caseConsole.searchAndOpenCase(newCase.displayId);
         await viewCasePo.clickOnEmailLink();
         for (let i = 0; i <= 20; i++) {
