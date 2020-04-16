@@ -21,6 +21,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import utilityCommon from '../../utils/utility.common';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -136,11 +137,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
     }, 180 * 1000);
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     afterAll(async () => {
@@ -385,7 +386,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
@@ -736,7 +737,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
@@ -828,7 +829,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
@@ -886,7 +887,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh();
+            await utilityCommon.refresh();
             await apiHelper.apiLogin('tadmin');
             let domainTagData = domainTagDataFile['DomainTagDataPsilon'];
             let domainTag = await apiHelper.createDomainTag(domainTagData);

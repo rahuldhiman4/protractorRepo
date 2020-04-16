@@ -10,6 +10,7 @@ import automatedStatusTransitionEditPage from "../../pageobject/settings/case-ma
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Automated Case Status Transition', () => {
     beforeAll(async () => {
@@ -24,7 +25,7 @@ describe('Automated Case Status Transition', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //asahitya
@@ -62,7 +63,7 @@ describe('Automated Case Status Transition', () => {
 
         expect(await automatedStatusTransitionConsole.areGridColumnMatches(['Name', 'Company', 'From Status', 'To Status', 'Days Inactive', 'Enabled', 'Flowset', 'Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']))
         await automatedStatusTransitionConsole.removeGridColumns(['Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']);
-        await browser.refresh();
+        await utilityCommon.refresh();
         await automatedStatusTransitionConsole.isGridColumnSorted('Days Inactive');
 
         await utilGrid.searchAndOpenHyperlink(configName1);
@@ -105,12 +106,12 @@ describe('Automated Case Status Transition', () => {
             expect(await automatedStatusTransitionConsole.isAddAutomatedStatusTransitionBtnEnabled()).toBeFalsy();
             await utilGrid.searchAndSelectGridRecord(configName1);
             expect(await automatedStatusTransitionConsole.isDeleteAutomatedStatusTransitionBtnEnabled()).toBeFalsy();
-            await browser.refresh();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await automatedStatusTransitionConsole.openAutomatedTransitionConfig(configName1);
             expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionNameEnabled()).toBeFalsy();
             expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionSaveBtnEnabled()).toBeFalsy();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             //Search and presence of existing rule test
             expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy();
@@ -130,7 +131,7 @@ describe('Automated Case Status Transition', () => {
             await automatedStatusTransitionConsole.addGridColumns(['Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']);
             expect(await automatedStatusTransitionConsole.areGridColumnMatches(['Name', 'Company', 'From Status', 'To Status', 'Days Inactive', 'Enabled', 'Flowset', 'Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']))
             await automatedStatusTransitionConsole.removeGridColumns(['Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']);
-            await browser.refresh();
+            await utilityCommon.refresh();
             await automatedStatusTransitionConsole.isGridColumnSorted('Days Inactive');
         }
         catch (ex) {
@@ -227,7 +228,7 @@ describe('Automated Case Status Transition', () => {
         await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
         await apiHelper.runAutomatedCaseTransitionProcess();
 
-        await browser.refresh();
+        await utilityCommon.refresh();
         await notificationPo.clickOnNotificationIcon();
         expect(await notificationPo.isAlertPresent('Petramco Administrator changed the status of ' + caseId + ' to Closed')).toBeTruthy('Alert message is not present');
     });

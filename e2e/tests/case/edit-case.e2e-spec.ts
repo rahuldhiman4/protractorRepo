@@ -13,6 +13,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import caseConsolePo from 'e2e/pageobject/case/case-console.po';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Edit Case', () => {
     beforeAll(async () => {
@@ -25,7 +26,7 @@ describe('Edit Case', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //ankagraw

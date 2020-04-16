@@ -20,6 +20,7 @@ import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Create Adhoc task', () => {
     beforeAll(async () => {
@@ -32,7 +33,7 @@ describe('Create Adhoc task', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     it('[DRDMV-3820,DRDMV-1239]: Adhoc Task Create view (UI verification)', async () => {

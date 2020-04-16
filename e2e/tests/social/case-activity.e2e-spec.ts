@@ -26,6 +26,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Case Activity', () => {
 
@@ -41,7 +42,7 @@ describe('Case Activity', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //kgaikwad
@@ -900,7 +901,7 @@ describe('Case Activity', () => {
             await activityTabPo.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
-            await browser.refresh();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
             await navigationPage.gotoPersonProfile();
@@ -959,7 +960,7 @@ describe('Case Activity', () => {
             await utilCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
             await navigationPage.gotoQuickCase();
-            await browser.refresh();
+            await utilityCommon.refresh();
             await quickCasePo.selectRequesterName('qtao');
             await quickCasePo.setCaseSummary(caseData.Summary);
             await quickCasePo.saveCase();
@@ -1017,7 +1018,7 @@ describe('Case Activity', () => {
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('Fabian');
             await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Fabian Krause')).toBeTruthy('Failuer:Fabian Krause Agent Name is missing');
-            await browser.refresh();
+            await utilityCommon.refresh();
             //Write Access Agent
             await viewCasePo.clickOnTab('Case Access');
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');

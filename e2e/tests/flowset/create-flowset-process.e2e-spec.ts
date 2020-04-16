@@ -8,6 +8,7 @@ import consoleFlowsetProcessLibrary from '../../pageobject/settings/manage-flows
 import createFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/create-register-process-config.po';
 import editFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/edit-register-process-config.po';
 import { BWF_BASE_URL } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Create Process in Flowset', () => {
     beforeAll(async () => {
@@ -20,7 +21,7 @@ describe('Create Process in Flowset', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //ankagraw

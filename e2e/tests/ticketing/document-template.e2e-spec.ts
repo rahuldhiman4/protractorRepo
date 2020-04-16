@@ -9,6 +9,7 @@ import documentTemplateConsolePo from '../../pageobject/settings/document-manage
 import editDocumentTemplatePo from '../../pageobject/settings/document-management/edit-document-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Document Template', () => {
     beforeAll(async () => {
@@ -21,7 +22,7 @@ describe('Document Template', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //kgaikwad

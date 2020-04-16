@@ -26,6 +26,8 @@ import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
+
 let filePath = '../../data/ui/attachment/bwfPdf.pdf';
 
 describe('Create Task Template', () => {
@@ -39,7 +41,7 @@ describe('Create Task Template', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //ankagraw

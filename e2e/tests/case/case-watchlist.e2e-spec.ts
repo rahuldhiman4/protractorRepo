@@ -12,6 +12,7 @@ import notificationAlerts from '../../pageobject/notification/notification.po';
 import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import { default as gridUtil, default as utilGrid } from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Case Watchlist', () => {
 
@@ -53,7 +54,7 @@ describe('Case Watchlist', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
         await navigationPage.gotoCaseConsole();
     });
 
@@ -66,7 +67,7 @@ describe('Case Watchlist', () => {
             caseId[i] = response.displayId;
         }
         await utilGrid.clearFilter();
-        await browser.refresh();
+        await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
             await gridUtil.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -89,7 +90,7 @@ describe('Case Watchlist', () => {
             caseId[i] = response.displayId;
         }
         await utilGrid.clearFilter();
-        await browser.refresh();
+        await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
             await gridUtil.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -114,7 +115,7 @@ describe('Case Watchlist', () => {
             caseId[i] = response.displayId;
         }
         await utilGrid.clearFilter();
-        await browser.refresh();
+        await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
             await gridUtil.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -146,7 +147,7 @@ describe('Case Watchlist', () => {
             caseId[i] = response.displayId;
         }
         await utilGrid.clearFilter();
-        await browser.refresh();
+        await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
             await gridUtil.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -168,7 +169,7 @@ describe('Case Watchlist', () => {
             caseId[i] = response.displayId;
         }
         await utilGrid.clearFilter();
-        await browser.refresh();
+        await utilityCommon.refresh();
         for (let i: number = 0; i < 2; i++) {
             await gridUtil.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -290,7 +291,7 @@ describe('Case Watchlist', () => {
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
         let caseId = response.displayId;
 
-        await browser.refresh();
+        await utilityCommon.refresh();
         await gridUtil.clickCheckBoxOfValueInGrid(caseId);
         await caseConsole.clickOnAddToWatchlist();
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
@@ -318,7 +319,7 @@ describe('Case Watchlist', () => {
         let statusNotification3 = utilCommon.formatString(statusNotificationStr, caseId, resolvedStr, qingYuanStr);
         let statusNotification4 = utilCommon.formatString(statusNotificationStr, caseId, "Closed", qingYuanStr);
 
-        await browser.refresh();
+        await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
         expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeTruthy(statusNotification1 + " is not present");
         expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeTruthy(statusNotification2 + " is not present");
@@ -335,7 +336,7 @@ describe('Case Watchlist', () => {
             let response = await apiHelper.createCase(caseData['caseWatchlist']);
             caseId[i] = response.displayId;
         }
-        await browser.refresh();
+        await utilityCommon.refresh();
 
         await utilGrid.searchAndOpenHyperlink(caseId[1]);
         await viewCasePage.clickAddToWatchlistLink();
@@ -371,7 +372,7 @@ describe('Case Watchlist', () => {
         let assignmentNotification2 = utilCommon.formatString(assignmentNotificationStr, caseId[1], kasiaOstlunStr, qingYuanStr);
         let statusNotification2 = utilCommon.formatString(statusNotificationStr, caseId[1], pendingStr, qingYuanStr);
 
-        await browser.refresh();
+        await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
         expect(await notificationAlerts.isAlertPresent(assignmentNotification1)).toBeTruthy(assignmentNotification1 + " is not present");
         expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeTruthy(statusNotification1 + " is not present");
@@ -385,7 +386,7 @@ describe('Case Watchlist', () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
         let caseId = response.displayId;
-        await browser.refresh();
+        await utilityCommon.refresh();
         await gridUtil.clickCheckBoxOfValueInGrid(caseId);
         expect(await caseConsole.getAddToWatchlistText()).toBe("Add to Watchlist", "Label is not matching");
         expect(await caseConsole.getWatchlistIconText()).toBe("Watchlist", "Label is not matching");
@@ -433,7 +434,7 @@ describe('Case Watchlist', () => {
         await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
         await editCase.clickSaveCase();
 
-        await browser.refresh();
+        await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
         let groupAssignmentNotification1 = utilCommon.formatString(groupAssignmentNotificationStr, caseId, auSupport1Str, qingYuanStr);
         let groupAssignmentNotification2 = utilCommon.formatString(groupAssignmentNotificationStr, caseId, compensationAndBenefitsStr, qingYuanStr);
@@ -448,7 +449,7 @@ describe('Case Watchlist', () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
         let caseId = response.displayId;
-        await browser.refresh();
+        await utilityCommon.refresh();
         await gridUtil.clickCheckBoxOfValueInGrid(caseId);
         await caseConsole.clickOnAddToWatchlist();
         await caseWatchlist.addWatchlistEvent(caseGroupAssignmentChangesStr);
@@ -475,7 +476,7 @@ describe('Case Watchlist', () => {
         await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
         await editCase.clickSaveCase();
 
-        await browser.refresh();
+        await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
         let groupAssignmentNotification1 = utilCommon.formatString(groupAssignmentNotificationStr, caseId, auSupport1Str, qingYuanStr);
         let groupAssignmentNotification2 = utilCommon.formatString(groupAssignmentNotificationStr, caseId, compensationAndBenefitsStr, qingYuanStr);
@@ -531,7 +532,7 @@ describe('Case Watchlist', () => {
             await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
             await editCase.clickSaveCase();
             await utilCommon.closePopUpMessage();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             //Verify the notifications
             await notificationAlerts.clickOnNotificationIcon();
@@ -600,14 +601,14 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.changeCaseStatus("Assigned");
             await updateStatusBladePo.clickSaveStatus();
             await utilCommon.waitUntilPopUpDisappear();
-            await browser.refresh();
+            await utilityCommon.refresh();
             await viewCasePage.clickEditCaseButton();
             await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
 
             //Verify the notifications
-            await browser.refresh();
+            await utilityCommon.refresh();
             await notificationAlerts.clickOnNotificationIcon();
             let assignmentNotification = utilCommon.formatString(assignmentNotificationStr, caseId, kasiaOstlunStr, qianruTaoStr);
             let statusNotification = utilCommon.formatString(statusNotificationStr, caseId, "Assigned", qianruTaoStr);
@@ -635,7 +636,7 @@ describe('Case Watchlist', () => {
         let caseId = response.displayId;
 
         //Add the case to watchlist
-        await browser.refresh();
+        await utilityCommon.refresh();
         await gridUtil.clickCheckBoxOfValueInGrid(caseId);
         await caseConsole.clickOnAddToWatchlist();
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
@@ -668,7 +669,7 @@ describe('Case Watchlist', () => {
         let assignmentNotification2 = utilCommon.formatString(assignmentNotificationStr, caseId, kasiaOstlunStr, qingYuanStr);
         let statusNotification2 = utilCommon.formatString(statusNotificationStr, caseId, pendingStr, qingYuanStr);
 
-        await browser.refresh();
+        await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
         expect(await notificationAlerts.isAlertPresent(assignmentNotification1)).toBeTruthy(assignmentNotification1 + " is not present");
         expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeTruthy(statusNotification1 + " is not present");
@@ -685,7 +686,7 @@ describe('Case Watchlist', () => {
             let response = await apiHelper.createCase(caseData['caseWatchlist']);
             caseId[i] = response.displayId;
         }
-        await browser.refresh();
+        await utilityCommon.refresh();
 
         //Adding the cases to watchlist
         for (let i: number = 0; i < 3; i++) {
@@ -713,7 +714,7 @@ describe('Case Watchlist', () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
         let caseId = response.displayId;
-        await browser.refresh();
+        await utilityCommon.refresh();
         await gridUtil.clickCheckBoxOfValueInGrid(caseId);
         await caseConsole.clickOnAddToWatchlist();
         expect(await caseWatchlist.isSaveEventsButtonEnabled()).toBeFalsy('Save button is enabled');
@@ -832,7 +833,7 @@ describe('Case Watchlist', () => {
             caseId[i] = response.displayId;
             caseGuid[i] = response.id;
         }
-        await browser.refresh();
+        await utilityCommon.refresh();
 
         //Write access to qyuan
         let caseAccessDataQyuan = {
@@ -898,7 +899,7 @@ describe('Case Watchlist', () => {
         let assignmentNotification2 = utilCommon.formatString(assignmentNotificationStr, caseId[1], kasiaOstlunStr, qingYuanStr);
         let statusNotification2 = utilCommon.formatString(statusNotificationStr, caseId[1], inProgressStr, qingYuanStr);
 
-        await browser.refresh();
+        await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
         expect(await notificationAlerts.isAlertPresent(assignmentNotification1)).toBeTruthy(assignmentNotification1 + " is not present");
         expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeTruthy(statusNotification1 + " is not present");
@@ -917,7 +918,7 @@ describe('Case Watchlist', () => {
             caseId[i] = response.displayId;
             caseGuid[i] = response.id;
         }
-        await browser.refresh();
+        await utilityCommon.refresh();
 
         //Write access to qyuan
         let caseAccessDataQyuan = {
@@ -980,7 +981,7 @@ describe('Case Watchlist', () => {
         let assignmentNotification2 = utilCommon.formatString(assignmentNotificationStr, caseId[1], kasiaOstlunStr, qingYuanStr);
         let statusNotification2 = utilCommon.formatString(statusNotificationStr, caseId[1], inProgressStr, qingYuanStr);
 
-        await browser.refresh();
+        await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
         expect(await notificationAlerts.isAlertPresent(assignmentNotification1)).toBeTruthy(assignmentNotification1 + " is not present");
         expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeTruthy(statusNotification1 + " is not present");
@@ -1027,7 +1028,7 @@ describe('Case Watchlist', () => {
             let assignmentNotification2 = utilCommon.formatString(assignmentNotificationStr, caseId, kasiaOstlunStr, qianruTaoStr);
             let statusNotification2 = utilCommon.formatString(statusNotificationStr, caseId, pendingStr, qianruTaoStr);
 
-            await browser.refresh();
+            await utilityCommon.refresh();
             await notificationAlerts.clickOnNotificationIcon();
             expect(await notificationAlerts.isAlertPresent(assignmentNotification1)).toBeTruthy(assignmentNotification1 + " is not present");
             expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeTruthy(statusNotification1 + " is not present");
@@ -1120,7 +1121,7 @@ describe('Case Watchlist', () => {
             let assignmentNotification2 = utilCommon.formatString(assignmentNotificationStr, caseId, "Peter Kahn", qianruTaoStr);
             let statusNotification2 = utilCommon.formatString(statusNotificationStr, caseId, pendingStr, qianruTaoStr);
 
-            await browser.refresh();
+            await utilityCommon.refresh();
             await notificationAlerts.clickOnNotificationIcon();
             expect(await notificationAlerts.isAlertPresent(assignmentNotification1)).toBeTruthy(assignmentNotification1 + " is not present");
             expect(await notificationAlerts.isAlertPresent(statusNotification1)).toBeTruthy(statusNotification1 + " is not present");
