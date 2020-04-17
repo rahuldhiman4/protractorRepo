@@ -257,7 +257,6 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    // Ok
     it('[DRDMV-16733]: Case Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotoCreateCase();
@@ -392,7 +391,6 @@ describe('Case Activity', () => {
     }, 140 * 1000);
 
     //kgaikwad
-    // Ok
     it('[DRDMV-16734]: From Case Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Login to BWF with Case agent and open case from pre condition
         await navigationPage.gotoCreateCase();
@@ -434,7 +432,6 @@ describe('Case Activity', () => {
     }, 160 * 1000);
 
     //kgaikwad
-    // Ok
     it('[DRDMV-16759]: Task Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotoCreateCase();
@@ -883,7 +880,6 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    // Ok
     it('[DRDMV-16582]: Check case view count log is displayed on the activity feed of case along with name of user and time', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -905,7 +901,7 @@ describe('Case Activity', () => {
             await activityTabPo.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi  viewed the case. ')).toEqual(1);
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
-            await browser.refresh();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             await navigationPage.gotoPersonProfile();
