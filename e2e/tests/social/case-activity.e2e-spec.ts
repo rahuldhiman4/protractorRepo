@@ -92,7 +92,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
             expect(await activityTabPage.getTextFromFilterList('Unflag')).toBe('Unflag'), 'Unflag is missing';
             expect(await activityTabPage.getTextFromFilterList('Feedback')).toBe('Feedback'), 'Feedback is missing';
-            expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie'), 'Author : ajolie is missing';
+            expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie'), 'Author: ajolie is missing';
             // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
             await activityTabPage.closeNmoreLink();
             await activityTabPage.clickOnNmoreLink();
@@ -108,7 +108,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
             expect(await activityTabPage.getTextFromFilterList('Unflag')).toBe('Unflag'), 'Assignment Change is missing';
             expect(await activityTabPage.getTextFromFilterList('Feedback')).toBe('Feedback'), 'Feedback is missing';
-            expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie'), 'Author : ajolie is missing';
+            expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie'), 'Author: ajolie is missing';
             await activityTabPage.closeNmoreLink();
             //  v) - That particular filter is removed.
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
@@ -258,6 +258,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
+    // Ok
     it('[DRDMV-16733]: Case Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotoCreateCase();
@@ -392,6 +393,7 @@ describe('Case Activity', () => {
     }, 140 * 1000);
 
     //kgaikwad
+    // Ok
     it('[DRDMV-16734]: From Case Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Login to BWF with Case agent and open case from pre condition
         await navigationPage.gotoCreateCase();
@@ -433,6 +435,7 @@ describe('Case Activity', () => {
     }, 160 * 1000);
 
     //kgaikwad
+    // Ok
     it('[DRDMV-16759]: Task Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotoCreateCase();
@@ -855,7 +858,6 @@ describe('Case Activity', () => {
         await utilCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.getFirstPostContent()).toContain('step 2nd added ' + taskBodyText);
         expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('file is not present');
-        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is not deleted.');
         await activityTabPage.clickAttachedFile('bwfPdf.pdf');
         expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
         //multiple line
@@ -880,9 +882,10 @@ describe('Case Activity', () => {
         expect(await activityTabPage.getFirstPostContent()).toContain(textWithMultipleAttachment);
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('Show more button for attachment is missing');
         expect(await activityTabPage.getCountAttachedFiles('demo.txt')).toBe(6);
-    }, 140 * 1000);
+    });
 
     //kgaikwad
+    // Ok
     it('[DRDMV-16582]: Check case view count log is displayed on the activity feed of case along with name of user and time', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -961,9 +964,9 @@ describe('Case Activity', () => {
             await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
             await quickCasePo.gotoCaseButton();
             await utilCommon.waitUntilSpinnerToHide();
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
             await navigationPage.gotoQuickCase();
-            await browser.refresh();
+            await utilityCommon.refresh();
             await quickCasePo.selectRequesterName('qtao');
             await quickCasePo.setCaseSummary(caseData.Summary);
             await quickCasePo.saveCase();
@@ -971,7 +974,7 @@ describe('Case Activity', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('FailuerMsg: Email Link is not present');
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
 
             await viewCasePo.clickOnTab('Related Persons');
             await relatedTabPage.addRelatedPerson();
@@ -988,8 +991,8 @@ describe('Case Activity', () => {
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing');
             await activityTabPage.clickOnRefreshButton();
             await utilCommon.waitUntilSpinnerToHide();
-            await expect(await activityTabPage.getCaseViewCount('Elizabeth Peters  viewed the case. ')).toEqual(1);
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Elizabeth Peters viewed the case.')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
         } catch (e) {
             throw e;
         } finally {
