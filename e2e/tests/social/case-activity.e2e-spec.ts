@@ -129,7 +129,6 @@ describe('Case Activity', () => {
     //kgaikwad
     it('[DRDMV-18141]: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
         let caseBodyText = `CaseBody${randomStr}`;
-        console.log(10000);
         // 2nd Step :Open Case from pre condition and inspect its activities
         await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -880,7 +879,6 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.getFirstPostContent()).toContain(textWithMultipleAttachment);
-        await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('Show more button for attachment is missing');
         expect(await activityTabPage.getCountAttachedFiles('demo.txt')).toBe(6);
     });
 
@@ -987,7 +985,6 @@ describe('Case Activity', () => {
             await navigationPage.gotoPersonProfile();
             await personProfilePo.clickOnTab('Related Cases');
             await relatedCaseTab.clickOnCaseSummaryLink(caseData.Summary);
-            await browser.sleep(10000);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing');
             await activityTabPage.clickOnRefreshButton();
             await utilCommon.waitUntilSpinnerToHide();
