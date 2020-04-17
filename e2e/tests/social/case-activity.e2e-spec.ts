@@ -420,7 +420,6 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isEmailPresentOnUserPopUp('ajolie@petramco.com')).toBeTruthy('Email is Not Present On Author List PopUp');
         await expect(await activityTabPage.isPhoneNumberPresentOnUserPopUp('+12124021501')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
         await expect(await activityTabPage.isCompanyPresentOnUserPopUp('Petramco')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
-        // await activityTabPage.removeAuthorFromFilter();
         await activityTabPage.clearAuthorSearchBoxOnFilter();
         // 5th Step: User is selected and Author field gets disabled 
         // i) User is selected and Author field gets disabled 
@@ -725,7 +724,7 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.clickOnFilterClearButton();
         await expect(await activityTabPage.isfilterPresent()).not.toBeTruthy('filter displayed');
-    }, 900 * 1000);
+    }, 330 * 1000);
 
     //kgaikwad
     it('[DRDMV-18048]: While adding a note on Case one or more agent can be tagged in Comment', async () => {
@@ -1146,11 +1145,9 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg8: BodyText is missing');
         // Verify logs with 5 lines  with 3 attachment
         await activityTabPage.addActivityNote(addNoteBodyText1);
-        await activityTabPage.addActivityNote('Tushar');
         await activityTabPage.addAttachment(filePath1);
-        await browser.sleep(5000);
         await activityTabPage.addAttachment(filePath2);
-        // await activityTabPage.addAttachment(filePath3);
+        await activityTabPage.addAttachment(filePath3);
         await activityTabPage.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
@@ -1218,7 +1215,7 @@ describe('Case Activity', () => {
 
         await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
 
-    }, 300 * 1000);
+    }, 150 * 1000);
 
     //kgaikwad
     it('[DRDMV-16765]:Validate Show More/Less option in KA Activity Tab', async () => {

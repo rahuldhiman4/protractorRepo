@@ -50,7 +50,7 @@ class ViewCasePage {
         dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] label',
         dynamicFieldsValue: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .read-only-content',
         slaProgressBar: '.progress-bar',
-        tabName: '.nav-item button',
+        tab: '.nav-item button',
     }
 
     async isGroupNameDisplayed(groupName: string): Promise<boolean> {
@@ -306,27 +306,27 @@ class ViewCasePage {
     async clickOnTab(tabName: string): Promise<void> {
         switch (tabName) {
             case "Tasks": {
-                await $$(this.selectors.tabName).get(0).click();
+                await $$(this.selectors.tab).get(0).click();
                 break;
             }
             case "Related Cases": {
-                await $$(this.selectors.tabName).get(1).click();
+                await $$(this.selectors.tab).get(1).click();
                 break;
             }
             case "Related Persons": {
-                await $$(this.selectors.tabName).get(2).click();
+                await $$(this.selectors.tab).get(2).click();
                 break;
             }
             case "Case Access": {
-                await $$(this.selectors.tabName).get(3).click();
+                await $$(this.selectors.tab).get(3).click();
                 break;
             }
             case "Activity": {
-                await $$(this.selectors.tabName).get(4).click();
+                await $$(this.selectors.tab).get(4).click();
                 break;
             }
             case "Resources": {
-                await $$(this.selectors.tabName).get(5).click();
+                await $$(this.selectors.tab).get(5).click();
                 break;
             }
             default: {

@@ -2,6 +2,7 @@ import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
 import gridUtil from '../../utils/util.grid';
 import utilityGrid from '../../utils/utility.grid';
 
+
 class CaseConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -53,6 +54,7 @@ class CaseConsolePage {
     }
 
     async searchAndOpenCase(caseId: string): Promise<void> {
+        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(caseId);
     }
 

@@ -15,8 +15,7 @@ class ActivityTabPage {
         activityLog: '.activity__body .activity-title, .activity__body [style="position: relative;"], .activity__body .field, .activity__body .value',
         personLink: 'bwf-activity-title a[href].ng-star-inserted',
         filterButton: '.d-icon-filter',
-        filterCheckbox: '.dropdown-menu .ng-star-inserted .checkbox__input',
-        filterCheckBoxLabel: '.checkbox__label span',
+        filterCheckbox: '.checkbox__label span',
         filterAuthor: '.dropdown input[placeholder="Enter name, email, or login ID"]',
         filterPopupApplyOrClearButton: '.filter-options button span',
         // activityText: '[rx-view-component-id="34167059-11d4-4e85-8a58-e501544e2461"] [title="Activity"]',
@@ -64,8 +63,8 @@ class ActivityTabPage {
         publicCheckbox: '.bwf-activity-add-note .checkbox__input',
         logTitle: '.activity-title',
         showLessLink: 'button[aria-label="Show less"]',
-        showMoreLinkForAttachment: '.bwf-show-more button',
-        showLessLinkForAttachment: '.bwf-show-more button',
+        showMoreLinkForAttachment: '.rx-attachment-show-text[aria-label="Show more attachments"]',
+        showLessLinkForAttachment: '.rx-attachment-show-text[aria-label="Show less attachments"]',
         lockIcon: '.d-icon-lock',
         activityLogList: '.activity__wrapper',
     }
@@ -147,16 +146,12 @@ class ActivityTabPage {
     }
 
     async clickShowMoreLinkInActivity(activityNumber: number): Promise<boolean> {
-        try {
-            return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLink).isDisplayed().then(async (link) => {
-                if (link) {
-                    await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLink).click();
-                    return true;
-                } else return false;
-            });
-        } catch (error) {
-            return false;
-        }
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLink).isDisplayed().then(async (link) => {
+            if (link) {
+                await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLink).click();
+                return true;
+            } else return false;
+        });
     }
 
     async clickShowLessLinkInActivity(activityNumber: number): Promise<boolean> {
@@ -169,17 +164,12 @@ class ActivityTabPage {
     }
 
     async clickShowMoreLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
-        try {
-            return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).isDisplayed().then(async (link) => {
-                if (link) {
-                    await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).click();
-                    return true;
-                } else return false;
-            });
-        } catch (error) {
-            return false;
-        }
-
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).isPresent().then(async (link) => {
+            if (link) {
+                await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).click();
+                return true;
+            } else return false;
+        });
     }
 
     async clickShowLessLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
@@ -407,7 +397,7 @@ class ActivityTabPage {
 
     async getTextTaskFilterOption(filterCheckBox: string): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
-        return await element(by.cssContainingText(this.selectors.filterCheckBoxLabel, filterCheckBox)).getText();
+        return await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBox)).getText();
     }
 
     async isAuthorSearchBoxVisible(): Promise<boolean> {
@@ -422,7 +412,7 @@ class ActivityTabPage {
 
     async selectFilterCheckBox(filterCheckBoxText: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
-        await element(by.cssContainingText(this.selectors.filterCheckBoxLabel, filterCheckBoxText)).click();
+        await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBoxText)).click();
     }
 
     async addAuthorOnFilter(AuthorName: string): Promise<void> {
