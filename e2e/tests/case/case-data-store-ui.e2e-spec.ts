@@ -24,6 +24,8 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Case Data Store', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -37,7 +39,7 @@ describe('Case Data Store', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //ankagraw
@@ -144,8 +146,7 @@ describe('Case Data Store', () => {
             await loginPage.login("qkatawazi");
             await navigationPage.gotoTaskConsole();
             await taskConsole.clearFilter();
-            await taskConsole.setTaskSearchBoxValue(taskvalue);
-            await taskConsole.clickFirstLinkInTaskTemplateSearchGrid();
+            await utilityGrid.searchAndOpenHyperlink(taskvalue);
             await expect(viewTaskTemplate.isDynamicFieldPresent('Field Description')).toBeTruthy('Field Description');
         } catch (error) {
             throw error;
@@ -584,7 +585,7 @@ describe('Case Data Store', () => {
             }
             await previewCaseTemplateCasesPo.clickOnBackButton();
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
-            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
             //verify dynmaic groups and fields
             expect(await previewCaseTemplateCasesPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
             expect(await previewCaseTemplateCasesPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');

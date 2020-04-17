@@ -1,22 +1,23 @@
-import { $, $$, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
+import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 
-class ChangeAssignmentBlade {
+class ChangeAssignmentOldBlade {
         EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
         selectors = {
                 changeAssignmentButton: '[rx-view-component-id="6041cce1-05bd-458d-b097-eb310507cae3"] button',
-                assignButton: '.modal-footer .btn-primary',
-                assignmentDropDownList: '.flex-wrap bwf-select-with-pagination',
-                selectOptions: '.dropdown-item span',
-                cancelButton: '.modal-footer .btn-secondary',
+                assignButton: '.rx-assignment-modal-footer button.d-button_primary',
+                assignmentDropDownList: '.rx-assignment_modal_filters .rx-assignment-select',
+                selectOptions: '.options-box .options li',
+                cancelButton: '.rx-assignment-modal-footer button.d-button_secondary',
                 multipleSuppGrpMsg: '.manual-select-sg-msg',
-                assignToMeCheckBox: '.checkbox__input',
-                searchAsignee: '[class="search-input"] .adapt-search-field-wrapper input',
-                assignee: '.person__info .name',
-                filterDropdowns: '[rx-view-component-id="f95c0ee2-cc2f-4c9e-975a-449f71aeba83"] button.dropdown-toggle',
+                assignToMeCheckBox: '.rx-assignment_assignToMe span',
+                searchAsignee: '.d-icon-search input',
+                assignee: '.rx-assignment-person-fullName',
+                company: 'selectedOrganizationId',
                 businessUnit: 'selectedBusinessUnitId',
                 supportGroupName: '.rx-assignment-person-info',
                 department: 'selectedDepartmentId',
                 supportGroup: 'selectedSupportGroupId',
+                search: '.d-icon-search input'
         }
 
         async isAssignToMeCheckBoxSelected(): Promise<boolean> {
@@ -26,12 +27,12 @@ class ChangeAssignmentBlade {
 
         async getCompanyDefaultValue(): Promise<string> {
                 //        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.company))));
-             return await $$(this.selectors.filterDropdowns).get(0).getText();
+                return await element(by.model(this.selectors.company)).getText();
         }
 
         async getSupportGroupDefaultValue(): Promise<string> {
                 //        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.company))));
-                return await $$(this.selectors.filterDropdowns).get(3).getText();
+                return await element(by.model(this.selectors.supportGroup)).getText();
         }
 
         async isAssignToMeCheckBoxPresent(): Promise<boolean> {
@@ -41,27 +42,27 @@ class ChangeAssignmentBlade {
 
         async isSearchInputBoxPresent(): Promise<boolean> {
                 //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeCheckBox)));
-                return await $(this.selectors.searchAsignee).isDisplayed();
+                return await $(this.selectors.search).isDisplayed();
         }
 
         async isCompanyDrpDwnDisplayed(): Promise<boolean> {
                 //        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.company))));
-                return await $$(this.selectors.filterDropdowns).get(0).isDisplayed();
+                return await element(by.model(this.selectors.company)).isDisplayed();
         }
 
         async isBuisnessUnitDrpDwnDisplayed(): Promise<boolean> {
                 //       await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.businessUnit))));
-                return await $$(this.selectors.filterDropdowns).get(1).isDisplayed();
+                return await element(by.model(this.selectors.businessUnit)).isDisplayed();
         }
 
         async isDepartmentDrpDwnDisplayed(): Promise<boolean> {
                 //        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.department))));
-                return await $$(this.selectors.filterDropdowns).get(2).isDisplayed();
+                return await element(by.model(this.selectors.department)).isDisplayed();
         }
 
         async isSupportGroupDrpDwnDisplayed(): Promise<boolean> {
                 //        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.supportGroup))));
-                return await $$(this.selectors.filterDropdowns).get(3).isDisplayed();
+                return await element(by.model(this.selectors.supportGroup)).isDisplayed();
         }
 
         async isAssigneeListPresent(): Promise<boolean> {
@@ -175,8 +176,6 @@ class ChangeAssignmentBlade {
 
         async selectAssignee(name: string): Promise<void> {
                 //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchAsignee)));
-                await $(this.selectors.searchAsignee).click();
-
                 await $(this.selectors.searchAsignee).sendKeys(name + Key.ENTER);
                 //        await browser.wait(this.EC.or(async () => {
                 //            let count = await $$(this.selectors.assignee).count();
@@ -210,11 +209,10 @@ class ChangeAssignmentBlade {
         async selectAssigneeAsSupportGroup(name: string): Promise<void> {
                 //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchAsignee)));
                 //        await $(this.selectors.searchAsignee).sendKeys(name);
-                browser.sleep(1000);
-                await element(by.cssContainingText(this.selectors.assignee, "Assign to support group")).click();
+                await element(by.cssContainingText(this.selectors.assignee, 'Assign to Support Group')).click();
                 //        await browser.wait(this.EC.visibilityOf(option));
                 //        await browser.wait(this.EC.elementToBeClickable(option));
         }
 }
 
-export default new ChangeAssignmentBlade();
+export default new ChangeAssignmentOldBlade();

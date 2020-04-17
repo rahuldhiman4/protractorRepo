@@ -3,10 +3,8 @@ import { $, browser, protractor, ProtractorExpectedConditions, element, by, $$, 
 class NotificationAlerts {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        notificationIcon: '.d-icon-left-bell_o',
-        alerts: '.rx-shell-notification__item-content-text',
-        clearAllBtn: '[rx-id="dismiss-all-notifications-button"]',
-        notificationButtons: '.rx-shell-notification__buttons-wrapper .d-button_action-clear'
+        notificationIcon: 'button.d-icon-bell_o[title="Messages"]',
+        alerts: '.active-messages .item-content-section'
     }
 
     async clickOnNotificationIcon(): Promise<void> {
@@ -19,7 +17,7 @@ class NotificationAlerts {
         let cnt: number = await $$(this.selectors.alerts).count();
         let status = false;
         for (let i = 0; i < cnt; i++) {
-            let notification: string = await $$(this.selectors.alerts).get(i).getText();
+            let notification: string = await $$(this.selectors.alerts).get(i).$('.item-content-text p').getText();
             if (await notification.includes(msg)) {
                 status = true;
                 break;

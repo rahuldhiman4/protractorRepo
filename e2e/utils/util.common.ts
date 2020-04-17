@@ -24,6 +24,11 @@ export class Util {
         warningMsgText: '.modal-content .modal-title-message, .modal-content .d-modal__title',
         warningMsgTextKnowledgeStyle: '.d-modal__content .d-modal__content-item',
         configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
+        backArrow: '[class="d-button d-icon-left-undo d-button_link d-button_small"]',
+    }
+
+    async clickOnBackArrow(): Promise<void> {
+        await $(this.selectors.backArrow).click();
     }
 
     async isConfigurationOptionMessageDisplayed(errorMessage): Promise<boolean> {
@@ -202,15 +207,12 @@ export class Util {
     }
 
     async switchToNewWidnow(windowNum: number): Promise<void> {
-        await browser.sleep(5000);
         await browser.getAllWindowHandles().then(async function (handles) {
             await browser.switchTo().window(handles[windowNum]);
         });
-        await browser.sleep(2000);
     }
 
     async switchToDefaultWindowClosingOtherTabs(): Promise<void> {
-        await browser.sleep(5000);
         await browser.getAllWindowHandles().then(async function (handles) {
             for (let i = handles.length; i > 1; i--) {
                 await browser.switchTo().window(handles[i - 1]);
@@ -218,7 +220,6 @@ export class Util {
             }
             await browser.switchTo().window(handles[0]);
         });
-        await browser.sleep(2000);
     }
 
     async waitUntilSpinnerToHide(): Promise<void> {

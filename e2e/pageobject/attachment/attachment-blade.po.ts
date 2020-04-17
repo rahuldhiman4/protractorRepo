@@ -1,23 +1,25 @@
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
 class AttachmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        columnnHeader: '.ui-grid-header-cell',
+        gridGuid: 'adb9ac10-3732-4fd9-8af3-29bec77272b4',
+        columnnHeader: '.c-header-container .c-header-name',
         selectCheckbox: '.ui-grid-selection-row-header-buttons',
-        download: '.case-attachments-action-buttons .d-button_primary',
-        close: '.case-attachments-action-buttons .d-button_secondary',
+        download: '.bwf-case-attachment__footer-button  .btn-primary',
+        close: '.bwf-case-attachment__footer-button  .btn-secondary',
         gridValue: '.ui-grid-cell-contents',
-        searchbox: 'input[role="search"]',
-        searchButton: 'button[rx-id="submit-search-button"]',
+        searchbox: '.adapt-search-triggerable .adapt-search-field-ellipsis',
+        searchButton: '.input-group-append .adapt-search-button"]',
         crossbutton: '.d-icon-cross[aria-label="Clear Search Field"]',
-        allCheckbox: '.row_selection .ui-grid-selection-row-header-button',
-        attachmentSize: '.attachmnet-size',
-        paginationNextButton: '.d-icon-right-angle_right',
-        paginationPreviousButton: '.d-icon-right-angle_left',
+        allCheckbox: '.checkbox__input',
+        attachmentSize: 'bwf-case-attachment__paginator__page-count',
+        paginationNextButton: '.content-outlet .page-next',
+        paginationPreviousButton: '.content-outlet .page-prev',
         refreshButton: '.d-icon-refresh',
-        selectedCheckBoxCount: 'selected-files-label',
+        selectedCheckBoxCount: '.bwf-case-attachment__footer-button .bwf-case-attachment__footer-button__selected-files-label',
         attachmentColoumnValues: 'tbody tr td:nth-of-type(2) div:nth-of-type(2)',
         attachmentColoumnHeader: 'table thead tr th:nth-of-type(2) div',
         attachedToColoumnValues: 'tbody tr td:nth-of-type(3) div',
@@ -29,10 +31,11 @@ class AttachmentBlade {
     }
 
     async getCountOfSelectedCheckBox(): Promise<string> {
-        return await $(this.selectors.attachmentSize).getText();
+        return await $(this.selectors.selectedCheckBoxCount).getText();
     }
 
     async searchRecord(record: string): Promise<void> {
+        await utilityGrid.searchRecord(record);
         await $(this.selectors.searchbox).clear();
         await $(this.selectors.searchbox).sendKeys(record);
         await $(this.selectors.searchButton).click();
@@ -51,13 +54,13 @@ class AttachmentBlade {
     }
 
     async searchAndSelectCheckBox(record: string): Promise<void> {
-        let allAttachmentRows: ElementFinder[] = await $$('.attachments_row');
+        let allAttachmentRows: ElementFinder[] = await $$('.at-row');
         let attachmentFound: boolean = false;
         for (let i: number = 0; i < allAttachmentRows.length; i++) {
-            let attachmentName: ElementFinder = await allAttachmentRows[i].$('.attachment-title-text');
+            let attachmentName: ElementFinder = await allAttachmentRows[i].$('.attachment-view-thumbnail__title-text');
             if (await attachmentName.getText() === record) {
-                await browser.executeScript("arguments[0].scrollIntoView();", await allAttachmentRows[i].$('.ui-grid-selection-row-header-buttons').getWebElement());
-                await allAttachmentRows[i].$('.ui-grid-selection-row-header-buttons').click();
+                await browser.executeScript("arguments[0].scrollIntoView();", await allAttachmentRows[i].$('.ui-chkbox-box').getWebElement());
+                await allAttachmentRows[i].$('.ui-chkbox-box').click();
                 attachmentFound = true;
                 break;
             }
@@ -91,15 +94,15 @@ class AttachmentBlade {
     }
 
     async isAttachmentPresent(attachmentName: string): Promise<boolean> {
-        return await $(`.attachment-title-text[title='${attachmentName}']`).isPresent();
+        return await utilityGrid.isGridRecordPresent(attachmentName, this.selectors.gridGuid);
     }
 
     async getAttachmentNameCount(attachmentName: string): Promise<number> {
-        return await $$(`.attachment-title-text[title='${attachmentName}']`).count();
+        return await $$(`.attachment-view-thumbnail__title-text[title='${attachmentName}']`).count();
     }
 
     async getAttachmentToolTipText(attachmentName: string): Promise<boolean> {
-        return await $(`.attachment-title-text[title='${attachmentName}']`).getAttribute('title') == attachmentName ? true : false;
+        return await $(`.attachment-view-thumbnail__title-text[title='${attachmentName}']`).getAttribute('title') == attachmentName ? true : false;
     }
 
     async clickOnAllCheckboxButton(): Promise<void> {
@@ -107,12 +110,12 @@ class AttachmentBlade {
     }
 
     async isCheckBoxSelected(record: string): Promise<boolean> {
-        let allAttachmentRows: ElementFinder[] = await $$('.attachments_row');
+        let allAttachmentRows: ElementFinder[] = await $$('.at-row');
         for (let i: number = 0; i < allAttachmentRows.length; i++) {
-            let attachmentName: ElementFinder = await allAttachmentRows[i].$('.attachment-title-text');
+            let attachmentName: ElementFinder = await allAttachmentRows[i].$('attachment-view-thumbnail__title-text');
             if (await attachmentName.getText() === record) {
-                await browser.executeScript("arguments[0].scrollIntoView();", await allAttachmentRows[i].$('.ui-grid-selection-row-header-buttons').getWebElement());
-                return await allAttachmentRows[i].$('.ui-grid-selection-row-header-buttons').isSelected();
+                await browser.executeScript("arguments[0].scrollIntoView();", await allAttachmentRows[i].$('.ui-chkbox-box').getWebElement());
+                return await allAttachmentRows[i].$('.ui-chkbox-box').isSelected();
             }
         }
     }
@@ -129,12 +132,12 @@ class AttachmentBlade {
         await $(this.selectors.refreshButton).click();
     }
 
-    async getRecordValue(value: any): Promise<string> {
-        return await element(by.cssContainingText(this.selectors.gridValue, value)).getText();
+    async getRecordValue(columnName: any): Promise<string> {
+        return await utilityGrid.getFirstGridRecordColumnValue(columnName);
     }
 
     async clickOnFileName(value: any): Promise<void> {
-        await $(`.attachment-title-text[title='${value}']`).click();
+        await utilityGrid.searchAndOpenHyperlink(value);
     }
 
     async clickOnDownloadButton(): Promise<void> {
@@ -150,7 +153,7 @@ class AttachmentBlade {
     }
 
     async getTextOfColumnHeader(columnHeader: string): Promise<string> {
-        return await element(by.cssContainingText(this.selectors.columnnHeader, columnHeader)).getText()
+        return await element(by.cssContainingText(this.selectors.columnnHeader, columnHeader)).getText();
     }
 
     async isDownloadButtonDisplayed(): Promise<boolean> {

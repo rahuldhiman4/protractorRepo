@@ -4,6 +4,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import notificationTempGridPage from "../../pageobject/settings/notification-config/console-notification-template.po";
 import editNotificationTemplate from "../../pageobject/settings/notification-config/edit-notification-template.po";
 import { BWF_BASE_URL } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
 
 describe("Notification Template", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -20,7 +21,7 @@ describe("Notification Template", () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //radhiman
@@ -52,7 +53,7 @@ describe("Notification Template", () => {
         await notificationTempGridPage.clickCopyTemplateButtonInCopyTempWindow();
         await editNotificationTemplate.clickOnCancelButton();
         //Validate if the new copied template is created
-        await browser.refresh();
+        await utilityCommon.refresh();
         await notificationTempGridPage.searchTemplate(notificationData[expectedJsonName].CopiedTemplateName);
         expect(await notificationTempGridPage.getValueOnAssignmentConfigGrid("Template Name")).toBe(notificationData[expectedJsonName].CopiedTemplateName);
     });

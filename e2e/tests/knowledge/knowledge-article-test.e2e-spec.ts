@@ -17,6 +17,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Knowledge Article', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -36,7 +37,7 @@ describe('Knowledge Article', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //ptidke
@@ -104,7 +105,7 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
-            await browser.refresh();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
         }
     });
@@ -161,7 +162,7 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
-            await browser.refresh();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
         }
     });

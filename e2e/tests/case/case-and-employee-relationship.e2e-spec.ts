@@ -14,6 +14,7 @@ import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import { default as gridUtil, default as utilGrid } from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Case And Employee Relationship', () => {
     beforeAll(async () => {
@@ -26,7 +27,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //asahitya

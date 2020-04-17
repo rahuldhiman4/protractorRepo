@@ -15,6 +15,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import viewTaskPo from '../../pageobject/task/view-task.po';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Email', () => {
     beforeAll(async () => {
@@ -27,7 +28,7 @@ describe('Email', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     it('[DRDMV-19011]: Automated task should not have email options but other type of task should have email option	', async () => {
@@ -499,7 +500,7 @@ describe('Email', () => {
         await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
         await emailTemplateBladePo.clickOnApplyButton();
         await emailPo.clickOnSendButton();
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await activityTabPo.getEmailContent()).toContain('Fritz Schulz sent an email');
         expect(await activityTabPo.getEmailContent()).toContain('To: Fritz Schulz');
         await activityTabPo.clickOnReply();
@@ -526,7 +527,7 @@ describe('Email', () => {
         await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
         await emailTemplateBladePo.clickOnApplyButton();
         await emailPo.clickOnSendButton();
-        await browser.refresh();
+        await utilityCommon.refresh();
         await browser.sleep(2000);
         await activityTabPo.clickOnReply();
         expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');

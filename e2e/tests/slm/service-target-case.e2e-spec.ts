@@ -12,6 +12,7 @@ import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbu
 import serviceTargetInfoPage from '../../pageobject/slm/service-target-info.po';
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
 import { BWF_BASE_URL } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -35,7 +36,7 @@ describe('Service Target Tests for Cases', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //skhobrag
@@ -67,11 +68,11 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
             await browser.sleep(100000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
             // expect(await viewCasePo.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
             await browser.sleep(40000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         }
@@ -114,11 +115,11 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
             await browser.sleep(100000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
             // expect(await viewCasePage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
             await browser.sleep(40000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         }
@@ -162,11 +163,11 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
             await browser.sleep(100000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
             // expect(await viewCasePo.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
             await browser.sleep(40000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
 
@@ -258,11 +259,11 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
             await browser.sleep(100000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
             // expect(await viewCasePo.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
             await browser.sleep(50000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         }
@@ -438,7 +439,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await navigationPage.signOut();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             //Create a Case
             await loginPage.login(caseAgentUser);
@@ -491,7 +492,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await navigationPage.signOut();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             //Create a Case
             await loginPage.login(caseAgentUserPsilon);
@@ -533,7 +534,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await navigationPage.signOut();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             //Create a Case
             await loginPage.login(caseAgentUser);
@@ -571,7 +572,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('InProcess');
             await serviceTargetInfoPage.clickOnCloseButton();
             await browser.sleep(80000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             await expect(slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SLA Warning bar is not displayed');
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
@@ -586,7 +587,7 @@ describe('Service Target Tests for Cases', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             await browser.sleep(60000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             await expect(slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBeTruthy('SLA Missed Goal bar is not displayed');
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
@@ -644,7 +645,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await navigationPage.signOut();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             //Create a Case
             await loginPage.login(caseAgentUser);
@@ -658,9 +659,9 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             browser.sleep(130000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             browser.sleep(30000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
             await updateStatusBladePo.changeCaseStatus('Pending');
@@ -729,7 +730,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await navigationPage.signOut();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             //Create a Case
             await loginPage.login(caseAgentUser);
@@ -799,7 +800,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(2000);
             await navigationPage.signOut();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             // Create a Case
             await loginPage.login(caseAgentUser);
@@ -834,7 +835,7 @@ describe('Service Target Tests for Cases', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             await browser.sleep(190000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             await expect(slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SLA Warning bar is not displayed');
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
@@ -849,7 +850,7 @@ describe('Service Target Tests for Cases', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             await browser.sleep(80000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             await expect(slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBeTruthy('SLA Missed Goal bar is not displayed');
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
@@ -891,7 +892,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await navigationPage.signOut();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             // Create a Case
             await loginPage.login(caseAgentUser);
@@ -946,7 +947,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await navigationPage.signOut();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             // Create a Case
             await loginPage.login(caseAgentUser);
@@ -1001,7 +1002,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await navigationPage.signOut();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             // Create a Case
             await loginPage.login(caseAgentUser);
@@ -1016,7 +1017,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
             await browser.sleep(130000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SVT Warning Icon is not attached to case.');
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
@@ -1059,7 +1060,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await navigationPage.signOut();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             // Create a Case
             await loginPage.login(caseAgentUser);
@@ -1109,7 +1110,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(2000);
             await navigationPage.signOut();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             // Create a Case
             await loginPage.login(caseAgentUser);
@@ -1124,10 +1125,10 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
             await browser.sleep(130000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SVT Warning Icon is not attached to case.');
             await browser.sleep(60000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             await expect(slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBeTruthy('SLA Missed Goal bar is not displayed');
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         } catch (error) {
@@ -1161,7 +1162,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(2000);
             await navigationPage.signOut();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             // Create a Case
             await loginPage.login(caseAgentUser);
@@ -1216,14 +1217,14 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
             await browser.sleep(130000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SVT Warning Icon is not attached to case.');
             expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : Warning');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
             await browser.sleep(80000);
-            await browser.refresh();
+            await utilityCommon.refresh();
             await expect(slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBeTruthy('SLA Missed Goal bar is not displayed');
             expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');

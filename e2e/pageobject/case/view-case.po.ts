@@ -48,13 +48,14 @@ class ViewCasePage {
         caseTemplate: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .read-only-content',
         sourceValue: '[rx-view-component-id="8abd013f-26cd-4aa5-a3bb-63b063d3a7ec"] .read-only-content',
         showMore: '.rx-attachment-show-text',
-        dynamicFieldsName: '[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] span',
-        dynamicFieldsValue: '[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] p',
+        dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] label',
+        dynamicFieldsValue: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .read-only-content',
         slaProgressBar: '.progress-bar',
+        tab:'button[role="tab"] span.nav-link-wrapper',
     }
 
     async isGroupNameDisplayed(groupName:string):Promise<boolean>{
-        return await $(`[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] .group-container div[title=${groupName}]}`).isDisplayed(); 
+        return await $(`[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .group-container__name__title[title=${groupName}]}`).isDisplayed(); 
     }
 
     async isAttachedDocumentPresent(fileName: string): Promise<boolean> {
@@ -191,7 +192,7 @@ class ViewCasePage {
 
     async getCaseID(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseIdText)));
-        return await $(this.selectors.caseIdText).getText();
+        return await (await $(this.selectors.caseIdText).getText()).trim();
     }
 
     async getRequesterName(): Promise<string> {
@@ -304,7 +305,7 @@ class ViewCasePage {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
-        await element(by.linkText(tabName)).click();
+        await element(by.cssContainingText(this.selectors.tab, tabName)).click();
     }
 
     async getCaseTemplateText(): Promise<string> {

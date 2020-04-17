@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from 'protractor';
 
 const fs = require('fs');
 
@@ -28,8 +28,9 @@ export class Utility {
         activeMeridiemClock: '.a3t-clock--control-item[class*=active]',
         meridiemClock: '.a3t-clock--control-item',
         okDateTimePicker: '.btn-primary',
-        clearDateTimePicker: '.btn-secondary'
+        clearDateTimePicker: '.btn-secondary',
     }
+
 
     async isWarningDialogBoxDisplayed(): Promise<boolean> {
         return await $(this.selectors.warningDialog).isPresent();
@@ -46,12 +47,11 @@ export class Utility {
     async selectDropDown(guid: string, value: string): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-        const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
+        const dropDownInputElement: ElementFinder = await dropDown.$(this.selectors.dropDownInput);
         await dropDownBoxElement.click();
-        await browser.wait(this.EC.elementToBeClickable(dropDownInputElement),3000).then(async function(){
-            await dropDownInputElement.sendKeys(value);
-        });
-        
+        let isSearchPresent: boolean = await dropDownInputElement.isPresent();
+        if (isSearchPresent) await dropDownInputElement.sendKeys(value);
+
         let optionCss: string = `[rx-view-component-id="${guid}"] .dropdown_select__menu-content button`;
         let option = await element(by.cssContainingText(optionCss, value));
         await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
@@ -100,11 +100,11 @@ export class Utility {
     }
 
     async isSuccessMsgAppeared(): Promise<boolean> {
-        return await $(this.selectors.popupMsgTitle).getText()=='Success';
+        return await $(this.selectors.popupMsgTitle).getText() == 'Success';
     }
 
     async isErrorMsgAppeared(): Promise<boolean> {
-        return await $(this.selectors.popupMsgTitle).getText()=='Script Error';
+        return await $(this.selectors.popupMsgTitle).getText() == 'Script Error';
     }
 
     async isPopUpMessagePresent(expectedMsg: string): Promise<boolean> {
@@ -157,16 +157,13 @@ export class Utility {
         }
     }
 
-    async switchToNewWidnow(windowNum: number): Promise<void> {
-        await browser.sleep(5000);
+    async switchToNewTab(tabNum: number): Promise<void> {
         await browser.getAllWindowHandles().then(async function (handles) {
-            await browser.switchTo().window(handles[windowNum]);
+            await browser.switchTo().window(handles[tabNum]);
         });
-        await browser.sleep(2000);
     }
 
     async switchToDefaultWindowClosingOtherTabs(): Promise<void> {
-        await browser.sleep(5000);
         await browser.getAllWindowHandles().then(async function (handles) {
             for (let i = handles.length; i > 1; i--) {
                 await browser.switchTo().window(handles[i - 1]);
@@ -174,7 +171,6 @@ export class Utility {
             }
             await browser.switchTo().window(handles[0]);
         });
-        await browser.sleep(2000);
     }
 
     async waitUntilSpinnerToHide(): Promise<void> {
@@ -228,9 +224,13 @@ export class Utility {
     }
 
     async isRequiredTagToField(guid: string): Promise<boolean> {
-        let nameElement = await $(`[rx-view-component-id="${guid}"] span`);
-        let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
-        return value.trim().substring(3, value.length - 2) === 'required';
+        let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent();
+        if (!isRequired) {
+            let nameElement = await $(`[rx-view-component-id="${guid}"] label`);
+            let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+            isRequired = value.trim().substring(3, value.length - 2) === 'required';
+        }
+        return isRequired;
     }
 
     async deleteAlreadyDownloadedFile(fileName: string): Promise<boolean> {
@@ -280,7 +280,7 @@ export class Utility {
     async setDateField(guid: string, dateValue: string): Promise<void> {
         //expects dateValue as format 04-01-2023 06:11 PM  -  DD-MM-YYYY HH:MM PM/AM
         let currentDate = new Date();
-        let currentMonth = currentDate.getMonth()+1;      //incrementing 1 because getmonth() function returns 0 for jan and 11 for dec
+        let currentMonth = currentDate.getMonth() + 1;      //incrementing 1 because getmonth() function returns 0 for jan and 11 for dec
         let arr = dateValue.split(" ");
         let date = arr[0].split("-");
         let time = arr[1].split(":");
@@ -291,7 +291,7 @@ export class Utility {
         let hour: number = +time[0];
         let minutes: number = +time[1];
         let yearDifference = year - currentDate.getFullYear();
-        let monthDifference = month - currentMonth;                
+        let monthDifference = month - currentMonth;
         let dateFieldGuid = await $(`[rx-view-component-id='${guid}']`);
         let dateFieldElement = await dateFieldGuid.$(this.selectors.dateFieldPicker);
         await dateFieldElement.click();
@@ -319,37 +319,36 @@ export class Utility {
 
         await browser.sleep(2000);
         let numberOfDays = await dateFieldGuid.$$(this.selectors.calendarDays).count();
-        let dayToCompare:string = day + ", " + year;
-        for(let i=0;i<numberOfDays;i++){
-            let activeDayElement:string = await dateFieldGuid.$$(this.selectors.calendarDays).get(i).getAttribute('aria-label');
-            if(activeDayElement.search(dayToCompare)!=-1){
+        let dayToCompare: string = day + ", " + year;
+        for (let i = 0; i < numberOfDays; i++) {
+            let activeDayElement: string = await dateFieldGuid.$$(this.selectors.calendarDays).get(i).getAttribute('aria-label');
+            if (activeDayElement.search(dayToCompare) != -1) {
                 await dateFieldGuid.$$(this.selectors.calendarDays).get(i).click();
                 break;
             }
         }
 
         await dateFieldGuid.$(this.selectors.selectTimeArrow).click();
-        let degrees = hour*30;
+        let degrees = hour * 30;
         await dateFieldGuid.$(`.a3t-clock--tick-label[style="transform: rotate(-${degrees}deg);"]`).click();
-        degrees = minutes*6;
+        degrees = minutes * 6;
         await dateFieldGuid.$(`.a3t-clock--tick-label[style="transform: rotate(-${degrees}deg);"]`).click();
-        let isActive=false;
+        let isActive = false;
         let activeCounter = await dateFieldGuid.$$(this.selectors.activeMeridiemClock).count();
-        for(let i=0;i<activeCounter;i++){
-            if(await dateFieldGuid.$$(this.selectors.activeMeridiemClock).get(i).getText()==meridiem){
-                isActive=true;
+        for (let i = 0; i < activeCounter; i++) {
+            if (await dateFieldGuid.$$(this.selectors.activeMeridiemClock).get(i).getText() == meridiem) {
+                isActive = true;
                 break;
             }
         }
 
-        if(isActive==false)
-        {
+        if (isActive == false) {
             let counter = await dateFieldGuid.$$(this.selectors.meridiemClock).count();
-            for(let i=0;i<counter;i++){
-                if(await dateFieldGuid.$$(this.selectors.meridiemClock).get(i).getText()==meridiem){
+            for (let i = 0; i < counter; i++) {
+                if (await dateFieldGuid.$$(this.selectors.meridiemClock).get(i).getText() == meridiem) {
                     await dateFieldGuid.$$(this.selectors.meridiemClock).get(i).click();
                 }
-            } 
+            }
         }
 
         await dateFieldGuid.$(this.selectors.okDateTimePicker).click();
@@ -375,6 +374,23 @@ export class Utility {
         return arr;
     }
 
+    async refresh(): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.navigate().refresh();
+        await browser.switchTo().alert().then((alert) => {
+            alert.accept();
+        }, () => { });
+        await browser.waitForAngularEnabled(true);
+    }
+
+    async acceptOrRejectBrowserPopup(accept: boolean): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().alert().then((alert) => {
+            if (accept) alert.accept();
+            else alert.dismiss();
+        }, () => { });
+        await browser.waitForAngularEnabled(true);
+    }
 }
 
 export default new Utility();

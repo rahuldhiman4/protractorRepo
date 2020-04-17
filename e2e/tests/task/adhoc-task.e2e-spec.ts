@@ -6,7 +6,7 @@ import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import { default as viewCasePage, default as viewCasePo } from "../../pageobject/case/view-case.po";
-import changeAssignmentBlade from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentOldBlade from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
@@ -19,7 +19,8 @@ import { default as manageTask, default as manageTaskBladePo } from "../../pageo
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Create Adhoc task', () => {
     beforeAll(async () => {
@@ -32,7 +33,7 @@ describe('Create Adhoc task', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     it('[DRDMV-3820,DRDMV-1239]: Adhoc Task Create view (UI verification)', async () => {
@@ -53,7 +54,7 @@ describe('Create Adhoc task', () => {
         expect(await adhoctaskTemplate.isAssignedCompanyRequiredTextPresent()).toBeTruthy();
         expect(await adhoctaskTemplate.isAssignedGroupRequiredTextPresent()).toBeTruthy();
 
-        expect(await adhoctaskTemplate.getSaveButtonAttribute('ng-disabled')).toBeTruthy();
+        expect(await adhoctaskTemplate.getSaveButtonAttribute('disabled')).toBeFalsy();
         expect(await adhoctaskTemplate.getStatusAttribute()).toBeTruthy();
         expect(await adhoctaskTemplate.getAssignCompanyAttribute()).toBeTruthy();
         expect(await adhoctaskTemplate.getBuisnessUnitAttribute()).toBeTruthy();
@@ -183,11 +184,10 @@ describe('Create Adhoc task', () => {
         await taskTemplate.setTaskDescription('Description in manual task');
         await taskTemplate.selectCompanyByName('Petramco');
         await taskTemplate.clickOnAssignment();
-        await changeAssignmentBlade.selectCompany('Petramco');
-        await changeAssignmentBlade.selectSupportGroup('Employee Relations');
-        await changeAssignmentBlade.selectAssignee('Qiwei Liu');
-        await changeAssignmentBlade.clickOnAssignButton();
-        await browser.sleep(2000);
+        await changeAssignmentOldBlade.selectCompany('Petramco');
+        await changeAssignmentOldBlade.selectSupportGroup('Employee Relations');
+        await changeAssignmentOldBlade.selectAssignee('Qiwei Liu');
+        await changeAssignmentOldBlade.clickOnAssignButton();
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.selectOwnerGroup('Employee Relations');
         await taskTemplate.clickOnSaveTaskTemplate();
@@ -199,6 +199,7 @@ describe('Create Adhoc task', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        let newCaseID: string = await viewCasePage.getCaseID();
         await viewCasePage.clickAddTaskButton();
 
         //Add Manual task and Automation Task in Case
@@ -207,27 +208,26 @@ describe('Create Adhoc task', () => {
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus();
 
-
         //different user
         await navigationPage.signOut();
         await loginPage.login('qliu');
         await navigationPage.gotoTaskConsole();
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
-        expect(await taskConsole.isCaseIdLinkIsPresent()).toBeFalsy(" Case Id Displayed in Task console");
-        await taskConsole.clickFirstLinkInTaskTemplateSearchGrid();
+        expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe("", " Case Id Displayed in Task console");
+        await utilityGrid.searchAndOpenHyperlink(manualTaskSummary);
         expect(await viewTask.isCaseViewLinkDisplayed()).toBeFalsy('Case View Link is displayed');
 
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
         await navigationPage.gotoTaskConsole();
         await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
-        expect(await taskConsole.isCaseIdLinkIsPresent()).toBeTruthy('Case Id is not Displayed in Task console');
-        await taskConsole.clickFirstLinkInTaskTemplateSearchGrid();
+        expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCaseID, " Case Id NOT displayed in Task console");
+        await utilityGrid.searchAndOpenHyperlink(manualTaskSummary);
         expect(await viewTask.isCaseViewLinkDisplayed()).toBeTruthy('Case View Link is not displayed');
         await navigationPage.signOut();
         await loginPage.login('qtao');
-    }, 240 * 1000);
+    }, 260 * 1000);
 
     it('[DRDMV-12249,DRDMV-12244]: Verify task creation with attachments & Verify attachment grid from case', async () => {
         let filePath = '../../data/ui/attachment/demo.txt';

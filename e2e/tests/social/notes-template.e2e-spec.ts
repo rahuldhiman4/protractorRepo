@@ -18,6 +18,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Notes template', () => {
     beforeAll(async () => {
@@ -30,7 +31,7 @@ describe('Notes template', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //ptidke
@@ -57,7 +58,7 @@ describe('Notes template', () => {
         await expect(await editNotetemplate.getStatusValue()).toContain('Inactive');
         await expect(await editNotetemplate.getBodyValue()).toContain(updateBody);
         await editNotetemplate.clickOnCancelButton();
-        await browser.refresh();
+        await utilityCommon.refresh();
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
@@ -89,7 +90,7 @@ describe('Notes template', () => {
         await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
         await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
         await editNotetemplate.clickOnCancelButton();
-        await browser.refresh();
+        await utilityCommon.refresh();
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
@@ -121,7 +122,7 @@ describe('Notes template', () => {
         await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
         await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
         await editNotetemplate.clickOnCancelButton();
-        await browser.refresh();
+        await utilityCommon.refresh();
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
@@ -153,7 +154,7 @@ describe('Notes template', () => {
         await expect(editNotetemplate.getStatusValue()).toContain('Inactive');
         await expect(editNotetemplate.getBodyValue()).toContain(updateBody);
         await editNotetemplate.clickOnCancelButton();
-        await browser.refresh();
+        await utilityCommon.refresh();
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
