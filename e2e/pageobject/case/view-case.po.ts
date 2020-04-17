@@ -167,7 +167,7 @@ class ViewCasePage {
     }
 
     async isEditLinkDisplay(): Promise<boolean> {
-        return await $(this.selectors.editLink).getAttribute("aria-hidden") == "false";
+        return await $(this.selectors.editLink).isDisplayed();
     }
 
     async clickEditCaseButton(): Promise<void> {
