@@ -19,6 +19,7 @@ import { default as manageTask } from "../../pageobject/task/manage-task-blade.p
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 let RecommendedKnowledgeStr = "Recommended Knowledge ";
 let applyBtn = "Apply";
@@ -39,7 +40,7 @@ describe("Quick Case", () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     afterAll(async () => {
@@ -143,10 +144,10 @@ describe("Quick Case", () => {
         let categoryvalues: string[] = [caseSummary771, caseDescription771];
         for (let i = 0; i < categoryvalues.length; i++) {
             let result;
-            await browser.refresh();
+            await utilityCommon.refresh();
             await quickCasePo.selectRequesterName('Adam Pavlik');
             await quickCasePo.setCaseSummary(categoryvalues[i]);
-            await utilCommon.waitUntilSpinnerToHide();
+            await utilityCommon.waitUntilSpinnerToHide();
             let qcSummary = await quickCasePo.isCaseSummaryPresentInRecommendedCases(categoryvalues[0]);
             qcSummary = false ? result = false : result = true;
             await expect(result).toBeTruthy(`FailureMsg: Case Summary does not match for ${categoryvalues[i]}`);
@@ -173,11 +174,11 @@ describe("Quick Case", () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.updateCaseTemplateStatus(caseTemplateId797, 'Draft');
         await quickCasePo.saveCase();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for draft template');
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for inactive template');
         await apiHelper.updateCaseTemplateStatus(caseTemplateId797, 'Inactive');
         await quickCasePo.saveCase();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for inactive template');
-    });
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for inactive template');
+     },200 * 1000);
 
     it('[DRDMV-800]: [Quick Case] Case creation with requester having same name as other company users', async () => {
         let userData1 = {
@@ -214,7 +215,7 @@ describe("Quick Case", () => {
         await quickCase.selectRequesterName('Person1 Person1');
         await quickCase.setCaseSummary('caseSummary');
         await quickCase.createCaseButton();
-        expect(await utilCommon.isPopupMsgsMatches(['Saved successfully'])).toBeTruthy('Success message not validated');
+        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Success message not validated');
         await quickCase.gotoCaseButton();
         expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
     });

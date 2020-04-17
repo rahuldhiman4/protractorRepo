@@ -11,7 +11,8 @@ import personProfilePage from '../../pageobject/common/person-profile.po';
 import composemailPage from '../../pageobject/email/compose-mail.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
+import utilCommon from '../../utils/utility.common';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Edit Case', () => {
     beforeAll(async () => {
@@ -24,7 +25,7 @@ describe('Edit Case', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //ankagraw
@@ -40,7 +41,7 @@ describe('Edit Case', () => {
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
-
+         
         await expect(viewCasePage.getRequesterName()).toBe('Adam Pavlik');
         await expect(viewCasePage.getRequesterPhoneNo()).toBe('+19254694006');
         await expect(viewCasePage.getRequesterEmail()).toBe('apavlik@petramco.com');
@@ -77,19 +78,7 @@ describe('Edit Case', () => {
         await expect(editCasePage.isRequesterImageDisplayed()).toBeTruthy();
         await expect(editCasePage.isSiteTextPresent()).toBeTruthy();
 
-        await editCasePage.clickOnRequesterName();
-        await utilCommon.switchToNewWidnow(1);
-        await expect(personProfilePage.getPersonName()).toBe('Adam Pavlik ');
-        await browser.close();
-        await utilCommon.switchToNewWidnow(0);
-        await editCasePage.clickOnRequesterMail();
-        await composemailPage.clickOnDiscardButton();
-        await utilCommon.clickOnWarningOk();
-
-        await editCasePage.waitForEditCasePageToBeDisplayed();
-        await browser.sleep(1000);
         await editCasePage.clickChangeAssignmentButton();
-        await expect(changeAssignmentPage.isAssignToMeCheckBoxPresent()).toBeTruthy();
         await expect(changeAssignmentPage.isCompanyDrpDwnDisplayed()).toBeTruthy();
         await expect(changeAssignmentPage.isDepartmentDrpDwnDisplayed()).toBeTruthy();
         await expect(changeAssignmentPage.isBuisnessUnitDrpDwnDisplayed()).toBeTruthy();
@@ -104,6 +93,15 @@ describe('Edit Case', () => {
         await expect(editCasePage.getChangeCaseTemplate()).toBe('Change Case Template');
         await editCasePage.clickSaveCase();
         await expect(editCasePage.isActivityFeedPresent()).toBeTruthy();
+
+        await viewCasePage.clickEditCaseButton();
+        await editCasePage.clickOnRequesterName();
+        await expect(personProfilePage.getPersonName()).toBe('Adam Pavlik');
+        await browser.navigate().back();
+        await editCasePage.clickOnRequesterMail();
+        await composemailPage.clickOnDiscardButton();
+        await utilCommon.clickOnWarningOk();
+   
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
     });
@@ -139,24 +137,24 @@ describe('Edit Case', () => {
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
         expect(await viewCasePage.getAssignedGroupText()).toBe('Employee Relations');
-        expect(await activityTabPo.getAllTaskActivity('Employee Relations')).toBe('Employee Relations');
+        expect(await activityTabPo.getAllTaskActivity('Employee Relations')).toBe(' Employee Relations ');
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickChangeAssignmentButton();
         await changeAssignmentPage.selectSupportGroup('Facilities');
         await changeAssignmentPage.selectAssignee('Fritz Schulz');
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
-        expect(await activityTabPo.getAllTaskActivity('Facilities')).toBe('Facilities');
+        expect(await activityTabPo.getAllTaskActivity('Facilities')).toBe(' Facilities ');
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickOnAssignToMe();
         await editCasePage.clickSaveCase();
-        expect(await activityTabPo.getAllTaskActivity('Compensation and Benefits')).toBe('Compensation and Benefits');
+        expect(await activityTabPo.getAllTaskActivity('Compensation and Benefits')).toBe(' Compensation and Benefits ');
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickChangeAssignmentButton();
         await changeAssignmentPage.selectSupportGroup('Compensation and Benefits');
         await changeAssignmentPage.selectAssigneeAsSupportGroup('Compensation and Benefits');
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
-
+        await utilCommon.waitUntilPopUpDisappear();
     }, 150 * 1000);
 });

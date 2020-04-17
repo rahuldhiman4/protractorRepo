@@ -9,6 +9,7 @@ import createFlowset from '../../pageobject/settings/manage-flowset/create-flows
 import editFlowset from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Create Flowset', () => {
     beforeAll(async () => {
@@ -21,7 +22,7 @@ describe('Create Flowset', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //ankagraw

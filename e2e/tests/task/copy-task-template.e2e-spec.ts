@@ -15,6 +15,7 @@ import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Copy Task Template', () => {
     beforeAll(async () => {
@@ -27,7 +28,7 @@ describe('Copy Task Template', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     it('[DRDMV-14214]: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {
@@ -209,7 +210,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 300 * 1000);
+    }, 500 * 1000);
 
     it('[DRDMV-14217]: Copy of Automated task template created across company and no new Process is created', async () => {
         try {
@@ -257,8 +258,9 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setNewProcessName(newAutomationTaskProcess);
             await copyTemplatePage.clickSaveCopytemplate();
             await expect(await utilCommon.isErrorMsgPresent()).toBeTruthy(); // ERROR (902): Duplicate process name 
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await copyTemplatePage.clickCancelCopytemplate();
+            await utilCommon.clickOnWarningOk();
+            await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(automationTaskTemplate);
             await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
         } catch (e) {
@@ -299,9 +301,7 @@ describe('Copy Task Template', () => {
             await expect(await viewTaskTemplate.getTemplateStatus()).toBe("Draft");
             await expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
             await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
-
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(newManualTaskTemplate);
             await expect(await viewTaskTemplate.getTemplateName()).toBe(newManualTaskTemplate);
         } catch (e) {
@@ -339,9 +339,8 @@ describe('Copy Task Template', () => {
             await taskTemplatePage.selectTaskCategoryTier3('Chatter');
             await taskTemplatePage.clickOnSaveTaskTemplate();
             //await utilCommon.waitUntilPopUpDisappear();
-
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await utilCommon.clickOnBackArrow();
+            
             await selectTaskTemplate.searchAndSelectTaskTemplate(manualTaskTemplate);
             await selectTaskTemplate.clickOnCopyTaskTemplateButton();
             await copyTemplatePage.setTemplateName(newManualTaskTemplate);
@@ -390,8 +389,7 @@ describe('Copy Task Template', () => {
             await taskTemplatePage.clickOnSaveTaskTemplate();
             //await utilCommon.waitUntilPopUpDisappear();
 
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
             await viewTaskTemplate.clickOnCopyTemplate();
             await expect(await copyTemplatePage.getSourceProcessName()).toBe('com.bmc.dsm.bwfa:' + processName);
@@ -457,8 +455,7 @@ describe('Copy Task Template', () => {
             await expect(viewTasktemplatePo.getOwnerCompanyValue()).toBe("Petramco");
             //await utilCommon.waitUntilPopUpDisappear();
 
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
@@ -498,16 +495,16 @@ describe('Copy Task Template', () => {
             await taskTemplatePage.clickOnSaveTaskTemplate();
             //await utilCommon.waitUntilPopUpDisappear();
 
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.setNewProcessName(processName);
             await copyTemplatePage.clickSaveCopytemplate();
-            await utilCommon.waitUntilPopUpDisappear();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            // await utilCommon.waitUntilPopUpDisappear();
+            await copyTemplatePage.clickCancelCopytemplate();
+            await utilCommon.clickOnWarningOk();
+            await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(updatedTaskTemplate);
             await viewTaskTemplate.clickOnEditProcessLink();
             await expect(await utilCommon.isPopupMsgsMatches(['WARNING (222062): Updates to dynamic fields or process affect the templates using the selected process :' + taskTemplate])).toBeTruthy("Popup message doesn't match");
@@ -542,13 +539,12 @@ describe('Copy Task Template', () => {
             await taskTemplatePage.clickOnSaveTaskTemplate();
             //await utilCommon.waitUntilPopUpDisappear();
 
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.clickSaveCopytemplate();
-            await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.waitUntilPopUpDisappear();
             await expect(await viewTaskTemplate.getTemplateStatus()).toBe('Draft');
             await expect(await viewTaskTemplate.getSummaryValue()).toBe(taskSummary);
             await expect(await viewTaskTemplate.getTaskTypeValue()).toBe('External');
@@ -565,7 +561,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    },240*1000);
 
     it('[DRDMV-13547]: Create a Copy of Task template by Case Business Analyst that belongs to Support Group', async () => {
         try {
@@ -608,7 +604,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 140 * 1000);
+    }, 240 * 1000);
 
     it('[DRDMV-13572]: Fields copied while creating copy of Manual Task template', async () => {
         try {
@@ -633,8 +629,7 @@ describe('Copy Task Template', () => {
             await taskTemplatePage.clickOnSaveTaskTemplate();
             //await utilCommon.waitUntilPopUpDisappear();
 
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
@@ -689,8 +684,7 @@ describe('Copy Task Template', () => {
             await dynamicField.clickSaveButton();
             //await utilCommon.waitUntilPopUpDisappear();
 
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(automationTaskTemplate);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
@@ -731,8 +725,7 @@ describe('Copy Task Template', () => {
             await taskTemplatePage.clickOnSaveTaskTemplate();
             //await utilCommon.waitUntilPopUpDisappear();
 
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')
+            await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(automationTaskTemplate);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);

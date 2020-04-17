@@ -8,6 +8,7 @@ import serviceTargetConfig from '../../pageobject/settings/slm/service-target-bl
 import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
 import { BWF_BASE_URL } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
 
 let caseBAUser = 'qkatawazi';
 
@@ -22,7 +23,7 @@ describe('Service Target - Second Level Association Tests', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     it('[DRDMV-19665]:UI Validation to check how associations are displayed on build expression blade', async () => {
@@ -92,11 +93,11 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
         // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
         await browser.sleep(40000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
 
@@ -130,11 +131,11 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
         // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
         await browser.sleep(40000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
 
@@ -169,11 +170,11 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
         // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
         await browser.sleep(40000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
 
@@ -209,11 +210,11 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
         // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
         await browser.sleep(40000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     }, 600 * 1000);
@@ -247,11 +248,11 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
         // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
         await browser.sleep(40000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
 
@@ -286,11 +287,11 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
         // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
         await browser.sleep(40000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     }, 600 * 1000);
@@ -324,11 +325,11 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(100000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
         // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
         await browser.sleep(40000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     }, 600 * 1000);

@@ -6,6 +6,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import statusConfig from "../../pageobject/settings/common/status-config.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilGrid from "../../utils/util.grid";
+import utilityCommon from '../../utils/utility.common';
 
 describe('Case Console Preset Filter', () => {
 
@@ -47,7 +48,7 @@ describe('Case Console Preset Filter', () => {
         await statusConfig.clickEditLifeCycleLink();
         await statusConfig.addCustomStatus('Resolved', 'Closed', 'AfterResolved');
 
-        await browser.refresh();
+        await utilityCommon.refresh();
         await statusConfig.setCompanyDropdown('Phylum', 'case');
         await statusConfig.clickEditLifeCycleLink();
         await statusConfig.addCustomStatus('In Progress', 'Resolved', 'BeforeResolved');
@@ -64,7 +65,7 @@ describe('Case Console Preset Filter', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //asahitya --Blocked since story is blocked
@@ -113,7 +114,7 @@ describe('Case Console Preset Filter', () => {
         let response11 = await apiHelper.createCase(caseData.AFTERRESOLVED_NONVIP_DRDMV_20843_8);
         caseId.push(response11.displayId);
 
-        await browser.refresh();
+        await utilityCommon.refresh();
         await utilGrid.clearFilter();
 
         for (let i: number = 0; i < 11; i++) {

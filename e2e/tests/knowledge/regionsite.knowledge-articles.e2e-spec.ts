@@ -21,6 +21,8 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import utilityCommon from '../../utils/utility.common';
+
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
 let caseManagerUser = 'qdu';
@@ -133,7 +135,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
     }, 3 * 60 * 1000);
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     afterAll(async () => {
@@ -264,7 +266,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
@@ -451,7 +453,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
@@ -558,7 +560,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
@@ -654,7 +656,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
@@ -810,7 +812,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
@@ -1397,7 +1399,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         }
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);

@@ -13,6 +13,7 @@ import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -35,7 +36,7 @@ describe('Service Target Tests for Tasks', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //skhobrag
@@ -60,7 +61,7 @@ describe('Service Target Tests for Tasks', () => {
 
             await browser.sleep(2000);
             await navigationPage.signOut();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             // Create a Case
             await loginPage.login(caseAgentUser);
@@ -149,7 +150,7 @@ describe('Service Target Tests for Tasks', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(2000);
             await navigationPage.signOut();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             // Create a Case
             await loginPage.login(caseAgentUser);
@@ -246,7 +247,7 @@ describe('Service Target Tests for Tasks', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(2000);
             await navigationPage.signOut();
-            await browser.refresh();
+            await utilityCommon.refresh();
 
             // Create a Case
             await loginPage.login(caseAgentUser);
@@ -278,7 +279,7 @@ describe('Service Target Tests for Tasks', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : InProcess');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
-            await browser.refresh();
+            await utilityCommon.refresh();
             await viewTask.getTaskTypeValue();
             await viewTask.clickOnViewCase();
             await viewCasePage.openTaskCard(1);

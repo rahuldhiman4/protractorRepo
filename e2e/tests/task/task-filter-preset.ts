@@ -6,6 +6,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import statusConfig from "../../pageobject/settings/common/status-config.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilGrid from "../../utils/util.grid";
+import utilityCommon from '../../utils/utility.common';
 
 describe('Task Console Preset Filter', () => {
 
@@ -42,7 +43,7 @@ describe('Task Console Preset Filter', () => {
         await statusConfig.clickEditLifeCycleLink();
         await statusConfig.addCustomStatus('Completed', 'Closed', 'AfterCompleted');
 
-        await browser.refresh();
+        await utilityCommon.refresh();
         await statusConfig.setCompanyDropdown('Phylum', 'task');
         await statusConfig.clickEditLifeCycleLink();
         await statusConfig.addCustomStatus('In Progress', 'Completed', 'BeforeCompleted');
@@ -58,7 +59,7 @@ describe('Task Console Preset Filter', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     xit('[DRDMV-20883]: Validate the My Open Cases filter after applying and removing the filter', async () => {
@@ -650,11 +651,11 @@ describe('Task Console Preset Filter', () => {
         expect(await utilGrid.getAppliedFilterName()).toBe('All Open Breached Tasks');
 
         await browser.sleep(130000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         expect(await utilGrid.isGridRecordPresent(taskId[7])).toBeFalsy(taskId[7] + ' :Record is available');
 
         browser.sleep(120000);
-        await browser.refresh();
+        await utilityCommon.refresh();
         for (let i: number = 4; i < 7; i++) {
             expect(await utilGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
         }

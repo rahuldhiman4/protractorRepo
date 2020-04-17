@@ -26,6 +26,9 @@ import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
+import utilityCommon from '../../utils/utility.common';
+
 let filePath = '../../data/ui/attachment/bwfPdf.pdf';
 
 describe('Create Task Template', () => {
@@ -39,7 +42,7 @@ describe('Create Task Template', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //ankagraw
@@ -455,10 +458,10 @@ describe('Create Task Template', () => {
         await navigationPage.signOut();
         await loginPage.login('qcolumbcille');
         await navigationPage.gotoTaskConsole();
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await taskConsole.setTaskSearchBoxValue(taskTemplateName);
-        await expect(taskConsole.isCaseIdLinkIsPresent()).toBeFalsy(" Case Id Displayed in Task console");
-        await taskConsole.clickFirstLinkInTaskTemplateSearchGrid();
+        expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe("", " Case Id Displayed in Task console");
+        await utilityGrid.searchAndOpenHyperlink(taskTemplateName);
         await expect(activityTabPo.getTaskActivity('attachment')).toBe('attachment');
         await expect(activityTabPo.getTaskActivity('abcde')).toBe('abcde');
         await navigationPage.signOut();

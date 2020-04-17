@@ -9,6 +9,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import statusConfigPo from '../../pageobject/settings/common/status-config.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Case Status Configuration', () => {
     let flowsetData;
@@ -31,7 +32,7 @@ describe('Case Status Configuration', () => {
     });
 
     afterEach(async () => {
-        await browser.refresh();
+        await utilityCommon.refresh();
     });
 
     //ankagraw

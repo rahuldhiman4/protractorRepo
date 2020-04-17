@@ -1,6 +1,6 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import util from '../../utils/util.common';
-import gridUtil from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
+import utilityCommon from '../../utils/utility.common';
 
 class AddRelationshipPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -10,22 +10,24 @@ class AddRelationshipPage {
     }
 
     async searchAndSelectPerson(personName: string): Promise<void> {
-        await gridUtil.searchAndSelectGridRecord(personName);
+        await utilityGrid.searchAndSelectGridRecord(personName);
     }
 
     async clickNextButton() {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nextButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nextButton)));
         await $(this.selectors.nextButton).click();
     }
 
     async selectRelationshipType(relationshipType: string) {
-        await util.selectDropDownWithName("Relationship Type", relationshipType);
+        await utilityCommon.selectDropDown('e2dc9466-aa5d-41d9-9515-8a047c7b9737', relationshipType).catch(async (error) => {
+                if(error) await utilityCommon.selectDropDown('8ecbe002-6180-403e-b019-acde4dff5f90', relationshipType);
+            });
     }
 
     async clickSaveButton() {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-//        await utilCommon.waitUntilSpinnerToHide();
+        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async addPerson(name: string, relation: string) {

@@ -1,6 +1,7 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
 
 class SelectEmailTemplateBlad {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -36,11 +37,11 @@ class SelectEmailTemplateBlad {
     }
 
     async addGridColumn(columnName: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.gridGuid, columnName);
+        await utilityGrid.addGridColumn(columnName,this.selectors.gridGuid);
     }
 
     async removeGridColumn(columnName: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.gridGuid, columnName);
+        await utilityGrid.removeGridColumn(columnName,this.selectors.gridGuid);
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
@@ -48,11 +49,11 @@ class SelectEmailTemplateBlad {
     }
 
     async areColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.areColumnHeaderMatches(columnHeader,this.selectors.gridGuid);
     }
 
     async searchAndSelectEmailTemplate(templateName: string): Promise<void> {
-        await utilGrid.searchAndSelectGridRecord(templateName);
+        await utilityGrid.searchAndSelectGridRecord(templateName);
     }
 
     async searchEmailTemplate(templateName: string): Promise<void> {
