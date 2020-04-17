@@ -259,18 +259,22 @@ class NavigationPage {
     }
 
     async signOut(): Promise<void> {
-        await this.switchToAngularTab();
-        await utilityCommon.refresh();
-        if (await this.isHambergerIconPresent()) {
-            await $(this.selectors.hamburgerIcon).click();
-            await element(by.buttonText(' Sign Out')).click();
-        } else {
-            await $(this.selectors.profileMenu).click();
-            await element(by.buttonText('Sign Out')).click();
+        try {
+            await this.switchToAngularTab();
+            await utilityCommon.refresh();
+            if (await this.isHambergerIconPresent()) {
+                await $(this.selectors.hamburgerIcon).click();
+                await element(by.buttonText('Sign Out')).click();
+            } else {
+                await $(this.selectors.profileMenu).click();
+                await element(by.buttonText('Sign Out')).click();
+            }
+            let noAccess = this.EC.titleContains('No Access');
+            let bwfLogin = this.EC.titleContains('Login - Business Workflows');
+            await browser.wait(this.EC.or(noAccess, bwfLogin), 10000);
+        } catch (ex) {
+            console.log('Already Signout');
         }
-        let noAccess = this.EC.titleContains('No Access');
-        let bwfLogin = this.EC.titleContains('Login - Business Workflows');
-        await browser.wait(this.EC.or(noAccess, bwfLogin), 10000);
     }
 
     async switchToAnotherApplication(applicationName: string): Promise<void> {
