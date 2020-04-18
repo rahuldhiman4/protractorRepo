@@ -22,7 +22,7 @@ class CaseConsolePage {
     }
 
     async setCaseSearchBoxValue(input: string): Promise<void> {
-        await gridUtil.searchOnGridConsole(input);
+        await utilityGrid.searchRecord(input);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
@@ -128,15 +128,15 @@ class CaseConsolePage {
     }
 
     async areCaseGridColumnMatches(columnNames: string[]): Promise<boolean> {
-        return await gridUtil.areColumnHeaderMatches(this.selectors.guid, columnNames);
+        return await utilityGrid.areColumnHeaderMatches(columnNames,this.selectors.guid);
     }
 
     async addRequestedCaseGridColumn(columnNames: string[]): Promise<void> {
-        await gridUtil.addGridColumn(this.selectors.guid, columnNames);
+        await utilityGrid.addGridColumn(columnNames,this.selectors.guid);
     }
 
     async removeRequestedCaseGridColumn(columnNames: string[]): Promise<void> {
-        await gridUtil.removeGridColumn(this.selectors.guid, columnNames);
+        await utilityGrid.removeGridColumn(columnNames,this.selectors.guid);
     }
 
 }

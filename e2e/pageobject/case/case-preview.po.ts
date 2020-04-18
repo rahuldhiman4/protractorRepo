@@ -133,10 +133,10 @@ class CasePreview {
     }
 
     async isAssigneeDisplayed(assignee: string): Promise<boolean> {
-        let valueassignee = await $(this.selectors.assignee + ' .ac-person-absent').getAttribute('aria-hidden');
-        if (valueassignee == 'true') {
-            return await $(this.selectors.assignee + ' a[title]').getText() == assignee ? true : false;
-        } else { return await $(this.selectors.assignee + ' .ac-person-absent').getText() == assignee ? true : false; }
+      let valueassignee:boolean = await $(this.selectors.assignee + ' .person-link').isPresent();
+        if (valueassignee == true) {
+         return await $(this.selectors.assignee + ' .person-link').getText() == assignee ? true : false;
+        }else { return await $(this.selectors.assignee + ' .ac-person-absent').getText() == assignee ? true : false; }
     }
 
     async clickGoToCaseButton(): Promise<void> {

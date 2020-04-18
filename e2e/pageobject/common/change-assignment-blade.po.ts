@@ -26,7 +26,7 @@ class ChangeAssignmentBlade {
 
         async getCompanyDefaultValue(): Promise<string> {
                 //        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.company))));
-             return await $$(this.selectors.filterDropdowns).get(0).getText();
+                return await $$(this.selectors.filterDropdowns).get(0).getText();
         }
 
         async getSupportGroupDefaultValue(): Promise<string> {
@@ -196,14 +196,7 @@ class ChangeAssignmentBlade {
 
         async setAssigneeGroup(group: string): Promise<void> {
                 await this.selectSupportGroup(group);
-                //        await browser.wait(this.EC.or(async () => {
-                //            let count = await $$(this.selectors.assignee).count();
-                //            return count >= 1;
-                //        }));
-                let name = "Assign to Support Group";
-                //        await browser.wait(this.EC.visibilityOf(option));
-                //        await browser.wait(this.EC.elementToBeClickable(option));
-                await element(by.cssContainingText(this.selectors.assignee, name)).click();
+                await $$(this.selectors.assignee).first().click();
                 await this.clickOnAssignButton();
         }
 
