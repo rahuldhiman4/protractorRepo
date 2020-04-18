@@ -206,6 +206,7 @@ class NavigationPage {
     }
 
     async gotoSettingsPage(): Promise<void> {
+        await this.switchToAngularTab();
         await $(this.selectors.settingsButton).click();
         await this.switchToAngularJsTab();
     }
