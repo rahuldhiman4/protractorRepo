@@ -304,36 +304,7 @@ class ViewCasePage {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
-        switch (tabName) {
-            case "Tasks": {
-                await $$(this.selectors.tab).get(0).click();
-                break;
-            }
-            case "Related Cases": {
-                await $$(this.selectors.tab).get(1).click();
-                break;
-            }
-            case "Related Persons": {
-                await $$(this.selectors.tab).get(2).click();
-                break;
-            }
-            case "Case Access": {
-                await $$(this.selectors.tab).get(3).click();
-                break;
-            }
-            case "Activity": {
-                await $$(this.selectors.tab).get(4).click();
-                break;
-            }
-            case "Resources": {
-                await $$(this.selectors.tab).get(5).click();
-                break;
-            }
-            default: {
-                console.log(tabName, '  is not a valid tab name');
-                break;
-            }
-        }
+        await element(by.cssContainingText(this.selectors.tab, tabName)).click();
     }
 
     async getCaseTemplateText(): Promise<string> {

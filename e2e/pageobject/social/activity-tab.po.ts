@@ -213,7 +213,7 @@ class ActivityTabPage {
     }
 
     async addAttachment(fileToUpload: string): Promise<void> {
-        let absolutePath: string = resolve(__dirname, fileToUpload);
+        const absolutePath = resolve(__dirname, fileToUpload);
         console.log(absolutePath);
         await $(this.selectors.attachmentField).sendKeys(absolutePath);
     }

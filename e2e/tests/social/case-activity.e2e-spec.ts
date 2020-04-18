@@ -257,6 +257,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
+    // Ok
     it('[DRDMV-16733]: Case Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotoCreateCase();
@@ -391,6 +392,7 @@ describe('Case Activity', () => {
     }, 140 * 1000);
 
     //kgaikwad
+    // Ok
     it('[DRDMV-16734]: From Case Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Login to BWF with Case agent and open case from pre condition
         await navigationPage.gotoCreateCase();
@@ -432,6 +434,7 @@ describe('Case Activity', () => {
     }, 160 * 1000);
 
     //kgaikwad
+    // Ok
     it('[DRDMV-16759]: Task Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotoCreateCase();
@@ -880,6 +883,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
+    // Ok
     it('[DRDMV-16582]: Check case view count log is displayed on the activity feed of case along with name of user and time', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -913,7 +917,7 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 200 * 1000);
+    }, 240 * 1000);
 
     //kgaikwad
     it('[DRDMV-16589]: Check case view count is not increased by opening same case by different places', async () => {
