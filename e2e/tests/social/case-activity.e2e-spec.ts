@@ -5,7 +5,6 @@ import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCase from '../../pageobject/case/create-case.po';
-import quickCasePo from '../../pageobject/case/quick-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -16,6 +15,7 @@ import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
 import feedbackBladeKnowledgeArticlePo from '../../pageobject/knowledge/feedback-blade-Knowledge-article.po';
 import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import notificationPo from '../../pageobject/notification/notification.po';
@@ -25,8 +25,8 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import utilityCommon from '../../utils/utility.common';
+import quickCasePo from '../../pageobject/case/quick-case.po';
 
 describe('Case Activity', () => {
 
@@ -257,6 +257,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
+    // Ok
     it('[DRDMV-16733]: Case Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotoCreateCase();
@@ -305,22 +306,22 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'), 'Status Change is missing';
         await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change'), 'Assignment Change is missing';
         await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change'), 'Category Change is missing';
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie'), 'Author: ajolie is missing';
+        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie'), 'Author : ajolie is missing';
         // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
         await activityTabPage.closeNmoreLink();
         await activityTabPage.clickOnNmoreLink();
         await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'), 'General Notes is missing';
-        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 4 more');
+        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('4 Show more');
         await activityTabPage.removeFilterList();
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'), 'Status Change is missing';
-        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 3 more');
+        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('3 Show more');
         await activityTabPage.closeNmoreLink();
         // iv)- Click on + n more button (- Selected filter list is displayed )
         await activityTabPage.clickOnNmoreLink();
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'), 'Status Change is missing';
         await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change'), 'Assignment Change is missing';
         await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change'), 'Category Change is missing';
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie'), 'Author: ajolie is missing';
+        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie'), 'Author : ajolie is missing';
         await activityTabPage.closeNmoreLink();
         //  v) - That particular filter is removed.
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'), 'Status Change is missing';
@@ -391,6 +392,7 @@ describe('Case Activity', () => {
     }, 140 * 1000);
 
     //kgaikwad
+    // Ok
     it('[DRDMV-16734]: From Case Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Login to BWF with Case agent and open case from pre condition
         await navigationPage.gotoCreateCase();
@@ -419,7 +421,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isEmailPresentOnUserPopUp('ajolie@petramco.com')).toBeTruthy('Email is Not Present On Author List PopUp');
         await expect(await activityTabPage.isPhoneNumberPresentOnUserPopUp('+12124021501')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
         await expect(await activityTabPage.isCompanyPresentOnUserPopUp('Petramco')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
-        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.clearAuthorSearchBoxOnFilter();
         // 5th Step: User is selected and Author field gets disabled 
         // i) User is selected and Author field gets disabled 
         await activityTabPage.addAuthorOnFilter('Angelina Jolie');
@@ -429,9 +431,10 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isAuthorBoxEmpty()).toBeTruthy('Author field is not empty');
         // iii) - Select another user and click on Apply
         await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
-    });
+    }, 160 * 1000);
 
     //kgaikwad
+    // Ok
     it('[DRDMV-16759]: Task Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotoCreateCase();
@@ -489,16 +492,16 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
         await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change');
         await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change');
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie');
+        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie');
         // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
         await activityTabPage.closeNmoreLink();
         await activityTabPage.clickOnNmoreLink();
         await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes');
-        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 4 more');
+        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('4 Show more');
 
         await activityTabPage.removeFilterList();
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
-        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 3 more');
+        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('3 Show more');
         await activityTabPage.closeNmoreLink();
 
         // iv)- Click on + n more button (- Selected filter list is displayed )
@@ -506,7 +509,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
         await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change');
         await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change');
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie');
+        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie');
         await activityTabPage.closeNmoreLink();
         //  v) - That particular filter is removed.
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
@@ -593,15 +596,15 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
         await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change');
         await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change');
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie');
+        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie');
         // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
         await activityTabPage.closeNmoreLink();
         await activityTabPage.clickOnNmoreLink();
         await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes');
-        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 4 more');
+        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('4 Show more');
         await activityTabPage.removeFilterList();
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
-        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 3 more');
+        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('3 Show more');
         await activityTabPage.closeNmoreLink();
 
         // iv)- Click on + n more button (- Selected filter list is displayed )
@@ -609,7 +612,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
         await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change');
         await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change');
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie');
+        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie');
         await activityTabPage.closeNmoreLink();
         //  v) - That particular filter is removed.
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
@@ -695,15 +698,15 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
         await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change');
         await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change');
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie');
+        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie');
         // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
         await activityTabPage.closeNmoreLink();
         await activityTabPage.clickOnNmoreLink();
         await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes');
-        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 4 more');
+        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('4 Show more');
         await activityTabPage.removeFilterList();
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
-        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 3 more');
+        await expect(await activityTabPage.getTextOfNmoreLink()).toBe('3 Show more');
         await activityTabPage.closeNmoreLink();
 
         // iv)- Click on + n more button (- Selected filter list is displayed )
@@ -711,7 +714,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
         await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change');
         await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change');
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie');
+        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie');
         await activityTabPage.closeNmoreLink();
         //  v) - That particular filter is removed.
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
@@ -723,7 +726,7 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.clickOnFilterClearButton();
         await expect(await activityTabPage.isfilterPresent()).not.toBeTruthy('filter displayed');
-    }, 230 * 1000);
+    }, 330 * 1000);
 
     //kgaikwad
     it('[DRDMV-18048]: While adding a note on Case one or more agent can be tagged in Comment', async () => {
@@ -880,6 +883,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
+    // Ok
     it('[DRDMV-16582]: Check case view count log is displayed on the activity feed of case along with name of user and time', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -899,21 +903,21 @@ describe('Case Activity', () => {
             await caseConsolePo.searchAndOpenCase(caseId);
             await utilCommon.waitUntilSpinnerToHide();
             await activityTabPo.clickOnRefreshButton();
-            await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao viewed the case.')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             await navigationPage.gotoPersonProfile();
             await utilCommon.waitUntilSpinnerToHide();
-            await expect(await personProfilePo.getCaseViewCount('Viewed the ' + caseId)).toEqual(1);
+            await expect(await personProfilePo.getCaseViewCount(' Viewed the  ' + caseId)).toEqual(1);
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 200 * 1000);
+    }, 240 * 1000);
 
     //kgaikwad
     it('[DRDMV-16589]: Check case view count is not increased by opening same case by different places', async () => {
