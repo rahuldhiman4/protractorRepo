@@ -1,6 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import updateStatusBlade from '../../pageobject/common/update.status.blade.po';
-import utilCommon from '../../utils/util.common';
 
 class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -51,11 +50,11 @@ class ViewCasePage {
         dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] label',
         dynamicFieldsValue: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .read-only-content',
         slaProgressBar: '.progress-bar',
-        tab:'button[role="tab"] span.nav-link-wrapper',
+        tab: '.nav-item button',
     }
 
-    async isGroupNameDisplayed(groupName:string):Promise<boolean>{
-        return await $(`[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .group-container__name__title[title=${groupName}]}`).isDisplayed(); 
+    async isGroupNameDisplayed(groupName: string): Promise<boolean> {
+        return await $(`[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .group-container__name__title[title=${groupName}]}`).isDisplayed();
     }
 
     async isAttachedDocumentPresent(fileName: string): Promise<boolean> {
