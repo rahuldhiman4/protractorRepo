@@ -658,7 +658,7 @@ describe("Compose Email", () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
         }
-    }, 180 * 1000);
+    }, 280 * 1000);
 
     it('[DRDMV-20368,DRDMV-20371]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
         try {
@@ -800,7 +800,7 @@ describe("Compose Email", () => {
             await navigationPage.signOut();
             await loginPage.login("qtao");
         }
-    }, 150 * 1000);
+    }, 200 * 1000);
 
     it('[DRDMV-20370]: Verify tags which are not in white list for email', async () => {
         try {

@@ -190,7 +190,7 @@ describe("Create Case Assignment Mapping", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 150 * 1000);
+    }, 250 * 1000);
 
     //radhiman
     it('[DRDMV-12034]: [Assignment Mapping] Verify precedence will be given to company specific assignment mapping if we have global approval mapping with Same name', async () => {
@@ -230,7 +230,7 @@ describe("Create Case Assignment Mapping", () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         expect(await viewCasePage.getAssignedGroupText()).toBe("AU Support 2");
-    }, 150 * 1000);
+    }, 160 * 1000);
 
     //radhiman
     it('[DRDMV-12033]: [Assignment Mapping] Verify Global assignment mapping applied to case if assignment qualification matches', async () => {

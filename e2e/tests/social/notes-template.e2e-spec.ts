@@ -95,7 +95,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
-    });
+    }, 150 * 1000);
 
     //ptidke
     it('[DRDMV-16028]: [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
@@ -202,7 +202,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
         }
-    });
+    }, 200 * 1000);
 
     //ptidke
     it('[DRDMV-15999]: [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
@@ -237,7 +237,7 @@ describe('Notes template', () => {
         await expect(await createNotesTemplate.isSaveButtonDisabled()).toBeFalsy();
         await expect(await createNotesTemplate.isCreateNotesTemplateUIPresent()).toBeTruthy();
         //await utilCommon.waitUntilSpinnerToHide();
-    });
+    }, 150 * 1000);
 
     //ptidke
     it('[DRDMV-16111]: [Design Time] Verify warning Message for locale values if template message is not configured against that locale value', async () => {
@@ -280,7 +280,7 @@ describe('Notes template', () => {
         await editNotetemplate.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
         //await utilCommon.waitUntilSpinnerToHide();
-    }, 210 * 1000);
+    }, 230 * 1000);
 
     //ptidke
     it('[DRDMV-16040]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
@@ -388,7 +388,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         }
-    });
+    }, 160 * 1000);
 
     //ptidke
     it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual', async () => {

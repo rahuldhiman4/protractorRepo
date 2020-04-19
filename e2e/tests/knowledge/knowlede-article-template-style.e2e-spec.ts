@@ -84,7 +84,7 @@ describe('KnowledgeArticlestyle', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 150 * 1000);
+    }, 220 * 1000);
 
     it('[DRDMV-5020]: [Article Styles] Mandatory field validation on template styles', async () => {
         await navigationPage.gotoSettingsPage();

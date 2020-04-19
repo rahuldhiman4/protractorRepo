@@ -97,7 +97,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 180 * 1000);
+    }, 230 * 1000);
 
     //ankagraw
     it('[DRDMV-13169]: [Dynamic Data] [UI] - Automated Task UI on Edit view', async () => {
@@ -210,7 +210,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 160 * 1000);
+    }, 250 * 1000);
 
     //ptidke
     it('[DRDMV-13126]:[Dynamic Data] - Create Case from Quick Case with Template having dynamic fields and also have field with source as Requester', async () => {
@@ -601,7 +601,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 160 * 1000);
+    }, 200 * 1000);
 
     //ptidke
     it('[DRDMV-13131]:[Dynamic Data] [UI] - Dynamic Fields and Groups display on Case and Similar Cases preview', async () => {
@@ -686,7 +686,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 160 * 1000);
+    }, 200 * 1000);
 
     //ptidke
     it('[DRDMV-13114]:[Dynamic Data] - Add all type of dynamic fields in Case Template', async () => {

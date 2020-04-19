@@ -294,7 +294,7 @@ describe('Service Target Tests for Tasks', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 400 * 1000);
+    }, 450 * 1000);
 
     //skhobrag
     it('[DRDMV-13064]:UI Validation for Qualification builder for Task SVT', async () => {

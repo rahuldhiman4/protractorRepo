@@ -133,7 +133,7 @@ describe("Case Preview", () => {
         await expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Case save message not matched');
         await casePreviewPo.clickOncreateNewCaseButton();
         await expect(await quickCasePo.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
-    });
+    }, 380 * 1000);
 
     //kgaikwad
     it('[DRDMV-13680]: UI Validation for Fields on Case Preview Page', async () => {

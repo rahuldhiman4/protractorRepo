@@ -61,7 +61,7 @@ describe('Service Level Management - Goal Type Tests', () => {
         expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         await utilGrid.searchAndOpenHyperlink(goalTypeTitle);
         expect(await editGoalType.getStatusDropDownFieldValue()).toBe('InActive');
-    }, 300 * 1000);
+    }, 550 * 1000);
 
     //skhobrag
     it('[DRDMV-2282]:SLM - Goal Type - Error and Warning Messages', async () => {
