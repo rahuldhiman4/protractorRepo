@@ -4,7 +4,7 @@ def dirSuffix = "ui_run_";
 properties([
 	parameters([
     stringParam(
-      defaultValue: 'SlaveUI1',
+      defaultValue: 'SlaveUI2',
       description: 'Node name to run the job',
       name: 'NodeName',
     ),
