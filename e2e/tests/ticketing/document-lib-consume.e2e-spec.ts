@@ -1071,7 +1071,7 @@ describe('Document Library Consume UI', () => {
         await resourcesTabPo.clickOnAdvancedSearchOptions('Knowledge Articles ');
         await resourcesTabPo.searchTextAndEnter(publishDocLibData1.docLibTitle);
         await expect(await resourcesTabPo.isKnowledgeArticlesEmpty()).toBeTruthy('Failuer: Knowledge Article is not empty');
-    });
+    }, 210 * 1000);
 
     //kgaikwad
     it('[DRDMV-13517]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
@@ -1579,6 +1579,6 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 200 * 1000);
+    }, 220 * 1000);
 
 })

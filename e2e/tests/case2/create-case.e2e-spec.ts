@@ -143,7 +143,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 150 * 1000);
+    }, 220 * 1000);
 
     //kgaikwad
     it('[DRDMV-18031]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
@@ -360,7 +360,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });
+    }, 160 * 1000);
 
     //ankagraw
     it('[DRDMV-11856]: [Case Creation] create case with Global case template without flowset ', async () => {
@@ -398,7 +398,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    }, 180 * 1000);
 
     //ankagraw
     it('[DRDMV-16076]: Reopen configurations available on Case Template Create screen ', async () => {
@@ -479,7 +479,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 240 * 1000);
+    }, 330 * 1000);
 
     //ankagraw
     it('[DRDMV-1237]: [Global navigation] Navigation to Workspaces and Create subitems in the Shell ', async () => {
@@ -504,7 +504,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    }, 210 * 1000);
 
     //ankagraw
     it('[DRDMV-7027]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
@@ -627,7 +627,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    }, 180 * 1000);
 
     //ankagraw
     it('[DRDMV-12061]: [ Task ] - Verify create case with Global task template having assignment', async () => {
@@ -706,7 +706,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 180 * 1000);
+    }, 360 * 1000);
 
     //ankagraw
     it('[DRDMV-15974]: Verify the status transition Closed->New is available only when Closed case is Reopened', async () => {
@@ -783,7 +783,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 240 * 1000);
+    }, 310 * 1000);
 
     //ankagraw
     it('[DRDMV-5479,DRDMV-1192]: Verify case assignment on Create Case', async () => {
@@ -821,7 +821,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    }, 200 * 1000);
 
     //ankagraw
     it('[DRDMV-11818]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
@@ -873,7 +873,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 140 * 1000);
+    }, 170 * 1000);
 
     //ankagraw
     it('[DRDMV-1614]: [Case] Fields validation for case in New status ', async () => {
@@ -1006,5 +1006,5 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 240 * 1000);
+    }, 270 * 1000);
 });

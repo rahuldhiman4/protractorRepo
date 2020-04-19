@@ -152,7 +152,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    }, 200 * 1000);
 
     //ptidke
     it('[DRDMV-10479]: Case Template NOT created with Template validation as OPTIONAL using Case Agent login', async () => {
@@ -324,7 +324,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 160 * 1000);
+    }, 230 * 1000);
 
     //ptidke
     it('[DRDMV-12578]:Case BA from other than case template owner group can NOT update the template', async () => {
@@ -553,7 +553,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 180 * 1000)
+    }, 250 * 1000)
 
     //apdeshmu 
     it('[DRDMV-769]: [Case Creation] [Template Selection] Applying a Template to a Case', async () => {
@@ -667,7 +667,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 280 * 1000);
+    }, 310 * 1000);
 
     it('[DRDMV-1216]: [Case Template] Create Case Template with all fields data populated', async () => {
         try {

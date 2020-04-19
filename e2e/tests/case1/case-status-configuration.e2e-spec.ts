@@ -251,7 +251,7 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await statusConfigPo.clickOnBackButton();
-    });
+    }, 180 * 1000);
 
     //ankagraw
     it('[DRDMV-13635]:Verify UI for Knowledge status configuration', async () => {
