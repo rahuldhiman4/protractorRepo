@@ -381,7 +381,7 @@ describe('Case Status Change', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 140 * 1000);
+    }, 180 * 1000);
 
     //ankagraw
     it('[DRDMV-1199]: [Case Status] Case status change from In Progress', async () => {
@@ -474,7 +474,7 @@ describe('Case Status Change', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 160 * 1000);
+    }, 210 * 1000);
 
     //apdeshmu
     it('[DRDMV-1196]: [Case Status] Case status change from Resolved', async () => {

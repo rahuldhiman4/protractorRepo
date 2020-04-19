@@ -102,7 +102,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 140 * 1000);
+    }, 190 * 1000);
 
     it('[DRDMV-19079]: Change Reviewer blade should process properly on KA', async () => {
         try {
@@ -338,7 +338,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    });
+    }, 170 * 1000);
 
     it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
         try {

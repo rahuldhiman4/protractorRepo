@@ -253,7 +253,7 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    }, 150 * 1000);
 
     //kgaikwad
     it('[DRDMV-13079]: Verify document will not appear in knowledge article searches	', async () => {
@@ -608,7 +608,7 @@ describe('Document Library', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
         await expect(documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeTruthy("Document not visible");
-    }, 240 * 1000);
+    }, 300 * 1000);
 
     it('[DRDMV-12954]: Verify Create view of Document library', async () => {
         await navigationPage.gotoSettingsPage();

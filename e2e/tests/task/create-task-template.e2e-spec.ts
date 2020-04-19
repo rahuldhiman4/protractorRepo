@@ -95,7 +95,7 @@ describe('Create Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });
+    }, 180 * 1000);
 
     //ankagraw
     it('[DRDMV-12087]: [Global Task Template] Update Task company to Global', async () => {
@@ -124,7 +124,7 @@ describe('Create Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });
+    }, 190 * 1000);
 
     //ankagraw
     it('[DRDMV-12086]: [Global Task Template] Update Task company from Global to Any', async () => {
@@ -154,7 +154,7 @@ describe('Create Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });
+    }, 170 * 1000);
 
     //ankagraw
     it('[DRDMV-12577]: Case BA other than task template owner group can NOT update the template', async () => {
@@ -189,7 +189,7 @@ describe('Create Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 180 * 1000);
+    }, 250 * 1000);
 
     //ankagraw
     it('[DRDMV-12567]: Case BA from task template owner group can update the template', async () => {
@@ -238,7 +238,7 @@ describe('Create Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 150 * 1000);
+    }, 220 * 1000);
 
     //ankagraw
     it('[DRDMV-12555]: Task template submitter from same company of owner group can edit the task template', async () => {
@@ -283,7 +283,7 @@ describe('Create Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 180 * 1000);
+    }, 220 * 1000);
 
     async function foundationData(company: string) {
         const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
@@ -392,7 +392,7 @@ describe('Create Task Template', () => {
         await expect(activityTabPo.getTaskActivity('Assigned')).toBe('Assigned');
         await expect(activityTabPo.getTaskActivity('In Progress')).toBe('In Progress');
         await expect(activityTabPo.getTaskActivity('Completed')).toBe('Completed');
-    });
+    }, 150 * 1000);
 
     it('[DRDMV-5326]: [Permission] [Task Template] Access to Activity Feed records of the Task created using template', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

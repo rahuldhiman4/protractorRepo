@@ -162,7 +162,7 @@ describe('Dynamic data', () => {
         await addFieldsPopPo.clickOnOkButtonOfEditor();
         await createDocumentTemplatePo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-    }, 280 * 1000);
+    }, 310 * 1000);
 
     it('[DRDMV-19270]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
         await apiHelper.apiLogin('tadmin');
@@ -432,7 +432,7 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.isFileDisplayed('demo.txt')).toBeTruthy('File is not present');
         expect(await viewCasePo.isFileDisplayed('bwfWord1.rtf')).toBeTruthy('File is not present');
         expect(await viewCasePo.isFileDisplayed('articleStatus.png')).toBeTruthy('File is not present');
-    });
+    }, 300 * 1000);
 
     it('[DRDMV-13947]: [Dynamic Data] [Attachment] - Task UI when it has Dynamic Fields including Attachment', async () => {
         await apiHelper.apiLogin('tadmin');
@@ -728,7 +728,7 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.getValueOfDynamicFields('temp5')).toBe('2:00 AM');
         expect(await viewCasePo.getValueOfDynamicFields('dynamicList')).toBe('listvalues');
         expect(await viewCasePo.getValueOfDynamicFields('attachment2')).toContain('demo.txt');
-    }, 160 * 1000);
+    }, 200 * 1000);
 
     // ptidke
     it('[DRDMV-13127]: [Dynamic Data] - Create Case from Create Case with Template having dynamic fields and also have field with source as Requester', async () => {
@@ -769,7 +769,7 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.getValueOfDynamicFields('temp5')).toBe(empty);
         expect(await viewCasePo.getValueOfDynamicFields('dynamicList')).toBe(empty);
         expect(await viewCasePo.getValueOfDynamicFields('attachment1')).toBe(empty);
-    });
+    }, 160 * 1000);
 
     //ptidke
     it('[DRDMV-13158]: [-ve] [UI] [Dynamic Data] - Update Task dynamic fields with invalid data', async () => {
@@ -1000,7 +1000,7 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('', 'field should be empty');
         expect(await viewCasePo.getValueOfDynamicFields('temp2')).toBe('', 'field should be empty');
         expect(await viewCasePo.getValueOfDynamicFields('temp4')).toBe('', 'field should be empty');
-    }, 180 * 1000);
+    }, 440 * 1000);
 
     //ptidke
     it('[DRDMV-13125]:[Dynamic Data] - Create Case from Create Case with Template having dynamic fields but does not have field with source as Requester', async () => {

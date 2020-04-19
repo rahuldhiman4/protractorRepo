@@ -271,5 +271,4 @@ describe('Automated Case Status Transition', () => {
         await automatedStatusTransitionCreatePage.setLabelValue(label);
         await automatedStatusTransitionCreatePage.saveConfig();
     }, 180 * 1000);
-
 })
