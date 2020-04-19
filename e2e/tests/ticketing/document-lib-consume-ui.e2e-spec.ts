@@ -111,7 +111,7 @@ describe('Document Library Consume UI', () => {
         await attachmentBladePo.searchAndSelectCheckBox('bwfJpg');
         await attachmentBladePo.clickOnDownloadButton();
         await expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is not downloaded.');
-    }, 240 * 1000);
+    }, 140 * 1000);
 
     //kgaikwad
     it('[DRDMV-13533]: Access to the documents attached on case when agent has read access to the case', async () => {
@@ -177,7 +177,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 250 * 1000);
+    }, 140 * 1000);
 
     //kgaikwad
     it('[DRDMV-13524]: Edit Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
@@ -250,6 +250,7 @@ describe('Document Library Consume UI', () => {
 
             await navigationPage.signOut();
             await loginPage.login(loginId);
+
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
@@ -271,18 +272,17 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.clickOnAttachButton();
             await editTaskPo.clickOnSaveButton();
 
-            await expect(await viewTaskPo.isAttachedDocumentPresent(' bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
-            await expect(await utilCommon.deleteAlreadyDownloadedFile(' bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
-            await viewTaskPo.clickOnAttachedDocumentFile(' bwfJpg.jpg');
-            await expect(await utilCommon.isFileDownloaded(' bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
+            await expect(await viewTaskPo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
+            await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
+            await viewTaskPo.clickOnAttachedDocumentFile('bwfJpg.jpg');
+            await expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.clickOnAttachButton();
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
             await editTaskPo.clickOnAttachButton();
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await editTaskPo.clickOnSaveButton();
-
-            await expect(await viewTaskPo.isAttachedDocumentPresent(' bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
+            await expect(await viewTaskPo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
             await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfPdf.pdf');
             await expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
@@ -296,7 +296,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 900 * 1000);
+    }, 440 * 1000);
 
     //kgaikwad
     it('[DRDMV-13507]: Compose Email - Case agent attaches published document from document library where case agent is author of the document', async () => {
@@ -1071,7 +1071,7 @@ describe('Document Library Consume UI', () => {
         await resourcesTabPo.clickOnAdvancedSearchOptions('Knowledge Articles ');
         await resourcesTabPo.searchTextAndEnter(publishDocLibData1.docLibTitle);
         await expect(await resourcesTabPo.isKnowledgeArticlesEmpty()).toBeTruthy('Failuer: Knowledge Article is not empty');
-    });
+    }, 210 * 1000);
 
     //kgaikwad
     it('[DRDMV-13517]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
@@ -1579,6 +1579,6 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 200 * 1000);
+    }, 220 * 1000);
 
 })
