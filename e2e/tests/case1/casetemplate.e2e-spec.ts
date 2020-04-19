@@ -770,5 +770,3 @@ describe('Case Template', () => {
         }
     }, 300 * 1000);
 })
-
-

@@ -15,7 +15,6 @@ describe('Case Status Configuration', () => {
     let flowsetData;
     let flowsetName: string;
 
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
