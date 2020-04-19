@@ -8,7 +8,7 @@ import createDocumentTemplatePo from '../../pageobject/settings/document-managem
 import documentTemplateConsolePo from '../../pageobject/settings/document-management/document-template-console.po';
 import editDocumentTemplatePo from '../../pageobject/settings/document-management/edit-document-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
+// import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 
 describe('Document Template', () => {
@@ -41,26 +41,20 @@ describe('Document Template', () => {
         await createMenuItemsBladePo.clickOnMenuOptionLink();
         await createMenuItemsBladePo.selectMenuNameDropDown('Label');
         await createMenuItemsBladePo.clickOnLocalizeLink();
-        //await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.setLocalizeValue(labelRandVal);
         await localizeValuePopPo.clickOnSaveButton();
-        //await utilCommon.waitUntilSpinnerToHide();
         await createMenuItemsBladePo.selectStatusDropDown('Active');
         await createMenuItemsBladePo.selectAvailableOnUiToggleButton(true);
         await createMenuItemsBladePo.clickOnSaveButton();
-        //await utilCommon.waitUntilPopUpDisappear();
 
         await createMenuItemsBladePo.clickOnMenuOptionLink();
         await createMenuItemsBladePo.selectMenuNameDropDown('Label');
         await createMenuItemsBladePo.clickOnLocalizeLink();
-        //await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.setLocalizeValue(labelRandVal2);
         await localizeValuePopPo.clickOnSaveButton();
-        //await utilCommon.waitUntilSpinnerToHide();
         await createMenuItemsBladePo.selectStatusDropDown('Active');
         await createMenuItemsBladePo.selectAvailableOnUiToggleButton(true);
         await createMenuItemsBladePo.clickOnSaveButton();
-        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
@@ -75,7 +69,6 @@ describe('Document Template', () => {
         await createDocumentTemplatePo.clickOnDocumentBodyImageButton();
         await imagePropertiesPo.addImg('Upload', '../../../data/ui/attachment/articleStatus.png');
         await createDocumentTemplatePo.clickOnSaveButton();
-        //await utilCommon.waitUntilPopUpDisappear();
 
         await createDocumentTemplatePo.clickOnAddTemplate();
         await createDocumentTemplatePo.setTemplateName(templateRandVal2);
@@ -85,7 +78,6 @@ describe('Document Template', () => {
         await createDocumentTemplatePo.setDescription(description);
         await createDocumentTemplatePo.setDocumentBody(documentBody);
         await createDocumentTemplatePo.clickOnSaveButton();
-        //await utilCommon.waitUntilPopUpDisappear();
 
         await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
         expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal1)).toBeTruthy('Template Name is missing');
@@ -95,7 +87,7 @@ describe('Document Template', () => {
         expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody)).toBeTruthy('Document body text is missing');
         expect(await editDocumentTemplatePo.isDocumentBodyImgDisplay()).toBeTruthy('Document body Img text is missing');
         await editDocumentTemplatePo.clickOnCancelButton();
-
+        await utilityCommon.clickOnWarningOk();
         await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal2);
         expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal2)).toBeTruthy('Template Name is missing for Global company');
         expect(await editDocumentTemplatePo.isCompanyNameDisplayed('- Global -')).toBeTruthy('Global Company Name is missing ');
@@ -104,6 +96,7 @@ describe('Document Template', () => {
         expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody)).toBeTruthy('Document body text is missing of Global company');
         expect(await editDocumentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('company drop down is enabled of Global company');
         await editDocumentTemplatePo.clickOnCancelButton();
+        await utilityCommon.clickOnWarningOk();
 
         await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
         expect(await editDocumentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company Drop down is not disabled');
@@ -112,7 +105,6 @@ describe('Document Template', () => {
         await editDocumentTemplatePo.updateDescription(description2);
         await editDocumentTemplatePo.updateDocumentBody(documentBody2);
         await editDocumentTemplatePo.clickOnSaveButton();
-        //await utilCommon.waitUntilPopUpDisappear();
 
         await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
         expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal1)).toBeTruthy('Template Name is missing');
@@ -121,6 +113,7 @@ describe('Document Template', () => {
         expect(await editDocumentTemplatePo.isDescriptionValueDisplayed(description2)).toBeTruthy('Description2 Name is missing');
         expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody2)).toBeTruthy('Document body2 text is missing');
         await editDocumentTemplatePo.clickOnCancelButton();
+        await utilityCommon.clickOnWarningOk();
         await documentTemplateConsolePo.searchOnGridConsole(templateRandVal1);
 
         await navigationPage.signOut();
@@ -135,7 +128,7 @@ describe('Document Template', () => {
         await documentTemplateConsolePo.clearGridSearchBox();
         await documentTemplateConsolePo.selectCheckBox(templateRandVal2);
         await documentTemplateConsolePo.clickOnDeleteButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnWarningOk();
 
         expect(await documentTemplateConsolePo.isGridRecordPresent(templateRandVal2)).toBeFalsy('template name is preset on grid');
     }, 280 * 1000);

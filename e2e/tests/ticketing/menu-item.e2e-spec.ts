@@ -84,7 +84,6 @@ describe('Menu Item', () => {
         await createMenuItems.selectAvailableOnUiToggleButton(true);
         await createMenuItems.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
-
         await createMenuItems.clickOnMenuOptionLink();
         await createMenuItems.selectMenuNameDropDown('Label');
         await createMenuItems.clickOnLocalizeLink();
@@ -97,7 +96,6 @@ describe('Menu Item', () => {
         await createMenuItems.clickOnSaveButton();
         expect(await utilCommon.getPopUpMessage()).toBe('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.');
         await utilCommon.closePopUpMessage();
-
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
@@ -107,7 +105,6 @@ describe('Menu Item', () => {
         await createMenuItems.clickOnSaveButton();
         expect(await utilCommon.getPopUpMessage()).toBe('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.');
         await utilCommon.closePopUpMessage();
-
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
@@ -117,7 +114,6 @@ describe('Menu Item', () => {
         await createMenuItems.clickOnSaveButton();
         expect(await utilCommon.getPopUpMessage()).toBe('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.');
         await utilCommon.closePopUpMessage();
-
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
@@ -127,7 +123,6 @@ describe('Menu Item', () => {
         await createMenuItems.clickOnSaveButton();
         expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
         await utilCommon.waitUntilPopUpDisappear();
-
         await createMenuItems.clickOnMenuOptionLink();
         await createMenuItems.selectMenuNameDropDown('Source');
         await createMenuItems.clickOnLocalizeLink();
@@ -138,9 +133,8 @@ describe('Menu Item', () => {
         await createMenuItems.selectStatusDropDown('Active');
         await createMenuItems.selectAvailableOnUiToggleButton(true);
         await createMenuItems.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.');
-        await utilCommon.closePopUpMessage();
-
+        
+        await expect(await utilCommon.getPopUpMessage()).toBe('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.');
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
@@ -150,7 +144,6 @@ describe('Menu Item', () => {
         await createMenuItems.clickOnSaveButton();
         expect(await utilCommon.getPopUpMessage()).toBe('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.');
         await utilCommon.closePopUpMessage();
-
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
@@ -160,7 +153,6 @@ describe('Menu Item', () => {
         await createMenuItems.clickOnSaveButton();
         expect(await utilCommon.getPopUpMessage()).toBe('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.');
         await utilCommon.closePopUpMessage();
-
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
@@ -170,7 +162,7 @@ describe('Menu Item', () => {
         await createMenuItems.clickOnSaveButton();
         expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
         await utilCommon.waitUntilPopUpDisappear();
-    }, 150 * 1000);
+    }, 270 * 1000);
 
     //kgaikwad
     it('[DRDMV-16105,DRDMV-16106]: [Menu Items] - Update records AND grid Validation', async () => {
