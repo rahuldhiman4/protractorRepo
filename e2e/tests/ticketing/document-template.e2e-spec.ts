@@ -8,7 +8,6 @@ import createDocumentTemplatePo from '../../pageobject/settings/document-managem
 import documentTemplateConsolePo from '../../pageobject/settings/document-management/document-template-console.po';
 import editDocumentTemplatePo from '../../pageobject/settings/document-management/edit-document-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-// import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 
 describe('Document Template', () => {
