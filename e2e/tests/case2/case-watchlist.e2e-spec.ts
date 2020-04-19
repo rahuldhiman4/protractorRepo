@@ -1135,5 +1135,4 @@ describe('Case Watchlist', () => {
             await loginPage.login(qyuanStr);
         }
     }, 340 * 1000);
-
 })
