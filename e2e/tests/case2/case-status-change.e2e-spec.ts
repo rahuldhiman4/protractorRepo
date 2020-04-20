@@ -38,6 +38,7 @@ describe('Case Status Change', () => {
     });
 
     //kgaikwad
+    // Done
     it('[DRDMV-2530]: [Case Status] Case status change from New', async () => {
         let priority: string = "Medium";
         let summary: string = "Test case for DRDMV-2530";
@@ -78,7 +79,7 @@ describe('Case Status Change', () => {
         expect(await caseConsole.isCaseStatusPresent(statusAssigned)).toBeTruthy("Status Assigned not matching");
         expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
         console.log('Assigned status success');
-        // - Change status from New to Canceled.
+//         // - Change status from New to Canceled.
         let newCase2 = await apiHelper.createCase(caseData);
         let caseId2: string = newCase2.displayId;
         await caseConsole.searchCase(caseId2);
@@ -89,12 +90,12 @@ describe('Case Status Change', () => {
         await caseConsole.searchAndOpenCase(caseId2);
         expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
         await updateStatusBladePo.changeCaseStatus(statusCanceled);
-        let cancelStatusReasons: string[] = [' ', 'Approval Rejected', 'Customer Canceled'];
+        let cancelStatusReasons: string[] = ['Select None', 'Approval Rejected', 'Customer Canceled'];
         expect(await updateStatusBladePo.allStatusReasonOptionsPresent(cancelStatusReasons)).toBeTruthy('Cancel status reason options mismatch');
+        await updateStatusBladePo.clickOnstatusReason();
         await updateStatusBladePo.setStatusReason('Customer Canceled');
-        await updateStatusBladePo.clickSaveStatus(statusCanceled);
+        await updateStatusBladePo.clickSaveStatus();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusCanceled), 'Status should be New to Cancelled';
-
         await navigationPage.gotoCaseConsole();
         await caseConsole.searchCase(caseId2);
         expect(await caseConsole.isCaseIdPresent(caseId2)).toBeTruthy("CaseID not matching");
@@ -113,14 +114,15 @@ describe('Case Status Change', () => {
         await caseConsole.searchAndOpenCase(caseId3);
         expect(await viewCasePage.getTextOfStatus()).toBe(statusNew), 'status should be new of status';
         await updateStatusBladePo.changeCaseStatus(statusPending);
-        let pendingStatusReasons: string[] = [' ', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
+        let pendingStatusReasons: string[] = ['Select None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
         expect(await updateStatusBladePo.allStatusReasonOptionsPresent(pendingStatusReasons)).toBeTruthy('Pending status reason options mismatch');
+        await updateStatusBladePo.clickOnstatusReason();
         await updateStatusBladePo.setStatusReason('Approval');
         await updateStatusBladePo.clickSaveStatus();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Case status updated to Pending for Approval only when approval is initiated. You cannot manually select this status.');
-        //        await utilCommon.closePopUpMessage();
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Case status updated to Pending for Approval only when approval is initiated. You cannot manually select this status.');
+        await utilityCommon.closePopUpMessage();
         await updateStatusBladePo.setStatusReason('Customer Response');
-        await updateStatusBladePo.clickSaveStatus(statusPending);
+        await updateStatusBladePo.clickSaveStatus();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusPending), 'status should be new of Pending';
         await navigationPage.gotoCaseConsole();
         await caseConsole.searchCase(caseId3);
@@ -128,7 +130,7 @@ describe('Case Status Change', () => {
         expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
         expect(await caseConsole.isCaseStatusPresent(statusPending)).toBeTruthy("Status Pending not matching");
         expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
-    }, 240 * 1000);
+    }, 335 * 1000);
 
     //kgaikwad
     it('[DRDMV-1618]: [Case] Fields validation for case in Resolved status', async () => {
@@ -188,6 +190,7 @@ describe('Case Status Change', () => {
     });
 
     //kgaikwad
+    // Done
     it('[DRDMV-1233]: [Case Status Reason] Status Reason change without status transition', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -198,15 +201,15 @@ describe('Case Status Change', () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await updateStatusBladePo.changeCaseStatus(statusPending);
-        let pendingStatusReasons: string[] = [' ', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
+        let pendingStatusReasons: string[] = ['Select None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
         expect(await updateStatusBladePo.allStatusReasonOptionsPresent(pendingStatusReasons)).toBeTruthy('Pending status reason options mismatch');
+        await updateStatusBladePo.clickOnstatusReason();
         await updateStatusBladePo.setStatusReason('Approval');
         await updateStatusBladePo.clickSaveStatus();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Case status updated to Pending for Approval only when approval is initiated. You cannot manually select this status.');
-        //        await utilCommon.closePopUpMessage();
+        await expect(await utilityCommon.getAllPopupMsg()).toContain('Case status updated to Pending for Approval only when approval is initiated. You cannot manually select this status.');
         await updateStatusBladePo.setStatusReason('Customer Response');
-        await updateStatusBladePo.clickSaveStatus(statusPending);
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
+        await updateStatusBladePo.clickSaveStatus();
+        await expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + summary);
@@ -215,14 +218,16 @@ describe('Case Status Change', () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await updateStatusBladePo.changeCaseStatus(statusResolved);
-        let resolvedStatusReasons: string[] = [' ', 'Auto Resolved', 'Customer Follow-Up Required', 'No Further Action Required'];
-        expect(await updateStatusBladePo.allStatusReasonOptionsPresent(resolvedStatusReasons)).toBeTruthy('Resolved status reason options mismatch');
+        let resolvedStatusReasons: string[] = ['Select None', 'Auto Resolved', 'Customer Follow-Up Required', 'No Further Action Required'];
+        await expect(await updateStatusBladePo.allStatusReasonOptionsPresent(resolvedStatusReasons)).toBeTruthy('Resolved status reason options mismatch');
+        await updateStatusBladePo.clickOnstatusReason();
         await updateStatusBladePo.setStatusReason('Auto Resolved');
-        await updateStatusBladePo.clickSaveStatus(statusResolved);
-    });
+        await updateStatusBladePo.clickSaveStatus();
+    }, 160 * 1000);
 
     //kgaikwad
-    it('[DRDMV-1616]: [Case] Fields validation for case In Progress status', async () => {
+    // Ok
+    fit('[DRDMV-1616]: [Case] Fields validation for case In Progress status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
@@ -233,6 +238,7 @@ describe('Case Status Change', () => {
         await previewCasePo.clickGoToCaseButton();
         await updateStatusBladePo.changeCaseStatus(statusInProgress);
         await updateStatusBladePo.clickSaveStatus(statusInProgress);
+        
         expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
@@ -312,6 +318,7 @@ describe('Case Status Change', () => {
     });
 
     //kgaikwad
+    // Ok
     it('[DRDMV-1615]: [Case] Fields validation for case in Assigned status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -343,6 +350,7 @@ describe('Case Status Change', () => {
     });
 
     //kgaikwad
+    // Ok
     it('[DRDMV-1617]: [Case] Fields validation for case in Pending status', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -384,6 +392,7 @@ describe('Case Status Change', () => {
     }, 180 * 1000);
 
     //ankagraw
+    // Ok
     it('[DRDMV-1199]: [Case Status] Case status change from In Progress', async () => {
         try {
             await navigationPage.signOut();
@@ -477,6 +486,8 @@ describe('Case Status Change', () => {
     }, 210 * 1000);
 
     //apdeshmu
+    // Done
+    // Stack issue
     it('[DRDMV-1196]: [Case Status] Case status change from Resolved', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -566,6 +577,7 @@ describe('Case Status Change', () => {
     }, 420 * 1000);
 
     //apdeshmu
+    // Ok
     it('[DRDMV-1619]: [Case] Fields validation for case in Canceled status', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -705,6 +717,7 @@ describe('Case Status Change', () => {
     }, 380 * 1000);
 
     //apdeshmu
+    // Ok
     it('[DRDMV-1200]: [Case Status] Case status change from Pending', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -817,6 +830,7 @@ describe('Case Status Change', () => {
     }, 420 * 1000);
 
     //apdeshmu
+    // Ok
     it('[DRDMV-4680]: [Status Blade] Case Status Blade view', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
