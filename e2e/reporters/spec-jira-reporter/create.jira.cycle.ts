@@ -349,15 +349,15 @@ export class CreateJiraCycle {
             });
             let totalExecution: number = folderExecutionInfo[0].totalExecutions;
 
+            let skipCount: number = find(folderExecutionInfo[0].executionSummaries.executionSummary, (status) => {
+                return status.statusName === "UNEXECUTED";
+            }).count;
+
             let passCount: number = find(folderExecutionInfo[0].executionSummaries.executionSummary, (status) => {
                 return status.statusName === "PASS";
             }).count;
 
-            let failCount: number = find(folderExecutionInfo[0].executionSummaries.executionSummary, (status) => {
-                return status.statusName === "FAIL";
-            }).count;
-
-            let skipCount: number = totalExecution - passCount - failCount;
+            let failCount: number = totalExecution - passCount - skipCount;
             let cyclePassPercent: number = Math.round(passCount * 100 / totalExecution);
 
             console.log("Cycle name ==> " + this.testCycleName);
