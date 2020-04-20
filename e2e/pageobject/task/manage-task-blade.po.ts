@@ -74,7 +74,7 @@ class ManageTaskBlade {
         //            return count >= 1;
         //        }));
         //        await browser.wait(this.EC.elementToBeClickable(element(by.linkText(taskSummary))));
-        await element(by.linkText(taskSummary)).click();
+        await element(by.partialLinkText(taskSummary)).click();
         //        await utilCommon.waitUntilSpinnerToHide();
     }
 

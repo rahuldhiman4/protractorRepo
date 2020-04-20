@@ -31,7 +31,6 @@ export class Utility {
         clearDateTimePicker: '.btn-secondary',
     }
 
-
     async isWarningDialogBoxDisplayed(): Promise<boolean> {
         return await $(this.selectors.warningDialog).isPresent();
     }
