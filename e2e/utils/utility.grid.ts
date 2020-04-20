@@ -31,6 +31,7 @@ export class GridOperations {
         if (guid) { searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator; }
         await $(searchTextBoxLocator).clear();
         await $(searchTextBoxLocator).sendKeys(searchValue + Key.ENTER);
+        await utilityCommon.waitUntilSpinnerToHide();
     }
 
     async isGridRecordPresent(searchRecord: string, guid?: string): Promise<boolean> {
@@ -211,9 +212,9 @@ export class GridOperations {
         );
     }
 
-    async addFilter(fieldName: string, textValue: string, type: string, guid?: string): Promise<void> {
+    async addFilter(fieldName: string, textValue: string, type: string, guid?: string): Promise<void> {
         let guidId: string = "";
-        if (guid) { guidId = `[rx-view-component-id="${guid}"] `; }
+        if (guid) { guidId = `[rx-view-component-id="${guid}"] `; }
         await $(guidId + this.selectors.filterPresetBtn).click();
         let filterCount = await $$(this.selectors.filterItems);
         for (let i = 0; i < await filterCount.length; i++) {
@@ -243,7 +244,7 @@ export class GridOperations {
 
     async applyPresetFilter(filterName: string, guid?: string): Promise<void> {
         let guidId: string = "";
-        if (guid) { guidId = `[rx-view-component-id="${guid}"] `; }
+        if (guid) { guidId = `[rx-view-component-id="${guid}"] `; }
         await $(guidId + this.selectors.filterPresetBtn).click();
         await $$(this.selectors.filterTab).get(1).click();
         await element(by.cssContainingText('.radio__item', filterName)).click();
@@ -251,15 +252,15 @@ export class GridOperations {
     }
 
     async getAppliedFilterName(guid?: string): Promise<string> {
-        if (guid) return $(`[rx-view-component-id="${guid}"] ` + this.selectors.appliedPresetFilter)
+        if (guid) return $(`[rx-view-component-id="${guid}"] ` + this.selectors.appliedPresetFilter)
         else return await $(this.selectors.appliedPresetFilter).getText();
     }
 
     async searchAndSelectGridRecord(recordName: string, guid?: string): Promise<void> {
         if (guid) {
             this.searchRecord(recordName, guid);
-            this.selectors.selectCheckbox = `[rx-view-component-id="${guid}"] ` + this.selectors.selectCheckbox;
-            this.selectors.selectRadioButton = `[rx-view-component-id="${guid}"] ` + this.selectors.selectRadioButton;
+            this.selectors.selectCheckbox = `[rx-view-component-id="${guid}"] ` + this.selectors.selectCheckbox;
+            this.selectors.selectRadioButton = `[rx-view-component-id="${guid}"] ` + this.selectors.selectRadioButton;
         }
         else await this.searchRecord(recordName);
         let checkboxLocator = await $(this.selectors.selectCheckbox);

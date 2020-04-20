@@ -44,8 +44,8 @@ class CreateCasePage {
         assignedGroupGuid: '79750d81-d8e5-447e-b923-94c54f2d3310',
         labelGuid: '47f29467-cdd3-4e04-a7f2-ceb795e8b6e5',
         attachmentField: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] input[type="file"]',
-        clearRequesterButton: '[rx-view-component-id="be946309-c359-40fe-a579-1a0e0d04bb01"] button',
-        templateValue: '.ui-grid__link',
+        clearRequesterButton: '[rx-view-component-id="be946309-c359-40fe-a579-1a0e0d04bb01"] .d-icon-cross',
+        templateValue: 'td .btn-link',
     }
 
     async addDescriptionAttachment(fileToUpload: string): Promise<void> {

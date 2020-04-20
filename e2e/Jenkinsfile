@@ -1,29 +1,34 @@
-node('Protractor'){
-  properties([
-	  parameters([
-	    stringParam(
-			  defaultValue: 'http://clm-aus-t5jj96.bmc.com:8008',
-			  description: 'Execution Stack',
-        name: 'BaseUrl',
-      ),
-      stringParam(
-        defaultValue: 'Regression:UI:Auto:Upgrade',
-        description: 'Jira test cycle',
-        name: 'CycleName',
-      ),
-      stringParam(
-        defaultValue: 'UI_Auto:Upgrade_Protractor',
-        description: 'Jira test cycle folder',
-        name: 'FolderName',
-      ),
-      booleanParam(
-        defaultValue: false,
-        description: 'Pass Percent',
-        name: 'Stats'
-      )
-    ])
+properties([
+	parameters([
+    stringParam(
+      defaultValue: 'SlaveUI1',
+      description: 'Node name to run the job',
+      name: 'NodeName',
+    ),
+	  stringParam(
+			defaultValue: 'http://clm-aus-t5jj96.bmc.com:8008',
+			description: 'Execution Stack',
+      name: 'BaseUrl',
+    ),
+    stringParam(
+      defaultValue: 'Regression:UI:Auto:Upgrade',
+      description: 'Jira test cycle',
+      name: 'CycleName',
+    ),
+    stringParam(
+      defaultValue: 'UI_Auto:Upgrade_Protractor',
+      description: 'Jira test cycle folder',
+      name: 'FolderName',
+    ),
+    booleanParam(
+      defaultValue: false,
+      description: 'Pass Percent',
+      name: 'Stats'
+    )
   ])
+])
 
+node("${NodeName}"){
   stage('Clone Sources') {
     git branch: 'master',
     credentialsId: '807c8e4d-6d6c-47e1-a62e-ef2de91d6dce',

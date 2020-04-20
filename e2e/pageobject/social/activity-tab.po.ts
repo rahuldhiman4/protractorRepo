@@ -15,13 +15,13 @@ class ActivityTabPage {
         activityLog: '.activity__body .activity-title, .activity__body [style="position: relative;"], .activity__body .field, .activity__body .value',
         personLink: 'bwf-activity-title a[href].ng-star-inserted',
         filterButton: '.d-icon-filter',
-        filterCheckbox: '.dropdown-menu .ng-star-inserted .checkbox__input',
+        filterCheckbox: '.checkbox__label span',
         filterAuthor: '.dropdown input[placeholder="Enter name, email, or login ID"]',
         filterPopupApplyOrClearButton: '.filter-options button span',
         // activityText: '[rx-view-component-id="34167059-11d4-4e85-8a58-e501544e2461"] [title="Activity"]',
         // FilterTask: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .d-tag-label',
         FilterPopUp: '.bwf-activity-log-filter button[aria-expanded]',
-        
+
         filterApplyButtonEnableDisabled: '.filter-options .btn-primary[disabled="disabled"]',
         filterLists: '.a-tag-active .bwf-text-overflow-ellipsis',
         nMoreButton: '.bwf-show-more .dropdown-toggle span',
@@ -49,12 +49,12 @@ class ActivityTabPage {
         closeButton: '.modal-dialog button',
         dwpIcon: '.dwp_survey .log-item__icon',
         dwpFeedback: '.rx-content.dwp-comment',
-        logItems: '.log-item__body',
+        logItems: '.activity  .activity__body',
         // body: '.log-item__body .body',
-        
+
         AttachedfileName: '.activity__wrapper .bwf-attachment-container__file-name',
         refreshButton: '.tab-content .bwf-button-link[aria-label="Refresh"]',
-        attachmentField: '.activity-feed-note-buttons__left input[type="file"]',
+        attachmentField: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] input[type="file"]',
         showMoreEmailActivity: '.activity__wrapper button[aria-label="Show more"]',
         allTaskActivity: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .fields .value',
         taskActivity: '.fields .value',
@@ -66,7 +66,7 @@ class ActivityTabPage {
         showMoreLinkForAttachment: '.rx-attachment-show-text[aria-label="Show more attachments"]',
         showLessLinkForAttachment: '.rx-attachment-show-text[aria-label="Show less attachments"]',
         lockIcon: '.d-icon-lock',
-        activityLogList:'.activity__wrapper',
+        activityLogList: '.activity__wrapper',
     }
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
         return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isDisplayed().then(async (result) => {
@@ -291,7 +291,7 @@ class ActivityTabPage {
         var value = await elem.getText();
         //        await utilCommon.waitUntilSpinnerToHide();
         return value.includes(textToMatch) ? true : false;
-        
+
     }
 
     async removeFilterList(): Promise<void> {
@@ -332,7 +332,7 @@ class ActivityTabPage {
 
     async isFilterPopUpDisplayed(): Promise<string> {
         return await $(this.selectors.FilterPopUp).getAttribute('aria-expanded');
-        
+
     }
 
     async clickActivityNoteTextBox(): Promise<void> {
@@ -423,6 +423,11 @@ class ActivityTabPage {
         await $(this.selectors.personPopup).click();
     }
 
+    async clearAuthorSearchBoxOnFilter(): Promise<void> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
+        await $(this.selectors.filterAuthor).clear();
+    }
+
     async removeAuthorFromFilter(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.authorCloseButton)));
         await $(this.selectors.authorCloseButton).click();
@@ -430,7 +435,7 @@ class ActivityTabPage {
 
     async isAuthorBoxEmpty(): Promise<boolean> {
         return await $(this.selectors.filterAuthor).getAttribute('value') == "" ? true : false;
-        
+
     }
 
     async searchAuthorOnFilter(AuthorName: string): Promise<void> {

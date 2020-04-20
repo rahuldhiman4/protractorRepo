@@ -56,7 +56,7 @@ describe("Create Case Assignment Mapping", () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         expect(await viewCasePage.getCaseSite()).toBe('Berlin');
-    })
+    });
 
     //radhiman
     it('[DRDMV-1210]: Case Workspace table columns', async () => {
@@ -77,7 +77,7 @@ describe("Create Case Assignment Mapping", () => {
         await caseConsolePage.removeRequestedCaseGridColumn(caseLabelColumn);
         await defaultCaseColumns.splice(defaultCaseColumns.indexOf("Label"), 1);
         expect(await caseConsolePage.areCaseGridColumnMatches(defaultCaseColumns)).toBeTruthy("Default And remaining new columns are not matching");
-    })
+    },150 * 1000);
 
     //radhiman
     it('[DRDMV-15168]: Assignment mapping table columns', async () => {
@@ -93,14 +93,14 @@ describe("Create Case Assignment Mapping", () => {
         await AssignmentConfigConsolePage.removeRequestedCaseAssignmentGridColumn(caseAssignmentLabelColumn);
         await defaultCaseAssignmentColumns.splice(defaultCaseAssignmentColumns.indexOf("Label"), 1);
         expect(await AssignmentConfigConsolePage.areCaseAssignmentGridColumnMatches(defaultCaseAssignmentColumns)).toBeTruthy("Default And remaining new columns are not matching");
-    })
+    });
 
     //radhiman
     it('[DRDMV-1242]: [Assignment Mapping] Add/Edit Assignment Mapping views (UI verification)', async () => {
         let assignmentFields: string[] = ["Assignment Mapping Name", "Company", "Flowset", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Category Tier 4", "Priority", "Label", "Region", "Site", "Use as Default", "Support Company", "Business Unit", "Department", "Support Group", "Assignee"];
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let assignmentMappingName = "DRDMV-1242 " + randomStr;
-        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsPage(); 
         await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
         await AssignmentConfigConsolePage.clearFilter();
         await AssignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
@@ -112,7 +112,7 @@ describe("Create Case Assignment Mapping", () => {
         await AssignmentConfigCreatePage.clickonSaveButton();
         await AssignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentMappingName);
         expect(await AssignmentConfigEditPage.areAllFieldsPresentOnUI(assignmentFields)).toBeTruthy("Expected fields are not matching with actual fields present on Edit Assignent UI");
-    })
+    });
 
     //radhiman
     it('[DRDMV-11999]: [Assignment Mapping] Verify Global Company on Assignment Grid', async () => {
@@ -129,7 +129,7 @@ describe("Create Case Assignment Mapping", () => {
         await AssignmentConfigCreatePage.clickonSaveButton();
         await AssignmentConfigConsolePage.searchAssignmentConfig(assignmentMappingName);
         expect(await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Company")).toBe("- Global -");
-    })
+    });
 
     //radhiman
     it('[DRDMV-11964]: [Assignment Mapping] Verify Global Company on Assignment Grid', async () => {
@@ -145,14 +145,14 @@ describe("Create Case Assignment Mapping", () => {
         await AssignmentConfigCreatePage.setSupportGroup("AU Support 1");
         await AssignmentConfigCreatePage.clickonSaveButton();
         await AssignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentMappingName);
-        await AssignmentConfigEditPage.setCompany("- Global -")
+        await AssignmentConfigEditPage.setCompany("- Global -");
         await AssignmentConfigEditPage.clickonSaveButton();
         await AssignmentConfigConsolePage.searchAndselectAssignmentConfig(assignmentMappingName);
         expect(await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Company")).toBe("- Global -");
         await AssignmentConfigConsolePage.clickDeleteButton();
         await utilCommon.clickOnWarningOk();
         //expect(await utilCommon.getPopUpMessage()).toBe('Record(s) deleted successfully.');
-    })
+    });
 
     //radhiman
     it('[DRDMV-11963]: [Assignment Mapping] Global Assignment Mapping', async () => {
@@ -190,7 +190,7 @@ describe("Create Case Assignment Mapping", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 150 * 1000);
+    }, 250 * 1000);
 
     //radhiman
     it('[DRDMV-12034]: [Assignment Mapping] Verify precedence will be given to company specific assignment mapping if we have global approval mapping with Same name', async () => {
@@ -221,6 +221,7 @@ describe("Create Case Assignment Mapping", () => {
         await AssignmentConfigCreatePage.clickonSaveButton();
         await AssignmentConfigConsolePage.searchAssignmentConfig(companyAssignmentMappingName);
         expect(await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Assignment Name")).toBe(companyAssignmentMappingName);
+        await utilCommon.switchToDefaultWindowClosingOtherTabs();
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary("DRDMV-12034 Case Summary");
@@ -229,7 +230,7 @@ describe("Create Case Assignment Mapping", () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         expect(await viewCasePage.getAssignedGroupText()).toBe("AU Support 2");
-    }, 150 * 1000);
+    }, 160 * 1000);
 
     //radhiman
     it('[DRDMV-12033]: [Assignment Mapping] Verify Global assignment mapping applied to case if assignment qualification matches', async () => {
@@ -280,18 +281,7 @@ describe("Create Case Assignment Mapping", () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let assignmentMappingName = "DRDMV-1212 " + randomStr;
         let caseTemplateName = "DRDMV-1212 CT " + randomStr;
-        var assignmentData =
-        {
-            "assignmentMappingName": assignmentMappingName,
-            "company": "Petramco",
-            "supportCompany": "Petramco",
-            "supportGroup": "Employee Relations",
-            "assignee": "qliu",
-            "categoryTier1": "Purchasing Card",
-            "categoryTier2": "Policies",
-            "categoryTier3": "Card Issuance",
-            "priority": "Low",
-        }
+        
         let templateData = {
             "templateName": caseTemplateName,
             "templateSummary": caseTemplateName,
@@ -301,13 +291,13 @@ describe("Create Case Assignment Mapping", () => {
             "casePriority": "Low",
             "templateStatus": "Active",
             "company": "Petramco",
+            "assignee": "qliu",
+            "supportGroup": "Employee Relations",
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCaseTemplate(templateData);
-        await apiHelper.createCaseAssignmentMapping(assignmentData);
         await navigationPage.gotoQuickCase();
         await QuickCasePage.selectRequesterName("adam");
-        await browser.sleep(30000);
         await QuickCasePage.selectCaseTemplate(caseTemplateName);
         await QuickCasePage.saveCase();
         await QuickCasePage.gotoCaseButton();

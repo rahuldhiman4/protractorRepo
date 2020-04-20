@@ -15,7 +15,6 @@ describe('Case Status Configuration', () => {
     let flowsetData;
     let flowsetName: string;
 
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
@@ -252,7 +251,7 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await statusConfigPo.clickOnBackButton();
-    });
+    }, 180 * 1000);
 
     //ankagraw
     it('[DRDMV-13635]:Verify UI for Knowledge status configuration', async () => {

@@ -180,7 +180,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    }, 190 * 1000);
 
     it('[DRDMV-1298]: [Flowsets] Flowsets Console verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

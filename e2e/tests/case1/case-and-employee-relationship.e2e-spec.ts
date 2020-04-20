@@ -61,7 +61,7 @@ describe('Case And Employee Relationship', () => {
         await addRelatedPopupPage.addPerson('Brain Adams', 'Witness');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(5);
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Brain Adams', 'Witness')).toBeTruthy();
-    });
+    }, 150 * 1000);
 
     //asahitya
     it('[DRDMV-16896]: Multiple people can be added by same Relationship', async () => {
@@ -84,7 +84,7 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qianru Tao', 'Inspector')).toBeTruthy();
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Harry Potter', 'Inspector')).toBeTruthy();
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Lily Anthony', 'Inspector')).toBeTruthy();
-    });
+    }, 150 * 1000);
 
     //asahitya
     it('[DRDMV-16248]: Related Persons tab is available on Person Profile check UI', async () => {
