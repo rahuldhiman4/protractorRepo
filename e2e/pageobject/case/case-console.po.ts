@@ -22,7 +22,7 @@ class CaseConsolePage {
     }
 
     async setCaseSearchBoxValue(input: string): Promise<void> {
-        await gridUtil.searchOnGridConsole(input);
+        await utilityGrid.searchRecord(input, this.selectors.guid);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
