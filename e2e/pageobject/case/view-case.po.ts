@@ -42,7 +42,7 @@ class ViewCasePage {
         priority: '[rx-view-component-id="7b47ca08-e9d4-4656-8f96-3bc751c098b0"] .selection-field',
         emailLink: '[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
         addedTaskFromCaseTemplate: '.task-list__task-card a',
-        taskCardArrow: '.icon-angle_right.task-list__task-card__preview-icon',
+        taskCardArrow: '[class="d-icon-angle_right task-list__task-card__preview-icon"]',
         attachmentFile: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .bwf-attachment-container__file-name',
         caseTemplate: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .read-only-content',
         sourceValue: '[rx-view-component-id="8abd013f-26cd-4aa5-a3bb-63b063d3a7ec"] .read-only-content',

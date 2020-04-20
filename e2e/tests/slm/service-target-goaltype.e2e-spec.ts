@@ -55,20 +55,18 @@ describe('Service Level Management - Goal Type Tests', () => {
         expect(await editGoalType.isSaveButtonDisabled()).toBeTruthy('Save button is enabled.');
         expect(await editGoalType.getGoalTypeFieldValue()).toBe('Request-Based');
         expect(await editGoalType.getStatusDropDownFieldValue()).toBe('Active');
-        editGoalType.selectGoalTypeStatus('InActive');
-        editGoalType.clickSaveGoalTypeButton();
+        await editGoalType.selectGoalTypeStatus('Inactive');
+        await editGoalType.clickSaveGoalTypeButton();
         await browser.sleep(1000);
         expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         await utilGrid.searchAndOpenHyperlink(goalTypeTitle);
-        expect(await editGoalType.getStatusDropDownFieldValue()).toBe('InActive');
+        expect(await editGoalType.getStatusDropDownFieldValue()).toBe('Inactive');
     }, 550 * 1000);
 
     //skhobrag
     it('[DRDMV-2282]:SLM - Goal Type - Error and Warning Messages', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let goalTypeTitle = 'New Goal Type' + randomStr;
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type');
 
         //when Goal Type created with mandatory details
         await createGoalType.clickCreateGoalTypeConfigButton();
@@ -86,12 +84,12 @@ describe('Service Level Management - Goal Type Tests', () => {
         expect(await editGoalType.isSaveButtonDisabled()).toBeTruthy('Save button is enabled.');
         expect(await editGoalType.getGoalTypeFieldValue()).toBe('Request-Based');
         expect(await editGoalType.getStatusDropDownFieldValue()).toBe('Active');
-        editGoalType.selectGoalTypeStatus('InActive');
-        editGoalType.clickCloseGoalTypeButton();
+        await editGoalType.selectGoalTypeStatus('Inactive');
+        await editGoalType.clickCloseGoalTypeButton();
         await browser.sleep(1000);
         expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
         expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
-        expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+        expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
         await utilCommon.clickOnWarningOk();
 
         //when Goal Type created with mandatory details
