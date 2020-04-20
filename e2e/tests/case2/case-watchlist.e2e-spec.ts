@@ -157,7 +157,7 @@ describe('Case Watchlist', () => {
         await caseConsole.clickOnWatchlistIcon();
         await caseWatchlist.addFilter("Status", "Resolved", 'searchbox');
         expect(await caseWatchlist.isEntireColumnContainsValue("Status", "Resolved")).toBeTruthy("Records are not filtered"); //Need to fix common method written by Ankush
-    });
+    }, 380 * 1000);
 
     it('[DRDMV-16043]: Verify that Case Agent can remove the cases from Watchlist', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -182,7 +182,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.clearWatchlistFilter();
         expect(await caseWatchlist.isCasePresent(caseId[0])).toBeFalsy(caseId[0] + ": Case is not removed");
         expect(await caseWatchlist.isCasePresent(caseId[1])).toBeFalsy(caseId[1] + ": Case is not removed");
-    });
+    }, 200 * 1000);
 
     it('[DRDMV-16020]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -280,7 +280,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
         }
-    }, 330 * 1000);
+    }, 600 * 1000);
 
     it('[DRDMV-16033]: Verify that Case Agent is notified for OOB status changes in Case life cycle once Case Agent follow the case status change', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -625,7 +625,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
         }
-    }, 180 * 1000);
+    }, 230 * 1000);
 
     it('[DRDMV-16062]: Verify that user add the watch from Case Console and remove the watch from Case then it should reflect', async () => {
         await apiHelper.apiLogin(qyuanStr);
@@ -705,7 +705,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
         expect(await utilityCommon.getAllPopupMsg()).toContain("Added 3 selected case(s) to the watchlist.");
-    });
+    }, 380 * 1000);
 
     it('[DRDMV-16059]: Verify that Save and Close buttons on Event Add are working correctly', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -819,7 +819,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
         }
-    }, 300 * 1000);
+    }, 420 * 1000);
 
     it('[DRDMV-16055]: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -904,7 +904,7 @@ describe('Case Watchlist', () => {
         expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeTruthy(assignmentNotification2 + " is not present");
         expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeTruthy(statusNotification2 + " is not present");
         await notificationAlerts.clickOnNotificationIcon();
-    }, 160 * 1000);
+    }, 420 * 1000);
 
     it('[DRDMV-16052]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -986,7 +986,7 @@ describe('Case Watchlist', () => {
         expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeTruthy(assignmentNotification2 + " is not present");
         expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeTruthy(statusNotification2 + " is not present");
         await notificationAlerts.clickOnNotificationIcon();
-    }, 190 * 1000);
+    }, 450 * 1000);
 
     it('[DRDMV-16050]: Verify that write access Agent can add the case to watchlist from Case', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -1041,7 +1041,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
         }
-    },240*1000);
+    }, 340 * 1000);
 
     it('[DRDMV-16041]: Verify that Case Agent can follow/unfollow the cases from case itself - Read only user', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -1134,6 +1134,5 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
         }
-    }, 340 * 1000);
-
+    }, 600 * 1000);
 })

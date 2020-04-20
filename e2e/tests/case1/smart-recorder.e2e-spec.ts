@@ -102,7 +102,7 @@ describe("Quick Case", () => {
         await quickCase.selectRequesterName('adam');
         await quickCase.selectRoleValue('Related to');
         expect(await quickCase.selectCaseTemplate(caseTemplateDraft)).toBeFalsy('template is present');
-    }, 480 * 1000);
+    }, 520 * 1000);
 
     //ptidke
     it('[DRDMV-741]: [Quick Case] UI validation including Source field in Quick Case', async () => {

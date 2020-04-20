@@ -174,7 +174,7 @@ describe('Case Bulk Operation', () => {
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
         }
-    });
+    }, 170 * 1000);
 
     it('[DRDMV-15980]: Verify that Assignment change information is visible in Actvity section', async () => {
         await apiHelper.apiLogin(qtaoStr);

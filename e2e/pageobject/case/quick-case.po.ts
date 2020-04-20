@@ -4,6 +4,7 @@ class QuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
+        recommendedTitle: '.bwf-search-result .bwf-search-fields__title-text span',
         drpdownHeader: '.sr-preview-item .dropdown-toggle',
         startOver: '.text-muted .btn-secondary',
         smartSearchTextBox: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .sr-input',
@@ -14,7 +15,7 @@ class QuickCasePage {
         pinValidateInput: '[rx-view-component-id="bfe9a8e0-26e7-43a5-9561-1c92539bdda3"] input',
         pinOk: '[rx-view-component-id="ea1b7291-a0de-47d6-9239-cccf6b850a86"] button',
         quickCaseGuid: 'ac36dcad-30f0-4ab0-86a4-11fee7195051',
-        popUpMsgLocator: '.rx-growl-item__message', 
+        popUpMsgLocator: '.rx-growl-item__message',
         smartSearchText: '.smart-recorder-highlightPerfectMatch',
         createCaseButton: '.d-inline-block [rx-view-component-id="8b88c054-4445-43e4-90f0-72f829571fd5"] button',
         requesters: '.bwf-select-list .bwf-selectable-list-item',
@@ -53,7 +54,8 @@ class QuickCasePage {
     }
 
     async clickOnCaseSummaryInRecommendedCases(caseSummary: string): Promise<void> {
-        await $(`.km-group div[title="${caseSummary}"]`).click();
+        await element(by.cssContainingText(this.selectors.recommendedTitle, caseSummary)).click();
+
     }
 
     async getDrpDownValueByIndex(indexValue: number): Promise<string> {
@@ -96,8 +98,8 @@ class QuickCasePage {
         await browser.sleep(1000); // required because UI renders after get call used before calling this method
         let elementCount = await $$(this.selectors.confirmedItemSelection).count();
         for (let i = 0; i < elementCount; i++) {
-        let actualRelationType = await $$(this.selectors.confirmedItemSelection).get(i).$('button').getText();
-           if (actualRelationType == relationType) {
+            let actualRelationType = await $$(this.selectors.confirmedItemSelection).get(i).$('button').getText();
+            if (actualRelationType == relationType) {
                 employee = await $$(this.selectors.confirmedItemSelection).get(i).$('.sr-header-display-name').getText();
                 break;
             }
@@ -240,15 +242,14 @@ class QuickCasePage {
         await $(`div[title=${templateName}]`).click();
     }
 
-    async clickOnRecommandedCase(caseID:string):Promise<void>{
-        let recommandedCount:number= await $$('.km-group-list-item__title').count();
-        for(let i=0;i<recommandedCount;i++)
-        {
-            let value=await $$('.km-group-list-item__title').get(i).getText();
-            if(value==caseID){
+    async clickOnRecommandedCase(caseID: string): Promise<void> {
+        let recommandedCount: number = await $$('.km-group-list-item__title').count();
+        for (let i = 0; i < recommandedCount; i++) {
+            let value = await $$('.km-group-list-item__title').get(i).getText();
+            if (value == caseID) {
                 await $$('.km-group-list-item__title').get(i).click();
             }
-        } 
+        }
     }
 }
 export default new QuickCasePage();

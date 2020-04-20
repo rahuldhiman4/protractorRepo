@@ -31,7 +31,8 @@ exports.config = {
 
   suites: {
     attachment: ['./tests/attachment/*.e2e-spec.ts'],
-    case: ['./tests/case/*.e2e-spec.ts'],
+    case1: ['./tests/case1/*.e2e-spec.ts'],
+    case2: ['./tests/case2/*.e2e-spec.ts'],
     cognitive: ['./tests/cognitive/*.e2e-spec.ts'],
     email: ['./tests/email/*.e2e-spec.ts'],
     flowset: ['./tests/flowset/*.e2e-spec.ts'],
@@ -49,7 +50,7 @@ exports.config = {
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 240 * 1000,
+    defaultTimeoutInterval: 120 * 1000,
     print: function () { }
   },
 

@@ -170,7 +170,7 @@ describe('Menu Item', () => {
         await createMenuItems.clickOnSaveButton();
         expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
         await utilCommon.waitUntilPopUpDisappear();
-    }, 150 * 1000);
+    }, 180 * 1000);
 
     //kgaikwad
     it('[DRDMV-16105,DRDMV-16106]: [Menu Items] - Update records AND grid Validation', async () => {

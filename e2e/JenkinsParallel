@@ -1,32 +1,37 @@
-node("Protractor"){
-  def suiteNameList = [];
-  def envNameList;
-  def dirSuffix = "ui_run_";
-  properties([
-	  parameters([
-      text(
-        defaultValue: 'case,cognitive=http://clm-pun-t3erts.bmc.com:8008\ntask,social,attachment=http://clm-pun-t3erts.bmc.com:8008\nknowledge,email=http://clm-pun-t3erts.bmc.com:8008\nslm,flowset,notification=http://clm-pun-t3erts.bmc.com:8008\nticketing=http://clm-pun-t3erts.bmc.com:8008',
-        description: 'Execution Suite List',
-        name: 'SuiteList',
-      ),
-      stringParam(
-        defaultValue: 'Regression:UI:Auto:Upgrade',
-        description: 'Jira test cycle',
-        name: 'CycleName',
-      ),
-      stringParam(
-        defaultValue: 'UI_Auto:Upgrade_Protractor',
-        description: 'Jira test cycle folder',
-        name: 'FolderName',
-      ),
-      booleanParam(
-        defaultValue: false,
-        description: 'Pass Percent',
-        name: 'Stats'
-      )
-    ])
+def suiteNameList = [];
+def envNameList;
+def dirSuffix = "ui_run_";
+properties([
+	parameters([
+    stringParam(
+      defaultValue: 'SlaveUI2',
+      description: 'Node name to run the job',
+      name: 'NodeName',
+    ),
+    text(
+      defaultValue: 'case,cognitive=http://clm-pun-t3erts.bmc.com:8008\ntask,social,attachment=http://clm-pun-t3erts.bmc.com:8008\nknowledge,email=http://clm-pun-t3erts.bmc.com:8008\nslm,flowset,notification=http://clm-pun-t3erts.bmc.com:8008\nticketing=http://clm-pun-t3erts.bmc.com:8008',
+      description: 'Execution Suite List',
+      name: 'SuiteList',
+    ),
+    stringParam(
+      defaultValue: 'Regression:UI:Auto:Upgrade',
+      description: 'Jira test cycle',
+      name: 'CycleName',
+    ),
+    stringParam(
+      defaultValue: 'UI_Auto:Upgrade_Protractor',
+      description: 'Jira test cycle folder',
+      name: 'FolderName',
+    ),
+    booleanParam(
+      defaultValue: false,
+      description: 'Pass Percent',
+      name: 'Stats'
+    )
   ])
+])
 
+node("${NodeName}"){
   stage('Parallel Automation Run'){
     bat """if exist "./e2e/reports" RMDIR /S /Q "./e2e/reports" """
     def runList = [:];
