@@ -9,9 +9,8 @@ import navigationPage from '../../pageobject/common/navigation.po';
 import notificationPo from '../../pageobject/notification/notification.po';
 import activityPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Bulk Operation', () => {
 
@@ -22,7 +21,7 @@ describe('Case Bulk Operation', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(qtaoStr);
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await apiHelper.apiLogin("tadmin");
         await apiHelper.updateNotificationEmailListForSupportGroup(compensationAndBenefitsStr, "");
         await apiHelper.setDefaultNotificationForUser('qfeng', "Alert");
@@ -72,14 +71,14 @@ describe('Case Bulk Operation', () => {
         }
         await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
+            await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qing Yuan");
-        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222156): The selected case(s) have been successfully assigned.");
-        await utilCommon.closePopUpMessage();
+        expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
+        await utilityCommon.closePopUpMessage();
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.searchAndOpenHyperlink(caseId[i]);
+            await utilityGrid.searchAndOpenHyperlink(caseId[i]);
             expect(await viewCasePage.getAssigneeText()).toBe("Qing Yuan");
             await navigationPage.gotoCaseConsole();
         }
@@ -101,16 +100,16 @@ describe('Case Bulk Operation', () => {
             caseId[i] = response.displayId;
         }
         await utilityCommon.refresh();
-        await utilGrid.clickCheckBoxOfValueInGrid(caseId[0]);
-        await utilGrid.clickCheckBoxOfValueInGrid(caseId[1]);
+        await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
+        await utilityGrid.clickCheckBoxOfValueInGrid(caseId[1]);
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qiao Feng");
-        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222156): The selected case(s) have been successfully assigned.");
-        await utilCommon.closePopUpMessage();
-        await utilGrid.clickCheckBoxOfValueInGrid(caseId[2]);
+        expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
+        await utilityCommon.closePopUpMessage();
+        await utilityGrid.clickCheckBoxOfValueInGrid(caseId[2]);
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qing Yuan");
-        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222156): The selected case(s) have been successfully assigned.");
+        expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
         try {
             await navigationPage.signOut();
             await loginPage.login("qfeng");
@@ -160,12 +159,12 @@ describe('Case Bulk Operation', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
-            await utilGrid.clearFilter();
-            await utilGrid.clickCheckBoxOfValueInGrid(caseId1);
-            await utilGrid.clickCheckBoxOfValueInGrid(caseId2);
+            await utilityGrid.clearFilter();
+            await utilityGrid.clickCheckBoxOfValueInGrid(caseId1);
+            await utilityGrid.clickCheckBoxOfValueInGrid(caseId2);
             await caseConsolePage.clickOnChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qianru Tao");
-            expect(await utilCommon.getPopUpMessage()).toBe("ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.");
+            expect(await utilityCommon.getAllPopupMsg()).toContain("You do not have permission to perform this operation. Please contact your system administrator.");
         }
         catch (ex) {
             throw ex;
@@ -186,14 +185,14 @@ describe('Case Bulk Operation', () => {
         }
         await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
+            await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, "Risk Management", "Quenton Annis");
-        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222156): The selected case(s) have been successfully assigned.");
-        await utilCommon.closePopUpMessage();
+        expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
+        await utilityCommon.closePopUpMessage();
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.searchAndOpenHyperlink(caseId[i]);
+            await utilityGrid.searchAndOpenHyperlink(caseId[i]);
             expect(await activityPo.isTextPresentInActivityLog("Qianru Tao")).toBeTruthy("Text is not present in activiy tab1");
             expect(await activityPo.isTextPresentInActivityLog("changed the case assignment")).toBeTruthy("Text is not present in activiy tab2");
             expect(await activityPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab");
@@ -213,14 +212,14 @@ describe('Case Bulk Operation', () => {
         caseId[2] = (await apiHelper.createCase(caseData['bulkCaseAssignee_Resolved'])).displayId;
         await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
+            await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qing Yuan");
-        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222156): The selected case(s) have been successfully assigned.");
-        await utilCommon.closePopUpMessage();
+        expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
+        await utilityCommon.closePopUpMessage();
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.searchAndOpenHyperlink(caseId[i]);
+            await utilityGrid.searchAndOpenHyperlink(caseId[i]);
             expect(await viewCasePage.getAssigneeText()).toBe("Qing Yuan");
             await navigationPage.gotoCaseConsole();
         }
@@ -237,7 +236,7 @@ describe('Case Bulk Operation', () => {
         }
         await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
+            await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
 
         await caseConsolePage.clickOnChangeAssignmentButton();
@@ -247,10 +246,10 @@ describe('Case Bulk Operation', () => {
         await changeAssignmentBladePo.selectSupportGroup("BulkOperationSupportGroup");
         await changeAssignmentBladePo.selectAssignee("BOPerson lnPerson");
         await changeAssignmentBladePo.clickOnAssignButton();
-        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222156): The selected case(s) have been successfully assigned.");
+        expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
 
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.searchAndOpenHyperlink(caseId[i]);
+            await utilityGrid.searchAndOpenHyperlink(caseId[i]);
             expect(await viewCasePage.getBusinessUnitText()).toBe("BulkOperationBusinessUnit");
             expect(await viewCasePage.getDepartmentText()).toBe("BulkOperationDepartment");
             expect(await viewCasePage.getAssignedCompanyText()).toBe("Petramco");
@@ -270,15 +269,15 @@ describe('Case Bulk Operation', () => {
         }
         await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
+            await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
 
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignmentBladePo.setAssignee(petramcoStr, compensationAndBenefitsStr, 'Qadim Katawazi');
-        expect(await utilCommon.getPopUpMessage()).toBe("INFO (222156): The selected case(s) have been successfully assigned.");
+        expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
 
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.searchAndOpenHyperlink(caseId[i]);
+            await utilityGrid.searchAndOpenHyperlink(caseId[i]);
             expect(await viewCasePage.isTextPresent('BulkOperationBusinessUnit')).toBeFalsy("BulkOperationBusinessUnit is present");
             expect(await viewCasePage.isTextPresent('BulkOperationDepartment')).toBeFalsy("BulkOperationDepartment is present");
             expect(await viewCasePage.getAssignedCompanyText()).toBe('Petramco');
@@ -306,12 +305,12 @@ describe('Case Bulk Operation', () => {
 
         await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
-            await utilGrid.clickCheckBoxOfValueInGrid(caseId[i]);
+            await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
 
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignmentBladePo.setAssignee(petramcoStr, compensationAndBenefitsStr, 'Qadim Katawazi');
-        expect(await utilCommon.getPopUpMessage()).toBe("ERROR (222158): Cases in closed or canceled status cannot be modified. Please update the selected cases.");
-        await utilCommon.closePopUpMessage();
+        expect(await utilityCommon.getAllPopupMsg()).toContain("Cases in closed or canceled status cannot be modified. Please update the selected cases.");
+        await utilityCommon.closePopUpMessage();
     });
 })

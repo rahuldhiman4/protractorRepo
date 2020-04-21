@@ -130,9 +130,6 @@ describe('Service Target Tests', () => {
 
     //skhobrag
     it('[DRDMV-2360]:SLM - Service Target - Create/Edit with min/max information', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
-
         //when SVT created with only mandatory details
         await serviceTargetConfig.createServiceTargetConfig('SVT with mandatory fields', 'Petramco', 'Case Management');
         await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
@@ -177,8 +174,6 @@ describe('Service Target Tests', () => {
 
     //skhobrag
     it('[DRDMV-5038]:"Terms and Condition" qualification is added on Service Target - Create View', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
         await serviceTargetConfig.clickCreateSVTButton();
         expect(await serviceTargetBladePo.isTermsAndConditionsFieldMandatory()).toBeTruthy('Terms and Conditions field is optional.');
         await serviceTargetConfig.enterSVTTitle('SVT from Protractor');
@@ -203,8 +198,6 @@ describe('Service Target Tests', () => {
     //skhobrag
     it('[DRDMV-5039]:"Terms and Condition" qualification is added on Service Target - Edit View', async () => {
         try {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
@@ -244,9 +237,6 @@ describe('Service Target Tests', () => {
 
     //skhobrag
     it('[DRDMV-2363]:SLM - Service Target - Measurement Build Expression', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
-
         //when SVT created with both mandatory and optional details
         await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Case Management');
         await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');

@@ -4,7 +4,7 @@ class AttachDocumentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         bladeTitle: '.dp-header .dp-title',
-        advanceSearchButton: '.bwf-search-result .btn-secondary span',
+        advanceSearchButton: '[rx-view-component-id="6b6c2401-1732-4a8f-b746-0b3ab3d9df8a"] button',
         searchBox: '.adapt-search-field-wrapper  input.adapt-search-field[placeholder="Search"]',
         iconCircle: '.search-item__unpin-icon .adapt-icon',
         attachButton: '[rx-view-component-id="9d41c65a-85a9-4316-bd64-8fa8ed68dfde"] button',
@@ -68,7 +68,7 @@ class AttachDocumentBlade {
     }
 
     async clickOnAdvanceSearchButton(): Promise<void> {
-        await element(by.cssContainingText(this.selectors.advanceSearchButton, 'Advanced search options')).click();
+        await $$(this.selectors.advanceSearchButton).get(0).click();
     }
 
     async searchRecord(documentName: string): Promise<void> {
