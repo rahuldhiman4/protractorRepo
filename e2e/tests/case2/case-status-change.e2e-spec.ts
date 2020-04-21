@@ -79,7 +79,7 @@ describe('Case Status Change', () => {
         expect(await caseConsole.isCaseStatusPresent(statusAssigned)).toBeTruthy("Status Assigned not matching");
         expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
         console.log('Assigned status success');
-//         // - Change status from New to Canceled.
+        // - Change status from New to Canceled.
         let newCase2 = await apiHelper.createCase(caseData);
         let caseId2: string = newCase2.displayId;
         await caseConsole.searchCase(caseId2);
@@ -844,7 +844,6 @@ describe('Case Status Change', () => {
             let caseId1: string = newCase1.displayId;
             let newCase2 = await apiHelper.createCase(caseData2);
             let caseId2: string = newCase2.displayId;
-            console.log('>>>>>>>>>>>>>>>>>1111111111111');
             
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');

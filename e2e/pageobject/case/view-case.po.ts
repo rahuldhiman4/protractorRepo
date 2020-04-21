@@ -166,7 +166,6 @@ class ViewCasePage {
     }
 
     async isEditLinkDisplay(): Promise<boolean> {
-        // return await $(this.selectors.editLink).isDisplayed();
         try {
             return await $(this.selectors.editLink).isDisplayed().then(async (result) => {
                 if (result) return true;
