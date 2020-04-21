@@ -275,7 +275,7 @@ describe("Quick Case", () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let assignmentMappingName = "DRDMV-1087 " + randomStr;
         let caseTemplateName = randomStr + "DRDMV1087Petramco";
-        let caseTemplateName1 = randomStr + "DRDMV1087Psilon";
+        let caseTemplateName1 = randomStr + " DRDMV1087Psilon";
         let threeCharacterString = randomStr.substr(0, 3);
 
         let assignmentData =
@@ -316,18 +316,7 @@ describe("Quick Case", () => {
             //Draft Template Search 
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
-            await quickCasePo.selectCaseTemplate(caseTemplateName);
             expect(await quickCasePo.selectCaseTemplate(caseTemplateName)).toBeFalsy("Draft Template is founded");;
-
-            //Different Company Search
-            await quickCasePo.clickStartOverButton();
-            await quickCasePo.selectRequesterName("adam");
-            expect(await quickCasePo.selectCaseTemplate(caseTemplateName1)).toBeFalsy("Template is same as employee comapny");;
-
-            //3 Character Search Template Verification
-            await quickCasePo.clickStartOverButton();
-            await quickCasePo.selectRequesterName("adam");
-            expect(await quickCasePo.selectCaseTemplate(threeCharacterString)).toBeTruthy("Template is not founded");
 
             //Active Template Verification
             await navigationPage.gotoSettingsPage();
@@ -336,13 +325,24 @@ describe("Quick Case", () => {
             await editCaseTemplate.clickOnEditCaseTemplateMetadata();
             await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.waitUntilPopUpDisappear();
             await navigationPage.gotoQuickCase();
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
-            expect(await quickCasePo.selectCaseTemplate(caseTemplateName)).toBeTruthy("Active Template is Not founded");
             await quickCasePo.selectCaseTemplate(caseTemplateName);
+            await quickCase.setCaseSummary(caseTemplateName);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
+
+            //Different Company Search
+             await navigationPage.gotoQuickCase();
+             await quickCasePo.selectRequesterName("adam");
+             expect(await quickCasePo.selectCaseTemplate(caseTemplateName1)).toBeFalsy("Template is same as employee comapny");;
+
+            //3 Character Search Template Verification
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName("adam");
+            expect(await quickCasePo.selectCaseTemplate(threeCharacterString)).toBeTruthy("Template is not founded");
         } catch (e) {
             throw e;
         }
@@ -556,29 +556,26 @@ describe("Quick Case", () => {
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
         expect(await quickCase.selectCaseTemplate(`${caseTemplateName}` + 'InDraftStatus')).toBeFalsy("Draft case template present");
-        await quickCase.clearInputBox();
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
         expect(await quickCase.selectCaseTemplate(`${caseTemplateName}` + 'WithDifferentOrganization')).toBeFalsy('Different organization case template present');
-        await quickCase.clearInputBox();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         await consoleCasetemplatePo.searchAndClickOnCaseTemplate(`${caseTemplateName}` + 'InDraftStatus');
         await editCaseTemplate.clickOnEditCaseTemplateMetadata();
         await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
         await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
+        await utilCommon.waitUntilPopUpDisappear();
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
         expect(await quickCase.selectCaseTemplate(`${caseTemplateName}` + 'InDraftStatus')).toBeTruthy("template not present");
-        await quickCase.clearInputBox();
         await quickCase.clickStartOverButton();
         await quickCase.selectRequesterName('adam');
         expect(await quickCase.selectCaseTemplate(`${casTemplateSummary}` + 'InDraftStatus')).toBeTruthy("template not present");
         await quickCase.clickStartOverButton();
         await quickCase.selectRequesterName('adam');
         expect(await quickCase.selectCaseTemplate("DRDMV-795 verify")).toBeTruthy("template not present");
-        await quickCase.clickStartOverButton();
-    });
+    }, 900 * 1000);
 
     //apdeshmu
     it('[DRDMV-767]:[Quick Case] Case creation with template (end-to-end)', async () => {
@@ -656,17 +653,17 @@ describe("Quick Case", () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(caseTemplateName);
-            await quickCasePo.selectRequesterName("friz");
+            await quickCasePo.selectRequesterName("fritz");
             await quickCase.selectDrpDownValueByIndex('Another person contacting on behalf of the requester', 1);
             await quickCasePo.selectRequesterName("chetan");
             await quickCasePo.setCaseSummary(caseTemplateName);
             await utilCommon.waitUntilSpinnerToHide();
-            await quickCase.pinFirstRecommendedCase();
+            await quickCase.pinRecommendedCases(1);
             await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
             await resources.enterAdvancedSearchText(caseTemplateName);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
-            await quickCasePo.pinRecommendedKnowledgeArticles(3);
+            await quickCasePo.pinRecommendedKnowledgeArticles(1);
             await quickCasePo.saveCase();
             await utilCommon.waitUntilSpinnerToHide();
             await utilCommon.waitUntilPopUpDisappear();
@@ -682,7 +679,7 @@ describe("Quick Case", () => {
             expect(await viewCasePage.getCaseTemplateText()).toBe(`${caseTemplateName}`);
             expect(await activityPo.isTextPresentInActivityLog("created the case")).toBeTruthy("Text is not present in activiy tab1");
             expect(await activityPo.isTextPresentInActivityLog("created the case")).toBeTruthy("Text is not present in activiy tab1");
-            await utilCommon.scrollUpOrDownTillElement(viewCasePage.selectors.addedTaskFromCaseTemplate);
+            await utilityCommon.scrollUpOrDownTillElement(viewCasePage.selectors.addedTaskFromCaseTemplate);
             expect(await viewCasePage.isCoreTaskPresent(caseTemplateName)).toBeTruthy("Task Is not added from Case Template");
             await viewCasePage.clickOnTab('Resources');
             await resources.clickOnAdvancedSearchOptions(caseTemplateName);
