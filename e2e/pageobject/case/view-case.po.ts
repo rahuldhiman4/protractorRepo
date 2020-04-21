@@ -47,7 +47,7 @@ class ViewCasePage {
         caseTemplate: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .read-only-content',
         sourceValue: '[rx-view-component-id="8abd013f-26cd-4aa5-a3bb-63b063d3a7ec"] .read-only-content',
         showMore: '.rx-attachment-show-text',
-        dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] label',
+        dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group label',
         dynamicFieldsValue: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .read-only-content',
         slaProgressBar: '.progress-bar',
         tab: '.nav-item button',
@@ -344,14 +344,14 @@ class ViewCasePage {
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
-        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
-        for (let i = 0; i < dynamicFields; i++) {
-            let field = await $$(this.selectors.dynamicFieldsName).get(i).getText();
-            if (fieldName == field) {
-                return true;
+        let dynamicFieldLocator = `[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group label[title="${fieldName}"]`;
+        return await $(dynamicFieldLocator).isPresent().then(async (result) => {
+            if(result) return await $(dynamicFieldLocator).isDisplayed();
+            else {
+                console.log('dynamic field is not present');
+                return false;
             }
-        }
-        return false;
+         });
     }
 
     async getValueOfDynamicFields(fieldName: string): Promise<string> {

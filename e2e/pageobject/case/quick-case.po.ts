@@ -1,4 +1,5 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, Key } from "protractor";
+import utilityCommon from '../../utils/utility.common';
 
 class QuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -31,17 +32,19 @@ class QuickCasePage {
         advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select label',
         startOverButton: '.sr-footer .text-muted .btn-secondary',
         RecommendedKnowledge: 'bwf-search-result-fields .bwf-search-fields__title-text',
+        RecommendedCaseGuid: '[rx-view-component-id="c0487804-1748-4995-99c9-69e6ad217c74"]',
+        RecommendedKnowledgeGuid: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"]',
     }
 
     async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
         for (let i = 0; i < numberOfArticles; i++) {
-            await $$('.km-group').get(1).$$('i[role="checkbox"]').get(i).click();
+            await $(this.selectors.RecommendedCaseGuid).$$('adapt-icon[class="search-item__unpin-icon"]').get(i).click();
         }
     }
 
     async pinRecommendedCases(numberOfCases: number): Promise<void> {
         for (let i = 0; i < numberOfCases; i++) {
-            await $$('.km-group').get(2).$$('i[role="checkbox"]').get(i).click();
+            await $(this.selectors.RecommendedCaseGuid).$$('adapt-icon[class="search-item__unpin-icon"]').get(i).click();
         }
     }
 
@@ -162,8 +165,8 @@ class QuickCasePage {
 
     async selectCaseTemplate(templateName: string): Promise<boolean> {
         let success: boolean = false;
-        for (let i: number = 0; i <= 10; i++) {
-            browser.sleep(5 * 1000);
+        for (let i: number = 0; i <= 3; i++) {
+            browser.sleep(1000);
             let template: string = "!" + templateName;
             await $(this.selectors.smartSearchTextBox).sendKeys(template);
             success = await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).isPresent().then(async (result) => {
