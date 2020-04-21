@@ -49,19 +49,19 @@ describe('Document Library', () => {
         await editDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is not enabled');
+        await expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is not enabled');
         await editDocumentLibraryPo.selectStatus('Draft');
         await editDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeTruthy('Delete buttton is not enabled');
+        await expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeTruthy('Delete buttton is not enabled');
         await editDocumentLibraryPo.clickOnDeleteButton();
-        expect(await editDocumentLibraryPo.getDeleteWarningMsgText('Are you sure you want to delete the document?')).toBe('Are you sure you want to delete the document?'), 'Warning Message of Delete button is missing';
+        await expect(await editDocumentLibraryPo.getDeleteWarningMsgText('Are you sure you want to delete the document?')).toBe('Are you sure you want to delete the document?'), 'Warning Message of Delete button is missing';
         await editDocumentLibraryPo.clickOnYesButtonOfDeleteWarningMsg();
-        expect(await utilCommon.getPopUpMessage()).toBe('Document deleted successfully.');
+        await expect(await utilCommon.getPopUpMessage()).toBe('Document deleted successfully.');
         await utilCommon.waitUntilPopUpDisappear();
-        expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Grid Record displayed which should not be');
-    }, 150 * 1000);
+        await expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Grid Record displayed which should not be');
+    });
 
     //kgaikwad
     it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify Delete button on document', async () => {
@@ -78,16 +78,16 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
-        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'status is not in draft status';
+        await expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'status is not in draft status';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        expect(await editDocumentLibraryPo.isDeleteButtonEnabled).toBeTruthy('Delete Button is not enabled');
+        await expect(await editDocumentLibraryPo.isDeleteButtonEnabled).toBeTruthy('Delete Button is not enabled');
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
-        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'status is not in Published status';
+        await expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'status is not in Published status';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is enabled');
+        await expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is enabled');
     });
 
     //kgaikwad
@@ -309,6 +309,7 @@ describe('Document Library', () => {
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
 
+        await editDocumentLibraryPo.clickOnSupportGroupAccessButton()
         await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Employee Relations');
         await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
         await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
@@ -348,49 +349,36 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.closeGroupAccessTag('Employee Relations');
             expect(await editDocumentLibraryPo.isRemoveGroupAccessWarningMessageDisplayed('Are you sure you want to remove access to "Employee Relations"?')).toBeTruthy('Remove Group List Warning Message Missing');
             await editDocumentLibraryPo.clickOnRemoveGroupWarningMsgYesButton();
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
-            await utilCommon.closePopUpMessage();
 
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('BMC Software');
+            await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Google');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Company');
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
-            await utilCommon.closePopUpMessage();
 
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
             await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('ESM');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Business Unit');
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
-            await utilCommon.closePopUpMessage();
 
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Engineering');
+            await editDocumentLibraryPo.selectAddSupportDepartmentDropDownOfReadAccess('Engineering');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Department');
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
-            await utilCommon.closePopUpMessage();
-
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
             await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Accounts Payable (AP)');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
-            await utilCommon.closePopUpMessage();
-
             await editDocumentLibraryPo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal)
-
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 150 * 1000);
+    }, 320 * 1000);
 
     //kgaikwad
     it('[DRDMV-13072]: Verify error should be thrown when write access SG is added in read access', async () => {

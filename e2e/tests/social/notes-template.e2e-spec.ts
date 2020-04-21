@@ -19,6 +19,7 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Notes template', () => {
     beforeAll(async () => {
@@ -322,8 +323,8 @@ describe('Notes template', () => {
         let newCase = await apiHelper.createCase(caseData);
         let displayId: string = newCase.displayId;
         await navigationPage.gotoCaseConsole();
-        await utilGrid.clearFilter();
-        await utilGrid.searchAndOpenHyperlink(displayId);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(displayId);
         await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
         await activityTabPo.clickOnPostButton();
         await expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
@@ -358,8 +359,8 @@ describe('Notes template', () => {
             await apiHelper.apiLogin('franz');
             let newCase1 = await apiHelper.createCase(caseData1);
             let displayId: string = newCase1.displayId;
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(displayId);
             await notesTemplateUsage.clickOnRequsterName();
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
             await activityTabPo.clickOnPostButton();
@@ -374,8 +375,8 @@ describe('Notes template', () => {
             let newCase2 = await apiHelper.createCase(caseData2);
             console.log("case is created ===", newCase2.displayId);
             let displayIdnew: string = newCase2.displayId;
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(displayIdnew);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(displayIdnew);
             await notesTemplateUsage.clickOnRequsterName();
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
             await activityTabPo.clickOnPostButton();
@@ -423,8 +424,8 @@ describe('Notes template', () => {
             await apiHelper.apiLogin('fritz');
             let newCaseTemplate = await apiHelper.createCase(caseData);
             let displayId: string = newCaseTemplate.displayId;
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(manualTaskSummary);
             //await utilCommon.waitUntilSpinnerToHide();

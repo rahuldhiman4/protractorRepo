@@ -212,9 +212,7 @@ describe('Create Task Template', () => {
             await taskTemplate.clickOnSaveTaskTemplate();
             //await utilCommon.waitUntilPopUpDisappear();
 
-            await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-                .toEqual('Task Templates - Business Workflows');
+            await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(manualTaskTemplate);
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus("Draft");
@@ -261,9 +259,7 @@ describe('Create Task Template', () => {
             await taskTemplate.clickOnSaveTaskTemplate();
             //await utilCommon.waitUntilPopUpDisappear();
 
-            await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-                .toEqual('Task Templates - Business Workflows');
+            await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(manualTaskTemplate);
             await viewTaskTemplate.clickOnEditLink();
             await editTaskTemplate.setSummary(updateSummary);

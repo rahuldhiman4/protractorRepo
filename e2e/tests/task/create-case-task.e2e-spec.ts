@@ -93,14 +93,14 @@ describe('Create Case Task', () => {
             await viewTask.clickOnEditTask();
             await expect(await editTask.getTaskTypeValue()).toBe('Automated');
             await expect(await editTask.getTaskTypeValueAttribute('disabled')).toBeTruthy();
-            await expect(await editTask.waitProcessNamePresentInTask()).toBeTruthy();
+            await expect(await editTask.processNamePresentInTask()).toBeTruthy();
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 290 * 1000);
+    }, 240 * 1000);
 
     //ankagraw
     it('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Automatic Task data validation once Task is created	', async () => {
