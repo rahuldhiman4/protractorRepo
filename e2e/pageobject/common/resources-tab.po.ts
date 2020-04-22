@@ -74,8 +74,8 @@ export class Resources {
         );
     }
 
-    async clickOnAdvancedSearchFiltersButton(buttonText: string): Promise<void> {
-        const advancedSearchFilterBtn = await element(by.xpath(`//*[contains(@class,'km-group')]//button[text()="${buttonText}"]`));
+    async clickOnAdvancedSearchFiltersButton(buttonText: string): Promise<void> {  
+        const advancedSearchFilterBtn = await element(by.xpath(`//*[contains(@class,'justify-content-end')]//button[contains(text(),"${buttonText}")]`));
         //        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterBtn));
         await advancedSearchFilterBtn.click();
     }
@@ -85,7 +85,7 @@ export class Resources {
     }
     async getAdvancedSearchResultForParticularSection(headingType: string): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
-        const searchResult = await element(by.xpath(`//*[text()="${headingType}"]/..//*[contains(@class,"km-group-list-item__description")]`))
+        const searchResult = await element(by.xpath(`//*[@title="${headingType}"]/..//*[contains(@class,"bwf-search-fields__title-text")]`))
         return await searchResult.getText();
     }
 
