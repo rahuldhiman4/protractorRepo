@@ -166,10 +166,16 @@ class ViewCasePage {
     }
 
     async isEditLinkDisplay(): Promise<boolean> {
-        return await $(this.selectors.editLink).isPresent().then(async (result) => {
-                if (result) return await $(this.selectors.editLink).isDisplayed();
-                else return false;
-                 });
+        return await $(this.selectors.editLink).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.editLink).isDisplayed();
+            else return false;
+        });
+    }
+
+    async clickEditCaseButton(): Promise<void> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
+        await $(this.selectors.editLink).click();
+        //        await browser.wait(this.EC.visibilityOf($(editCasePage.selectors.cancelBtn)));
     }
 
     async clickAddTaskButton(): Promise<void> {
@@ -335,12 +341,12 @@ class ViewCasePage {
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
         let dynamicFieldLocator = `[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group label[title="${fieldName}"]`;
         return await $(dynamicFieldLocator).isPresent().then(async (result) => {
-            if(result) return await $(dynamicFieldLocator).isDisplayed();
+            if (result) return await $(dynamicFieldLocator).isDisplayed();
             else {
                 console.log('dynamic field is not present');
                 return false;
             }
-         });
+        });
     }
 
     async getValueOfDynamicFields(fieldName: string): Promise<string> {
