@@ -1,4 +1,4 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 
@@ -82,7 +82,11 @@ class CreateKnowledgePage {
     async clickOnTemplate(templateName: string): Promise<void> {
         let templateLocator = await $$('.col-md');
         for (let i = 0; i < templateLocator.length; i++) {
-            if (await templateLocator[i].$('.template-name').getText() == templateName) await templateLocator[i].$('.section-title').click();
+            if (await templateLocator[i].$('.template-name').getText() == templateName) 
+            {
+                await templateLocator[i].$('.section-title').click();
+                break;
+            }
         }
     }
 
@@ -94,7 +98,12 @@ class CreateKnowledgePage {
 
     async setReferenceValue(value: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.reference)));
+        await browser.waitForAngularEnabled(false);
+        await browser.sleep(4000);
+        await browser.switchTo().frame(element(by.css("iframe.cke_wysiwyg_frame")).getWebElement());
         await $(this.selectors.reference).sendKeys(value);
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
     }
 
     async selectKnowledgeSet(knowledgeSet: string): Promise<void> {
