@@ -11,11 +11,16 @@ node("${NODE}"){
 		bat "npm install"
 		bat "npm run webdriver-update"
 	}
+
 	try {
 		stage('Run Automation ' + suiteName) {
 			bat """npm run e2e-protractor -- --baseUrl=${environment} --suite=${suiteName}"""
 		}
+	} catch (Exception e) {
+		echo """Automation Failed ${suiteName}""" + e;
+	}
 
+	try {
 		stage('Reports ' + suiteName) {
 			zip archive: false, dir: 'e2e/reports', zipFile: "e2e/reports/${suiteName}_reports.zip"
 			//copy report zip to parent report folder
@@ -24,6 +29,6 @@ node("${NODE}"){
 			bat """xcopy /Y /F /I /Z /Q "e2e/reports/spec-json-report/spec-json-report.json" "${reportDir}/${suiteName}_spec-json-report.json*" """
 		}
 	} catch (Exception e) {
-		echo """Automation Failed ${suiteName}""" + e;
+		echo """Reporting Failed ${suiteName}""" + e;
 	}
 }

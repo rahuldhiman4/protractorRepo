@@ -57,7 +57,11 @@ node("${NODE}"){
             }
             parallel (builds)
         }
+    } catch (Exception e) {
+        echo """Child Job Failure""" + e;
+    }
 
+    try{
         stage('Jira Cycle'){
             def now = new Date();
             def dateNow = now.format("yyyy-MM-dd HH:mm", TimeZone.getTimeZone('UTC'));
@@ -79,7 +83,11 @@ node("${NODE}"){
             //create zip of jira-report folder
             zip archive: false, dir: 'artefact/jira-report', zipFile: 'artefact/jira-report.zip'
         }
+    } catch (Exception e) {
+        echo """Jira Cycle Failure""" + e;
+    }
 
+    try{
         stage('Send Email'){
             def suiteDetails = "${SUITELIST}".split('\n').join("<br>");
             emailext (
@@ -126,7 +134,11 @@ node("${NODE}"){
                 attachmentsPattern: 'e2e/reports/spec-jira-report/jira-report.csv'
             )
         }
+    } catch (Exception e) {
+        echo """Email Failure""" + e;
+    }
 
+    try{
         stage('Upload Over FTP'){
             ftpPublisher alwaysPublishFromMaster: true, continueOnError: true, failOnError: false, publishers: [
                 [configName: 'vl-pun-rem-qa4n-protractor', transfers: [
@@ -135,6 +147,6 @@ node("${NODE}"){
             ]
         }
     } catch (Exception e) {
-        echo """Parent Job Failure""" + e;
+        echo """FTP Failure""" + e;
     }
 }
