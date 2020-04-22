@@ -39,7 +39,7 @@ describe('Case Status Change', () => {
 
     //kgaikwad
     // Done
-    it('[DRDMV-2530]: [Case Status] Case status change from New', async () => {
+    fit('[DRDMV-2530]: [Case Status] Case status change from New', async () => {
         let priority: string = "Medium";
         let summary: string = "Test case for DRDMV-2530";
         let caseData =
@@ -60,7 +60,7 @@ describe('Case Status Change', () => {
         let boln: boolean = await updateStatusBladePo.allStatusOptionsPresent(statuses);
         expect(boln).toBeTruthy('Status does not match On view case');
         await updateStatusBladePo.clickCancelButton();
-        await expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
+        expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
         await navigationPage.gotoCaseConsole();
         await caseConsole.searchCase(caseId1);
         expect(await caseConsole.isCaseIdPresent(caseId1)).toBeTruthy("CaseID not matching");
@@ -466,7 +466,6 @@ describe('Case Status Change', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(manualTask);
             await manageTask.clickOnCloseButton();
-            await browser.refresh();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
@@ -866,7 +865,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickCancelButton();
             await expect(await utilityCommon.getWarningDialogMsg()).toContain('You have unsaved data. Do you want to continue without saving?');
-            await utilCommon.clickOnWarningYesNoButton('Yes');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         } catch (e) {
             throw e;
         } finally {

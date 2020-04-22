@@ -189,10 +189,6 @@ export class Util {
         });
     }
 
-    async clickOnWarningYesNoButton(buttonName:string): Promise<void> {
-        await element(by.cssContainingText('.modal-footer adapt-button',buttonName)).click();
-    }
-
     async selectToggleButton(guid: string, value: boolean): Promise<void> {
         const togglebutton = await $(`[rx-view-component-id="${guid}"]`);
         if (value) {

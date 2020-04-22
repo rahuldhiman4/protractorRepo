@@ -166,20 +166,10 @@ class ViewCasePage {
     }
 
     async isEditLinkDisplay(): Promise<boolean> {
-        try {
-            return await $(this.selectors.editLink).isDisplayed().then(async (result) => {
-                if (result) return true;
-                else return false;
-            });
-        } catch (error) {
-            return false;
-        }
-    }
-
-    async clickEditCaseButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
-        await $(this.selectors.editLink).click();
-        //        await browser.wait(this.EC.visibilityOf($(editCasePage.selectors.cancelBtn)));
+        return await $(this.selectors.editLink).isPresent().then(async (result) => {
+                if (result) return await $(this.selectors.editLink).isDisplayed();
+                else return false;
+                 });
     }
 
     async clickAddTaskButton(): Promise<void> {
