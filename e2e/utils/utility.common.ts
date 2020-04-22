@@ -390,6 +390,10 @@ export class Utility {
         }, () => { });
         await browser.waitForAngularEnabled(true);
     }
+
+    async clickOnApplicationWarningYesNoButton(buttonName:string): Promise<void> {
+        await element(by.cssContainingText('.modal-footer adapt-button',buttonName)).click();
+    }
 }
 
 export default new Utility();
