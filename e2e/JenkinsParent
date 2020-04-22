@@ -48,7 +48,7 @@ node("${NODE}"){
                 suiteNameList[i] = suiteAndEnv[0];
                 i++;
                 builds["${it}"] = {
-                    br["{it}"] = build job: 'childjob', parameters: [
+                    br["{it}"] = build job: 'ProtractorChild', parameters: [
                         [$class: 'StringParameterValue', name: 'NODE', value: "${NODE}"],
                         [$class: 'StringParameterValue', name: 'SUITE', value: "${it}"],
                         [$class: 'StringParameterValue', name: 'PARENTDIR', value: "${WORKSPACE}"],
