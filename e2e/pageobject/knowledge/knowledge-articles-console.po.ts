@@ -1,5 +1,6 @@
 import { $, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from "../../utils/util.grid";
+import utilityGrid from '../../utils/utility.grid';
 
 class KnowledgeArticlesGridConsole {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -73,7 +74,7 @@ class KnowledgeArticlesGridConsole {
     }
 
     async isGridRecordPresent(searchRecord: string): Promise<boolean> {
-        return await utilGrid.isGridRecordPresent(searchRecord);
+        return await utilityGrid.isGridRecordPresent(searchRecord);
     }
 
     async getKnowledgeArticleTitle(): Promise<string> {
