@@ -70,7 +70,7 @@ describe('Case Status Change', () => {
         // Select Assigned status and save.
         await updateStatusBladePo.changeCaseStatus(statusAssigned);
         await updateStatusBladePo.clickSaveStatus(statusAssigned);
-        await expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
+        expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
         await navigationPage.gotoCaseConsole();
         await caseConsole.searchCase(caseId1);
         expect(await caseConsole.isCaseIdPresent(caseId1)).toBeTruthy("CaseID not matching");
@@ -87,7 +87,7 @@ describe('Case Status Change', () => {
         expect(await caseConsole.isCaseStatusPresent(statusNew)).toBeTruthy("Status New not matching");
         expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
         await caseConsole.searchAndOpenCase(caseId2);
-        await expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
+        expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
         await updateStatusBladePo.changeCaseStatus(statusCanceled);
         let cancelStatusReasons: string[] = ['Select None', 'Approval Rejected', 'Customer Canceled'];
         expect(await updateStatusBladePo.allStatusReasonOptionsPresent(cancelStatusReasons)).toBeTruthy('Cancel status reason options mismatch');
@@ -111,7 +111,7 @@ describe('Case Status Change', () => {
         expect(await caseConsole.isCaseStatusPresent(statusNew)).toBeTruthy("Status New not matching");
         expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
         await caseConsole.searchAndOpenCase(caseId3);
-        await expect(await viewCasePage.getTextOfStatus()).toBe(statusNew), 'status should be new of status';
+        expect(await viewCasePage.getTextOfStatus()).toBe(statusNew), 'status should be new of status';
         await updateStatusBladePo.changeCaseStatus(statusPending);
         let pendingStatusReasons: string[] = ['Select None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
         expect(await updateStatusBladePo.allStatusReasonOptionsPresent(pendingStatusReasons)).toBeTruthy('Pending status reason options mismatch');
@@ -122,7 +122,7 @@ describe('Case Status Change', () => {
         await utilityCommon.closePopUpMessage();
         await updateStatusBladePo.setStatusReason('Customer Response');
         await updateStatusBladePo.clickSaveStatus();
-        await expect(await viewCasePage.getTextOfStatus()).toBe(statusPending), 'status should be new of Pending';
+        expect(await viewCasePage.getTextOfStatus()).toBe(statusPending), 'status should be new of Pending';
         await navigationPage.gotoCaseConsole();
         await caseConsole.searchCase(caseId3);
         expect(await caseConsole.isCaseIdPresent(caseId3)).toBeTruthy("CaseID not matching");
@@ -207,7 +207,7 @@ describe('Case Status Change', () => {
         await expect(await utilityCommon.getAllPopupMsg()).toContain('Case status updated to Pending for Approval only when approval is initiated. You cannot manually select this status.');
         await updateStatusBladePo.setStatusReason('Customer Response');
         await updateStatusBladePo.clickSaveStatus();
-        await expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
+        expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + summary);
@@ -235,7 +235,7 @@ describe('Case Status Change', () => {
         await previewCasePo.clickGoToCaseButton();
         await updateStatusBladePo.changeCaseStatus(statusInProgress);
         await updateStatusBladePo.clickSaveStatus(statusInProgress);
-        await expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress);
+        expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
         expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
@@ -247,7 +247,7 @@ describe('Case Status Change', () => {
         expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Assignee not present');
         await editCasePage.clearCaseSummary();
         await editCasePage.clickSaveCase();
-        await expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
         await utilCommon.closePopUpMessage();
         await editCasePage.updateCaseSummary('pendingAC');
         await editCasePage.clickSaveCase();
@@ -324,7 +324,7 @@ describe('Case Status Change', () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         console.log(await viewCasePage.getCaseID());
-        await expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
+        expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
         expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
@@ -337,11 +337,11 @@ describe('Case Status Change', () => {
         expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Description not present');
         await editCasePage.clearCaseSummary();
         await editCasePage.clickSaveCase();
-        await expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
         //        await utilCommon.closePopUpMessage();
         await editCasePage.updateCaseSummary('pendingAC');
         await editCasePage.clickSaveCase();
-        await expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
     });
 
     //kgaikwad
@@ -359,7 +359,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.changeCaseStatus(statusPending);
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus(statusPending);
-            await expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
+            expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
@@ -372,11 +372,11 @@ describe('Case Status Change', () => {
             expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Assignee not present');
             await editCasePage.clearCaseSummary();
             await editCasePage.clickSaveCase();
-            await expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
+            expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
             //        await utilCommon.closePopUpMessage();
             await editCasePage.updateCaseSummary('pendingAC');
             await editCasePage.clickSaveCase();
-            await expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
+            expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
         } catch (e) {
             throw e;
         } finally {
@@ -451,7 +451,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLinkOnManageTask(manualSummary);
-            await expect(await viewTask.getTaskStatusValue()).toBe('Assigned', 'Assigned status not found');
+            expect(await viewTask.getTaskStatusValue()).toBe('Assigned', 'Assigned status not found');
 
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId2);
@@ -469,7 +469,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLinkOnManageTask(manualSummary);
-            await expect(await viewTask.getTaskStatusValue()).toBe('Canceled', 'canceled status not found');
+            expect(await viewTask.getTaskStatusValue()).toBe('Canceled', 'canceled status not found');
         } catch (e) {
             throw e;
         } finally {
@@ -773,7 +773,7 @@ describe('Case Status Change', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickOnStatus();
-            await expect(await updateStatusBladePo.allStatusOptionsPresent(statusOptions)).toBeTruthy("Status Options is not present");
+            expect(await updateStatusBladePo.allStatusOptionsPresent(statusOptions)).toBeTruthy("Status Options is not present");
             await updateStatusBladePo.clickCancelButton();
             await browser.refresh();
             await updateStatusBladePo.changeCaseStatus('Resolved');
@@ -862,7 +862,7 @@ describe('Case Status Change', () => {
             await caseConsole.searchAndOpenCase(caseId2);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickCancelButton();
-            await expect(await utilityCommon.getWarningDialogMsg()).toContain('You have unsaved data. Do you want to continue without saving?');
+            expect(await utilityCommon.getWarningDialogMsg()).toContain('You have unsaved data. Do you want to continue without saving?');
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         } catch (e) {
             throw e;
