@@ -157,12 +157,14 @@ export class Utility {
     }
 
     async switchToNewTab(tabNum: number): Promise<void> {
+        await browser.sleep(2000);
         await browser.getAllWindowHandles().then(async function (handles) {
             await browser.switchTo().window(handles[tabNum]);
         });
     }
 
     async switchToDefaultWindowClosingOtherTabs(): Promise<void> {
+        await browser.sleep(2000);
         await browser.getAllWindowHandles().then(async function (handles) {
             for (let i = handles.length; i > 1; i--) {
                 await browser.switchTo().window(handles[i - 1]);
