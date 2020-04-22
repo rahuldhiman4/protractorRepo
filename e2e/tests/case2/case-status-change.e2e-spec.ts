@@ -446,7 +446,6 @@ describe('Case Status Change', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(manualTask);
             await manageTask.clickOnCloseButton();
-            await browser.refresh();
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Third Party');
             await updateStatusBladePo.clickSaveStatus();
