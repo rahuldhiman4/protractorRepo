@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from "../../utils/util.common";
+import utilityCommon from "../../utils/utility.common";
 
 class CaseEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -114,7 +115,7 @@ class CaseEditPage {
     }
 
     async updateCasePriority(casePriority: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.priorityGuid, casePriority);
+        await utilityCommon.selectDropDown(this.selectors.priorityGuid, casePriority);
     }
 
     async updateCaseCategoryTier1(caseCategoryTier1: string): Promise<void> {
@@ -212,22 +213,22 @@ class CaseEditPage {
 
     async isSummaryRequiredText(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.summary)));
-        return await utilCommon.isRequiredTagToField(this.selectors.summaryGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.summaryGuid);
     }
 
     async isPriorityRequiredText(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.priorityRequiredText)));
-        return await utilCommon.isRequiredTagToField(this.selectors.priorityGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.priorityGuid);
     }
 
     async isAssignedCompanyRequiredText(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeCompany)));
-        return await utilCommon.isRequiredTagToField(this.selectors.assigneeCompanyGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.assigneeCompanyGuid);
     }
 
     async isAssignedGroupRequiredText(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroup)));
-        return await utilCommon.isRequiredTagToField(this.selectors.assignedGroupGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.assignedGroupGuid);
     }
 
     async  isClearContactButtonEnable(): Promise<boolean> {

@@ -48,8 +48,8 @@ class CaseConsolePage {
     }
 
     async searchCase(caseId: string): Promise<void> {
-        await gridUtil.clearFilter();
-        await gridUtil.searchRecord(caseId);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchRecord(caseId);
         //        await utilCommon.waitUntilSpinnerToHide();
     }
 
@@ -59,22 +59,22 @@ class CaseConsolePage {
     }
 
     async isCaseIdPresent(caseId: string): Promise<boolean> {
-        let caseIDfromGrid = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Case ID');
-        return caseId === caseIDfromGrid;
+        let caseIDfromGrid = await utilityGrid.getFirstGridRecordColumnValue('Case ID');
+        return caseId === caseIDfromGrid.trim();
     }
 
     async isCasePriorityPresent(priority: string): Promise<boolean> {
-        let priorityValue = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Priority');
+        let priorityValue = await utilityGrid.getFirstGridRecordColumnValue('Priority');
         return priority === priorityValue;
     }
 
     async isCaseStatusPresent(status: string): Promise<boolean> {
-        let caseStatus = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Status');
+        let caseStatus = await utilityGrid.getFirstGridRecordColumnValue('Status');
         return status === caseStatus;
     }
 
     async isCaseSummaryPresent(summary: string): Promise<boolean> {
-        let caseSummary = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Summary');
+        let caseSummary = await utilityGrid.getFirstGridRecordColumnValue('Summary');
         return summary === caseSummary;
     }
 
