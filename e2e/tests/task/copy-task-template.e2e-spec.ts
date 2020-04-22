@@ -38,7 +38,7 @@ describe('Copy Task Template', () => {
             let automatedTaskTemplate1 = 'DRDMV14214AutomationTask' + randomStr;
             let automatedTaskSummary1 = 'DRDMV14214AutomationSummary1' + randomStr;
             let automatedTaskTemplate2 = 'DRDMV14214AutomationTask2' + randomStr;
-            let automatedTaskSummary2 = 'DRDMV14214AutomationSummary2' + randomStr;
+            let automatedTaskSummary2 = randomStr +'DRDMV14214AutomationSummary2' ;
             let processName = 'DRDMV14214ProcessName' + randomStr;
 
             //Automation Task template
@@ -269,7 +269,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 240 * 1000);
+    }, 300 * 1000);
 
     it('[DRDMV-13540,DRDMV-13556]: Case Business Analyst can create a copy of Task Template type= Manual, New template created is in draft status', async () => {
         try {
@@ -373,7 +373,7 @@ describe('Copy Task Template', () => {
             let newProcessName = 'NewProcessDRDMV14215' + randomStr;
 
             let updatedTaskTemplate = 'UpdatedTaskDRDMV14215' + randomStr;
-            let updatedTaskSummary = 'NewSummaryDRDMV14215' + randomStr;
+            let updatedTaskSummary = randomStr+ 'NewSummaryDRDMV14215';
             let description = 'DescriptionDRDMV14215' + randomStr;
 
             //Automation Task template
