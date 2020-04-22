@@ -93,7 +93,7 @@ class UpdateStatus {
 
     async clickSaveStatus(expectedStatus?: string): Promise<void> {
         await $(this.selectors.saveUpdateStatus).click();
-        await browser.wait(this.EC.invisibilityOf($(this.selectors.saveUpdateStatus)), 3000);
+        // await browser.wait(this.EC.invisibilityOf($(this.selectors.saveUpdateStatus)), 3000);
         if (expectedStatus) {
             await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.statusChange, expectedStatus))), 3000);
         }
