@@ -1,6 +1,6 @@
 import { resolve } from "path";
 import { $, $$, by, element, protractor, ProtractorExpectedConditions} from "protractor";
-import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 import selectCasetemplateBladePo from './select-casetemplate-blade.po';
 import utilGrid from '../../utils/util.grid';
 class CreateCasePage {
@@ -91,25 +91,25 @@ class CreateCasePage {
 
     async isRequesterRequiredTextPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterInput)));
-        return await utilCommon.isRequiredTagToField('be946309-c359-40fe-a579-1a0e0d04bb01');
+        return await utilityCommon.isRequiredTagToField('be946309-c359-40fe-a579-1a0e0d04bb01');
     }
 
     async isPriorityRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.priorityGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.priorityGuid);
     }
 
     async isSourceRequiredTextPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.sourceRequiredText)));
-        return await utilCommon.isRequiredTagToField(this.selectors.sourceGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.sourceGuid);
     }
 
     async isSummaryRequiredTextPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.summary)));
-        return await utilCommon.isRequiredTagToField(this.selectors.summaryGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.summaryGuid);
     }
 
     async isCompanyRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField('a7cfc996-f8c8-4ef0-afe4-18ca7e1fef88');
+        return await utilityCommon.isRequiredTagToField('a7cfc996-f8c8-4ef0-afe4-18ca7e1fef88');
     }
 
     async isSelectCaseTemplateButtonEnabled(): Promise<boolean> {
@@ -163,7 +163,7 @@ class CreateCasePage {
     }
 
     async setLabel(label: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.labelGuid, label);
+        await utilityCommon.selectDropDown(this.selectors.labelGuid, label);
     }
 
     async setPriority(priorityVal: string): Promise<void> {
@@ -183,7 +183,7 @@ class CreateCasePage {
     }
 
     async allPriorityOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.priorityGuid, list);
+        return await utilityCommon.isDropDownValueDisplayed(this.selectors.priorityGuid, list);
     }
 
     async setDescription(description: string): Promise<void> {
@@ -192,19 +192,19 @@ class CreateCasePage {
     }
 
     async selectCategoryTier1(categValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier1Guid, categValue);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier1Guid, categValue);
     }
 
     async selectCategoryTier2(categValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier2Guid, categValue);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier2Guid, categValue);
     }
 
     async selectCategoryTier3(categValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier3Guid, categValue);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier3Guid, categValue);
     }
 
     async selectCategoryTier4(categValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier4Guid, categValue);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier4Guid, categValue);
     }
 
     async clickAssignToMeButton(): Promise<void> {
@@ -215,8 +215,8 @@ class CreateCasePage {
     async clickSaveCaseButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
         await $(this.selectors.saveCaseButton).click();
-        //        await utilCommon.waitUntilPopUpDisappear();
-        //        await utilCommon.waitUntilSpinnerToHide();
+        //        await utilityCommon.waitUntilPopUpDisappear();
+        //        await utilityCommon.waitUntilSpinnerToHide();
     }
 
     async isSaveCaseButtonEnabled(): Promise<boolean> {
@@ -250,31 +250,31 @@ class CreateCasePage {
     }
 
     async getCategoryTier1Title(categoryTier1: string): Promise<void> {
-        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier1Guid, categoryTier1);
+        await utilityCommon.isFieldLabelDisplayed(this.selectors.categoryTier1Guid, categoryTier1);
     }
 
     async getCategoryTier2Title(categoryTier2: string): Promise<void> {
-        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier2Guid, categoryTier2);
+        await utilityCommon.isFieldLabelDisplayed(this.selectors.categoryTier2Guid, categoryTier2);
     }
 
     async getCategoryTier3Title(categoryTier3: string): Promise<void> {
-        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier3Guid, categoryTier3);
+        await utilityCommon.isFieldLabelDisplayed(this.selectors.categoryTier3Guid, categoryTier3);
     }
 
     async getCategoryTier4Title(categoryTier4: string): Promise<void> {
-        await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier4Guid, categoryTier4);
+        await utilityCommon.isFieldLabelDisplayed(this.selectors.categoryTier4Guid, categoryTier4);
     }
 
     async getContactTitle(contact: string): Promise<void> {
-        await utilCommon.isFieldLabelDisplayed(this.selectors.contactGuid, contact);
+        await utilityCommon.isFieldLabelDisplayed(this.selectors.contactGuid, contact);
     }
 
     async getDescriptionTitle(description: string): Promise<void> {
-        await utilCommon.isFieldLabelDisplayed(this.selectors.descriptionGuid, description);
+        await utilityCommon.isFieldLabelDisplayed(this.selectors.descriptionGuid, description);
     }
 
     async getAssigneeTitle(assignee: string): Promise<void> {
-        await utilCommon.isFieldLabelDisplayed(this.selectors.assigneGuid, assignee);
+        await utilityCommon.isFieldLabelDisplayed(this.selectors.assigneGuid, assignee);
     }
 
     async clickClearRequesterButton(): Promise<void> {

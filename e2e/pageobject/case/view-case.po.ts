@@ -42,12 +42,12 @@ class ViewCasePage {
         priority: '[rx-view-component-id="7b47ca08-e9d4-4656-8f96-3bc751c098b0"] .selection-field',
         emailLink: '[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
         addedTaskFromCaseTemplate: '.task-list__task-card a',
-        taskCardArrow: '.icon-angle_right.task-list__task-card__preview-icon',
+        taskCardArrow: '[class="d-icon-angle_right task-list__task-card__preview-icon"]',
         attachmentFile: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .bwf-attachment-container__file-name',
         caseTemplate: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .read-only-content',
         sourceValue: '[rx-view-component-id="8abd013f-26cd-4aa5-a3bb-63b063d3a7ec"] .read-only-content',
         showMore: '.rx-attachment-show-text',
-        dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] label',
+        dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group label',
         dynamicFieldsValue: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .read-only-content',
         slaProgressBar: '.progress-bar',
         tab: '.nav-item button',
@@ -166,11 +166,13 @@ class ViewCasePage {
     }
 
     async isEditLinkDisplay(): Promise<boolean> {
-        return await $(this.selectors.editLink).isDisplayed();
+        return await $(this.selectors.editLink).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.editLink).isDisplayed();
+            else return false;
+        });
     }
 
-    async clickEditCaseButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
+    async clickEditCaseButton(): Promise<void> {        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
         await $(this.selectors.editLink).click();
         //        await browser.wait(this.EC.visibilityOf($(editCasePage.selectors.cancelBtn)));
     }
@@ -336,14 +338,14 @@ class ViewCasePage {
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
-        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
-        for (let i = 0; i < dynamicFields; i++) {
-            let field = await $$(this.selectors.dynamicFieldsName).get(i).getText();
-            if (fieldName == field) {
-                return true;
+        let dynamicFieldLocator = `[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group label[title="${fieldName}"]`;
+        return await $(dynamicFieldLocator).isPresent().then(async (result) => {
+            if (result) return await $(dynamicFieldLocator).isDisplayed();
+            else {
+                console.log('dynamic field is not present');
+                return false;
             }
-        }
-        return false;
+        });
     }
 
     async getValueOfDynamicFields(fieldName: string): Promise<string> {

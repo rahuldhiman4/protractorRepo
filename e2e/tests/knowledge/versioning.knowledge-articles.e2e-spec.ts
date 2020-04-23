@@ -125,13 +125,12 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(knowledgeTitleStr, 'Article title not matched.');
             await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
             let actualVersion = await viewKnowledgeArticlePo.getArticleVersion();
             let actualDate = await viewKnowledgeArticlePo.formatDate();
             console.log(actualDate);
-
             let expectedVersion = "Version " + "1" + " - " + actualDate;
             expect(actualVersion).toBe(expectedVersion);
         }
@@ -139,7 +138,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             throw e;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
         }

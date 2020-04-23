@@ -1,5 +1,6 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 
 class CreateKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -29,9 +30,9 @@ class CreateKnowledgePage {
         knowledgePreview: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .create-ka-template__preview',
         selectDifferentTemplate: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .group-buttons button.btn-secondary',
         changeTemplate: '[rx-view-component-id="64e29650-ca7f-4b3d-a2af-826be22f8e0f"] button',
-        categoryTier1Value:'[rx-view-component-id="b51fcb01-f3d1-4da2-a42d-ffc5873a21b3"] button',
-        categoryTier2Value:'[rx-view-component-id="6f480482-c224-4742-b941-bce655d40fde"] button',
-        categoryTier3Value:'[rx-view-component-id="2774b518-00ab-4e02-bb23-95bdb0285840"] button',
+        categoryTier1Value: '[rx-view-component-id="b51fcb01-f3d1-4da2-a42d-ffc5873a21b3"] button',
+        categoryTier2Value: '[rx-view-component-id="6f480482-c224-4742-b941-bce655d40fde"] button',
+        categoryTier3Value: '[rx-view-component-id="2774b518-00ab-4e02-bb23-95bdb0285840"] button',
     }
 
     async clickChangeTemplateButton(): Promise<void> {
@@ -78,9 +79,15 @@ class CreateKnowledgePage {
         return await element(by.cssContainingText(this.selectors.templateHeading, documentheading)).isPresent();
     }
 
-    async clickOnTemplate(TemplateName: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.clickOnReferenceTemplate)));
-        await element(by.cssContainingText(this.selectors.clickOnReferenceTemplate, TemplateName)).click();
+    async clickOnTemplate(templateName: string): Promise<void> {
+        let templateLocator = await $$('.col-md');
+        for (let i = 0; i < templateLocator.length; i++) {
+            if (await templateLocator[i].$('.template-name').getText() == templateName) 
+            {
+                await templateLocator[i].$('.section-title').click();
+                break;
+            }
+        }
     }
 
     async   clickOnUseSelectedTemplateButton(): Promise<void> {
@@ -91,11 +98,16 @@ class CreateKnowledgePage {
 
     async setReferenceValue(value: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.reference)));
+        await browser.waitForAngularEnabled(false);
+        await browser.sleep(4000);
+        await browser.switchTo().frame(element(by.css("iframe.cke_wysiwyg_frame")).getWebElement());
         await $(this.selectors.reference).sendKeys(value);
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
     }
 
     async selectKnowledgeSet(knowledgeSet: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.knowledgeSet, knowledgeSet);
+        await utilityCommon.selectDropDown(this.selectors.knowledgeSet, knowledgeSet);
     }
 
     async addTextInKnowlegeTitleField(addTextKnowlegeTitleField: string): Promise<void> {
@@ -119,7 +131,7 @@ class CreateKnowledgePage {
             }
         }
     }
-    
+
     async isKnowledgeTitleRequired(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeTitleEditBox)));
         return await $(this.selectors.knowledgeTitleEditBox).getAttribute("required") == "true";
@@ -166,15 +178,15 @@ class CreateKnowledgePage {
         return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier4Guid, fieldName);
     }
 
-    async getValueOfCategoryTier1():Promise<string>{
+    async getValueOfCategoryTier1(): Promise<string> {
         return (await $(this.selectors.categoryTier1Value).getText()).trim();
     }
 
-    async getValueOfCategoryTier2():Promise<string>{
+    async getValueOfCategoryTier2(): Promise<string> {
         return (await $(this.selectors.categoryTier2Value).getText()).trim();
     }
 
-    async getValueOfCategoryTier3():Promise<string>{
+    async getValueOfCategoryTier3(): Promise<string> {
         return (await $(this.selectors.categoryTier3Value).getText()).trim();
     }
 
@@ -194,7 +206,7 @@ class CreateKnowledgePage {
         await utilCommon.selectDropDown(this.selectors.categoryTier4Guid, fieldOption);
     }
 
-   
+
     async selectRegionDropDownOption(fieldOption: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.regionGuid, fieldOption);
     }

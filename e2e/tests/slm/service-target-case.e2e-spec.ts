@@ -32,7 +32,7 @@ describe('Service Target Tests for Cases', () => {
 
     beforeEach(async () => {
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteServiceTargets();
+       await apiHelper.deleteServiceTargets();
     });
 
     afterEach(async () => {
@@ -112,16 +112,16 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
+            expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true);
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
             await browser.sleep(100000);
             await utilityCommon.refresh();
-            expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
+            expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true);
             // expect(await viewCasePage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
             await browser.sleep(40000);
             await utilityCommon.refresh();
-            expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+            expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); 
+            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)'); //red
         }
         catch (error) {
             throw error;
@@ -162,11 +162,11 @@ describe('Service Target Tests for Cases', () => {
             await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-            await browser.sleep(100000);
+            await browser.sleep(90000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
-            // expect(await viewCasePo.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
-            await browser.sleep(40000);
+            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
+            await browser.sleep(50000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
@@ -258,10 +258,10 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-            await browser.sleep(100000);
+            await browser.sleep(90000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
-            // expect(await viewCasePo.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
+            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
             await browser.sleep(50000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
@@ -668,6 +668,7 @@ describe('Service Target Tests for Cases', () => {
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
+            await utilityCommon.refresh();
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Pending Icon on SVT Info Blade is not displayed.');

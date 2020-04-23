@@ -321,10 +321,10 @@ describe("Create Case", () => {
             let caseSummary = 'Summary ' + randomStr;
 
             await navigationPage.gotoCreateCase();
-            expect(await createCasePage.isRequesterRequiredTextPresent()).toBeTruthy("required text present in Request");
-            expect(await createCasePage.isSummaryRequiredTextPresent()).toBeTruthy("required text present in Summary");
-            expect(await createCasePage.isPriorityRequiredTextPresent()).toBeTruthy("required text present in Priority");
-            expect(await createCasePage.isCompanyRequiredTextPresent()).toBeTruthy("required text present in Assigned Company");
+            expect(await createCasePage.isRequesterRequiredTextPresent()).toBeTruthy("required text absent in Request");
+            expect(await createCasePage.isSummaryRequiredTextPresent()).toBeTruthy("required text absent in Summary");
+            expect(await createCasePage.isPriorityRequiredTextPresent()).toBeTruthy("required text absent in Priority");
+            expect(await createCasePage.isCompanyRequiredTextPresent()).toBeTruthy("required text absent in Assigned Company");
             expect(await createCasePage.isSelectCaseTemplateButtonEnabled()).toBeFalsy("Select Case template is Disabled");
             expect(await createCasePage.isClearTemplateButtonEnabled()).toBeFalsy("Clear Template is Disabled");
             expect(await createCasePage.isAutocategorizationEnabled()).toBeFalsy("Autocategorization is Disabled");
@@ -360,7 +360,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 160 * 1000);
+    }, 200*1000);
 
     //ankagraw
     it('[DRDMV-11856]: [Case Creation] create case with Global case template without flowset ', async () => {
@@ -873,7 +873,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 170 * 1000);
+    }, 210 * 1000);
 
     //ankagraw
     it('[DRDMV-1614]: [Case] Fields validation for case in New status ', async () => {

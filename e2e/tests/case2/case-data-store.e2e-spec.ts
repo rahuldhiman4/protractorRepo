@@ -145,7 +145,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
             await navigationPage.gotoTaskConsole();
-            await taskConsole.clearFilter();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(taskvalue);
             await expect(viewTaskTemplate.isDynamicFieldPresent('Field Description')).toBeTruthy('Field Description');
         } catch (error) {
@@ -180,7 +180,6 @@ describe('Case Data Store', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await viewCasePo.isDynamicFieldDisplayed('temp')).toBeTruthy('dynamic fields not present');
             expect(await viewCasePo.isDynamicFieldDisplayed('temp1')).toBeTruthy('dynamic fields not present');
             expect(await viewCasePo.isDynamicFieldDisplayed('temp2')).toBeTruthy('dynamic fields not present');
@@ -462,6 +461,7 @@ describe('Case Data Store', () => {
             "templateSummary": `${manualTaskSummaryDraft}`,
             "templateStatus": "Draft",
         }
+        await apiHelper.apiLogin('qkatawazi');
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
         //Inactive

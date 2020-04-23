@@ -701,7 +701,7 @@ describe('Case Template', () => {
             expect(await viewCaseTemplate.getCaseTemplateNameValue()).toBe(caseTemplateName);
             expect(await viewCaseTemplate.getPriorityValue()).toBe("Low");
             expect(await viewCaseTemplate.getTemplateStatusValue()).toBe("Active");
-            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
+            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe("Facilities");
             expect(await viewCaseTemplate.getCategoryTier2()).toBe("Policies");
             expect(await viewCaseTemplate.getCategoryTier3()).toBe("Card Issuance");
             expect(await viewCaseTemplate.getCategoryTier1()).toBe("Purchasing Card");
@@ -726,47 +726,4 @@ describe('Case Template', () => {
         }
     }, 300 * 1000);
 
-    it('[DRDMV-1231]: [Edit Case Template] Template metadata edit', async () => {
-        try {
-            let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let caseTemplateName = 'caseTemplateName' + randomStr;
-            let caseTemplateSummary = 'CaseSummaryName' + randomStr;
-            let casetemplatePetramco = {
-                "templateName": `${caseTemplateName}`,
-                "templateSummary": `${caseTemplateSummary}`,
-                "templateStatus": "Active",
-                "company": "Petramco",
-                "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
-                "supportGroup": "Facilities",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
-                "casePriority": "Low",
-                "caseStatus": "New",
-                "description": `${caseTemplateSummary}`,
-            }
-
-            await apiHelper.apiLogin('fritz');
-            await apiHelper.createCaseTemplate(casetemplatePetramco);
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
-            await editCaseTemplate.clickOnEditCaseTemplateMetadata();
-            await editCaseTemplate.changeOwnerCompanyValue("Petramco");
-            await editCaseTemplate.changeOwnerGroupDropdownValue("Compensation and Benefits");
-            expect(await editCaseTemplate.isTemplateStatusRequiredTextPresent()).toBeTruthy();
-            expect(await editCaseTemplate.isOwnerCompanyRequiredTextPresent()).toBeTruthy();
-            expect(await editCaseTemplate.isOwnerGroupRequiredTextPresent()).toBeTruthy();
-            await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
-            expect(await viewCaseTemplate.getOwnerCompanyValue()).toBe("Petramco");
-            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
-            expect(await viewCaseTemplate.getTemplateStatusValue).toBe("Active");
-        } catch (e) {
-            throw e;
-        } finally {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        }
-    }, 300 * 1000);
 })

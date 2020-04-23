@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from "../../utils/util.common";
+import utilityCommon from "../../utils/utility.common";
 
 class CaseEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -61,7 +62,7 @@ class CaseEditPage {
         dynamicBooleanValue: 'button[aria-label="True"]',
         dynamicFieldDateTime: 'input[ng-model="datetime"]',
         dynamicFieldTime: '.dynamic-time-field input[ng-model="hours"]',
-        dynamicFieldsName: '[rx-view-component-id="74b3189b-8a0f-489c-bfaa-264b38b586c8"] .label-wrapper',
+        dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .label-wrapper span',
         dynamicFieldInput: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] input',
         dynamicAttachmentField:'[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .bwf-attachment-button input',
         tabText: '.nav-link-wrapper',
@@ -114,7 +115,7 @@ class CaseEditPage {
     }
 
     async updateCasePriority(casePriority: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.priorityGuid, casePriority);
+        await utilityCommon.selectDropDown(this.selectors.priorityGuid, casePriority);
     }
 
     async updateCaseCategoryTier1(caseCategoryTier1: string): Promise<void> {
@@ -212,22 +213,22 @@ class CaseEditPage {
 
     async isSummaryRequiredText(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.summary)));
-        return await utilCommon.isRequiredTagToField(this.selectors.summaryGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.summaryGuid);
     }
 
     async isPriorityRequiredText(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.priorityRequiredText)));
-        return await utilCommon.isRequiredTagToField(this.selectors.priorityGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.priorityGuid);
     }
 
     async isAssignedCompanyRequiredText(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeCompany)));
-        return await utilCommon.isRequiredTagToField(this.selectors.assigneeCompanyGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.assigneeCompanyGuid);
     }
 
     async isAssignedGroupRequiredText(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroup)));
-        return await utilCommon.isRequiredTagToField(this.selectors.assignedGroupGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.assignedGroupGuid);
     }
 
     async  isClearContactButtonEnable(): Promise<boolean> {
@@ -379,14 +380,11 @@ class CaseEditPage {
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
-        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
-        for (let i = 0; i < dynamicFields; i++) {
-            let field = await $$(this.selectors.dynamicFieldsName).get(i).getText();
-            if (fieldName == field) {
-                return true;
-            }
-        }
-        return false;
+        let dynamicFieldLocator = `[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group[title="${fieldName}"]`;
+        return await $(dynamicFieldLocator).isPresent().then(async (result) => {
+           if(result) return await $(dynamicFieldLocator).isDisplayed();
+           else console.log('dynamic field is not present');
+        });
     }
 
     async addAttachment(attachmentField: string, fileToUpload: string): Promise<void> {

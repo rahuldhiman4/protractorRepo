@@ -18,12 +18,12 @@ class CaseConsolePage {
         changeAssignment: '[rx-view-component-id="da845b85-4dba-4fb2-90b1-93d6f6d94058"] button',
         allCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] .ui-chkbox-box',
         selectAllrows: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] .checkbox__input',
-        selectedCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] div[aria-checked="true"]',
-        unselectedCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] div[aria-checked="false"]',
+        selectedCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] .pi-check',
+        unselectedCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] .ui-state-default :not(.pi-check)',
     }
 
     async setCaseSearchBoxValue(input: string): Promise<void> {
-        await utilityGrid.searchRecord(input);
+        await utilityGrid.searchRecord(input, this.selectors.guid);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
@@ -48,8 +48,8 @@ class CaseConsolePage {
     }
 
     async searchCase(caseId: string): Promise<void> {
-        await gridUtil.clearFilter();
-        await gridUtil.searchRecord(caseId);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchRecord(caseId);
         //        await utilCommon.waitUntilSpinnerToHide();
     }
 
@@ -59,22 +59,22 @@ class CaseConsolePage {
     }
 
     async isCaseIdPresent(caseId: string): Promise<boolean> {
-        let caseIDfromGrid = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Case ID');
-        return caseId === caseIDfromGrid;
+        let caseIDfromGrid = await utilityGrid.getFirstGridRecordColumnValue('Case ID');
+        return caseId === caseIDfromGrid.trim();
     }
 
     async isCasePriorityPresent(priority: string): Promise<boolean> {
-        let priorityValue = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Priority');
+        let priorityValue = await utilityGrid.getFirstGridRecordColumnValue('Priority');
         return priority === priorityValue;
     }
 
     async isCaseStatusPresent(status: string): Promise<boolean> {
-        let caseStatus = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Status');
+        let caseStatus = await utilityGrid.getFirstGridRecordColumnValue('Status');
         return status === caseStatus;
     }
 
     async isCaseSummaryPresent(summary: string): Promise<boolean> {
-        let caseSummary = await gridUtil.getSelectedGridRecordValue(this.selectors.guid, 'Summary');
+        let caseSummary = await utilityGrid.getFirstGridRecordColumnValue('Summary');
         return summary === caseSummary;
     }
 
