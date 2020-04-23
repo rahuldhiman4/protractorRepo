@@ -74,9 +74,9 @@ node("${NODE}"){
                 bat """xcopy /Y /F /I /Z /Q "e2e/reports/spec-jira-report/jira-report.csv" "artefact/jira-report/${suiteName}_jira-report.csv*" """
             }
             // merge all Jira output csv files
-            def fileContent = readFile("artefact/${suiteNameList[0]}_jira-report.csv");
+            def fileContent = readFile("artefact/jira-report/${suiteNameList[0]}_jira-report.csv");
             for (int j=1; j < suiteNameList.size(); j++){
-                def fileLines = readFile("artefact/${suiteNameList[j]}_jira-report.csv").readLines();
+                def fileLines = readFile("artefact/jira-report/${suiteNameList[j]}_jira-report.csv").readLines();
                 fileContent = fileContent + "\n" + fileLines.tail().join('\n');
             }
             writeFile(file: "artefact/jira-report/jira-report.csv", text: fileContent);
@@ -131,7 +131,7 @@ node("${NODE}"){
                 "</table>",
                 to: "tushar_garud@bmc.com",
                 from: "jenkins@noreply",
-                attachmentsPattern: 'e2e/reports/spec-jira-report/jira-report.csv'
+                attachmentsPattern: 'artefact/jira-report/jira-report.csv'
             )
         }
     } catch (Exception e) {
