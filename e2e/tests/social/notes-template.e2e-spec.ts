@@ -427,7 +427,7 @@ describe('Notes template', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(manualTaskSummary);
+            await manageTask.addTaskFromTaskTemplate(taskTemplateName);
             //await utilCommon.waitUntilSpinnerToHide();
             await manageTask.clickTaskLinkOnManageTask(manualTaskSummary);
             await viewTask.clickOnEditTask();
@@ -464,8 +464,9 @@ describe('Notes template', () => {
         await createKnowlegePo.selectKnowledgeSet('HR');
         await createKnowlegePo.clickOnSaveKnowledgeButton();
         await previewKnowledgePo.clickOnViewArticleLink();
+        
         // View Knowledege Page
-        await utilCommon.switchToNewWidnow(1);
+        await utilityCommon.switchToNewTab(1);
         await viewKnowledgeArticlePo.clickOnTab('Activity');
         await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
         await activityTabPo.clickOnPostButton();

@@ -38,7 +38,7 @@ class QuickCasePage {
 
     async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
         for (let i = 0; i < numberOfArticles; i++) {
-            await $(this.selectors.RecommendedCaseGuid).$$('adapt-icon[class="search-item__unpin-icon"]').get(i).click();
+            await $(this.selectors.RecommendedKnowledgeGuid).$$('adapt-icon[class="search-item__unpin-icon"]').get(i).click();
         }
     }
 

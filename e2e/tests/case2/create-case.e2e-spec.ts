@@ -35,6 +35,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 
 describe("Create Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -1007,4 +1008,64 @@ describe("Create Case", () => {
             await loginPage.login('qkatawazi');
         }
     }, 270 * 1000);
+    
+    it('[DRDMV-11700]: Verify  sort on all attachments grid', async () => {
+        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
+        let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseSummary = 'DRDMV-11700' + summary;
+        await navigationPage.gotoCreateCase();
+        await createCasePage.selectRequester('adam');
+        await createCasePage.setSummary(caseSummary);
+        let fileName: string[] = ['bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf'];
+        for (let i: number = 0; i < fileName.length; i++) {
+            await editCasePage.addDescriptionAttachment(`../../data/ui/attachment/${fileName[i]}`);
+        }
+        await createCasePage.clickSaveCaseButton();
+        await previewCasePo.clickGoToCaseButton();
+        await activityTabPo.addActivityNote(activityNoteText);
+        let fileName1: string[] = ['bwfWord1.rtf', 'bwfWord2.rtf', 'demo.txt', 'bwfJson1.json', 'bwfJson2.json'];
+        for (let i: number = 0; i < fileName1.length; i++) {
+            await adhoctaskTemplate.addAttachmentInDescription(`../../data/ui/attachment/${fileName1[i]}`);
+        }
+        await activityTabPo.clickOnPostButton();
+        await utilCommon.waitUntilSpinnerToHide();
+        await utilCommon.waitUntilSpinnerToHide();
+        await viewCasePage.clickAddTaskButton();
+        await manageTask.clickAddAdhocTaskButton();
+        expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
+        await adhoctaskTemplate.setSummary(summary);
+        await adhoctaskTemplate.setDescription("Description");
+        expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeTruthy('Attachment button is disabled');
+        let fileName2: string[] = ['bwfXsl.xsl', 'bwfXml.xml', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
+        for (let i: number = 0; i < fileName2.length; i++) {
+            await adhoctaskTemplate.addAttachmentInDescription(`../../data/ui/attachment/${fileName2[i]}`);
+        }
+        await adhoctaskTemplate.clickOnSaveAdhoctask();
+        await manageTask.clickOnCloseButton();
+        await utilCommon.waitUntilPopUpDisappear();
+        await viewCasePage.clickAttachmentsLink();
+        await attachmentBladePage.clickOnColumnHeader('Attachment');
+        expect(await attachmentBladePage.isAttachTableColumnSorted('Attachment', true)).toBeTruthy("Attachment Not Sorted Desecnding");
+        await attachmentBladePage.clickOnPaginationNextButton();
+        await attachmentBladePage.clickOnColumnHeader('Attachment');
+        expect(await attachmentBladePage.isAttachTableColumnSorted('Attachment')).toBeTruthy("Attachment Not Sorted Ascending");
+
+        await attachmentBladePage.clickOnColumnHeader('Attached to');
+        expect(await attachmentBladePage.isAttachTableColumnSorted('Attached to', true)).toBeTruthy("Attached to Not Sorted Desecnding");
+        await attachmentBladePage.clickOnPaginationNextButton();
+        await attachmentBladePage.clickOnColumnHeader('Attached to');
+        expect(await attachmentBladePage.isAttachTableColumnSorted('Attached to')).toBeTruthy("Attached to Not Sorted Ascending");
+
+        await attachmentBladePage.clickOnColumnHeader('Media type');
+        expect(await attachmentBladePage.isAttachTableColumnSorted('Media type', true)).toBeTruthy("Media type Not Sorted Desecnding");
+        await attachmentBladePage.clickOnPaginationNextButton();
+        await attachmentBladePage.clickOnColumnHeader('Media type');
+        expect(await attachmentBladePage.isAttachTableColumnSorted('Media type')).toBeTruthy("Media type Not Sorted Ascending");
+
+        await attachmentBladePage.clickOnColumnHeader('Created date');
+        expect(await attachmentBladePage.isAttachTableColumnSorted('Created date', true)).toBeTruthy("Created date Not Sorted Desecnding");
+        await attachmentBladePage.clickOnPaginationNextButton();
+        await attachmentBladePage.clickOnColumnHeader('Created date');
+        expect(await attachmentBladePage.isAttachTableColumnSorted('Created date')).toBeTruthy("Created date Not Sorted Ascending");
+    }, 400 * 1000);
 });

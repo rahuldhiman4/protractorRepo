@@ -221,11 +221,10 @@ describe("Quick Case", () => {
         expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
     });
 
-    //pending contact bug
     it('[DRDMV-794]: [Quick Case] Requester, Contact, Subject Employee people selection', async () => {
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('allen');
-        expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Requester');
+        expect(await quickCase.getDrpDownValueByIndex(1)).toBe('The requester of the case');
         await quickCase.selectRequesterName('adam');
         expect(await quickCase.getDrpDownValueByIndex(2)).toBe('Related to');
         await quickCase.selectRequesterName('bpitt');
@@ -233,7 +232,7 @@ describe("Quick Case", () => {
         await quickCase.selectRequesterName('brain');
         expect(await quickCase.getDrpDownValueByIndex(4)).toBe('Related to');
         await quickCase.selectDrpDownValueByIndex('Target', 1);
-        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy('Save button Enabled');
+        expect(await quickCase.isCreateButtonDisabled()).toBeFalsy('Save button Enabled');
         await quickCase.selectRequesterName('kye');
         expect(await quickCase.getDrpDownValueByIndex(5)).toBe('The requester of the case');
         expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Target');
@@ -274,22 +273,9 @@ describe("Quick Case", () => {
     it('[DRDMV-1087]:[Quick Case] Case Template search via !', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let assignmentMappingName = "DRDMV-1087 " + randomStr;
-        let caseTemplateName = randomStr + "DRDMV1087Petramco";
-        let caseTemplateName1 = randomStr + " DRDMV1087Psilon";
+        let caseTemplateName = randomStr + "Petramco";
+        let caseTemplateName1 = randomStr + "Psilon";
         let threeCharacterString = randomStr.substr(0, 3);
-
-        let assignmentData =
-        {
-            "assignmentMappingName": assignmentMappingName,
-            "company": "Petramco",
-            "supportCompany": "Petramco",
-            "supportGroup": "Employee Relations",
-            "assignee": "qliu",
-            "categoryTier1": "Purchasing Card",
-            "categoryTier2": "Policies",
-            "categoryTier3": "Card Issuance",
-            "priority": "Low",
-        }
         let templateData = {
             "templateName": caseTemplateName,
             "templateSummary": caseTemplateName,
@@ -309,15 +295,12 @@ describe("Quick Case", () => {
         try {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData);
-            await apiHelper.createCaseAssignmentMapping(assignmentData);
             await apiHelper.apiLogin('gwixillian');
             await apiHelper.createCaseTemplate(templateData1);
-
             //Draft Template Search 
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             expect(await quickCasePo.selectCaseTemplate(caseTemplateName)).toBeFalsy("Draft Template is founded");;
-
             //Active Template Verification
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
@@ -333,12 +316,10 @@ describe("Quick Case", () => {
             await quickCase.setCaseSummary(caseTemplateName);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
-
             //Different Company Search
              await navigationPage.gotoQuickCase();
              await quickCasePo.selectRequesterName("adam");
-             expect(await quickCasePo.selectCaseTemplate(caseTemplateName1)).toBeFalsy("Template is same as employee comapny");;
-
+             expect(await quickCasePo.selectCaseTemplate(caseTemplateName1)).toBeFalsy("Template is same as employee comapny");
             //3 Character Search Template Verification
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
@@ -525,23 +506,23 @@ describe("Quick Case", () => {
     //ankagraw
     it('[DRDMV-795]: [Quick Case] Case template search in Resources', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName = randomStr + 'caseTemplateName';
-        let casTemplateSummary = 'CaseSummaryName' + randomStr;
+        let caseTemplateName = randomStr + 'NameInDraftStatus';
+        let casTemplateSummary = randomStr + 'SummaryInDraftStatus'; 
+        let caseTempalteDescription = randomStr + 'DRDMV-795Description';
         let CaseTemplateDataInDraftStatus = {
-            "templateName": `${caseTemplateName}` + 'InDraftStatus',
-            "templateSummary": `${casTemplateSummary}` + 'InDraftStatus',
+            "templateName": caseTemplateName,
+            "templateSummary": casTemplateSummary,
             "caseStatus": "InProgress",
             "templateStatus": "Draft",
-            "description": "DRDMV-795 verify",
+            "description": caseTempalteDescription,
             "assignee": "Fritz",
             "company": "Petramco",
             "supportGroup": "Facilities",
             "ownerGroup": "Facilities"
         }
-
         let CaseTemplateDataWithDifferentOrganization = {
-            "templateName": `${caseTemplateName}` + 'WithDifferentOrganization',
-            "templateSummary": `${casTemplateSummary}`,
+            "templateName": `${randomStr}` + 'WithDifferentOrganization',
+            "templateSummary": `${randomStr}`,
             "caseStatus": "InProgress",
             "templateStatus": "Active",
             "assignee": "gderuno",
@@ -555,26 +536,28 @@ describe("Quick Case", () => {
         await apiHelper.createCaseTemplate(CaseTemplateDataWithDifferentOrganization);
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
-        expect(await quickCase.selectCaseTemplate(`${caseTemplateName}` + 'InDraftStatus')).toBeFalsy("Draft case template present");
+        expect(await quickCase.selectCaseTemplate(caseTemplateName)).toBeFalsy("Draft case template present");
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
-        expect(await quickCase.selectCaseTemplate(`${caseTemplateName}` + 'WithDifferentOrganization')).toBeFalsy('Different organization case template present');
+        expect(await quickCase.selectCaseTemplate(`${randomStr}` + 'WithDifferentOrganization')).toBeFalsy('Different organization case template present');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-        await consoleCasetemplatePo.searchAndClickOnCaseTemplate(`${caseTemplateName}` + 'InDraftStatus');
+        await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplateName);
         await editCaseTemplate.clickOnEditCaseTemplateMetadata();
         await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
         await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
         await utilCommon.waitUntilPopUpDisappear();
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
-        expect(await quickCase.selectCaseTemplate(`${caseTemplateName}` + 'InDraftStatus')).toBeTruthy("template not present");
+        expect(await quickCase.selectCaseTemplate(caseTemplateName)).toBeTruthy("template not present1");
         await quickCase.clickStartOverButton();
         await quickCase.selectRequesterName('adam');
-        expect(await quickCase.selectCaseTemplate(`${casTemplateSummary}` + 'InDraftStatus')).toBeTruthy("template not present");
+        await quickCase.setCaseSummary(casTemplateSummary);
+        expect(await resources.getAdvancedSearchResultForParticularSection(caseTemplateName)).toEqual(caseTemplateName);
         await quickCase.clickStartOverButton();
         await quickCase.selectRequesterName('adam');
-        expect(await quickCase.selectCaseTemplate("DRDMV-795 verify")).toBeTruthy("template not present");
+        await quickCase.setCaseSummary(caseTempalteDescription);
+        expect(await resources.getAdvancedSearchResultForParticularSection(caseTemplateName)).toEqual(caseTemplateName);
     }, 900 * 1000);
 
     //apdeshmu
@@ -812,66 +795,6 @@ describe("Quick Case", () => {
         expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Status not displaying');
         await previewKnowledgePo.clickOnBackButton();
     }, 360 * 1000);
-
-    it('[DRDMV-11700]: Verify  sort on all attachments grid', async () => {
-        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-        let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseSummary = 'DRDMV-11700' + summary;
-        await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester('adam');
-        await createCasePo.setSummary(caseSummary);
-        let fileName: string[] = ['bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf'];
-        for (let i: number = 0; i < fileName.length; i++) {
-            await editCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName[i]}`);
-        }
-        await createCasePo.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await activityTabPo.addActivityNote(activityNoteText);
-        let fileName1: string[] = ['bwfWord1.rtf', 'bwfWord2.rtf', 'demo.txt', 'bwfJson1.json', 'bwfJson2.json'];
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await adhoctaskTemplate.addAttachmentInDescription(`../../data/ui/attachment/${fileName1[i]}`);
-        }
-        await activityTabPo.clickOnPostButton();
-        await utilCommon.waitUntilSpinnerToHide();
-        await utilCommon.waitUntilSpinnerToHide();
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.clickAddAdhocTaskButton();
-        expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
-        await adhoctaskTemplate.setSummary(summary);
-        await adhoctaskTemplate.setDescription("Description");
-        expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeTruthy('Attachment button is disabled');
-        let fileName2: string[] = ['bwfXsl.xsl', 'bwfXml.xml', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
-        for (let i: number = 0; i < fileName2.length; i++) {
-            await adhoctaskTemplate.addAttachmentInDescription(`../../data/ui/attachment/${fileName2[i]}`);
-        }
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await manageTask.clickOnCloseButton();
-        await utilCommon.waitUntilPopUpDisappear();
-        await viewCasePage.clickAttachmentsLink();
-        await attachmentBladePage.clickOnColumnHeader('Attachment');
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Attachment', true)).toBeTruthy("Attachment Not Sorted Desecnding");
-        await attachmentBladePage.clickOnPaginationNextButton();
-        await attachmentBladePage.clickOnColumnHeader('Attachment');
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Attachment')).toBeTruthy("Attachment Not Sorted Ascending");
-
-        await attachmentBladePage.clickOnColumnHeader('Attached to');
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Attached to', true)).toBeTruthy("Attached to Not Sorted Desecnding");
-        await attachmentBladePage.clickOnPaginationNextButton();
-        await attachmentBladePage.clickOnColumnHeader('Attached to');
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Attached to')).toBeTruthy("Attached to Not Sorted Ascending");
-
-        await attachmentBladePage.clickOnColumnHeader('Media type');
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Media type', true)).toBeTruthy("Media type Not Sorted Desecnding");
-        await attachmentBladePage.clickOnPaginationNextButton();
-        await attachmentBladePage.clickOnColumnHeader('Media type');
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Media type')).toBeTruthy("Media type Not Sorted Ascending");
-
-        await attachmentBladePage.clickOnColumnHeader('Created date');
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Created date', true)).toBeTruthy("Created date Not Sorted Desecnding");
-        await attachmentBladePage.clickOnPaginationNextButton();
-        await attachmentBladePage.clickOnColumnHeader('Created date');
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Created date')).toBeTruthy("Created date Not Sorted Ascending");
-    }, 400 * 1000);
 
     it('[DRDMV-8387]: UI validation Email Option via Quick case', async () => {
         await navigationPage.gotoQuickCase();

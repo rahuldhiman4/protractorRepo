@@ -272,8 +272,6 @@ export class GridOperations {
         if (await checkboxLocator.isPresent()) await checkboxLocator.click();
         else await radioButtonLocator.click();
     }
-
-
 }
 
 export default new GridOperations();
