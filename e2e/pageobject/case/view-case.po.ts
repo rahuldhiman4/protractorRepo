@@ -172,8 +172,7 @@ class ViewCasePage {
         });
     }
 
-    async clickEditCaseButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
+    async clickEditCaseButton(): Promise<void> {        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
         await $(this.selectors.editLink).click();
         //        await browser.wait(this.EC.visibilityOf($(editCasePage.selectors.cancelBtn)));
     }

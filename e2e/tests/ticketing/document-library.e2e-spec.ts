@@ -15,6 +15,7 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Document Library', () => {
     beforeAll(async () => {
@@ -49,18 +50,18 @@ describe('Document Library', () => {
         await editDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        await expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is not enabled');
+        expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is not enabled');
         await editDocumentLibraryPo.selectStatus('Draft');
         await editDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        await expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeTruthy('Delete buttton is not enabled');
+        expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeTruthy('Delete buttton is not enabled');
         await editDocumentLibraryPo.clickOnDeleteButton();
-        await expect(await editDocumentLibraryPo.getDeleteWarningMsgText('Are you sure you want to delete the document?')).toBe('Are you sure you want to delete the document?'), 'Warning Message of Delete button is missing';
+        expect(await editDocumentLibraryPo.getDeleteWarningMsgText('Are you sure you want to delete the document?')).toBe('Are you sure you want to delete the document?'), 'Warning Message of Delete button is missing';
         await editDocumentLibraryPo.clickOnYesButtonOfDeleteWarningMsg();
-        await expect(await utilCommon.getPopUpMessage()).toBe('Document deleted successfully.');
+        expect(await utilCommon.getPopUpMessage()).toBe('Document deleted successfully.');
         await utilCommon.waitUntilPopUpDisappear();
-        await expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Grid Record displayed which should not be');
+        expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Grid Record displayed which should not be');
     });
 
     //kgaikwad
@@ -78,16 +79,16 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
-        await expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'status is not in draft status';
+        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'status is not in draft status';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        await expect(await editDocumentLibraryPo.isDeleteButtonEnabled).toBeTruthy('Delete Button is not enabled');
+        expect(await editDocumentLibraryPo.isDeleteButtonEnabled).toBeTruthy('Delete Button is not enabled');
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
-        await expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'status is not in Published status';
+        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'status is not in Published status';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        await expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is enabled');
+        expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is enabled');
     });
 
     //kgaikwad
@@ -200,6 +201,7 @@ describe('Document Library', () => {
         expect(await editDocumentLibraryPo.isSiteDropDownDisplayed()).toBeTruthy('Site Drop Down is not displayed');
 
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
+        await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
         expect(await editDocumentLibraryPo.isSupportGroupAccessButtonDisplayed()).toBeTruthy('Support Group Access Group Button is not displayed');
         expect(await editDocumentLibraryPo.isAddCompanyDropDownDisplayed()).toBeTruthy('Add Company Drop Down is not displayed');
         expect(await editDocumentLibraryPo.isAddCompanyAddButtonDisplayed()).toBeTruthy('Add Company Add Button is not displayed');
@@ -212,6 +214,7 @@ describe('Document Library', () => {
         let dropDownValues: string[] = ["Published", "Draft"];
         expect(await editDocumentLibraryPo.isStatusDropDownvalueMatches(dropDownValues)).toBeTruthy('Values of status drop down is not matches');
         await editDocumentLibraryPo.clickOnCancelButton();
+        await utilityCommon.clickOnWarningOk();
         let column: string[] = ["Author"];
         await documentLibraryConsolePo.addColumnOnGrid(column);
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
@@ -232,9 +235,9 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectCompany('Petramco');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        // await utilCommon.waitUntilPopUpDisappear();
         await navigationPage.gotoKnowledgeConsole();
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         expect(await consoleKnowledgePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Record is present on knowledge article grid');
     });
 
@@ -273,11 +276,10 @@ describe('Document Library', () => {
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName('Angelina Jolie');
         await quickCasePo.setCaseSummary(titleRandVal);
-        let column: string = await resources.getCountOfHeading('Recommended Knowledge ')
-        expect(await resources.getCountOfHeading('Recommended Knowledge ')).toBe('0', 'heading Count is not correct');
-
+        let column: string = await resources.getCountOfHeading('Recommended Knowledge');
+        expect(await resources.getCountOfHeading('Recommended Knowledge')).toBe('0', 'heading Count is not correct');
         await navigationPage.gotoCreateKnowledge();
-        await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
+        expect(await browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
         await createKnowlegePo.clickOnTemplate('Reference');
         await createKnowlegePo.clickOnUseSelectedTemplateButton();
         await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16754');
@@ -286,7 +288,7 @@ describe('Document Library', () => {
         await createKnowlegePo.clickOnSaveKnowledgeButton();
         await previewKnowledgePo.clickOnViewArticleLink();
 
-        await utilCommon.switchToNewWidnow(1);
+        await utilityCommon.switchToNewTab(1);
         await informationTabPo.clickOnEditButton();
         expect(await informationTabPo.isAttachDocumentBladeDisplayed()).toBeFalsy('Attach Document Blade is displayed');
 
@@ -393,16 +395,15 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectCompany('Petramco');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal, 'Title is missing');
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft', 'Draft Status is missing');
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
+        await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
         await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Petramco');
         await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Company');
         await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-        // await editDocumentLibraryPo.selectReadAccessDropDown('Add Support Group', 'Compensation and Benefits');
         await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Compensation and Benefits');
         await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
         expect(await editDocumentLibraryPo.sameSupportGroupErrorMessageDisplayed(' The group already exists in the access list. To modify the access permissions, remove the group from the access list and add it again.')).toBeTruthy();
@@ -415,11 +416,11 @@ describe('Document Library', () => {
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
         await utilCommon.waitUntilSpinnerToHide();
         await createDocumentLibraryPo.openAddNewDocumentBlade();
-        await expect(createDocumentLibraryPo.attachmentRequiredText()).toBeTruthy();
-        await expect(createDocumentLibraryPo.titleRequiredText()).toBeTruthy();
-        await expect(createDocumentLibraryPo.companyRequiredText()).toBeTruthy();
-        await expect(createDocumentLibraryPo.ownerGroupRequiredText()).toBeTruthy();
-        await expect(createDocumentLibraryPo.isSaveButtonEnabled()).toBeFalsy();
+        expect(await createDocumentLibraryPo.attachmentRequiredText()).toBeTruthy();
+        expect(await createDocumentLibraryPo.titleRequiredText()).toBeTruthy();
+        expect(await createDocumentLibraryPo.companyRequiredText()).toBeTruthy();
+        expect(await createDocumentLibraryPo.ownerGroupRequiredText()).toBeTruthy();
+        expect(await createDocumentLibraryPo.isSaveButtonEnabled()).toBeFalsy();
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
@@ -492,12 +493,13 @@ describe('Document Library', () => {
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(draftDocLibData.docLibTitle);
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
+        await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
         await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Petramco');
         await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('UI-BusinessUnit');
         await editDocumentLibraryPo.selectAddSupportDepartmentDropDownOfReadAccess('UI-Department');
         await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('UI-SupportGroup');
         await editDocumentLibraryPo.clickOnSaveButton();
-        await expect(utilCommon.getAllPopupMsg()).toBe('Saved successfully.');
+        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
     });
 
     //apdeshmu
@@ -512,7 +514,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectCompany('Petramco');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.addAttachment(filePath);
-        await expect(await utilCommon.isPopUpMessagePresent('File size limit is: 20 MB')).toBeTruthy('Info msg not present');
+        expect(await utilCommon.isPopUpMessagePresent('The file 50MB.zip is too large and cannot be added. File size limit is: 20 MB')).toBeTruthy('Info msg not present');
     });
 
     //apdeshmu
@@ -524,7 +526,6 @@ describe('Document Library', () => {
         //Supported attachment type verification
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await utilCommon.waitUntilSpinnerToHide()
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         for (let i: number = 0; i < fileName1.length; i++) {
             await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -532,8 +533,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.addAttachment(`../../../data/ui/attachment/${fileName1[i]}`);
             await createDocumentLibraryPo.clickOnSaveButton();
-            await expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Success msg not present');
-            await utilCommon.waitUntilSpinnerToHide();
+            expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.','Success message missing');
             await createDocumentLibraryPo.openAddNewDocumentBlade();
         }
         await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -541,7 +541,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.clickOnSaveButton();
-        await expect(await utilCommon.isErrorMsgPresent()).toBeTruthy('Error msg not present');
+        expect(await utilCommon.isErrorMsgPresent()).toBeTruthy('Error msg not present');
     }, 240 * 1000);
 
     //apdeshmu
@@ -561,11 +561,11 @@ describe('Document Library', () => {
     });
 
     it('[DRDMV-13044]: Verify that Document access on multiple change in assignments of support group.', async () => {
+        try {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await utilCommon.waitUntilSpinnerToHide();
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -575,9 +575,8 @@ describe('Document Library', () => {
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.selectOwnerGroup('Facilities');
         await editDocumentLibraryPo.clickOnSaveButton();
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-
+        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+        
         await navigationPage.signOut();
         await loginPage.login('fritz');
         await navigationPage.gotoSettingsPage();
@@ -586,8 +585,7 @@ describe('Document Library', () => {
         //await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.selectOwnerGroup('Employee Relations');
         await editDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.closePopUpMessage();
-
+        await editDocumentLibraryPo.clickOnCancelButton();
         await navigationPage.signOut();
         await loginPage.login('qliu');
         await navigationPage.gotoSettingsPage();
@@ -595,52 +593,56 @@ describe('Document Library', () => {
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
-
+        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
         await navigationPage.signOut();
         await loginPage.login('fritz');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await expect(documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeFalsy("Document is listed");
+        expect(await documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeFalsy("Document is listed");
         await navigationPage.signOut();
-
 
         await loginPage.login('qkatawazi');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await expect(documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeTruthy("Document not visible");
+        expect(await documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeTruthy("Document not visible");
+    } catch (e) {
+        throw e;
+    } finally {
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
+    }
     }, 300 * 1000);
 
     it('[DRDMV-12954]: Verify Create view of Document library', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await utilCommon.waitUntilSpinnerToHide();
         await createDocumentLibraryPo.openAddNewDocumentBlade();
-        await expect(createDocumentLibraryPo.attachmentTextPresent('Attachment')).toBeTruthy("Attachment text not present");
-        await expect(createDocumentLibraryPo.titleTextPresent('Title')).toBeTruthy("Title text not present");
-        await expect(createDocumentLibraryPo.descriptionTextPresent('Description')).toBeTruthy("Description text not present");
-        await expect(createDocumentLibraryPo.companyTextPresent('Company')).toBeTruthy("Company text not present");
-        await expect(createDocumentLibraryPo.departmentTextPresent('Department')).toBeTruthy("Department text not present");
-        await expect(createDocumentLibraryPo.buisnessUnitTextPresent('Business Unit')).toBeTruthy("Business Unit text not present");
-        await expect(createDocumentLibraryPo.OwnerGroupTextPresent('Owner Group')).toBeTruthy("Owner Group text not present");
-        await expect(createDocumentLibraryPo.keyWordTextPresent('Keywords')).toBeTruthy("Keywords text not present");
-        await expect(createDocumentLibraryPo.categoryTier1TextPresent('Category Tier 1')).toBeTruthy("Category Tier 1 text not present");
-        await expect(createDocumentLibraryPo.categoryTier2TextPresent('Category Tier 2')).toBeTruthy("Category Tier 2 text not present");
-        await expect(createDocumentLibraryPo.categoryTier3TextPresent('Category Tier 3')).toBeTruthy("Category Tier 3 text not present");
-        await expect(createDocumentLibraryPo.categoryTier4TextPresent('Category Tier 4')).toBeTruthy("Category Tier 4 text not present");
-        await expect(createDocumentLibraryPo.regionTextPresent('Region')).toBeTruthy("Attachment text not present");
-        await expect(createDocumentLibraryPo.siteTextPresent('Site')).toBeTruthy("Site text not present");
+        expect(await createDocumentLibraryPo.attachmentTextPresent('Attachment')).toBeTruthy("Attachment text not present");
+        expect(await createDocumentLibraryPo.titleTextPresent('Title')).toBeTruthy("Title text not present");
+        expect(await createDocumentLibraryPo.descriptionTextPresent('Description')).toBeTruthy("Description text not present");
+        expect(await createDocumentLibraryPo.companyTextPresent('Company')).toBeTruthy("Company text not present");
+        expect(await createDocumentLibraryPo.departmentTextPresent('Department')).toBeTruthy("Department text not present");
+        expect(await createDocumentLibraryPo.buisnessUnitTextPresent('Business Unit')).toBeTruthy("Business Unit text not present");
+        expect(await createDocumentLibraryPo.OwnerGroupTextPresent('Owner Group')).toBeTruthy("Owner Group text not present");
+        expect(await createDocumentLibraryPo.keyWordTextPresent('Keywords')).toBeTruthy("Keywords text not present");
+        expect(await createDocumentLibraryPo.categoryTier1TextPresent('Category Tier 1')).toBeTruthy("Category Tier 1 text not present");
+        expect(await createDocumentLibraryPo.categoryTier2TextPresent('Category Tier 2')).toBeTruthy("Category Tier 2 text not present");
+        expect(await createDocumentLibraryPo.categoryTier3TextPresent('Category Tier 3')).toBeTruthy("Category Tier 3 text not present");
+        expect(await createDocumentLibraryPo.categoryTier4TextPresent('Category Tier 4')).toBeTruthy("Category Tier 4 text not present");
+        expect(await createDocumentLibraryPo.regionTextPresent('Region')).toBeTruthy("Region text not present");
 
-        await expect(createDocumentLibraryPo.attachmentLinkEnable()).toBeTruthy("Link is not enabled");
-        await expect(createDocumentLibraryPo.isSaveButtonDisplayed()).toBeTruthy("Save button is not Displayed");
-        await expect(createDocumentLibraryPo.isCancelButtonDisplayed()).toBeTruthy("cancel button is not Displayed");
-        await expect(createDocumentLibraryPo.isCancelButtonDisplayed()).toBeFalsy("delete button is Displayed");
+        expect(await createDocumentLibraryPo.attachmentLinkEnable()).toBeTruthy("Link is not enabled");
+        expect(await createDocumentLibraryPo.isSaveButtonDisplayed()).toBeTruthy("Save button is not Displayed");
+        expect(await createDocumentLibraryPo.isCancelButtonDisplayed()).toBeTruthy("cancel button is not Displayed");
+        expect(await createDocumentLibraryPo.isDeleteButtonDisplayed()).toBeFalsy("delete button is Displayed");
 
         await createDocumentLibraryPo.selectCompany('Petramco');
         await createDocumentLibraryPo.selectOwnerGroup("Compensation and Benefits");
         await createDocumentLibraryPo.selectCategoryTier1("Applications");
         await createDocumentLibraryPo.selectCategoryTier2('Social');
-        await createDocumentLibraryPo.selectCategoryTier3('chatter');
+        await createDocumentLibraryPo.selectCategoryTier3('Chatter');
         await createDocumentLibraryPo.selectRegion('Australia');
         await createDocumentLibraryPo.selectSite('Canberra');
-    }, 240 * 1000);
+        expect(await createDocumentLibraryPo.siteTextPresent('Site')).toBeTruthy("Site text not present");
+    },120 * 1000);
 })
