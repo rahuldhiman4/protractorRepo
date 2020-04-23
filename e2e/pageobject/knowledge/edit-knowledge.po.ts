@@ -1,5 +1,6 @@
 import { $, $$, by, element, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common'
 
 class EditKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -105,11 +106,11 @@ class EditKnowledgePage {
     }
 
     async selectRegionDropDownOption(fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.editRegionGuid, fieldOption);
+        await utilityCommon.selectDropDown(this.selectors.editRegionGuid, fieldOption);
     }
 
     async selectSiteDropDownOption(fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.editSiteGuid, fieldOption);
+        await utilityCommon.selectDropDown(this.selectors.editSiteGuid, fieldOption);
     }
 
     async updateRegionDropDownOption(guid: string, fieldOption: string): Promise<void> {
