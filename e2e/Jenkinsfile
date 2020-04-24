@@ -1,4 +1,4 @@
-node('Protractor'){
+node('SlaveUI1'){
   properties([
 	  parameters([
 	    stringParam(
