@@ -41,7 +41,7 @@ class ComposeMail {
         numberIcon: '.cke_button__numberedlist_icon',
         attachmentView: 'span.bwf-attachment-container__file-name',
         warningMessage:'.modal-content .modal-body, .modal-content .d-modal__content-item',
-        toCcInput:'.adapt-mt-input-container',
+        toCcInput:'.adapt-mt-input-container input',
     }
 
     async clickOnTableIcon(): Promise<void> {

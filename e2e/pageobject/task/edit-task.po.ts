@@ -109,7 +109,10 @@ class EditTask {
     }
 
     async isDynamicFieldDisplayed(value: string): Promise<boolean> {
-        return await $(`span[title=${value}]`).isDisplayed();
+        return await $(`.textfield[title=${value}]`).isPresent().then(async (result) => {
+            if (result) return await $(`.textfield[title=${value}]`).isDisplayed();
+            else return false;
+        });
     }
 
     async addAttachmentInDynamicField(attachmentField: string, fileToUpload: string): Promise<void> {
@@ -119,7 +122,7 @@ class EditTask {
     }
 
     async setDynamicFieldValue(fieldName:string,fieldValue:string):Promise<void>{
-        await $(`input[name=${fieldName}]`).sendKeys(fieldValue);
+        await $(`adapt-textfield[title=${fieldName}] input`).sendKeys(fieldValue); 
     }
 
     async updateTaskSummary(summary: string): Promise<void> {

@@ -334,11 +334,19 @@ class ViewTask {
     }
 
     async getDynamicFieldName(fieldName:string):Promise<string>{
-        return await $(`span[title=${fieldName}]`).getText();
+        return await $(`.fields-container .form-group label[title=${fieldName}]`).getText();
     }
 
-    async getDynamicFieldValue(fieldValue:string):Promise<string>{
-        return await $(`p[title='${fieldValue}']`).getText();
+    async getDynamicFieldValue(fieldName:string):Promise<string>{
+        // return await $(`.fields-container .read-only-content`).getText();
+        let dynamicFields:number= await $$('.fields-container .form-group label').count();
+        for(let i=0; i<dynamicFields;i++){
+           let field= await $$('.fields-container .form-group label').get(i).getText();
+           if(fieldName==field){
+             return await $$('.fields-container .form-group .read-only-content').get(i).getText();
+           }
+        }
+        return null;
     }
 
     async getValueOfDynamicFields(fieldName:string):Promise<string>{
