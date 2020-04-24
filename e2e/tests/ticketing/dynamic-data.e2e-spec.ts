@@ -1,5 +1,6 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
@@ -162,7 +163,7 @@ describe('Dynamic data', () => {
         await addFieldsPopPo.clickOnOkButtonOfEditor();
         await createDocumentTemplatePo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-    }, 310 * 1000);
+    }, 600 * 1000);
 
     it('[DRDMV-19270]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
         await apiHelper.apiLogin('tadmin');
@@ -630,6 +631,7 @@ describe('Dynamic data', () => {
         await createCasePo.setSummary('new cases');
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        let caseId = await viewCasePo.getCaseID();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
         await manageTaskBladePo.addTaskFromTaskTemplate(automatedTask);
@@ -646,14 +648,15 @@ describe('Dynamic data', () => {
         await editTaskPo.setDynamicFieldValue(dynamicfield2, dynamicfield1);
         await editTaskPo.clickOnAssignToMe();
         await editTaskPo.setDynamicFieldValue(dynamicfield3, dynamicfield4);
-        await editTaskPo.setDynamicFieldValue(dynamicfield4, dynamicfield3);
+        await editTaskPo.setDynamicFieldValue(dynamicfield4, '100');
         await editTaskPo.clickOnSaveButton();
         //verify input field values are peresent are not 
         expect(await viewTaskPo.getDynamicFieldValue(dynamicfield1)).toContain(dynamicfield2);
         expect(await viewTaskPo.getDynamicFieldValue(dynamicfield2)).toContain(dynamicfield1);
         expect(await viewTaskPo.getDynamicFieldValue(dynamicfield3)).toContain(dynamicfield4);
-        expect(await viewTaskPo.getDynamicFieldValue(dynamicfield4)).toContain(dynamicfield3);
-        await viewTaskPo.clickOnViewCase();
+        expect(await viewTaskPo.getDynamicFieldValue(dynamicfield4)).toContain('100');
+        await navigationPage.gotoCaseConsole();
+        await caseConsolePo.searchAndOpenCase(caseId);
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
         //verify dynamic field on external task
@@ -662,12 +665,12 @@ describe('Dynamic data', () => {
         expect(await viewTaskPo.getDynamicFieldName('theThirdDynamicExternalFieldsIsgettingMouseOveredMouseOvered')).toContain('theThirdDynamicExternalFieldsIsgettingMouseOveredMouseOvered');
         expect(await viewTaskPo.getDynamicFieldName('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
         await viewTaskPo.clickOnEditTask();
-        await editTaskPo.setDynamicFieldValue('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered', 'theThirdDynamicExternalFieldsIsgettingMouseOveredMouseOvered');
+        await editTaskPo.setDynamicFieldValue('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered', '200');
         await editTaskPo.setDynamicFieldValue('theSecondExternalDynamicFieldsIsgettingMouseOveredMouseOvered', 'temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
         await editTaskPo.clickOnAssignToMe();
         await editTaskPo.clickOnSaveButton();
         //verify input field values are peresent are not 
-        expect(await viewTaskPo.getDynamicFieldValue('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theThirdDynamicExternalFieldsIsgettingMouseOveredMouseOvered');
+        expect(await viewTaskPo.getDynamicFieldValue('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('200');
         expect(await viewTaskPo.getDynamicFieldValue('theSecondExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAddTaskButton();
@@ -679,14 +682,13 @@ describe('Dynamic data', () => {
         expect(await viewTaskPo.getDynamicFieldName('theThirdDynamicautomatedFieldsIsgettingMouseOveredMouseOvered')).toContain('theThirdDynamicautomatedFieldsIsgettingMouseOveredMouseOvered');
         expect(await viewTaskPo.getDynamicFieldName('temp1theNewautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('temp1theNewautomatedDynamicFieldsIsgettingMouseOveredMouseOvered');
         await viewTaskPo.clickOnEditTask();
-        await editTaskPo.setDynamicFieldValue('temp1theNewautomatedDynamicFieldsIsgettingMouseOveredMouseOvered', 'theThirdDynamicautomatedFieldsIsgettingMouseOveredMouseOvered');
+        await editTaskPo.setDynamicFieldValue('temp1theNewautomatedDynamicFieldsIsgettingMouseOveredMouseOvered', '300');
         await editTaskPo.setDynamicFieldValue('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered', 'theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered');
-        await editTaskPo.clickOnAssignToMe();
         await editTaskPo.clickOnSaveButton();
         //verify input field values are peresent are not 
-        expect(await viewTaskPo.getDynamicFieldValue('temp1theNewautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theThirdDynamicautomatedFieldsIsgettingMouseOveredMouseOvered');
+        expect(await viewTaskPo.getDynamicFieldValue('temp1theNewautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('300');
         expect(await viewTaskPo.getDynamicFieldValue('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered');
-    }, 280 * 1000);
+    }, 320 * 1000);
 
     // ptidke
     it('[DRDMV-13128]: [Dynamic Data] - Create Case with Case Template having dynamic fields and Update dynamic fields data in Case', async () => {
