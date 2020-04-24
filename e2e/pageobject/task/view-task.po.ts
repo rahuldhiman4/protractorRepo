@@ -338,7 +338,6 @@ class ViewTask {
     }
 
     async getDynamicFieldValue(fieldName:string):Promise<string>{
-        // return await $(`.fields-container .read-only-content`).getText();
         let dynamicFields:number= await $$('.fields-container .form-group label').count();
         for(let i=0; i<dynamicFields;i++){
            let field= await $$('.fields-container .form-group label').get(i).getText();
