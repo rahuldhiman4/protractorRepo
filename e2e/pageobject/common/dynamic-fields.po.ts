@@ -52,7 +52,8 @@ class DynamicField {
 
     async selectInfromationSource(sourceValue:string):Promise<void>{
         await $$(this.selectors.informationSource).last().click();
-        await $(`div[title=${sourceValue}]`).click();
+        let tempLoc = `div[title="${sourceValue}"]`;
+        await $(tempLoc).click();
     }
     
    }

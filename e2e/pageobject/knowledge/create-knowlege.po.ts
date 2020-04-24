@@ -1,5 +1,4 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 
 class CreateKnowledgePage {
@@ -8,7 +7,7 @@ class CreateKnowledgePage {
         createKnowledgeHeader: '[rx-view-component-id="cebb7cbd-0e7b-48a2-9944-c11d3ba255d0"] p',
         clickOnReferenceTemplate: '[rx-view-component-id="6e402c66-fcdc-464b-b6e7-7e963d9c3a17"] .sectionsName',
         knowledgeTitleEditBox: '[rx-view-component-id="291bf2bb-1eac-404e-94ba-762a50da5ac9"] input',
-        saveKnowlegeButton: '[rx-view-component-id="2fdb0ffb-560d-46b4-b7af-379d90bcb0a8"]',
+        saveKnowlegeButton: '[rx-view-component-id="2fdb0ffb-560d-46b4-b7af-379d90bcb0a8"] button',
         knowledgeSet: '80a2cd78-e9a5-4997-b7bb-6fadf918bd3e',
         assignToMeBtn: '[rx-view-component-id="8cb384cb-598d-46f4-a858-08111a6c51bd"] button',
         knowledgeMetadataSection: '[rx-view-component-id="789f2b42-5a5f-4926-8ddd-c2b90fbb7e5e"] .adapt-select',
@@ -163,19 +162,19 @@ class CreateKnowledgePage {
     }
 
     async isCategoryTier1FieldLabelDisplayed(fieldName: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier1Guid, fieldName);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.categoryTier1Guid, fieldName);
     }
 
     async isCategoryTier2FieldLabelDisplayed(fieldName: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier2Guid, fieldName);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.categoryTier2Guid, fieldName);
     }
 
     async isCategoryTier3FieldLabelDisplayed(fieldName: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier3Guid, fieldName);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.categoryTier3Guid, fieldName);
     }
 
     async isCategoryTier4FieldLabelDisplayed(fieldName: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.categoryTier4Guid, fieldName);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.categoryTier4Guid, fieldName);
     }
 
     async getValueOfCategoryTier1(): Promise<string> {
@@ -191,28 +190,28 @@ class CreateKnowledgePage {
     }
 
     async selectCategoryTier1Option(fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier1Guid, fieldOption);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier1Guid, fieldOption);
     }
 
     async selectCategoryTier2Option(fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier2Guid, fieldOption);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier2Guid, fieldOption);
     }
 
     async selectCategoryTier3Option(fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier3Guid, fieldOption);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier3Guid, fieldOption);
     }
 
     async selectCategoryTier4Option(fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier4Guid, fieldOption);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier4Guid, fieldOption);
     }
 
 
     async selectRegionDropDownOption(fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.regionGuid, fieldOption);
+        await utilityCommon.selectDropDown(this.selectors.regionGuid, fieldOption);
     }
 
     async selectSiteDropDownOption(fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.siteGuid, fieldOption);
+        await utilityCommon.selectDropDown(this.selectors.siteGuid, fieldOption);
     }
 
     async getCreateKnowledgeHeader(): Promise<string> {

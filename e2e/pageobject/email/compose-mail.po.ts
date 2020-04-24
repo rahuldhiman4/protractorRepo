@@ -140,7 +140,7 @@ class ComposeMail {
     }
 
     async clickOnSelectEmailTemplateLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectTemplateButton)), 4000);
+        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectTemplateButton)), 4000);
         await $(this.selectors.selectTemplateButton).click();
     }
 
@@ -171,7 +171,7 @@ class ComposeMail {
 
     async getSubject(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.getsubject)),2000);
-        return await (await $(this.selectors.getsubject).getText()).trim();
+        return (await $(this.selectors.getsubject).getText()).trim();
     }
 
     async isSelectEmailTemplateLinkPresent(): Promise<boolean> {
@@ -331,7 +331,7 @@ class ComposeMail {
 
     async getEmailTemplateNameHeading(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateNameHeader)));
-        return $(this.selectors.templateNameHeader).getText();
+        return await $(this.selectors.templateNameHeader).getText();
     }
 
     async selectEmailFromPopUp(emailIdForToOrCc: string): Promise<void> {

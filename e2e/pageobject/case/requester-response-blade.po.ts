@@ -3,8 +3,8 @@ import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
 class RequesterResponseBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        bladeHeading: 'h3.modal-title',
-        dynamicFieldsName: '[rx-view-component-id="795026f0-f441-46b7-81c4-736511c800e0"] .form-control-label',
+        bladeHeading: '.dp-title',
+        dynamicFieldsName: '.simple-field label.form-control-label',
         okButton:'[rx-view-component-id="d459dabe-1ccb-4776-b121-874ed4ded902"] button',
     }
 
