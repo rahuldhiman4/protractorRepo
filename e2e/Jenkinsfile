@@ -1,29 +1,34 @@
-node('SlaveUI1'){
-  properties([
-	  parameters([
-	    stringParam(
-			  defaultValue: 'http://clm-aus-t5jj96.bmc.com:8008',
-			  description: 'Execution Stack',
-        name: 'BaseUrl',
-      ),
-      stringParam(
-        defaultValue: 'Regression:UI:Auto:Upgrade',
-        description: 'Jira test cycle',
-        name: 'CycleName',
-      ),
-      stringParam(
-        defaultValue: 'UI_Auto:Upgrade_Protractor',
-        description: 'Jira test cycle folder',
-        name: 'FolderName',
-      ),
-      booleanParam(
-        defaultValue: false,
-        description: 'Pass Percent',
-        name: 'Stats'
-      )
-    ])
+properties([
+	parameters([
+    stringParam(
+      defaultValue: 'SlaveUI1',
+      description: 'Node name to run the job',
+      name: 'NodeName',
+    ),
+	  stringParam(
+			defaultValue: 'http://clm-aus-t5jj96.bmc.com:8008',
+			description: 'Execution Stack',
+      name: 'BaseUrl',
+    ),
+    stringParam(
+      defaultValue: 'Regression:UI:Auto:Upgrade',
+      description: 'Jira test cycle',
+      name: 'CycleName',
+    ),
+    stringParam(
+      defaultValue: 'UI_Auto:Upgrade_Protractor',
+      description: 'Jira test cycle folder',
+      name: 'FolderName',
+    ),
+    booleanParam(
+      defaultValue: false,
+      description: 'Pass Percent',
+      name: 'Stats'
+    )
   ])
+])
 
+node("${NodeName}"){
   stage('Clone Sources') {
     git branch: 'master',
     credentialsId: '807c8e4d-6d6c-47e1-a62e-ef2de91d6dce',
@@ -66,7 +71,7 @@ node('SlaveUI1'){
               font-size: 10pt;
             }
             h3 {
-              background: #50EBEC;
+              background: #F2B66B;
               padding: 10px;
               border: 1px solid #333;
             }
@@ -87,13 +92,13 @@ node('SlaveUI1'){
           <table>
             <tr><td class=bold>Environment Name: </td><td>${env.BaseUrl}</td></tr>
             <tr><td class=bold>Build URL:</td><td><a href="${env.BUILD_URL}">View Jenkins</a></td></tr>
-            <tr><td class=bold>Build Artefact:</td><td><a href="ftp://vl-pun-rem-qa4n/punebuild/bwf_automation/UI_AutomationReport/ProtractorRun/UIAutoRun_Build${env.BUILD_NUMBER}">FTP Link</a></td></tr>
+            <tr><td class=bold>Build Artefact:</td><td><a href="ftp://vl-pun-rem-qa4n/punebuild/automation-results/protractor-result/UIAutoRun_Build${env.BUILD_NUMBER}">FTP Link</a></td></tr>
           """
           +
           '${FILE, path="e2e/reports/spec-jira-report/CycleReport.html"}'
           +
           "</table>",
-        to: "prasad_vidhate@bmc.com;sunil_patil@bmc.com;pravin_ajagunde@bmc.com;tushar_garud@bmc.com;anant_sahitya@bmc.com;swapnil_khobragade_tp@bmc.com;ankush_agrawal_tp@bmc.com;pravin_tidke_tp@bmc.com;kiran_gaikwad_tp@bmc.com;naziya_mujawar@bmc.com;gaurav_mirani@bmc.com;rahul_dhiman_tp@bmc.com;rajan_bangar_tp@bmc.com;",
+        to: "prasad_vidhate@bmc.com;sunil_patil@bmc.com;pravin_ajagunde@bmc.com;tushar_garud@bmc.com;anant_sahitya@bmc.com;swapnil_khobragade_tp@bmc.com;ankush_agrawal_tp@bmc.com;pravin_tidke_tp@bmc.com;kiran_gaikwad_tp@bmc.com;naziya_mujawar@bmc.com;rahul_dhiman_tp@bmc.com;rajan_bangar_tp@bmc.com;apurva_deshmukh_tp@bmc.com;ashish_gabhane@bmc.com;swapnil_yelkar@bmc.com",
         from: "jenkins@noreply",
         attachmentsPattern: '**/*jira-report.csv'
       )
