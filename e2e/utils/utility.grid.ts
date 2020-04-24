@@ -21,8 +21,6 @@ export class GridOperations {
         filterCheckboxOptions: '.a-select-inline__list .a-select-inline__item .checkbox__label',
         filterTab: '.nav-item button',
         visibleColumnButton: '.d-icon-left-lines_vertical',
-        selectCheckbox: '.ui-chkbox-box',
-        selectRadioButton: '.radio__label input',
         refreshIcon: 'button[rx-id="refresh-button"]'
     }
 
@@ -257,14 +255,16 @@ export class GridOperations {
     }
 
     async searchAndSelectGridRecord(recordName: string, guid?: string): Promise<void> {
+        let selectCheckbox= '.ui-chkbox-box';
+        let selectRadioButton= '.radio__label input';
         if (guid) {
-            this.searchRecord(recordName, guid);
-            this.selectors.selectCheckbox = `[rx-view-component-id="${guid}"] ` + this.selectors.selectCheckbox;
-            this.selectors.selectRadioButton = `[rx-view-component-id="${guid}"] ` + this.selectors.selectRadioButton;
+            await this.searchRecord(recordName, guid);
+            selectCheckbox = `[rx-view-component-id="${guid}"] ` + selectCheckbox;
+            selectRadioButton = `[rx-view-component-id="${guid}"] ` + selectRadioButton;
         }
         else await this.searchRecord(recordName);
-        let checkboxLocator = await $(this.selectors.selectCheckbox);
-        let radioButtonLocator = await $(this.selectors.selectRadioButton);
+        let checkboxLocator = await $(selectCheckbox);
+        let radioButtonLocator = await $(selectRadioButton);
         if (await checkboxLocator.isPresent()) await checkboxLocator.click();
         else await radioButtonLocator.click();
     }

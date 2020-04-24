@@ -40,7 +40,7 @@ class ActivityTabPage {
 
         // emailContent: '.log-item__content email',
         emailReply: '.bwf-button-link[aria-label="Reply"]',
-        emailReplyAll: '.bwf-button-link[aria-label="Reply"]',
+        emailReplyAll: '.bwf-button-link[aria-label="Reply All"]',
 
         dwpSurveyText: '.dwp_survey .log-item__body div',
         viewSurveyBtn: '.dwp_survey .d-button_link',
@@ -186,30 +186,29 @@ class ActivityTabPage {
     }
 
     async isImageDisplayedInActivity(value: string): Promise<boolean> {
-        return await $(`img[src='${value}']`).isDisplayed();
+        let locator = `.activity .email-body img[src='${value}']`;
+        let imageIsDisplayed: boolean = await $(locator).isDisplayed();
+        return imageIsDisplayed;
     }
 
     async isLinkDisplayedInActivity(value: string): Promise<boolean> {
         return await $(`a[href='${value}']`).isDisplayed();
     }
 
-    async getTextOfAlignment(value: string): Promise<string> {
-        return await $(`td[style="${value}"]`).getText();
-    }
-
     async clickOnHyperlink(value: string): Promise<void> {
-        let locator = `a[href='${value}']`;
+        let locator = `.activity .email-body a[href='${value}']`;
         await $(locator).click();
     }
 
-    async getColorOrFontOfText(value: string): Promise<string> {
-        let locator = `td span[style='${value}']`;
-        return await $(locator).getText();
+    async getTextOfTD(tabValue: string): Promise<string> {
+        let locator = `.activity .email-body table ${tabValue}`;
+        return await $$(locator).first().getText();
     }
 
-    async getTextOfTD(summary: string, tabValue: string): Promise<string> {
-        let locator = `[summary='${summary}'] td ${tabValue}`;
-        return await $(locator).getText();
+    async getTextOnActivityTable(rowNumber:number, columnNumber: number): Promise<string>{
+        let row = await $$('.activity .email-body table tr').get(rowNumber);
+        let cellText = await row.$$('td').get(columnNumber).getText();
+        return cellText;
     }
 
     async addAttachment(fileToUpload: string): Promise<void> {
@@ -249,9 +248,7 @@ class ActivityTabPage {
     }
 
     async clickOnReplyAll(): Promise<void> {
-        //        await utilCommon.waitUntilSpinnerToHide();
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailReplyAll)));
-        await $(this.selectors.emailReplyAll).click();
+        await $$(this.selectors.emailReplyAll).first().click();
     }
 
     async getFirstPostContent(): Promise<string> {
@@ -263,11 +260,28 @@ class ActivityTabPage {
         await $(this.selectors.refreshButton).click();
     }
 
-    async getEmailContent(): Promise<string> {
-        //        await browser.sleep(2000);
-        //        await utilCommon.waitUntilSpinnerToHide();
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailContent)), 5000);
-        let emailBody = await $$('email .content-wrapper').first().getText();
+    async getEmailTitle(): Promise<string> {
+        let emailTitle = await $$('.activity .activity-title').first().getText();
+        return emailTitle;
+    }
+    
+    async getEmailTemplateDetails(): Promise<string> {
+        let templateUsed = await $$('.activity .template').first().getText();
+        return templateUsed;
+    }
+
+    async getRecipientInTo(): Promise<string> {
+        let toRecipient = await $$('.activity .to-list').first().getText();
+        return toRecipient;
+    }
+
+    async getEmailSubject(): Promise<string> {
+        let subject = await $$('.activity .subject').first().getText();
+        return subject;
+    }
+
+    async getEmailBody(): Promise<string> {
+        let emailBody = await $$('.activity .email-body').first().getText();
         return emailBody;
     }
 
