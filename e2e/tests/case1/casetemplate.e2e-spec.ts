@@ -19,6 +19,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilCommon from '../../utils/util.common';
 
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
@@ -159,8 +160,8 @@ describe('Case Template', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('franz');
-            await navigationPage.gotoSettingsPage();
-            expect(await createCaseTemplate.isPanelHeadingPresent('Configuration options not created for these settings.')).toBeTruthy('Expected heading not present');
+            await navigationPage.gotoSettingsPage();            
+            expect(await createCaseTemplate.isPanelHeadingPresent('Select a configuration option from the navigation menu to show configuration content here')).toBeTruthy('Expected heading not present');
         } catch (e) {
             throw e;
         } finally {
@@ -240,6 +241,7 @@ describe('Case Template', () => {
         await editCaseTemplate.clickOnEditCaseTemplateMetadata();
         await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
         await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
+        await utilCommon.waitUntilPopUpDisappear();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         await utilGrid.searchAndOpenHyperlink(caseTemplateName);
@@ -590,6 +592,7 @@ describe('Case Template', () => {
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(casetemplatePsilon);
+            
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('fritz');
             await createCasePo.setSummary(caseTemplateNamePetramco);
@@ -615,8 +618,8 @@ describe('Case Template', () => {
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateNamePsilon);
             await createCasePo.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getCaseTemplateText()).toBe(caseTemplateNamePsilon);
+            await utilityCommon.waitUntilPopUpDisappear();
+            expect(await previewCasePo.isCaseTemplateDisplayed(caseTemplateNamePsilon)).toBeTruthy("Template is not selected");
         } catch (e) {
             throw e;
         } finally {

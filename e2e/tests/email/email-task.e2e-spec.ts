@@ -16,6 +16,7 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Email', () => {
     beforeAll(async () => {
@@ -130,14 +131,14 @@ describe('Email', () => {
         await apiHelper.apiLogin('fritz');
         var newCaseTemplate = await apiHelper.createCase(caseData);
         var displayId: string = newCaseTemplate.displayId;
-        await utilGrid.clearFilter();
-        await utilGrid.searchAndOpenHyperlink(displayId);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePage.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         await browser.sleep(2000);
-        await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
+        await expect(await emailPo.isEmailIconLinkPresent()).toBeTruthy();
         let ManualtaskID = await viewTask.getTaskID();
         await viewTaskPo.clickEmailLink();
         expect(await emailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
@@ -219,8 +220,8 @@ describe('Email', () => {
             await apiHelper.apiLogin('qkatawazi');
             var newCaseTemplate = await apiHelper.createCase(caseData);
             var displayId: string = newCaseTemplate.displayId;
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
@@ -237,7 +238,7 @@ describe('Email', () => {
             await viewTaskPo.clickEmailLink();
             expect(await emailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
             await emailPo.clickOnDiscardButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewTask.clickOnViewCase();
             await viewCasePo.clickAddTaskButton();
             //verify activity email post
@@ -253,30 +254,30 @@ describe('Email', () => {
             await viewTaskPo.clickEmailLink();
             expect(await emailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
             await emailPo.clickOnDiscardButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoTaskConsole();
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(ExternaltaskID);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(ExternaltaskID);
             await viewTaskPo.clickEmailLink();
             expect(await emailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
             await emailPo.clickOnDiscardButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await navigationPage.gotoTaskConsole();
-            await utilGrid.searchAndOpenHyperlink(ManualtaskID);
+            await utilityGrid.searchAndOpenHyperlink(ManualtaskID);
             await viewTaskPo.clickEmailLink();
             expect(await emailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
             await emailPo.clickOnDiscardButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         } catch (e) {
             throw e;
         }
         finally {
             await navigationPage.signOut();
-            await loginPage.login('elizabeth');
+            await loginPage.login('fritz');
         }
-    });
+    }, 300 * 1000);
 
     it('[DRDMV-19558]: Verify social notes other than email should not have reply and reply all options', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -417,8 +418,8 @@ describe('Email', () => {
         await apiHelper.apiLogin('fritz');
         var newCaseTemplate = await apiHelper.createCase(caseData);
         var displayId: string = newCaseTemplate.displayId;
-        await utilGrid.clearFilter();
-        await utilGrid.searchAndOpenHyperlink(displayId);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePo.clickOnEmailLink();
         await emailPo.addAttachment();
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
@@ -586,8 +587,8 @@ describe('Email', () => {
             await apiHelper.apiLogin('qkatawazi');
             var newCaseTemplate = await apiHelper.createCase(caseData);
             var displayId: string = newCaseTemplate.displayId;
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
@@ -607,15 +608,15 @@ describe('Email', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoTaskConsole();
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(ExternaltaskID);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(ExternaltaskID);
             await viewTask.clickOnRequesterEmail();
             // https://jira.bmc.com/browse/DRDMV-19670  defect
             expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeFalsy();
             await emailPo.clickOnDiscardButton();
             await utilCommon.clickOnWarningOk();
             await navigationPage.gotoTaskConsole();
-            await utilGrid.searchAndOpenHyperlink(ManualtaskID);
+            await utilityGrid.searchAndOpenHyperlink(ManualtaskID);
             await viewTask.clickOnRequesterEmail();
             // https://jira.bmc.com/browse/DRDMV-19670  defect
             expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeFalsy();

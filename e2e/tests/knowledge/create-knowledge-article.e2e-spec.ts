@@ -329,6 +329,7 @@ describe('Knowledge Article', () => {
             var knowledgeIdValue: string = await previewKnowledgePo.getKnowledgeArticleID();
             await utilityCommon.refresh();
             await navigationPage.gotoKnowledgeConsole(); 
+            await utilityGrid.clearFilter();
             await knowledgeArticlesConsolePo.searchKnowledgeArticle(knowledgeTitle);
             await expect(knowledgeArticlesConsolePo.isArticleIdDisplayed(knowledgeIdValue.trim())).toBeTruthy("Knowledge Article is not displayed");
         } catch (error) {
@@ -731,13 +732,13 @@ describe('Knowledge Article', () => {
         expect(await createKnowledgePage.isTemplatePresent('How To')).toBeTruthy('Template is not present');
         await createKnowledgePage.clickOnTemplate('Reference');
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
-        await createKnowledgePage.setReferenceValue('reference values are as follows');
         await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
         await createKnowledgePage.selectRegionDropDownOption('Australia');
         await createKnowledgePage.selectSiteDropDownOption('Melbourne');
         await createKnowledgePage.selectCategoryTier1Option('Applications');
         await createKnowledgePage.selectCategoryTier2Option('Help Desk');
         await createKnowledgePage.selectCategoryTier3Option('Incident');
+        await createKnowledgePage.setReferenceValue('reference values are as follows');
         expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitle, 'expected Value not present');
         expect(await createKnowledgePage.getValueOfCategoryTier1()).toContain('Applications', 'value not matched with expected');
         expect(await createKnowledgePage.getValueOfCategoryTier2()).toContain('Help Desk', 'value not matched with expected');
@@ -747,7 +748,7 @@ describe('Knowledge Article', () => {
         expect(await createKnowledgePage.getKnowledgeSetValue()).toContain('HR', 'expected Value not present');
         expect(await createKnowledgePage.isSaveButtonEnabled()).toBeTruthy('Save Button is disabled');
         await createKnowledgePage.clickOnSaveKnowledgeButton();
-        await previewKnowledgePo.clickOnBackButton();
+        await utilityCommon.refresh();
         await navigationPage.gotoKnowledgeConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchRecord(knowledgeTitle);
@@ -785,7 +786,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.selectSiteDropDownOption('Melbourne');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
             expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Melbourne');
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
@@ -799,7 +800,7 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('');
             expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await previewKnowledgePo.clickOnBackButton();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
@@ -810,7 +811,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.selectRegionDropDownOption('Australia');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA();
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
         }

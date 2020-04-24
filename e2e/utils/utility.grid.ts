@@ -1,4 +1,4 @@
-import { $, $$, Key, element, by, ElementFinder, browser } from 'protractor';
+import { $, $$, Key, element, by, ElementFinder, browser, protractor } from 'protractor';
 import utilityCommon from '../utils/utility.common';
 
 export class GridOperations {
@@ -61,8 +61,8 @@ export class GridOperations {
     }
 
     async clearFilter(guid?: string): Promise<void> {
-        let gridGuid: string = ''
         if (guid) {
+            let gridGuid = `[rx-view-component-id="${guid}"] `;
             this.selectors.appliedPresetFilter = gridGuid + this.selectors.appliedPresetFilter;
             this.selectors.filterPresetBtn = gridGuid + this.selectors.filterPresetBtn;
             this.selectors.clearBtn = gridGuid + this.selectors.clearBtn;
@@ -107,10 +107,13 @@ export class GridOperations {
     }
 
     async areColumnHeaderMatches(expetcedHeaders: string[], guid?: string): Promise<boolean> {
-        let actualHeaders = await element.all(by.css(".c-header-container .c-header-name"))
+        let csslocator: string = undefined;
+        if (guid) csslocator = `[rx-view-component-id='${guid}'] .c-header-container .c-header-name`;
+        else csslocator = ".c-header-container .c-header-name";
+        let actualHeaders = await element.all(by.css(csslocator))
             .map(async function (header) {
                 return await header.getAttribute('innerText');
-            })
+            });
         actualHeaders.sort();
         expetcedHeaders.sort();
         return actualHeaders.length === expetcedHeaders.length && actualHeaders.every(
@@ -212,7 +215,9 @@ export class GridOperations {
 
     async addFilter(fieldName: string, textValue: string, type: string, guid?: string): Promise<void> {
         let guidId: string = "";
-        if (guid) { guidId = `[rx-view-component-id="${guid}"] `; }
+        if (guid) {
+            this.selectors.refreshIcon = `[rx-view-component-id="${guid}"] ` + this.selectors.refreshIcon;
+        }
         await $(guidId + this.selectors.filterPresetBtn).click();
         let filterCount = await $$(this.selectors.filterItems);
         for (let i = 0; i < await filterCount.length; i++) {
@@ -229,15 +234,14 @@ export class GridOperations {
             }
             case "date": {
                 await utilityCommon.setDateField(guid, textValue);
+                break;
             }
             default: {
-                let aloc = await $('.card[aria-selected="true"] .adapt-mt');
-                let action = await browser.actions().mouseMove(aloc).click();
-                await action.sendKeys(textValue + Key.ENTER).perform();
+                await $('.card[aria-selected="true"] .adapt-mt input').sendKeys(textValue + protractor.Key.ENTER);
                 break;
             }
         }
-        await utilityCommon.refresh();
+        await $(this.selectors.refreshIcon).click();
     }
 
     async applyPresetFilter(filterName: string, guid?: string): Promise<void> {

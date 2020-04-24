@@ -1,7 +1,7 @@
 import { $, browser, protractor, ProtractorExpectedConditions, element, by, ElementFinder } from "protractor";
 import { ICaseTemplate } from "../../../data/ui/interface/caseTemplate.interface";
 import caseTemplateGrid from "../../../pageobject/settings/case-management/console-casetemplate.po";
-import changeAssignemetBlade from '../../common/change-assignment-blade.po';
+import changeAssignemetOldBlade from '../../common/change-assignment-old-blade.po';
 import viewCaseTemplate from "../../../pageobject/settings/case-management/view-casetemplate.po";
 import utilCommon from '../../../utils/util.common';
 
@@ -41,7 +41,8 @@ class CreateCaseTemplate {
         changeAssignmentButton: '[rx-view-component-id="5a23952e-aac4-4e00-af6c-b93a214e26a9"] button',
         clearButton: '[rx-view-component-id="863df084-ff37-4099-85d9-2bfcc4783adc"] button',
         reopentimelineDays: '[rx-view-component-id="c562f849-8baa-4324-bbfc-77f34c4cdbde"] input',
-        panelHeadingOfSetting: '.panel-heading h4'
+        panelHeadingOfSetting: '.panel-heading h4',
+        searchInput: 'input[type="search"]',
     }
 
     async setCompanyName(companyValue: string): Promise<void> {
@@ -177,9 +178,8 @@ class CreateCaseTemplate {
     }
 
     async isPanelHeadingPresent(expectedHeading: string): Promise<boolean> {
-        return await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.panelHeadingOfSetting, expectedHeading))), 3000).then(async function (result: ElementFinder) {
-            return result.isDisplayed();
-        });
+      await element(by.css(this.selectors.searchInput)).sendKeys('Case Template');     
+      return await element(by.cssContainingText(this.selectors.panelHeadingOfSetting,expectedHeading)).isPresent();     
     }
 
     async createCaseTemplateWithMandatoryFields(caseTemplate: ICaseTemplate): Promise<void> {
@@ -195,9 +195,9 @@ class CreateCaseTemplate {
         await this.isResolutionCodeRequired(true);
         await this.isResolutionDescriptionRequired(true);
         await this.clickOnChangeAssignmentButton();
-        await changeAssignemetBlade.selectSupportGroup(caseTemplate.supportGroup);
-        await changeAssignemetBlade.selectAssignee(caseTemplate.assignee);
-        await changeAssignemetBlade.clickOnAssignButton();
+        await changeAssignemetOldBlade.selectSupportGroup(caseTemplate.supportGroup);
+        await changeAssignemetOldBlade.selectAssignee(caseTemplate.assignee);
+        await changeAssignemetOldBlade.clickOnAssignButton();
         //        await browser.sleep(2000);
         // expect(await copyCasetemplatePo.getValueOfAssignee()).toBe(caseTemplate.assignee);
         await this.clickSaveCaseTemplate();
@@ -225,10 +225,10 @@ class CreateCaseTemplate {
         await this.isResolutionCodeRequired(true);
         await this.isResolutionDescriptionRequired(true);
         await this.clickOnChangeAssignmentButton();
-        await changeAssignemetBlade.selectSupportGroup(caseTemplate.supportGroup);
-        await changeAssignemetBlade.selectAssignee(caseTemplate.assignee);
-        await changeAssignemetBlade.clickOnAssignButton();
-        //        await browser.wait(this.EC.invisibilityOf($(changeAssignemetBlade.selectors.assignToMeCheckBox)));
+        await changeAssignemetOldBlade.selectSupportGroup(caseTemplate.supportGroup);
+        await changeAssignemetOldBlade.selectAssignee(caseTemplate.assignee);
+        await changeAssignemetOldBlade.clickOnAssignButton();
+        //        await browser.wait(this.EC.invisibilityOf($(changeAssignemetOldBlade.selectors.assignToMeCheckBox)));
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
         await this.clickSaveCaseTemplate();
     }
