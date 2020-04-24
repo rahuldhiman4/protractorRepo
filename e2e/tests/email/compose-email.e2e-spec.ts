@@ -52,9 +52,9 @@ describe("Compose Email", () => {
         await loginPage.login("qtao");
         await apiHelper.apiLogin('tadmin');
         emailGuid = await apiHelper.createEmailConfiguration();
-        incomingGUID = emailGuid.incomingMailGUID;
-        outgoingGUID = emailGuid.outGoingMailGUID;
-        emailconfigGUID = emailGuid.emailConfigurationEmailGUID;
+        incomingGUID = await emailGuid.incomingMailGUID;
+        outgoingGUID = await emailGuid.outGoingMailGUID;
+        emailconfigGUID = await emailGuid.emailConfigurationEmailGUID;
     });
 
     afterAll(async () => {
@@ -311,7 +311,6 @@ describe("Compose Email", () => {
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnRequestersEmail();
         await composeMail.clickOnSelectEmailTemplateLink();
-        //await utilCommon.waitUntilSpinnerToHide();
         await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
         await emailTemplateBladePo.clickOnApplyButton();
         await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
@@ -322,7 +321,6 @@ describe("Compose Email", () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteEmailOrNotificationTemplate(emailTemplateName);
         await composeMail.clickOnSelectEmailTemplateLink();
-        await utilityCommon.waitUntilSpinnerToHide();
         await utilityGrid.searchRecord(emailTemplateName);
         expect(await emailTemplateBladePo.isEmailTemplateGridEmpty(emailTemplateName)).toBeFalsy('Email template grid is not empty');
         await emailTemplateBladePo.clickOnCancelButton();
@@ -353,7 +351,7 @@ describe("Compose Email", () => {
         await caseConsole.searchAndOpenCase(caseId);
         await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnSelectEmailTemplateLink();
-        await utilCommon.waitUntilSpinnerToHide();
+        await browser.sleep(3000);
         await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplate1);
         await emailTemplateBladePo.clickOnApplyButton();
         await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
@@ -362,7 +360,6 @@ describe("Compose Email", () => {
         expect(await composeMail.getSubjectInputValue()).toContain('Leave summary', 'Subject value 1 does not match');
         expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate1, 'email Template Name 1 does not match');
         await composeMail.clickOnSelectEmailTemplateLink();
-        await utilCommon.waitUntilSpinnerToHide();
         await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplate2);
         await emailTemplateBladePo.clickOnApplyButton();
         expect(await composeMail.getEmailBody()).toContain('I have checked my salary.', 'Email Body 2 does not match');
@@ -370,7 +367,8 @@ describe("Compose Email", () => {
         expect(await composeMail.getSubjectInputValue()).toContain('Salary summary', 'Subject 2 does not match');
         expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate2, 'Email Template name heading does not match');
         await composeMail.clickOnSendButton();
-    });
+        await utilityCommon.waitUntilPopUpDisappear();
+    }, 150*1000);
 
     //kgaikwad
     it('[DRDMV-8392,DRDMV-10384]: Negative: In Email "To" and "cc" should be user from Foundation data ', async () => {

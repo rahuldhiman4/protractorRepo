@@ -1,5 +1,6 @@
 import { $, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from "../../utils/util.grid";
+import utilityGrid from '../../utils/utility.grid';
 
 class KnowledgeArticlesGridConsole {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -26,7 +27,7 @@ class KnowledgeArticlesGridConsole {
     }
 
     async addColumnOnGrid(columnHeader: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.knowledgeArticleGridConsoleGuid, columnHeader);
+        await utilityGrid.addGridColumn(columnHeader,this.selectors.knowledgeArticleGridConsoleGuid);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
@@ -36,7 +37,7 @@ class KnowledgeArticlesGridConsole {
     }
 
     async removeColumnOnGrid(columnHeader: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.knowledgeArticleGridConsoleGuid, columnHeader);
+        await utilityGrid.removeGridColumn(columnHeader,this.selectors.knowledgeArticleGridConsoleGuid);
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
@@ -73,7 +74,7 @@ class KnowledgeArticlesGridConsole {
     }
 
     async isGridRecordPresent(searchRecord: string): Promise<boolean> {
-        return await utilGrid.isGridRecordPresent(searchRecord);
+        return await utilityGrid.isGridRecordPresent(searchRecord);
     }
 
     async getKnowledgeArticleTitle(): Promise<string> {
@@ -82,7 +83,7 @@ class KnowledgeArticlesGridConsole {
     }
 
     async isValueDisplayedInGrid(columnName: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.knowledgeArticleGridConsoleGuid, columnName);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnName,this.selectors.knowledgeArticleGridConsoleGuid);
     }
 
     async getNumberOfRecordsInGrid(): Promise<number>{

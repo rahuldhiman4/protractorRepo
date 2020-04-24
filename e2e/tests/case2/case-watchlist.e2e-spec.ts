@@ -39,6 +39,7 @@ describe('Case Watchlist', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(qyuanStr);
+        await utilityGrid.clearFilter();
         await apiHelper.apiLogin("tadmin");
         await apiHelper.updateNotificationEmailListForSupportGroup("Compensation and Benefits", "");
         await apiHelper.setDefaultNotificationForUser(qannisStr, "Alert");
@@ -141,13 +142,15 @@ describe('Case Watchlist', () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
-        for (let i: number = 0; i < 3; i++) {
+        let response = await apiHelper.createCase(caseData['caseWatchlist']);
+        caseId[0] = response.displayId;
+        for (let i: number = 1; i < 4; i++) {
             let response = await apiHelper.createCase(caseData['caseWatchlist_Resolved']);
             caseId[i] = response.displayId;
         }
         await utilityGrid.clearFilter();
         await utilityCommon.refresh();
-        for (let i: number = 0; i < 3; i++) {
+        for (let i: number = 0; i < 4; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
         await caseConsole.clickOnAddToWatchlist();

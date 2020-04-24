@@ -68,7 +68,7 @@ class ViewCasePage {
     async clickOnEmailLink(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
         await $(this.selectors.emailLink).click();
-        await browser.wait(this.EC.visibilityOf($('.modal-content')), 2000); // wait until compose email appears (api is not involved hence EC wait)
+        //await browser.wait(this.EC.visibilityOf($('.modal-content')), 2000); // wait until compose email appears (api is not involved hence EC wait)
     }
 
     async clickOnRequestersEmail(): Promise<void> {
@@ -172,8 +172,7 @@ class ViewCasePage {
         });
     }
 
-    async clickEditCaseButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
+    async clickEditCaseButton(): Promise<void> {        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
         await $(this.selectors.editLink).click();
         //        await browser.wait(this.EC.visibilityOf($(editCasePage.selectors.cancelBtn)));
     }

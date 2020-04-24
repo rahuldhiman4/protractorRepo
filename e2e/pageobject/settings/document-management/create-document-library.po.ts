@@ -32,7 +32,7 @@ class DocumentLibraryPage {
         category3: '04175b81-40f9-4112-a521-6ab4a9c8160b',
         category4: 'b74fd509-d489-4ccb-bf89-41307f794df7',
         region: 'cec69daa-b696-415b-b2ab-ebec81251d10',
-        site: '1a4afa56-0b87-45ea-9456-f251b0848c70',
+        site: '904078f1-17f1-4ac6-ab8a-a2f6e661f01d',
         status: '0a8b7179-dd0a-47f9-8515-7c7aceda3118',
         editSaveButton: '[rx-view-component-id="8035353f-acb0-4bb5-a5c5-fe7626c01b3e"] button',
         documentHamburgerGuid: '5d1f94a9-693e-4dbf-896f-3b9689f95a42',
@@ -186,7 +186,10 @@ class DocumentLibraryPage {
 
     async isDeleteButtonDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
-       return await $(this.selectors.deleteButton).isDisplayed();
+       return await $(this.selectors.deleteButton).isPresent().then(async (result) => {
+        if (result) return await $(this.selectors.deleteButton).isDisplayed();
+        else return false;
+    });
     }
 
     async isCancelButtonDisplayed(): Promise<boolean> {

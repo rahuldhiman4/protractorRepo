@@ -280,7 +280,7 @@ class NavigationPage {
 
     async switchToAnotherApplication(applicationName: string): Promise<void> {
         await this.switchToAngularTab();
-        await element(by.cssContainingText(this.selectors.menu, ' Business Workflows ')).click();
+        await element(by.cssContainingText(this.selectors.menu, 'Business Workflows')).click();
         await element(by.cssContainingText(this.selectors.menu, applicationName)).click();
     }
 
