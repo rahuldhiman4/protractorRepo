@@ -30,7 +30,7 @@ properties([
 
 node("${NodeName}"){
   stage('Clone Sources') {
-    git branch: 'master',
+    git branch: '20.02',
     credentialsId: '807c8e4d-6d6c-47e1-a62e-ef2de91d6dce',
     url: 'https://github.bmc.com/DSM-Apps/bwf-e2e-protractor.git'
   }
