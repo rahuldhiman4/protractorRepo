@@ -240,12 +240,13 @@ describe("Compose Email", () => {
         expect(await composeMail.getSubject()).toContain(caseId);
         expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
         await composeMail.clickOnSendButton();
-        expect(await activityTabPo.getEmailContent()).toContain('Qianru Tao sent an email');
-        expect(await activityTabPo.getEmailContent()).toContain(emailTemplateName);
-        expect(await activityTabPo.getEmailContent()).toContain('TO: Fritz Schulz');
-        expect(await activityTabPo.getEmailContent()).toContain(caseId + ':' + 'Leave summary');
+        await utilityCommon.waitUntilPopUpDisappear();
+        expect(await activityTabPo.getEmailTitle()).toContain('Qianru Tao sent an email');
+        expect(await activityTabPo.getEmailTemplateDetails()).toContain(emailTemplateName);
+        expect(await activityTabPo.getRecipientInTo()).toContain('To:  Fritz Schulz');
+        expect(await activityTabPo.getEmailSubject()).toContain(caseId + ':' + 'Leave summary');
         await activityTabPo.clickShowMoreForEmailActivity();
-        expect(await activityTabPo.getEmailContent()).toContain('I am taking leave today.');
+        expect(await activityTabPo.getEmailBody()).toContain('I am taking leave today.');
     });
 
     //kgaikwad
@@ -351,7 +352,6 @@ describe("Compose Email", () => {
         await caseConsole.searchAndOpenCase(caseId);
         await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnSelectEmailTemplateLink();
-        await browser.sleep(3000);
         await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplate1);
         await emailTemplateBladePo.clickOnApplyButton();
         await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
@@ -368,7 +368,7 @@ describe("Compose Email", () => {
         expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate2, 'Email Template name heading does not match');
         await composeMail.clickOnSendButton();
         await utilityCommon.waitUntilPopUpDisappear();
-    }, 150*1000);
+    }, 150 * 1000);
 
     //kgaikwad
     it('[DRDMV-8392,DRDMV-10384]: Negative: In Email "To" and "cc" should be user from Foundation data ', async () => {
@@ -400,127 +400,6 @@ describe("Compose Email", () => {
         expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?'), 'Warning Email message is missing';
         await utilCommon.clickOnWarningOk();
     });
-
-    it('[DRDMV-20365,DRDMV-20366]: Verify Able to insert table,hyperlink, images (All images) and Copy paste images in compose email and its send successfully', async () => {
-        try {
-            await navigationPage.gotoCaseConsole();
-            let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let caseData =
-            {
-                "Requester": "qtao",
-                "Summary": "Test case for DRDMV-20365 RandVal" + summary,
-                "Support Group": "Compensation and Benefits",
-                "Assignee": "qkatawazi"
-            }
-            await apiHelper.apiLogin('fritz');
-            let newCase = await apiHelper.createCase(caseData);
-            await utilityGrid.clearFilter();
-            await caseConsole.searchAndOpenCase(newCase.displayId);
-            await viewCasePo.clickOnEmailLink();
-            await composeMail.setEmailBody('new execution');
-            await composeMail.clickOnImageIcon();
-            let sourceValue = await imagePropertiesPo.addImageOnEmail('Upload', '../../../data/ui/attachment/articleStatus.png', 2, 0);
-            await composeMail.setEmailBody("This is Uploaded Image");
-            await composeMail.clickOnImageIcon();
-            await imagePropertiesPo.setInputBoxValue(uploadURL, 9);
-            await imagePropertiesPo.setInputBoxValue('200', 11);
-            await imagePropertiesPo.clickOnOkButton();
-            await composeMail.setEmailBody("this is new ");
-            await composeMail.clickOnLinkIcon();
-            await linkPropertiesPo.setValueOfLinkProperties('Google', displayText);
-            await linkPropertiesPo.setValueOfLinkProperties('www.google.com', URL);
-            await linkPropertiesPo.clickOnTargetTab();
-            await linkPropertiesPo.selectDropDown('_blank', target);
-            await linkPropertiesPo.clickOnOkBtn(0);
-            await composeMail.setEmailBody("");
-            await composeMail.clickOnTableIcon();
-            await tablePropertiesPo.setValueOfTableProperties('4', row);
-            await tablePropertiesPo.setValueOfTableProperties('10', column);
-            await tablePropertiesPo.setValueOfTableProperties('500', width);
-            await tablePropertiesPo.setValueOfTableProperties('200', height);
-            await tablePropertiesPo.setValueOfTableProperties('new' + randomStr, cellCaption);
-            await tablePropertiesPo.setValueOfTableProperties('tableSummary', cellSummary);
-            await tablePropertiesPo.clickOnOkButton();
-            //bold
-            await composeMail.clickInTableRow(0, 'tableSummary');
-            await composeMail.clickOnBoldIcon();
-            await composeMail.setDataInTable(0, 'FritstBold', 'tableSummary');
-            //italic
-            await composeMail.clickInTableRow(1, 'tableSummary');
-            await composeMail.clickOnItalicIcon();
-            await composeMail.setDataInTable(1, 'FritstItalic', 'tableSummary');
-            //underline
-            await composeMail.clickInTableRow(2, 'tableSummary');
-            await composeMail.clickOnUnderLineIcon();
-            await composeMail.setDataInTable(2, 'FritstUnderLine', 'tableSummary');
-            //left Align
-            await composeMail.clickInTableRow(3, 'tableSummary');
-            await composeMail.clickOnLeftAlignIcon();
-            await composeMail.setDataInTable(3, 'FritstLeftAlign', 'tableSummary');
-            //Right Align
-            await composeMail.clickInTableRow(4, 'tableSummary');
-            await composeMail.clickOnRightAlignIcon();
-            await composeMail.setDataInTable(4, 'FritstRightAlign', 'tableSummary');
-            //Center Align
-            await composeMail.clickInTableRow(5, 'tableSummary');
-            await composeMail.clickOnCenterAlignIcon();
-            await composeMail.setDataInTable(5, 'FritstCenterAlign', 'tableSummary');
-            //set color
-            await composeMail.clickInTableRow(6, 'tableSummary');
-            await composeMail.selectColor('Bright Blue');
-            await composeMail.setDataInTable(6, 'SettingColor', 'tableSummary');
-            //set font
-            await composeMail.clickInTableRow(7, 'tableSummary');
-            await composeMail.clickOnFontSizeIcon();
-            await composeMail.selectFontTypeOrSize('18');
-            await composeMail.setDataInTable(7, 'SettingFontSize', 'tableSummary');
-            //set fontType
-            await composeMail.clickInTableRow(8, 'tableSummary');
-            await composeMail.clickOnFontTypeIcon();
-            await composeMail.selectFontTypeOrSize('Courier New');
-            await composeMail.setDataInTable(8, 'SettingFontType', 'tableSummary');
-            await composeMail.setEmailBody("");
-            //checking number and bullot points and setting values for them
-            await composeMail.setBulletPointAndNumer('PlusOne');
-            await composeMail.setBulletPointAndNumer('PlusTwo');
-            await composeMail.setBulletPointAndNumer('PlusThree');
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
-            await composeMail.clickOnSendButton();
-            //activity verify
-            await activityTabPo.clickOnShowMore();
-            //defect/https://jira.bmc.com/browse/DRDMV-20526
-            expect(await activityTabPo.isImageDisplayedInActivity(sourceValue)).toBeTruthy('Image is not displayed');
-            expect(await activityTabPo.isImageDisplayedInActivity(uploadURL)).toBeTruthy('Image is not displayed');
-            expect(await activityTabPo.isLinkDisplayedInActivity('http://www.google.com')).toBeTruthy('Link is not displayed');
-            expect(await activityTabPo.getTextOfTD('tableSummary', 'strong')).toContain('FritstBold');
-            expect(await activityTabPo.getTextOfTD('tableSummary', 'em')).toContain('FritstItalic');
-            expect(await activityTabPo.getTextOfTD('tableSummary', 'u')).toContain('FritstUnderLine');
-            expect(await activityTabPo.getTextOfAlignment('text-align: center;')).toContain('FritstCenterAlign');
-            expect(await activityTabPo.getTextOfAlignment('text-align: right;')).toContain('FritstRightAlign');
-            expect(await activityTabPo.getColorOrFontOfText('font-family:Courier New,Courier,monospace;')).toContain('SettingFontType');
-            expect(await activityTabPo.getColorOrFontOfText('font-size:18px;')).toContain('SettingFontSize');
-            await activityTabPo.clickOnHyperlink('http://www.google.com');
-            await utilCommon.switchToNewWidnow(1);
-            expect(await browser.getTitle()).toContain('Google');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await activityTabPo.clickOnReplyAll();
-            expect(await composeMail.isImageDisplayedComposeEmail(uploadURL)).toBeTruthy('Image is not displayed');
-            expect(await composeMail.isLinkDisplayedComposeEmail('http://www.google.com')).toBeTruthy('Image is not displayed');
-            expect(await composeMail.getColorOrFontOfTextComposeEmail('font-family:Courier New,Courier,monospace;')).toContain('SettingFontType');
-            expect(await composeMail.getColorOrFontOfTextComposeEmail('font-size:18px;')).toContain('SettingFontSize');
-            await composeMail.setEmailBody("");
-            await composeMail.clickOnImageIcon();
-            let sourceValue2 = await imagePropertiesPo.addImageOnEmail('Upload', '../../../data/ui/attachment/articleStatus.png', 2, 0);
-            expect(await composeMail.isImageDisplayedComposeEmail(sourceValue2)).toBeTruthy('Image is not displayed');
-            await composeMail.clickOnSendButton();
-            expect(await activityTabPo.isImageDisplayedInActivity(sourceValue2)).toBeTruthy('Image is not displayed');
-        } catch (e) {
-            throw (e);
-        } finally {
-            await navigationPage.signOut();
-            await loginPage.login('qtao');
-        }
-    }, 500 * 1000);
 
     it('[DRDMV-20369]: Verify able to apply email template with images tables and hyperlinks ', async () => {
         try {
@@ -561,7 +440,7 @@ describe("Compose Email", () => {
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 15);
             await linkPropertiesPo.clickOnTargetTab();
             await linkPropertiesPo.selectDropDown('_blank', 7);
-            await linkPropertiesPo.clickOnOkBtn(1);
+            await linkPropertiesPo.clickOnOkBtn();
             await createEmailTemplatePo.setBody('');
             await createEmailTemplatePo.setBody(' Empty New things');
             await composeMail.clickOnTableIcon();
@@ -571,7 +450,7 @@ describe("Compose Email", () => {
             await tablePropertiesPo.setValueOfTableProperties('200', height);
             await tablePropertiesPo.setValueOfTableProperties('new' + randomStr, cellCaption);
             await tablePropertiesPo.setValueOfTableProperties('tableEmail', cellSummary);
-            await linkPropertiesPo.clickOnOkBtn(2);
+            await tablePropertiesPo.clickOnOkButton();
             //bold
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(0, 'tableEmail');
             await createEmailTemplatePo.clickOnInsertField();
@@ -586,27 +465,27 @@ describe("Compose Email", () => {
             //bold
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(2, 'tableEmail');
             await composeMail.clickOnBoldIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 'FritstBold', 'tableEmail');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 'FirstBold', 'tableEmail');
             //italic
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(3, 'tableEmail');
             await composeMail.clickOnItalicIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(3, 'FritstItalic', 'tableEmail');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(3, 'FirstItalic', 'tableEmail');
             //underline
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(4, 'tableEmail');
             await composeMail.clickOnUnderLineIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(4, 'FritstUnderLine', 'tableEmail');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(4, 'FirstUnderLine', 'tableEmail');
             //left Align
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(5, 'tableEmail');
             await composeMail.clickOnLeftAlignIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(5, 'FritstLeftAlign', 'tableEmail');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(5, 'FirstLeftAlign', 'tableEmail');
             //Right Align
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(6, 'tableEmail');
             await composeMail.clickOnRightAlignIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(6, 'FritstRightAlign', 'tableEmail');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(6, 'FirstRightAlign', 'tableEmail');
             //Center Align
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(7, 'tableEmail');
             await composeMail.clickOnCenterAlignIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(7, 'FritstCenterAlign', 'tableEmail');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(7, 'FirstCenterAlign', 'tableEmail');
             //set color
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(8, 'tableEmail');
             await composeMail.selectColor('Bright Blue');
@@ -643,12 +522,12 @@ describe("Compose Email", () => {
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.getFirstPostContent()).toContain('Fritz Schulz sent an email', 'not');
             expect(await activityTabPo.isLinkDisplayedInActivity('http://www.google.com')).toBeTruthy('Link is not displayed');
-            expect(await activityTabPo.getTextOfTD('tableEmail', 'strong')).toContain('FritstBold');
-            expect(await activityTabPo.getTextOfTD('tableEmail', 'em')).toContain('FritstItalic');
-            expect(await activityTabPo.getTextOfTD('tableEmail', 'u')).toContain('FritstUnderLine');
-            expect(await activityTabPo.getTextOfAlignment('text-align: center;')).toContain('FritstCenterAlign');
-            expect(await activityTabPo.getTextOfAlignment('text-align: right;')).toContain('FritstRightAlign');
-            expect(await activityTabPo.getColorOrFontOfText('font-size:18px;')).toContain('SettingFontSize');
+            expect(await activityTabPo.getTextOfTD('strong')).toContain('FirstBold');
+            expect(await activityTabPo.getTextOfTD('em')).toContain('FirstItalic');
+            expect(await activityTabPo.getTextOfTD('u')).toContain('FirstUnderLine');
+            expect(await activityTabPo.getTextOnActivityTable(0, 6)).toContain('FirstRightAlign');
+            expect(await activityTabPo.getTextOnActivityTable(0, 7)).toContain('FirstCenterAlign');
+            expect(await activityTabPo.getTextOnActivityTable(0, 9)).toContain('SettingFontSize');
             expect(await activityTabPo.isImageDisplayedInActivity(sourceValue1)).toBeTruthy('Image is not displayed');
         } catch (e) {
             throw (e);
@@ -682,7 +561,7 @@ describe("Compose Email", () => {
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 15);
             await linkPropertiesPo.clickOnTargetTab();
             await linkPropertiesPo.selectDropDown('_blank', 7);
-            await linkPropertiesPo.clickOnOkBtn(1);
+            await linkPropertiesPo.clickOnOkBtn();
             await editMessageTextBladePo.setMessageBody('');
             await editMessageTextBladePo.setMessageBody('this is link');
             await composeMail.clickOnTableIcon();
@@ -692,31 +571,31 @@ describe("Compose Email", () => {
             await tablePropertiesPo.setValueOfTableProperties('200', height);
             await tablePropertiesPo.setValueOfTableProperties('new' + randomStr, cellCaption);
             await tablePropertiesPo.setValueOfTableProperties('NotiFicationT', cellSummary);
-            await linkPropertiesPo.clickOnOkBtn(2);
+            await tablePropertiesPo.clickOnOkButton();
             //bold
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(0, 'NotiFicationT');
             await composeMail.clickOnBoldIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(0, 'FritstBold', 'NotiFicationT');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(0, 'FirstBold', 'NotiFicationT');
             //italic
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(3, 'NotiFicationT');
             await composeMail.clickOnItalicIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(3, 'FritstItalic', 'NotiFicationT');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(3, 'FirstItalic', 'NotiFicationT');
             //underline
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(4, 'NotiFicationT');
             await composeMail.clickOnUnderLineIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(4, 'FritstUnderLine', 'NotiFicationT');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(4, 'FirstUnderLine', 'NotiFicationT');
             //left Align
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(5, 'NotiFicationT');
             await composeMail.clickOnLeftAlignIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(5, 'FritstLeftAlign', 'NotiFicationT');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(5, 'FirstLeftAlign', 'NotiFicationT');
             //Right Align
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(6, 'NotiFicationT');
             await composeMail.clickOnRightAlignIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(6, 'FritstRightAlign', 'NotiFicationT');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(6, 'FirstRightAlign', 'NotiFicationT');
             //Center Align
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(7, 'NotiFicationT');
             await composeMail.clickOnCenterAlignIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(7, 'FritstCenterAlign', 'NotiFicationT');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(7, 'FirstCenterAlign', 'NotiFicationT');
             //set color
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(8, 'NotiFicationT');
             await composeMail.selectColor('Bright Blue');
@@ -758,13 +637,13 @@ describe("Compose Email", () => {
             //font 
             await expect(body.includes('<td><span style="font-size:18px;">SettingFontSize</span></td>')).toBeFalsy('alignment is not present');
             //right allign
-            await expect(body.includes('<td style="text-align: right;">FritstRightAlign</td>')).toBeFalsy('alignment is not present');
+            await expect(body.includes('<td style="text-align: right;">FirstRightAlign</td>')).toBeFalsy('alignment is not present');
             //center align
-            await expect(body.includes('<td style="text-align: center;">FritstCenterAlign</td>')).toBeFalsy('alignment is not present');
+            await expect(body.includes('<td style="text-align: center;">FirstCenterAlign</td>')).toBeFalsy('alignment is not present');
             //italic
-            await expect(body.includes('<td><em>FritstItalic</em></td>')).toBeFalsy('font is not present');
+            await expect(body.includes('<td><em>FirstItalic</em></td>')).toBeFalsy('font is not present');
             //underline
-            await expect(body.includes('<td><u>FritstUnderLine</u></td>')).toBeFalsy('font is not present');
+            await expect(body.includes('<td><u>FirstUnderLine</u></td>')).toBeFalsy('font is not present');
             //removing tags added
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateEmailWhiteList('a', domainName);
@@ -823,7 +702,7 @@ describe("Compose Email", () => {
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 15);
             await linkPropertiesPo.clickOnTargetTab();
             await linkPropertiesPo.selectDropDown('_blank', 7);
-            await linkPropertiesPo.clickOnOkBtn(1);
+            await linkPropertiesPo.clickOnOkBtn();
             await createEmailTemplatePo.setBody('');
             await createEmailTemplatePo.setBody('    New things');
             await composeMail.clickOnTableIcon();
@@ -833,7 +712,7 @@ describe("Compose Email", () => {
             await tablePropertiesPo.setValueOfTableProperties('200', height);
             await tablePropertiesPo.setValueOfTableProperties('new' + randomStr, cellCaption);
             await tablePropertiesPo.setValueOfTableProperties('tableEmail', cellSummary);
-            await linkPropertiesPo.clickOnOkBtn(2);
+            await tablePropertiesPo.clickOnOkButton();
             //bold
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(0, 'tableEmail');
             await createEmailTemplatePo.clickOnInsertField();
@@ -844,27 +723,27 @@ describe("Compose Email", () => {
             //bold
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(2, 'tableEmail');
             await composeMail.clickOnBoldIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 'FritstBold', 'tableEmail');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 'FirstBold', 'tableEmail');
             //italic
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(3, 'tableEmail');
             await composeMail.clickOnItalicIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(3, 'FritstItalic', 'tableEmail');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(3, 'FirstItalic', 'tableEmail');
             //underline
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(4, 'tableEmail');
             await composeMail.clickOnUnderLineIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(4, 'FritstUnderLine', 'tableEmail');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(4, 'FirstUnderLine', 'tableEmail');
             //left Align
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(5, 'tableEmail');
             await composeMail.clickOnLeftAlignIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(5, 'FritstLeftAlign', 'tableEmail');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(5, 'FirstLeftAlign', 'tableEmail');
             //Right Align
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(6, 'tableEmail');
             await composeMail.clickOnRightAlignIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(6, 'FritstRightAlign', 'tableEmail');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(6, 'FirstRightAlign', 'tableEmail');
             //Center Align
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(7, 'tableEmail');
             await composeMail.clickOnCenterAlignIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(7, 'FritstCenterAlign', 'tableEmail');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(7, 'FirstCenterAlign', 'tableEmail');
             //set color
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(8, 'tableEmail');
             await composeMail.selectColor('Bright Blue');
@@ -1034,4 +913,130 @@ describe("Compose Email", () => {
         await activityTabPo.clickShowMoreForEmailActivity();
         expect(await activityTabPo.getAttachmentCount()).toBe(21);
     });
+
+    it('[DRDMV-20365,DRDMV-20366]: Verify Able to insert table,hyperlink, images (All images) and Copy paste images in compose email and its send successfully', async () => {
+        try {
+            await navigationPage.gotoCaseConsole();
+            let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let caseData =
+            {
+                "Requester": "qtao",
+                "Summary": "Test case for DRDMV-20365 RandVal" + summary,
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "qkatawazi"
+            }
+            await apiHelper.apiLogin('fritz');
+            let newCase = await apiHelper.createCase(caseData);
+            await utilityGrid.clearFilter();
+            await caseConsole.searchAndOpenCase(newCase.displayId);
+            await viewCasePo.clickOnEmailLink();
+            await composeMail.setEmailBody('Uploading Image through Browsing');
+            await composeMail.clickOnImageIcon();
+            let sourceValue = await imagePropertiesPo.addImageOnEmail('Upload', '../../../data/ui/attachment/articleStatus.png', 2, 0);
+            await composeMail.setEmailBody("Uploading Image through URL");
+            await composeMail.clickOnImageIcon();
+            await imagePropertiesPo.setInputBoxValue(uploadURL, 0);
+            await imagePropertiesPo.setInputBoxValue('200', 2);
+            await imagePropertiesPo.clickOnOkButton();
+            await composeMail.setEmailBody("Adding a Link: ");
+            await composeMail.clickOnLinkIcon();
+            await linkPropertiesPo.setValueOfLinkProperties('Google', displayText);
+            await linkPropertiesPo.setValueOfLinkProperties('www.google.com', URL);
+            await linkPropertiesPo.clickOnTargetTab();
+            await linkPropertiesPo.selectDropDown('_blank', target);
+            await linkPropertiesPo.clickOnOkBtn();
+            await composeMail.setEmailBody("Table: ");
+            await composeMail.clickOnTableIcon();
+            await tablePropertiesPo.setValueOfTableProperties('4', row);
+            await tablePropertiesPo.setValueOfTableProperties('10', column);
+            await tablePropertiesPo.setValueOfTableProperties('500', width);
+            await tablePropertiesPo.setValueOfTableProperties('200', height);
+            await tablePropertiesPo.setValueOfTableProperties('new' + randomStr, cellCaption);
+            await tablePropertiesPo.setValueOfTableProperties('tableSummary', cellSummary);
+            await tablePropertiesPo.clickOnOkButton();
+            //bold
+            await composeMail.clickInTableRow(0, 'tableSummary');
+            await composeMail.clickOnBoldIcon();
+            await composeMail.setDataInTable(0, 'FirstBold', 'tableSummary');
+            //italic
+            await composeMail.clickInTableRow(1, 'tableSummary');
+            await composeMail.clickOnItalicIcon();
+            await composeMail.setDataInTable(1, 'FirstItalic', 'tableSummary');
+            //underline
+            await composeMail.clickInTableRow(2, 'tableSummary');
+            await composeMail.clickOnUnderLineIcon();
+            await composeMail.setDataInTable(2, 'FirstUnderLine', 'tableSummary');
+            //left Align
+            await composeMail.clickInTableRow(3, 'tableSummary');
+            await composeMail.clickOnLeftAlignIcon();
+            await composeMail.setDataInTable(3, 'FirstLeftAlign', 'tableSummary');
+            //Right Align
+            await composeMail.clickInTableRow(4, 'tableSummary');
+            await composeMail.clickOnRightAlignIcon();
+            await composeMail.setDataInTable(4, 'FirstRightAlign', 'tableSummary');
+            //Center Align
+            await composeMail.clickInTableRow(5, 'tableSummary');
+            await composeMail.clickOnCenterAlignIcon();
+            await composeMail.setDataInTable(5, 'FirstCenterAlign', 'tableSummary');
+            //set color
+            await composeMail.clickInTableRow(6, 'tableSummary');
+            await composeMail.selectColor('Bright Blue');
+            await composeMail.setDataInTable(6, 'SettingColor', 'tableSummary');
+            //set font
+            await composeMail.clickInTableRow(7, 'tableSummary');
+            await composeMail.clickOnFontSizeIcon();
+            await composeMail.selectFontTypeOrSize('18');
+            await composeMail.setDataInTable(7, 'SettingFontSize', 'tableSummary');
+            //set fontType
+            await composeMail.clickInTableRow(8, 'tableSummary');
+            await composeMail.clickOnFontTypeIcon();
+            await composeMail.selectFontTypeOrSize('Courier New');
+            await composeMail.setDataInTable(8, 'SettingFontType', 'tableSummary');
+            //checking number and bullot points and setting values for them
+            await composeMail.setBulletPointAndNumer('PlusOne');
+            await composeMail.setBulletPointAndNumer('PlusTwo');
+            await composeMail.setBulletPointAndNumer('PlusThree');
+            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.clickOnSendButton();
+            await utilityCommon.waitUntilPopUpDisappear();
+            //activity verify
+            await activityTabPo.clickOnShowMore();
+            expect(await activityTabPo.isImageDisplayedInActivity(sourceValue)).toBeTruthy('Image is not displayed');
+            expect(await activityTabPo.isImageDisplayedInActivity(uploadURL)).toBeTruthy('Image is not displayed');
+            expect(await activityTabPo.isLinkDisplayedInActivity('http://www.google.com')).toBeTruthy('Link is not displayed');
+            expect(await activityTabPo.getTextOfTD('strong')).toContain('FirstBold');
+            expect(await activityTabPo.getTextOfTD('em')).toContain('FirstItalic');
+            expect(await activityTabPo.getTextOfTD('u')).toContain('FirstUnderLine');
+            expect(await activityTabPo.getTextOnActivityTable(0, 3)).toContain('FirstLeftAlign');
+            expect(await activityTabPo.getTextOnActivityTable(0, 4)).toContain('FirstRightAlign');
+            expect(await activityTabPo.getTextOnActivityTable(0, 5)).toContain('FirstCenterAlign');
+            expect(await activityTabPo.getTextOnActivityTable(0, 6)).toContain('SettingColor');
+            expect(await activityTabPo.getTextOnActivityTable(0, 7)).toContain('SettingFontSize');
+            expect(await activityTabPo.getTextOnActivityTable(0, 8)).toContain('SettingFontType');
+            await activityTabPo.clickOnHyperlink('http://www.google.com');
+            await browser.waitForAngularEnabled(false);
+            expect(await browser.getTitle()).toContain('Google');
+            await browser.waitForAngularEnabled(true);
+            await browser.navigate().back();
+            expect(await browser.getTitle()).toContain('Helix');
+            await activityTabPo.clickOnRefreshButton();
+            await activityTabPo.clickOnReplyAll();
+            expect(await composeMail.isImageDisplayedComposeEmail(uploadURL)).toBeTruthy('Image is not displayed');
+            expect(await composeMail.isLinkDisplayedComposeEmail('http://www.google.com')).toBeTruthy('Image is not displayed');
+            expect(await composeMail.getColorOrFontOfTextComposeEmail('font-family:Courier New,Courier,monospace;')).toContain('SettingFontType');
+            expect(await composeMail.getColorOrFontOfTextComposeEmail('font-size:18px;')).toContain('SettingFontSize');
+            await composeMail.clickOnImageIcon();
+            let sourceValue2 = await imagePropertiesPo.addImageOnEmail('Upload', '../../../data/ui/attachment/articleStatus.png', 2, 0);
+            expect(await composeMail.isImageDisplayedComposeEmail(sourceValue2)).toBeTruthy('Image is not displayed');
+            await composeMail.clickOnSendButton();
+            await utilityCommon.waitUntilPopUpDisappear();
+            await activityTabPo.clickOnShowMore();
+            expect(await activityTabPo.isImageDisplayedInActivity(sourceValue2)).toBeTruthy('Image not displayed');
+        } catch (e) {
+            throw (e);
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+        }
+    }, 500 * 1000);
 })
