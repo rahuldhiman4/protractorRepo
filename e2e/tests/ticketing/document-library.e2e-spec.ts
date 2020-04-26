@@ -89,7 +89,7 @@ describe('Document Library', () => {
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'status is not in Published status';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is enabled');
-    });
+    }, 170 * 1000);
 
     //kgaikwad
     it('[DRDMV-13074]: Verify Document Managment Grid Console', async () => {

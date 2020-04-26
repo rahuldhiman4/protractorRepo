@@ -880,7 +880,7 @@ describe('Case Activity', () => {
         await utilCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.getFirstPostContent()).toContain(textWithMultipleAttachment);
         expect(await activityTabPage.getCountAttachedFiles('demo.txt')).toBe(6);
-    });
+    }, 150 * 1000);
 
     //kgaikwad
     // Ok

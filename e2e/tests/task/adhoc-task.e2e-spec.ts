@@ -227,7 +227,7 @@ describe('Create Adhoc task', () => {
         expect(await viewTask.isCaseViewLinkDisplayed()).toBeTruthy('Case View Link is not displayed');
         await navigationPage.signOut();
         await loginPage.login('qtao');
-    }, 290 * 1000);
+    }, 350 * 1000);
 
     it('[DRDMV-12249,DRDMV-12244]: Verify task creation with attachments & Verify attachment grid from case', async () => {
         let filePath = '../../data/ui/attachment/demo.txt';

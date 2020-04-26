@@ -185,7 +185,7 @@ describe('Email', () => {
         //verify activity email post
         await emailPo.clickOnSendButton();
         expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
-    });
+    }, 160 * 1000);
 
     it('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -277,7 +277,7 @@ describe('Email', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
         }
-    }, 300 * 1000);
+    }, 340 * 1000);
 
     it('[DRDMV-19558]: Verify social notes other than email should not have reply and reply all options', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -629,6 +629,6 @@ describe('Email', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         }
-    }, 200 * 1000);
+    }, 290 * 1000);
 
 })
