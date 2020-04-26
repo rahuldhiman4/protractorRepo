@@ -98,7 +98,7 @@ describe('EmailTemplate', () => {
         expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message Type')).toBe('body', 'Body is missing from Grid');
         await editEmailTemplatePo.searchOnGridConsole('subject');
         expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message Type')).toBe('subject', 'subject is missing from Grid');
-    }, 200 * 1000);
+    }, 220 * 1000);
 
     //kgaikwad
     it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Email Template : User Is able to delete Email Template', async () => {
@@ -211,5 +211,5 @@ describe('EmailTemplate', () => {
         await consoleEmailTemplatePo.clickOnDeleteButton();
         await utilCommon.waitUntilSpinnerToHide();
         expect(await consoleEmailTemplatePo.isGridRecordPresent(templateName2)).toBeFalsy('Public template name is preset on grid')
-    }, 250 * 1000);
+    }, 270 * 1000);
 })

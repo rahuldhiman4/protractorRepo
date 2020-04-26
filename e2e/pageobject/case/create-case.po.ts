@@ -3,6 +3,7 @@ import { $, $$, by, element, protractor, ProtractorExpectedConditions} from "pro
 import utilityCommon from '../../utils/utility.common';
 import selectCasetemplateBladePo from './select-casetemplate-blade.po';
 import utilGrid from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
 class CreateCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -283,7 +284,7 @@ class CreateCasePage {
 
     async isTemplateNamePresent(templateName: string) :Promise<boolean>{    
         await selectCasetemplateBladePo.clickOnAllTemplateTab();
-        await utilGrid.searchOnGridConsole(templateName);
+        await utilityGrid.searchRecord(templateName);
         return await element(by.cssContainingText(this.selectors.templateValue,templateName)).isPresent();
     }
 }

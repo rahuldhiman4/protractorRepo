@@ -6,23 +6,23 @@ class TableProperties {
     selectors = {
         tablePropertiesInput:'.cke_single_page  tbody input',
         dropdownValues:'.cke_single_page select.cke_dialog_ui_input_select',
-        okButton:'.cke_dialog_footer .cke_dialog_ui_button_ok',
+        okButton:'.cke_dialog_ui_button_ok',
+        tableDialogWindow:'.cke_dialog_body'
     }
     
     async setValueOfTableProperties(value:string,sequ:number):Promise<void>{
-        await $$(this.selectors.tablePropertiesInput).get(sequ).clear();
-        await $$(this.selectors.tablePropertiesInput).get(sequ).sendKeys(value);
+        await $$(this.selectors.tableDialogWindow).get(2).$$(this.selectors.tablePropertiesInput).get(sequ).clear();
+        await $$(this.selectors.tableDialogWindow).get(2).$$(this.selectors.tablePropertiesInput).get(sequ).sendKeys(value);
     }
 
     async selectDropDownValues(value:string,sequ:number):Promise<void>{
-        await $$(this.selectors.dropdownValues).get(sequ).click();
+        await $$(this.selectors.tableDialogWindow).get(2).$$(this.selectors.dropdownValues).get(sequ).click();
         let locator=`option[value='${value}']`
         await $(locator).click();
     }
 
     async clickOnOkButton():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable( $(this.selectors.okButton)));
-        await $(this.selectors.okButton).click();
+        await $$(this.selectors.tableDialogWindow).get(2).$(this.selectors.okButton).click();
     }
 
 }

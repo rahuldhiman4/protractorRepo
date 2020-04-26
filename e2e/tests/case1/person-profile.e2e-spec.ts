@@ -116,7 +116,7 @@ describe('Person Profile test', () => {
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
         }
-    });
+    }, 190 * 1000);
 
     //asahitya
     it('[DRDMV-14028]: Verify Requested Cases tab of My Profile console', async () => {

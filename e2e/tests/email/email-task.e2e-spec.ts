@@ -159,7 +159,7 @@ describe('Email', () => {
         expect(await emailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
         //verify activity email post
         await emailPo.clickOnSendButton();
-        expect(await activityTabPo.getEmailContent()).toContain('Fritz Schulz sent an email');
+        expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
         await viewTask.clickOnViewCase();
         await viewCasePage.clickAddTaskButton();
         await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
@@ -184,8 +184,8 @@ describe('Email', () => {
         expect(await emailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
         //verify activity email post
         await emailPo.clickOnSendButton();
-        expect(await activityTabPo.getEmailContent()).toContain('Fritz Schulz sent an email');
-    });
+        expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
+    }, 160 * 1000);
 
     it('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -277,7 +277,7 @@ describe('Email', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
         }
-    }, 300 * 1000);
+    }, 340 * 1000);
 
     it('[DRDMV-19558]: Verify social notes other than email should not have reply and reply all options', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -358,10 +358,10 @@ describe('Email', () => {
         await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com')
         await emailPo.setEmailBody('this is new email sending frist time to the user');
         await emailPo.clickOnSendButton();
-        expect(await activityTabPo.getEmailContent()).toContain('Fritz Schulz sent an email');
-        expect(await activityTabPo.getEmailContent()).toContain('To: Fritz Schulz');
-        expect(await activityTabPo.getEmailContent()).toContain(displayId + ':' + ManualtaskID + ':' + manualTaskSummary);
-        expect(await activityTabPo.getEmailContent()).toContain('this is new email sending frist time to the user');
+        expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
+        expect(await activityTabPo.getRecipientInTo()).toContain('To:  Fritz Schulz');
+        expect(await activityTabPo.getEmailSubject()).toContain(displayId + ':' + ManualtaskID + ':' + manualTaskSummary);
+        expect(await activityTabPo.getEmailBody()).toContain('this is new email sending frist time to the user');
         await activityTabPo.clickOnReplyAll();
         await emailPo.isComposeEmailUIDisplay();
         expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
@@ -370,10 +370,10 @@ describe('Email', () => {
         expect(await emailPo.getEmailBody()).toContain('While replying, please do not add information below this line');
         await emailPo.setEmailBody('this is second reply to all');
         await emailPo.clickOnSendButton();
-        expect(await activityTabPo.getEmailContent()).toContain('this is second reply to all');
+        expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
         await activityTabPo.clickOnReply();
         expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
-        expect(await activityTabPo.getEmailContent()).toContain('this is second reply to all');
+        expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
         await viewTask.clickOnViewCase();
@@ -386,10 +386,10 @@ describe('Email', () => {
         await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com')
         await emailPo.setEmailBody('this is new email sending frist time to the user');
         await emailPo.clickOnSendButton();
-        expect(await activityTabPo.getEmailContent()).toContain('Fritz Schulz sent an email');
-        expect(await activityTabPo.getEmailContent()).toContain('To: Fritz Schulz');
-        expect(await activityTabPo.getEmailContent()).toContain(displayId + ':' + externaltaskID + ':' + externalTaskSummary);
-        expect(await activityTabPo.getEmailContent()).toContain('this is new email sending frist time to the user');
+        expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
+        expect(await activityTabPo.getRecipientInTo()).toContain('To:  Fritz Schulz');
+        expect(await activityTabPo.getEmailSubject()).toContain(displayId + ':' + externaltaskID + ':' + externalTaskSummary);
+        expect(await activityTabPo.getEmailBody()).toContain('this is new email sending frist time to the user');
         await activityTabPo.clickOnReplyAll();
         await emailPo.isComposeEmailUIDisplay();
         expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
@@ -398,13 +398,13 @@ describe('Email', () => {
         expect(await emailPo.getEmailBody()).toContain('this is new email sending frist time to the user');
         await emailPo.setEmailBody('this is second reply to all');
         await emailPo.clickOnSendButton();
-        expect(await activityTabPo.getEmailContent()).toContain('this is second reply to all');
+        expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
         await activityTabPo.clickOnReply();
         expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
-        expect(await activityTabPo.getEmailContent()).toContain('this is second reply to all');
+        expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
-        expect(await activityTabPo.getEmailContent()).toContain('this is third reply');
+        expect(await activityTabPo.getEmailBody()).toContain('this is third reply');
     }, 200 * 1000);
 
     it('[DRDMV-19557]: For Reply / Reply All earlier email context should be copied as part of email composition on Case', async () => {
@@ -426,10 +426,10 @@ describe('Email', () => {
         await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com')
         await emailPo.setEmailBody('this is new email sending frist time to the user');
         await emailPo.clickOnSendButton();
-        expect(await activityTabPo.getEmailContent()).toContain('Fritz Schulz sent an email');
-        expect(await activityTabPo.getEmailContent()).toContain('To: Fritz Schulz');
-        expect(await activityTabPo.getEmailContent()).toContain(displayId + ':' + 'Create case for Email Test');
-        expect(await activityTabPo.getEmailContent()).toContain('this is new email sending frist time to the user');
+        expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
+        expect(await activityTabPo.getRecipientInTo()).toContain('To:  Fritz Schulz');
+        expect(await activityTabPo.getEmailSubject()).toContain(displayId + ':' + 'Create case for Email Test');
+        expect(await activityTabPo.getEmailBody()).toContain('this is new email sending frist time to the user');
         await activityTabPo.clickOnReplyAll();
         await emailPo.isComposeEmailUIDisplay();
         expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
@@ -438,10 +438,10 @@ describe('Email', () => {
         expect(await emailPo.getEmailBody()).toContain('While replying, please do not add information below this line');
         await emailPo.setEmailBody('this is second reply to all');
         await emailPo.clickOnSendButton();
-        expect(await activityTabPo.getEmailContent()).toContain('this is second reply to all');
+        expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
         await activityTabPo.clickOnReply();
         expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
-        expect(await activityTabPo.getEmailContent()).toContain('this is second reply to all');
+        expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
     }, 200 * 1000);
@@ -502,8 +502,8 @@ describe('Email', () => {
         await emailTemplateBladePo.clickOnApplyButton();
         await emailPo.clickOnSendButton();
         await utilityCommon.refresh();
-        expect(await activityTabPo.getEmailContent()).toContain('Fritz Schulz sent an email');
-        expect(await activityTabPo.getEmailContent()).toContain('To: Fritz Schulz');
+        expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
+        expect(await activityTabPo.getRecipientInTo()).toContain('To:  Fritz Schulz');
         await activityTabPo.clickOnReply();
         expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
         expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\n\n\nI am taking leave today.\n\n\n\nThanks.');
@@ -629,6 +629,6 @@ describe('Email', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         }
-    }, 200 * 1000);
+    }, 290 * 1000);
 
 })

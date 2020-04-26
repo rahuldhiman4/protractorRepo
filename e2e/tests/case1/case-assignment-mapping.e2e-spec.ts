@@ -190,7 +190,7 @@ describe("Create Case Assignment Mapping", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 250 * 1000);
+    }, 310 * 1000);
 
     //radhiman
     it('[DRDMV-12034]: [Assignment Mapping] Verify precedence will be given to company specific assignment mapping if we have global approval mapping with Same name', async () => {

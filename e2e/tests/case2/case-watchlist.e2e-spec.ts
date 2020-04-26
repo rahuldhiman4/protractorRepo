@@ -1044,7 +1044,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
         }
-    }, 340 * 1000);
+    }, 360 * 1000);
 
     it('[DRDMV-16041]: Verify that Case Agent can follow/unfollow the cases from case itself - Read only user', async () => {
         await apiHelper.apiLogin(qtaoStr);
