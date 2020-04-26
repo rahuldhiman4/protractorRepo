@@ -399,7 +399,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 180 * 1000);
+    }, 250 * 1000);
 
     //ankagraw
     it('[DRDMV-16076]: Reopen configurations available on Case Template Create screen ', async () => {
@@ -480,7 +480,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 330 * 1000);
+    }, 490 * 1000);
 
     //ankagraw
     it('[DRDMV-1237]: [Global navigation] Navigation to Workspaces and Create subitems in the Shell ', async () => {
@@ -915,7 +915,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 180 * 1000);
+    }, 240 * 1000);
 
     it('[DRDMV-1620]: [Case] Fields validation for case in Closed status ', async () => {
         try {

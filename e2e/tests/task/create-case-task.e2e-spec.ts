@@ -376,7 +376,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 260 * 1000);
+    }, 290 * 1000);
 
     //ankagraw
     it('[DRDMV-12558]: Task Template submitter from different company of owner group can edit the template', async () => {
@@ -696,7 +696,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });
+    }, 180 * 1000);
 
     //ankagraw
     it('[DRDMV-3795]: [Task Template] Task Template Status changes', async () => {
@@ -747,7 +747,7 @@ describe('Create Case Task', () => {
         await editTaskTemplate.selectTemplateStatus("Draft");
         await editTaskTemplate.clickOnSaveMetadata();
         await expect(viewTaskTemplate.getTemplateStatus()).toBe('Draft');
-    });
+    }, 150 * 1000);
 
     //ankagraw
     it('[DRDMV-7254]: Automated Task] - Automated Task Activation behavior when Case is created in In Progress status via Case template having Task templates in it', async () => {
@@ -800,7 +800,7 @@ describe('Create Case Task', () => {
         await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Completed");
 
-    }, 160 * 1000);
+    }, 190 * 1000);
 
     //ankagraw
     it('[DRDMV-7158]: Automated Task] - Automated Task Activation behavior when Case is created in In Progress status via Case template having Task templates in it', async () => {

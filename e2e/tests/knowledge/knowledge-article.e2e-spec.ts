@@ -756,7 +756,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    })
+    }, 170 * 1000);
 
     it('[DRDMV-5192]: Unflag the article', async () => {
         try {

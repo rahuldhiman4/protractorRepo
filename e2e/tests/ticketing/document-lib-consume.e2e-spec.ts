@@ -111,7 +111,7 @@ describe('Document Library Consume UI', () => {
         await attachmentBladePo.searchAndSelectCheckBox('bwfJpg');
         await attachmentBladePo.clickOnDownloadButton();
         await expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is not downloaded.');
-    }, 140 * 1000);
+    }, 250 * 1000);
 
     //kgaikwad
     it('[DRDMV-13533]: Access to the documents attached on case when agent has read access to the case', async () => {
@@ -296,7 +296,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 440 * 1000);
+    }, 520 * 1000);
 
     //kgaikwad
     it('[DRDMV-13507]: Compose Email - Case agent attaches published document from document library where case agent is author of the document', async () => {
