@@ -481,7 +481,7 @@ describe('Dynamic data', () => {
         await editTaskPo.clickOnSaveButton();
         //verify show more and show less button
         expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText()).toContain('Show more');
-        await viewTaskPo.clickShowMoreLink();
+        await viewTaskPo.clickShowMoreShowLessLink();
         expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText()).toContain('Show less');
         //verify attached files on case view
         expect(await viewTaskPo.isFileDisplayed('bwfJpg3.jpg')).toBeTruthy('File is not present');
