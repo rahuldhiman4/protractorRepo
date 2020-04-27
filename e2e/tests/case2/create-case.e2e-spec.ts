@@ -971,13 +971,11 @@ describe("Create Case", () => {
             await previewCasePo.clickGoToCaseButton();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickChangeAssignmentButton();
             await changeAssignmentPage.setAssignee(petramcoStr, aUsupportStr, kasiaOstlunsStr);
             await editCasePage.clickSaveCase();
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await activityPo.isTextPresentInActivityLog("Kasia Ostlun")).toBeTruthy("Text is not present in activiy tab1");
             expect(await activityPo.isTextPresentInActivityLog("changed the case assignment")).toBeTruthy("Text is not present in activiy tab2");
             expect(await activityPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab3");
@@ -986,20 +984,16 @@ describe("Create Case", () => {
             await activityTabPo.addActivityNote(activityNoteText);
             await activityTabPo.addAttachment(filePath);
             await activityTabPo.clickOnPostButton();
-            await utilCommon.waitUntilSpinnerToHide();
-            await utilCommon.waitUntilSpinnerToHide();
             await expect(activityTabPo.isTextPresentInNote(activityNoteText)).toBeTruthy('Private Note is not Added');
+            expect(await activityTabPo.isAttachmentInActivity('bwfPdf.pdf')).toBeTruthy('File is not present on activity');
             await activityTabPo.addActivityNote(randomStr);
             await activityTabPo.clickPublicCheckbox();
             await activityTabPo.clickOnPostButton();
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await activityTabPo.isTextPresentInNote(randomStr)).toBeTruthy('Public Note is not Added');
             await viewCasePage.clickAttachmentsLink();
             await attachmentBladePage.searchAndSelectCheckBox('bwfPdf');
             expect(await attachmentBladePage.isDownloadButtonEnabled()).toBeTruthy('Download button is disabled');
             await attachmentBladePage.clickOnDownloadButton();
-            expect(await activityTabPo.isTextPresentInNote(activityNoteText)).toBeTruthy('Private Note is not Added');
-            expect(await activityTabPo.isAttachmentInActivity('bwfPdf.pdf')).toBeTruthy('File is not present on activity');
             expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
         } catch (e) {
             throw e;

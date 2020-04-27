@@ -206,8 +206,8 @@ class ActivityTabPage {
     }
 
     async getTextOnActivityTable(rowNumber:number, columnNumber: number): Promise<string>{
-        let row = await $$('.activity .email-body table tr').get(rowNumber);
-        let cellText = await row.$$('td').get(columnNumber).getText();
+        let row = await $$('.activity .email-body table tr').get(rowNumber-1);
+        let cellText = await row.$$('td').get(columnNumber-1).getText();
         return cellText;
     }
 
@@ -513,10 +513,9 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText('.activity-general-note', bodyText)).isDisplayed().then(async (result) => {
-            if (result) return true;
-            else return false;
-        });
+        let activityText = await $$('.activity .pt-2 [style="position: relative;"] .ng-star-inserted').first();
+        let value = await activityText.getText();
+        return value.includes(bodyText) ? true:false;
     }
 
     async getCaseViewCount(TitleText: string): Promise<number> {
@@ -646,10 +645,9 @@ class ActivityTabPage {
     }
 
     async isAttachmentInActivity(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText('.rx-attachment-view-name', bodyText)).isDisplayed().then(async (result) => {
-            if (result) return true;
-            else return false;
-        });
+        let attachmentText = await $$('.activity .pt-2 .bwf-attachment-container__file-name').first();
+        let value = await attachmentText.getText();
+        return value.includes(bodyText) ? true:false;
     }
 }
 
