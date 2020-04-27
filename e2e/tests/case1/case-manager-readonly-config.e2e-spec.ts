@@ -118,7 +118,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
-        await statusConfig.setCompanyDropdown("Petramco", 'case');
+        await statusConfig.setCompanyDropdown("Petramco", 'task');
         expect(await statusConfig.isEditLifeCycleBtnDisabled()).toBeTruthy("Edit Life Cycle button is enabled");
     });
 

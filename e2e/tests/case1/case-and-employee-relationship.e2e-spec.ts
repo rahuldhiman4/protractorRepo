@@ -13,7 +13,7 @@ import relatedCasePage from '../../pageobject/common/related-case-tab.po';
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import { default as gridUtil, default as utilGrid } from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
 
 describe('Case And Employee Relationship', () => {
@@ -61,7 +61,7 @@ describe('Case And Employee Relationship', () => {
         await addRelatedPopupPage.addPerson('Brain Adams', 'Witness');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(5);
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Brain Adams', 'Witness')).toBeTruthy();
-    }, 150 * 1000);
+    }, 240 * 1000);
 
     //asahitya
     it('[DRDMV-16896]: Multiple people can be added by same Relationship', async () => {
@@ -107,7 +107,7 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedTabPage.getRelatedPersonPhoneNumber('Bobby Hill')).toBe('+556132296002');
         expect(await relatedTabPage.getRelatedPersonRelationship('Bobby Hill')).toBe('Former Manager');
         expect(await relatedTabPage.getRelatedPersonSite('Bobby Hill')).toBe('Houston\n2101 CityWest Blvd., Houston, Texas, 77042, United States');
-        expect(await relatedTabPage.isEmailLinkNotPresent('Bobby Hill')).toBeTruthy();
+        expect(await relatedTabPage.isEmailLinkNotPresent('Bobby Hill')).toBeTruthy('Email should not be a clickable link');
     }, 150 * 1000);
 
     //asahitya
@@ -179,16 +179,16 @@ describe('Case And Employee Relationship', () => {
 
         //Open case 3 and verify case1 is not present in Related cases
         await navigationPage.gotoCaseConsole()
-        await gridUtil.clearFilter();
-        await gridUtil.searchAndOpenHyperlink(caseId3);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(caseId3);
         await viewCasePo.clickOnTab('Related Cases');
         expect(await relatedCasePage.isCasePresent(caseId1)).toBeTruthy();
 
         //Remove case 2 from case 1 and verify in case 2
         await relatedCasePage.removeRelatedCase(caseId2);
         await navigationPage.gotoCaseConsole()
-        await gridUtil.clearFilter();
-        await gridUtil.searchAndOpenHyperlink(caseId2);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(caseId2);
         await viewCasePo.clickOnTab('Related Cases');
         expect(await relatedCasePage.isCasePresent(caseId3)).toBeTruthy();
     }, 180 * 1000);
@@ -200,7 +200,7 @@ describe('Case And Employee Relationship', () => {
         let response = await apiHelper.createCase(caseData['caseData_DRDMV16243']);
         let caseDisplayId = response.displayId;
         await navigationPage.gotoCaseConsole();
-        await utilGrid.searchAndOpenHyperlink(caseDisplayId);
+        await utilityGrid.searchAndOpenHyperlink(caseDisplayId);
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Qianru Tao', 'Inspector');
@@ -221,7 +221,7 @@ describe('Case And Employee Relationship', () => {
         let caseDisplayId1 = response1.displayId;
         let caseDisplayId2 = response2.displayId;
         await navigationPage.gotoCaseConsole();
-        await utilGrid.searchAndOpenHyperlink(caseDisplayId1);
+        await utilityGrid.searchAndOpenHyperlink(caseDisplayId1);
         await viewCasePo.clickOnTab('Related Cases');
         await relatedCasePage.addRelatedCases();
         await addRelatedCasespopup.addRelatedCase(caseDisplayId2, "Child");
@@ -259,24 +259,23 @@ describe('Case And Employee Relationship', () => {
         await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
 
         await navigationPage.gotoCaseConsole();
-        await utilGrid.searchAndOpenHyperlink(caseId);
+        await utilityGrid.searchAndOpenHyperlink(caseId);
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Harry Potter', 'Related to');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
 
         await navigationPage.gotoCaseConsole();
-        await utilGrid.searchAndOpenHyperlink(caseId);
+        await utilityGrid.searchAndOpenHyperlink(caseId);
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.removeRelatedPerson("Harry Potter");
-        await utilCommon.waitUntilSpinnerToHide();
-        await viewCasePo.clickOnTab('Case Access');
+        await utilityCommon.waitUntilSpinnerToHide();
         expect(await relatedTabPage.isRelatedPersonPresent("Harry Potter")).toBeFalsy("Harry Potter is still related to Case: " + caseId);
 
         await navigationPage.gotoPersonProfile();
         expect(await relatedTabPage.isRelatedPersonPresent("Brain Adams")).toBeFalsy("Brain Adams is still related to Person Profile");
-        expect(await relatedTabPage.isRemoveRelatedPersonIconPresent("Qiang Du")).toBeFalsy("Cross icon is available");
-    });
+        expect(await relatedTabPage.isRemoveRelatedPersonIconEnabled("Qiang Du")).toBeFalsy("Cross icon is enabled");
+    },180*1000);
 
     //asahitya
     it('[DRDMV-17029]: Check Related Cases Tab on Case Bottom section', async () => {
@@ -307,16 +306,16 @@ describe('Case And Employee Relationship', () => {
         await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
 
         await navigationPage.gotoCaseConsole();
-        await utilGrid.searchAndOpenHyperlink(caseId);
+        await utilityGrid.searchAndOpenHyperlink(caseId);
         // This validation is not required as tab click is happening based on Tab text
         //expect(await caseEditPage.getRelatedCasesTabText()).toBe("Related Cases");
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
         await quickCase.setCaseSummary(randomStr);
-        await utilCommon.waitUntilSpinnerToHide();
+        await utilityCommon.waitUntilSpinnerToHide();
         await quickCase.pinFirstRecommendedCase();
         await quickCase.createCaseButton();
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         await quickCase.gotoCaseButton();
 
         await viewCasePo.clickOnTab('Related Cases');
