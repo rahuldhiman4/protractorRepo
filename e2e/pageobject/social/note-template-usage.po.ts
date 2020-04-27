@@ -1,5 +1,5 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
 import activityTab from './activity-tab.po';
 import utilCommon from '../../utils/util.common';
 
@@ -31,7 +31,7 @@ class notesTemplateUsage {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notesTemplateButton)));
         await $(this.selectors.notesTemplateButton).click();
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchTextBox)));
-        await utilGrid.searchAndSelectGridRecord(notesTemplate, this.selectors.searchGuid);
+        await utilityGrid.searchAndSelectGridRecord(notesTemplate);
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyButton)));
         await $(this.selectors.applyButton).click();
 //        await utilCommon.waitUntilSpinnerToHide();
