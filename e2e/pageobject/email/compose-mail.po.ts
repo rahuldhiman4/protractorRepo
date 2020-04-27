@@ -26,6 +26,7 @@ class ComposeMail {
         toOrCcEmailgetText: 'div.adapt-mt-field-wrapper .flexi-type-ahead-person-tag',
         subjectInput: '.subject-name input',
         templateNameHeader: '.select-email-container .template-seperator',
+        recipientRemoveIcon: '.adapt-mt-wrapper .adapt-mt-item-close',
         tableIcon: '.cke_toolbar .cke_button__table_icon',
         imageIcon: '.cke_toolbar .cke_button__image_icon',
         linkIcon: '.cke_toolbar .cke_button__link_icon',
@@ -46,22 +47,36 @@ class ComposeMail {
 
     async clickOnTableIcon(): Promise<void> {
         await $(this.selectors.tableIcon).click();
+        await browser.sleep(2000);
     }
 
     async clickOnImageIcon(): Promise<void> {
         await $(this.selectors.imageIcon).click();
+        await browser.sleep(2000);
     }
 
     async clickOnLinkIcon(): Promise<void> {
         await $(this.selectors.linkIcon).click();
+        await browser.sleep(2000);
     }
 
 
-    async clickInTableRow(td: number, summary: string): Promise<void> {
-        let locator = `table[summary='${summary}'] td`;
+    async clickInTableCell(row: number, column: number, summary: string): Promise<void> {
+        let locator = `table[summary='${summary}'] tr`;
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame(element(by.css("iframe.cke_wysiwyg_frame")).getWebElement());
-        await $$(locator).get(td).click();
+        let rowLocator = await $$(locator).get(row-1);
+        await rowLocator.$$('td').get(column-1).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+    }
+
+    async setDataInTable(row: number, column: number, value: string, summary: string): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        let locator = `table[summary='${summary}'] tr`;
+        await browser.switchTo().frame(element(by.css("iframe.cke_wysiwyg_frame")).getWebElement());
+        let rowLocator = await $$(locator).get(row-1);
+        await rowLocator.$$('td').get(column-1).sendKeys(value);
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
     }
@@ -88,16 +103,6 @@ class ComposeMail {
 
     async clickOnCenterAlignIcon(): Promise<void> {
         await $(this.selectors.centerAlignIcon).click();
-    }
-
-    async setDataInTable(td: number, value: string, summary: string): Promise<void> {
-        await browser.waitForAngularEnabled(false);
-        let locator = `table[summary='${summary}'] td`;
-        await browser.switchTo().frame(element(by.css("iframe.cke_wysiwyg_frame")).getWebElement());
-        await browser.wait(this.EC.elementToBeClickable($$(locator).get(td)), 2000);
-        await $$(locator).get(td).sendKeys(value);
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
     }
 
     async selectColor(colorValue: string): Promise<void> {
@@ -130,13 +135,14 @@ class ComposeMail {
     }
 
     async isUserPopulatedInToOrCc(value: string, emailToOrCCValue): Promise<boolean> {
-        let element = await $(`input[aria-label="${value}"]`);
-        //        await browser.wait(this.EC.elementToBeClickable(element));
-        await element.click();
-        await element.clear();
-        await element.sendKeys(emailToOrCCValue);
-        //        await browser.sleep(2000);
-        return await $(this.selectors.templateNameHeader).isPresent();
+        if(value=='To'){
+            await $$(this.selectors.toCcInput).get(0).clear();
+            await $$(this.selectors.toCcInput).get(0).sendKeys(emailToOrCCValue);
+        }else{
+            await $$(this.selectors.toCcInput).get(1).clear();
+            await $$(this.selectors.toCcInput).get(1).sendKeys(emailToOrCCValue);
+        }
+        return await $(this.selectors.recipientRemoveIcon).isPresent();
     }
 
     async clickOnSelectEmailTemplateLink(): Promise<void> {
@@ -159,43 +165,34 @@ class ComposeMail {
     }
 
     async closeComposeEmail(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.crossIcon)));
         await ($(this.selectors.crossIcon)).click();
-        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isSubjectPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.getsubject)));
         return await $(this.selectors.getsubject).isPresent();
     }
 
     async getSubject(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.getsubject)),2000);
         return (await $(this.selectors.getsubject).getText()).trim();
     }
 
     async isSelectEmailTemplateLinkPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectEmailTemplateLink)));
         return await $(this.selectors.selectEmailTemplateLink).isPresent();
     }
 
     async isMessageBodyFontPannelBarPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.messageBodyFontPannelBar)));
         return await $(this.selectors.messageBodyFontPannelBar).isPresent();
     }
 
     async isAttachLinkPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachLink)));
         return await $(this.selectors.attachLink).isPresent();
     }
 
     async isSendButtonPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.sendButton)));
         return await $(this.selectors.sendButton).isDisplayed();
     }
 
     async isDiscardButtonPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.discardButton)));
         return await $(this.selectors.discardButton).isPresent();
     }
 
@@ -210,24 +207,20 @@ class ComposeMail {
     }
 
   async clickOnSelectTempalteButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectTemplateButton)));
         await $(this.selectors.selectTemplateButton).click();
     }
 
     async getToEmailPerson(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.toEmailgetText)));
         return await (await $$(this.selectors.toOrCcEmailgetText).first().getText()).trim();
     }
 
     async getCcEmailPerson(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.ccEmailgetText)));
         return await (await $$(this.selectors.toOrCcEmailgetText).last().getText()).trim();
     }
 
     async setBulletPointAndNumer(value: string): Promise<void> {
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
-        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
         await $(this.selectors.emailBody).sendKeys(Key.CONTROL, Key.END);
         await $(this.selectors.emailBody).sendKeys(Key.ENTER);
         await browser.switchTo().defaultContent();
@@ -280,21 +273,15 @@ class ComposeMail {
 
 
     async isEmailIconLinkPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.presenceOf($('[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"]')));
         let presentInDom: boolean = await element(by.css('[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button')).isPresent();
-        //        if (presentInDom) {
         return await $('[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button').isDisplayed();
-        //        }
-        //        return presentInDom;
     }
 
     async isSelectEmailTemplateButtonPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectTemplateButton)));
         return await $(this.selectors.selectTemplateButton).isDisplayed();
     }
 
     async isComposeEmailUIDisplay(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.composeEmailUI)));
         return await $(this.selectors.composeEmailUI).isDisplayed();
     }
 
@@ -320,7 +307,6 @@ class ComposeMail {
     }
 
     async getSubjectInputValue(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.subjectInput)));
         let newInput = $(this.selectors.subjectInput);
         await $(this.selectors.subjectInput).click();
         let templateName = await newInput.getAttribute('value');
@@ -328,12 +314,10 @@ class ComposeMail {
     }
 
     async getEmailTemplateNameHeading(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateNameHeader)));
         return await $(this.selectors.templateNameHeader).getText();
     }
 
     async selectEmailFromPopUp(emailIdForToOrCc: string): Promise<void> {
-        //        let element = await browser.wait(this.EC.elementToBeClickable($(this.selectors.popupEmail)));
         let popupemail = await $(this.selectors.popupEmail);
         let isclicked = await popupemail.getAttribute('aria-label');
         if (isclicked.contains(emailIdForToOrCc)) {
@@ -342,19 +326,15 @@ class ComposeMail {
     }
 
     async clickOnAttachmentLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachButton)));
         await $(this.selectors.attachButton).click();
     }
     async searchPerson(value: string, EmailIdForToOrCc: string): Promise<number> {
         let countOfPersons = 0;
         let element = await $(`input[aria-label="${value}"]`);
-        //        await browser.wait(this.EC.elementToBeClickable(element));
         await element.click();
         await element.clear();
         await element.sendKeys(EmailIdForToOrCc);
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.popupEmail)));
         await this.setToOrCCInputTetxbox(value, EmailIdForToOrCc);
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.popupInfo)));
         let values: number = await $$(this.selectors.popupInfo).count();
         for (let i = 0; i < values; i++) {
             let person = await $$(this.selectors.popupInfo).get(i);
@@ -364,13 +344,11 @@ class ComposeMail {
             }
         }
         element.clear();
-        //        await browser.wait(this.EC.invisibilityOf($(this.selectors.popupInfo)));
         return countOfPersons;
     }
     async isImageDisplayedComposeEmail(value: string): Promise<boolean> {
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
-       // await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
         let locator = `img[src='${value}']`;
         let imageIsDisplayed: boolean = await $$(locator).last().isDisplayed();
         await browser.switchTo().defaultContent();
@@ -392,7 +370,6 @@ class ComposeMail {
     async getColorOrFontOfTextComposeEmail(value: string): Promise<string> {
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
-        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
         let locator = `td span[style='${value}']`;
         let isColorDisplayed = await $(locator).getText();
         await browser.switchTo().defaultContent();

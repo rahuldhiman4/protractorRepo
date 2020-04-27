@@ -1,28 +1,44 @@
-import { $,$$, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
 
 class TableProperties {
-   
+
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        tablePropertiesInput:'.cke_single_page  tbody input',
-        dropdownValues:'.cke_single_page select.cke_dialog_ui_input_select',
-        okButton:'.cke_dialog_ui_button_ok',
-        tableDialogWindow:'.cke_dialog_body'
-    }
-    
-    async setValueOfTableProperties(value:string,sequ:number):Promise<void>{
-        await $$(this.selectors.tableDialogWindow).get(2).$$(this.selectors.tablePropertiesInput).get(sequ).clear();
-        await $$(this.selectors.tableDialogWindow).get(2).$$(this.selectors.tablePropertiesInput).get(sequ).sendKeys(value);
+        tablePropertiesInput: '.cke_single_page  tbody input',
+        dropdownValues: '.cke_single_page select.cke_dialog_ui_input_select',
+        okButton: '.cke_dialog_ui_button_ok',
+        tableDialogWindow: '.cke_dialog_body'
     }
 
-    async selectDropDownValues(value:string,sequ:number):Promise<void>{
-        await $$(this.selectors.tableDialogWindow).get(2).$$(this.selectors.dropdownValues).get(sequ).click();
-        let locator=`option[value='${value}']`
+    async getTableParentElementIndex(): Promise<number> {
+        let i = 0;
+        let elementsCount = await $$('.cke_dialog_body').count();
+        for (i = 0; i < elementsCount; i++) {
+            let tempElement = await $$('.cke_dialog_body').get(i);
+            let actualText = await tempElement.$('div').getText();
+            if (actualText == 'Table Properties') {
+                break;
+            }
+        }
+        return i;
+    }
+
+    async setValueOfTableProperties(value: string, sequ: number): Promise<void> {
+        let index = await this.getTableParentElementIndex();
+        await $$(this.selectors.tableDialogWindow).get(index).$$(this.selectors.tablePropertiesInput).get(sequ).clear();
+        await $$(this.selectors.tableDialogWindow).get(index).$$(this.selectors.tablePropertiesInput).get(sequ).sendKeys(value);
+    }
+
+    async selectDropDownValues(value: string, sequ: number): Promise<void> {
+        let index = await this.getTableParentElementIndex();
+        await $$(this.selectors.tableDialogWindow).get(index).$$(this.selectors.dropdownValues).get(sequ).click();
+        let locator = `option[value='${value}']`
         await $(locator).click();
     }
 
-    async clickOnOkButton():Promise<void>{
-        await $$(this.selectors.tableDialogWindow).get(2).$(this.selectors.okButton).click();
+    async clickOnOkButton(): Promise<void> {
+        let index = await this.getTableParentElementIndex();
+        await $$(this.selectors.tableDialogWindow).get(index).$(this.selectors.okButton).click();
     }
 
 }
