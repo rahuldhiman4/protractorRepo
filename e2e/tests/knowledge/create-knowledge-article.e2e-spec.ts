@@ -771,7 +771,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    });
+    }, 160 * 1000);
 
     it('[DRDMV-2887]: [Knowledge Article] Adding/Modifying location data while creating knowledge articles - site, region', async () => {
         try {

@@ -730,7 +730,7 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.getValueOfDynamicFields('temp5')).toBe('2:00 AM');
         expect(await viewCasePo.getValueOfDynamicFields('dynamicList')).toBe('listvalues');
         expect(await viewCasePo.getValueOfDynamicFields('attachment2')).toContain('demo.txt');
-    }, 200 * 1000);
+    }, 230 * 1000);
 
     // ptidke
     it('[DRDMV-13127]: [Dynamic Data] - Create Case from Create Case with Template having dynamic fields and also have field with source as Requester', async () => {
@@ -771,7 +771,7 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.getValueOfDynamicFields('temp5')).toBe(empty);
         expect(await viewCasePo.getValueOfDynamicFields('dynamicList')).toBe(empty);
         expect(await viewCasePo.getValueOfDynamicFields('attachment1')).toBe(empty);
-    }, 160 * 1000);
+    }, 250 * 1000);
 
     //ptidke
     it('[DRDMV-13158]: [-ve] [UI] [Dynamic Data] - Update Task dynamic fields with invalid data', async () => {

@@ -154,7 +154,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 210 * 1000);
+    }, 280 * 1000);
 
     //ptidke
     it('[DRDMV-13123]:[Dynamic Data] [UI] - Dynamic Fields display on Case Edit view UI', async () => {
@@ -271,7 +271,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 180 * 1000);
+    }, 250 * 1000);
 
     it('[DRDMV-13136]:[-ve] [Dynamic Data] - Case with large no. of Dynamic fields', async () => {
         try {
@@ -447,7 +447,7 @@ describe('Case Data Store', () => {
         expect(await viewCasePo.getValueOfDynamicFields(field4OutSideGroup)).toBe('Yes');
         expect(await viewCasePo.getValueOfDynamicFields(field1OutSideGroup)).toBe(field2InGroup);
         expect(await viewCasePo.getValueOfDynamicFields(field2OutSideGroup)).toBe('8888545888');
-    }, 150 * 1000);
+    }, 180 * 1000);
 
     //ptidke
     it('[DRDMV-13140]:[Dynamic Data] [UI] -Dynamic Fields display on Task Template Edit view UI', async () => {

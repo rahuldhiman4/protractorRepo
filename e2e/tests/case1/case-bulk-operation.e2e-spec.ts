@@ -82,7 +82,7 @@ describe('Case Bulk Operation', () => {
             expect(await viewCasePage.getAssigneeText()).toBe("Qing Yuan");
             await navigationPage.gotoCaseConsole();
         }
-    });
+    }, 150 * 1000);
 
     it('[DRDMV-15954]: Verify if Case Agent can select and un-select all the Cases using checkbox beside Case column', async () => {
         await caseConsolePage.selectAllCases();
@@ -126,7 +126,7 @@ describe('Case Bulk Operation', () => {
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
         }
-    });
+    }, 160 * 1000);
 
     it('[DRDMV-15978]: Verify user having case read access cannot change assignee of the case using bulk assignment', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -224,7 +224,7 @@ describe('Case Bulk Operation', () => {
             await navigationPage.gotoCaseConsole();
         }
 
-    });
+    }, 160 * 1000);
 
     it('[DRDMV-16109]: Verify that Agent creates the Case with BU, Org, Support Group, Department and while Bulk Assignment select only Org and Support Group', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -257,7 +257,7 @@ describe('Case Bulk Operation', () => {
             expect(await viewCasePage.getAssigneeText()).toBe("BOPerson lnPerson");
             await navigationPage.gotoCaseConsole();
         }
-    });
+    }, 150 * 1000);
 
     it('[DRDMV-16110]: Verify that Agent creates the Case with Org, Support Group and while Bulk Assignment select BU, Org, Support Group, Department', async () => {
         await apiHelper.apiLogin(qtaoStr);
