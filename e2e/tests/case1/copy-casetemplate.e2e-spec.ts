@@ -66,7 +66,7 @@ describe('Copy Case Template', () => {
         expect(copiedCasetemplateFromNew == CasetemplateNew).toBeFalsy();
         expect(await copyCaseTemplate.getValueOfResolutionCode()).toBe(caseTemplateAllFields.resolutionCode);
         expect(await copyCaseTemplate.getValueOfResolutionDescription()).toBe(caseTemplateAllFields.resolutionDescription);
-    }, 150 * 1000);
+    }, 190 * 1000);
 
     //ptidke
     it('[DRDMV-13543,DRDMV-13555]: Create a Copy of Case template by Case Business Analyst that belongs to Support Group,Case Template console grid should show Newly created copied template', async () => {
@@ -164,7 +164,7 @@ describe('Copy Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 220 * 1000);
+    }, 300 * 1000);
 
     //ptidke
     it('[DRDMV-13815]: Instruction come Warning Message is displayed on Create Copy Case Template Page', async () => {
@@ -185,5 +185,5 @@ describe('Copy Case Template', () => {
         expect(await copyCaseTemplate.getCopyCaseTemplateInstruction()).toContain('Task templates similar to the associated task templates are added.');
         expect(await copyCaseTemplate.getCopyCaseTemplateInstruction()).toContain('If no similar task templates are available, new task templates are automatically created.');
         expect(await copyCaseTemplate.getCopyCaseTemplateInstruction()).toContain('Assignment and ownership for new task templates are copied from new case template.');
-    });
+    }, 150 * 1000);
 });

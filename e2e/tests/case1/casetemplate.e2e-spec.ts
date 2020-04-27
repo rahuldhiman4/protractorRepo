@@ -56,7 +56,7 @@ describe('Case Template', () => {
         //await utilCommon.waitUntilPopUpDisappear();
         await expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(caseTemplateName);
         await expect(await viewCaseTemplate.getIdentityValdationValue()).toContain(caseTemplateAllFields.identityValidation);
-    });
+    }, 170 * 1000);
 
     //ptidke
     it('[DRDMV-10487]: Case Template update with Template validation as ENFORCED', async () => {
@@ -83,7 +83,7 @@ describe('Case Template', () => {
         await editCasetemplatePo.changeIdentityValidationValue('Enforced');
         await editCaseTemplate.clickSaveCaseTemplate();
         await expect(await viewCaseTemplate.getIdentityValdationValue()).toContain('Enforced');
-    });
+    }, 150 * 1000);
 
     //ptidke
     it('[DRDMV-10469]: Case Template creation with Template validation as ENFORCED', async () => {
@@ -103,7 +103,7 @@ describe('Case Template', () => {
         //await utilCommon.waitUntilPopUpDisappear();
         await expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(caseTemplateName);
         await expect(await viewCaseTemplate.getIdentityValdationValue()).toContain('Enforced');
-    });
+    }, 150 * 1000);
 
     //ptidke
     it('[DRDMV-10481]: Case Template creation with Template validation as NONE', async () => {
@@ -123,7 +123,7 @@ describe('Case Template', () => {
         //await utilCommon.waitUntilPopUpDisappear();
         await expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(caseTemplateName);
         await expect(await viewCaseTemplate.getIdentityValdationValue()).toContain('None');
-    });
+    }, 160 * 1000);
 
     //ptidke
     it('[DRDMV-10476]: Case Template creation with Template validation as OPTIONAL using tadmin login', async () => {
@@ -216,7 +216,7 @@ describe('Case Template', () => {
         await editCaseTemplate.clickEditCaseTemplate();
         await expect(editCasetemplatePo.getValueOfAssignmentMethod()).toContain('None');
         await editCaseTemplate.clickSaveCaseTemplate();
-    });
+    }, 150 * 1000);
 
     //ptidke
     it('[DRDMV-1231]: [Edit Case Template] Template metadata edit', async () => {
@@ -248,7 +248,7 @@ describe('Case Template', () => {
         await expect(await viewCaseTemplate.getOwnerGroupValue()).toContain(caseTemplateRequiredFields.supportGroup);
         await expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Petramco');
         await expect(await viewCaseTemplate.getTemplateStatusValue()).toContain(caseTemplateRequiredFields.templateStatus);
-    }, 140 * 1000);
+    }, 160 * 1000);
 
     //ptidke
     it('[DRDMV-1229]: [Case Template Console] Search by Summary and Display ID on the Case Template Console', async () => {
@@ -326,7 +326,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 230 * 1000);
+    }, 250 * 1000);
 
     //ptidke
     it('[DRDMV-12578]:Case BA from other than case template owner group can NOT update the template', async () => {
@@ -626,7 +626,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 280 * 1000);
+    }, 330 * 1000);
 
     //apdeshmu 
     it('[DRDMV-1223]: [Case Template] Template visibility', async () => {

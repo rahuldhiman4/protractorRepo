@@ -247,7 +247,7 @@ describe("Compose Email", () => {
         expect(await activityTabPo.getEmailSubject()).toContain(caseId + ':' + 'Leave summary');
         await activityTabPo.clickShowMoreForEmailActivity();
         expect(await activityTabPo.getEmailBody()).toContain('I am taking leave today.');
-    });
+    }, 150 * 1000);
 
     //kgaikwad
     it('[DRDMV-10401,DRDMV-10393]: Email Body override with template details', async () => {
@@ -1038,5 +1038,5 @@ describe("Compose Email", () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
         }
-    }, 500 * 1000);
+    }, 570 * 1000);
 })

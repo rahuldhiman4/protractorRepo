@@ -129,7 +129,7 @@ describe('Case Status Change', () => {
         expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
         expect(await caseConsole.isCaseStatusPresent(statusPending)).toBeTruthy("Status Pending not matching");
         expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
-    }, 335 * 1000);
+    }, 350 * 1000);
 
     //kgaikwad
     it('[DRDMV-1618]: [Case] Fields validation for case in Resolved status', async () => {
@@ -221,7 +221,7 @@ describe('Case Status Change', () => {
         await updateStatusBladePo.clickOnstatusReason();
         await updateStatusBladePo.setStatusReason('Auto Resolved');
         await updateStatusBladePo.clickSaveStatus();
-    }, 160 * 1000);
+    }, 180 * 1000);
 
     //kgaikwad
     it('[DRDMV-1616]: [Case] Fields validation for case In Progress status', async () => {
@@ -476,7 +476,7 @@ describe('Case Status Change', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 312 * 1000);
+    }, 370 * 1000);
 
     //apdeshmu
     it('[DRDMV-1196]: [Case Status] Case status change from Resolved', async () => {
@@ -705,7 +705,7 @@ describe('Case Status Change', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 460 * 1000);
+    }, 520 * 1000);
 
     //apdeshmu
     it('[DRDMV-1200]: [Case Status] Case status change from Pending', async () => {
