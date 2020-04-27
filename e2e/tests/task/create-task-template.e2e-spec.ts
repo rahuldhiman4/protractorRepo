@@ -424,8 +424,8 @@ describe('Create Task Template', () => {
         //Add Automation Task templates in Case
         await viewCasePage.clickOnTab('Case Access');
         await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-        await caseAccessTabPo.selectCompany('Petramco');
-        await caseAccessTabPo.selectSupportGroup('Staffing');
+        await caseAccessTabPo.selectCompany('Petramco','Select Company');
+        await caseAccessTabPo.selectSupportGroup('Staffing','Select Support Group');
         await viewCasePage.clickOnTab('Tasks');
         await viewCasePage.clickAddTaskButton();
 
