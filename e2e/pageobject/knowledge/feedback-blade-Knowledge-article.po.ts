@@ -21,9 +21,9 @@ class FeedbackKnowledgeBlade {
      }
 
      async isTellUsMoreDisplayedWithReuqired():Promise<string>{
-        let nameElement = await $('[rx-view-component-id="2b192056-a661-49b7-948f-4c75dbc4ffea"] span');
-        let value:string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
-        return await value.trim().substring(3,value.length-2);
+        let nameElement = await $('[rx-view-component-id="2b192056-a661-49b7-948f-4c75dbc4ffea"] span.form-control-required');
+        let value =  await nameElement.getText();
+        return await value.substring(1,value.length-1);
      }
 
      async isSaveButtonDisplayed():Promise<boolean>{

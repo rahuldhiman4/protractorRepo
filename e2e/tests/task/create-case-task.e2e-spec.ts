@@ -128,7 +128,7 @@ describe('Create Case Task', () => {
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.clickOnSaveTaskTemplate();
         expect(await viewTasktemplatePage.getTaskCompanyNameValue()).toBe("Petramco");
-        //await utilCommon.waitUntilPopUpDisappear();
+        await utilityCommon.waitUntilPopUpDisappear();
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
@@ -147,7 +147,7 @@ describe('Create Case Task', () => {
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.clickOnSaveTaskTemplate();
         await expect(viewTasktemplatePage.getTaskCompanyNameValue()).toBe("Petramco");
-        //await utilCommon.waitUntilPopUpDisappear();
+        await utilityCommon.waitUntilPopUpDisappear();
 
         //case create
         try {
@@ -171,7 +171,7 @@ describe('Create Case Task', () => {
             await manageTask.clickTaskLinkOnManageTask(automationTaskSummaryWithallField);
             await expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             await expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.bwfa:Get Request Status Data2 ${randomStr}`);
-            await expect(await viewTask.getDescriptionValue()).toBe('All field get added in this task template');
+            await expect(await viewTask.getDescriptionValue()).toBe(' All field get added in this task template ');
             await expect(await viewTask.getLabelValue()).toBe(menuItemName);
             await expect(await viewTask.getCategoryTier1Value()).toBe('Applications');
             await expect(await viewTask.getCategoryTier2Value()).toBe('Social');
@@ -184,12 +184,12 @@ describe('Create Case Task', () => {
             await manageTask.clickTaskLinkOnManageTask(autmationTaskSummaryWithRequiredData);
             await expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             await expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.bwfa:Get Request Status Data1 ${randomStr}`);
-            await expect(await viewTask.getDescriptionValue()).toBe('');
-            await expect(await viewTask.getLabelValue()).toBe('');
-            await expect(await viewTask.getCategoryTier1Value()).toBe('');
-            await expect(await viewTask.getCategoryTier2Value()).toBe('');
-            await expect(await viewTask.getCategoryTier3Value()).toBe('');
-            await expect(await viewTask.getCategoryTier4Value()).toBe('');
+            await expect(await viewTask.getDescriptionValue()).toBe('-');
+            await expect(await viewTask.getLabelValue()).toBe('-');
+            await expect(await viewTask.getCategoryTier1Value()).toBe('-');
+            await expect(await viewTask.getCategoryTier2Value()).toBe('-');
+            await expect(await viewTask.getCategoryTier3Value()).toBe('-');
+            await expect(await viewTask.getCategoryTier4Value()).toBe('-');
         } catch (e) {
             throw e;
         } finally {

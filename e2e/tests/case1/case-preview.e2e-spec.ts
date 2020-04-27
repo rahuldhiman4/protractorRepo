@@ -10,6 +10,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 
 describe("Case Preview", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -34,10 +35,13 @@ describe("Case Preview", () => {
         await quickCasePo.selectRequesterName('qkatawazi');
         await quickCasePo.setCaseSummary(caseSummary);
         await quickCasePo.saveCase();
+        await utilityCommon.waitUntilPopUpDisappear();
         await casePreviewPo.clickOnViewCaseLink();
-        await utilityCommon.switchToNewTab(0);
+        await utilityCommon.switchToNewTab(1);
+        expect(await viewCasePo.getCaseSummary()).toBe(caseSummary);
         expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy('On View Case page edit button not present');
-        await utilCommon.switchToDefaultWindowClosingOtherTabs();
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        await previewCasePo.clickGoToCaseButton();
     });
 
     //kgaikwad
@@ -88,7 +92,7 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCategoryTier2Displayed('-')).toBeTruthy('CategoryTier2 is missing');
         expect(await casePreviewPo.isCategoryTier3Displayed('-')).toBeTruthy('CategoryTier3 is missing');
         expect(await casePreviewPo.isAssigneeDisplayed('None')).toBeTruthy('Assignee name is missing');
-        expect(await casePreviewPo.isAssignedGroupDisplayed('Workforce Administration')).toBeTruthy('Assigned group name is missing');
+        expect(await casePreviewPo.isAssignedGroupDisplayed('AU Support 1')).toBeTruthy('Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
@@ -130,9 +134,9 @@ describe("Case Preview", () => {
         await quickCasePo.selectRequesterName('qkatawazi');
         await quickCasePo.setCaseSummary(caseSummary);
         await quickCasePo.saveCase();
-        await expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Case save message not matched');
+        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Case save message not matched');
         await casePreviewPo.clickOncreateNewCaseButton();
-        await expect(await quickCasePo.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
+        expect(await quickCasePo.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
     }, 380 * 1000);
 
     //kgaikwad
@@ -196,7 +200,7 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCaseSummaryDisplayed(caseSummary)).toBeTruthy('failureMsg: Summary is missing');
         expect(await casePreviewPo.isCaseIdDisplayed()).toBeTruthy('failureMsg: Case ID is missing');
         expect(await casePreviewPo.isPriorityDisplayed('High')).toBeTruthy('failureMsg: Priority is missing');
-        expect(await casePreviewPo.isCaseStatusDisplayed('Assigned')).toBeTruthy('failureMsg: Case Status is missing');
+        expect(await casePreviewPo.isCaseStatusDisplayed('Pending')).toBeTruthy('failureMsg: Case Status is missing');
         expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('failureMsg: Requester name is missing');
         expect(await casePreviewPo.isRequesterPhoneDisplayed('+15123431923')).toBeTruthy('Requester phone number is missing');
         expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('failureMsg: Requester email id is missing');

@@ -370,10 +370,9 @@ export class GridOperation {
 
         // await browser.wait(this.EC.elementToBeClickable($(guidId + this.selectors.filterIcon)));
         await $(guidId + this.selectors.filterIcon).click();
-        let fldLocator = await element(by.cssContainingText(guidId + this.selectors.filterItems, fieldName));
+        await element.all(by.cssContainingText(guidId + this.selectors.filterItems, fieldName)).last().click();
         // await browser.wait(this.EC.elementToBeClickable(fldLocator));
-        await fldLocator.click();
-
+        
         switch (type) {
             case "checkbox": {
                 let cbox = `.rx-search-filter-option[title='${textValue}']`
@@ -391,9 +390,7 @@ export class GridOperation {
                 break;
             }
             default: {
-                let txtFieldLocator = fldLocator.$('label.d-textfield__label');
-                // await browser.wait(this.EC.elementToBeClickable(txtFieldLocator));
-                await txtFieldLocator.sendKeys(textValue + Key.ENTER);
+                element.all(by.cssContainingText(guidId + this.selectors.filterItems, fieldName)).last().$('label.d-textfield__label').sendKeys(textValue + Key.ENTER);
                 break;
             }
         }
