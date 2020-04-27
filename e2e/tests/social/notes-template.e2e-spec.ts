@@ -364,7 +364,7 @@ describe('Notes template', () => {
             await notesTemplateUsage.clickOnRequsterName();
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
             await activityTabPo.clickOnPostButton();
-            await expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
+            await expect(await activityTabPo.isTextPresentInActivityLog(notesTemplateBody)).toBeTruthy();
             await navigationPage.signOut();
             await loginPage.login('qdu');
             let caseData2 = {
@@ -380,7 +380,7 @@ describe('Notes template', () => {
             await notesTemplateUsage.clickOnRequsterName();
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
             await activityTabPo.clickOnPostButton();
-            await expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
+            await expect(await activityTabPo.isTextPresentInActivityLog(notesTemplateBody)).toBeTruthy();
         }
         catch (e) {
             throw e;
@@ -433,9 +433,10 @@ describe('Notes template', () => {
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
+            await utilityCommon.refresh();
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
             await activityTabPo.clickOnPostButton();
-            await expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
+            await expect(await activityTabPo.isTextPresentInActivityLog(notesTemplateBody)).toBeTruthy();
         } catch (e) {
             throw e;
         }
@@ -443,7 +444,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         }
-    }, 170 * 1000);
+    }, 200 * 1000);
 
     //ptidke
     it('[DRDMV-16047]: [Run Time] Validate that case BA is able to select and utilize Active Knowledge notes templates in Knowledge Article ', async () => {
@@ -470,6 +471,6 @@ describe('Notes template', () => {
         await viewKnowledgeArticlePo.clickOnTab('Activity');
         await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
         await activityTabPo.clickOnPostButton();
-        await expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
+        await expect(await activityTabPo.isTextPresentInActivityLog(notesTemplateBody)).toBeTruthy();
     });
 })

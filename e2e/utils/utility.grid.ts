@@ -28,7 +28,7 @@ export class GridOperations {
         let searchTextBoxLocator: string = this.selectors.searchTextBox;
         if (guid) { searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator; }
         await $(searchTextBoxLocator).clear();
-        await $(searchTextBoxLocator).sendKeys(searchValue + Key.ENTER);
+        await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
         await utilityCommon.waitUntilSpinnerToHide();
     }
 
@@ -122,14 +122,9 @@ export class GridOperations {
     }
 
     async searchAndOpenHyperlink(id: string, guid?: string): Promise<void> {
-        if (guid) {
-            await this.searchRecord(id, guid);
-            await $$(`[rx-view-component-id='${guid}'] ` + this.selectors.gridRowLinks).first().click();
-        }
-        else {
-            await this.searchRecord(id);
-            await $$(this.selectors.gridRowLinks).first().click();
-        }
+        await this.searchRecord(id, guid);
+        if (guid) await $$(`[rx-view-component-id='${guid}'] ` + this.selectors.gridRowLinks).first().click();
+        else await $$(this.selectors.gridRowLinks).first().click();
     }
 
     async getFirstGridRecordColumnValue(columnName: string, guid?: string): Promise<string> {

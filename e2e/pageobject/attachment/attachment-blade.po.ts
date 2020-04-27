@@ -28,6 +28,7 @@ class AttachmentBlade {
         mediaTypeColoumnHeader: 'table thead tr th:nth-of-type(4) div',
         createdDateColoumnValues: 'tbody tr td:nth-of-type(5) div',
         createdDateColoumnHeader: 'table thead tr th:nth-of-type(5) div',
+        attachmentName: 'table .attachment-view-thumbnail__title-text',
     }
 
     async getCountOfSelectedCheckBox(): Promise<string> {
@@ -136,8 +137,9 @@ class AttachmentBlade {
         return await utilityGrid.getFirstGridRecordColumnValue(columnName);
     }
 
-    async clickOnFileName(value: any): Promise<void> {
-        await utilityGrid.searchAndOpenHyperlink(value);
+    async clickOnFileName(attachment: string): Promise<void> {
+        await utilityGrid.searchRecord(attachment);
+        await element(by.cssContainingText(this.selectors.attachmentName, attachment)).click(); 
     }
 
     async clickOnDownloadButton(): Promise<void> {
@@ -188,4 +190,3 @@ class AttachmentBlade {
 }
 
 export default new AttachmentBlade();
-

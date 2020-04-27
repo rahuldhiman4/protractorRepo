@@ -5,7 +5,7 @@ import utilityCommon from '../../utils/utility.common'
 class EditKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        statusChange: '.adapt-counter-label-wrapper  .status-transition',
+        statusChange: 'ux-status-transition .status-transition',
         statusSaveBtn: '[rx-view-component-id="e45ca390-e752-4bd5-97c7-69618d609d59"] button',
         changeReviewerBtn: '[rx-view-component-id="f8c32272-6166-4001-a2dc-60762b5f6d69"] button',
         assigneToMeReviewerAssign: '[rx-view-component-id="38145a40-54e3-4e12-95b6-db53dced601d"] button',
@@ -44,7 +44,7 @@ class EditKnowledgePage {
     async setKnowledgeStatus(newStatus: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
-        await utilCommon.selectDropDownWithName('Status', newStatus);
+        await utilityCommon.selectDropDown('6f8e4177-cad6-4d59-9467-074b688aa06e', newStatus);
         await $(this.selectors.statusSaveBtn).click();
         //await utilCommon.waitUntilPopUpDisappear();
     }
@@ -207,7 +207,7 @@ class EditKnowledgePage {
     }
 
     async removeRegionValue(): Promise<void> {
-        await $(this.selectors.removeRegionValues).click();
+        await utilityCommon.clearDropDown('6c3548bc-bd52-4da6-b365-f546ca7bd744');
     }
 
     async isArticleEditOptionDisplayed(editOption: string): Promise<boolean> {

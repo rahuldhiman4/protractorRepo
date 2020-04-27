@@ -464,7 +464,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayID);
@@ -475,9 +475,9 @@ describe('Knowledge Article', () => {
             expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
             expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilCommon.clickOnWarningCancel();
+            await utilityCommon.clickOnWarningCancel();
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnWarningOk();
             expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
@@ -485,12 +485,12 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with contributor
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayID);
@@ -501,9 +501,9 @@ describe('Knowledge Article', () => {
             expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
             expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilCommon.clickOnWarningCancel();
+            await utilityCommon.clickOnWarningCancel();
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnWarningOk();
             expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
@@ -511,12 +511,12 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayID);
@@ -527,9 +527,9 @@ describe('Knowledge Article', () => {
             expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
             expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilCommon.clickOnWarningCancel();
+            await utilityCommon.clickOnWarningCancel();
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnWarningOk();
             expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
@@ -542,7 +542,7 @@ describe('Knowledge Article', () => {
             //login with publisher
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayID);
@@ -553,9 +553,9 @@ describe('Knowledge Article', () => {
             expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
             expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilCommon.clickOnWarningCancel();
+            await utilityCommon.clickOnWarningCancel();
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnWarningOk();
             expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
@@ -572,7 +572,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 300 * 1000);
+    }, 400 * 1000);
 
     it('[DRDMV-5058]: Review article in SME Review status & Approve article', async () => {
         try {
@@ -760,8 +760,8 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('sbadree');
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
-            expect(knowledgeArticlesConsolePo.getMessageOfAccess()).toContain('You do not have access to the Knowledge management application.');
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getMessageOfAccess()).toContain('You do not have access to the Knowledge management application.');
         }
         catch (e) {
             throw e;
@@ -787,6 +787,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();
             await utilityCommon.switchToNewTab(1);
+            await utilityCommon.refresh();
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
             expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Melbourne');
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
@@ -801,7 +802,7 @@ describe('Knowledge Article', () => {
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('');
             expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await previewKnowledgePo.clickOnBackButton();
+            await utilityCommon.refresh();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
