@@ -61,7 +61,7 @@ describe("Attachment", () => {
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
-        await createCasePo.addDescriptionAttachment(filePath);
+        await createCasePo.addDescriptionAttachment([filePath]);
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
@@ -263,7 +263,7 @@ describe("Attachment", () => {
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf', 'bwfXlsx.xlsx', 'demo.txt'];
 
         for (let i: number = 0; i < fileName1.length; i++) {
-            await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
+            await createCasePo.addDescriptionAttachment([`../../data/ui/attachment/${fileName1[i]}`]);
         }
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -357,7 +357,7 @@ describe("Attachment", () => {
         await createCasePo.setSummary(caseSummary);
         let fileName1: string[] = ['articleStatus.png', 'articleStatus.png', 'articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf'];
         for (let i: number = 0; i < fileName1.length; i++) {
-            await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
+            await createCasePo.addDescriptionAttachment([`../../data/ui/attachment/${fileName1[i]}`]);
         }
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -378,7 +378,7 @@ describe("Attachment", () => {
         await createCasePo.setSummary(caseSummary);
         let fileName1: string[] = ['bwfJpg.jpg', 'articleStatus.png'];
         for (let i: number = 0; i < fileName1.length; i++) {
-            await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
+            await createCasePo.addDescriptionAttachment([`../../data/ui/attachment/${fileName1[i]}`]);
         }
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -405,7 +405,7 @@ describe("Attachment", () => {
         await createCasePo.setSummary(caseSummary);
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg'];
         for (let i: number = 0; i < fileName1.length; i++) {
-            await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
+            await createCasePo.addDescriptionAttachment([`../../data/ui/attachment/${fileName1[i]}`]);
         }
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -432,7 +432,7 @@ describe("Attachment", () => {
         await createCasePo.setSummary(caseSummary);
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf'];
         for (let i: number = 0; i < fileName1.length; i++) {
-            await createCasePo.addDescriptionAttachment(`../../data/ui/attachment/${fileName1[i]}`);
+            await createCasePo.addDescriptionAttachment([`../../data/ui/attachment/${fileName1[i]}`]);
         }
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();

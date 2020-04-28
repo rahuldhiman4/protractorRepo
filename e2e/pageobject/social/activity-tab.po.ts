@@ -164,13 +164,18 @@ class ActivityTabPage {
     }
 
     async clickShowMoreLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).isPresent().then(async (link) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.activity__wrapper .flex-wrap button span').isPresent().then(async (link) => {
             if (link) {
-                await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLinkForAttachment).click();
-                return true;
+                let showMoreTextName = await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.activity__wrapper .flex-wrap button span').getText();
+                if (showMoreTextName.trim() == '1 more') {
+                    await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.activity__wrapper .flex-wrap button span').click();
+                    return true;
+                }
+
             } else return false;
         });
     }
+
 
     async clickShowLessLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
         return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showLessLinkForAttachment).isPresent().then(async (link) => {
@@ -205,7 +210,7 @@ class ActivityTabPage {
         return await $$(locator).first().getText();
     }
 
-    async getTextOnActivityTable(rowNumber:number, columnNumber: number): Promise<string>{
+    async getTextOnActivityTable(rowNumber: number, columnNumber: number): Promise<string> {
         let row = await $$('.activity .email-body table tr').get(rowNumber);
         let cellText = await row.$$('td').get(columnNumber).getText();
         return cellText;
@@ -222,10 +227,11 @@ class ActivityTabPage {
     }
 
     async isAttachedFileNameDisplayed(fileName: string): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.AttachedfileName)), 3000);
-        return await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isDisplayed().then(async (result) => {
-            if (result) return true;
-            else return false;
+        return await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isPresent().then(async (link) => {
+            if (link) {
+                await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isDisplayed();
+                return true;
+            } else return false;
         });
     }
 
@@ -264,7 +270,7 @@ class ActivityTabPage {
         let emailTitle = await $$('.activity .activity-title').first().getText();
         return emailTitle;
     }
-    
+
     async getEmailTemplateDetails(): Promise<string> {
         let templateUsed = await $$('.activity .template').first().getText();
         return templateUsed;
@@ -357,8 +363,11 @@ class ActivityTabPage {
 
     async addActivityNote(addNoteText: string): Promise<void> {
         await this.clickActivityNoteTextBox();
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBoxEdit)));
-        await $(this.selectors.addNoteBoxEdit).sendKeys(addNoteText);
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
+        await $('.cke_editable_themed').sendKeys(addNoteText);
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
     }
 
     async addPersonInActivityNote(tagPerson: string): Promise<void> {

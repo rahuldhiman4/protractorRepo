@@ -3,7 +3,7 @@ class CaseAccessTab {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         agentAccess: '.bwf-access-manager .access-group .btn-title',
-        agents: '.dropdown-menu .dropdown-item.active',
+        agents: '.dropdown-menu button',
         searchInput: '.flex-row input.form-control',
         agentAddButton: '.input-group-btn .btn-secondary',
         company: '.flex-item .ac-company-field button',

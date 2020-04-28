@@ -40,7 +40,7 @@ class ViewTask {
         showAttachmentLink: '.rx-attachment-show-text',
         showAttachmentCounterButton: '.rx-attachment-show-more',
         saveAdhocTask: '[rx-view-component-id="a19228d0-81a9-4b19-9cb3-b5bd9550966f"] button',
-        attachmentFile: '.rx-attachment-view-name',
+        attachmentFile: '.justify-content-start .bwf-attachment-container__file-name',
         attachmentpath: '.rx-attachment-view .d-icon-cross',
         showMore:'.rx-attachment-show-text',
         dynamicFieldsName:'[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] span',

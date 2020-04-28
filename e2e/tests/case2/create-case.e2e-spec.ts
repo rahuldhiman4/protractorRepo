@@ -344,7 +344,7 @@ describe("Create Case", () => {
             await createCasePage.selectCategoryTier1('Applications');
             await createCasePage.selectCategoryTier2('Social');
             await createCasePage.selectCategoryTier3('Chatter');
-            await createCasePage.addDescriptionAttachment('../../data/ui/attachment/demo.txt');
+            await createCasePage.addDescriptionAttachment(['../../data/ui/attachment/demo.txt']);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();

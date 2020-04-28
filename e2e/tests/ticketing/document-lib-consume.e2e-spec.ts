@@ -177,7 +177,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 140 * 1000);
+    }, 300 * 1000);
 
     //kgaikwad
     it('[DRDMV-13524]: Edit Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
@@ -284,11 +284,11 @@ describe('Document Library Consume UI', () => {
             await editTaskPo.clickOnSaveButton();
             await expect(await viewTaskPo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
             await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
-            await viewCasePo.clickOnAttachedDocumentFile('bwfPdf.pdf');
+            await viewTaskPo.clickOnAttachedDocumentFile('bwfPdf.pdf');
             await expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
             await expect(await viewTaskPo.isAttachedDocumentPresent('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
             await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
-            await viewCasePo.clickOnAttachedDocumentFile('bwfXlsx.xlsx');
+            await viewTaskPo.clickOnAttachedDocumentFile('bwfXlsx.xlsx');
             await expect(await utilCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         } catch (e) {
             throw e;
@@ -296,7 +296,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 520 * 1000);
+    }, 660 * 1000);
 
     //kgaikwad
     it('[DRDMV-13507]: Compose Email - Case agent attaches published document from document library where case agent is author of the document', async () => {
@@ -391,7 +391,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 420 * 1000);
+    }, 610 * 1000);
 
     //kgaikwad
     it('[DRDMV-13449]: Edit Case - Case agent attaches published document from document library who has write access to that document', async () => {
@@ -477,7 +477,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 340 * 1000);
+    }, 600 * 1000);
 
     //kgaikwad
     it('[DRDMV-13480]: Add Activity - Case agent attaches published document from document library who has read access to that document', async () => {
@@ -569,7 +569,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 350 * 1000);
+    }, 600 * 1000);
 
     //kgaikwad
     it('[DRDMV-13479]: Add Activity - Case business analyst attaches published document from document library who has read access to that document', async () => {
@@ -663,7 +663,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 340 * 1000);
+    }, 620 * 1000);
 
     //kgaikwad
     it('[DRDMV-13463]: Edit Case - Case business analyst attaches published document from document library who has write access to that document', async () => {
@@ -750,7 +750,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 330 * 1000);
+    }, 660 * 1000);
 
     //kgaikwad
     it('[DRDMV-13506]: Compose Email - Case business analyst attaches published document from document library where case business analyst is author of the document', async () => {
@@ -845,7 +845,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 360 * 1000);
+    }, 600 * 1000);
 
     //kgaikwad
     it('[DRDMV-13481]: Add Activity - Case manager attaches published document from document library who has read access to that document', async () => {
@@ -938,7 +938,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 360 * 1000);
+    }, 600 * 1000);
 
     //kgaikwad
     it('[DRDMV-13458]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
@@ -1026,7 +1026,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 360 * 1000);
+    }, 600 * 1000);
 
     //kgaikwad
     it('[DRDMV-13537]: Availability of documents on knowledge search under Quick case, Resources tab', async () => {
@@ -1067,11 +1067,11 @@ describe('Document Library Consume UI', () => {
         await editCasePo.updateCaseSummary(publishDocLibData1.docLibTitle);
         await editCasePo.clickSaveCase();
         await viewCasePo.clickOnTab('Resources')
-        await expect(await resourcesTabPo.isKnowledgeArticlesEmpty()).toBeTruthy('Failuer: Knowledge Article is not empty');
+        await expect(await resourcesTabPo.isSearchRecordEmpty(1)).toBeTruthy('Failuer1: Knowledge Article is not empty');
         await resourcesTabPo.clickOnAdvancedSearchOptions('Knowledge Articles ');
         await resourcesTabPo.searchTextAndEnter(publishDocLibData1.docLibTitle);
-        await expect(await resourcesTabPo.isKnowledgeArticlesEmpty()).toBeTruthy('Failuer: Knowledge Article is not empty');
-    }, 210 * 1000);
+        await expect(await resourcesTabPo.isSearchRecordEmpty(1)).toBeTruthy('Failuer2: Knowledge Article is not empty');
+    }, 200 * 1000);
 
     //kgaikwad
     it('[DRDMV-13517]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
@@ -1202,7 +1202,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 370 * 1000);
+    }, 650 * 1000);
 
     //kgaikwad
     it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
@@ -1310,7 +1310,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 340 * 1000);
+    }, 700 * 1000);
 
     //kgaikwad
     it('[DRDMV-13534]: Search and UI Validation of document library search view', async () => {
@@ -1342,13 +1342,13 @@ describe('Document Library Consume UI', () => {
         await editDocumentLibraryPo.setSite('Canberra');
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
-        //Create Case
+        await expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+        // //Create Case
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qtao');
         await createCasePo.setSummary(caseSummary);
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
-
         await activityTabPo.addActivityNote(addNoteText);
         await activityTabPo.clickOnAttachLink();
         await attachDocumentBladePo.clickOnAdvanceSearchButton();
@@ -1387,7 +1387,7 @@ describe('Document Library Consume UI', () => {
         await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
         await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
         await expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
-    }, 240 * 1000);
+    }, 600 * 1000);
 
     //kgaikwad
     it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
@@ -1429,8 +1429,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
             await activityTabPo.clickOnPostButton();
             await utilCommon.waitUntilSpinnerToHide();
-            await viewCasePo.clickAttachmentsLink();
-            await attachmentBladePo.clickOnCloseButton();
+            await expect (await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed')
 
             await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
             await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
@@ -1451,14 +1450,13 @@ describe('Document Library Consume UI', () => {
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('qstrong');
             await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Quin Strong')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
-            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('qgeorge');
             await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Quanah George')).toBeTruthy('Failuer: Quanah George Agent Name is missing');
 
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(caseId);
-
+            await expect (await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed');
             await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg:bwfJpg.jpg Attached Document is missing');
             await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
@@ -1489,7 +1487,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 240 * 1000);
+    }, 500 * 1000);
 
     //kgaikwad
     it('[DRDMV-13528]: Access to the documents attached on case when case is re-assigned to some other support group', async () => {
@@ -1567,10 +1565,10 @@ describe('Document Library Consume UI', () => {
             await changeAssignmentBladePo.selectAssignee('Quanah George');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
-            await expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+            await expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
             await navigationPage.signOut();
             await loginPage.loginWithCredentials('qgeorge@petramco.com', 'Password_1234');
-            await caseConsolePo.searchAndOpenCase('CASE-0000000310');
+            await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeFalsy('FailureMsg: bwfJpg.jpg Attached Document is displayed');
             await expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeFalsy('FailureMsg: bwfPdf.pdf Attached Document is displayed');
         } catch (e) {
@@ -1579,6 +1577,6 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 220 * 1000);
+    }, 540 * 1000);
 
 })
