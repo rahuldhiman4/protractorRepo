@@ -248,7 +248,7 @@ describe("Compose Email", () => {
         expect(await activityTabPo.getEmailSubject()).toContain(caseId + ':' + 'Leave summary');
         await activityTabPo.clickShowMoreForEmailActivity();
         expect(await activityTabPo.getEmailBody()).toContain('I am taking leave today.');
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //kgaikwad
     it('[DRDMV-10401,DRDMV-10393]: Email Body override with template details', async () => {
@@ -365,7 +365,7 @@ describe("Compose Email", () => {
         expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate2, 'Email Template name heading does not match');
         await composeMail.clickOnSendButton();
         await utilityCommon.waitUntilPopUpDisappear();
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //kgaikwad
     it('[DRDMV-8392,DRDMV-10384]: Negative: In Email "To" and "cc" should be user from Foundation data ', async () => {
@@ -395,7 +395,7 @@ describe("Compose Email", () => {
         await composeMail.clickOnDiscardButton();
         expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?'), 'Warning Email message is missing';
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     it('[DRDMV-20369]: Verify able to apply email template with images tables and hyperlinks ', async () => {
         try {
@@ -674,7 +674,7 @@ describe("Compose Email", () => {
             await navigationPage.signOut();
             await loginPage.login("qtao");
         }
-    }, 200 * 1000);
+    });//, 200 * 1000);
 
     it('[DRDMV-20370]: Verify tags which are not in white list for email', async () => {
         try {

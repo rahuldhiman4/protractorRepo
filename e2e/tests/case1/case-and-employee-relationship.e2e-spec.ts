@@ -61,7 +61,7 @@ describe('Case And Employee Relationship', () => {
         await addRelatedPopupPage.addPerson('Brain Adams', 'Witness');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(5);
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Brain Adams', 'Witness')).toBeTruthy();
-    }, 240 * 1000);
+    });//, 240 * 1000);
 
     //asahitya
     it('[DRDMV-16896]: Multiple people can be added by same Relationship', async () => {
@@ -84,7 +84,7 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qianru Tao', 'Inspector')).toBeTruthy();
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Harry Potter', 'Inspector')).toBeTruthy();
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Lily Anthony', 'Inspector')).toBeTruthy();
-    }, 170 * 1000);
+    });//, 170 * 1000);
 
     //asahitya
     it('[DRDMV-16248]: Related Persons tab is available on Person Profile check UI', async () => {
@@ -108,7 +108,7 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedTabPage.getRelatedPersonRelationship('Bobby Hill')).toBe('Former Manager');
         expect(await relatedTabPage.getRelatedPersonSite('Bobby Hill')).toBe('Houston\n2101 CityWest Blvd., Houston, Texas, 77042, United States');
         expect(await relatedTabPage.isEmailLinkNotPresent('Bobby Hill')).toBeTruthy('Email should not be a clickable link');
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //asahitya
     it('[DRDMV-17037]: Related Case tab is available on Person Profile', async () => {
@@ -131,7 +131,7 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedCasePage.getRelatedCasePriority(caseId)).toBe('Medium');
         expect(await relatedCasePage.getRelatedCaseStatus(caseId)).toBe('Assigned');
         expect(await relatedCasePage.getRelatedCaseRelation(caseId)).toBe('Inspector');
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //asahitya
     it('[DRDMV-17035]: Remove Related Case from Case', async () => {
@@ -191,7 +191,7 @@ describe('Case And Employee Relationship', () => {
         await utilityGrid.searchAndOpenHyperlink(caseId2);
         await viewCasePo.clickOnTab('Related Cases');
         expect(await relatedCasePage.isCasePresent(caseId3)).toBeTruthy();
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     //asahitya
     it('[DRDMV-16243]: Check details shown for Employees on Related People tab', async () => {
@@ -275,7 +275,7 @@ describe('Case And Employee Relationship', () => {
         await navigationPage.gotoPersonProfile();
         expect(await relatedTabPage.isRelatedPersonPresent("Brain Adams")).toBeFalsy("Brain Adams is still related to Person Profile");
         expect(await relatedTabPage.isRemoveRelatedPersonIconEnabled("Qiang Du")).toBeFalsy("Cross icon is enabled");
-    },180*1000);
+    });//, 180 * 1000);
 
     //asahitya
     it('[DRDMV-17029]: Check Related Cases Tab on Case Bottom section', async () => {

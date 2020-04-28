@@ -77,7 +77,7 @@ describe('Automated Case Status Transition', () => {
         expect(await automatedStatusTransitionEditPage.isNumberOfDaysFieldEnabled()).toBeTruthy("Change After Days is disabled");
         expect(await automatedStatusTransitionEditPage.isToStatusReasonFieldEnabled()).toBeTruthy("To Staus Reason is disabled");
         expect(await automatedStatusTransitionEditPage.isFromStatusReasonFieldEnabled()).toBeTruthy("From Staus Reason is disabled");
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     //asahitya
     it('[DRDMV-17553]: Case manager - automatic case status transtion rule console validations', async () => {
@@ -270,5 +270,5 @@ describe('Automated Case Status Transition', () => {
         await automatedStatusTransitionCreatePage.setCategoryTier4Value('Failure');
         await automatedStatusTransitionCreatePage.setLabelValue(label);
         await automatedStatusTransitionCreatePage.saveConfig();
-    }, 180 * 1000);
+    });//, 180 * 1000);
 })

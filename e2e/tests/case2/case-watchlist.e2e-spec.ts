@@ -185,7 +185,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.clearWatchlistFilter();
         expect(await caseWatchlist.isCasePresent(caseId[0])).toBeFalsy(caseId[0] + ": Case is not removed");
         expect(await caseWatchlist.isCasePresent(caseId[1])).toBeFalsy(caseId[1] + ": Case is not removed");
-    }, 200 * 1000);
+    });//, 200 * 1000);
 
     it('[DRDMV-16020]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -328,7 +328,7 @@ describe('Case Watchlist', () => {
         expect(await notificationAlerts.isAlertPresent(statusNotification3)).toBeTruthy(statusNotification3 + " is not present");
         expect(await notificationAlerts.isAlertPresent(statusNotification4)).toBeTruthy(statusNotification4 + " is not present");
         await notificationAlerts.clickOnNotificationIcon();
-    },220*1000);
+    });//, 220 * 1000);
 
     it('[DRDMV-16029]: Verify that all the Case Agents having write access can follow/unfollow the cases', async () => {
         await apiHelper.apiLogin(qyuanStr);
@@ -381,7 +381,7 @@ describe('Case Watchlist', () => {
         expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeFalsy(assignmentNotification2 + " is present");
         expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeFalsy(statusNotification2 + " is present");
         await notificationAlerts.clickOnNotificationIcon();
-    }, 200 * 1000);
+    });//, 200 * 1000);
 
     it('[DRDMV-16044,DRDMV-16060]: Verify the position, Labels and * icon on Case console, Case and Watchlist modal', async () => {
         await apiHelper.apiLogin(qyuanStr);
@@ -486,7 +486,7 @@ describe('Case Watchlist', () => {
         expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification1)).toBeTruthy(groupAssignmentNotification1 + " is not present");
         expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification2)).toBeFalsy(groupAssignmentNotification2 + " is present");
         await notificationAlerts.clickOnNotificationIcon();
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     it('[DRDMV-16556]: Verify that Agent remove the Case Group Assignment and Status from Watchlist update event then only Assignment change notifications will be shown', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -554,7 +554,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
         }
-    }, 220 * 1000);
+    });//, 220 * 1000);
 
     it('[DRDMV-16557]: Verify that Agent can update(add) Case group Assignment for any of the existing Watched case', async () => {
         await apiHelper.apiLogin(qyuanStr);
@@ -628,7 +628,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
         }
-    }, 230 * 1000);
+    });//, 230 * 1000);
 
     it('[DRDMV-16062]: Verify that user add the watch from Case Console and remove the watch from Case then it should reflect', async () => {
         await apiHelper.apiLogin(qyuanStr);
@@ -677,7 +677,7 @@ describe('Case Watchlist', () => {
         expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeFalsy(assignmentNotification2 + " is present");
         expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeFalsy(statusNotification2 + " is present");
         await notificationAlerts.clickOnNotificationIcon();
-    }, 140 * 1000);
+    });//, 140 * 1000);
 
     it('[DRDMV-16061]: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
         await apiHelper.apiLogin(qtaoStr);

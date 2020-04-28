@@ -124,7 +124,7 @@ describe('Create Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 220 * 1000);
+    });//, 220 * 1000);
 
     //ankagraw
     it('[DRDMV-12086]: [Global Task Template] Update Task company from Global to Any', async () => {
@@ -154,7 +154,7 @@ describe('Create Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 170 * 1000);
+    });//, 170 * 1000);
 
     //ankagraw
     it('[DRDMV-12577]: Case BA other than task template owner group can NOT update the template', async () => {
@@ -279,7 +279,7 @@ describe('Create Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 220 * 1000);
+    });//, 220 * 1000);
 
     async function foundationData(company: string) {
         const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
@@ -345,7 +345,7 @@ describe('Create Task Template', () => {
         await expect(viewTaskTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
         await expect(viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
         await expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     it('[DRDMV-7151]: [Automatic Task] - Automatic Task: Social: System Comments', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -388,7 +388,7 @@ describe('Create Task Template', () => {
         await expect(activityTabPo.getTaskActivity('Assigned')).toBe('Assigned');
         await expect(activityTabPo.getTaskActivity('In Progress')).toBe('In Progress');
         await expect(activityTabPo.getTaskActivity('Completed')).toBe('Completed');
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     it('[DRDMV-5326]: [Permission] [Task Template] Access to Activity Feed records of the Task created using template', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -475,7 +475,7 @@ describe('Create Task Template', () => {
         await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
         await expect(activityTabPo.getTaskActivity('attachment')).toBe('attachment');
         await expect(activityTabPo.getTaskActivity('abcde')).toBe('abcde');
-    }, 240 * 1000);
+    });//, 240 * 1000);
 
     //ankagraw
     it('[DRDMV-3768]: [Task Template Console] Filter menu verification', async () => {
@@ -546,5 +546,5 @@ describe('Create Task Template', () => {
         await utilGrid.addFilter("Display ID", taskTemplateId, 'text');
         expect(await utilGrid.isGridRecordPresent(taskTemplateId)).toBeTruthy(taskTemplateId + '  not present');
         await utilGrid.clearFilter();
-    }, 150 * 1000);
+    });//, 150 * 1000);
 });

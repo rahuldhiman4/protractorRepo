@@ -142,7 +142,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
         }
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //skhobrag
     it('[DRDMV-20742]: Verify the functionality of Edit article with Minor Edit button', async () => {

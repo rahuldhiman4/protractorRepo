@@ -97,7 +97,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 230 * 1000);
+    });//, 230 * 1000);
 
     //ankagraw
     it('[DRDMV-13169]: [Dynamic Data] [UI] - Automated Task UI on Edit view', async () => {
@@ -154,7 +154,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 280 * 1000);
+    }, 350 * 1000);
 
     //ptidke
     it('[DRDMV-13123]:[Dynamic Data] [UI] - Dynamic Fields display on Case Edit view UI', async () => {
@@ -331,7 +331,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 220 * 1000);
+    });//, 220 * 1000);
 
     //ptidke
     it('[DRDMV-13115]:[Dynamic Data] - Update Dynamic fields in Existing Case Template by replacing old fields with new Fields', async () => {
@@ -379,7 +379,7 @@ describe('Case Data Store', () => {
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri12' + randomStr)).toBeTruthy();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri13' + randomStr)).toBeTruthy();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri14' + randomStr)).toBeTruthy();
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     //ptidke
     it('[DRDMV-13118]:[Dynamic Data] - Case Template and Case UI with dynamic fields and groups having long title', async () => {
@@ -447,7 +447,7 @@ describe('Case Data Store', () => {
         expect(await viewCasePo.getValueOfDynamicFields(field4OutSideGroup)).toBe('Yes');
         expect(await viewCasePo.getValueOfDynamicFields(field1OutSideGroup)).toBe(field2InGroup);
         expect(await viewCasePo.getValueOfDynamicFields(field2OutSideGroup)).toBe('8888545888');
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     //ptidke
     it('[DRDMV-13140]:[Dynamic Data] [UI] -Dynamic Fields display on Task Template Edit view UI', async () => {
@@ -539,7 +539,7 @@ describe('Case Data Store', () => {
         for (let i = 0; i < arr.length; i++) {
             expect(await editTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
         }
-    }, 190 * 1000);
+    });//, 190 * 1000);
 
     //ptidke
     it('[DRDMV-13122]:[Dynamic Data] [UI] - Dynamic fields and groups display on Case Template preview', async () => {
@@ -601,7 +601,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 200 * 1000);
+    });//, 200 * 1000);
 
     //ptidke
     it('[DRDMV-13131]:[Dynamic Data] [UI] - Dynamic Fields and Groups display on Case and Similar Cases preview', async () => {
@@ -686,7 +686,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 200 * 1000);
+    });//, 200 * 1000);
 
     //ptidke
     it('[DRDMV-13114]:[Dynamic Data] - Add all type of dynamic fields in Case Template', async () => {
@@ -737,7 +737,7 @@ describe('Case Data Store', () => {
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri18' + randomStr)).toBeTruthy('field not present');
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri19' + randomStr)).toBeTruthy('field not present');
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri20' + randomStr)).toBeTruthy('field not present');
-    }, 240 * 1000);
+    });//, 240 * 1000);
 
     //ptidke
     it('[DRDMV-13610]:[UI] [-ve] Update Automated Task Template Process and Task Type', async () => {
@@ -765,5 +765,5 @@ describe('Case Data Store', () => {
         expect(await viewTaskPo.getCategoryTier1Value()).toBe('Accounts Receivable');
         expect(await viewTaskPo.getTaskSummaryValue()).toBe('update'+randomStr);
         expect(await viewTaskPo.getPriorityValue()).toBe('High');
-    }, 240 * 1000);
+    });//, 240 * 1000);
 })

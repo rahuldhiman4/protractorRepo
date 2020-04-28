@@ -177,7 +177,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 140 * 1000);
+    });//, 140 * 1000);
 
     //kgaikwad
     it('[DRDMV-13524]: Edit Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
@@ -391,7 +391,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 420 * 1000);
+    }, 500 * 1000);
 
     //kgaikwad
     it('[DRDMV-13449]: Edit Case - Case agent attaches published document from document library who has write access to that document', async () => {
@@ -477,7 +477,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 340 * 1000);
+    }, 450 * 1000);
 
     //kgaikwad
     it('[DRDMV-13480]: Add Activity - Case agent attaches published document from document library who has read access to that document', async () => {
@@ -750,7 +750,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 330 * 1000);
+    }, 400 * 1000);
 
     //kgaikwad
     it('[DRDMV-13506]: Compose Email - Case business analyst attaches published document from document library where case business analyst is author of the document', async () => {
@@ -845,7 +845,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 360 * 1000);
+    }, 420 * 1000);
 
     //kgaikwad
     it('[DRDMV-13481]: Add Activity - Case manager attaches published document from document library who has read access to that document', async () => {
@@ -1026,7 +1026,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 360 * 1000);
+    }, 450 * 1000);
 
     //kgaikwad
     it('[DRDMV-13537]: Availability of documents on knowledge search under Quick case, Resources tab', async () => {
@@ -1071,7 +1071,7 @@ describe('Document Library Consume UI', () => {
         await resourcesTabPo.clickOnAdvancedSearchOptions('Knowledge Articles ');
         await resourcesTabPo.searchTextAndEnter(publishDocLibData1.docLibTitle);
         await expect(await resourcesTabPo.isKnowledgeArticlesEmpty()).toBeTruthy('Failuer: Knowledge Article is not empty');
-    }, 210 * 1000);
+    });//, 210 * 1000);
 
     //kgaikwad
     it('[DRDMV-13517]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
@@ -1202,7 +1202,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 370 * 1000);
+    }, 430 * 1000);
 
     //kgaikwad
     it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
@@ -1387,7 +1387,7 @@ describe('Document Library Consume UI', () => {
         await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
         await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
         await expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
-    }, 240 * 1000);
+    });//, 240 * 1000);
 
     //kgaikwad
     it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
@@ -1489,7 +1489,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 240 * 1000);
+    });//, 240 * 1000);
 
     //kgaikwad
     it('[DRDMV-13528]: Access to the documents attached on case when case is re-assigned to some other support group', async () => {
@@ -1579,6 +1579,6 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 220 * 1000);
+    }, 290 * 1000);
 
 })
