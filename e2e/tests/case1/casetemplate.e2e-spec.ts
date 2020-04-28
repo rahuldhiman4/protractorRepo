@@ -555,7 +555,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 250 * 1000)
+    }, 340 * 1000)
 
     //apdeshmu 
     it('[DRDMV-769]: [Case Creation] [Template Selection] Applying a Template to a Case', async () => {

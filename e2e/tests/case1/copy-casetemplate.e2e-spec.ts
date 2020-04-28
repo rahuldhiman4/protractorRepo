@@ -115,7 +115,7 @@ describe('Copy Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 270 * 1000);
+    }, 320 * 1000);
 
     //ptidke
     it('[DRDMV-13550]: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {

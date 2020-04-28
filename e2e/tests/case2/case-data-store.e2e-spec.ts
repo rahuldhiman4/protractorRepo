@@ -154,7 +154,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 280 * 1000);
+    }, 350 * 1000);
 
     //ptidke
     it('[DRDMV-13123]:[Dynamic Data] [UI] - Dynamic Fields display on Case Edit view UI', async () => {

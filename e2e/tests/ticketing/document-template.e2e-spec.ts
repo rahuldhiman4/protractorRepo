@@ -130,5 +130,5 @@ describe('Document Template', () => {
         await utilityCommon.clickOnWarningOk();
 
         expect(await documentTemplateConsolePo.isGridRecordPresent(templateRandVal2)).toBeFalsy('template name is preset on grid');
-    }, 300 * 1000);
+    }, 320 * 1000);
 })

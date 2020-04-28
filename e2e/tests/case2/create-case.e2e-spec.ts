@@ -86,7 +86,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-);//}, 200 * 1000);
+    });//, 200 * 1000);
 
     //kgaikwad
     it('[DRDMV-17653]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {
@@ -399,7 +399,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 250 * 1000);
+    });//, 250 * 1000);
 
     //ankagraw
     it('[DRDMV-16076]: Reopen configurations available on Case Template Create screen ', async () => {
@@ -784,7 +784,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 310 * 1000);
+    }, 390 * 1000);
 
     //ankagraw
     it('[DRDMV-5479,DRDMV-1192]: Verify case assignment on Create Case', async () => {
@@ -874,7 +874,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 210 * 1000);
+    }, 260 * 1000);
 
     //ankagraw
     it('[DRDMV-1614]: [Case] Fields validation for case in New status ', async () => {

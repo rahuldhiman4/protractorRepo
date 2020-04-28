@@ -89,7 +89,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 350 * 1000);
+    }, 380 * 1000);
 
     it('[DRDMV-13548]: Create a Copy of Task template where Submitter do not belong to any Support Groups', async () => {
         try {
@@ -651,7 +651,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 210 * 1000);
+    }, 260 * 1000);
 
     it('[DRDMV-13569]: Dynamic Field get copied upon creating copy of Task Template', async () => {
         try {
@@ -749,5 +749,5 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 210 * 1000);
+    }, 260 * 1000);
 });

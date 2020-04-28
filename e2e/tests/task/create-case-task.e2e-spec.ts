@@ -196,7 +196,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 380 * 1000);
+    }, 420 * 1000);
 
     //ankagraw
     it('[DRDMV-7124]: [Automatic Task] - Task Template UI in Edit mode: New fields validations ', async () => {
@@ -1111,6 +1111,6 @@ describe('Create Case Task', () => {
         await caseConsolePage.searchAndOpenCase(canceled);
         await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy("Add task button Visible");
 
-    }, 320 * 1000);
+    }, 350 * 1000);
 
 });
