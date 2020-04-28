@@ -401,8 +401,8 @@ describe("Compose Email", () => {
 
     it('[DRDMV-20369]: Verify able to apply email template with images tables and hyperlinks ', async () => {
         try {
-            //await navigationPage.signOut();
-            //await loginPage.login('fritz');
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
             let recDeleted = await apiHelper.deleteDynamicFieldAndGroup();
             console.log("Record deleted...", recDeleted);
             let caseTemplateName = 'caseTempRDMV-20369lp3ir' + randomStr;
@@ -881,7 +881,7 @@ describe("Compose Email", () => {
         expect(await activityTabPo.getFirstPostContent()).toContain('This is email body');
         expect(await activityTabPo.getFirstPostContent()).toContain('Qianru Tao sent an email');
         expect(activityTabPo.isAttachedFileNameDisplayed('demo.txt')).toBeTruthy('Attached file not Present');
-    }, 160 * 1000);
+    });//, 160 * 1000);
 
     it('[DRDMV-9032]: Negative -Verify large number of attachments. Click on Send button in Compose Email', async () => {
         await navigationPage.gotoCaseConsole();
