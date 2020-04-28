@@ -124,7 +124,7 @@ describe('Case Activity', () => {
         } finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //kgaikwad
     it('[DRDMV-18141]: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
@@ -331,7 +331,7 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.clickOnFilterClearButton();
         await expect(await activityTabPage.isfilterPresent()).not.toBeTruthy('filter displayed');
-    }, 140 * 1000);
+    });//, 140 * 1000);
 
     //kgaikwad
     it('[DRDMV-16760]: From Task Activity Filters > Person search behavior in Author field', async () => {
@@ -389,7 +389,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isAuthorBoxEmpty()).toBeTruthy('Author field is not empty');
         // ii) - Select another user and click on Apply
         await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
-    }, 140 * 1000);
+    });//, 140 * 1000);
 
     //kgaikwad
     // Ok
@@ -431,7 +431,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isAuthorBoxEmpty()).toBeTruthy('Author field is not empty');
         // iii) - Select another user and click on Apply
         await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
-    }, 160 * 1000);
+    });//, 160 * 1000);
 
     //kgaikwad
     // Ok
@@ -880,7 +880,7 @@ describe('Case Activity', () => {
         await utilCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.getFirstPostContent()).toContain(textWithMultipleAttachment);
         expect(await activityTabPage.getCountAttachedFiles('demo.txt')).toBe(6);
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //kgaikwad
     // Ok
@@ -917,7 +917,7 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 240 * 1000);
+    });//, 240 * 1000);
 
     //kgaikwad
     it('[DRDMV-16589]: Check case view count is not increased by opening same case by different places', async () => {
@@ -1058,7 +1058,7 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 210 * 1000);
+    });//, 210 * 1000);
 
     //kgaikwad
     it('[DRDMV-18052]: Alert Notification should be send to tagged persons other than Assignee and Requester', async () => {
@@ -1215,7 +1215,7 @@ describe('Case Activity', () => {
 
         await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
 
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //kgaikwad
     it('[DRDMV-16765]:Validate Show More/Less option in KA Activity Tab', async () => {
@@ -1339,7 +1339,7 @@ describe('Case Activity', () => {
 
         await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
 
-    }, 160 * 1000);
+    });//, 160 * 1000);
 
     //kgaikwad
     it('[DRDMV-16764]:Validate all type of social activities are displayed correctly in KA Activity tab', async () => {
@@ -1435,9 +1435,5 @@ describe('Case Activity', () => {
             await loginPage.login('qkatawazi');
             await utilCommon.waitUntilSpinnerToHide();
         }
-    }, 220 * 1000);
-
-
-
-
+    });//, 220 * 1000);
 })

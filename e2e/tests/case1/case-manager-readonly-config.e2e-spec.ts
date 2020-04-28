@@ -361,6 +361,6 @@ describe('Case Manager Read-only Config', () => {
         await editAcknowledementTemplatePage.clickOnSubjectCheckbox();
         expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Subject button is enabled');
         await utilityCommon.refresh();
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
 })

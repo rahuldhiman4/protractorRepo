@@ -186,7 +186,7 @@ describe("Attachment", () => {
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is delete sucessfully');
         await navigationPage.gotoPersonProfile();
         expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
-    }, 140 * 1000);
+    });//, 140 * 1000);
 
     //kgaikwad
     it('[DRDMV-11708]: Upload attachment from task activity & verify all attachments grid', async () => {
@@ -347,7 +347,7 @@ describe("Attachment", () => {
         await expect(await attachmentBladePo.isCheckBoxSelected('bwfXlsx')).toBeFalsy('bwfXlsx CheckBox is selected');
         await expect(await attachmentBladePo.isCheckBoxSelected('bwfXml')).toBeFalsy('bwfXml CheckBox is selected');
         await attachmentBladePo.clickOnCloseButton();
-    }, 170 * 1000);
+    });//, 170 * 1000);
 
     //kgaikwad
     it('[DRDMV-11701,DRDMV-11706]: Pagination on all attachments grid', async () => {

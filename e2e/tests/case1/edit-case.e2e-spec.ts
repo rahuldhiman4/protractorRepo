@@ -104,7 +104,7 @@ describe('Edit Case', () => {
    
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
-    }, 160 * 1000);
+    });//, 160 * 1000);
 
     //ankagraw
     it('[DRDMV-7063]: [Case Edit] [Assignment] Changing the Assignment when editing the case by the member of one Support Group', async () => {
@@ -156,5 +156,5 @@ describe('Edit Case', () => {
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
         await utilCommon.waitUntilPopUpDisappear();
-    }, 170 * 1000);
+    });//, 170 * 1000);
 });

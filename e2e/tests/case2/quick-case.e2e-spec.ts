@@ -179,7 +179,7 @@ describe("Quick Case", () => {
         await apiHelper.updateCaseTemplateStatus(caseTemplateId797, 'Inactive');
         await quickCasePo.saveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for inactive template');
-     },200 * 1000);
+    });//, 200 * 1000);
 
     it('[DRDMV-800]: [Quick Case] Case creation with requester having same name as other company users', async () => {
         let userData1 = {
@@ -317,9 +317,9 @@ describe("Quick Case", () => {
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
             //Different Company Search
-             await navigationPage.gotoQuickCase();
-             await quickCasePo.selectRequesterName("adam");
-             expect(await quickCasePo.selectCaseTemplate(caseTemplateName1)).toBeFalsy("Template is same as employee comapny");
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName("adam");
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateName1)).toBeFalsy("Template is same as employee comapny");
             //3 Character Search Template Verification
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
@@ -507,7 +507,7 @@ describe("Quick Case", () => {
     it('[DRDMV-795]: [Quick Case] Case template search in Resources', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = randomStr + 'NameInDraftStatus';
-        let casTemplateSummary = randomStr + 'SummaryInDraftStatus'; 
+        let casTemplateSummary = randomStr + 'SummaryInDraftStatus';
         let caseTempalteDescription = randomStr + 'DRDMV-795Description';
         let CaseTemplateDataInDraftStatus = {
             "templateName": caseTemplateName,
