@@ -159,11 +159,11 @@ describe('Case Status Change', () => {
         expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Description not present');
         await editCasePage.clearCaseSummary();
         await editCasePage.clickSaveCase();
-        expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
         //        await utilCommon.closePopUpMessage();
         await editCasePage.updateCaseSummary('Pending AC');
         await editCasePage.clickSaveCase();
-        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+        expect(await utilityCommon.getAllPopupMsg()).toBe('Saved successfully.');
     });//, 180 * 1000);
 
     //kgaikwad
@@ -248,7 +248,7 @@ describe('Case Status Change', () => {
         await editCasePage.clearCaseSummary();
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         await editCasePage.updateCaseSummary('pendingAC');
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
