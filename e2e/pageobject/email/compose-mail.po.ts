@@ -21,7 +21,6 @@ class ComposeMail {
         email: 'iframe[class="cke_wysiwyg_frame cke_reset"]',
         attachmentName: '.rx-attachment-view-name',
         getsubject: '.subject-name span',
-        attachmentField: '.attachment-button input',
         selectTemplateButton: '.select-template-button',
         toOrCcEmailgetText: 'div.adapt-mt-field-wrapper .flexi-type-ahead-person-tag',
         subjectInput: '.subject-name input',
@@ -203,7 +202,7 @@ class ComposeMail {
     async addAttachment(): Promise<void> {
         const fileToUpload = '../../data/ui/attachment/demo.txt';
         const absolutePath = resolve(__dirname, fileToUpload);
-        await $(this.selectors.attachmentField).sendKeys(absolutePath);
+        await $('.attachment-button input').sendKeys(absolutePath);
     }
 
   async clickOnSelectTempalteButton(): Promise<void> {
@@ -236,7 +235,7 @@ class ComposeMail {
     async setEmailBody(value: string): Promise<void> {
         await browser.waitForAngularEnabled(false);
         await browser.sleep(6000);
-        await browser.switchTo().frame(await $$('iframe.cke_wysiwyg_frame').first().getWebElement());
+        await browser.switchTo().frame(await element(by.css('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame')).getWebElement());
         await $(this.selectors.emailBody).sendKeys(Key.chord(Key.CONTROL, Key.END));
         await $(this.selectors.emailBody).sendKeys(Key.ENTER);
         await $(this.selectors.emailBody).sendKeys(value);
@@ -258,9 +257,9 @@ class ComposeMail {
 
     async getEmailBody(): Promise<string> {
         await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(element(by.css("iframe.cke_wysiwyg_frame")).getWebElement());
+        await browser.switchTo().frame(await element(by.css('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame')).getWebElement());
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
-        let value = await $(this.selectors.emailBody).getText();;
+        let value = await $(this.selectors.emailBody).getText();
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
         return value;
@@ -343,7 +342,7 @@ class ComposeMail {
                 countOfPersons++;
             }
         }
-        element.clear();
+        await element.clear();
         return countOfPersons;
     }
     async isImageDisplayedComposeEmail(value: string): Promise<boolean> {
