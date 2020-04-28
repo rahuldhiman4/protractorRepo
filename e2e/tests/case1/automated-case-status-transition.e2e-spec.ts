@@ -77,7 +77,7 @@ describe('Automated Case Status Transition', () => {
         expect(await automatedStatusTransitionEditPage.isNumberOfDaysFieldEnabled()).toBeTruthy("Change After Days is disabled");
         expect(await automatedStatusTransitionEditPage.isToStatusReasonFieldEnabled()).toBeTruthy("To Staus Reason is disabled");
         expect(await automatedStatusTransitionEditPage.isFromStatusReasonFieldEnabled()).toBeTruthy("From Staus Reason is disabled");
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     //asahitya
     it('[DRDMV-17553]: Case manager - automatic case status transtion rule console validations', async () => {
@@ -215,7 +215,6 @@ describe('Automated Case Status Transition', () => {
         await automatedStatusTransitionCreatePage.setFromStatus('Resolved');
         await automatedStatusTransitionCreatePage.setToStatus('Closed');
         await automatedStatusTransitionCreatePage.setFromStatusReason('Customer Follow-Up Required');
-        //await automatedStatusTransitionCreatePage.setToStatusReason('No Further Action Required');
         await automatedStatusTransitionCreatePage.setChangeStatusAfter(days);
         await automatedStatusTransitionCreatePage.saveConfig();
 
@@ -228,6 +227,7 @@ describe('Automated Case Status Transition', () => {
         await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
         await apiHelper.runAutomatedCaseTransitionProcess();
 
+        await navigationPage.gotoCaseConsole();
         await utilityCommon.refresh();
         await notificationPo.clickOnNotificationIcon();
         expect(await notificationPo.isAlertPresent('Petramco Administrator changed the status of ' + caseId + ' to Closed')).toBeTruthy('Alert message is not present');
@@ -239,7 +239,7 @@ describe('Automated Case Status Transition', () => {
         let days: any = Math.floor(Math.random() * 180) + 1;
         let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.associateCategoryToCategory('Chatter', 'Failure');
+        await apiHelper.associateCategoryToCategory('Bonus', 'Failure');
 
         let label = await menuItemDataFile['sampleMenuItem'].menuItemName + configName;
         menuItemDataFile['sampleMenuItem'].menuItemName = label;
@@ -255,20 +255,20 @@ describe('Automated Case Status Transition', () => {
         expect(await automatedStatusTransitionCreatePage.isToStatusRequiredText()).toBeTruthy("To Status Required text not present");
         expect(await automatedStatusTransitionCreatePage.isChangeStatusAferRequiredText()).toBeTruthy("change Status Required text not present");
         expect(await automatedStatusTransitionCreatePage.isFromStatusEnabled()).toBeFalsy("From Status field Enabled");
+        await automatedStatusTransitionCreatePage.setCompany('Petramco');
         await automatedStatusTransitionCreatePage.setFlowset('Human Resources');
         await automatedStatusTransitionCreatePage.setName(configName);
-        await automatedStatusTransitionCreatePage.setCompany('Petramco');
         expect(await automatedStatusTransitionCreatePage.isFromStatusEnabled()).toBeTruthy("From Status field disabled");
         await automatedStatusTransitionCreatePage.setFromStatus('Resolved');
         await automatedStatusTransitionCreatePage.setToStatus('Closed');
         await automatedStatusTransitionCreatePage.setFromStatusReason('Auto Resolved');
         await automatedStatusTransitionCreatePage.setToStatusReason('No Further Action Required');
         await automatedStatusTransitionCreatePage.setChangeStatusAfter(days);
-        await automatedStatusTransitionCreatePage.setCategoryTier1Value('Applications');
-        await automatedStatusTransitionCreatePage.setCategoryTier2Value('Social');
-        await automatedStatusTransitionCreatePage.setCategoryTier3Value('Chatter');
+        await automatedStatusTransitionCreatePage.setCategoryTier1Value('Employee Relations');
+        await automatedStatusTransitionCreatePage.setCategoryTier2Value('Compensation');
+        await automatedStatusTransitionCreatePage.setCategoryTier3Value('Bonus');
         await automatedStatusTransitionCreatePage.setCategoryTier4Value('Failure');
         await automatedStatusTransitionCreatePage.setLabelValue(label);
         await automatedStatusTransitionCreatePage.saveConfig();
-    }, 180 * 1000);
+    });//, 180 * 1000);
 })

@@ -1,5 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 
 class RelatedPersonPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -12,7 +12,7 @@ class RelatedPersonPage {
         relatedPersonNames: ' .person-name a',
         relations: ' .person-relationship p',
         personOrganization: ' .person-organization',
-        emailLink: ' .list-email, [rx-view-component-id="6bfe26e7-5065-4db7-a317-18e14a37cd30"] .ac-link-person-email',
+        emailLink: ' .person-info-list button.btn',
         site: ' .bwf-person-site',
         phoneNumber: ' .bwf-person-phone',
         removePersonCrossIcon: ' .close.close-button',
@@ -159,7 +159,7 @@ class RelatedPersonPage {
             let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
             if (nm == personName) {
                 person = await $$(this.selectors.allRelatedPersons).get(i);
-                stat = await person.$$(this.selectors.emailLink).getAttribute("ng-if") == "!showLink";
+                stat = await person.$$(this.selectors.emailLink).isEnabled();
                 break;
             }
         }
@@ -177,7 +177,7 @@ class RelatedPersonPage {
                 break;
             }
         }
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     }
 
     async isRelatedPersonPresent(personName: string): Promise<boolean> {
@@ -197,7 +197,7 @@ class RelatedPersonPage {
         return status;
     }
 
-    async isRemoveRelatedPersonIconPresent(personName: string): Promise<boolean> {
+    async isRemoveRelatedPersonIconEnabled(personName: string): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
         let allCasesNum: number = await $$(this.selectors.allRelatedPersons).count();
         let status: boolean;
@@ -205,7 +205,7 @@ class RelatedPersonPage {
             let person = await $$(this.selectors.allRelatedPersons).get(i);
             let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
             if (nm == personName) {
-                status = await person.$(this.selectors.removePersonCrossIcon).isPresent();
+                status = await person.$(this.selectors.removePersonCrossIcon).isEnabled();
                 break;
             }
         }

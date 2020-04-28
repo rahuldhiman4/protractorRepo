@@ -58,7 +58,7 @@ describe('Knowledge Article', () => {
             let knowledgeDisplayID = knowledgeArticleData.displayId;
             let knowledgeArticleGUID = knowledgeArticleData.id;
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
-            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval',"qkatawazi","Compensation and Benefits")).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "qkatawazi", "Compensation and Benefits")).toBeTruthy('Status Not Set');
             await apiHelper.flagAndUnflagKnowledgeArticle(knowledgeArticleGUID, knowledgeTitile, 1);
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
@@ -82,7 +82,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
             await utilCommon.waitUntilSpinnerToHide();
         }
-    }, 140 * 1000);
+    });//, 140 * 1000);
 
     //ptidke
     it('[DRDMV-13646,DRDMV-13681]: Create a Knowledge article and check Knowledge Preview', async () => {
@@ -142,7 +142,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    },200 * 1000);
+    });//, 200 * 1000);
 
     //ptidke
     it('[DRDMV-2374]: [Edit Knowledge Article] Article creation not possible by selecting disabled templates', async () => {
@@ -756,7 +756,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 170 * 1000);
+    });//, 170 * 1000);
 
     it('[DRDMV-5192]: Unflag the article', async () => {
         try {
@@ -844,7 +844,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 240 * 1000);
+    });//, 240 * 1000);
 
     //ptidke
     it('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {

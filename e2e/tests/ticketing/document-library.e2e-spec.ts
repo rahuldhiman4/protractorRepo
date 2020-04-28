@@ -89,7 +89,7 @@ describe('Document Library', () => {
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'status is not in Published status';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is enabled');
-    }, 170 * 1000);
+    });//, 170 * 1000);
 
     //kgaikwad
     it('[DRDMV-13074]: Verify Document Managment Grid Console', async () => {
@@ -256,7 +256,7 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //kgaikwad
     it('[DRDMV-13079]: Verify document will not appear in knowledge article searches	', async () => {
@@ -533,7 +533,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.addAttachment(`../../../data/ui/attachment/${fileName1[i]}`);
             await createDocumentLibraryPo.clickOnSaveButton();
-            expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.','Success message missing');
+            expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.', 'Success message missing');
             await createDocumentLibraryPo.openAddNewDocumentBlade();
         }
         await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -542,7 +542,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.clickOnSaveButton();
         expect(await utilCommon.isErrorMsgPresent()).toBeTruthy('Error msg not present');
-    }, 240 * 1000);
+    });//, 240 * 1000);
 
     //apdeshmu
     it('[DRDMV-13012]: Verify that single file can be attach per document', async () => {
@@ -562,55 +562,55 @@ describe('Document Library', () => {
 
     it('[DRDMV-13044]: Verify that Document access on multiple change in assignments of support group.', async () => {
         try {
-        let filePath = '../../../data/ui/attachment/demo.txt';
-        let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await createDocumentLibraryPo.openAddNewDocumentBlade();
-        await createDocumentLibraryPo.addAttachment(filePath);
-        await createDocumentLibraryPo.setTitle(titleRandVal);
-        await createDocumentLibraryPo.selectCompany('Petramco');
-        await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
-        await createDocumentLibraryPo.clickOnSaveButton();
-        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        await editDocumentLibraryPo.selectOwnerGroup('Facilities');
-        await editDocumentLibraryPo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
-        
-        await navigationPage.signOut();
-        await loginPage.login('fritz');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        //await editDocumentLibraryPo.selectStatus('Published');
-        await editDocumentLibraryPo.selectOwnerGroup('Employee Relations');
-        await editDocumentLibraryPo.clickOnSaveButton();
-        await editDocumentLibraryPo.clickOnCancelButton();
-        await navigationPage.signOut();
-        await loginPage.login('qliu');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        await editDocumentLibraryPo.selectStatus('Published');
-        await editDocumentLibraryPo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
-        await navigationPage.signOut();
-        await loginPage.login('fritz');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        expect(await documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeFalsy("Document is listed");
-        await navigationPage.signOut();
+            let filePath = '../../../data/ui/attachment/demo.txt';
+            let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await createDocumentLibraryPo.openAddNewDocumentBlade();
+            await createDocumentLibraryPo.addAttachment(filePath);
+            await createDocumentLibraryPo.setTitle(titleRandVal);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+            await createDocumentLibraryPo.clickOnSaveButton();
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await editDocumentLibraryPo.selectOwnerGroup('Facilities');
+            await editDocumentLibraryPo.clickOnSaveButton();
+            expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
 
-        await loginPage.login('qkatawazi');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        expect(await documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeTruthy("Document not visible");
-    } catch (e) {
-        throw e;
-    } finally {
-        await navigationPage.signOut();
-        await loginPage.login('qkatawazi');
-    }
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            //await editDocumentLibraryPo.selectStatus('Published');
+            await editDocumentLibraryPo.selectOwnerGroup('Employee Relations');
+            await editDocumentLibraryPo.clickOnSaveButton();
+            await editDocumentLibraryPo.clickOnCancelButton();
+            await navigationPage.signOut();
+            await loginPage.login('qliu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await editDocumentLibraryPo.selectStatus('Published');
+            await editDocumentLibraryPo.clickOnSaveButton();
+            expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            expect(await documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeFalsy("Document is listed");
+            await navigationPage.signOut();
+
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            expect(await documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeTruthy("Document not visible");
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
     }, 300 * 1000);
 
     it('[DRDMV-12954]: Verify Create view of Document library', async () => {
@@ -644,5 +644,5 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectRegion('Australia');
         await createDocumentLibraryPo.selectSite('Canberra');
         expect(await createDocumentLibraryPo.siteTextPresent('Site')).toBeTruthy("Site text not present");
-    },120 * 1000);
+    });//, 120 * 1000);
 })
