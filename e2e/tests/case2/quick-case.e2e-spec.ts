@@ -48,88 +48,6 @@ describe("Quick Case", () => {
         await navigationPage.signOut();
     });
 
-    //radhiman
-    it('[DRDMV-18972]: Populating fields in Quick Case if only Required parameter is specified', async () => {
-        let caseData = require('../../data/ui/case/case.ui.json');
-        let expectedJsonName = 'caseData_DRDMV18972';
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=PET000000000484&desc=&contact=');
-        expect(await quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester1);
-        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy;
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu@petramco.com&desc=&contact=');
-        expect(await quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
-        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy;
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu&desc=&contact=');
-        expect(await quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
-        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy;
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=+61288992922&desc=&contact=');
-        expect(await quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
-        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy();
-    });
-
-    //radhiman
-    it('[DRDMV-18973]: Populating fields in Quick Case when all parameters are specified', async () => {
-        let caseData = require('../../data/ui/case/case.ui.json');
-        let expectedJsonName = 'caseData_DRDMV18973';
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu@petramco.com&desc=Change my Last Name&contact=PET000000000484');
-        await browser.sleep(1000);
-        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
-        expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu@petramco.com&desc=Change my Last Name&contact=tesser@petramco.com');
-        await browser.sleep(1000);
-        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
-        expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu@petramco.com&desc=Change my Last Name&contact=+14085719604');
-        await browser.sleep(1000);
-        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
-        expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu@petramco.com&desc=Change my Last Name&contact=tesser');
-        await browser.sleep(1000);
-        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
-        expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
-    });
-
-    //radhiman
-    it('[DRDMV-18980]: Populating fields in Quick Case with Required and one optional parameter', async () => {
-        let caseData = require('../../data/ui/case/case.ui.json');
-        let expectedJsonName = 'caseData_DRDMV18980';
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu&desc=Change my Last Name&contact');
-        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
-        expect(await quickCase.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu&desc=&contact=+14085719604');
-        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
-        expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
-        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy();
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qdu&desc=Change my Last Name&contact=');
-        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester2);
-        expect(await quickCase.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
-    });
-
-    //radhiman
-    it('[DRDMV-18977]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=Change my Last Name&contact=PET000000000484');
-        expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=Change my Last Name&contact=');
-        expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=&contact=PET000000000484');
-        expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=&contact=');
-        expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case serch box is not empty');
-    });
-
-    //radhiman
-    it('[DRDMV-18983]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
-        let caseData = require('../../data/ui/case/case.ui.json');
-        let expectedJsonName = 'caseData_DRDMV18983';
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=Test1&desc=Change my Last Name&contact=qliu');
-        await browser.sleep(2000);
-        expect(await quickCase.getPopUpMessage()).toContain(caseData[expectedJsonName].warningMsg);
-        expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
-        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy();
-        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu&desc=Change my Last Name&contact=test1');
-        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
-        expect(await quickCase.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
-    });
-
     async function testData771() {
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester("Adam Pavlik");
@@ -426,83 +344,7 @@ describe("Quick Case", () => {
             await loginPage.login('qkatawazi');
         }
     }, 500 * 1000);
-
-    // Failed due to defect
-    //ankagraw
-    it('[DRDMV-796]: [Quick Case] Resources preview', async () => {
-        let userData1 = {
-            "firstName": "Person1",
-            "lastName": "Person1",
-            "userId": "userData1",
-        }
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.createNewUser(userData1);
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName = randomStr + 'caseTemplateName';
-        let casTemplateSummary = 'CaseSummaryName' + randomStr;
-        let knowledgeTitile = 'knowledge2985' + randomStr;
-        let manualTaskTemplateData = {
-            "templateName": `manualTaskTemplateDraft ${randomStr}`,
-            "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
-            "templateStatus": "Active",
-        }
-        let CaseTemplateData = {
-            "templateName": `${caseTemplateName}`,
-            "templateSummary": `${casTemplateSummary}`,
-            "caseStatus": "InProgress",
-            "templateStatus": "Active",
-            "assignee": "Fritz",
-            "company": "Petramco",
-            "supportGroup": "Facilities",
-            "ownerGroup": "Facilities"
-        }
-
-        let articleData = {
-            "knowledgeSet": "HR",
-            "title": `${caseTemplateName}`,
-            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "assignee": "KWilliamson",
-            "assigneeSupportGroup": "AU Support 3",
-            "company": "Petramco"
-        }
-
-        await apiHelper.apiLogin('qkatawazi');
-        let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
-        let newCaseTemplate = await apiHelper.createCaseTemplate(CaseTemplateData);
-        await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
-        let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-
-        let knowledgeArticleGUID = knowledgeArticleData.id;
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'SMEReview', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Published')).toBeTruthy('Status Not Set');
-
-        await navigationPage.gotoQuickCase();
-        await quickCase.selectRequesterName('Person1');
-        await quickCase.selectCaseTemplate(`${caseTemplateName}`);
-        await quickCase.clickArrowFirstRecommendedCase();
-        expect(await previewCaseTemplateCasesPo.getCaseSummary()).toBe(`${casTemplateSummary}`);
-        expect(await previewCaseTemplateCasesPo.getCaseStatus()).toBe("In Progress");
-        expect(await previewCaseTemplateCasesPo.getCaseCompanyValue()).toBe("Petramco");
-        expect(await previewCaseTemplateCasesPo.getCaseTemplateName()).toBe(`${caseTemplateName}`);
-        expect(await previewCaseTemplateCasesPo.getCasePriority()).toBe("Medium");
-        await previewCaseTemplateCasesPo.clickOnBackButton();
-        await quickCase.clickArrowFirstRecommendedKnowledge();
-        expect(await previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy('View article link not present');
-        expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Knowledge status not present');
-        expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
-        await previewKnowledgePo.clickOnBackButton();
-        await quickCase.createCaseButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully');
-        expect(await previewCasePo.isRequesterNameDisplayed('Person1 Person1')).toBeTruthy();
-        expect(await previewCasePo.isCaseSummaryDisplayed(`${caseTemplateName}`)).toBeTruthy();
-        expect(await previewCasePo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();
-        expect(await previewCasePo.isRequesterEmailIdDisplayed('test@petramco.com')).toBeTruthy();
-        expect(await previewCasePo.isDescriptionDisplayed('Person1 Person1 2bvfcaseTemplateName')).toBeTruthy();
-        await previewCasePo.clickOncreateNewCaseButton();
-        expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
-    }, 480 * 1000);
-
+    
     //ankagraw
     it('[DRDMV-795]: [Quick Case] Case template search in Resources', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -560,7 +402,7 @@ describe("Quick Case", () => {
         expect(await resources.getAdvancedSearchResultForParticularSection(caseTemplateName)).toEqual(caseTemplateName);
     }, 900 * 1000);
 
-    //apdeshmu
+    //apdeshmu 
     it('[DRDMV-767]:[Quick Case] Case creation with template (end-to-end)', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let assignmentMappingName = "DRDMV-1087 " + randomStr;
@@ -874,7 +716,7 @@ describe("Quick Case", () => {
         await quickCase.selectRequesterName('adam');
         await quickCase.selectRoleValue('Related to');
         expect(await quickCase.selectCaseTemplate(caseTemplateDraft)).toBeFalsy('template is present');
-    }, 480 * 1000);
+    }, 500 * 1000);
 
     //ptidke
     it('[DRDMV-741]: [Quick Case] UI validation including Source field in Quick Case', async () => {
@@ -912,5 +754,163 @@ describe("Quick Case", () => {
         expect(await quickCase.isValuePresentInSourceDropDown(sourceDeprecated741)).toBeFalsy(sourceDeprecated741 + 'is present');
         expect(await quickCase.isValuePresentInSourceDropDown(inActiveSource741)).toBeFalsy(inActiveSource741 + 'is present');
         expect(await quickCase.isValuePresentInSourceDropDown(activeSourceNotUI)).toBeFalsy(activeSourceNotUI + 'is present');
+    });
+
+    // Failed due to defect
+    //ankagraw
+    it('[DRDMV-796]: [Quick Case] Resources preview', async () => {
+        let userData1 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData1",
+        }
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.createNewUser(userData1);
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateName = randomStr + 'caseTemplateName';
+        let casTemplateSummary = 'CaseSummaryName' + randomStr;
+        let knowledgeTitile = 'knowledge2985' + randomStr;
+        let manualTaskTemplateData = {
+            "templateName": `manualTaskTemplateDraft ${randomStr}`,
+            "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
+            "templateStatus": "Active",
+        }
+        let CaseTemplateData = {
+            "templateName": `${caseTemplateName}`,
+            "templateSummary": `${casTemplateSummary}`,
+            "caseStatus": "InProgress",
+            "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
+        }
+
+        let articleData = {
+            "knowledgeSet": "HR",
+            "title": `${caseTemplateName}`,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignee": "KWilliamson",
+            "assigneeSupportGroup": "AU Support 3",
+            "company": "Petramco"
+        }
+
+        await apiHelper.apiLogin('qkatawazi');
+        let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+        let newCaseTemplate = await apiHelper.createCaseTemplate(CaseTemplateData);
+        await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
+        let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+
+        let knowledgeArticleGUID = knowledgeArticleData.id;
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'SMEReview', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Published')).toBeTruthy('Status Not Set');
+
+        await navigationPage.gotoQuickCase();
+        await quickCase.selectRequesterName('Person1');
+        await quickCase.selectCaseTemplate(`${caseTemplateName}`);
+        await quickCase.clickArrowFirstRecommendedCase();
+        expect(await previewCaseTemplateCasesPo.getCaseSummary()).toBe(`${casTemplateSummary}`);
+        expect(await previewCaseTemplateCasesPo.getCaseStatus()).toBe("In Progress");
+        expect(await previewCaseTemplateCasesPo.getCaseCompanyValue()).toBe("Petramco");
+        expect(await previewCaseTemplateCasesPo.getCaseTemplateName()).toBe(`${caseTemplateName}`);
+        expect(await previewCaseTemplateCasesPo.getCasePriority()).toBe("Medium");
+        await previewCaseTemplateCasesPo.clickOnBackButton();
+        await quickCase.clickArrowFirstRecommendedKnowledge();
+        expect(await previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy('View article link not present');
+        expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Knowledge status not present');
+        expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
+        await previewKnowledgePo.clickOnBackButton();
+        await quickCase.createCaseButton();
+        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully');
+        expect(await previewCasePo.isRequesterNameDisplayed('Person1 Person1')).toBeTruthy();
+        expect(await previewCasePo.isCaseSummaryDisplayed(`${caseTemplateName}`)).toBeTruthy();
+        expect(await previewCasePo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();
+        expect(await previewCasePo.isRequesterEmailIdDisplayed('test@petramco.com')).toBeTruthy();
+        expect(await previewCasePo.isDescriptionDisplayed('Person1 Person1 2bvfcaseTemplateName')).toBeTruthy();
+        await previewCasePo.clickOncreateNewCaseButton();
+        expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
+    }, 480 * 1000);
+
+    //radhiman
+    it('[DRDMV-18972]: Populating fields in Quick Case if only Required parameter is specified', async () => {
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let expectedJsonName = 'caseData_DRDMV18972';
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=PET000000000484&desc=&contact=');
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester1);
+        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy;
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu@petramco.com&desc=&contact=');
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
+        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy;
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu&desc=&contact=');
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
+        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy;
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=+61288992922&desc=&contact=');
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
+        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy();
+    });
+
+    //radhiman
+    it('[DRDMV-18973]: Populating fields in Quick Case when all parameters are specified', async () => {
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let expectedJsonName = 'caseData_DRDMV18973';
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu@petramco.com&desc=Change my Last Name&contact=PET000000000484');
+        await browser.sleep(1000);
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
+        expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu@petramco.com&desc=Change my Last Name&contact=tesser@petramco.com');
+        await browser.sleep(1000);
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
+        expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu@petramco.com&desc=Change my Last Name&contact=+14085719604');
+        await browser.sleep(1000);
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
+        expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu@petramco.com&desc=Change my Last Name&contact=tesser');
+        await browser.sleep(1000);
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
+        expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
+    });
+
+    //radhiman
+    it('[DRDMV-18980]: Populating fields in Quick Case with Required and one optional parameter', async () => {
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let expectedJsonName = 'caseData_DRDMV18980';
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu&desc=Change my Last Name&contact');
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
+        expect(await quickCase.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu&desc=&contact=+14085719604');
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
+        expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
+        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy();
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qdu&desc=Change my Last Name&contact=');
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester2);
+        expect(await quickCase.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
+    });
+
+    //radhiman
+    it('[DRDMV-18977]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=Change my Last Name&contact=PET000000000484');
+        expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=Change my Last Name&contact=');
+        expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=&contact=PET000000000484');
+        expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=&desc=&contact=');
+        expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case serch box is not empty');
+    });
+
+    //radhiman
+    it('[DRDMV-18983]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
+        let caseData = require('../../data/ui/case/case.ui.json');
+        let expectedJsonName = 'caseData_DRDMV18983';
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=Test1&desc=Change my Last Name&contact=qliu');
+        await browser.sleep(2000);
+        expect(await quickCase.getPopUpMessage()).toContain(caseData[expectedJsonName].warningMsg);
+        expect(await quickCase.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
+        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy();
+        await browser.get('/innovationsuite/index.html#/com.bmc.dsm.bwfa/quickcase?customer=qliu&desc=Change my Last Name&contact=test1');
+        expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
+        expect(await quickCase.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
     });
 })

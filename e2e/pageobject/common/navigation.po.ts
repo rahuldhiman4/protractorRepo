@@ -13,6 +13,7 @@ class NavigationPage {
         hamburgerIcon: '.a-hamburger',
         hamburgerHelpIcon: '[class="d-n-hamburger__nav-link d-icon-left-question_circle"]',
         closeHambergerMenu: 'button.close.close-inverse',
+        panelHeadingOfSetting: 'rx-administration-settings .rx-admin-settings .panel-heading h4',
     }
 
     async isHambergerIconPresent(): Promise<boolean> {
@@ -284,13 +285,21 @@ class NavigationPage {
         await element(by.cssContainingText(this.selectors.menu, applicationName)).click();
     }
 
+    
+    async getSettingPanelText(): Promise<String> {
+        let titleName = await $(this.selectors.panelHeadingOfSetting).getText();
+        return titleName;
+    }
+
     async switchToAngularJsTab(): Promise<void> {
+        await browser.sleep(2000);
         await browser.getAllWindowHandles().then(async function (handles) {
             await browser.switchTo().window(handles[1]);
         });
     }
 
     async switchToAngularTab(): Promise<void> {
+        await browser.sleep(2000);
         await browser.getAllWindowHandles().then(async function (handles) {
             for (let i = handles.length; i > 1; i--) {
                 await browser.switchTo().window(handles[i - 1]);
