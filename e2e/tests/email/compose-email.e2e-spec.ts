@@ -283,7 +283,7 @@ describe("Compose Email", () => {
         expect((await composeMail.isTextPresentInEmailBody('qtao@petramco.com'))).toBeFalsy();
         expect((await composeMail.isTextPresentInEmailBody('Qianru Tao'))).toBeFalsy();
         await composeMail.clickOnSendButton();
-    }, 160 * 1000);
+    });//, 160 * 1000);
 
     //ptidke
     it('[DRDMV-10398,DRDMV-10396,DRDMV-10402]:Email Template List Update in case compose email', async () => {
