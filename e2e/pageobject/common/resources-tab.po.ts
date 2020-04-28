@@ -14,8 +14,8 @@ export class Resources {
         backBuuton: 'span.d-icon-angle_left',
     }
 
-    async isKnowledgeArticlesEmpty(): Promise<boolean> {
-        return await $$('.km-group').get(0).$$('.km-group-list-item_empty').get(0).isPresent();
+    async isSearchRecordEmpty(recordNumber:number): Promise<boolean> {
+        return await $$('.bwf-search-result p').get(recordNumber - 1).isPresent();
     }
 
     async clickOnAdvancedSearchOptions(searchArea: string): Promise<void> {
