@@ -129,17 +129,19 @@ export class GridOperations {
 
     async getFirstGridRecordColumnValue(columnName: string, guid?: string): Promise<string> {
         let count: number = 0;
+        let gridHeaders = '.c-header-container .c-header-name';
+        let gridCellData = '.at-data-row .at-data-cell'
         if (guid) {
-            this.selectors.gridHeaders = `[rx-view-component-id='${guid}'] ` + this.selectors.gridHeaders;
-            this.selectors.gridCellData = `[rx-view-component-id='${guid}'] ` + this.selectors.gridCellData;
+            gridHeaders = `[rx-view-component-id='${guid}'] ` + gridHeaders;
+            gridCellData = `[rx-view-component-id='${guid}'] ` + gridCellData;
         }
-        let headersLocator = await $$(this.selectors.gridHeaders);
+        let headersLocator = await $$(gridHeaders);
         for (let i: number = 0; i < await headersLocator.length; i++) {
             count = count + 1;
-            let tempLocator = await $$(this.selectors.gridHeaders).get(i);
+            let tempLocator = await $$(gridHeaders).get(i);
             if (await tempLocator.getText() == columnName) { break; }
         }
-        return await $$(this.selectors.gridCellData).get(count - 1).getAttribute('innerText');
+        return await $$(gridCellData).get(count - 1).getAttribute('innerText');
     }
 
     async getAllValuesFromColumn(columnHeader: string, guid?: string): Promise<string[]> {
@@ -176,11 +178,11 @@ export class GridOperations {
 
     //Accepts sortType as 'asc' or 'desc'
     async isGridColumnSorted(columnName: string, sortType: string, guid?: string): Promise<boolean> {
-        let columnHeaderLocator = this.selectors.gridHeaders;
+        let columnHeaderLocator = '.c-header-container .c-header-name';
         let columnContainerLocator = '.c-header-container';
         if (guid) {
-            columnHeaderLocator = `[rx-view-component-id='${guid}'] ` + this.selectors.gridHeaders;
-            columnContainerLocator = `[rx-view-component-id='${guid}'] ` + '.c-header-container';
+            columnHeaderLocator = `[rx-view-component-id='${guid}'] ` + columnHeaderLocator;
+            columnContainerLocator = `[rx-view-component-id='${guid}'] ` + columnContainerLocator;
         }
         let columnHeaderContainer = await $$(columnContainerLocator);
         for (let i = 0; i < await columnHeaderContainer.length; i++) {

@@ -20,6 +20,7 @@ describe('Case And Employee Relationship', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qtao');
+        await utilityGrid.clearFilter();
     });
 
     afterAll(async () => {

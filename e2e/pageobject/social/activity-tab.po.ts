@@ -42,13 +42,14 @@ class ActivityTabPage {
         emailReply: '.bwf-button-link[aria-label="Reply"]',
         emailReplyAll: '.bwf-button-link[aria-label="Reply All"]',
 
-        dwpSurveyText: '.dwp_survey .log-item__body div',
-        viewSurveyBtn: '.dwp_survey .d-button_link',
-        dwpQuestions: '.dwp_question',
-        dwpAnswers: '.dwp_answer',
-        closeButton: '.modal-dialog button',
-        dwpIcon: '.dwp_survey .log-item__icon',
-        dwpFeedback: '.rx-content.dwp-comment',
+        dwpRatingText: 'bwf-activity-dwp-survey .activity-title',
+        dwpSurveyText: '.dwp-answer strong, .dwp-answer div, .dwp-answer',
+        viewSurveyBtn: '.dwp-survey-list button',
+        dwpQuestions: '.list-of-questions strong',
+        dwpAnswers: '.dwp-survey-details .types-of-answers',
+        closeButton: '.dp-footer button',
+        dwpIcon: 'bwf-activity-dwp-survey .activity__icon',
+        dwpFeedback: '.dp-content .dwp-comment',
         logItems: '.activity  .activity__body',
         // body: '.log-item__body .body',
 
@@ -584,9 +585,7 @@ class ActivityTabPage {
     }
 
     async getRatingTextOnActivityTab(): Promise<string> {
-        let surveyXpath = await $$(this.selectors.dwpSurveyText).get(0);
-        //        await browser.wait(this.EC.visibilityOf(surveyXpath));
-        return surveyXpath.getText();
+        return await $(this.selectors.dwpRatingText).getText();
     }
 
 
@@ -610,12 +609,12 @@ class ActivityTabPage {
 
     async getComplexSurveyModalTitle(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($('.modal-title')));
-        return await $('.modal-title').getText();
+        return await $('.dp-title').getText();
     }
 
     async getRatingText(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($('.rating')));
-        return await $('.rating').getText();
+        return await $('.dwp-survey-details .activity-title').getText();
     }
 
     async getDWPIconClassAttribute(): Promise<string> {
@@ -636,7 +635,7 @@ class ActivityTabPage {
     async isComplexSurveyOrderIsThird(): Promise<boolean> {
         //        await utilCommon.waitUntilSpinnerToHide();
         //        await browser.wait(this.EC.visibilityOf(element(by.xpath("(//div[@class='log-item__content'])[3]//div[text()='View Survey Information']"))));
-        let activityLog = await $$('.log-item__content').get(2);
+        let activityLog = await $$('[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] .activity__body').get(2);
         let textValue = await activityLog.getText();
         return textValue.includes('View Survey Information');
     }
