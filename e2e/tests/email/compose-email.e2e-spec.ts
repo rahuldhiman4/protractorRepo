@@ -233,7 +233,6 @@ describe("Compose Email", () => {
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnSelectEmailTemplateLink();
-        await utilityCommon.waitUntilSpinnerToHide();
         await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
         await emailTemplateBladePo.clickOnApplyButton();
         await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
@@ -244,7 +243,7 @@ describe("Compose Email", () => {
         await utilityCommon.waitUntilPopUpDisappear();
         expect(await activityTabPo.getEmailTitle()).toContain('Qianru Tao sent an email');
         expect(await activityTabPo.getEmailTemplateDetails()).toContain(emailTemplateName);
-        expect(await activityTabPo.getRecipientInTo()).toContain('To:  Fritz Schulz');
+        expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');
         expect(await activityTabPo.getEmailSubject()).toContain(caseId + ':' + 'Leave summary');
         await activityTabPo.clickShowMoreForEmailActivity();
         expect(await activityTabPo.getEmailBody()).toContain('I am taking leave today.');
@@ -284,7 +283,7 @@ describe("Compose Email", () => {
         expect((await composeMail.isTextPresentInEmailBody('qtao@petramco.com'))).toBeFalsy();
         expect((await composeMail.isTextPresentInEmailBody('Qianru Tao'))).toBeFalsy();
         await composeMail.clickOnSendButton();
-    });
+    }, 160 * 1000);
 
     //ptidke
     it('[DRDMV-10398,DRDMV-10396,DRDMV-10402]:Email Template List Update in case compose email', async () => {
@@ -347,8 +346,11 @@ describe("Compose Email", () => {
         let caseId: string = newCase.displayId;
         await utilityGrid.clearFilter();
         await caseConsole.searchAndOpenCase(caseId);
+        expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
+        expect(await composeMail.getSubject()).toContain(caseId);
         await composeMail.clickOnSelectEmailTemplateLink();
+        await utilCommon.waitUntilSpinnerToHide();
         await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplate1);
         await emailTemplateBladePo.clickOnApplyButton();
         await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
@@ -365,7 +367,7 @@ describe("Compose Email", () => {
         expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate2, 'Email Template name heading does not match');
         await composeMail.clickOnSendButton();
         await utilityCommon.waitUntilPopUpDisappear();
-    }, 150 * 1000);
+    }, 200 * 1000);
 
     //kgaikwad
     it('[DRDMV-8392,DRDMV-10384]: Negative: In Email "To" and "cc" should be user from Foundation data ', async () => {
@@ -399,8 +401,8 @@ describe("Compose Email", () => {
 
     it('[DRDMV-20369]: Verify able to apply email template with images tables and hyperlinks ', async () => {
         try {
-            await navigationPage.signOut();
-            await loginPage.login('fritz');
+            //await navigationPage.signOut();
+            //await loginPage.login('fritz');
             let recDeleted = await apiHelper.deleteDynamicFieldAndGroup();
             console.log("Record deleted...", recDeleted);
             let caseTemplateName = 'caseTempRDMV-20369lp3ir' + randomStr;
@@ -674,7 +676,7 @@ describe("Compose Email", () => {
             await navigationPage.signOut();
             await loginPage.login("qtao");
         }
-    }, 200 * 1000);
+    }, 400 * 1000);
 
     it('[DRDMV-20370]: Verify tags which are not in white list for email', async () => {
         try {
@@ -689,10 +691,9 @@ describe("Compose Email", () => {
             await createEmailTemplatePo.setDescription(randomStr);
             await createEmailTemplatePo.setSubject("templateRandomStr" + randomStr);
             //adding dynamic fields
-            await createEmailTemplatePo.setBody('');
+            await createEmailTemplatePo.setBody('Uploading image');
             await composeMail.clickOnImageIcon();
             await imagePropertiesPo.addImageOnEmail('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex);
-            await createEmailTemplatePo.setBody('');
             await createEmailTemplatePo.setBody('new link');
             await composeMail.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', linkDisplayTextFieldIndex);
@@ -700,8 +701,7 @@ describe("Compose Email", () => {
             await linkPropertiesPo.clickOnTargetTab();
             await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
             await linkPropertiesPo.clickOnOkBtn();
-            await createEmailTemplatePo.setBody('');
-            await createEmailTemplatePo.setBody('    New things');
+            await createEmailTemplatePo.setBody('New Table');
             await composeMail.clickOnTableIcon();
             await tablePropertiesPo.setValueOfTableProperties('4', tableRowFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('3', tableColumnFieldIndex);
@@ -716,7 +716,6 @@ describe("Compose Email", () => {
             await addFieldsPopPo.clickOnCase();
             await addFieldsPopPo.selectDynamicField('Assignee');
             await addFieldsPopPo.clickOnOkButtonOfEditor();
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(1, 1, 'tableEmail');
             //bold
             await createEmailTemplatePo.clickInTableRowOfEmailTemplate(1, 2, 'tableEmail');
             await composeMail.clickOnBoldIcon();
@@ -756,7 +755,7 @@ describe("Compose Email", () => {
             await createEmailTemplatePo.setFontBody('Font 72');
             await createEmailTemplatePo.setBody('Font 72');
             await createEmailTemplatePo.clickOnSaveButton();
-            // adding whitelist image , table and style p tags
+            //adding whitelist image , table and style p tags
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateEmailWhiteList(tagAdd, domainName);
             await navigationPage.gotoCaseConsole();
@@ -783,21 +782,20 @@ describe("Compose Email", () => {
             let newSubject = 'NewDescription' + randomStr;
             await composeMail.setSubject(newSubject);
             await composeMail.clickOnSendButton();
+            await utilityCommon.waitUntilPopUpDisappear();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.getFirstPostContent()).toContain('Fritz Schulz sent an email');
-            await browser.sleep(8000);
             let valueOfBody: string = await apiHelper.getHTMLBodyOfEmail(newCase.displayId + ':' + newSubject);
             //color span
             await expect(valueOfBody.includes('<td><span style="color:#3498db;">SettingColor</span></td>')).toBeTruthy(1);
-            //font
-            await expect(valueOfBody.includes('<p>This is new test<span style="font-size:72px;">Font 72Font 72this is newly added text</span></p>')).toBeTruthy(2);
             //table width size attaribute
-            await expect(valueOfBody.includes('<table border="1" cellspacing="1" cellpadding="1">')).toBeTruthy(3);
+            await expect(valueOfBody.includes('<table border="1" cellspacing="1" cellpadding="1">')).toBeTruthy(2);
             //image
-            await expect(valueOfBody.includes('<p><img alt="">new link<a>Google</a> New things</p>')).toBeFalsy(4);
+            await expect(valueOfBody.includes('<p>new link<a>Google</a></p>')).toBeFalsy(3);
             // removing tags added
             await navigationPage.gotoCaseConsole();
             let tagRemove = 'a';
+            await apiHelper.apiLogin('tadmin');
             await apiHelper.updateEmailWhiteList(tagRemove, domainName);
             let caseDataOne =
             {
@@ -822,19 +820,17 @@ describe("Compose Email", () => {
             await composeMail.clickOnSendButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.getFirstPostContent()).toContain('Fritz Schulz sent an email');
-            await browser.sleep(8000);
             let valueBody: string = await apiHelper.getHTMLBodyOfEmail(newCaseOne.displayId + ':' + newSubject1);
-            await expect(valueBody.includes('<p><img alt="">new link<a>Google</a> New things</p>')).toBeTruthy('Image is present in email');
-            await expect(valueBody.includes('<td><span>SettingColor</span></td> ')).toBeTruthy('span color is present in email');
-            await expect(valueBody.includes('<table border="1" cellspacing="1" cellpadding="1">')).toBeFalsy('table border , cellspacing , cellpading displayed in email');
-            await expect(valueBody.includes('<p>This is new test<span>Font 72Font 72this is newly added text</span></p>')).toBeTruthy('Font is displaying in email');
+            await expect(valueBody.includes('<td><span style="color:#3498db;">SettingColor</span></td>')).toBeFalsy("Font color is displayed");
+            await expect(valueBody.includes('<table border="1" cellspacing="1" cellpadding="1">')).toBeTruthy("Table border, cellspacing, cellpadding is shown");
+            await expect(valueBody.includes('<p>new link<a>Google</a></p>')).toBeTruthy("Link is not shown");
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qtao');
         }
-    }, 300 * 1000);
+    }, 500 * 1000);
 
     it('[DRDMV-9033]: Negative - Verify Discard button on adding attachment in Compose Email', async () => {
         await navigationPage.gotoCaseConsole();
@@ -885,7 +881,7 @@ describe("Compose Email", () => {
         expect(await activityTabPo.getFirstPostContent()).toContain('This is email body');
         expect(await activityTabPo.getFirstPostContent()).toContain('Qianru Tao sent an email');
         expect(activityTabPo.isAttachedFileNameDisplayed('demo.txt')).toBeTruthy('Attached file not Present');
-    });
+    }, 160 * 1000);
 
     it('[DRDMV-9032]: Negative -Verify large number of attachments. Click on Send button in Compose Email', async () => {
         await navigationPage.gotoCaseConsole();
@@ -902,14 +898,16 @@ describe("Compose Email", () => {
         await utilityGrid.clearFilter();
         await caseConsole.searchAndOpenCase(newCase.displayId);
         await viewCasePo.clickOnEmailLink();
+        await composeMail.setToOrCCInputTetxbox('To', 'franz.schwarz@petramco.com');
+        await composeMail.setEmailBody("With mutiple attachmnents")
         for (let i = 0; i <= 20; i++) {
             await composeMail.addAttachment();
         }
-        await composeMail.setToOrCCInputTetxbox('To', 'franz.schwarz@petramco.com');
         await composeMail.clickOnSendButton();
+        await utilityCommon.waitUntilPopUpDisappear();
         await activityTabPo.clickShowMoreForEmailActivity();
         expect(await activityTabPo.getAttachmentCount()).toBe(21);
-    });
+    }, 250 * 1000);
 
     it('[DRDMV-20365,DRDMV-20366]: Verify Able to insert table,hyperlink, images (All images) and Copy paste images in compose email and its send successfully', async () => {
         try {
