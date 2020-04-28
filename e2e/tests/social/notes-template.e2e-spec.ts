@@ -64,7 +64,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //ptidke
     it('[DRDMV-16010]: [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {
@@ -96,7 +96,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
-    }, 170 * 1000);
+    });//, 170 * 1000);
 
     //ptidke
     it('[DRDMV-16028]: [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
@@ -128,7 +128,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
-    }, 140 * 1000);
+    });//, 140 * 1000);
 
     //ptidke
     it('[DRDMV-16027]: [Design Time] Verify case Business analyst is able create ,edit and delete Task Notes template', async () => {
@@ -160,7 +160,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
-    }, 140 * 1000);
+    });//, 140 * 1000);
 
     //ptidke
     it('[DRDMV-16181]: [Design Time] Knowledge user is able to create,edit(update), Delete Knowledge Notes Template', async () => {
@@ -203,7 +203,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
         }
-    }, 200 * 1000);
+    });//, 200 * 1000);
 
     //ptidke
     it('[DRDMV-15999]: [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
@@ -238,7 +238,7 @@ describe('Notes template', () => {
         await expect(await createNotesTemplate.isSaveButtonDisabled()).toBeFalsy();
         await expect(await createNotesTemplate.isCreateNotesTemplateUIPresent()).toBeTruthy();
         //await utilCommon.waitUntilSpinnerToHide();
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //ptidke
     it('[DRDMV-16111]: [Design Time] Verify warning Message for locale values if template message is not configured against that locale value', async () => {
@@ -281,7 +281,7 @@ describe('Notes template', () => {
         await editNotetemplate.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
         //await utilCommon.waitUntilSpinnerToHide();
-    }, 230 * 1000);
+    });//, 230 * 1000);
 
     //ptidke
     it('[DRDMV-16040]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
@@ -364,7 +364,7 @@ describe('Notes template', () => {
             await notesTemplateUsage.clickOnRequsterName();
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
             await activityTabPo.clickOnPostButton();
-            await expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
+            await expect(await activityTabPo.isTextPresentInActivityLog(notesTemplateBody)).toBeTruthy();
             await navigationPage.signOut();
             await loginPage.login('qdu');
             let caseData2 = {
@@ -380,7 +380,7 @@ describe('Notes template', () => {
             await notesTemplateUsage.clickOnRequsterName();
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
             await activityTabPo.clickOnPostButton();
-            await expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
+            await expect(await activityTabPo.isTextPresentInActivityLog(notesTemplateBody)).toBeTruthy();
         }
         catch (e) {
             throw e;
@@ -389,7 +389,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         }
-    }, 160 * 1000);
+    });//, 160 * 1000);
 
     //ptidke
     it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual', async () => {
@@ -433,9 +433,10 @@ describe('Notes template', () => {
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
+            await utilityCommon.refresh();
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
             await activityTabPo.clickOnPostButton();
-            await expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
+            await expect(await activityTabPo.isTextPresentInActivityLog(notesTemplateBody)).toBeTruthy();
         } catch (e) {
             throw e;
         }
@@ -443,7 +444,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         }
-    }, 170 * 1000);
+    });//, 200 * 1000);
 
     //ptidke
     it('[DRDMV-16047]: [Run Time] Validate that case BA is able to select and utilize Active Knowledge notes templates in Knowledge Article ', async () => {
@@ -470,6 +471,6 @@ describe('Notes template', () => {
         await viewKnowledgeArticlePo.clickOnTab('Activity');
         await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateName);
         await activityTabPo.clickOnPostButton();
-        await expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
+        await expect(await activityTabPo.isTextPresentInActivityLog(notesTemplateBody)).toBeTruthy();
     });
 })

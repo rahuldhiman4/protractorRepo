@@ -35,10 +35,8 @@ class ViewTask {
         assignGroupText: '[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] label',
         assignCompany: '[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] label',
         taskStatusGuid: 'aea81ee2-85d9-4bb6-adb4-08c29028d45d',
-        attachedfileName: '.rx-attachment-view-item div:nth-child(2) >div.rx-attachment-view-name',
-        attachmentName: 'div.rx-attachment-view-item div:nth-child(2) > div.rx-attachment-view-name',
-        showAttachmentLink: '.rx-attachment-show-text',
-        showAttachmentCounterButton: '.rx-attachment-show-more',
+        attachmentName: 'bwf-attachment-viewer .bwf-attachment-container__file-name',
+        showMoreLessAttachmentLink: 'bwf-attachment-viewer button.ng-star-inserted span',
         saveAdhocTask: '[rx-view-component-id="a19228d0-81a9-4b19-9cb3-b5bd9550966f"] button',
         attachmentFile: '.justify-content-start .bwf-attachment-container__file-name',
         attachmentpath: '.rx-attachment-view .d-icon-cross',
@@ -301,34 +299,18 @@ class ViewTask {
         await element(by.cssContainingText(this.selectors.attachmentName, attachmentName)).click();
     }
 
-    async clickOnShowMoreButton(): Promise<void> {
-        await $(this.selectors.showAttachmentLink).click();
-    }
-
-    async clickOnShowLessButton(): Promise<void> {
-        await $(this.selectors.showAttachmentLink).click();
-    }
-
-    async clickOnShowMoreCounterButton(showMoreCounter: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.showAttachmentCounterButton, showMoreCounter)).click();
-    }
-
-    async closeAttachment(): Promise<void> {    
-        await element(by.css(this.selectors.attachmentpath)).click();
-    }
-
     async clickOnSaveViewAdhoctask(): Promise<void> {
         await $(this.selectors.saveAdhocTask).click();
     }
 
     async getShowMoreLessAttachmentsLinkText():Promise<string>{
-        return await $(this.selectors.showMore).getText();
+        return await $(this.selectors.showMoreLessAttachmentLink).getText();
     }
 
-    async clickShowMoreLink():Promise<void>{
-        return await $(this.selectors.showMore).click();
+    async clickShowMoreShowLessLink():Promise<void>{
+        return await $(this.selectors.showMoreLessAttachmentLink).click();
     }
-
+    
     async isFileDisplayed(fileName:string):Promise<boolean>{
         return await $(`.rx-attachment-view-thumbnail [alt=${fileName}]`).isDisplayed();
     }

@@ -20,7 +20,8 @@ class CreateAdhocTaskTemplatePage {
         saveAdhocTask: '[rx-view-component-id="e971ed74-8ded-44a4-945f-338067be3df9"] button',
         canceladhocTask: '[rx-view-component-id="73fcc0fa-3282-42a2-bf5d-0e4e4de5fcac"] button',
         status: '[rx-view-component-id="5c6f476e-c95c-4b24-b202-b4029c94ec02"] .dropdown-toggle',
-        attachmentLink: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] button',
+        attachmentLink: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] [type=button]',
+        attachmentLimitWarning: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .bwf-attachment-limit-warning',
         assignCompany: '[rx-view-component-id="359f0c65-e48c-458d-8f14-3c2fc85c5cf6"] .dropdown-toggle',
         buisnessUnit: '[rx-view-component-id="d290526a-893e-40c8-bbce-0a8e30c934c0"] .dropdown-toggle',
         assignee: '[rx-view-component-id="58085538-2875-4bf0-a880-f977bdeb842a"] .dropdown-toggle',
@@ -29,7 +30,7 @@ class CreateAdhocTaskTemplatePage {
         taskSummaryRequiredText: '76b6b259-a085-4d9f-91ac-8c5cbb2bc725',
         assignedCompanyRequiredText: '359f0c65-e48c-458d-8f14-3c2fc85c5cf6',
         assignedGroupRequiredText: '6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d',
-        attachmentField: 'input[type="file"]',
+        attachmentField: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] input[type="file"]',
     }
 
     async addAttachment(fileToUpload: string): Promise<void> {
@@ -179,8 +180,13 @@ class CreateAdhocTaskTemplatePage {
             return false;
         }
     }
+
     async isAttachmentButtonEnabled(): Promise<boolean> {
         return $(this.selectors.attachmentLink).isEnabled();
+    }
+
+    async getAttachmentLimitWarningText(): Promise<string> {
+        return $(this.selectors.attachmentLimitWarning).getText();
     }
 
     async addAttachmentInDescription(fileToUpload: string): Promise<void> {

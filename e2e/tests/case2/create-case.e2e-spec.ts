@@ -86,7 +86,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 200 * 1000);
+    });//, 200 * 1000);
 
     //kgaikwad
     it('[DRDMV-17653]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {
@@ -144,7 +144,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 220 * 1000);
+    });//, 220 * 1000);
 
     //kgaikwad
     it('[DRDMV-18031]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
@@ -209,7 +209,7 @@ describe("Create Case", () => {
         await caseConsolePage.searchAndOpenCase(caseId1);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     //ankagraw
     it('[DRDMV-16081]: Verify allow case reopen tag in case template', async () => {
@@ -361,7 +361,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 200*1000);
+    });//, 200 * 1000);
 
     //ankagraw
     it('[DRDMV-11856]: [Case Creation] create case with Global case template without flowset ', async () => {
@@ -399,7 +399,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 250 * 1000);
+    });//, 250 * 1000);
 
     //ankagraw
     it('[DRDMV-16076]: Reopen configurations available on Case Template Create screen ', async () => {
@@ -505,7 +505,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 210 * 1000);
+    });//, 210 * 1000);
 
     //ankagraw
     it('[DRDMV-7027]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
@@ -549,7 +549,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //ankagraw
     it('[DRDMV-8868]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', async () => {
@@ -628,7 +628,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     //ankagraw
     it('[DRDMV-12061]: [ Task ] - Verify create case with Global task template having assignment', async () => {
@@ -784,7 +784,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 310 * 1000);
+    }, 390 * 1000);
 
     //ankagraw
     it('[DRDMV-5479,DRDMV-1192]: Verify case assignment on Create Case', async () => {
@@ -822,7 +822,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 200 * 1000);
+    });//, 200 * 1000);
 
     //ankagraw
     it('[DRDMV-11818]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
@@ -874,7 +874,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 210 * 1000);
+    }, 260 * 1000);
 
     //ankagraw
     it('[DRDMV-1614]: [Case] Fields validation for case in New status ', async () => {
@@ -915,7 +915,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 240 * 1000);
+    });//, 240 * 1000);
 
     it('[DRDMV-1620]: [Case] Fields validation for case in Closed status ', async () => {
         try {
@@ -947,7 +947,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     //apdeshmu
     it('[DRDMV-5325]:  Case Agent user able to see all activity records in activity feed for a Case created using template', async () => {
@@ -971,13 +971,11 @@ describe("Create Case", () => {
             await previewCasePo.clickGoToCaseButton();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickChangeAssignmentButton();
             await changeAssignmentPage.setAssignee(petramcoStr, aUsupportStr, kasiaOstlunsStr);
             await editCasePage.clickSaveCase();
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await activityPo.isTextPresentInActivityLog("Kasia Ostlun")).toBeTruthy("Text is not present in activiy tab1");
             expect(await activityPo.isTextPresentInActivityLog("changed the case assignment")).toBeTruthy("Text is not present in activiy tab2");
             expect(await activityPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab3");
@@ -986,20 +984,16 @@ describe("Create Case", () => {
             await activityTabPo.addActivityNote(activityNoteText);
             await activityTabPo.addAttachment(filePath);
             await activityTabPo.clickOnPostButton();
-            await utilCommon.waitUntilSpinnerToHide();
-            await utilCommon.waitUntilSpinnerToHide();
             await expect(activityTabPo.isTextPresentInNote(activityNoteText)).toBeTruthy('Private Note is not Added');
+            expect(await activityTabPo.isAttachmentInActivity('bwfPdf.pdf')).toBeTruthy('File is not present on activity');
             await activityTabPo.addActivityNote(randomStr);
             await activityTabPo.clickPublicCheckbox();
             await activityTabPo.clickOnPostButton();
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await activityTabPo.isTextPresentInNote(randomStr)).toBeTruthy('Public Note is not Added');
             await viewCasePage.clickAttachmentsLink();
             await attachmentBladePage.searchAndSelectCheckBox('bwfPdf');
             expect(await attachmentBladePage.isDownloadButtonEnabled()).toBeTruthy('Download button is disabled');
             await attachmentBladePage.clickOnDownloadButton();
-            expect(await activityTabPo.isTextPresentInNote(activityNoteText)).toBeTruthy('Private Note is not Added');
-            expect(await activityTabPo.isAttachmentInActivity('bwfPdf.pdf')).toBeTruthy('File is not present on activity');
             expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
         } catch (e) {
             throw e;

@@ -116,7 +116,7 @@ describe('Person Profile test', () => {
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
         }
-    }, 190 * 1000);
+    });//, 190 * 1000);
 
     //asahitya
     it('[DRDMV-14028]: Verify Requested Cases tab of My Profile console', async () => {
@@ -143,7 +143,7 @@ describe('Person Profile test', () => {
 
         //Verify sorting
         expect(await personProfile.isRequestedCasesColumnsSortedAscending("Case ID")).toBeTruthy("Columns are not sorted");
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //asahitya
     it('[DRDMV-14029]: Verify Assigned Cases tab of My Profile console', async () => {
@@ -170,5 +170,5 @@ describe('Person Profile test', () => {
 
         //Verify sorting
         expect(await personProfile.isAssignedCasesColumnsSortedAscending("Case ID")).toBeTruthy("Columns are not sorted");
-    }, 160 * 1000);
+    });//, 160 * 1000);
 })

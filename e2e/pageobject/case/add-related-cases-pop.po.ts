@@ -1,6 +1,6 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import util from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 class AddRelatedCasesPopupPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -21,15 +21,15 @@ class AddRelatedCasesPopupPage {
     }
 
     async searchAndSelectEntity(caseId: string): Promise<void> {
-        await utilGrid.searchAndSelectGridRecord(caseId);
+        await utilityGrid.searchAndSelectGridRecord(caseId);
     }
 
     async selectRelationshipType(relationshipType: string) {
-        await util.selectDropDownWithName("Relationship Type", relationshipType);
+        await utilityCommon.selectDropDown('58316efa-4c99-4f8b-9bf7-bfdf2a3aa3d7', relationshipType);
     }
 
     async addRelatedCase(caseId: string, relation: string) {
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await this.searchAndSelectEntity(caseId);
         await this.clickNextButton();
         await this.selectRelationshipType(relation);

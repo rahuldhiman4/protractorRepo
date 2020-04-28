@@ -481,7 +481,7 @@ describe('Dynamic data', () => {
         await editTaskPo.clickOnSaveButton();
         //verify show more and show less button
         expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText()).toContain('Show more');
-        await viewTaskPo.clickShowMoreLink();
+        await viewTaskPo.clickShowMoreShowLessLink();
         expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText()).toContain('Show less');
         //verify attached files on case view
         expect(await viewTaskPo.isFileDisplayed('bwfJpg3.jpg')).toBeTruthy('File is not present');
@@ -730,7 +730,7 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.getValueOfDynamicFields('temp5')).toBe('2:00 AM');
         expect(await viewCasePo.getValueOfDynamicFields('dynamicList')).toBe('listvalues');
         expect(await viewCasePo.getValueOfDynamicFields('attachment2')).toContain('demo.txt');
-    }, 230 * 1000);
+    });//, 230 * 1000);
 
     // ptidke
     it('[DRDMV-13127]: [Dynamic Data] - Create Case from Create Case with Template having dynamic fields and also have field with source as Requester', async () => {
@@ -954,7 +954,7 @@ describe('Dynamic data', () => {
         await dynamicFieldsPo.setDescriptionName('NewUpdatedDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('NewUpdatedDescription' + randomStr)).toBeTruthy();
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     //ptidke
     it('[DRDMV-13132,DRDMV-13124]:[-ve] [Dynamic Data] [UI] - Update Case dynamic fields with invalid data', async () => {
@@ -1037,5 +1037,5 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.isDynamicFieldDisplayed('attachment2')).toBeTruthy('dynamic fields not present');
         expect(await viewCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('dynamic fields not present');
         expect(await viewCasePo.isDynamicFieldDisplayed('dynamicList')).toBeTruthy('dynamic fields not present');
-    }, 150 * 1000);
+    });//, 150 * 1000);
 });
