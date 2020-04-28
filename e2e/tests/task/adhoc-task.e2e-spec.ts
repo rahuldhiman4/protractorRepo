@@ -5,7 +5,7 @@ import attachmentInformationBladePo from '../../pageobject/attachment/attachment
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
-import { default as viewCasePage, default as viewCasePo } from "../../pageobject/case/view-case.po";
+import viewCasePage from "../../pageobject/case/view-case.po";
 import changeAssignmentOldBlade from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -15,12 +15,12 @@ import taskTemplate from "../../pageobject/settings/task-management/create-taskt
 import taskConsole from "../../pageobject/task/console-task.po";
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTask from "../../pageobject/task/edit-task.po";
-import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
+import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Create Adhoc task', () => {
     beforeAll(async () => {
@@ -163,7 +163,7 @@ describe('Create Adhoc task', () => {
         expect(await viewTask.isEditLinkDisplayed()).toBeTruthy("edit link is displayed ");
         expect(await viewTask.isViewCaseLinkDisplayed()).toBeTruthy("view case link is displayed ");
         await viewTask.clickOnViewCase();
-        expect(await viewCasePo.getCaseSummary()).toBe('Summary ' + summary);
+        expect(await viewCasePage.getCaseSummary()).toBe('Summary ' + summary);
     });
 
     it('[DRDMV-1500]: [Permissions] Navigating to case from the task', async () => {
@@ -203,10 +203,10 @@ describe('Create Adhoc task', () => {
         await viewCasePage.clickAddTaskButton();
 
         //Add Manual task and Automation Task in Case
-        await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplate);
-        await manageTaskBladePo.clickOnCloseButton();
+        await manageTask.addTaskFromTaskTemplate(manualTaskTemplate);
+        await manageTask.clickOnCloseButton();
         await updateStatusBladePo.changeCaseStatus('In Progress');
-        await updateStatusBladePo.clickSaveStatus();
+        await updateStatusBladePo.clickSaveStatus('In Progress');
 
         //different user
         await navigationPage.signOut();
@@ -221,13 +221,14 @@ describe('Create Adhoc task', () => {
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
         await navigationPage.gotoTaskConsole();
+        await utilityGrid.clearFilter();
         await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
         expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCaseID, " Case Id NOT displayed in Task console");
         await utilityGrid.searchAndOpenHyperlink(manualTaskSummary);
         expect(await viewTask.isCaseViewLinkDisplayed()).toBeTruthy('Case View Link is not displayed');
         await navigationPage.signOut();
         await loginPage.login('qtao');
-    }, 350 * 1000);
+    }, 570 * 1000);
 
     it('[DRDMV-12249,DRDMV-12244]: Verify task creation with attachments & Verify attachment grid from case', async () => {
         let filePath = '../../data/ui/attachment/demo.txt';
@@ -258,7 +259,7 @@ describe('Create Adhoc task', () => {
 
         //Navigated To Case and Verify attachments grid for task attachments
         await viewTask.clickOnViewCase();
-        await viewCasePo.clickAttachmentsLink();
+        await viewCasePage.clickAttachmentsLink();
         await attachmentBladePo.clickOnFileName('demo');
         let finalDate: string = await utilCommon.getCurrentDate();
         expect(await attachmentInformationBladePo.isDownloadButtonDisplayed()).toBeTruthy('download button is missing');
@@ -272,7 +273,7 @@ describe('Create Adhoc task', () => {
         expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
         await attachmentInformationBladePo.clickOnDownloadButton();
         expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
-    }, 140 * 1000);
+    }, 200 * 1000);
 
     it('[DRDMV-12245]: Verify task attachments deletion', async () => {
         let filePath = '../../data/ui/attachment/demo.txt';
@@ -299,10 +300,10 @@ describe('Create Adhoc task', () => {
         await viewCasePage.clickOnTaskLink(summary);
         expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeTruthy('Attached file name is not available');
         await viewTask.clickOnEditTask();
-        await viewTask.closeAttachment();
+        await editTask.removeAttachment('demo.txt');
         await viewTask.clickOnSaveViewAdhoctask();
         expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeFalsy('Attached file name is available');
-    });
+    }, 180 * 1000);
 
     it('[DRDMV-12246]: Verify attachment addition on edit task mode', async () => {
         let filePath = '../../data/ui/attachment/demo.txt';
@@ -329,7 +330,7 @@ describe('Create Adhoc task', () => {
         await editTask.addAttachment(filePath);
         await viewTask.clickOnSaveViewAdhoctask();
         expect(await viewTask.isAttachedFileNamePresent('demo')).toBeTruthy('Attached file name is not available');
-    });
+    }, 180 * 1000);
 
     it('[DRDMV-12248,DRDMV-12247,DRDMV-12250]: Verify max attachments added to task', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
@@ -351,27 +352,23 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.setDescription("Description");
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeTruthy('Attachment button is disabled');
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf', 'bwfXlsx.xlsx', 'demo.txt'];
+        // Defect: one file is uplaoding multiple times
         for (let i: number = 0; i < fileName1.length; i++) {
             await adhoctaskTemplate.addAttachmentInDescription(`../../data/ui/attachment/${fileName1[i]}`);
         }
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeFalsy('Attachment button is enabled');
+        expect(await adhoctaskTemplate.getAttachmentLimitWarningText()).toBe('The maximum number of attachments allowed is 20');
         await adhoctaskTemplate.clickOnSaveAdhoctask();
         await utilCommon.waitUntilPopUpDisappear();
         // hardwait to upload multiple files
         await browser.sleep(10000);
         await manageTask.clickTaskLinkOnManageTask(summary);
-        await viewTask.clickOnShowMoreButton();
-        let fileName2: string[] = ['articleStatus', 'bwfJpg', 'bwfJpg1', 'bwfJpg2', 'bwfJpg3', 'bwfJpg4', 'bwfJson1', 'bwfJson2', 'bwfJson3', 'bwfJson4', 'bwfJson5', 'bwfPdf', 'bwfPdf1', 'bwfPdf2', 'bwfPdf3', 'bwfPdf4', 'bwfWord1', 'bwfWord2', 'bwfXlsx', 'demo'];
-        let fileCount = fileName2.length;
-        for (let j: number = 0; j < fileCount; j++) {
-            expect(await viewTask.isAttachedFileNamePresent(`${fileName2[j]}`)).toBeTruthy('Attached file name is missing');
+        await viewTask.clickShowMoreShowLessLink();
+        let fileName2: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf', 'bwfXlsx.xlsx', 'demo.txt'];
+        for (let j: number = 0; j < fileName2.length; j++) {
+            expect(await viewTask.isAttachedFileNamePresent(`${fileName2[j]}`)).toBeTruthy(`${fileName2[j]} Attached file name is missing`);
         }
-        await viewTask.clickOnShowLessButton();
-        let fileCount1: number = fileCount - 3;
-        let showMoreCounter: string = fileCount1 + " more";
-        await viewTask.clickOnShowMoreCounterButton(showMoreCounter);
-        for (let j: number = 0; j < fileCount; j++) {
-            expect(await viewTask.isAttachedFileNamePresent(`${fileName2[j]}`)).toBeTruthy('Attached file name is missing');
-        }
+        await viewTask.clickShowMoreShowLessLink();
+        expect(await viewTask.getShowMoreLessAttachmentsLinkText()).toBe('18 more');
     });
 });

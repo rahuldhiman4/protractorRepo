@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, protractor, ProtractorExpectedConditions, $$ } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 class EditTask {
@@ -17,26 +17,26 @@ class EditTask {
         categoryTier2: '49d231d9-ee81-4d7c-90af-d7ca785a32d4',
         categoryTier3: 'c8858fb5-5b21-4e0d-a947-c0130a72b51a',
         categoryTier4: 'ff1636f8-4efe-4447-9c04-f32799904f2b',
-        priority:'0cf493f2-9e6b-4f23-bf3e-ba210c2baef8',
-        dynamicDate:'[class="input-group"] input[ng-model="date"]',
-        dynamicDateTime:'input[ng-model="datetime"]',
-        taskSummary:'[rx-view-component-id="1261e01e-00fb-4e2c-b2ac-72e837f9fcea"] input',
+        priority: '0cf493f2-9e6b-4f23-bf3e-ba210c2baef8',
+        dynamicDate: '[class="input-group"] input[ng-model="date"]',
+        dynamicDateTime: 'input[ng-model="datetime"]',
+        taskSummary: '[rx-view-component-id="1261e01e-00fb-4e2c-b2ac-72e837f9fcea"] input',
     }
 
-    async isAutomatedTaskTypeDisabled():Promise<boolean>{
-        return await $(this.selectors.taskTypeValue).getAttribute('disabled')=='true'? true: false;
+    async isAutomatedTaskTypeDisabled(): Promise<boolean> {
+        return await $(this.selectors.taskTypeValue).getAttribute('disabled') == 'true' ? true : false;
     }
 
-    async isProcessNameDisabled():Promise<boolean>{
-        return await $(this.selectors.processNameValue).getAttribute('readOnly')=='true' ? true:false;
+    async isProcessNameDisabled(): Promise<boolean> {
+        return await $(this.selectors.processNameValue).getAttribute('readOnly') == 'true' ? true : false;
     }
 
-    async setDateValueInDynamicField(value:string):Promise<void>{
+    async setDateValueInDynamicField(value: string): Promise<void> {
         await $(this.selectors.dynamicDate).clear();
         await $(this.selectors.dynamicDate).sendKeys(value);
     }
 
-    async setDateTimeDynamicFieldValue(value:string):Promise<void>{
+    async setDateTimeDynamicFieldValue(value: string): Promise<void> {
         await $(this.selectors.dynamicDateTime).clear();
         await $(this.selectors.dynamicDateTime).sendKeys(value);
     }
@@ -47,6 +47,15 @@ class EditTask {
         await $(this.selectors.attachmentField).sendKeys(absolutePath);
     }
 
+    async removeAttachment(fileName: string): Promise<void> {
+        let attachmentsIcon = await $$('bwf-attachment-viewer .justify-content-start');
+        for (let i: number = 0; i < attachmentsIcon.length; i++) {
+            let attachmentName = await attachmentsIcon[i].$('.bwf-attachment-container__file-name').getText();
+            if (attachmentName == fileName) {
+                await attachmentsIcon[i].$('.d-icon-cross').click();
+            }
+        }
+    }
 
     async clickOnAssignToMe() {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMe)));
@@ -88,10 +97,10 @@ class EditTask {
         await $(this.selectors.attachButton).click();
     }
 
-    async selectPriorityValue(priority:string):Promise<void>{
+    async selectPriorityValue(priority: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.priority, priority);
     }
-    
+
     async selectTaskCategoryTier1(categoryTier1: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.categoryTier1, categoryTier1);
     }
@@ -121,8 +130,8 @@ class EditTask {
         await $(attachmentLocator).sendKeys(absolutePath);
     }
 
-    async setDynamicFieldValue(fieldName:string,fieldValue:string):Promise<void>{
-        await $(`adapt-textfield[title=${fieldName}] input`).sendKeys(fieldValue); 
+    async setDynamicFieldValue(fieldName: string, fieldValue: string): Promise<void> {
+        await $(`adapt-textfield[title=${fieldName}] input`).sendKeys(fieldValue);
     }
 
     async updateTaskSummary(summary: string): Promise<void> {

@@ -48,15 +48,12 @@ class CreateEmailTemplate {
         await $(this.selectors.body).sendKeys(value);
     }
     async setBody(value: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.body)));
-        await $(this.selectors.body).click();
+        await $(this.selectors.body).sendKeys(Key.chord(Key.CONTROL, Key.END));
+        await $(this.selectors.body).sendKeys(Key.ENTER);
         await $(this.selectors.body).sendKeys(value);
-        await browser.actions().sendKeys(protractor.Key.chord(Key.CONTROL + Key.END)).click().sendKeys(protractor.Key.ENTER);
-        await browser.actions().sendKeys(protractor.Key.chord(Key.CONTROL + Key.END)).click().sendKeys(protractor.Key.ENTER);
     }
 
     async clickOnInsertField(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.insertField)));
         await $(this.selectors.insertField).click();
     }
 
@@ -74,13 +71,16 @@ class CreateEmailTemplate {
         return await element(by.cssContainingText(this.selectors.fieldValueInBody, value)).isDisplayed();
     }
 
-    async clickInTableRowOfEmailTemplate(td:number,summary:string):Promise<void>{
-        let locator=`table[summary='${summary}'] td`;
-        await $$(locator).get(td).click();
+    async clickInTableRowOfEmailTemplate(row: number, column:number, summary:string):Promise<void>{
+        let locator=`table[summary='${summary}'] tr`;
+        let rowLocator = await $$(locator).get(row-1);
+        await rowLocator.$$('td').get(column-1).click();
     }
-    async setDataInEmailTemplateTable(td: number, value: string, summary: string): Promise<void> {
-        let locator = `table[summary='${summary}'] td`;
-        await $$(locator).get(td).sendKeys(value);
+
+    async setDataInEmailTemplateTable(row: number, column: number, value: string, summary: string): Promise<void> {
+        let locator=`table[summary='${summary}'] tr`;
+        let rowLocator = await $$(locator).get(row-1);
+        await rowLocator.$$('td').get(column-1).sendKeys(value);
     }
 
 }

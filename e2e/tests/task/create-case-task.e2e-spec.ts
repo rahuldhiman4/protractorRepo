@@ -127,7 +127,8 @@ describe('Create Case Task', () => {
         await taskTemplate.setNewProcessName('Business Workflows', `Get Request Status Data1 ${randomStr}`);
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.clickOnSaveTaskTemplate();
-        //await utilCommon.waitUntilPopUpDisappear();
+        expect(await viewTasktemplatePage.getTaskCompanyNameValue()).toBe("Petramco");
+        await utilityCommon.waitUntilPopUpDisappear();
 
         //Automation Task template
         await navigationPage.gotoSettingsPage();
@@ -146,7 +147,7 @@ describe('Create Case Task', () => {
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.clickOnSaveTaskTemplate();
         await expect(viewTasktemplatePage.getTaskCompanyNameValue()).toBe("Petramco");
-        //await utilCommon.waitUntilPopUpDisappear();
+        await utilityCommon.waitUntilPopUpDisappear();
 
         //case create
         try {
@@ -170,7 +171,7 @@ describe('Create Case Task', () => {
             await manageTask.clickTaskLinkOnManageTask(automationTaskSummaryWithallField);
             await expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             await expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.bwfa:Get Request Status Data2 ${randomStr}`);
-            await expect(await viewTask.getDescriptionValue()).toBe('All field get added in this task template');
+            await expect(await viewTask.getDescriptionValue()).toBe(' All field get added in this task template ');
             await expect(await viewTask.getLabelValue()).toBe(menuItemName);
             await expect(await viewTask.getCategoryTier1Value()).toBe('Applications');
             await expect(await viewTask.getCategoryTier2Value()).toBe('Social');
@@ -183,12 +184,12 @@ describe('Create Case Task', () => {
             await manageTask.clickTaskLinkOnManageTask(autmationTaskSummaryWithRequiredData);
             await expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             await expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.bwfa:Get Request Status Data1 ${randomStr}`);
-            await expect(await viewTask.getDescriptionValue()).toBe('');
-            await expect(await viewTask.getLabelValue()).toBe('');
-            await expect(await viewTask.getCategoryTier1Value()).toBe('');
-            await expect(await viewTask.getCategoryTier2Value()).toBe('');
-            await expect(await viewTask.getCategoryTier3Value()).toBe('');
-            await expect(await viewTask.getCategoryTier4Value()).toBe('');
+            await expect(await viewTask.getDescriptionValue()).toBe('-');
+            await expect(await viewTask.getLabelValue()).toBe('-');
+            await expect(await viewTask.getCategoryTier1Value()).toBe('-');
+            await expect(await viewTask.getCategoryTier2Value()).toBe('-');
+            await expect(await viewTask.getCategoryTier3Value()).toBe('-');
+            await expect(await viewTask.getCategoryTier4Value()).toBe('-');
         } catch (e) {
             throw e;
         } finally {
@@ -457,8 +458,6 @@ describe('Create Case Task', () => {
         await taskTemplate.selectOwnerGroup('Facilities');
         await taskTemplate.clickOnSaveTaskTemplate();
         //await utilCommon.waitUntilPopUpDisappear();
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
 
         //search above template
         try {
@@ -474,9 +473,9 @@ describe('Create Case Task', () => {
             await editTaskTemplate.selectOwnerCompany('Psilon');
             await editTaskTemplate.selectOwnerGroup('Psilon Support Group2');
             await editTaskTemplate.clickOnSaveMetadata();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.searchAndOpenTaskTemplate(TaskTemplate);
+            //await navigationPage.gotoSettingsPage();
+            // await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            // await selectTaskTemplate.searchAndOpenTaskTemplate(TaskTemplate);
             await viewTaskTemplate.clickOnEditLink();
             await editTaskTemplate.setDescription(description);
             await editTaskTemplate.clickOnSaveButton();
@@ -508,7 +507,7 @@ describe('Create Case Task', () => {
             "templateSummary": automationTaskSummary,
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.social-lib",
-            "processName": social_Service_Process,
+            "processName": `Case Process 1 ${randomStr}`,
         }
         //Automation Task template
         await apiHelper.apiLogin('qkatawazi');
@@ -662,34 +661,34 @@ describe('Create Case Task', () => {
 
     //ankagraw
     it('[DRDMV-2475]: [Permissions] Settings menu for Case Functional Roles', async () => {
-        let caseManagementList: string[] = ['', 'Case Management', 'Approvals', 'Assignment', 'Automated Status Transition', 'Notes Template', 'Read Access', 'Status Configuration', 'Templates'];
-        let manageFlowsetList: string[] = ['', 'Manage Flowsets', 'Define Flowsets', 'Process Library'];
-        let serviceLevelManagementList: string[] = ['', 'Service Level Management', 'Business Time Segment', 'Business Time Shared Entity', 'Configure Data Source', 'Goal Type', 'Service Target', 'Service Target Group'];
-        let taskManagementList: string[] = ['', 'Task Management', 'Notes Template', 'Status Configuration', 'Templates'];
-        let emailtList: string[] = ['', 'Email', 'Acknowledgment Templates', 'Configuration', 'Templates'];
-        let notificationConfigurationList: string[] = ['', 'Notification Configuration', 'Manage Events', 'Manage Templates'];
+        let caseManagementList: string[] = ['Case Management', 'Approvals', 'Assignments', 'Automated Status Transition', 'Notes Template', 'Read Access', 'Status Configuration', 'Templates'];
+        let manageFlowsetList: string[] = ['Manage Flowsets', 'Define Flowsets', 'Process Library'];
+        let serviceLevelManagementList: string[] = ['Service Level Management', 'Business Time Segment', 'Business Time Shared Entity', 'Configure Data Source', 'Goal Type', 'Service Target', 'Service Target Group'];
+        let taskManagementList: string[] = ['Task Management','Approvals', 'Notes Template', 'Status Configuration', 'Templates'];
+        let emailtList: string[] = ['Email', 'Acknowledgment Templates', 'Configuration', 'Templates'];
+        let notificationConfigurationList: string[] = ['Notification Configuration', 'Manage Events', 'Manage Templates'];
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.isSettingSubMenusMatches("Case Management", caseManagementList);
-        await navigationPage.isSettingSubMenusMatches("Manage Flowsets", manageFlowsetList);
-        await navigationPage.isSettingSubMenusMatches("Service Level Management", serviceLevelManagementList);
-        await navigationPage.isSettingSubMenusMatches("Task Management", taskManagementList);
-        await navigationPage.isSettingSubMenusMatches("Email", emailtList);
-        await navigationPage.isSettingSubMenusMatches("Notification Configuration", notificationConfigurationList);
+        expect(await navigationPage.isSettingSubMenusMatches("Case Management", caseManagementList)).toBeTruthy("Case Management");
+        expect(await navigationPage.isSettingSubMenusMatches("Manage Flowsets", manageFlowsetList)).toBeTruthy("Manage Flowsets");
+        expect(await navigationPage.isSettingSubMenusMatches("Service Level Management", serviceLevelManagementList)).toBeTruthy("Service Level Management");
+        expect(await navigationPage.isSettingSubMenusMatches("Task Management", taskManagementList)).toBeTruthy("Task Management");
+        expect(await navigationPage.isSettingSubMenusMatches("Email", emailtList)).toBeTruthy("Email");
+        expect(await navigationPage.isSettingSubMenusMatches("Notification Configuration", notificationConfigurationList)).toBeTruthy("Notification Configuration");
 
         try {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.isSettingSubMenusMatches("Case Management", caseManagementList);
-            await navigationPage.isSettingSubMenusMatches("Manage Flowsets", manageFlowsetList);
-            await navigationPage.isSettingSubMenusMatches("Service Level Management", serviceLevelManagementList);
-            await navigationPage.isSettingSubMenusMatches("Task Management", taskManagementList);
+            expect(await navigationPage.isSettingSubMenusMatches("Case Management", caseManagementList)).toBeTruthy();
+            expect(await navigationPage.isSettingSubMenusMatches("Manage Flowsets", manageFlowsetList)).toBeTruthy();
+            expect(await navigationPage.isSettingSubMenusMatches("Service Level Management", serviceLevelManagementList)).toBeTruthy();
+            expect(await navigationPage.isSettingSubMenusMatches("Task Management", taskManagementList)).toBeTruthy();
 
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoSettingsPage();
-            await expect(navigationPage.isSettingMenuPresent('Case Management')).toBeFalsy();
+            expect(await navigationPage.isSettingMenuPresent('Case Management')).toBeFalsy();
         } catch (e) {
             throw e;
         } finally {

@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { $, browser, by, element, protractor, ProtractorExpectedConditions, $$ } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions, $$ } from "protractor";
 
 class ImagePropertiesPopUp {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -10,39 +10,54 @@ class ImagePropertiesPopUp {
         oKButton: '.cke_dialog_ui_button_ok',
         preViewBoxImg: '.ImagePreviewBox img[style]',
         inputFieldsOnImageInfoTab: '.cke_dialog_ui_hbox_first input.cke_dialog_ui_input_text',
-        inputBox:'input.cke_dialog_ui_input_text',
-        imageDialogWindow:'.cke_dialog_body'
+        inputBox: 'input.cke_dialog_ui_input_text',
+        imageDialogWindow: '.cke_dialog_body'
     }
 
-    async setInputBoxValue(value:string,squence:number):Promise<void>{
-        await $$(this.selectors.imageDialogWindow).get(0).$$(this.selectors.inputBox).get(squence).clear();
-        await $$(this.selectors.imageDialogWindow).get(0).$$(this.selectors.inputBox).get(squence).sendKeys(value);
+    async getImageParentElementIndex(): Promise<number> {
+        let i = 0;
+        let elementsCount = await $$('.cke_dialog_body').count();
+        for (i = 0; i < elementsCount; i++) {
+            let tempElement = await $$('.cke_dialog_body').get(i);
+            let actualText = await tempElement.$('div').getText();
+            if (actualText == 'Image Properties') {
+                break;
+            }
+        }
+        return i;
     }
 
-    async getInputBoxValue(squence:number):Promise<string>{
-       return await $$(this.selectors.imageDialogWindow).get(0).$$(this.selectors.inputBox).get(squence).getAttribute('value');
+    async setInputBoxValue(value: string, fieldElementSeq: number): Promise<void> {
+        let index = await this.getImageParentElementIndex();
+        await $$(this.selectors.imageDialogWindow).get(index).$$(this.selectors.inputBox).get(fieldElementSeq).clear();
+        await $$(this.selectors.imageDialogWindow).get(index).$$(this.selectors.inputBox).get(fieldElementSeq).sendKeys(value);
     }
 
-    async addImageOnEmail(menuName: string,fileToUpload:string,width:number,getInputValue:number): Promise<string> {
+    async getInputBoxValue(fieldElementSeq: number): Promise<string> {
+        let index = await this.getImageParentElementIndex();
+        return await $$(this.selectors.imageDialogWindow).get(index).$$(this.selectors.inputBox).get(fieldElementSeq).getAttribute('value');
+    }
+
+    async addImageOnEmail(menuName: string, fileToUpload: string, width: number, getInputValue: number): Promise<string> {
         await this.clickOnTab(menuName);
         await this.addAttachment(fileToUpload);
         await this.clickOnSendItToServerButton();
-        await this.setInputBoxValue('200',width);
-        let source =await this.getInputBoxValue(getInputValue);
+        await this.setInputBoxValue('200', width);
+        let source = await this.getInputBoxValue(getInputValue);
         await this.clickOnOkButton();
         return source;
     }
 
-    async addImageOnEmailTemplate(fileToUpload:string):Promise<string>{
-        await element(by.cssContainingText(this.selectors.tabs, 'Upload')).click();
+    async addImageOnEmailTemplate(fileToUpload: string): Promise<string> {
+        await this.clickOnTab('Upload');
         await this.addAttachment(fileToUpload);
         await this.clickOnSendItToServerButton();
         await $$(this.selectors.inputBox).get(2).sendKeys(200);
-        let source =await $$(this.selectors.inputBox).first().getAttribute('value')
+        let source = await $$(this.selectors.inputBox).first().getAttribute('value')
         this.clickOnOkButton();
         return source;
     }
-    
+
     async addImg(menuName: string, fileToUpload: string): Promise<void> {
         await this.clickOnTab(menuName);
         await this.addAttachment(fileToUpload);
@@ -52,19 +67,17 @@ class ImagePropertiesPopUp {
     }
 
     async clickOnOkButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.oKButton)));
-        await $$(this.selectors.imageDialogWindow).get(0).$(this.selectors.oKButton).click();
+        let index = await this.getImageParentElementIndex();
+        await $$(this.selectors.imageDialogWindow).get(index).$(this.selectors.oKButton).click();
     }
 
     async clickOnSendItToServerButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.sendItToServerButton)));
         await $(this.selectors.sendItToServerButton).click();
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.preViewBoxImg)));
     }
 
     async clickOnTab(menuName: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.tabs)), 3000);
-        await element(by.cssContainingText(this.selectors.tabs, menuName)).click();
+        let tab = `.cke_dialog_tab[title="${menuName}"]`;
+        await $(tab).click();
     }
 
     async addAttachment(fileToUpload: string): Promise<void> {
