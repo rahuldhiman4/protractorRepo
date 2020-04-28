@@ -129,7 +129,7 @@ describe('Case Status Change', () => {
         expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
         expect(await caseConsole.isCaseStatusPresent(statusPending)).toBeTruthy("Status Pending not matching");
         expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
-    }, 350 * 1000);
+    }, 410 * 1000);
 
     //kgaikwad
     it('[DRDMV-1618]: [Case] Fields validation for case in Resolved status', async () => {
@@ -159,12 +159,12 @@ describe('Case Status Change', () => {
         expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Description not present');
         await editCasePage.clearCaseSummary();
         await editCasePage.clickSaveCase();
-        expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
         //        await utilCommon.closePopUpMessage();
         await editCasePage.updateCaseSummary('Pending AC');
         await editCasePage.clickSaveCase();
-        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
-    }, 180 * 1000);
+        expect(await utilityCommon.getAllPopupMsg()).toBe('Saved successfully.');
+    });//, 180 * 1000);
 
     //kgaikwad
     it('[DRDMV-1197]: [Case Status] Case status change from Closed', async () => {
@@ -221,7 +221,7 @@ describe('Case Status Change', () => {
         await updateStatusBladePo.clickOnstatusReason();
         await updateStatusBladePo.setStatusReason('Auto Resolved');
         await updateStatusBladePo.clickSaveStatus();
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     //kgaikwad
     it('[DRDMV-1616]: [Case] Fields validation for case In Progress status', async () => {
@@ -248,7 +248,7 @@ describe('Case Status Change', () => {
         await editCasePage.clearCaseSummary();
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         await editCasePage.updateCaseSummary('pendingAC');
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
@@ -383,7 +383,7 @@ describe('Case Status Change', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     //ankagraw
     it('[DRDMV-1199]: [Case Status] Case status change from In Progress', async () => {

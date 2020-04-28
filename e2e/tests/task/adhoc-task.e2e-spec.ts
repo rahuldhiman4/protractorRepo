@@ -273,7 +273,7 @@ describe('Create Adhoc task', () => {
         expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
         await attachmentInformationBladePo.clickOnDownloadButton();
         expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
-    }, 200 * 1000);
+    });//, 200 * 1000);
 
     it('[DRDMV-12245]: Verify task attachments deletion', async () => {
         let filePath = '../../data/ui/attachment/demo.txt';
@@ -303,7 +303,7 @@ describe('Create Adhoc task', () => {
         await editTask.removeAttachment('demo.txt');
         await viewTask.clickOnSaveViewAdhoctask();
         expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeFalsy('Attached file name is available');
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     it('[DRDMV-12246]: Verify attachment addition on edit task mode', async () => {
         let filePath = '../../data/ui/attachment/demo.txt';
@@ -330,7 +330,7 @@ describe('Create Adhoc task', () => {
         await editTask.addAttachment(filePath);
         await viewTask.clickOnSaveViewAdhoctask();
         expect(await viewTask.isAttachedFileNamePresent('demo')).toBeTruthy('Attached file name is not available');
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     it('[DRDMV-12248,DRDMV-12247,DRDMV-12250]: Verify max attachments added to task', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);

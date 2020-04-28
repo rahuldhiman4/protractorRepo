@@ -69,7 +69,7 @@ node("${NODE}"){
             suiteNameList.each{
                 def suiteName = "${it}";
                 // Create Jira Cycle
-                bat """npm run jira-cycle -- --cycle=%CYCLENAME% --inputfile=${WORKSPACE}/artefact/${suiteName}_spec-json-report.json --folder="%FOLDERNAME% ${dateNow}" --stats=%STATS%"""
+                bat """npm run jira-cycle -- --cycle=%CYCLENAME% --inputfile="${WORKSPACE}/artefact/${suiteName}_spec-json-report.json" --folder="%FOLDERNAME% ${dateNow}" --stats=%STATS%"""
                 //copy jira report file artefact folder
                 bat """xcopy /Y /F /I /Z /Q "e2e/reports/spec-jira-report/jira-report.csv" "artefact/jira-report/${suiteName}_jira-report.csv*" """
             }

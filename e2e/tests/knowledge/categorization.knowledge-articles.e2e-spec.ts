@@ -134,7 +134,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, canceledStatus)).toBeTruthy("Article with Canceled status not updated.");
-    }, 180 * 1000);
+    });//, 180 * 1000);
 
     afterEach(async () => {
         await utilityCommon.refresh();
@@ -895,5 +895,5 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 240 * 1000);
+    });//, 240 * 1000);
 })

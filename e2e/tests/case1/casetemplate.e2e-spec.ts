@@ -56,7 +56,7 @@ describe('Case Template', () => {
         //await utilCommon.waitUntilPopUpDisappear();
         await expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(caseTemplateName);
         await expect(await viewCaseTemplate.getIdentityValdationValue()).toContain(caseTemplateAllFields.identityValidation);
-    }, 170 * 1000);
+    });//, 170 * 1000);
 
     //ptidke
     it('[DRDMV-10487]: Case Template update with Template validation as ENFORCED', async () => {
@@ -83,7 +83,7 @@ describe('Case Template', () => {
         await editCasetemplatePo.changeIdentityValidationValue('Enforced');
         await editCaseTemplate.clickSaveCaseTemplate();
         await expect(await viewCaseTemplate.getIdentityValdationValue()).toContain('Enforced');
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //ptidke
     it('[DRDMV-10469]: Case Template creation with Template validation as ENFORCED', async () => {
@@ -103,7 +103,7 @@ describe('Case Template', () => {
         //await utilCommon.waitUntilPopUpDisappear();
         await expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(caseTemplateName);
         await expect(await viewCaseTemplate.getIdentityValdationValue()).toContain('Enforced');
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //ptidke
     it('[DRDMV-10481]: Case Template creation with Template validation as NONE', async () => {
@@ -123,7 +123,7 @@ describe('Case Template', () => {
         //await utilCommon.waitUntilPopUpDisappear();
         await expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(caseTemplateName);
         await expect(await viewCaseTemplate.getIdentityValdationValue()).toContain('None');
-    }, 160 * 1000);
+    });//, 160 * 1000);
 
     //ptidke
     it('[DRDMV-10476]: Case Template creation with Template validation as OPTIONAL using tadmin login', async () => {
@@ -153,15 +153,15 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 200 * 1000);
+    });//, 200 * 1000);
 
     //ptidke
     it('[DRDMV-10479]: Case Template NOT created with Template validation as OPTIONAL using Case Agent login', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('franz');
-            await navigationPage.gotoSettingsPage();            
-            expect(await createCaseTemplate.isPanelHeadingPresent('Select a configuration option from the navigation menu to show configuration content here')).toBeTruthy('Expected heading not present');
+            await navigationPage.gotoSettingsPage();   
+            expect(await navigationPage.getSettingPanelText()).toContain("Select a configuration option from the navigation menu to show configuration content here");
         } catch (e) {
             throw e;
         } finally {
@@ -216,7 +216,7 @@ describe('Case Template', () => {
         await editCaseTemplate.clickEditCaseTemplate();
         await expect(editCasetemplatePo.getValueOfAssignmentMethod()).toContain('None');
         await editCaseTemplate.clickSaveCaseTemplate();
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     //ptidke
     it('[DRDMV-1231]: [Edit Case Template] Template metadata edit', async () => {
@@ -248,7 +248,7 @@ describe('Case Template', () => {
         await expect(await viewCaseTemplate.getOwnerGroupValue()).toContain(caseTemplateRequiredFields.supportGroup);
         await expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Petramco');
         await expect(await viewCaseTemplate.getTemplateStatusValue()).toContain(caseTemplateRequiredFields.templateStatus);
-    }, 160 * 1000);
+    });//, 160 * 1000);
 
     //ptidke
     it('[DRDMV-1229]: [Case Template Console] Search by Summary and Display ID on the Case Template Console', async () => {
@@ -354,7 +354,7 @@ describe('Case Template', () => {
         await expect(await editCaseTemplate.isSaveButtonOnMetaDataIsDisabled()).toBeTruthy();
     });
 
-    //ptidke
+    //ptidke APIFail
     it('[DRDMV-19741]:[RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = 'caseTemplateName' + randomStr;
@@ -449,7 +449,7 @@ describe('Case Template', () => {
         await viewTaskPo.clickOnSaveStatus();
         await viewTaskPo.clickOnViewCase();
         await expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
-    }, 140 * 1000);
+    });//, 140 * 1000);
 
     //ptidke
     it('[DRDMV-19734]:[RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case Template view Look & Feel after adding new configuration field', async () => {
@@ -555,7 +555,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 250 * 1000)
+    }, 340 * 1000)
 
     //apdeshmu 
     it('[DRDMV-769]: [Case Creation] [Template Selection] Applying a Template to a Case', async () => {
@@ -704,7 +704,7 @@ describe('Case Template', () => {
             expect(await viewCaseTemplate.getCaseTemplateNameValue()).toBe(caseTemplateName);
             expect(await viewCaseTemplate.getPriorityValue()).toBe("Low");
             expect(await viewCaseTemplate.getTemplateStatusValue()).toBe("Active");
-            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe("Facilities");
+            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
             expect(await viewCaseTemplate.getCategoryTier2()).toBe("Policies");
             expect(await viewCaseTemplate.getCategoryTier3()).toBe("Card Issuance");
             expect(await viewCaseTemplate.getCategoryTier1()).toBe("Purchasing Card");
@@ -728,5 +728,4 @@ describe('Case Template', () => {
             await loginPage.login('qkatawazi');
         }
     }, 300 * 1000);
-
 })

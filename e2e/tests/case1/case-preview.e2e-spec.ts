@@ -70,7 +70,7 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
-    },150 * 1000);
+    });//, 150 * 1000);
 
     //kgaikwad
     it('[DRDMV-14110]: Create a Case without template via Quick Case and check Case Preview screen', async () => {

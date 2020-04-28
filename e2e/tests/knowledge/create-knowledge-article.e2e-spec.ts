@@ -102,7 +102,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 190 * 1000);
+    });//, 190 * 1000);
 
     it('[DRDMV-19079]: Change Reviewer blade should process properly on KA', async () => {
         try {
@@ -190,7 +190,7 @@ describe('Knowledge Article', () => {
         finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
-    }, 240 * 1000);
+    });//, 240 * 1000);
 
     it('[DRDMV-19081]: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
         try {
@@ -291,7 +291,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 170 * 1000);
+    });//, 170 * 1000);
 
     async function foundationData19082(company: string) {
         await apiHelper.apiLogin('tadmin');
@@ -339,7 +339,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 170 * 1000);
+    });//, 170 * 1000);
 
     it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
         try {
@@ -625,7 +625,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     it('[DRDMV-5059]: Review article in SME Review status & Reject article', async () => {
         try {
@@ -678,7 +678,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 150 * 1000);
+    });//, 150 * 1000);
 
     it('[DRDMV-2433]: Assign SME - Reviewer assignment UI validation', async () => {
         try {
@@ -771,7 +771,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 160 * 1000);
+    });//, 160 * 1000);
 
     it('[DRDMV-2887]: [Knowledge Article] Adding/Modifying location data while creating knowledge articles - site, region', async () => {
         try {
@@ -823,5 +823,5 @@ describe('Knowledge Article', () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await previewKnowledgePo.clickOnBackButton();
         }
-    }, 150 * 1000);
+    });//, 150 * 1000);
 })

@@ -185,7 +185,7 @@ describe('Email', () => {
         //verify activity email post
         await emailPo.clickOnSendButton();
         expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
-    }, 160 * 1000);
+    });//, 160 * 1000);
 
     it('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -277,7 +277,7 @@ describe('Email', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
         }
-    }, 340 * 1000);
+    }, 400 * 1000);
 
     it('[DRDMV-19558]: Verify social notes other than email should not have reply and reply all options', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -405,7 +405,7 @@ describe('Email', () => {
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
         expect(await activityTabPo.getEmailBody()).toContain('this is third reply');
-    }, 200 * 1000);
+    });//, 200 * 1000);
 
     it('[DRDMV-19557]: For Reply / Reply All earlier email context should be copied as part of email composition on Case', async () => {
         var caseData = {
@@ -444,7 +444,7 @@ describe('Email', () => {
         expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
-    }, 200 * 1000);
+    });//, 200 * 1000);
 
     it('[DRDMV-19555]: In Case of Reply/Reply All  if we select new Email template then previous contents should not be erased.', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -539,7 +539,7 @@ describe('Email', () => {
         // defect -Bug DRDMV-19619
         //expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\n\n\nI am taking leave today.\n\n\n\nThanks.');
         await emailPo.clickOnSendButton();
-    }, 200 * 1000);
+    });//, 200 * 1000);
 
     it('[DRDMV-19552]: Verify task acknowledgement template are listed in Email Acknowledgement template and In Email Configuration', async () => {
         await navigationPage.gotoSettingsPage();
@@ -629,6 +629,6 @@ describe('Email', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         }
-    }, 290 * 1000);
+    }, 320 * 1000);
 
 })
