@@ -160,8 +160,8 @@ describe('Case Template', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('franz');
-            await navigationPage.gotoSettingsPage();            
-            expect(await createCaseTemplate.isPanelHeadingPresent('Select a configuration option from the navigation menu to show configuration content here')).toBeTruthy('Expected heading not present');
+            await navigationPage.gotoSettingsPage();   
+            expect(await navigationPage.getSettingPanelText()).toContain("Select a configuration option from the navigation menu to show configuration content here");
         } catch (e) {
             throw e;
         } finally {
@@ -354,7 +354,7 @@ describe('Case Template', () => {
         await expect(await editCaseTemplate.isSaveButtonOnMetaDataIsDisabled()).toBeTruthy();
     });
 
-    //ptidke
+    //ptidke APIFail
     it('[DRDMV-19741]:[RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = 'caseTemplateName' + randomStr;
@@ -704,7 +704,7 @@ describe('Case Template', () => {
             expect(await viewCaseTemplate.getCaseTemplateNameValue()).toBe(caseTemplateName);
             expect(await viewCaseTemplate.getPriorityValue()).toBe("Low");
             expect(await viewCaseTemplate.getTemplateStatusValue()).toBe("Active");
-            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe("Facilities");
+            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
             expect(await viewCaseTemplate.getCategoryTier2()).toBe("Policies");
             expect(await viewCaseTemplate.getCategoryTier3()).toBe("Card Issuance");
             expect(await viewCaseTemplate.getCategoryTier1()).toBe("Purchasing Card");
@@ -728,5 +728,4 @@ describe('Case Template', () => {
             await loginPage.login('qkatawazi');
         }
     }, 300 * 1000);
-
 })

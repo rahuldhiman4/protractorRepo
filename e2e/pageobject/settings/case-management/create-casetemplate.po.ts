@@ -41,7 +41,6 @@ class CreateCaseTemplate {
         changeAssignmentButton: '[rx-view-component-id="5a23952e-aac4-4e00-af6c-b93a214e26a9"] button',
         clearButton: '[rx-view-component-id="863df084-ff37-4099-85d9-2bfcc4783adc"] button',
         reopentimelineDays: '[rx-view-component-id="c562f849-8baa-4324-bbfc-77f34c4cdbde"] input',
-        panelHeadingOfSetting: '.panel-heading h4',
         searchInput: 'input[type="search"]',
     }
 
@@ -175,11 +174,6 @@ class CreateCaseTemplate {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseDescription)));
         await $(this.selectors.caseDescription).clear();
         await $(this.selectors.caseDescription).sendKeys(caseDescription);
-    }
-
-    async isPanelHeadingPresent(expectedHeading: string): Promise<boolean> {
-      await element(by.css(this.selectors.searchInput)).sendKeys('Case Template');     
-      return await element(by.cssContainingText(this.selectors.panelHeadingOfSetting,expectedHeading)).isPresent();     
     }
 
     async createCaseTemplateWithMandatoryFields(caseTemplate: ICaseTemplate): Promise<void> {
