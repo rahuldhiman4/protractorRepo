@@ -1,18 +1,18 @@
-import utilCommon from '../../../utils/util.common';
-import { $, browser, protractor, ProtractorExpectedConditions, $$ } from "protractor";
+import utilityCommon from '../../../utils/utility.common';
+import { $, protractor, ProtractorExpectedConditions, $$ } from "protractor";
 
 class PreviewCaseTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        caseSummary: '[rx-view-component-id="a2f98969-6981-4931-b38b-69b1684cd9bf"] span',
-        caseSummaryValue: '[rx-view-component-id="a2f98969-6981-4931-b38b-69b1684cd9bf"] p',
+        caseSummary: 'a2f98969-6981-4931-b38b-69b1684cd9bf',
+        caseSummaryValue: '[rx-view-component-id="a2f98969-6981-4931-b38b-69b1684cd9bf"] .read-only-content',
         caseTemplateName: '[rx-view-component-id="7570f145-6939-4462-bd01-b11b9405a08c"] span',
         caseStatus: '5ed66ea0-28ff-41b6-b587-ed42d0b2d9b2',
-        caseStatusValue: '[rx-view-component-id="5ed66ea0-28ff-41b6-b587-ed42d0b2d9b2"] .status-transition',
+        caseStatusValue: '[rx-view-component-id="5ed66ea0-28ff-41b6-b587-ed42d0b2d9b2"] .read-only-content',
         caseCompany: 'f87f672b-230f-4ced-95b7-fddcfcf86509',
-        caseCompanyValue: '[rx-view-component-id="f87f672b-230f-4ced-95b7-fddcfcf86509"] .d-textfield__rx-value',
+        caseCompanyValue: '[rx-view-component-id="f87f672b-230f-4ced-95b7-fddcfcf86509"] .read-only-content',
         casePriority: '747196f3-6773-434f-b1ac-9b83ac6aa8cf',
-        casePriorityValue: '[rx-view-component-id="747196f3-6773-434f-b1ac-9b83ac6aa8cf"] .d-textfield__rx-value',
+        casePriorityValue: '[rx-view-component-id="747196f3-6773-434f-b1ac-9b83ac6aa8cf"] .read-only-content',
         caseCategoryTier1: 'ca3b842c-0069-4cc2-b013-1e00a0f2eb19',
         caseCategoryTier2: '267deae6-a5c6-409f-85c3-9acc1bdc8598',
         caseCategoryTier3: 'b9e2c0da-ea81-4491-9039-c99d5f2da122',
@@ -57,57 +57,57 @@ class PreviewCaseTemplateBlade {
         return await $(this.selectors.caseCompanyValue).getText();
     }
 
-    async isCaseSummaryHeaderDisplayed(): Promise<boolean> {
+    async isCaseSummaryHeaderDisplayed(caseSummary: string): Promise<boolean> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummary)));
-        return await $(this.selectors.caseSummary).isDisplayed();
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseSummary,caseSummary);
     }
 
     async isCaseCompanyTitleDisplayed(caseCompany:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.caseCompany,caseCompany);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseCompany,caseCompany);
     }
 
     async isCaseStatusTitleDisplayed(caseStatusname:string): Promise<boolean> {
-      return await utilCommon.isFieldLabelDisplayed(this.selectors.caseStatus,caseStatusname);
+      return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseStatus,caseStatusname);
     }
 
     async isCasePriorityTitleDisplayed(casePriority:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.casePriority,casePriority);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.casePriority,casePriority);
     }
 
     async isCaseCategoryTier1TitleDisplayed(caseCategoryTier1:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier1,caseCategoryTier1);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier1,caseCategoryTier1);
     }
 
     async isCaseCategoryTier2TitleDisplayed(caseCategoryTier2:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier2,caseCategoryTier2);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier2,caseCategoryTier2);
     }
 
     async isCaseCategoryTier3TitleDisplayed(caseCategoryTier3:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier3,caseCategoryTier3);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier3,caseCategoryTier3);
     }
 
     async isCaseCategoryTier4TitleDisplayed(caseCategoryTier4:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier4,caseCategoryTier4);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier4,caseCategoryTier4);
     }
 
     async isFlowsetTitleDisplayed(flowset:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.flowset,flowset);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.flowset,flowset);
     }
 
     async isLabelTitleDisplayed(label:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.label,label);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.label,label);
     }
 
     async isCaseDescriptionTitleDisplayed(caseDescription:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.caseDescription,caseDescription);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseDescription,caseDescription);
     }
 
     async isSupportGroupTitleDisplayed(supportGroup:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.supportGroup,supportGroup);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.supportGroup,supportGroup);
     }
 
     async isSupportCompanyTitleDisplayed(supportCompany:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.supportCompany,supportCompany);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.supportCompany,supportCompany);
     }
 
     async isAssigneeTitleDisplayed(): Promise<boolean> {
