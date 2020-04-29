@@ -41,11 +41,11 @@ describe('Person Profile test', () => {
 
     //asahitya
     it('[DRDMV-14087]: Verify cases visible in Requested cases tab of My profile page are according to permissions of logged in user', async () => {
-        await personProfile.clickOnTab("Requested Cases");
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['DRDMV-14087']);
         let caseDisplayId = response.displayId;
+        await personProfile.clickOnTab("Requested Cases");
         expect(await personProfile.isCasePresentOnRequestedCases(caseDisplayId)).toBeTruthy("Case is not present");
     });
 
