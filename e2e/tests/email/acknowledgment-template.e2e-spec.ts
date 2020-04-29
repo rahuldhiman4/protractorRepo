@@ -191,7 +191,6 @@ describe('AcknowledgmentTemplate', () => {
 
     //ptidke
     it('[DRDMV-10902]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
-        //defect -DRDMV-21387
         let templateName4 = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName5 = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
