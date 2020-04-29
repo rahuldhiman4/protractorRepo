@@ -1018,9 +1018,8 @@ describe("Create Case", () => {
         await previewCasePo.clickGoToCaseButton();
         await activityTabPo.addActivityNote(activityNoteText);
         let fileName1: string[] = ['bwfWord1.rtf', 'bwfWord2.rtf', 'demo.txt', 'bwfJson1.json', 'bwfJson2.json'];
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await adhoctaskTemplate.addAttachmentInDescription(`../../data/ui/attachment/${fileName1[i]}`);
-        }
+        const filesToUpload1 = fileName1.map((file)=>{return `../../data/ui/attachment/${file}`});
+        await adhoctaskTemplate.addAttachmentInDescription(filesToUpload1);
         await activityTabPo.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
         await utilCommon.waitUntilSpinnerToHide();
@@ -1031,9 +1030,8 @@ describe("Create Case", () => {
         await adhoctaskTemplate.setDescription("Description");
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeTruthy('Attachment button is disabled');
         let fileName2: string[] = ['bwfXsl.xsl', 'bwfXml.xml', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
-        for (let i: number = 0; i < fileName2.length; i++) {
-            await adhoctaskTemplate.addAttachmentInDescription(`../../data/ui/attachment/${fileName2[i]}`);
-        }
+        const filesToUpload2 = fileName2.map((file)=>{return `../../data/ui/attachment/${file}`});
+        await adhoctaskTemplate.addAttachmentInDescription(filesToUpload2);
         await adhoctaskTemplate.clickOnSaveAdhoctask();
         await manageTask.clickOnCloseButton();
         await utilCommon.waitUntilPopUpDisappear();
