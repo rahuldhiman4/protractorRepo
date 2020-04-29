@@ -163,7 +163,7 @@ describe('Case Status Change', () => {
         //        await utilCommon.closePopUpMessage();
         await editCasePage.updateCaseSummary('Pending AC');
         await editCasePage.clickSaveCase();
-        expect(await utilityCommon.getAllPopupMsg()).toBe('Saved successfully.');
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
     });//, 180 * 1000);
 
     //kgaikwad

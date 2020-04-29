@@ -12,15 +12,22 @@ import documentLibraryConsolePo from '../../pageobject/settings/document-managem
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import apiCoreUtil from '../../api/api.core.util';
 
 describe('Document Library', () => {
+    const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
+    const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
+    const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+    const personDataFile = require('../../data/ui/foundation/person.ui.json');
+  
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
+        await apiHelper.apiLogin('tadmin');
+        await foundationData('Petramco');
     });
 
     afterAll(async () => {
@@ -30,6 +37,24 @@ describe('Document Library', () => {
     afterEach(async () => {
         await utilityCommon.refresh();
     });
+
+    async function foundationData(company: string) {
+        await apiHelper.apiLogin('tadmin');
+        let businessData = businessDataFile['BusinessUnitData'];
+        let departmentData = departmentDataFile['DepartmentData'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData'];
+        let personData = personDataFile['PersonData'];
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        departmentData.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData);
+        suppGrpData.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData);
+        await apiHelper.createNewUser(personData);
+        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
+        await apiHelper.associatePersonToCompany(personData.userId, company)
+    }
 
     //kgaikwad
     it('[DRDMV-13039,DRDMV-13073]: Verify document can be Deleted And Verify OOB document manager role is added to BA', async () => {
@@ -435,7 +460,6 @@ describe('Document Library', () => {
         await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createDocumentLibrary(draftDocLibData, filePath);
-
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(draftDocLibData.docLibTitle);
@@ -446,7 +470,7 @@ describe('Document Library', () => {
         await editDocumentLibraryPo.selectAddSupportDepartmentDropDownOfReadAccess('UI-Department');
         await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('UI-SupportGroup');
         await editDocumentLibraryPo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+        expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully.');
     });
 
     //apdeshmu
