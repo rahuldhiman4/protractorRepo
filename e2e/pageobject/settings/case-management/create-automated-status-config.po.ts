@@ -83,7 +83,7 @@ class AutomatedStatusTransitionConfigCreatePage {
 
     async isFromStatusEnabled(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
-        return await $(this.selectors.fromStatus).isEnabled();
+        return await $(this.selectors.fromStatus).getAttribute('aria-disabled')=="false";
     }
 
     async setToStatus(status: string): Promise<void> {

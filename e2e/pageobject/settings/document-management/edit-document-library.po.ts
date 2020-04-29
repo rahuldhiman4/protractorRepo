@@ -29,7 +29,7 @@ class EditDocumentLibraryPage {
         region: '[rx-view-component-id="836aa6d7-1d77-46b4-b270-50d7d25424ba"] .ui-select-toggle',
         regionGuid: '836aa6d7-1d77-46b4-b270-50d7d25424ba',
         site: '[rx-view-component-id="b22d4dc1-83b5-4b06-a2c0-10e3865fb46e"] .ui-select-toggle',
-        siteGuid: 'b22d4dc1-83b5-4b06-a2c0-10e3865fb46e',
+        siteGuid: '6b73d5aa-fdeb-4d10-aa35-14e842e35a95',
         tabs: '.rx-tab',
         supportGroupAccessButton: '.rx-case-access-block .ac-manage-support',
         addCompany: '.flex-item .ac-company-field .dropdown-toggle',

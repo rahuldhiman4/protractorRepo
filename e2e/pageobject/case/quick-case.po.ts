@@ -31,25 +31,26 @@ class QuickCasePage {
         resources: 'bwf-smart-recorder-results .d-icon-infinity',
         advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select label',
         startOverButton: '.sr-footer .text-muted .btn-secondary',
-        RecommendedKnowledge: 'bwf-search-result-fields .bwf-search-fields__title-text',
-        RecommendedCaseGuid: '[rx-view-component-id="c0487804-1748-4995-99c9-69e6ad217c74"]',
-        RecommendedKnowledgeGuid: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"]',
+        recommendedKnowledge: 'bwf-search-result-fields .bwf-search-fields__title-text',
+        recommendedKnowledgeEmpty: '[rx-view-component-id="aacf8477-f930-4983-820d-1b9fa12441c0"] .bwf-search-result p',
+        recommendedCaseGuid: '[rx-view-component-id="c0487804-1748-4995-99c9-69e6ad217c74"]',
+        recommendedKnowledgeGuid: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"]',
     }
 
     async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
         for (let i = 0; i < numberOfArticles; i++) {
-            await $(this.selectors.RecommendedKnowledgeGuid).$$('adapt-icon[class="search-item__unpin-icon"]').get(i).click();
+            await $(this.selectors.recommendedKnowledgeGuid).$$('adapt-icon[class="search-item__unpin-icon"]').get(i).click();
         }
     }
 
     async pinRecommendedCases(numberOfCases: number): Promise<void> {
         for (let i = 0; i < numberOfCases; i++) {
-            await $(this.selectors.RecommendedCaseGuid).$$('adapt-icon[class="search-item__unpin-icon"]').get(i).click();
+            await $(this.selectors.recommendedCaseGuid).$$('adapt-icon[class="search-item__unpin-icon"]').get(i).click();
         }
     }
 
     async isRecommendedKnowledgeEmpty(): Promise<boolean> {
-        return await $$('.km-group .km-group-list-item_empty').get(1).isPresent();
+        return await $(this.selectors.recommendedKnowledgeEmpty).isPresent();
     }
 
     async isCaseSummaryPresentInRecommendedCases(caseSummary: string): Promise<boolean> {

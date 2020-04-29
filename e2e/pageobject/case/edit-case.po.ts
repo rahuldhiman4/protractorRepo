@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, Key } from "protractor";
 import utilCommon from "../../utils/util.common";
 import utilityCommon from "../../utils/utility.common";
 
@@ -106,6 +106,7 @@ class CaseEditPage {
     async clearCaseSummary(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summary)));
         await $(this.selectors.summary).clear();
+        await $(this.selectors.summary).sendKeys('m'+Key.BACK_SPACE);
     }
 
     async updateCaseSummary(summary: string): Promise<void> {
