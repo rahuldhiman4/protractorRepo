@@ -37,6 +37,7 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
+    // Done
     it('[DRDMV-11697]: All attachments grid verification', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -71,9 +72,9 @@ describe("Attachment", () => {
         expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Media type ')).toBe('Media type', 'Media type  column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
-        await expect(await attachmentBladePo.getRecordValue('bwfJpg')).toBe('bwfJpg', 'Attachment file name is missing');
-        await expect(await attachmentBladePo.getRecordValue('Case')).toBe('Case', 'Attach to column value is missing');
-        await expect(await attachmentBladePo.getRecordValue('image/jpeg')).toBe('image/jpeg', 'Media type column value is missing');
+        await expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfJpg', 'Attachment file name is missing');
+        await expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Case', 'Attach to column value is missing');
+        await expect(await attachmentBladePo.getRecordValue('Media type')).toBe('image/jpeg', 'Media type column value is missing');
 
         let year: string;
         let month: string;
@@ -144,13 +145,13 @@ describe("Attachment", () => {
         await viewCasePo.clickAttachmentsLink();
         expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('demo');
-        await expect(await attachmentBladePo.getRecordValue('demo')).toBe('demo', 'demo txt file name is missing');
+        await expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('demo', 'demo txt file name is missing');
         await attachmentBladePo.clickOnDownloadButton();
         expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
     });
 
     //kgaikwad
-    it('[DRDMV-11710,DRDMV-11698]: Upload attachment from Social & verify all attachments grid', async () => {
+    xit('[DRDMV-11710,DRDMV-11698]: Upload attachment from Social & verify all attachments grid', async () => {
         let filePath = '../../data/ui/attachment/bwfPdf.pdf';
         let caseBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -177,7 +178,6 @@ describe("Attachment", () => {
         expect(await attachmentBladePo.isDownloadButtonEnabled()).toBeFalsy('Download button is enabled');
         await attachmentBladePo.searchAndSelectCheckBox('bwfPdf');
         expect(await attachmentBladePo.isDownloadButtonEnabled()).toBeTruthy('Download button is disabled');
-
         await attachmentBladePo.clickOnDownloadButton();
         expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
         await attachmentBladePo.clickOnCloseButton();
@@ -189,7 +189,7 @@ describe("Attachment", () => {
     });//, 140 * 1000);
 
     //kgaikwad
-    it('[DRDMV-11708]: Upload attachment from task activity & verify all attachments grid', async () => {
+    fit('[DRDMV-11708]: Upload attachment from task activity & verify all attachments grid', async () => {
         let xlsxFilePath = '../../data/ui/attachment/bwfXlsx.xlsx';
         let wordFilePath = '../../data/ui/attachment/bwfWord1.rtf';
         let adhocTaskSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

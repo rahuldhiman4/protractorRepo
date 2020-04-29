@@ -7,12 +7,12 @@ class AttachmentBlade {
     selectors = {
         gridGuid: 'adb9ac10-3732-4fd9-8af3-29bec77272b4',
         columnnHeader: '.c-header-container .c-header-name',
-        selectCheckbox: '.ui-grid-selection-row-header-buttons',
+        selectCheckbox: '.ui-chkbox-box',
         download: '.bwf-case-attachment__footer-button  .btn-primary',
         close: '.bwf-case-attachment__footer-button  .btn-secondary',
         gridValue: '.ui-grid-cell-contents',
         searchbox: '.adapt-search-triggerable .adapt-search-field-ellipsis',
-        searchButton: '.input-group-append .adapt-search-button"]',
+        searchButton: '.input-group-append button',
         crossbutton: '.d-icon-cross[aria-label="Clear Search Field"]',
         allCheckbox: '.checkbox__input',
         attachmentSize: 'bwf-case-attachment__paginator__page-count',
@@ -138,7 +138,8 @@ class AttachmentBlade {
     }
 
     async clickOnFileName(attachment: string): Promise<void> {
-        await utilityGrid.searchRecord(attachment);
+        // await utilityGrid.searchRecord(attachment);
+        await this.searchRecord(attachment);
         await element(by.cssContainingText(this.selectors.attachmentName, attachment)).click(); 
     }
 
