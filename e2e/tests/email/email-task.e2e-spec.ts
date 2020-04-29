@@ -74,8 +74,8 @@ describe('Email', () => {
         await apiHelper.apiLogin('fritz');
         var newCaseTemplate = await apiHelper.createCase(caseData);
         var displayId: string = newCaseTemplate.displayId;
-        await utilGrid.clearFilter();
-        await utilGrid.searchAndOpenHyperlink(displayId);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePage.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(automatedTaskSummary);
@@ -84,21 +84,21 @@ describe('Email', () => {
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         await viewTaskPo.clickEmailLink();
         await emailPo.clickOnDiscardButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await viewTask.clickOnViewCase();
         await viewCasePage.clickAddTaskButton();
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         await viewTaskPo.clickEmailLink();
         await emailPo.clickOnDiscardButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await viewTask.clickOnViewCase();
         await viewCasePage.clickAddTaskButton();
         await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         await viewTaskPo.clickEmailLink();
         await emailPo.clickOnDiscardButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
 
     it('[DRDMV-19008]: Email icon and Requester email link should open compose email dialog in Task', async () => {
@@ -142,17 +142,19 @@ describe('Email', () => {
         let ManualtaskID = await viewTask.getTaskID();
         await viewTaskPo.clickEmailLink();
         expect(await emailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
-        await expect(await emailPo.getEmailBody()).toContain('Regards');
-        await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
-        await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
+        //story changes
+        // await expect(await emailPo.getEmailBody()).toContain('Regards');
+        // await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
+        // await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
         expect(await emailPo.searchPerson('To', 'fri')).toBe(3);
         expect(await emailPo.searchPerson('Cc', 'fri')).toBe(3);
         await emailPo.clickOnDiscardButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await viewTask.clickOnRequesterEmail();
-        await expect(await emailPo.getEmailBody()).toContain('Regards');
-        await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
-        await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
+        //story changes
+        // await expect(await emailPo.getEmailBody()).toContain('Regards');
+        // await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
+        // await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
         expect(await emailPo.searchPerson('To', 'fri')).toBe(3);
         expect(await emailPo.searchPerson('Cc', 'fri')).toBe(3);
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
@@ -167,17 +169,17 @@ describe('Email', () => {
         let ExternaltaskID = await viewTask.getTaskID();
         await viewTaskPo.clickEmailLink();
         expect(await emailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
-        await expect(await emailPo.getEmailBody()).toContain('Regards');
-        await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
-        await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
+        // await expect(await emailPo.getEmailBody()).toContain('Regards');
+        // await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
+        // await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
         expect(await emailPo.searchPerson('To', 'fri')).toBe(3);
         expect(await emailPo.searchPerson('Cc', 'fri')).toBe(3);
         await emailPo.clickOnDiscardButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await viewTask.clickOnRequesterEmail();
-        await expect(await emailPo.getEmailBody()).toContain('Regards');
-        await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
-        await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
+        // await expect(await emailPo.getEmailBody()).toContain('Regards');
+        // await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
+        // await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
         expect(await emailPo.searchPerson('To', 'fri')).toBe(3);
         expect(await emailPo.searchPerson('Cc', 'fri')).toBe(3);
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
@@ -344,8 +346,8 @@ describe('Email', () => {
         await apiHelper.apiLogin('fritz');
         var newCaseTemplate = await apiHelper.createCase(caseData);
         var displayId: string = newCaseTemplate.displayId;
-        await utilGrid.clearFilter();
-        await utilGrid.searchAndOpenHyperlink(displayId);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePage.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
@@ -484,8 +486,8 @@ describe('Email', () => {
         await apiHelper.apiLogin('fritz');
         var newCaseTemplate = await apiHelper.createCase(caseData);
         var displayId: string = newCaseTemplate.displayId;
-        await utilGrid.clearFilter();
-        await utilGrid.searchAndOpenHyperlink(displayId);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePage.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
@@ -614,14 +616,14 @@ describe('Email', () => {
             // https://jira.bmc.com/browse/DRDMV-19670  defect
             expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeFalsy();
             await emailPo.clickOnDiscardButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(ManualtaskID);
             await viewTask.clickOnRequesterEmail();
             // https://jira.bmc.com/browse/DRDMV-19670  defect
             expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeFalsy();
             await emailPo.clickOnDiscardButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         } catch (e) {
             throw e;
         }
