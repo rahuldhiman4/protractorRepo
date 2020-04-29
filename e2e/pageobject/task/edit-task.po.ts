@@ -90,7 +90,7 @@ class EditTask {
 
     async processNamePresentInTask(): Promise<boolean> {
         //        await browser.wait(this.EC.invisibilityOf($(this.selectors.processNameValue)));
-        return await $(this.selectors.processNameValue).isDisplayed();
+        return await $(this.selectors.processNameValue).isPresent();
     }
 
     async clickOnAttachButton(): Promise<void> {
