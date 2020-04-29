@@ -3,11 +3,7 @@ export const EMAIL_WHITELIST = {
     "id": "AGGADG1AANVNMAPKRHEJP9UCTR5FHR",
     "displayId": "000000000000001",
     "recordDefinitionName": "com.bmc.arsys.rx.environment-configuration:EmailWhiteListConfiguration",
-    "permittedGroupsBySecurityLabels": {},
-    "permittedUsersBySecurityLabels": {},
-    "permittedRolesBySecurityLabels": {},
     "fieldInstances": {
-
         "18301": {
             "id": 18301,
             "value": "p(attrib=style)"
