@@ -41,10 +41,10 @@ class EditTask {
         await $(this.selectors.dynamicDateTime).sendKeys(value);
     }
 
-    async addAttachment(fileToUpload: string): Promise<void> {
-        const absolutePath = resolve(__dirname, fileToUpload);
-        console.log(absolutePath);
-        await $(this.selectors.attachmentField).sendKeys(absolutePath);
+    async addAttachment(fileToUpload: string[]): Promise<void> {
+        const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
+        console.log(absPathArray);
+        await $(this.selectors.attachmentField).sendKeys(absPathArray.join('\n'));
     }
 
     async removeAttachment(fileName: string): Promise<void> {
@@ -90,7 +90,7 @@ class EditTask {
 
     async processNamePresentInTask(): Promise<boolean> {
         //        await browser.wait(this.EC.invisibilityOf($(this.selectors.processNameValue)));
-        return await $(this.selectors.processNameValue).isDisplayed();
+        return await $(this.selectors.processNameValue).isPresent();
     }
 
     async clickOnAttachButton(): Promise<void> {

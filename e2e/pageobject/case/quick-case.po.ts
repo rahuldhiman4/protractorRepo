@@ -32,7 +32,7 @@ class QuickCasePage {
         advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select label',
         startOverButton: '.sr-footer .text-muted .btn-secondary',
         recommendedKnowledge: 'bwf-search-result-fields .bwf-search-fields__title-text',
-        recommendedKnowledgeEmpty: '[rx-view-component-id="aacf8477-f930-4983-820d-1b9fa12441c0"] .bwf-search-result p',
+        recommendedKnowledgeEmpty: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"] .bwf-search-result p',
         recommendedCaseGuid: '[rx-view-component-id="c0487804-1748-4995-99c9-69e6ad217c74"]',
         recommendedKnowledgeGuid: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"]',
     }

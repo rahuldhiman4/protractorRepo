@@ -221,7 +221,7 @@ describe("Attachment", () => {
         await viewCasePo.clickAddTaskButton();
         await manageTask.clickAddAdhocTaskButton();
         await adhoctaskTemplate.setSummary(adhocTaskSummary);
-        await adhoctaskTemplate.addAttachment(xlsxFilePath);
+        await adhoctaskTemplate.addAttachment([xlsxFilePath]);
         await adhoctaskTemplate.clickOnSaveAdhoctask();
         await manageTask.clickOnCloseButton();
         await viewCasePo.clickAttachmentsLink();
@@ -322,7 +322,7 @@ describe("Attachment", () => {
             await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateDraft ${taskRandString[i]}`);
 
             await viewTaskPo.clickOnEditTask();
-            await editTaskPo.addAttachment(`../../data/ui/attachment/${fileName[i]}`);
+            await editTaskPo.addAttachment([`../../data/ui/attachment/${fileName[i]}`]);
             await editTaskPo.clickOnAssignToMe();
             await editTaskPo.clickOnSaveButton();
             let taskIdText: string = await viewTaskPo.getTaskID();
