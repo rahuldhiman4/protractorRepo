@@ -74,7 +74,7 @@ describe('Create Adhoc task', () => {
         expect(await manageTask.isTaskLinkOnManageTask(summary)).toBeTruthy();
     });
 
-    it('[DRDMV-3821]: Adhoc Task details view (UI verification))', async () => {
+    it('[DRDMV-3821]: Adhoc Task details view (UI verification)', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
@@ -248,7 +248,7 @@ describe('Create Adhoc task', () => {
         expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
-        await adhoctaskTemplate.addAttachment(filePath);
+        await adhoctaskTemplate.addAttachment([filePath]);
         await adhoctaskTemplate.clickOnSaveAdhoctask();
         await manageTask.clickOnCloseButton();
         await viewCasePage.clickOnTaskLink(summary);
@@ -294,7 +294,7 @@ describe('Create Adhoc task', () => {
         expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
-        await adhoctaskTemplate.addAttachment(filePath);
+        await adhoctaskTemplate.addAttachment([filePath]);
         await adhoctaskTemplate.clickOnSaveAdhoctask();
         await manageTask.clickOnCloseButton();
         await viewCasePage.clickOnTaskLink(summary);
@@ -327,7 +327,7 @@ describe('Create Adhoc task', () => {
         await manageTask.clickOnCloseButton();
         await viewCasePage.clickOnTaskLink(summary);
         await viewTask.clickOnEditTask();
-        await editTask.addAttachment(filePath);
+        await editTask.addAttachment([filePath]);
         await viewTask.clickOnSaveViewAdhoctask();
         expect(await viewTask.isAttachedFileNamePresent('demo')).toBeTruthy('Attached file name is not available');
     });//, 180 * 1000);
@@ -352,10 +352,8 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.setDescription("Description");
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeTruthy('Attachment button is disabled');
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf', 'bwfXlsx.xlsx', 'demo.txt'];
-        // Defect: one file is uplaoding multiple times
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await adhoctaskTemplate.addAttachmentInDescription(`../../data/ui/attachment/${fileName1[i]}`);
-        }
+        const filesToUpload1 = fileName1.map((file)=>{return `../../data/ui/attachment/${file}`});
+        await adhoctaskTemplate.addAttachmentInDescription(filesToUpload1);
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeFalsy('Attachment button is enabled');
         expect(await adhoctaskTemplate.getAttachmentLimitWarningText()).toBe('The maximum number of attachments allowed is 20');
         await adhoctaskTemplate.clickOnSaveAdhoctask();
