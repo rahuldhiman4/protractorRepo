@@ -142,7 +142,7 @@ node("${NODE}"){
         stage('Upload Over FTP'){
             ftpPublisher alwaysPublishFromMaster: true, continueOnError: true, failOnError: false, publishers: [
                 [configName: 'vl-pun-rem-qa4n-protractor', transfers: [
-                    [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAutoRun_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'artefact/*.zip']
+                    [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAutoParallel_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'artefact/*.zip']
                 ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
             ]
         }
