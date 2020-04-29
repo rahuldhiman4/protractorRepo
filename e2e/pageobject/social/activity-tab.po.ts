@@ -57,6 +57,7 @@ class ActivityTabPage {
         refreshButton: '.tab-content .bwf-button-link[aria-label="Refresh"]',
         attachmentField: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] input[type="file"]',
         showMoreEmailActivity: '.activity__wrapper button[aria-label="Show more"]',
+        expandAllAttachmentActivity : '.activity__wrapper .d-icon-plus',
         allTaskActivity: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .fields .value',
         taskActivity: '.fields .value',
         showMoreLink: 'button[aria-label="Show more"]',
@@ -298,6 +299,10 @@ class ActivityTabPage {
 
     async clickShowMoreForEmailActivity(): Promise<void> {
         await $(this.selectors.showMoreEmailActivity).click();
+    }
+
+    async clickPlusIconOnMultipleAttachmentInActivity(): Promise<void> {
+        await $(this.selectors.expandAllAttachmentActivity).click();
     }
 
     async getemailAttachmentFileName(): Promise<string> {

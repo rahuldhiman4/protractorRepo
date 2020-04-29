@@ -9,7 +9,6 @@ class CopyNotificationTemplate {
     }
 
     async setCompanyValue(value:string): Promise<void> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.companyGuid)),3000);
         await utilCommon.selectDropDown(this.selectors.companyGuid,value);
     }
 

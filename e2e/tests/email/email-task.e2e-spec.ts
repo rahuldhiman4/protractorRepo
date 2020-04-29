@@ -355,7 +355,7 @@ describe('Email', () => {
         await browser.sleep(2000);
         var ManualtaskID = await viewTask.getTaskID();
         await viewTaskPo.clickEmailLink();
-        await emailPo.addAttachment();
+        await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
         await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com')
         await emailPo.setEmailBody('this is new email sending frist time to the user');
@@ -383,7 +383,7 @@ describe('Email', () => {
         await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
         var externaltaskID = await viewTask.getTaskID();
         await viewTaskPo.clickEmailLink();
-        await emailPo.addAttachment();
+        await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
         await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com')
         await emailPo.setEmailBody('this is new email sending frist time to the user');
@@ -423,7 +423,7 @@ describe('Email', () => {
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePo.clickOnEmailLink();
-        await emailPo.addAttachment();
+        await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
         await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com')
         await emailPo.setEmailBody('this is new email sending frist time to the user');
