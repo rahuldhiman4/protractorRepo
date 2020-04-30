@@ -325,22 +325,23 @@ class ComposeMail {
         await $(this.selectors.attachLink).click();
     }
     async searchPerson(value: string, EmailIdForToOrCc: string): Promise<number> {
-        let countOfPersons = 0;
-        let element = await $(`input[aria-label="${value}"]`);
-        await element.click();
-        await element.clear();
-        await element.sendKeys(EmailIdForToOrCc);
-        await this.setToOrCCInputTetxbox(value, EmailIdForToOrCc);
-        let values: number = await $$(this.selectors.popupInfo).count();
-        for (let i = 0; i < values; i++) {
-            let person = await $$(this.selectors.popupInfo).get(i);
-            let nm: string = await person.getText();
-            if (nm.includes(value)) {
-                countOfPersons++;
-            }
+        if (value == 'To') {
+            await $$(this.selectors.toCcInput).get(0).clear();
+            await $$(this.selectors.toCcInput).get(0).sendKeys(EmailIdForToOrCc);
+            let values: number = await $$(this.selectors.popupInfo).count();
+            await $$(this.selectors.toCcInput).get(0).clear();
+            await $$(this.selectors.toCcInput).get(0).sendKeys('n' + Key.BACK_SPACE);
+            await browser.wait(this.EC.invisibilityOf($$(this.selectors.popupInfo).get(0)), 4000);
+            return values;
+        } if (value == 'Cc') {
+            await $$(this.selectors.toCcInput).get(1).clear();
+            await $$(this.selectors.toCcInput).get(1).sendKeys(EmailIdForToOrCc);
+            let values: number = await $$(this.selectors.popupInfo).count();
+            await $$(this.selectors.toCcInput).get(1).clear();
+            await $$(this.selectors.toCcInput).get(1).sendKeys('n' + Key.BACK_SPACE);
+            await browser.wait(this.EC.invisibilityOf($$(this.selectors.popupInfo).get(0)), 4000);
+            return values;
         }
-        await element.clear();
-        return countOfPersons;
     }
     async isImageDisplayedComposeEmail(value: string): Promise<boolean> {
         await browser.waitForAngularEnabled(false);
