@@ -8,23 +8,21 @@ class ComposeMail {
         crossIcon: '.close-inverse',
         commonId: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"]',
         selectEmailTemplateLink: '.select-template-button',
-        messageBodyFontPannelBar: '.cke_inner .cke_reset_all',
         attachLink: '.attachment-button button',
         sendButton: '[rx-view-component-id="58d8a41f-6c8f-4f23-b986-6a94d35b0fbe"] button',
         discardButton: '[rx-view-component-id="038eaa3f-f2ff-4c6d-a5d1-351449671b76"] button',
         composeEmailUI: '[rx-view-definition-guid="a69ea993-2e45-4ae7-9435-25ba53cbad88"]',
         popupEmail: '.dropdown-item .popup-email',
         popupInfo: '.dropdown-item .popup-info',
-        attachButton: '.attachment-button button',
         emailBody: '.cke_editable_themed',
         firstClickInEmail: '.cke_editable_themed br',
         attachmentName: '.rx-attachment-view-name',
         getsubject: '.subject-name span',
-        selectTemplateButton: '.select-template-button',
         toOrCcEmailgetText: 'div.adapt-mt-field-wrapper .flexi-type-ahead-person-tag',
         subjectInput: '.subject-name input',
         templateNameHeader: '.select-email-container .template-seperator',
         recipientRemoveIcon: '.adapt-mt-wrapper .adapt-mt-item-close',
+        messageBodyFontPannelBar: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_inner .cke_reset_all',
         tableIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_toolbar .cke_button__table_icon',
         imageIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_toolbar .cke_button__image_icon',
         linkIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_toolbar .cke_button__link_icon',
@@ -145,8 +143,8 @@ class ComposeMail {
     }
 
     async clickOnSelectEmailTemplateLink(): Promise<void> {
-        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectTemplateButton)), 4000);
-        await $(this.selectors.selectTemplateButton).click();
+        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectEmailTemplateLink)), 4000);
+        await $(this.selectors.selectEmailTemplateLink).click();
     }
 
     async getTextOfDiscardButtonWarningMessage(): Promise<string> {
@@ -205,7 +203,7 @@ class ComposeMail {
     }
 
   async clickOnSelectTempalteButton(): Promise<void> {
-        await $(this.selectors.selectTemplateButton).click();
+        await $(this.selectors.selectEmailTemplateLink).click();
     }
 
     async getToEmailPerson(): Promise<string> {
@@ -276,7 +274,7 @@ class ComposeMail {
     }
 
     async isSelectEmailTemplateButtonPresent(): Promise<boolean> {
-        return await $(this.selectors.selectTemplateButton).isDisplayed();
+        return await $(this.selectors.selectEmailTemplateLink).isDisplayed();
     }
 
     async isComposeEmailUIDisplay(): Promise<boolean> {
@@ -324,7 +322,7 @@ class ComposeMail {
     }
 
     async clickOnAttachmentLink(): Promise<void> {
-        await $(this.selectors.attachButton).click();
+        await $(this.selectors.attachLink).click();
     }
     async searchPerson(value: string, EmailIdForToOrCc: string): Promise<number> {
         let countOfPersons = 0;
