@@ -86,11 +86,11 @@ class ViewCasePage {
     }
 
     async getResolutionCodeValue(): Promise<string> {
-        return await $(this.selectors.resolutionCodeValue).getText();
+        return await (await $(this.selectors.resolutionCodeValue).getText()).trim();
     }
 
     async getResolutionDescription(): Promise<string> {
-        return await $(this.selectors.resolutionDescriptionValue).getText();
+        return await (await $(this.selectors.resolutionDescriptionValue).getText()).trim();
     }
 
     async isCaseReopenLinkPresent(): Promise<boolean> {
