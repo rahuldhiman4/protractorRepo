@@ -150,7 +150,7 @@ describe("Create Case Assignment Mapping", () => {
         expect(await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Company")).toBe("- Global -");
         await AssignmentConfigConsolePage.clickDeleteButton();
         await utilCommon.clickOnWarningOk();
-        //expect(await utilCommon.getPopUpMessage()).toBe('Record(s) deleted successfully.');
+        //expect(await utilCommon.isPopUpMessagePresent('Record(s) deleted successfully.').tobeTruthy();
     });
 
     //radhiman

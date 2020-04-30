@@ -222,10 +222,6 @@ class EditCaseTemplate {
         await $(this.selectors.caseSummary).clear();
     }
 
-    async getErrorMessage():Promise<string>{
-        return await utilCommon.getPopUpMessage();
-    }
-
     async changeCaseSummary(caseSummaryValue: string): Promise<void> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
         await $(this.selectors.caseSummary).clear();

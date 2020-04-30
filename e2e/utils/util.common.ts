@@ -116,11 +116,6 @@ export class Util {
         );
     }
 
-    async getPopUpMessage(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
-        return await $(this.selectors.popUpMsgLocator).getText();
-    }
-
     async scrollUpOrDownTillElement(element: string): Promise<void> {
         await browser.executeScript("arguments[0].scrollIntoView();", $(`${element}`).getWebElement());
     }

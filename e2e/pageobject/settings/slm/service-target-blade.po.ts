@@ -20,7 +20,6 @@ class ServiceTargetConfig {
         segmentsArrow: '[id^="accordiongroup"][id$="tab"] .glyphicon',
         saveSVTButton: '.modal-footer button.d-button_primary',
         closeSVTButton: '.modal-footer button.d-button_secondary',
-        popUpMsgLocator: '.rx-growl-item__message',
         qualificationBuilder: 'ux-qualification-builder',
         searchField: 'searchText',
         field: '.record_field',
@@ -124,13 +123,6 @@ class ServiceTargetConfig {
         await SlmExpressionBuilder.selectExpressionQualification(field, operator, fieldAttribute, fieldvalue);
         await SlmExpressionBuilder.clickOnAddExpressionButton(fieldAttribute);
         await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
-    }
-
-    async getPopUpMessage() {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
-        let message = await $(this.selectors.popUpMsgLocator).getText();
-        //        await browser.wait(this.EC.invisibilityOf($(this.selectors.popUpMsgLocator)));
-        return message;
     }
 
     async clickOnSaveSVTButton() {

@@ -191,7 +191,7 @@ describe('Automated Case Status Transition', () => {
         await automatedStatusTransitionCreatePage.setChangeStatusAfter(days);
         await automatedStatusTransitionCreatePage.saveConfig();
 
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Automated Status Configuration with same values already exists.');
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Automated Status Configuration with same values already exists.')).toBeTruthy();
         await utilCommon.closePopUpMessage();
         await automatedStatusTransitionCreatePage.clickOCancelBtn();
         await utilCommon.clickOnWarningOk();

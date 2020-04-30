@@ -218,7 +218,7 @@ describe('AcknowledgmentTemplate', () => {
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
 
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:' + templateName4, 'Duplicate private template name error message is missing');
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (222108): Template Already exist with given name:' + templateName4)).toBeTruthy('Duplicate private template name error message is missing');
         await utilCommon.closePopUpMessage();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
@@ -243,7 +243,7 @@ describe('AcknowledgmentTemplate', () => {
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
 
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:' + templateName5, 'Duplicate private template name error message is missing');
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (222108): Template Already exist with given name:' + templateName5)).toBeTruthy('Duplicate private template name error message is missing');
         await utilCommon.closePopUpMessage();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();

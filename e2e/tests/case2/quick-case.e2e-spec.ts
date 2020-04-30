@@ -818,7 +818,7 @@ describe("Quick Case", () => {
         expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
         await previewKnowledgePo.clickOnBackButton();
         await quickCase.createCaseButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully');
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
         expect(await previewCasePo.isRequesterNameDisplayed('Person1 Person1')).toBeTruthy();
         expect(await previewCasePo.isCaseSummaryDisplayed(`${caseTemplateName}`)).toBeTruthy();
         expect(await previewCasePo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();

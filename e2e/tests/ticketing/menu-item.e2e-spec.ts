@@ -94,7 +94,7 @@ describe('Menu Item', () => {
         await createMenuItems.selectStatusDropDown('Active');
         await createMenuItems.selectAvailableOnUiToggleButton(true);
         await createMenuItems.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.');
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
         await utilCommon.closePopUpMessage();
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
@@ -103,7 +103,7 @@ describe('Menu Item', () => {
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.');
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
         await utilCommon.closePopUpMessage();
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
@@ -112,7 +112,7 @@ describe('Menu Item', () => {
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.');
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
         await utilCommon.closePopUpMessage();
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
@@ -121,7 +121,7 @@ describe('Menu Item', () => {
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
         await utilCommon.waitUntilPopUpDisappear();
         await createMenuItems.clickOnMenuOptionLink();
         await createMenuItems.selectMenuNameDropDown('Source');
@@ -134,7 +134,7 @@ describe('Menu Item', () => {
         await createMenuItems.selectAvailableOnUiToggleButton(true);
         await createMenuItems.clickOnSaveButton();
         
-        await expect(await utilCommon.getPopUpMessage()).toBe('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.');
+        await expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.clearValueTextBox();
@@ -142,7 +142,7 @@ describe('Menu Item', () => {
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.');
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
         await utilCommon.closePopUpMessage();
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
@@ -151,7 +151,7 @@ describe('Menu Item', () => {
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.');
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
         await utilCommon.closePopUpMessage();
         await createMenuItems.clickOnLocalizeLink();
         await utilCommon.waitUntilSpinnerToHide();
@@ -160,7 +160,7 @@ describe('Menu Item', () => {
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         await utilCommon.waitUntilPopUpDisappear();
     }, 270 * 1000);
 
@@ -219,7 +219,7 @@ describe('Menu Item', () => {
         let statusdropDown1: string[] = ["Deprecated", "Inactive", "Active"];
         expect(await editMenuItemsConfigPo.isStatusDropDownValuesMatch(statusdropDown1)).toBeTruthy('wrong column headers');
         await editMenuItemsConfigPo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.'), 'Saved successfully. Popup is missing';
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         await utilCommon.waitUntilPopUpDisappear();
 
         await menuItemsConfigConsolePo.searchAndEditMenuOption(lableRandVal);
@@ -234,7 +234,7 @@ describe('Menu Item', () => {
         expect(await editMenuItemsConfigPo.isStatusDropDownValuesMatch(statusDropDown2)).toBeTruthy('wrong column headers');
         await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(true);
         await editMenuItemsConfigPo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.'), 'Saved successfully. Popup is missing';
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         await utilCommon.waitUntilPopUpDisappear();
 
         await menuItemsConfigConsolePo.searchAndEditMenuOption(resolutionCodeRandVal);
@@ -249,7 +249,7 @@ describe('Menu Item', () => {
         expect(await editMenuItemsConfigPo.isStatusDropDownValuesMatch(statusDropDown3)).toBeTruthy('wrong column headers');
         await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(true);
         await editMenuItemsConfigPo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.'), 'Saved successfully. Popup is missing';
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         await utilCommon.waitUntilPopUpDisappear();
 
         let column1: string[] = ["ID", "Created Date", "Modified Date", "Menu Name", "Menu Options", "Status"];
