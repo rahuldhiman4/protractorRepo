@@ -1342,7 +1342,7 @@ describe('Document Library Consume UI', () => {
         await editDocumentLibraryPo.setSite('Canberra');
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         // //Create Case
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qtao');

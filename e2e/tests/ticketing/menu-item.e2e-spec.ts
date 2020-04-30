@@ -121,7 +121,7 @@ describe('Menu Item', () => {
         await localizeValuePopPo.clickOnSaveButton();
         await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.clickOnSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         await utilCommon.waitUntilPopUpDisappear();
         await createMenuItems.clickOnMenuOptionLink();
         await createMenuItems.selectMenuNameDropDown('Source');
