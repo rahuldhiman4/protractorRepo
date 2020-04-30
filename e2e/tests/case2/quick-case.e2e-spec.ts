@@ -898,6 +898,7 @@ describe("Quick Case", () => {
     });
 
     //radhiman
+    //Bug(DRDMV-21151)
     it('[DRDMV-18983]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18983';
