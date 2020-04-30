@@ -291,7 +291,7 @@ describe("Create Case", () => {
         expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
         await createCasePage.selectRequester('adam');
         expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy();
-        //expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.'); Save button wont enable unless summary is set
+        //expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).tobeTruthy; Save button wont enable unless summary is set
         //await utilCommon.closePopUpMessage();
         //await utilCommon.waitUntilPopUpDisappear();
         await createCasePage.setSummary(caseSummary);
@@ -882,7 +882,7 @@ describe("Create Case", () => {
             expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
             await createCasePage.selectRequester('adam');
             // await createCasePage.clickSaveCaseButtonWithoutMessageDisappear();
-            // expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
+            // expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.').tobeTruthy();
             // await utilCommon.closePopUpMessage();
             await expect(createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is Enabled");
             //await utilCommon.waitUntilPopUpDisappear();
@@ -897,7 +897,7 @@ describe("Create Case", () => {
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clearCaseSummary();
             await editCasePage.clickSaveCase();
-            expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
+            expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
         } catch (error) {
             throw error;
         } finally {

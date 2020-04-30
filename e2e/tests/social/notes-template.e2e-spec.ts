@@ -63,7 +63,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
+        await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
     });//, 150 * 1000);
 
     //ptidke
@@ -95,7 +95,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
+        await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
     });//, 170 * 1000);
 
     //ptidke
@@ -127,7 +127,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
+        await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
     });//, 140 * 1000);
 
     //ptidke
@@ -159,7 +159,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
+        await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
     });//, 140 * 1000);
 
     //ptidke
@@ -194,7 +194,7 @@ describe('Notes template', () => {
             await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
             await consoleNotesTemplate.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
+            await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
         }
         catch (e) {
             throw e;

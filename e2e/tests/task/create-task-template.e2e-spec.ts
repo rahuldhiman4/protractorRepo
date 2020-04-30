@@ -147,7 +147,7 @@ describe('Create Task Template', () => {
             await viewTaskTemplate.clickOnEditLink();
             await editTaskTemplate.selectTaskCompany('Petramco');
             await editTaskTemplate.clickOnSaveButtonWithoutWait();
-            await expect(utilCommon.getPopUpMessage()).toBe('ERROR (222121): Company marked for Global usage cannot be modified.')
+            await expect(utilCommon.isPopUpMessagePresent('ERROR (222121): Company marked for Global usage cannot be modified.')).toBeTruthy();
         } catch (error) {
             throw error;
         } finally {

@@ -235,7 +235,7 @@ describe('Case Template', () => {
         await editCaseTemplate.clickEditCaseTemplate();
         await editCaseTemplate.clearCaseSummary();
         await editCaseTemplate.clickSaveCaseTemplate();
-        await expect(await editCaseTemplate.getErrorMessage()).toContain('Resolve the field validation errors and then try again.');
+        await expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
         await editCaseTemplate.changeCaseSummary('Updated Summary');
         await editCaseTemplate.clickSaveCaseTemplate();
         await editCaseTemplate.clickOnEditCaseTemplateMetadata();

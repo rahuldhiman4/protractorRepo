@@ -129,7 +129,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(newManualTaskTemplate);
             await expect(await copyTemplatePage.isOwnerGroupEmpty()).toBeTruthy();
             await copyTemplatePage.clickSaveCopytemplate();
-            await expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
+            await expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
         } catch (e) {
             throw e;
         } finally {

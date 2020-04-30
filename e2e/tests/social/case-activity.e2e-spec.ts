@@ -1051,7 +1051,7 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.loginWithCredentials('qannis@petramco.com', passwd);
             await browser.get(getUrl);
-            await expect(await utilCommon.getPopUpMessage()).toContain('ERROR (302): Record Instance does not exist in the database. com.bmc.dsm.case-lib:Case:')
+            await expect(await utilCommon.isPopUpMessagePresent('ERROR (302): Record Instance does not exist in the database. com.bmc.dsm.case-lib:Case:')).toBeTruthy();
         } catch (e) {
             throw e;
         } finally {

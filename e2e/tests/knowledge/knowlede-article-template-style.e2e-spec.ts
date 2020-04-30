@@ -58,10 +58,10 @@ describe('KnowledgeArticlestyle', () => {
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.setStyleName(randomStr);
             await articleTemplateStylePo.clickSaveButton()
-            expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully')
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
             await articleTemplateStylePo.clickDeleteButton();
             await articleTemplateStylePo.clickSaveButton()
-            expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully')
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
             expect(await articleTemplateStylePo.isAddedStyleDeleted(randomStr)).toBeFalsy();
             await browser.navigate().back();
             await navigationPage.gotoSettingsPage();
@@ -71,10 +71,10 @@ describe('KnowledgeArticlestyle', () => {
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.setStyleName(randomStr);
             await articleTemplateStylePo.clickSaveButton()
-            expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully')
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
             await articleTemplateStylePo.clickDeleteButton();
             await articleTemplateStylePo.clickSaveButton()
-            expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully')
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
             expect(await articleTemplateStylePo.isAddedStyleDeleted(randomStr)).toBeFalsy('');
         }
         catch (e) {
@@ -101,10 +101,10 @@ describe('KnowledgeArticlestyle', () => {
         expect(await utilCommon.getWarningMessageTextKnowledgeStyle()).toContain('You have unsaved data. Do you want to continue?');
         utilCommon.clickOnWarningCancel();
         await articleTemplateStylePo.clickSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully')
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
         await articleTemplateStylePo.clickDeleteButton();
         await articleTemplateStylePo.clickSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully')
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
     });
 
     it('[DRDMV-5014,DRDMV-5022]: [Template Styles] Availability of default styles on custom templates', async () => {
@@ -130,10 +130,10 @@ describe('KnowledgeArticlestyle', () => {
         await articleTemplateStylePo.clickAddNewStyle();
         await articleTemplateStylePo.setStyleName("DRDMV-5014" + randomStr);
         await articleTemplateStylePo.clickSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully')
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
         await articleTemplateStylePo.clickAddNewStyle();
         await articleTemplateStylePo.setStyleName("DRDMV-5014" + randomStr);
         await articleTemplateStylePo.clickSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toContain('is already taken by another style. Please select a different name.');
+        expect(await utilCommon.isPopUpMessagePresent('is already taken by another style. Please select a different name.')).toBeTruthy();
     }, 500 * 1000);
 })
