@@ -16,7 +16,6 @@ class QuickCasePage {
         pinValidateInput: '[rx-view-component-id="bfe9a8e0-26e7-43a5-9561-1c92539bdda3"] input',
         pinOk: '[rx-view-component-id="ea1b7291-a0de-47d6-9239-cccf6b850a86"] button',
         quickCaseGuid: 'ac36dcad-30f0-4ab0-86a4-11fee7195051',
-        popUpMsgLocator: '.rx-growl-item__message',
         smartSearchText: '.smart-recorder-highlightPerfectMatch',
         createCaseButton: '.d-inline-block [rx-view-component-id="8b88c054-4445-43e4-90f0-72f829571fd5"] button',
         requesters: '.bwf-select-list .bwf-selectable-list-item',
@@ -102,7 +101,7 @@ class QuickCasePage {
         await browser.sleep(1000); // required because UI renders after get call used before calling this method
         let elementCount = await $$(this.selectors.confirmedItemSelection).count();
         for (let i = 0; i < elementCount; i++) {
-            let actualRelationType = await $$(this.selectors.confirmedItemSelection).get(i).$('button').getText();
+            let actualRelationType = await $$(this.selectors.confirmedItemSelection).get(i).$('button.dropdown-toggle').getText();
             if (actualRelationType == relationType) {
                 employee = await $$(this.selectors.confirmedItemSelection).get(i).$('.sr-header-display-name').getText();
                 break;
@@ -125,7 +124,7 @@ class QuickCasePage {
 
     async isCreateButtonDisabled(): Promise<boolean> {
         //await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseButton)));
-        return await $(this.selectors.createCaseButton).getAttribute("disabled") == "disabled";
+        return await $(this.selectors.createCaseButton).getAttribute("disabled") == "true";
     }
 
     async createCaseButton(): Promise<void> {
@@ -137,11 +136,6 @@ class QuickCasePage {
         // await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton)));
         await $(this.selectors.gotoCaseButton).click();
         // await utilCommon.waitUntilSpinnerToHide();
-    }
-
-    async getPopUpMessage() {
-        // await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
-        return await $(this.selectors.popUpMsgLocator).getText();
     }
 
     async pinFirstRecommendedCase(): Promise<void> {
