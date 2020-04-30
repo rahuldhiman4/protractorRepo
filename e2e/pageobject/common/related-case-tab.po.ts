@@ -1,5 +1,5 @@
 import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
-import util from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 
 class RelatedCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -143,7 +143,7 @@ class RelatedCasePage {
                 break;
             }
         }
-        await util.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     }
 
     async isCasePresent(caseId: string): Promise<boolean> {

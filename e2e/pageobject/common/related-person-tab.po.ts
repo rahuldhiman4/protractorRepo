@@ -200,12 +200,13 @@ class RelatedPersonPage {
     async isRemoveRelatedPersonIconEnabled(personName: string): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
         let allCasesNum: number = await $$(this.selectors.allRelatedPersons).count();
-        let status: boolean;
+        let status: boolean = undefined;
         for (let i = 0; i < allCasesNum; i++) {
             let person = await $$(this.selectors.allRelatedPersons).get(i);
             let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
             if (nm == personName) {
-                status = await person.$(this.selectors.removePersonCrossIcon).isEnabled();
+                await person.$(this.selectors.removePersonCrossIcon).click();
+                status = await $('.modal-footer adapt-button').isPresent();
                 break;
             }
         }

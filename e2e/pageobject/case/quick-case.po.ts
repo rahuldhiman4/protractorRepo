@@ -19,7 +19,7 @@ class QuickCasePage {
         smartSearchText: '.smart-recorder-highlightPerfectMatch',
         createCaseButton: '.d-inline-block [rx-view-component-id="8b88c054-4445-43e4-90f0-72f829571fd5"] button',
         requesters: '.bwf-select-list .bwf-selectable-list-item',
-        pinFirstRecommendedCase: '[class="bwf-search-result ng-tns-c36-9 ng-star-inserted"] .adapt-icon',
+        pinFirstRecommendedCase: 'svg.adapt-icon',
         requester: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .ac-person-full-name',
         arrowFirstRecommendedCase: '[class="bwf-search-result ng-tns-c36-9 ng-star-inserted"] .list__item__preview-icon',
         arrowFirstRecommendedKnowledge: '[class="bwf-search-result ng-tns-c36-8 ng-star-inserted"] .list__item__preview-icon',
@@ -140,7 +140,7 @@ class QuickCasePage {
 
     async pinFirstRecommendedCase(): Promise<void> {
         // await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
-        await element(by.xpath(this.selectors.pinFirstRecommendedCase)).click();
+        await $$(this.selectors.pinFirstRecommendedCase).first().click();
     }
 
     async clickArrowFirstRecommendedCase(): Promise<void> {

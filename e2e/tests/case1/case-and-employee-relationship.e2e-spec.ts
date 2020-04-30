@@ -12,7 +12,6 @@ import personProfilePage from '../../pageobject/common/person-profile.po';
 import relatedCasePage from '../../pageobject/common/related-case-tab.po';
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
 
@@ -62,7 +61,7 @@ describe('Case And Employee Relationship', () => {
         await addRelatedPopupPage.addPerson('Brain Adams', 'Witness');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(5);
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Brain Adams', 'Witness')).toBeTruthy();
-    });//, 240 * 1000);
+    }, 270*1000);//, 240 * 1000);
 
     //asahitya
     it('[DRDMV-16896]: Multiple people can be added by same Relationship', async () => {
@@ -280,15 +279,16 @@ describe('Case And Employee Relationship', () => {
 
     //asahitya
     it('[DRDMV-17029]: Check Related Cases Tab on Case Bottom section', async () => {
+        await navigationPage.gotoCaseConsole();
         //Create case 1 to pin with quick case
         let randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData2 =
         {
-            "Requester": "qtao",
+            "Requester": "qkatawazi",
             "Summary": randomStr
         }
         await apiHelper.apiLogin('qtao');
-        let caseId2 = (await apiHelper.createCase(caseData2)).displayId;
+        let caseId2 = await (await apiHelper.createCase(caseData2)).displayId;
 
         //Create case 2
         await apiHelper.apiLogin("qyuan");
@@ -306,7 +306,7 @@ describe('Case And Employee Relationship', () => {
         }
         await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
 
-        await navigationPage.gotoCaseConsole();
+        await utilityCommon.refresh();
         await utilityGrid.searchAndOpenHyperlink(caseId);
         // This validation is not required as tab click is happening based on Tab text
         //expect(await caseEditPage.getRelatedCasesTabText()).toBe("Related Cases");
@@ -316,9 +316,7 @@ describe('Case And Employee Relationship', () => {
         await utilityCommon.waitUntilSpinnerToHide();
         await quickCase.pinFirstRecommendedCase();
         await quickCase.createCaseButton();
-        await utilityCommon.closePopUpMessage();
         await quickCase.gotoCaseButton();
-
         await viewCasePo.clickOnTab('Related Cases');
         await relatedCasePage.isCasePresent(caseId2);
     });
