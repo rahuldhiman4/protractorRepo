@@ -1,5 +1,5 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../../utils/utility.common';
 
 class PreviewTaskTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -11,6 +11,7 @@ class PreviewTaskTemplateBlade {
         taskCompanyValue: '[rx-view-component-id="44e56c5d-b8d5-4f23-b4b6-da4d8baa43e9"] .d-textfield__rx-value',
         taskPriority: 'f4a0b2ba-433c-471f-89b1-e94d0c0f3b43',
         taskPriorityValue: '[rx-view-component-id="f4a0b2ba-433c-471f-89b1-e94d0c0f3b43"] .d-textfield__rx-value',
+        taskSummary: 'a790b9d4-46d5-408c-8f86-4e04a683bc3d',
         taskCategoryTier1: '516cbfcd-dda1-4d15-8508-4e90f7699846',
         taskCategoryTier2: 'ffb8c92f-ff09-41b2-8bd3-fff86c983416',
         taskCategoryTier3: '56354504-a395-4c39-b2ee-c1d937c57349',
@@ -59,49 +60,49 @@ class PreviewTaskTemplateBlade {
         return await $(this.selectors.taskPriorityValue).getText();
     }
 
-    async isTaskSummaryTitleDisplayed(): Promise<boolean> {
+    async isTaskSummaryTitleDisplayed(taskSummary: string): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskummary)));
-        return await $(this.selectors.taskummary).isDisplayed();
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCompany, taskSummary);
     }
 
     async isTaskCompanyTitleDisplayed(taskCompany: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCompany, taskCompany);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCompany, taskCompany);
     }
 
     async isTaskPriorityTitleDisplayed(taskPriority: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskPriority, taskPriority);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskPriority, taskPriority);
     }
 
     async isTaskCategoryTier1TitleDisplayed(taskCategoryTier1: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier1, taskCategoryTier1);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier1, taskCategoryTier1);
     }
 
     async isTaskCategoryTier2TitleDisplayed(taskCategoryTier2: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier2, taskCategoryTier2);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier2, taskCategoryTier2);
     }
 
     async isTaskCategoryTier3TitleDisplayed(taskCategoryTier3: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier3, taskCategoryTier3);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier3, taskCategoryTier3);
     }
 
     async isTaskCategoryTier4TitleDisplayed(taskCategoryTier4: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier4, taskCategoryTier4);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier4, taskCategoryTier4);
     }
 
     async isTaskTypeTitleDisplayed(taskType: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskType, taskType);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskType, taskType);
     }
 
     async isLabelTitleDisplayed(label: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.label, label);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.label, label);
     }
 
     async isTaskDescriptionTitleDisplayed(taskDescription: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskDescription, taskDescription);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskDescription, taskDescription);
     }
 
     async isProcessNameTitleDisplayed(processName: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.processName, processName);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.processName, processName);
     }
 }
 

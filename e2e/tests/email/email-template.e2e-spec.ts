@@ -80,7 +80,7 @@ describe('EmailTemplate', () => {
         await createEmailTemplatePo.setSubject(subject);
         await createEmailTemplatePo.setBody(body);
         await createEmailTemplatePo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:' + templateName, 'Duplicate Template Error messsage missing.');
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (222108): Template Already exist with given name:' + templateName)).toBeTruthy('Duplicate Template Error messsage missing.');
         await utilCommon.closePopUpMessage();
         await createEmailTemplatePo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
@@ -192,7 +192,7 @@ describe('EmailTemplate', () => {
         await editEmailTemplatePo.setSubjectOfNewLocalizedEmailMessage(subject);
         await editEmailTemplatePo.setBody(body);
         await editEmailTemplatePo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Message already exists with given locale.', 'Localize already exist error message missing');
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Message already exists with given locale.')).toBeTruthy('Localize already exist error message missing');
         await utilCommon.closePopUpMessage();
         await editEmailTemplatePo.clickOnCancelButton();
         await utilCommon.waitUntilSpinnerToHide();

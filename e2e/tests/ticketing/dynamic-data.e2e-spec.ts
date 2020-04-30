@@ -377,7 +377,7 @@ describe('Dynamic data', () => {
         expect(await createNotestemplatePo.isDynamicFieldDisplayedInBody('Confidential data')).toBeTruthy();
         expect(await createNotestemplatePo.isDynamicFieldDisplayedInBody('Additional Site Details')).toBeTruthy();
         await createNotestemplatePo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully.');
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
     }, 250 * 1000);
 
     it('[DRDMV-13567]: [Dynamic Data] [Attachment] - Case UI when it has Dynamic Fields including Attachment', async () => {

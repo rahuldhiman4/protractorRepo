@@ -23,18 +23,11 @@ export class Util {
         dropDownChoice: '.ui-select__rx-choice',
         warningMsgText: '.modal-content .modal-title-message, .modal-content .d-modal__title',
         warningMsgTextKnowledgeStyle: '.d-modal__content .d-modal__content-item',
-        configurationOptionsErrorMessage: '.panel-default .panel-heading h4',
         backArrow: '[class="d-button d-icon-left-undo d-button_link d-button_small"]',
     }
 
     async clickOnBackArrow(): Promise<void> {
         await $(this.selectors.backArrow).click();
-    }
-
-    async isConfigurationOptionMessageDisplayed(errorMessage): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.configurationOptionsErrorMessage)));
-        return await element(by.cssContainingText(this.selectors.configurationOptionsErrorMessage, errorMessage)).isDisplayed();
-
     }
 
     async isWarningDialogBoxDisplayed(): Promise<boolean> {
@@ -121,11 +114,6 @@ export class Util {
         return arr.length === data.length && arr.every(
             (value, index) => (value === data[index])
         );
-    }
-
-    async getPopUpMessage(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)));
-        return await $(this.selectors.popUpMsgLocator).getText();
     }
 
     async scrollUpOrDownTillElement(element: string): Promise<void> {

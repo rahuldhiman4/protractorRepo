@@ -8,6 +8,7 @@ import editCasePage from '../../pageobject/case/edit-case.po';
 import { default as selectCaseTemplateBlade } from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
+import changAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
 import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -122,7 +123,6 @@ describe("Create Case", () => {
             await editCasePage.updateResolutionCode(randVal);
             await editCasePage.updateResolutionDescription(randVal);
             await editCasePage.clickSaveCase();
-            //await utilCommon.waitUntilSpinnerToHide();
             expect(await viewCasePage.getResolutionCodeValue()).toBe(randVal);
             expect(await viewCasePage.getResolutionDescription()).toBe(randVal);
             await updateStatusBladePo.changeCaseStatus('Resolved');
@@ -154,14 +154,11 @@ describe("Create Case", () => {
         await createMenuItems.clickOnMenuOptionLink();
         await createMenuItems.selectMenuNameDropDown('Resolution Code');
         await createMenuItems.clickOnLocalizeLink();
-        //await utilCommon.waitUntilSpinnerToHide();
         await localizeValuePopPo.setLocalizeValue(randVal);
         await localizeValuePopPo.clickOnSaveButton();
-        //await utilCommon.waitUntilSpinnerToHide();
         await createMenuItems.selectStatusDropDown('Active');
         await createMenuItems.selectAvailableOnUiToggleButton(true);
         await createMenuItems.clickOnSaveButton();
-        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoCaseConsole();
         let caseData1 =
@@ -178,15 +175,12 @@ describe("Create Case", () => {
         await viewCasePage.clickEditCaseButton();
         await editCasePage.updateResolutionCode(randVal);
         await editCasePage.clickSaveCase();
-        //await utilCommon.waitUntilSpinnerToHide();
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
-        //await utilCommon.waitUntilSpinnerToHide();
         await menuItemConsole.searchAndEditMenuOption(randVal);
         await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(false);
         await editMenuItemsConfigPo.clickOnSaveButton();
-        //await utilCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoCaseConsole();
         let caseData2 =
@@ -203,8 +197,6 @@ describe("Create Case", () => {
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
         await editCasePage.clickOnCancelCaseButton();
-        await utilCommon.clickOnWarningOk();
-        //await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
         await caseConsolePage.searchAndOpenCase(caseId1);
         await viewCasePage.clickEditCaseButton();
@@ -242,7 +234,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setCaseSummary(caseTemplateSummary2);
             await createCaseTemplate.setCaseStatusValue("Assigned");
             await createCaseTemplate.clickOnChangeAssignmentButton();
-            await changeAssignmentPage.setAssignee('Petramco', 'Compensation and Benefits', 'Qianru Tao');
+            await changAssignmentOldPage.setAssignee('Petramco', 'Compensation and Benefits', 'Qianru Tao')
             await createCaseTemplate.setAllowCaseReopenValue('No');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
@@ -287,7 +279,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 260 * 1000);
+    }, 350 * 1000);
 
     //ankagraw
     it('[DRDMV-1191,DRDMV-1198]: [Case Creation] Case creation with/without mandatory fields populated ', async () => {
@@ -299,7 +291,7 @@ describe("Create Case", () => {
         expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
         await createCasePage.selectRequester('adam');
         expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy();
-        //expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.'); Save button wont enable unless summary is set
+        //expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).tobeTruthy; Save button wont enable unless summary is set
         //await utilCommon.closePopUpMessage();
         //await utilCommon.waitUntilPopUpDisappear();
         await createCasePage.setSummary(caseSummary);
@@ -516,7 +508,6 @@ describe("Create Case", () => {
         await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
         await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
         await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
-        await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
         await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
         //        browser.sleep(3000);
         try {
@@ -528,7 +519,6 @@ describe("Create Case", () => {
             await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
             await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
             await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
-            await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
             await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
             // await navigationPage.gotoSettingsPage();
 
@@ -540,7 +530,6 @@ describe("Create Case", () => {
             await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
             await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
             await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
-            await expect(navigationPage.isHelpIconDisplayed()).toBeTruthy('Help Icon is not Displayed');
             await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
             //await navigationPage.gotoSettingsPage();
         } catch (e) {
@@ -578,7 +567,7 @@ describe("Create Case", () => {
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.searchAndOpenCaseTemplate(caseTemplateData.templateName);
-            expect(await caseTemplatePreview.isCaseSummaryHeaderDisplayed()).toBeTruthy();
+            expect(await caseTemplatePreview.isCaseSummaryHeaderDisplayed('Case Summary')).toBeTruthy();
             expect(await caseTemplatePreview.isCaseCompanyTitleDisplayed('Case Company')).toBeTruthy();
             expect(await caseTemplatePreview.isCaseStatusTitleDisplayed('Case Status')).toBeTruthy();
             expect(await caseTemplatePreview.isCasePriorityTitleDisplayed('Case Priority')).toBeTruthy();
@@ -606,7 +595,7 @@ describe("Create Case", () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddTaskFromTemplateButton();
             await manageTask.searchTaskAndClickOnLink(templateData.templateName);
-            expect(await taskTemplatePreview.isTaskSummaryTitleDisplayed()).toBeTruthy();
+            expect(await taskTemplatePreview.isTaskSummaryTitleDisplayed('Task Summary')).toBeTruthy();
             expect(await taskTemplatePreview.isTaskCompanyTitleDisplayed('Task Company')).toBeTruthy();
             expect(await taskTemplatePreview.isTaskPriorityTitleDisplayed('Task Priority')).toBeTruthy();
             expect(await taskTemplatePreview.isTaskCategoryTier1TitleDisplayed('Task Category Tier 1')).toBeTruthy();
@@ -893,7 +882,7 @@ describe("Create Case", () => {
             expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
             await createCasePage.selectRequester('adam');
             // await createCasePage.clickSaveCaseButtonWithoutMessageDisappear();
-            // expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
+            // expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.').tobeTruthy();
             // await utilCommon.closePopUpMessage();
             await expect(createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is Enabled");
             //await utilCommon.waitUntilPopUpDisappear();
@@ -908,7 +897,7 @@ describe("Create Case", () => {
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clearCaseSummary();
             await editCasePage.clickSaveCase();
-            expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
+            expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
         } catch (error) {
             throw error;
         } finally {
@@ -1018,9 +1007,8 @@ describe("Create Case", () => {
         await previewCasePo.clickGoToCaseButton();
         await activityTabPo.addActivityNote(activityNoteText);
         let fileName1: string[] = ['bwfWord1.rtf', 'bwfWord2.rtf', 'demo.txt', 'bwfJson1.json', 'bwfJson2.json'];
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await adhoctaskTemplate.addAttachmentInDescription(`../../data/ui/attachment/${fileName1[i]}`);
-        }
+        const filesToUpload1 = fileName1.map((file)=>{return `../../data/ui/attachment/${file}`});
+        await adhoctaskTemplate.addAttachmentInDescription(filesToUpload1);
         await activityTabPo.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
         await utilCommon.waitUntilSpinnerToHide();
@@ -1031,9 +1019,8 @@ describe("Create Case", () => {
         await adhoctaskTemplate.setDescription("Description");
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeTruthy('Attachment button is disabled');
         let fileName2: string[] = ['bwfXsl.xsl', 'bwfXml.xml', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
-        for (let i: number = 0; i < fileName2.length; i++) {
-            await adhoctaskTemplate.addAttachmentInDescription(`../../data/ui/attachment/${fileName2[i]}`);
-        }
+        const filesToUpload2 = fileName2.map((file)=>{return `../../data/ui/attachment/${file}`});
+        await adhoctaskTemplate.addAttachmentInDescription(filesToUpload2);
         await adhoctaskTemplate.clickOnSaveAdhoctask();
         await manageTask.clickOnCloseButton();
         await utilCommon.waitUntilPopUpDisappear();

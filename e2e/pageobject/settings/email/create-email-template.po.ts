@@ -13,6 +13,18 @@ class CreateEmailTemplate {
         body: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_editable',
         insertField:'[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_button__expressioneditor_icon',
         fieldValueInBody:'[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_wysiwyg_div span',
+        tableIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_toolbar .cke_button__table_icon',
+        imageIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_toolbar .cke_button__image_icon',
+        linkIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_toolbar .cke_button__link_icon',
+        boldIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_button__bold_icon',
+        italicIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_button__italic_icon',
+        underLineIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_button__underline_icon',
+        leftAlignIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_button__justifyleft_icon',
+        centerAlignIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_button__justifycenter_icon',
+        rightAlignIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_button__justifyright_icon',
+        colorIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_button__textcolor',
+        fontType: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_combo__font',
+        fontSize: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_combo__fontsize',
         saveButton:'[rx-view-component-id="093a0eeb-c1e0-4ed8-945f-da46d9bbde88"] button',
         cancelButton: '[rx-view-component-id="9aeef4d7-1a10-4ffd-aa3a-22665c32883c"] button',
     }
@@ -81,6 +93,74 @@ class CreateEmailTemplate {
         let locator=`table[summary='${summary}'] tr`;
         let rowLocator = await $$(locator).get(row-1);
         await rowLocator.$$('td').get(column-1).sendKeys(value);
+    }
+
+    async clickOnTableIcon(): Promise<void> {
+        await $(this.selectors.tableIcon).click();
+        await browser.sleep(2000);
+    }
+
+    async clickOnImageIcon(): Promise<void> {
+        await $(this.selectors.imageIcon).click();
+        await browser.sleep(2000);
+    }
+
+    async clickOnLinkIcon(): Promise<void> {
+        await $(this.selectors.linkIcon).click();
+        await browser.sleep(2000);
+    }
+
+    async clickOnBoldIcon(): Promise<void> {
+        await $(this.selectors.boldIcon).click();
+    }
+
+    async clickOnItalicIcon(): Promise<void> {
+        await $(this.selectors.italicIcon).click();
+    }
+
+    async clickOnUnderLineIcon(): Promise<void> {
+        await $(this.selectors.underLineIcon).click();
+    }
+
+    async clickOnLeftAlignIcon(): Promise<void> {
+        await $(this.selectors.leftAlignIcon).click();
+    }
+
+    async clickOnRightAlignIcon(): Promise<void> {
+        await $(this.selectors.rightAlignIcon).click();
+    }
+
+    async clickOnCenterAlignIcon(): Promise<void> {
+        await $(this.selectors.centerAlignIcon).click();
+    }
+
+    async selectColor(colorValue: string): Promise<void> {
+        await $(this.selectors.colorIcon).click();
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame(await $('iframe.cke_panel_frame').getWebElement());
+        let locator: string = `a[title="${colorValue}"]`;
+        await browser.wait(this.EC.elementToBeClickable($(locator)), 2000);
+        await $(locator).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+    }
+
+    async clickOnFontTypeIcon(): Promise<void> {
+        await $(this.selectors.fontType).click();
+    }
+
+    async clickOnFontSizeIcon(): Promise<void> {
+        await $(this.selectors.fontSize).click();
+    }
+
+    async selectFontTypeOrSize(value: string): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('.cke_panel.cke_combopanel iframe.cke_panel_frame').getWebElement());
+        let locator = `a[title="${value}"]`;
+        await browser.wait(this.EC.elementToBeClickable($(locator)));
+        await $(locator).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
     }
 
 }

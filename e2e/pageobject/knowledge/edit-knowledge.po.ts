@@ -38,7 +38,8 @@ class EditKnowledgePage {
         articleMajorEditSaveButton: '[rx-view-component-id="8173a0e5-75f9-48bf-aeec-b5e9cef72de9"] button',
         knowledgeMetadataSaveButton: '[rx-view-component-id="15dcacfb-8cb2-49b7-a5db-fe0e16b311dc"] button',
         selectIsExternalGUID: '660f2cd8-9439-4954-9638-0064fbcb0e28',
-        keywordValue: '[rx-view-component-id="51e52d59-3acd-49b3-8291-e10558985fa1"] input'
+        keywordValue: '[rx-view-component-id="51e52d59-3acd-49b3-8291-e10558985fa1"] input',
+        attachmentField: '[rx-view-component-id="1f42f6d7-99cc-4c07-9249-94172d98d526"] .d-icon-paperclip',
     }
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
@@ -294,7 +295,11 @@ class EditKnowledgePage {
 
     }
 
-
+    async isAttachDocumentBladeDisplayed(): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentField)));
+        let attribute = await $(this.selectors.attachmentField).getAttribute('ng-click');
+        return attribute == 'openDocumentLibrary()' ? true : false
+    }
 }
 
 export default new EditKnowledgePage();

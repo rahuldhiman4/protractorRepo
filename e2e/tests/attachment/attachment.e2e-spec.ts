@@ -139,7 +139,7 @@ describe("Attachment", () => {
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
         await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
-        await composeMail.addAttachment();
+        await composeMail.addAttachment(['../../data/ui/attachment/demo.txt']);
         await composeMail.clickOnSendButton();
         await viewCasePo.clickAttachmentsLink();
         expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
@@ -221,7 +221,7 @@ describe("Attachment", () => {
         await viewCasePo.clickAddTaskButton();
         await manageTask.clickAddAdhocTaskButton();
         await adhoctaskTemplate.setSummary(adhocTaskSummary);
-        await adhoctaskTemplate.addAttachment(xlsxFilePath);
+        await adhoctaskTemplate.addAttachment([xlsxFilePath]);
         await adhoctaskTemplate.clickOnSaveAdhoctask();
         await manageTask.clickOnCloseButton();
         await viewCasePo.clickAttachmentsLink();
@@ -322,7 +322,7 @@ describe("Attachment", () => {
             await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateDraft ${taskRandString[i]}`);
 
             await viewTaskPo.clickOnEditTask();
-            await editTaskPo.addAttachment(`../../data/ui/attachment/${fileName[i]}`);
+            await editTaskPo.addAttachment([`../../data/ui/attachment/${fileName[i]}`]);
             await editTaskPo.clickOnAssignToMe();
             await editTaskPo.clickOnSaveButton();
             let taskIdText: string = await viewTaskPo.getTaskID();

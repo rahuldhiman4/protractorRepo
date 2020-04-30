@@ -8,37 +8,35 @@ class ComposeMail {
         crossIcon: '.close-inverse',
         commonId: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"]',
         selectEmailTemplateLink: '.select-template-button',
-        messageBodyFontPannelBar: '.cke_inner .cke_reset_all',
         attachLink: '.attachment-button button',
         sendButton: '[rx-view-component-id="58d8a41f-6c8f-4f23-b986-6a94d35b0fbe"] button',
         discardButton: '[rx-view-component-id="038eaa3f-f2ff-4c6d-a5d1-351449671b76"] button',
         composeEmailUI: '[rx-view-definition-guid="a69ea993-2e45-4ae7-9435-25ba53cbad88"]',
         popupEmail: '.dropdown-item .popup-email',
         popupInfo: '.dropdown-item .popup-info',
-        attachButton: '.attachment-button button',
         emailBody: '.cke_editable_themed',
         firstClickInEmail: '.cke_editable_themed br',
-        email: 'iframe[class="cke_wysiwyg_frame cke_reset"]',
         attachmentName: '.rx-attachment-view-name',
         getsubject: '.subject-name span',
-        selectTemplateButton: '.select-template-button',
         toOrCcEmailgetText: 'div.adapt-mt-field-wrapper .flexi-type-ahead-person-tag',
         subjectInput: '.subject-name input',
         templateNameHeader: '.select-email-container .template-seperator',
         recipientRemoveIcon: '.adapt-mt-wrapper .adapt-mt-item-close',
-        tableIcon: '.cke_toolbar .cke_button__table_icon',
-        imageIcon: '.cke_toolbar .cke_button__image_icon',
-        linkIcon: '.cke_toolbar .cke_button__link_icon',
-        boldIcon: '.cke_button__bold_icon',
-        italicIcon: '.cke_button__italic_icon',
-        underLineIcon: '.cke_button__underline_icon',
-        leftAlignIcon: '.cke_button__justifyleft_icon',
-        centerAlignIcon: '.cke_button__justifycenter_icon',
-        rightAlignIcon: '.cke_button__justifyright_icon',
-        colorIcon: '.cke_button__textcolor',
-        fontType: '.cke_combo__font',
-        fontSize: '.cke_combo__fontsize',
-        numberIcon: '.cke_button__numberedlist_icon',
+        messageBodyFontPannelBar: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_inner .cke_reset_all',
+        tableIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_toolbar .cke_button__table_icon',
+        imageIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_toolbar .cke_button__image_icon',
+        linkIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_toolbar .cke_button__link_icon',
+        boldIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__bold_icon',
+        italicIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__italic_icon',
+        underLineIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__underline_icon',
+        leftAlignIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__justifyleft_icon',
+        centerAlignIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__justifycenter_icon',
+        rightAlignIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__justifyright_icon',
+        colorIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__textcolor',
+        fontType: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_combo__font',
+        fontSize: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_combo__fontsize',
+        attachmentField: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .attachment-button input[type="file"]',
+        numberIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__numberedlist_icon',
         attachmentView: 'span.bwf-attachment-container__file-name',
         warningMessage:'.modal-content .modal-body, .modal-content .d-modal__content-item',
         toCcInput:'.adapt-mt-input-container input',
@@ -63,7 +61,7 @@ class ComposeMail {
     async clickInTableCell(row: number, column: number, summary: string): Promise<void> {
         let locator = `table[summary='${summary}'] tr`;
         await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(element(by.css("iframe.cke_wysiwyg_frame")).getWebElement());
+        await browser.switchTo().frame(element(by.css('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame')).getWebElement());
         let rowLocator = await $$(locator).get(row-1);
         await rowLocator.$$('td').get(column-1).click();
         await browser.switchTo().defaultContent();
@@ -73,7 +71,7 @@ class ComposeMail {
     async setDataInTable(row: number, column: number, value: string, summary: string): Promise<void> {
         await browser.waitForAngularEnabled(false);
         let locator = `table[summary='${summary}'] tr`;
-        await browser.switchTo().frame(element(by.css("iframe.cke_wysiwyg_frame")).getWebElement());
+        await browser.switchTo().frame(element(by.css('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame')).getWebElement());
         let rowLocator = await $$(locator).get(row-1);
         await rowLocator.$$('td').get(column-1).sendKeys(value);
         await browser.switchTo().defaultContent();
@@ -145,8 +143,8 @@ class ComposeMail {
     }
 
     async clickOnSelectEmailTemplateLink(): Promise<void> {
-        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectTemplateButton)), 4000);
-        await $(this.selectors.selectTemplateButton).click();
+        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectEmailTemplateLink)), 4000);
+        await $(this.selectors.selectEmailTemplateLink).click();
     }
 
     async getTextOfDiscardButtonWarningMessage(): Promise<string> {
@@ -199,14 +197,13 @@ class ComposeMail {
         return await $(this.selectors.attachmentView).getText();
     }
 
-    async addAttachment(): Promise<void> {
-        const fileToUpload = '../../data/ui/attachment/demo.txt';
-        const absolutePath = resolve(__dirname, fileToUpload);
-        await $('.attachment-button input').sendKeys(absolutePath);
+    async addAttachment(fileToUpload: string[]): Promise<void> {
+        const absPathArray=fileToUpload.map((curStr)=>{return resolve(__dirname, curStr)});
+        await $(this.selectors.attachmentField).sendKeys(absPathArray.join('\n'));
     }
 
   async clickOnSelectTempalteButton(): Promise<void> {
-        await $(this.selectors.selectTemplateButton).click();
+        await $(this.selectors.selectEmailTemplateLink).click();
     }
 
     async getToEmailPerson(): Promise<string> {
@@ -219,14 +216,14 @@ class ComposeMail {
 
     async setBulletPointAndNumer(value: string): Promise<void> {
         await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
+        await browser.switchTo().frame(await $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame').getWebElement());
         await $(this.selectors.emailBody).sendKeys(Key.CONTROL, Key.END);
         await $(this.selectors.emailBody).sendKeys(Key.ENTER);
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
         await $(this.selectors.numberIcon).click();
         await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
+        await browser.switchTo().frame(await $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame').getWebElement());
         await $(this.selectors.emailBody).sendKeys(value);
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
@@ -246,7 +243,7 @@ class ComposeMail {
     async isTextPresentInEmailBody(textvalue: string): Promise<boolean> {
         let value: string = undefined;
         await browser.waitForAngularEnabled(false);
-        let elem = $('iframe.cke_wysiwyg_frame');
+        let elem = $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame');
         await browser.switchTo().frame(elem.getWebElement());
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 2000);
         value = await $(this.selectors.emailBody).getText();
@@ -277,7 +274,7 @@ class ComposeMail {
     }
 
     async isSelectEmailTemplateButtonPresent(): Promise<boolean> {
-        return await $(this.selectors.selectTemplateButton).isDisplayed();
+        return await $(this.selectors.selectEmailTemplateLink).isDisplayed();
     }
 
     async isComposeEmailUIDisplay(): Promise<boolean> {
@@ -325,29 +322,30 @@ class ComposeMail {
     }
 
     async clickOnAttachmentLink(): Promise<void> {
-        await $(this.selectors.attachButton).click();
+        await $(this.selectors.attachLink).click();
     }
     async searchPerson(value: string, EmailIdForToOrCc: string): Promise<number> {
-        let countOfPersons = 0;
-        let element = await $(`input[aria-label="${value}"]`);
-        await element.click();
-        await element.clear();
-        await element.sendKeys(EmailIdForToOrCc);
-        await this.setToOrCCInputTetxbox(value, EmailIdForToOrCc);
-        let values: number = await $$(this.selectors.popupInfo).count();
-        for (let i = 0; i < values; i++) {
-            let person = await $$(this.selectors.popupInfo).get(i);
-            let nm: string = await person.getText();
-            if (nm.includes(value)) {
-                countOfPersons++;
-            }
+        if (value == 'To') {
+            await $$(this.selectors.toCcInput).get(0).clear();
+            await $$(this.selectors.toCcInput).get(0).sendKeys(EmailIdForToOrCc);
+            let values: number = await $$(this.selectors.popupInfo).count();
+            await $$(this.selectors.toCcInput).get(0).clear();
+            await $$(this.selectors.toCcInput).get(0).sendKeys('n' + Key.BACK_SPACE);
+            await browser.wait(this.EC.invisibilityOf($$(this.selectors.popupInfo).get(0)), 4000);
+            return values;
+        } if (value == 'Cc') {
+            await $$(this.selectors.toCcInput).get(1).clear();
+            await $$(this.selectors.toCcInput).get(1).sendKeys(EmailIdForToOrCc);
+            let values: number = await $$(this.selectors.popupInfo).count();
+            await $$(this.selectors.toCcInput).get(1).clear();
+            await $$(this.selectors.toCcInput).get(1).sendKeys('n' + Key.BACK_SPACE);
+            await browser.wait(this.EC.invisibilityOf($$(this.selectors.popupInfo).get(0)), 4000);
+            return values;
         }
-        await element.clear();
-        return countOfPersons;
     }
     async isImageDisplayedComposeEmail(value: string): Promise<boolean> {
         await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
+        await browser.switchTo().frame(await $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame').getWebElement());
         let locator = `img[src='${value}']`;
         let imageIsDisplayed: boolean = await $$(locator).last().isDisplayed();
         await browser.switchTo().defaultContent();
@@ -357,7 +355,7 @@ class ComposeMail {
 
     async isLinkDisplayedComposeEmail(value: string): Promise<boolean> {
         await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
+        await browser.switchTo().frame(await $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame').getWebElement());
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
         let locator = `[href='${value}']`;
         let islinkDisplayed: boolean = await $(locator).isDisplayed();
@@ -368,7 +366,7 @@ class ComposeMail {
 
     async getColorOrFontOfTextComposeEmail(value: string): Promise<string> {
         await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
+        await browser.switchTo().frame(await $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame').getWebElement());
         let locator = `td span[style='${value}']`;
         let isColorDisplayed = await $(locator).getText();
         await browser.switchTo().defaultContent();

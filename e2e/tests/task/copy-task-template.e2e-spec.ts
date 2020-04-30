@@ -129,7 +129,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(newManualTaskTemplate);
             await expect(await copyTemplatePage.isOwnerGroupEmpty()).toBeTruthy();
             await copyTemplatePage.clickSaveCopytemplate();
-            await expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
+            await expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
         } catch (e) {
             throw e;
         } finally {
@@ -269,7 +269,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 300 * 1000);
+    }, 360 * 1000);
 
     it('[DRDMV-13540,DRDMV-13556]: Case Business Analyst can create a copy of Task Template type= Manual, New template created is in draft status', async () => {
         try {
@@ -301,7 +301,8 @@ describe('Copy Task Template', () => {
             await expect(await viewTaskTemplate.getTemplateStatus()).toBe("Draft");
             await expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
             await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
-            await utilCommon.clickOnBackArrow();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(newManualTaskTemplate);
             await expect(await viewTaskTemplate.getTemplateName()).toBe(newManualTaskTemplate);
         } catch (e) {
@@ -310,7 +311,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 240 * 1000);
+    });
 
     it('[DRDMV-13573]: Fields copied while creating copy of Automated Task template', async () => {
         try {

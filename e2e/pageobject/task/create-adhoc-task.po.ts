@@ -33,10 +33,10 @@ class CreateAdhocTaskTemplatePage {
         attachmentField: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] input[type="file"]',
     }
 
-    async addAttachment(fileToUpload: string): Promise<void> {
-        const absolutePath = resolve(__dirname, fileToUpload);
-        console.log(absolutePath);
-        await $(this.selectors.attachmentField).sendKeys(absolutePath);
+    async addAttachment(fileToUpload: string[]): Promise<void> {
+        const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
+        console.log(absPathArray);
+        await $(this.selectors.attachmentField).sendKeys(absPathArray.join('\n'));
     }
 
     async setDescription(description: string): Promise<void> {
@@ -189,10 +189,10 @@ class CreateAdhocTaskTemplatePage {
         return $(this.selectors.attachmentLimitWarning).getText();
     }
 
-    async addAttachmentInDescription(fileToUpload: string): Promise<void> {
-        const absolutePath = resolve(__dirname, fileToUpload);
-        console.log(absolutePath);
-        await $(this.selectors.attachmentField).sendKeys(absolutePath);
+    async addAttachmentInDescription(fileToUpload: string[]): Promise<void> {
+        const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
+        console.log(absPathArray);
+        await $(this.selectors.attachmentField).sendKeys(absPathArray.join('\n'));
     }
 }
 export default new CreateAdhocTaskTemplatePage();
