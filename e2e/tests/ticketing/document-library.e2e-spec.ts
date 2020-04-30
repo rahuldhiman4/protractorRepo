@@ -585,7 +585,7 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 300 * 1000);
+    }, 350 * 1000);
 
     it('[DRDMV-12954]: Verify Create view of Document library', async () => {
         await navigationPage.gotoSettingsPage();

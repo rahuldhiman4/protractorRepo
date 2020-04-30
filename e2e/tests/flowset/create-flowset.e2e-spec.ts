@@ -208,7 +208,7 @@ describe('Create Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 300 * 1000);
+    }, 330 * 1000);
 
     //ankagraw
     it('[DRDMV-6213]: [Flowsets] Flowsets Console verification', async () => {

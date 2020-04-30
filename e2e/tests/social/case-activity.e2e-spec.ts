@@ -996,7 +996,7 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 320 * 1000);
+    }, 450 * 1000);
 
     //kgaikwad
     it('[DRDMV-16591]: Check case count is changed with different permission of user read/write/no access to the case', async () => {

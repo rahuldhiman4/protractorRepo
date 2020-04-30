@@ -61,7 +61,7 @@ describe('Case And Employee Relationship', () => {
         await addRelatedPopupPage.addPerson('Brain Adams', 'Witness');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(5);
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Brain Adams', 'Witness')).toBeTruthy();
-    }, 270*1000);//, 240 * 1000);
+    }, 270 * 1000);//, 240 * 1000);
 
     //asahitya
     it('[DRDMV-16896]: Multiple people can be added by same Relationship', async () => {

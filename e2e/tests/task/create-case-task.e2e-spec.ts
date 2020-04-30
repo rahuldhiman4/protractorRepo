@@ -101,7 +101,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 240 * 1000);
+    }, 300 * 1000);
 
     //ankagraw
     it('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Automatic Task data validation once Task is created	', async () => {
@@ -313,7 +313,7 @@ describe('Create Case Task', () => {
         await expect(editTaskTemplate.getTaskTypeValue()).toBe('Automated');
         await expect(editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
         await expect(editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
-    });
+    }, 280 * 1000);
 
     //ankagraw
     it('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: [ Task ] - Verify Associated menu for Task will show global configuration values as well	 ', async () => {
@@ -488,7 +488,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 270 * 1000);
+    }, 340 * 1000);
 
     //ankagraw
     it('[DRDMV-7149]: [Automatic Task] - Automated Task Status transition validation', async () => {
@@ -1114,6 +1114,6 @@ describe('Create Case Task', () => {
         await caseConsolePage.searchAndOpenCase(canceled);
         await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy("Add task button Visible");
 
-    }, 350 * 1000);
+    }, 450 * 1000);
 
 });

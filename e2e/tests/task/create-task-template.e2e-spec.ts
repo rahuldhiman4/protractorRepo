@@ -236,7 +236,7 @@ describe('Create Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 300 * 1000);
+    }, 390 * 1000);
 
     //ankagraw
     it('[DRDMV-12555]: Task template submitter from same company of owner group can edit the task template', async () => {

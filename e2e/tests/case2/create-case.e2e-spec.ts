@@ -144,7 +144,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });//, 220 * 1000);
+    }, 270 * 1000);
 
     //kgaikwad
     it('[DRDMV-18031]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
@@ -279,7 +279,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 350 * 1000);
+    }, 490 * 1000);
 
     //ankagraw
     it('[DRDMV-1191,DRDMV-1198]: [Case Creation] Case creation with/without mandatory fields populated ', async () => {
@@ -472,7 +472,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 490 * 1000);
+    }, 570 * 1000);
 
     //ankagraw
     it('[DRDMV-1237]: [Global navigation] Navigation to Workspaces and Create subitems in the Shell ', async () => {
@@ -773,7 +773,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 390 * 1000);
+    }, 450 * 1000);
 
     //ankagraw
     it('[DRDMV-5479,DRDMV-1192]: Verify case assignment on Create Case', async () => {
@@ -863,7 +863,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 260 * 1000);
+    }, 300 * 1000);
 
     //ankagraw
     it('[DRDMV-1614]: [Case] Fields validation for case in New status ', async () => {
