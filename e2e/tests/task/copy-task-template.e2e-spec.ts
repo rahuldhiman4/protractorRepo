@@ -89,7 +89,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 380 * 1000);
+    }, 480 * 1000);
 
     it('[DRDMV-13548]: Create a Copy of Task template where Submitter do not belong to any Support Groups', async () => {
         try {
@@ -269,7 +269,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 360 * 1000);
+    }, 410 * 1000);
 
     it('[DRDMV-13540,DRDMV-13556]: Case Business Analyst can create a copy of Task Template type= Manual, New template created is in draft status', async () => {
         try {
