@@ -1,5 +1,6 @@
 import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../utils/util.grid'
+import utilityGrid from '../../utils/utility.grid';
 
 
 class TaskGridPage {
@@ -30,11 +31,11 @@ class TaskGridPage {
     }
 
     async clickOnColumnAndIsColumnSortedAsending(colounm: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(colounm, 'ascending', this.selectors.taskGuid);
+        return await utilityGrid.isGridColumnSorted(colounm, 'asc', this.selectors.taskGuid);
     }
 
     async clickOnColumnAndIsColumnSortedDescending(colounm: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(colounm, 'descending', this.selectors.taskGuid);
+        return await utilityGrid.isGridColumnSorted(colounm, 'desc', this.selectors.taskGuid);
     }
 
     async clickonColumnHeader(value: string): Promise<void> {
