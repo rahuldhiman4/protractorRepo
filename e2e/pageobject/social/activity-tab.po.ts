@@ -58,7 +58,7 @@ class ActivityTabPage {
         attachmentField: '.attachment-button input[type="file"]',
         showMoreEmailActivity: '.activity__wrapper button[aria-label="Show more"]',
         expandAllAttachmentActivity : '.activity__wrapper .d-icon-plus',
-        allTaskActivity: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .fields .value',
+        allTaskActivity: 'div.activity__body div',
         taskActivity: '.fields .value',
         showMoreLink: 'button[aria-label="Show more"]',
         emailBodyImage: '.email-body img',

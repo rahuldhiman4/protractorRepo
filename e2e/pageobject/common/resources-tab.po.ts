@@ -47,10 +47,10 @@ export class Resources {
     }
 
 
-    async selectAdvancedSearchFilterOption(searchFilter: string, searchFilterOption: string): Promise<void> {
-        const advancedSearchFilterDropDown = await element(by.xpath(`//div[@aria-label='${searchFilter}']`));
-        const advancedSearchFilterInput = await element(by.xpath(`//input[@placeholder='${searchFilter}']`));
-        const advancedSearchFilterOption = await $('.ui-select-choices-row-inner');
+    async selectAdvancedSearchFilterOption(searchFilter: string ,searchFilterOption: string): Promise<void> {
+        const advancedSearchFilterDropDown = await element(by.xpath(`//label[contains(text(),'${searchFilter}')]/parent::div/following-sibling::button`));
+        const advancedSearchFilterInput = await element(by.css("input[placeholder='Filter options']"));
+        const advancedSearchFilterOption = await element(by.css('button[role="option"]'));
         //        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterDropDown));
         await advancedSearchFilterDropDown.click();
         //        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterInput));
@@ -59,9 +59,9 @@ export class Resources {
         await advancedSearchFilterOption.click();
     }
 
-    async isAdvancedSearchFilterOptionDropDownValueDisplayed(dropDownName: string, data: string[]): Promise<boolean> {
+    async isAdvancedSearchFilterOptionDropDownValueDisplayed(data: string[],dropDownNumber:number): Promise<boolean> {
         let arr: string[] = [];
-        await $(`div.ui-select-container[aria-label='${dropDownName}']`).click();
+        await $$('.advance-search button.dropdown-toggle').get(dropDownNumber).click();
         let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
         for (var i = 0; i < drpDwnvalue; i++) {
             var ab: string = await $$(this.selectors.dropDownOption).get(i).getText();

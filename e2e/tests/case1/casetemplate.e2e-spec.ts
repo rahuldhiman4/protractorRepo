@@ -161,7 +161,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('franz');
             await navigationPage.gotoSettingsPage();   
-            expect(await navigationPage.getSettingPanelText()).toContain("Select a configuration option from the navigation menu to show configuration content here");
+            expect(await navigationPage.getSettingPanelText()).toContain("Configuration options not created for these settings");
         } catch (e) {
             throw e;
         } finally {
@@ -704,7 +704,7 @@ describe('Case Template', () => {
             expect(await viewCaseTemplate.getCaseTemplateNameValue()).toBe(caseTemplateName);
             expect(await viewCaseTemplate.getPriorityValue()).toBe("Low");
             expect(await viewCaseTemplate.getTemplateStatusValue()).toBe("Active");
-            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
+            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe("Facilities");
             expect(await viewCaseTemplate.getCategoryTier2()).toBe("Policies");
             expect(await viewCaseTemplate.getCategoryTier3()).toBe("Card Issuance");
             expect(await viewCaseTemplate.getCategoryTier1()).toBe("Purchasing Card");
