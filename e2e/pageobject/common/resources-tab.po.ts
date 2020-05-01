@@ -1,4 +1,4 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from 'protractor';
+import { $, $$, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
 
 export class Resources {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -9,12 +9,12 @@ export class Resources {
         advancedSearchSettingsBtnClose: 'button.opened-advance-search-option',
         advancedSearchResult: 'div.sr-search-result-components .bwf-search-fields__title-text',
         headingName: '.km-group__header span',
-        recommendedKnowledgeNo: 'h3[class="km-group__header ng-binding"]:nth-last-child(3) span',
+        smartSearchResult: 'bwf-smart-recorder-results h1',
         advancedSearchButton: 'span.d-icon-search',
-        backBuuton: 'span.d-icon-angle_left',
+        backButton: 'span.d-icon-angle_left',
     }
 
-    async isSearchRecordEmpty(recordNumber:number): Promise<boolean> {
+    async isSearchRecordEmpty(recordNumber: number): Promise<boolean> {
         return await $$('.bwf-search-result p').get(recordNumber - 1).isPresent();
     }
 
@@ -74,7 +74,7 @@ export class Resources {
         );
     }
 
-    async clickOnAdvancedSearchFiltersButton(buttonText: string): Promise<void> {  
+    async clickOnAdvancedSearchFiltersButton(buttonText: string): Promise<void> {
         const advancedSearchFilterBtn = await element(by.xpath(`//*[contains(@class,'justify-content-end')]//button[contains(text(),"${buttonText}")]`));
         //        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterBtn));
         await advancedSearchFilterBtn.click();
@@ -91,9 +91,13 @@ export class Resources {
 
     async getCountOfHeading(headerName: string): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.headingName)));
-        let count: string = await $(this.selectors.recommendedKnowledgeNo).getText();
-        return await count.substring(1, count.length - 1);
+        let smartRecorderResults: ElementFinder[] = await $$(this.selectors.smartSearchResult);
+        for (let i: number = 0; i < smartRecorderResults.length; i++) {
+            if ((await smartRecorderResults[i].getText()).includes(headerName)) {
+                let count: string = await smartRecorderResults[i].$('span').getText();
+                return count.substring(1, count.length - 1);
+            }
+        }
     }
-
 }
 export default new Resources();

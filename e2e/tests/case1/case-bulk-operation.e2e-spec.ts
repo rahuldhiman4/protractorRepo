@@ -126,7 +126,7 @@ describe('Case Bulk Operation', () => {
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
         }
-    });//, 160 * 1000);
+    }, 750 * 1000);
 
     it('[DRDMV-15978]: Verify user having case read access cannot change assignee of the case using bulk assignment', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -179,14 +179,29 @@ describe('Case Bulk Operation', () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
+        let caseGuid: string[] = [];
         for (let i: number = 0; i < 3; i++) {
             let response = await apiHelper.createCase(caseData['bulkCaseAssignee_New'])
             caseId[i] = response.displayId;
+            caseGuid[i] = response.id;
         }
         await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
+
+        //Providing Read access of Case 1 to qstrong
+        let caseReadAccessDataQtao = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['readAccess'],
+            "username": 'qtao'
+        }
+
+        for (let i: number = 0; i < 3; i++) {
+            await apiHelper.updateCaseAccess(caseGuid[i], caseReadAccessDataQtao);
+        }
+
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, "Risk Management", "Quenton Annis");
         expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
@@ -230,13 +245,26 @@ describe('Case Bulk Operation', () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
+        let caseGuid: string[] = [];
         for (let i: number = 0; i < 3; i++) {
-            let response = await apiHelper.createCase(caseData['bulkCaseAssignee_New'])
+            let response = await apiHelper.createCase(caseData['bulkCaseAssignee_New']);
             caseId[i] = response.displayId;
+            caseGuid[i] = response.id;
         }
         await utilityCommon.refresh();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
+        }
+
+        let caseReadAccessDataQtao = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['writeAccess'],
+            "username": 'qtao'
+        }
+
+        for (let i: number = 0; i < 3; i++) {
+            await apiHelper.updateCaseAccess(caseGuid[i], caseReadAccessDataQtao);
         }
 
         await caseConsolePage.clickOnChangeAssignmentButton();
@@ -257,36 +285,49 @@ describe('Case Bulk Operation', () => {
             expect(await viewCasePage.getAssigneeText()).toBe("BOPerson lnPerson");
             await navigationPage.gotoCaseConsole();
         }
-    });//, 150 * 1000);
+    }, 310 * 1000);
 
     it('[DRDMV-16110]: Verify that Agent creates the Case with Org, Support Group and while Bulk Assignment select BU, Org, Support Group, Department', async () => {
-        await apiHelper.apiLogin(qtaoStr);
-        let caseData = require('../../data/ui/case/case.ui.json');
-        let caseId: string[] = [];
-        for (let i: number = 0; i < 3; i++) {
-            let response = await apiHelper.createCase(caseData['bulkCaseAssigneeWithAllAssigneeFields'])
-            caseId[i] = response.displayId;
-        }
-        await utilityCommon.refresh();
-        for (let i: number = 0; i < 3; i++) {
-            await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
-        }
+        try {
+            await apiHelper.apiLoginWithCredential('idPersonBO@petramco.com', "Password_1234");
+            let caseData = require('../../data/ui/case/case.ui.json');
+            let caseId: string[] = [];
+            for (let i: number = 0; i < 3; i++) {
+                let response = await apiHelper.createCase(caseData['bulkCaseAssigneeWithAllAssigneeFields']);
+                caseId[i] = response.displayId;
+            }
 
-        await caseConsolePage.clickOnChangeAssignmentButton();
-        await changeAssignmentBladePo.setAssignee(petramcoStr, compensationAndBenefitsStr, 'Qadim Katawazi');
-        expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
+            await navigationPage.signOut();
+            await loginPage.loginWithCredentials('idPersonBO@petramco.com', "Password_1234");
 
-        for (let i: number = 0; i < 3; i++) {
-            await utilityGrid.searchAndOpenHyperlink(caseId[i]);
-            expect(await viewCasePage.isTextPresent('BulkOperationBusinessUnit')).toBeFalsy("BulkOperationBusinessUnit is present");
-            expect(await viewCasePage.isTextPresent('BulkOperationDepartment')).toBeFalsy("BulkOperationDepartment is present");
-            expect(await viewCasePage.getAssignedCompanyText()).toBe('Petramco');
-            expect(await viewCasePage.getAssignedGroupText()).toBe(compensationAndBenefitsStr);
-            expect(await viewCasePage.getAssigneeText()).toBe('Qadim Katawazi');
-            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await utilityCommon.refresh();
+            for (let i: number = 0; i < 3; i++) {
+                await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
+            }
+
+            await caseConsolePage.clickOnChangeAssignmentButton();
+            await changeAssignmentBladePo.setAssignee(petramcoStr, compensationAndBenefitsStr, 'Qadim Katawazi');
+            expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
+
+            for (let i: number = 0; i < 3; i++) {
+                await utilityGrid.searchAndOpenHyperlink(caseId[i]);
+                expect(await viewCasePage.isTextPresent('BulkOperationBusinessUnit')).toBeFalsy("BulkOperationBusinessUnit is present");
+                expect(await viewCasePage.isTextPresent('BulkOperationDepartment')).toBeFalsy("BulkOperationDepartment is present");
+                expect(await viewCasePage.getAssignedCompanyText()).toBe('Petramco');
+                expect(await viewCasePage.getAssignedGroupText()).toBe(compensationAndBenefitsStr);
+                expect(await viewCasePage.getAssigneeText()).toBe('Qadim Katawazi');
+                await navigationPage.gotoCaseConsole();
+            }
         }
-
-    });
+        catch (ex) {
+            throw ex;
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login(qtaoStr);
+        }
+    }, 300 * 1000);
 
     it('[DRDMV-16107]: Verify if Agent Bulk Assign the cases with at least one closed status then Agent should get the error', async () => {
         await apiHelper.apiLogin(qtaoStr);

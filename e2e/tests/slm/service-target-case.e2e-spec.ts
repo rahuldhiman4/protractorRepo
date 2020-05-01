@@ -32,7 +32,7 @@ describe('Service Target Tests for Cases', () => {
 
     beforeEach(async () => {
         await apiHelper.apiLogin('tadmin');
-       await apiHelper.deleteServiceTargets();
+        await apiHelper.deleteServiceTargets();
     });
 
     afterEach(async () => {
@@ -120,7 +120,7 @@ describe('Service Target Tests for Cases', () => {
             // expect(await viewCasePage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
             await browser.sleep(40000);
             await utilityCommon.refresh();
-            expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); 
+            expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true);
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)'); //red
         }
         catch (error) {
@@ -131,7 +131,7 @@ describe('Service Target Tests for Cases', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 330 * 1000);
+    }, 530 * 1000);
 
     //skhobrag
     it('[DRDMV-2027]:Icons representing measurement status on SLA Progress Bar', async () => {
@@ -417,7 +417,7 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 280 * 1000);
+    }, 330 * 1000);
 
     //skhobrag
     it('[DRDMV-7044]:[UI]Check the SLA Bar and check the details data on SLA blade', async () => {
@@ -1240,6 +1240,6 @@ describe('Service Target Tests for Cases', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 500 * 1000);
+    }, 610 * 1000);
 
 })

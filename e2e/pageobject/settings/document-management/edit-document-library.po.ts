@@ -83,22 +83,24 @@ class EditDocumentLibraryPage {
     }
 
     async selectAddBusinessUnitDropDownOfReadAccess(value: string): Promise<void> {
-        await $$('.ui-select-bootstrap button').get(1).click();
-        await $$('.field input').get(1).sendKeys(value);
-        await element(by.cssContainingText(this.selectors.readAccessDropDownValue, value)).click();
+        await this.selectAddReadAccess(value, 1);
     }
 
     async selectAddSupportDepartmentDropDownOfReadAccess(value: string): Promise<void> {
-        await $$('.ui-select-bootstrap button').get(2).click();
-        await $$('.field input').get(2).sendKeys(value);
-        await element(by.cssContainingText(this.selectors.readAccessDropDownValue, value)).click();
+        await this.selectAddReadAccess(value, 2);
     }
 
     async selectAddSupportGroupDropDownOfReadAccess(value: string): Promise<void> {
-        await $$('.ui-select-bootstrap button').get(3).click();
-        await $$('.field input').get(3).sendKeys(value);
-        await browser.sleep(3000);
-        await element(by.cssContainingText('[class=""] .options-box .options li', value)).click();
+        await this.selectAddReadAccess(value, 3);
+    }
+
+    async selectAddReadAccess(value: string, index: number): Promise<void> {
+        await $$('.ui-select-bootstrap button').get(index).click();
+        await $$('.field input').get(index).sendKeys(value);
+        const option = await element(by.cssContainingText(this.selectors.readAccessDropDownValue, value));
+        await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
+            await option.click();
+        });
     }
 
     async sameSupportGroupErrorMessageDisplayed(message: string): Promise<boolean> {

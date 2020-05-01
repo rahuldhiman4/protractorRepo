@@ -957,7 +957,11 @@ class ApiHelper {
     }
 
     async deleteEmailOrNotificationTemplate(emailTemplateName: string, company?: string): Promise<boolean> {
-        let emailTemplateGuid = await coreApi.getEmailTemplateGuid(emailTemplateName);
+        let emailTemplateGuid;
+        if(company){
+            emailTemplateGuid = await coreApi.getEmailTemplateGuid(emailTemplateName,company);
+        }
+        else{emailTemplateGuid = await coreApi.getEmailTemplateGuid(emailTemplateName);}
         return await coreApi.deleteRecordInstance('com.bmc.dsm.notification-lib:NotificationTemplate', emailTemplateGuid);
     }
 

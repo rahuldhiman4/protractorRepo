@@ -257,7 +257,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle);
             await editKnowledgePage.updateKnowledgeArticleDescription(updatedArticleDesc);
             await editKnowledgePage.clickOnSaveButtonOfKA();
-            expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully');
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
             await utilityCommon.refresh();
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
@@ -667,7 +667,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(articleDetails.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.getPopUpMessage()).toContain('You have successfully flagged the article.', 'Article Not Flagged');
+            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
@@ -843,7 +843,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(articleDetails.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.getPopUpMessage()).toContain('You have successfully flagged the article.', 'Article Not Flagged');
+            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
@@ -949,7 +949,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(articleDetails.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.getPopUpMessage()).toContain('You have successfully flagged the article.', 'Article Not Flagged');
+            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
             await editKnowledgeAccessPage.selectCompany('Petramco');
@@ -989,7 +989,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.selectArticleEditOption(majorEditOption);
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle + "_updated version");
             await editKnowledgePage.clickArticleMajorEditSaveButton();
-            expect(await utilCommon.getPopUpMessage()).toContain('ERROR (170250): Draft version already created.', 'Already Draft version is present message is not displayed.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (170250): Draft version already created.')).toBeTruthy('Already Draft version is present message is not displayed.');
             await browser.sleep(4000);
             await utilityCommon.refresh();
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion);
@@ -1079,7 +1079,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(articleDetails.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.getPopUpMessage()).toContain('You have successfully flagged the article.', 'Article Not Flagged');
+            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
@@ -1216,7 +1216,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(articleDetails.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.getPopUpMessage()).toContain('You have successfully flagged the article.', 'Article Not Flagged');
+            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);

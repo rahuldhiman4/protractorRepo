@@ -140,7 +140,7 @@ describe("Attachment", () => {
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
         await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
-        await composeMail.addAttachment();
+        await composeMail.addAttachment(['../../data/ui/attachment/demo.txt']);
         await composeMail.clickOnSendButton();
         await viewCasePo.clickAttachmentsLink();
         expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');

@@ -25,7 +25,7 @@ class ManageTaskBlade {
     }
 
     async getSortedValuesFromColumn(columnHeader: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(columnHeader, 'ascending', this.selectors.taskTemplateGuid);
+        return await utilityGrid.isGridColumnSorted(columnHeader, 'asc', this.selectors.taskTemplateGuid);
     }
 
     async getFilterValue(copy: string): Promise<boolean> {

@@ -147,7 +147,7 @@ describe('Create Task Template', () => {
             await viewTaskTemplate.clickOnEditLink();
             await editTaskTemplate.selectTaskCompany('Petramco');
             await editTaskTemplate.clickOnSaveButtonWithoutWait();
-            await expect(utilCommon.getPopUpMessage()).toBe('ERROR (222121): Company marked for Global usage cannot be modified.')
+            await expect(utilCommon.isPopUpMessagePresent('ERROR (222121): Company marked for Global usage cannot be modified.')).toBeTruthy();
         } catch (error) {
             throw error;
         } finally {
@@ -236,7 +236,7 @@ describe('Create Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 300 * 1000);
+    }, 390 * 1000);
 
     //ankagraw
     it('[DRDMV-12555]: Task template submitter from same company of owner group can edit the task template', async () => {

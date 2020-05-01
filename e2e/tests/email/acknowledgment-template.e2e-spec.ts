@@ -10,7 +10,7 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 
-describe('AcknowledgmentTemplate', () => {
+describe('Acknowledgment Template', () => {
     let label: string;
     let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
     beforeAll(async () => {
@@ -94,7 +94,7 @@ describe('AcknowledgmentTemplate', () => {
         await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
         await utilCommon.waitUntilSpinnerToHide();
         expect(await consoleAcknowledgmentTemplatePo.isGridRecordPresent(templateName2)).toBeFalsy('Public template name is preset on grid')
-    });//, 240 * 1000);
+    }, 280 * 1000);
 
     //kgaikwad
     it('[DRDMV-10900,DRDMV-10924,DRDMV-10923]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
@@ -187,7 +187,7 @@ describe('AcknowledgmentTemplate', () => {
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Search Subject is missing in column');
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('Petramco');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Search Company is missing in column');
-    }, 390 * 1000);
+    }, 470 * 1000);
 
     //ptidke
     it('[DRDMV-10902]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
@@ -218,7 +218,7 @@ describe('AcknowledgmentTemplate', () => {
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
 
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:' + templateName4, 'Duplicate private template name error message is missing');
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (222108): Template Already exist with given name:' + templateName4)).toBeTruthy('Duplicate private template name error message is missing');
         await utilCommon.closePopUpMessage();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
@@ -243,9 +243,9 @@ describe('AcknowledgmentTemplate', () => {
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
 
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:' + templateName5, 'Duplicate private template name error message is missing');
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (222108): Template Already exist with given name:' + templateName5)).toBeTruthy('Duplicate private template name error message is missing');
         await utilCommon.closePopUpMessage();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-    });//, 160 * 1000);
+    }, 270 * 1000);
 })

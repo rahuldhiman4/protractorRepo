@@ -1,28 +1,29 @@
 import { browser } from "protractor";
+import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';
 import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
-import informationTabPo from '../../pageobject/knowledge/information-tab.po';
+import editKnowledgeMetaDataPo from '../../pageobject/knowledge/edit-knowledge.po';
 import consoleKnowledgePo from '../../pageobject/knowledge/knowledge-articles-console.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import createDocumentLibraryPo from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryConsolePo from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import apiCoreUtil from '../../api/api.core.util';
 
 describe('Document Library', () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
-  
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
@@ -84,7 +85,7 @@ describe('Document Library', () => {
         await editDocumentLibraryPo.clickOnDeleteButton();
         expect(await editDocumentLibraryPo.getDeleteWarningMsgText('Are you sure you want to delete the document?')).toBe('Are you sure you want to delete the document?'), 'Warning Message of Delete button is missing';
         await editDocumentLibraryPo.clickOnYesButtonOfDeleteWarningMsg();
-        expect(await utilCommon.getPopUpMessage()).toBe('Document deleted successfully.');
+        expect(await utilCommon.isPopUpMessagePresent('Document deleted successfully.')).toBeTruthy('Document deleted message not valid');
         await utilCommon.waitUntilPopUpDisappear();
         expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Grid Record displayed which should not be');
     });
@@ -185,7 +186,7 @@ describe('Document Library', () => {
         expect(await editDocumentLibraryPo.isAddSupportDepartmentAddButtonDisabled()).toBeTruthy('Add Support Department Add Button is enabled');
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete button is enabled');
         expect(await editDocumentLibraryPo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');  //defect https://jira.bmc.com/browse/DRDMV-21556
-    });
+    }, 260 * 1000);
 
     //kgaikwad
     it('[DRDMV-13021]: Verify edit document UI', async () => {
@@ -323,26 +324,26 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.closeGroupAccessTag('Employee Relations');
             expect(await editDocumentLibraryPo.isRemoveGroupAccessWarningMessageDisplayed('Are you sure you want to remove access to "Employee Relations"?')).toBeTruthy('Remove Group List Warning Message Missing');
             await editDocumentLibraryPo.clickOnRemoveGroupWarningMsgYesButton();
-            expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
 
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
             await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Google');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Company');
-            expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
 
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
             await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('ESM');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Business Unit');
-            expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
 
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
             await editDocumentLibraryPo.selectAddSupportDepartmentDropDownOfReadAccess('Engineering');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Department');
-            expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
             await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Accounts Payable (AP)');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
-            expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.', 'Message of permission denined for group access remove not displayed');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await editDocumentLibraryPo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal)
@@ -470,7 +471,7 @@ describe('Document Library', () => {
         await editDocumentLibraryPo.selectAddSupportDepartmentDropDownOfReadAccess('UI-Department');
         await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('UI-SupportGroup');
         await editDocumentLibraryPo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully.');
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
     });
 
     //apdeshmu
@@ -504,7 +505,8 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.addAttachment(`../../../data/ui/attachment/${fileName1[i]}`);
             await createDocumentLibraryPo.clickOnSaveButton();
-            expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.', 'Success message missing');
+            //This validation is alredy covered at DRDMV-13088 hence commented
+            //expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
             await createDocumentLibraryPo.openAddNewDocumentBlade();
         }
         await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -546,7 +548,8 @@ describe('Document Library', () => {
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
             await editDocumentLibraryPo.selectOwnerGroup('Facilities');
             await editDocumentLibraryPo.clickOnSaveButton();
-            expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+            //This validation is alredy covered at DRDMV-13088 hence commented
+            //expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
 
             await navigationPage.signOut();
             await loginPage.login('fritz');
@@ -564,7 +567,7 @@ describe('Document Library', () => {
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
-            expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -582,7 +585,7 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 300 * 1000);
+    }, 350 * 1000);
 
     it('[DRDMV-12954]: Verify Create view of Document library', async () => {
         await navigationPage.gotoSettingsPage();
@@ -616,7 +619,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectSite('Canberra');
         expect(await createDocumentLibraryPo.siteTextPresent('Site')).toBeTruthy("Site text not present");
     });//, 120 * 1000);
-    
+
     //kgaikwad
     it('[DRDMV-13079]: Verify document will not appear in knowledge article searches	', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
@@ -635,7 +638,6 @@ describe('Document Library', () => {
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName('Angelina Jolie');
         await quickCasePo.setCaseSummary(titleRandVal);
-        let column: string = await resources.getCountOfHeading('Recommended Knowledge');
         expect(await resources.getCountOfHeading('Recommended Knowledge')).toBe('0', 'heading Count is not correct');
         await navigationPage.gotoCreateKnowledge();
         expect(await browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
@@ -648,9 +650,8 @@ describe('Document Library', () => {
         await previewKnowledgePo.clickOnViewArticleLink();
 
         await utilityCommon.switchToNewTab(1);
-        await informationTabPo.clickOnEditButton();
-        expect(await informationTabPo.isAttachDocumentBladeDisplayed()).toBeFalsy('Attach Document Blade is displayed');
-
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        expect(await editKnowledgeMetaDataPo.isAttachDocumentBladeDisplayed()).toBeFalsy('Attach Document Blade is displayed');
     });
 
     //kgaikwad
@@ -661,7 +662,7 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('kayo');
             await navigationPage.gotoSettingsPage();
-            expect(await utilCommon.isConfigurationOptionMessageDisplayed('Configuration options not created for these settings.')).toBeTruthy('Document Management Link text is not displayed setting page');
+            expect(await navigationPage.getSettingPanelText()).toContain('Configuration options not created for these settings.');
         } catch (e) {
             throw e;
         } finally {
@@ -669,5 +670,4 @@ describe('Document Library', () => {
             await loginPage.login('qkatawazi');
         }
     });//, 150 * 1000);
-
 })
