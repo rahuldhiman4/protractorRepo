@@ -18,7 +18,6 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
-import attachDocumentBladePo from 'e2e/pageobject/common/attach-document-blade.po';
 
 describe("Attachment", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -186,7 +185,7 @@ describe("Attachment", () => {
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is delete sucessfully');
         await navigationPage.gotoPersonProfile();
         expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
-    }, 150 * 1000);
+    });
 
     //kgaikwad
     it('[DRDMV-11708]: Upload attachment from task activity & verify all attachments grid', async () => {
@@ -253,7 +252,7 @@ describe("Attachment", () => {
         await attachmentBladePo.clickOnCloseButton();
         await navigationPage.gotoPersonProfile();
         await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
-    }, 240 * 1000);
+    });
 
     //kgaikwad
     it('[DRDMV-11718,DRDMV-11720]: Large number of attachments verification', async () => {

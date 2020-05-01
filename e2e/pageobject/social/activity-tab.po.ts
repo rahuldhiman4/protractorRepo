@@ -541,7 +541,7 @@ class ActivityTabPage {
     async clickOnHyperlinkFromActivity(bodyText: string, authorText: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personLink)));
         //        browser.sleep(3000);
-        var customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='activity__body']//a[text()="${authorText}"]`;
+        let  customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='activity__body']//a[text()="${authorText}"]`;
         //        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customXpath))));
         await element(by.xpath(customXpath)).click();
         //        await utilCommon.waitUntilSpinnerToHide();

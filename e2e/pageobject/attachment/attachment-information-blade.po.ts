@@ -1,4 +1,4 @@
-import { $$, $, ElementFinder, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 
 class AttachmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

@@ -121,17 +121,6 @@ class AttachmentBlade {
         }
     }
 
-    // let allAttachmentRows: ElementFinder[] = await $$('.at-row');
-    // let attachmentFound: boolean = false;
-    // for (let i: number = 0; i < allAttachmentRows.length; i++) {
-    //     let attachmentName: ElementFinder = await allAttachmentRows[i].$('.attachment-view-thumbnail__title-text');
-    //     if (await attachmentName.getText() === record) {
-    //         await browser.executeScript("arguments[0].scrollIntoView();", await allAttachmentRows[i].$('.ui-chkbox-box').getWebElement());
-    //         await allAttachmentRows[i].$('.ui-chkbox-box').click();
-    //         attachmentFound = true;
-    //         break;
-    //     }
-    // }
     async clickOnPaginationPreviousButton(): Promise<void> {
         await $(this.selectors.paginationPreviousButton).click();
     }
@@ -149,7 +138,6 @@ class AttachmentBlade {
     }
 
     async clickOnFileName(attachment: string): Promise<void> {
-        // await utilityGrid.searchRecord(attachment);
         await this.searchRecord(attachment);
         await element(by.cssContainingText(this.selectors.attachmentName, attachment)).click(); 
     }
