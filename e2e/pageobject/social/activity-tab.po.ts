@@ -55,10 +55,10 @@ class ActivityTabPage {
 
         AttachedfileName: '.activity__wrapper .bwf-attachment-container__file-name',
         refreshButton: '.tab-content .bwf-button-link[aria-label="Refresh"]',
-        attachmentField: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] input[type="file"]',
+        attachmentField: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] input[type="file"]',
         showMoreEmailActivity: '.activity__wrapper button[aria-label="Show more"]',
         expandAllAttachmentActivity : '.activity__wrapper .d-icon-plus',
-        allTaskActivity: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .fields .value',
+        allTaskActivity: 'div.activity__body div',
         taskActivity: '.fields .value',
         showMoreLink: 'button[aria-label="Show more"]',
         emailBodyImage: '.email-body img',
