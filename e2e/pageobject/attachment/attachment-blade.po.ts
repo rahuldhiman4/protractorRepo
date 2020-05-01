@@ -15,7 +15,7 @@ class AttachmentBlade {
         searchButton: '.input-group-append button',
         crossbutton: '.d-icon-cross[aria-label="Clear Search Field"]',
         allCheckbox: '.checkbox__input',
-        attachmentSize: 'bwf-case-attachment__paginator__page-count',
+        attachmentSize: '.bwf-case-attachment__paginator .bwf-case-attachment__paginator__page-count',
         paginationNextButton: '.content-outlet .page-next',
         paginationPreviousButton: '.content-outlet .page-prev',
         refreshButton: '.d-icon-refresh',
@@ -103,7 +103,7 @@ class AttachmentBlade {
     }
 
     async getAttachmentToolTipText(attachmentName: string): Promise<boolean> {
-        return await $(`.attachment-view-thumbnail__title-text[title='${attachmentName}']`).getAttribute('title') == attachmentName ? true : false;
+        return await $(`.attachment-view-thumbnail__title-text[title=${attachmentName}]`).getAttribute('title') == attachmentName ? true : false;
     }
 
     async clickOnAllCheckboxButton(): Promise<void> {
@@ -113,14 +113,25 @@ class AttachmentBlade {
     async isCheckBoxSelected(record: string): Promise<boolean> {
         let allAttachmentRows: ElementFinder[] = await $$('.at-row');
         for (let i: number = 0; i < allAttachmentRows.length; i++) {
-            let attachmentName: ElementFinder = await allAttachmentRows[i].$('attachment-view-thumbnail__title-text');
-            if (await attachmentName.getText() === record) {
+            let attachmentName: ElementFinder = await allAttachmentRows[i].$('.attachment-view-thumbnail__title-text');
+            if ((await attachmentName.getText()).trim() === record) {
                 await browser.executeScript("arguments[0].scrollIntoView();", await allAttachmentRows[i].$('.ui-chkbox-box').getWebElement());
                 return await allAttachmentRows[i].$('.ui-chkbox-box').isSelected();
             }
         }
     }
 
+    // let allAttachmentRows: ElementFinder[] = await $$('.at-row');
+    // let attachmentFound: boolean = false;
+    // for (let i: number = 0; i < allAttachmentRows.length; i++) {
+    //     let attachmentName: ElementFinder = await allAttachmentRows[i].$('.attachment-view-thumbnail__title-text');
+    //     if (await attachmentName.getText() === record) {
+    //         await browser.executeScript("arguments[0].scrollIntoView();", await allAttachmentRows[i].$('.ui-chkbox-box').getWebElement());
+    //         await allAttachmentRows[i].$('.ui-chkbox-box').click();
+    //         attachmentFound = true;
+    //         break;
+    //     }
+    // }
     async clickOnPaginationPreviousButton(): Promise<void> {
         await $(this.selectors.paginationPreviousButton).click();
     }

@@ -448,7 +448,7 @@ describe('Create Task Template', () => {
         await activityTabPo.clickOnPostButton();
         await expect(activityTabPo.getTaskActivity('abcde')).toBe('abcde');
         await activityTabPo.addActivityNote("attachment");
-        await activityTabPo.addAttachment(filePath);
+        await activityTabPo.addAttachment([filePath]);
         await activityTabPo.clickOnPostButton();
         await expect(activityTabPo.getTaskActivity('attachment')).toBe('attachment');
         await navigationPage.signOut();
