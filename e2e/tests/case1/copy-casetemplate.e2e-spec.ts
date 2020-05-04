@@ -66,7 +66,7 @@ describe('Copy Case Template', () => {
         expect(copiedCasetemplateFromNew == CasetemplateNew).toBeFalsy();
         expect(await copyCaseTemplate.getValueOfResolutionCode()).toBe(caseTemplateAllFields.resolutionCode);
         expect(await copyCaseTemplate.getValueOfResolutionDescription()).toBe(caseTemplateAllFields.resolutionDescription);
-    });//, 190 * 1000);
+    }, 350 * 1000);
 
     //ptidke
     it('[DRDMV-13543,DRDMV-13555]: Create a Copy of Case template by Case Business Analyst that belongs to Support Group,Case Template console grid should show Newly created copied template', async () => {
@@ -115,7 +115,7 @@ describe('Copy Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 320 * 1000);
+    }, 420 * 1000);
 
     //ptidke
     it('[DRDMV-13550]: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
@@ -164,7 +164,7 @@ describe('Copy Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 300 * 1000);
+    }, 400 * 1000);
 
     //ptidke
     it('[DRDMV-13815]: Instruction come Warning Message is displayed on Create Copy Case Template Page', async () => {

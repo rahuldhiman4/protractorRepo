@@ -161,7 +161,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('franz');
             await navigationPage.gotoSettingsPage();   
-            expect(await navigationPage.getSettingPanelText()).toContain("Select a configuration option from the navigation menu to show configuration content here");
+            expect(await navigationPage.getSettingPanelText()).toContain("Configuration options not created for these settings");
         } catch (e) {
             throw e;
         } finally {
@@ -235,7 +235,7 @@ describe('Case Template', () => {
         await editCaseTemplate.clickEditCaseTemplate();
         await editCaseTemplate.clearCaseSummary();
         await editCaseTemplate.clickSaveCaseTemplate();
-        await expect(await editCaseTemplate.getErrorMessage()).toContain('Resolve the field validation errors and then try again.');
+        await expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
         await editCaseTemplate.changeCaseSummary('Updated Summary');
         await editCaseTemplate.clickSaveCaseTemplate();
         await editCaseTemplate.clickOnEditCaseTemplateMetadata();
@@ -248,7 +248,7 @@ describe('Case Template', () => {
         await expect(await viewCaseTemplate.getOwnerGroupValue()).toContain(caseTemplateRequiredFields.supportGroup);
         await expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Petramco');
         await expect(await viewCaseTemplate.getTemplateStatusValue()).toContain(caseTemplateRequiredFields.templateStatus);
-    });//, 160 * 1000);
+    }, 280 * 1000);
 
     //ptidke
     it('[DRDMV-1229]: [Case Template Console] Search by Summary and Display ID on the Case Template Console', async () => {
@@ -326,7 +326,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 250 * 1000);
+    }, 300 * 1000);
 
     //ptidke
     it('[DRDMV-12578]:Case BA from other than case template owner group can NOT update the template', async () => {
@@ -555,7 +555,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 340 * 1000)
+    }, 400 * 1000)
 
     //apdeshmu 
     it('[DRDMV-769]: [Case Creation] [Template Selection] Applying a Template to a Case', async () => {
@@ -704,7 +704,7 @@ describe('Case Template', () => {
             expect(await viewCaseTemplate.getCaseTemplateNameValue()).toBe(caseTemplateName);
             expect(await viewCaseTemplate.getPriorityValue()).toBe("Low");
             expect(await viewCaseTemplate.getTemplateStatusValue()).toBe("Active");
-            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
+            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe("Facilities");
             expect(await viewCaseTemplate.getCategoryTier2()).toBe("Policies");
             expect(await viewCaseTemplate.getCategoryTier3()).toBe("Card Issuance");
             expect(await viewCaseTemplate.getCategoryTier1()).toBe("Purchasing Card");

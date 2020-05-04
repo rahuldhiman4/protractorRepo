@@ -35,25 +35,7 @@ describe("Attachment", () => {
     afterAll(async () => {
         await navigationPage.signOut();
     });
-
-    //kgaikwad
-    it('[DRDMV-11697]: All attachments grid verification', async () => {
-        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester('Elizabeth Peters');
-        await createCasePo.setSummary(caseSummary);
-        await createCasePo.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await viewCasePo.clickAttachmentsLink();
-
-        expect(await attachmentBladePo.isDownloadButtonDisplayed()).toBeTruthy('Download button is missing');
-        expect(await attachmentBladePo.isCloseButtonDisplayed()).toBeTruthy('Close button is missing');
-        await expect(await attachmentBladePo.getTextOfColumnHeader('Attachments ')).toBe('Attachments', 'Attachment column header is missing');
-        expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
-        expect(await attachmentBladePo.getTextOfColumnHeader('Media type ')).toBe('Media type', 'Media type  column header is missing');
-        expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
-    })
-
+    
     //kgaikwad
     it('[DRDMV-11707,DRDMV-11703,DRDMV-11704]: Upload attachment while creating case via BWF & verify all attachments Grid	', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -71,9 +53,9 @@ describe("Attachment", () => {
         expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Media type ')).toBe('Media type', 'Media type  column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
-        await expect(await attachmentBladePo.getRecordValue('bwfJpg')).toBe('bwfJpg', 'Attachment file name is missing');
-        await expect(await attachmentBladePo.getRecordValue('Case')).toBe('Case', 'Attach to column value is missing');
-        await expect(await attachmentBladePo.getRecordValue('image/jpeg')).toBe('image/jpeg', 'Media type column value is missing');
+        await expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfJpg', 'Attachment file name is missing');
+        await expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Case', 'Attach to column value is missing');
+        await expect(await attachmentBladePo.getRecordValue('Media type')).toBe('image/jpeg', 'Media type column value is missing');
 
         let year: string;
         let month: string;
@@ -123,6 +105,24 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
+    it('[DRDMV-11697]: All attachments grid verification', async () => {
+        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoCreateCase();
+        await createCasePo.selectRequester('Elizabeth Peters');
+        await createCasePo.setSummary(caseSummary);
+        await createCasePo.clickSaveCaseButton();
+        await previewCasePo.clickGoToCaseButton();
+        await viewCasePo.clickAttachmentsLink();
+
+        expect(await attachmentBladePo.isDownloadButtonDisplayed()).toBeTruthy('Download button is missing');
+        expect(await attachmentBladePo.isCloseButtonDisplayed()).toBeTruthy('Close button is missing');
+        await expect(await attachmentBladePo.getTextOfColumnHeader('Attachments ')).toBe('Attachments', 'Attachment column header is missing');
+        expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
+        expect(await attachmentBladePo.getTextOfColumnHeader('Media type ')).toBe('Media type', 'Media type  column header is missing');
+        expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
+    })
+
+    //kgaikwad
     it('[DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -144,7 +144,7 @@ describe("Attachment", () => {
         await viewCasePo.clickAttachmentsLink();
         expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('demo');
-        await expect(await attachmentBladePo.getRecordValue('demo')).toBe('demo', 'demo txt file name is missing');
+        await expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('demo', 'demo txt file name is missing');
         await attachmentBladePo.clickOnDownloadButton();
         expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
     });
@@ -166,18 +166,17 @@ describe("Attachment", () => {
         var caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
         await activityTabPo.addActivityNote(caseBodyText);
-        await activityTabPo.addAttachment(filePath);
+        await activityTabPo.addAttachment([filePath]);
         await activityTabPo.clickOnPostButton();
         expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
         await viewCasePo.clickAttachmentsLink();
         expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
-        expect(await attachmentBladePo.getRecordValue('bwfPdf')).toBe('bwfPdf', 'Attachment file name is missing');
+        expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfPdf', 'Attachment file name is missing');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is deleted sucessfully');
         // DRDMV-11698
         expect(await attachmentBladePo.isDownloadButtonEnabled()).toBeFalsy('Download button is enabled');
         await attachmentBladePo.searchAndSelectCheckBox('bwfPdf');
         expect(await attachmentBladePo.isDownloadButtonEnabled()).toBeTruthy('Download button is disabled');
-
         await attachmentBladePo.clickOnDownloadButton();
         expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
         await attachmentBladePo.clickOnCloseButton();
@@ -186,7 +185,7 @@ describe("Attachment", () => {
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is delete sucessfully');
         await navigationPage.gotoPersonProfile();
         expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
-    });//, 140 * 1000);
+    });
 
     //kgaikwad
     it('[DRDMV-11708]: Upload attachment from task activity & verify all attachments grid', async () => {
@@ -225,8 +224,8 @@ describe("Attachment", () => {
         await adhoctaskTemplate.clickOnSaveAdhoctask();
         await manageTask.clickOnCloseButton();
         await viewCasePo.clickAttachmentsLink();
-        await expect(await attachmentBladePo.getRecordValue('bwfXlsx')).toBe('bwfXlsx', 'Attachment file name is missing');
-        await expect(await attachmentBladePo.getRecordValue('Task')).toBe('Task', 'Attach to column value is missing');
+        await expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfXlsx', 'Attachment file name is missing');
+        await expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Task', 'Attach to column value is missing');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('bwfXlsx');
         await attachmentBladePo.clickOnDownloadButton();
@@ -237,18 +236,19 @@ describe("Attachment", () => {
         await manageTask.addTaskFromTaskTemplate(`manualTaskTemplateDraft ${randomStr}`);
         await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateDraft ${randomStr}`);
         await activityTabPo.addActivityNote(addNotes);
-        await activityTabPo.addAttachment(wordFilePath);
+        await activityTabPo.addAttachment([wordFilePath]);
         await activityTabPo.clickOnPostButton();
         await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAttachmentsLink();
-        await expect(await attachmentBladePo.getRecordValue('bwfWord1')).toBe('bwfWord1', 'Attachment file name is missing');
-        await expect(await attachmentBladePo.getRecordValue('Social')).toBe('Social', 'Attach to column value is missing');
-        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
+        await attachmentBladePo.searchRecord('bwfWord1');
+        await expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfWord1', 'Attachment file name is missing');
+        await expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Social', 'Attach to column value is missing');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('bwfWord1');
         await attachmentBladePo.clickOnDownloadButton();
-        await expect(await utilCommon.isFileDownloaded('bwfWord1.rtf')).toBeTruthy('File is not downloaded.');
-        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
+        await expect(await utilityCommon.isFileDownloaded('bwfWord1.rtf')).toBeTruthy('File is not downloaded.');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.clickOnCloseButton();
         await navigationPage.gotoPersonProfile();
         await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
@@ -261,10 +261,7 @@ describe("Attachment", () => {
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf', 'bwfXlsx.xlsx', 'demo.txt'];
-
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await createCasePo.addDescriptionAttachment([`../../data/ui/attachment/${fileName1[i]}`]);
-        }
+        await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf', '../../data/ui/attachment/bwfPdf1.pdf', '../../data/ui/attachment/bwfPdf2.pdf', '../../data/ui/attachment/bwfPdf3.pdf', '../../data/ui/attachment/bwfPdf4.pdf', '../../data/ui/attachment/bwfWord1.rtf', '../../data/ui/attachment/bwfWord2.rtf', '../../data/ui/attachment/bwfXlsx.xlsx', '../../data/ui/attachment/demo.txt']); 
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
@@ -274,14 +271,14 @@ describe("Attachment", () => {
         for (j = 0; j < fileName2.length; j++) {
             await attachmentBladePo.searchRecord(`${fileName2[j]}`);
             await attachmentBladePo.searchAndSelectCheckBox(`${fileName2[j]}`);
-            await expect(await attachmentBladePo.getRecordValue(`${fileName2[j]}`)).toBe(`${fileName2[j]}`, 'Attachment file name is missing');
+            await expect(await attachmentBladePo.getRecordValue('Attachments')).toBe(`${fileName2[j]}`, 'Attachment file name is missing');
             await attachmentBladePo.clickOnDownloadButton();
             await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
             await attachmentBladePo.searchAndSelectCheckBox(`${fileName2[j]}`);
-            await expect(await utilCommon.isFileDownloaded(`${fileName1[j]}`)).toBeTruthy('File is not downloaded.');
+            await expect(await utilCommon.isFileDownloaded(`${fileName1[j]}`)).toBeTruthy(`${fileName1[j]} File is not downloaded.`);
             await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
         }
-    }, 280 * 1000);
+    }, 900 * 1000);
 
     //kgaikwad
     it('[DRDMV-11721,DRDMV-11746]: Multiple tasks on same case with attachments verification with task id', async () => {
@@ -323,6 +320,7 @@ describe("Attachment", () => {
 
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.addAttachment([`../../data/ui/attachment/${fileName[i]}`]);
+            // await editTaskPo.addAttachment(['../../data/ui/attachment/bwfJpg.jpg','../../data/ui/attachment/bwfXlsx.xlsx','../../data/ui/attachment/bwfXml.xml']);
             await editTaskPo.clickOnAssignToMe();
             await editTaskPo.clickOnSaveButton();
             let taskIdText: string = await viewTaskPo.getTaskID();
@@ -339,7 +337,7 @@ describe("Attachment", () => {
             await expect(await attachmentInformationBladePo.getValuesOfInformation(taskId[j])).toContain(taskId[j]);
             await attachmentInformationBladePo.clickOnCloseButton();
         }
-
+        await attachmentBladePo.clickOnRefreshButton();
         await expect(await attachmentBladePo.getAttachmentToolTipText('bwfJpg')).toBeTruthy('ToolTip is missing of attachment');
         await attachmentBladePo.clickOnAllCheckboxButton();
         await attachmentBladePo.clickOnRefreshButton();
@@ -347,7 +345,7 @@ describe("Attachment", () => {
         await expect(await attachmentBladePo.isCheckBoxSelected('bwfXlsx')).toBeFalsy('bwfXlsx CheckBox is selected');
         await expect(await attachmentBladePo.isCheckBoxSelected('bwfXml')).toBeFalsy('bwfXml CheckBox is selected');
         await attachmentBladePo.clickOnCloseButton();
-    });//, 170 * 1000);
+    }, 450 * 1000);
 
     //kgaikwad
     it('[DRDMV-11701,DRDMV-11706]: Pagination on all attachments grid', async () => {
@@ -355,17 +353,14 @@ describe("Attachment", () => {
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
-        let fileName1: string[] = ['articleStatus.png', 'articleStatus.png', 'articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf'];
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await createCasePo.addDescriptionAttachment([`../../data/ui/attachment/${fileName1[i]}`]);
-        }
+        await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf', '../../data/ui/attachment/bwfPdf1.pdf', '../../data/ui/attachment/bwfPdf2.pdf', '../../data/ui/attachment/bwfPdf3.pdf', '../../data/ui/attachment/bwfPdf4.pdf', '../../data/ui/attachment/bwfWord1.rtf', '../../data/ui/attachment/bwfWord2.rtf', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf', '../../data/ui/attachment/bwfPdf1.pdf', '../../data/ui/attachment/bwfPdf2.pdf', '../../data/ui/attachment/bwfPdf3.pdf', '../../data/ui/attachment/bwfPdf4.pdf', '../../data/ui/attachment/bwfWord1.rtf', '../../data/ui/attachment/bwfWord2.rtf', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf', '../../data/ui/attachment/bwfPdf1.pdf', '../../data/ui/attachment/bwfPdf2.pdf', '../../data/ui/attachment/bwfPdf3.pdf', '../../data/ui/attachment/bwfPdf4.pdf', '../../data/ui/attachment/bwfWord1.rtf', '../../data/ui/attachment/bwfWord2.rtf']);
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
-        await expect(await attachmentBladePo.getAttachmentNameCount('articleStatus')).toEqual(3);
-        await expect(await attachmentBladePo.getAttachmentSize()).toBe('1 - 10 of 20');
+        await expect(await attachmentBladePo.getAttachmentNameCount('articleStatus')).toEqual(6);
+        await expect(await attachmentBladePo.getAttachmentSize()).toBe('1 - 50 of 60');
         await attachmentBladePo.clickOnPaginationNextButton();
-        await expect(await attachmentBladePo.getAttachmentSize()).toBe('11 - 20 of 20');
+        await expect(await attachmentBladePo.getAttachmentSize()).toBe('51 - 60 of 60');
         await attachmentBladePo.clickOnPaginationPreviousButton();
         await attachmentBladePo.clickOnCloseButton();
     });
@@ -376,14 +371,13 @@ describe("Attachment", () => {
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
-        let fileName1: string[] = ['bwfJpg.jpg', 'articleStatus.png'];
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await createCasePo.addDescriptionAttachment([`../../data/ui/attachment/${fileName1[i]}`]);
-        }
+        await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/articleStatus.png']);
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
+        await attachmentBladePo.searchRecord('bwfJpg');
         await expect(await attachmentBladePo.isAttachmentPresent('bwfJpg')).toBeTruthy('bwfJpg Attachment is missing on grid');
+        await attachmentBladePo.searchRecord('articleStatus');
         await expect(await attachmentBladePo.isAttachmentPresent('articleStatus')).toBeTruthy('articleStatus.png Attachment is missing on grid');
         await attachmentBladePo.clickOnCloseButton();
         await viewCasePo.clickEditCaseButton();
@@ -404,9 +398,7 @@ describe("Attachment", () => {
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg'];
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await createCasePo.addDescriptionAttachment([`../../data/ui/attachment/${fileName1[i]}`]);
-        }
+         await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/articleStatus.png','../../data/ui/attachment/bwfJpg.jpg']);
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
@@ -431,9 +423,7 @@ describe("Attachment", () => {
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf'];
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await createCasePo.addDescriptionAttachment([`../../data/ui/attachment/${fileName1[i]}`]);
-        }
+        await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg',  '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf']);
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();

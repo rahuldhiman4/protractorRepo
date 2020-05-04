@@ -163,7 +163,7 @@ describe('Dynamic data', () => {
         await addFieldsPopPo.clickOnOkButtonOfEditor();
         await createDocumentTemplatePo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-    }, 600 * 1000);
+    }, 630 * 1000);
 
     it('[DRDMV-19270]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
         await apiHelper.apiLogin('tadmin');
@@ -377,8 +377,8 @@ describe('Dynamic data', () => {
         expect(await createNotestemplatePo.isDynamicFieldDisplayedInBody('Confidential data')).toBeTruthy();
         expect(await createNotestemplatePo.isDynamicFieldDisplayedInBody('Additional Site Details')).toBeTruthy();
         await createNotestemplatePo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toContain('Saved successfully.');
-    }, 250 * 1000);
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+    }, 270 * 1000);
 
     it('[DRDMV-13567]: [Dynamic Data] [Attachment] - Case UI when it has Dynamic Fields including Attachment', async () => {
         await apiHelper.apiLogin('tadmin');
@@ -1002,7 +1002,7 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('', 'field should be empty');
         expect(await viewCasePo.getValueOfDynamicFields('temp2')).toBe('', 'field should be empty');
         expect(await viewCasePo.getValueOfDynamicFields('temp4')).toBe('', 'field should be empty');
-    }, 440 * 1000);
+    }, 940 * 1000);
 
     //ptidke
     it('[DRDMV-13125]:[Dynamic Data] - Create Case from Create Case with Template having dynamic fields but does not have field with source as Requester', async () => {

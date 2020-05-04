@@ -516,12 +516,11 @@ describe("Quick Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 500 * 1000);
+    }, 550 * 1000);
 
     it('[DRDMV-624]:  Advanced Search UI verification on the Quick Case view', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let knowledgeTitile = 'knowledge3542' + randomStr;
-        console.log(knowledgeTitile);
         await apiHelper.apiLogin('fritz');
         let articleData1 = {
             "knowledgeSet": "HR",
@@ -596,38 +595,37 @@ describe("Quick Case", () => {
         await apiHelper.createKnowledgeArticle(articleData4);
         await apiHelper.createKnowledgeArticle(articleData5);
         await apiHelper.createKnowledgeArticle(articleData6);
-
+        let currentDate = new Date();
+        let dateFormate = currentDate.getDate() + ", " + currentDate.getFullYear();
+        
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName("fritz");
         await quickCasePo.setCaseSummary(knowledgeTitile);
         await utilCommon.waitUntilSpinnerToHide();
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
-        expect(await quickCasePo.isFilterAvailable('Status')).toBeTruthy();
+        expect(await quickCasePo.isFilterAvailable('ArticleStatus')).toBeTruthy();
         expect(await quickCasePo.isFilterAvailable('Knowledge Set')).toBeTruthy();
         expect(await quickCasePo.isFilterAvailable('Site')).toBeTruthy();
         expect(await quickCasePo.isFilterAvailable('Region')).toBeTruthy();
         expect(await quickCasePo.isFilterAvailable('Operational Category Tier 1')).toBeTruthy();
-        let statusFieldValues: string[] = ["Closed", "Retired", "Canceled", "In Progress", "Draft", "SME Review", "Published", "Publish Approval", "Retire Approval", "Cancel Approval"];
-        expect(await resources.isAdvancedSearchFilterOptionDropDownValueDisplayed('Status', statusFieldValues)).toBeTruthy();
+        let statusFieldValues: string[] = ["Select None","Closed", "Retired", "Canceled", "In Progress", "Draft", "SME Review", "Published", "Publish Approval", "Retire Approval", "Cancel Approval"];
+        expect(await resources.isAdvancedSearchFilterOptionDropDownValueDisplayed(statusFieldValues,0)).toBeTruthy();
         await resources.clickOnAdvancedSearchSettingsIconToClose();
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
-        await resources.selectAdvancedSearchFilterOption('Status', 'In Progress');
-        await resources.selectAdvancedSearchFilterOption('Knowledge Set', 'HR');
-        await resources.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Applications');
-        await resources.selectAdvancedSearchFilterOption('Region', 'Australia');
-        await resources.selectAdvancedSearchFilterOption('Site', 'Canberra');
+        await resources.selectAdvancedSearchFilterOption('ArticleStatus','In Progress');
+        await resources.selectAdvancedSearchFilterOption('Knowledge Set','HR');
+        await resources.selectAdvancedSearchFilterOption('Operational Category Tier 1','Applications');
+        await resources.selectAdvancedSearchFilterOption('Region','Australia');
+        await resources.selectAdvancedSearchFilterOption('Site','Canberra');
         await resources.clickOnAdvancedSearchFiltersButton('Apply');
-        let getCurrentDate = utilCommon.getCurrentDate();
-        let currentDate = new Date();
-        let dateFormate = currentDate.getDate() + ", " + currentDate.getFullYear();
-        expect(await quickCasePo.getKnowledgeArticleInfo(1)).toContain(knowledgeTitile, 'title not correct');
-        expect(await quickCasePo.getKnowledgeArticleInfo(1)).toContain('Fritz Schulz', 'Author not correct');
-        expect(await quickCasePo.getKnowledgeArticleInfo(1)).toContain('In Progress', 'status not correct');
-        expect(await quickCasePo.getKnowledgeArticleInfo(1)).toContain('KA-', 'KA ID not correct');
-        expect(await quickCasePo.getKnowledgeArticleInfo(1)).toContain(dateFormate, 'KA ID not correct');
+        expect(await quickCasePo.getKnowledgeArticleID()).toContain('KA-', 'KA ID not correct');
+        expect(await quickCasePo.getKnowledgeArticleInfo()).toContain('knowledge35428j8lf38xb8', 'title not correct');
+        expect(await quickCasePo.getKnowledgeArticleInfo()).toContain('Fritz Schulz', 'Author not correct');
+        expect(await quickCasePo.getKnowledgeArticleInfo()).toContain('In Progress', 'status not correct');
+        expect(await quickCasePo.getKnowledgeArticleInfo()).toContain(dateFormate, 'KA ID not correct');
         await quickCasePo.clickArrowFirstRecommendedKnowledge();
-        expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(knowledgeTitile, 'title not correct');
+        expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(knowledgeTitile);
         expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
         expect(await previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy('viewArticle link Not peresent');
         expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Status not displaying');
@@ -818,7 +816,7 @@ describe("Quick Case", () => {
         expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
         await previewKnowledgePo.clickOnBackButton();
         await quickCase.createCaseButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully');
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
         expect(await previewCasePo.isRequesterNameDisplayed('Person1 Person1')).toBeTruthy();
         expect(await previewCasePo.isCaseSummaryDisplayed(`${caseTemplateName}`)).toBeTruthy();
         expect(await previewCasePo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();

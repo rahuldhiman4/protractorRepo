@@ -63,7 +63,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
+        await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
     });//, 150 * 1000);
 
     //ptidke
@@ -95,8 +95,8 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
-    });//, 170 * 1000);
+        await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
+    }, 320 * 1000);
 
     //ptidke
     it('[DRDMV-16028]: [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
@@ -127,7 +127,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
+        await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
     });//, 140 * 1000);
 
     //ptidke
@@ -159,8 +159,8 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
-    });//, 140 * 1000);
+        await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
+    }, 270 * 1000);
 
     //ptidke
     it('[DRDMV-16181]: [Design Time] Knowledge user is able to create,edit(update), Delete Knowledge Notes Template', async () => {
@@ -194,7 +194,7 @@ describe('Notes template', () => {
             await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
             await consoleNotesTemplate.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            await expect(await utilCommon.getPopUpMessage()).toContain('Record deleted successfully.');
+            await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
         }
         catch (e) {
             throw e;

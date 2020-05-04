@@ -1342,7 +1342,7 @@ describe('Document Library Consume UI', () => {
         await editDocumentLibraryPo.setSite('Canberra');
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
-        await expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         // //Create Case
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qtao');
@@ -1422,7 +1422,7 @@ describe('Document Library Consume UI', () => {
             await previewCasePo.clickGoToCaseButton();
             let caseId = await viewCasePo.getCaseID();
             await activityTabPo.addActivityNote(addNoteText);
-            await activityTabPo.addAttachment(excelFile);
+            await activityTabPo.addAttachment([excelFile]);
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[0]);
             await activityTabPo.clickOnAttachLink();

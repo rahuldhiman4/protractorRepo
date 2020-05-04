@@ -80,7 +80,7 @@ describe('EmailTemplate', () => {
         await createEmailTemplatePo.setSubject(subject);
         await createEmailTemplatePo.setBody(body);
         await createEmailTemplatePo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (222108): Template Already exist with given name:' + templateName, 'Duplicate Template Error messsage missing.');
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (222108): Template Already exist with given name:' + templateName)).toBeTruthy('Duplicate Template Error messsage missing.');
         await utilCommon.closePopUpMessage();
         await createEmailTemplatePo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
@@ -98,7 +98,7 @@ describe('EmailTemplate', () => {
         expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message Type')).toBe('body', 'Body is missing from Grid');
         await editEmailTemplatePo.searchOnGridConsole('subject');
         expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message Type')).toBe('subject', 'subject is missing from Grid');
-    });//, 220 * 1000);
+    }, 280 * 1000);
 
     //kgaikwad
     it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Email Template : User Is able to delete Email Template', async () => {
@@ -192,7 +192,7 @@ describe('EmailTemplate', () => {
         await editEmailTemplatePo.setSubjectOfNewLocalizedEmailMessage(subject);
         await editEmailTemplatePo.setBody(body);
         await editEmailTemplatePo.clickOnSaveButton();
-        expect(await utilCommon.getPopUpMessage()).toBe('ERROR (10000): Message already exists with given locale.', 'Localize already exist error message missing');
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Message already exists with given locale.')).toBeTruthy('Localize already exist error message missing');
         await utilCommon.closePopUpMessage();
         await editEmailTemplatePo.clickOnCancelButton();
         await utilCommon.waitUntilSpinnerToHide();

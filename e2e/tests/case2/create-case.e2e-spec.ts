@@ -144,7 +144,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });//, 220 * 1000);
+    }, 270 * 1000);
 
     //kgaikwad
     it('[DRDMV-18031]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
@@ -279,7 +279,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 350 * 1000);
+    }, 490 * 1000);
 
     //ankagraw
     it('[DRDMV-1191,DRDMV-1198]: [Case Creation] Case creation with/without mandatory fields populated ', async () => {
@@ -291,7 +291,7 @@ describe("Create Case", () => {
         expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
         await createCasePage.selectRequester('adam');
         expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy();
-        //expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.'); Save button wont enable unless summary is set
+        //expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).tobeTruthy; Save button wont enable unless summary is set
         //await utilCommon.closePopUpMessage();
         //await utilCommon.waitUntilPopUpDisappear();
         await createCasePage.setSummary(caseSummary);
@@ -472,7 +472,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 490 * 1000);
+    }, 570 * 1000);
 
     //ankagraw
     it('[DRDMV-1237]: [Global navigation] Navigation to Workspaces and Create subitems in the Shell ', async () => {
@@ -773,7 +773,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 390 * 1000);
+    }, 450 * 1000);
 
     //ankagraw
     it('[DRDMV-5479,DRDMV-1192]: Verify case assignment on Create Case', async () => {
@@ -863,7 +863,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 260 * 1000);
+    }, 300 * 1000);
 
     //ankagraw
     it('[DRDMV-1614]: [Case] Fields validation for case in New status ', async () => {
@@ -882,7 +882,7 @@ describe("Create Case", () => {
             expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
             await createCasePage.selectRequester('adam');
             // await createCasePage.clickSaveCaseButtonWithoutMessageDisappear();
-            // expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
+            // expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.').tobeTruthy();
             // await utilCommon.closePopUpMessage();
             await expect(createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is Enabled");
             //await utilCommon.waitUntilPopUpDisappear();
@@ -897,7 +897,7 @@ describe("Create Case", () => {
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clearCaseSummary();
             await editCasePage.clickSaveCase();
-            expect(await utilCommon.getPopUpMessage()).toBe('Resolve the field validation errors and then try again.');
+            expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
         } catch (error) {
             throw error;
         } finally {
@@ -971,7 +971,7 @@ describe("Create Case", () => {
             expect(await activityPo.isTextPresentInActivityLog("Assigned Group")).toBeTruthy("Text is not present in activiy tab4");
             expect(await activityPo.isTextPresentInActivityLog("AU Support 1")).toBeTruthy("Text is not present in activiy tab5");
             await activityTabPo.addActivityNote(activityNoteText);
-            await activityTabPo.addAttachment(filePath);
+            await activityTabPo.addAttachment([filePath]);
             await activityTabPo.clickOnPostButton();
             await expect(activityTabPo.isTextPresentInNote(activityNoteText)).toBeTruthy('Private Note is not Added');
             expect(await activityTabPo.isAttachmentInActivity('bwfPdf.pdf')).toBeTruthy('File is not present on activity');

@@ -150,7 +150,7 @@ describe("Create Case Assignment Mapping", () => {
         expect(await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Company")).toBe("- Global -");
         await AssignmentConfigConsolePage.clickDeleteButton();
         await utilCommon.clickOnWarningOk();
-        //expect(await utilCommon.getPopUpMessage()).toBe('Record(s) deleted successfully.');
+        //expect(await utilCommon.isPopUpMessagePresent('Record(s) deleted successfully.').tobeTruthy();
     });
 
     //radhiman
@@ -273,7 +273,7 @@ describe("Create Case Assignment Mapping", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 250 * 1000);
+    }, 280 * 1000);
 
     //radhiman
     it('[DRDMV-1212]: [Assignment Mapping] Configuring an Assignment Mapping', async () => {
@@ -427,7 +427,7 @@ describe("Create Case Assignment Mapping", () => {
         await expect(viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
         await expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
         await utilCommon.switchToDefaultWindowClosingOtherTabs();
-    }, 400 * 1000);
+    }, 430 * 1000);
 
     it('[DRDMV-12080]: Verify Company and Support Group selection hierarchy.', async () => {
         const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');

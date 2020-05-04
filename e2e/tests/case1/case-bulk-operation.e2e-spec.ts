@@ -126,7 +126,7 @@ describe('Case Bulk Operation', () => {
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
         }
-    });//, 160 * 1000);
+    }, 750 * 1000);
 
     it('[DRDMV-15978]: Verify user having case read access cannot change assignee of the case using bulk assignment', async () => {
         await apiHelper.apiLogin(qtaoStr);
@@ -285,7 +285,7 @@ describe('Case Bulk Operation', () => {
             expect(await viewCasePage.getAssigneeText()).toBe("BOPerson lnPerson");
             await navigationPage.gotoCaseConsole();
         }
-    });//, 150 * 1000);
+    }, 310 * 1000);
 
     it('[DRDMV-16110]: Verify that Agent creates the Case with Org, Support Group and while Bulk Assignment select BU, Org, Support Group, Department', async () => {
         try {
@@ -327,7 +327,7 @@ describe('Case Bulk Operation', () => {
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
         }
-    });
+    }, 300 * 1000);
 
     it('[DRDMV-16107]: Verify if Agent Bulk Assign the cases with at least one closed status then Agent should get the error', async () => {
         await apiHelper.apiLogin(qtaoStr);

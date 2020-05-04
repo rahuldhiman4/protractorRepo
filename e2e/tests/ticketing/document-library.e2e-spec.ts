@@ -506,7 +506,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.addAttachment(`../../../data/ui/attachment/${fileName1[i]}`);
             await createDocumentLibraryPo.clickOnSaveButton();
             //This validation is alredy covered at DRDMV-13088 hence commented
-            //expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.', 'Success message missing');
+            //expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
             await createDocumentLibraryPo.openAddNewDocumentBlade();
         }
         await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -549,7 +549,7 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.selectOwnerGroup('Facilities');
             await editDocumentLibraryPo.clickOnSaveButton();
             //This validation is alredy covered at DRDMV-13088 hence commented
-            //expect(await utilCommon.getPopUpMessage()).toBe('Saved successfully.');
+            //expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
 
             await navigationPage.signOut();
             await loginPage.login('fritz');
@@ -585,7 +585,7 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 300 * 1000);
+    }, 350 * 1000);
 
     it('[DRDMV-12954]: Verify Create view of Document library', async () => {
         await navigationPage.gotoSettingsPage();

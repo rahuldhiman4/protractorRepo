@@ -450,7 +450,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(KADetails.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.getPopUpMessage()).toContain('You have successfully flagged the article.', 'Article Not Flagged');
+            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with contributor
@@ -474,7 +474,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(kkohriId.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.getPopUpMessage()).toContain('You have successfully flagged the article.', 'Article Not Flagged');
+            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with publisher
@@ -498,7 +498,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(kmillsId.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.getPopUpMessage()).toContain('You have successfully flagged the article.', 'Article Not Flagged');
+            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with publisher
@@ -522,7 +522,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(kWilliamsonId.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.getPopUpMessage()).toContain('You have successfully flagged the article.', 'Article Not Flagged');
+            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
         catch (e) {
