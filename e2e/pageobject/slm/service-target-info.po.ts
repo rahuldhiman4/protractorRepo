@@ -1,5 +1,12 @@
 import { $, browser, protractor, ProtractorExpectedConditions, element,by, $$ } from "protractor";
 
+let serviceTargetInformationInProceessIcon = 'triangle_right_circle_o';
+let serviceTargetInformationWarningIcon = 'exclamation_circle_o';
+let serviceTargetInformationMissedGoalIcon = 'cross_circle_o';
+let serviceTargetInformationPausedIcon = 'pause_circle_o';
+let serviceTargetInformationSVTMetIcon = 'check_circle_o';
+
+
 class ServiceTargetInfo {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -9,12 +16,8 @@ class ServiceTargetInfo {
         serviceTargetInformationCloseButton: '.dp-footer > button',
         serviceTargeDetails: '.progress-bar-info__details-label strong',
         serviceTargetStatus: 'adapt-icon[role="img"] + span',
-        serviceTargetInformationInProceessIcon: 'svg#triangle_right_circle_o',
-        serviceTargetInformationWarningIcon: 'svg#exclamation_circle_o',
-        serviceTargetInformationMissedGoalIcon: 'svg#cross_circle_o',
+        serviceTargetInformationIcons: 'svg use',
         serviceTargetInformationDualSVTIcon: 'div.status-container .d-icon-right-circle_o',
-        serviceTargetInformationPausedIcon: 'svg#pause_circle_o',
-        serviceTargetInformationSVTMetIcon: 'svg#check_circle_o',
         serviceTargetDueDate: '.progress-bar-info__details-label',
     }
 
@@ -33,39 +36,43 @@ class ServiceTargetInfo {
        return await element(by.cssContainingText(this.selectors.serviceTargeDetails, fieldOptionValue)).isDisplayed();
     }
 
+    async isServiceTargetInformationFieldValues(fieldOptionValue:string): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.serviceTargetInformationCloseButton)));
+       return await element(by.cssContainingText('.dp-body div div', fieldOptionValue)).isDisplayed();
+    }
+
     async isServiceTargetDueDateDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.serviceTargetInformationCloseButton)));
         return await $$(this.selectors.serviceTargetDueDate).last().isDisplayed();
     }
 
     async isServiceTargetInformationInProcessIconDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationInProceessIcon)));
-        return await $(this.selectors.serviceTargetInformationInProceessIcon).isDisplayed();
+        return await (await $(this.selectors.serviceTargetInformationIcons).getAttribute('xlink:href')).includes(serviceTargetInformationInProceessIcon);
     }
 
     async isServiceTargetInformationWarningIconDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationWarningIcon)));
-        return await $(this.selectors.serviceTargetInformationWarningIcon).isDisplayed();
+        return await (await $(this.selectors.serviceTargetInformationIcons).getAttribute('xlink:href')).includes(serviceTargetInformationWarningIcon);
     }
 
     async isServiceTargetInformationPausedIconDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationPausedIcon)));
-        return await $(this.selectors.serviceTargetInformationPausedIcon).isDisplayed();
+        return await (await $(this.selectors.serviceTargetInformationIcons).getAttribute('xlink:href')).includes(serviceTargetInformationPausedIcon);
     }
 
     async isServiceTargetInformationDualSVTIconDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationDualSVTIcon)));
-        return await $(this.selectors.serviceTargetInformationDualSVTIcon).isDisplayed();
+        return await $(this.selectors.serviceTargetInformationDualSVTIcon).isPresent();
     }
 
     async isServiceTargetInformationMissedGoalIconDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationMissedGoalIcon)));
-        return await $(this.selectors.serviceTargetInformationMissedGoalIcon).isDisplayed();
+        return await (await $(this.selectors.serviceTargetInformationIcons).getAttribute('xlink:href')).includes(serviceTargetInformationMissedGoalIcon);
     }
 
     async isServiceTargetInformationSVTMetIconDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.serviceTargetInformationSVTMetIcon)));
-        return await $(this.selectors.serviceTargetInformationSVTMetIcon).isDisplayed();
+        return await (await $(this.selectors.serviceTargetInformationIcons).getAttribute('xlink:href')).includes(serviceTargetInformationSVTMetIcon);
     }
 
     async getServiceTargetStatus(): Promise<string> {

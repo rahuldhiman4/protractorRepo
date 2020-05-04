@@ -12,7 +12,7 @@ import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbu
 import serviceTargetInfoPage from '../../pageobject/slm/service-target-info.po';
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilityCommon from '../../utils/utility.common';
+import utilityCommon, { Utility } from '../../utils/utility.common';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -71,7 +71,7 @@ describe('Service Target Tests for Cases', () => {
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
             // expect(await viewCasePo.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
-            await browser.sleep(40000);
+            await browser.sleep(50000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
@@ -100,8 +100,8 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMileStone();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(3000);
             await navigationPage.gotoCreateCase();
@@ -148,8 +148,8 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMileStone();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(3000);
             await navigationPage.gotoCreateCase();
@@ -185,8 +185,8 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMileStone();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(3000);
             await navigationPage.gotoCreateCase();
@@ -277,6 +277,7 @@ describe('Service Target Tests for Cases', () => {
 
     }, 370 * 1000);
 
+    //Failing application issue
     //skhobrag
     it('[DRDMV-8365]:Verify the SLA Progress Bar change in color when single SVT attached', async () => {
         try {
@@ -293,8 +294,8 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMileStone();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
 
             browser.sleep(3000);
@@ -315,6 +316,8 @@ describe('Service Target Tests for Cases', () => {
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
+            await browser.sleep(2000);
+            await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
 
             //Update the case status to In Progress
@@ -376,8 +379,8 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMileStone();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
 
             //Create a SVT with 4 mins timeline  
@@ -392,8 +395,8 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMileStone();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
 
             browser.sleep(3000);
@@ -418,7 +421,7 @@ describe('Service Target Tests for Cases', () => {
             await loginPage.login(caseBAUser);
         }
     }, 330 * 1000);
-
+    
     //skhobrag
     it('[DRDMV-7044]:[UI]Check the SLA Bar and check the details data on SLA blade', async () => {
         try {
@@ -455,10 +458,11 @@ describe('Service Target Tests for Cases', () => {
             await slmProgressBar.clickOnSLAProgressBarInProcessIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetInformationBladeHeader()).toBe('Service Target Information');
-            expect(await serviceTargetInfoPage.isServiceTargetInformationDetails('Service Target : ')).toBeTruthy('Service Target Label on SVT Info Blade is not displayed.');
-            expect(await serviceTargetInfoPage.isServiceTargetInformationDetails('SVT from Protractor')).toBeTruthy('Service Target on SVT Info Blade is not displayed.');
-            expect(await serviceTargetInfoPage.isServiceTargetInformationDetails('Due Date and Time : ')).toBeTruthy('Due Date Label on SVT Info Blade is not displayed.');
+            expect(await serviceTargetInfoPage.isServiceTargetInformationDetails('Service Target: ')).toBeTruthy('Service Target Label on SVT Info Blade is not displayed.');
+            expect(await serviceTargetInfoPage.isServiceTargetInformationFieldValues('SVT from Protractor ')).toBeTruthy('Service Target on SVT Info Blade is not displayed.');
+            expect(await serviceTargetInfoPage.isServiceTargetInformationDetails('Due Date and Time: ')).toBeTruthy('Due Date Label on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetDueDateDisplayed()).toBeTruthy('Due Date on SVT Info Blade is not displayed.');
+            //await browser.sleep(120000);
             expect(await serviceTargetInfoPage.isServiceTargetInformationInProcessIconDisplayed()).toBeTruthy('SVT In Process Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('InProcess');
         }
@@ -469,7 +473,6 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-
     }, 300 * 1000);
 
     //skhobrag
@@ -607,8 +610,9 @@ describe('Service Target Tests for Cases', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 300 * 1000);
+    }, 600 * 1000);
 
+    //Failed
     //skhobrag
     it('[DRDMV-8368]:Verify SLA Progress Bar change in color when multiple SVT attached and one SVT is missed', async () => {
         try {
@@ -658,9 +662,7 @@ describe('Service Target Tests for Cases', () => {
             await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
-            browser.sleep(130000);
-            await utilityCommon.refresh();
-            browser.sleep(30000);
+            browser.sleep(160000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
@@ -678,7 +680,7 @@ describe('Service Target Tests for Cases', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 110, 0, 1)');
             await slmProgressBar.clickOnSLAProgressBarMissedGoalIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationMissedGoalIconDisplayed()).toBeTruthy('SVT In Process Icon on SVT Info Blade is not displayed.');
@@ -695,6 +697,7 @@ describe('Service Target Tests for Cases', () => {
 
     }, 410 * 1000);
 
+    //Failed due to application error
     //skhobrag
     it('[DRDMV-8367]:Verify the SLA Progress Bar change in color when multiple SVT attached and all SVT are in Pause State', async () => {
         try {
@@ -747,6 +750,7 @@ describe('Service Target Tests for Cases', () => {
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.refresh();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
@@ -871,7 +875,7 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 590 * 1000);
+    }, 620 * 1000);
 
     //skhobrag
     it('[DRDMV-8370]:Verify Visualization change when Status changes(In Process-> Pending)', async () => {
@@ -1087,7 +1091,6 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-
     }, 300 * 1000);
 
     //skhobrag

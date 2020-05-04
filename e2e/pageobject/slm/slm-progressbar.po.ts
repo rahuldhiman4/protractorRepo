@@ -18,12 +18,12 @@ class SlmProgressBar {
 
     async isSLAProgressBarDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.slaProgressBar)));
-        return await $(this.selectors.slaProgressBar).isDisplayed();
+        return await $(this.selectors.slaProgressBar).isPresent();
     }
 
     async isSLAProgressBarInProcessIconDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarInProceess)));
-        return await $(this.selectors.slaProgressBarInProceess).isDisplayed();
+        return await $(this.selectors.slaProgressBarInProceess).isPresent();
     }
 
     async clickOnSLAProgressBarInProcessIcon() {
@@ -106,8 +106,8 @@ class SlmProgressBar {
     }
 
     async isSLAProgressBarSVTMetIconDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarComplete)),40000);
-        return await $(this.selectors.slaProgressBarComplete).isDisplayed();
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarComplete)),40000);
+        return await $(this.selectors.slaProgressBarComplete).isPresent();
     }
 
     async clickOnSLAProgressBarSVTMetIcon() {
