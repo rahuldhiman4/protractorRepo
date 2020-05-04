@@ -19,10 +19,10 @@ class QuickCasePage {
         smartSearchText: '.smart-recorder-highlightPerfectMatch',
         createCaseButton: '.d-inline-block [rx-view-component-id="8b88c054-4445-43e4-90f0-72f829571fd5"] button',
         requesters: '.bwf-select-list .bwf-selectable-list-item',
-        pinFirstRecommendedCase: '[class="bwf-search-result ng-tns-c36-9 ng-star-inserted"] .adapt-icon',
+        pinFirstRecommendedCase: 'svg.adapt-icon',
         requester: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .ac-person-full-name',
         arrowFirstRecommendedCase: '[class="bwf-search-result ng-tns-c36-9 ng-star-inserted"] .list__item__preview-icon',
-        arrowFirstRecommendedKnowledge: '[class="bwf-search-result ng-tns-c36-8 ng-star-inserted"] .list__item__preview-icon',
+        arrowFirstRecommendedKnowledge: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"] .list__item__preview-icon .adapt-icon',
         roleDropDown: '.sr-preview-pane .sr-preview-item-header .btn-secondary',
         sourceValue: '.sr-select-bar .btn-xs',
         roleValue: '.select_option_container span',
@@ -140,7 +140,7 @@ class QuickCasePage {
 
     async pinFirstRecommendedCase(): Promise<void> {
         // await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
-        await element(by.xpath(this.selectors.pinFirstRecommendedCase)).click();
+        await $$(this.selectors.pinFirstRecommendedCase).first().click();
     }
 
     async clickArrowFirstRecommendedCase(): Promise<void> {
@@ -150,7 +150,7 @@ class QuickCasePage {
 
     async clickArrowFirstRecommendedKnowledge(): Promise<void> {
         // await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
-        await element(by.xpath(this.selectors.arrowFirstRecommendedKnowledge)).click();
+        await element(by.css(this.selectors.arrowFirstRecommendedKnowledge)).click();
     }
 
     async saveCase(): Promise<void> {
@@ -228,8 +228,12 @@ class QuickCasePage {
         await $(this.selectors.startOverButton).click();
     }
 
-    async getKnowledgeArticleInfo(articleNumeber: number): Promise<string> {
-        return await $$('.km-group-list-item__info').get(articleNumeber - 1).getText();
+    async getKnowledgeArticleInfo(): Promise<string> {
+        return await $$('.flex-column bwf-search-result-fields div span').getText();
+    }
+
+    async getKnowledgeArticleID(): Promise<string> {
+        return await $$('.flex-column bwf-search-result-fields div span').first().getText();
     }
 
     async isFilterAvailable(filterText: string): Promise<boolean> {

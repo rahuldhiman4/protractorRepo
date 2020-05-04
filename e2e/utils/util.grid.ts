@@ -34,7 +34,8 @@ export class GridOperation {
         dateTo: 'input[min-date="option.fromDatePicker.date"]',
         datePickerApplyButton: '.dropdown-item_range .d-button_small',
         presetFilter: '.rx-filter-preset__title span',
-        appliedFilterName: '.d-tag-label'
+        appliedFilterName: '.d-tag-label',
+        timePicker: 'button.d-timepicker__input'
     }
 
     async clickOnGridRefreshButton(): Promise<void> {
@@ -58,8 +59,8 @@ export class GridOperation {
     }
 
     async isGridRecordPresent(searchRecord: string): Promise<boolean> {
-        await this.clearGridSearchBox();
-        await this.searchOnGridConsole(searchRecord);
+         await this.clearGridSearchBox();
+         await this.searchOnGridConsole(searchRecord);
         //        await browser.sleep(5000);
         return await $(this.selectors.gridRecordPresent).isPresent();
     }
@@ -381,7 +382,7 @@ export class GridOperation {
                 break;
             }
             case "date": {
-                let date = textValue.split(":");
+                let date = textValue.split("-");
                 await $(this.selectors.dateFrom).clear();
                 await $(this.selectors.dateFrom).sendKeys(date[0]);
                 await $(this.selectors.dateTo).clear();

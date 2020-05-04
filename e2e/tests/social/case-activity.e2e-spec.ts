@@ -852,7 +852,7 @@ describe('Case Activity', () => {
         expect(await activityTabPage.getFirstPostContent()).toContain(taskBodyText);
         //one file and commnet
         await activityTabPage.addActivityNote('step 2nd added ' + taskBodyText);
-        await activityTabPage.addAttachment(filePath);
+        await activityTabPage.addAttachment([filePath]);
         await activityTabPage.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.getFirstPostContent()).toContain('step 2nd added ' + taskBodyText);
@@ -874,7 +874,7 @@ describe('Case Activity', () => {
         let textWithMultipleAttachment: string = "new values with attachments";
         await activityTabPage.addActivityNote(textWithMultipleAttachment);
         for (let i = 0; i <= 5; i++) {
-            await activityTabPage.addAttachment('../../data/ui/attachment/demo.txt');
+            await activityTabPage.addAttachment(['../../data/ui/attachment/demo.txt']);
         }
         await activityTabPage.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
@@ -996,7 +996,7 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 320 * 1000);
+    }, 450 * 1000);
 
     //kgaikwad
     it('[DRDMV-16591]: Check case count is changed with different permission of user read/write/no access to the case', async () => {
@@ -1145,9 +1145,9 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg8: BodyText is missing');
         // Verify logs with 5 lines  with 3 attachment
         await activityTabPage.addActivityNote(addNoteBodyText1);
-        await activityTabPage.addAttachment(filePath1);
-        await activityTabPage.addAttachment(filePath2);
-        await activityTabPage.addAttachment(filePath3);
+        await activityTabPage.addAttachment([filePath1]);
+        await activityTabPage.addAttachment([filePath2]);
+        await activityTabPage.addAttachment([filePath3]);
         await activityTabPage.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
@@ -1158,9 +1158,9 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg14: Show more link is displayed');
         // Verify logs with more than 5 lines  with 3 attachment
         await activityTabPage.addActivityNote(addNoteBodyText2);
-        await activityTabPage.addAttachment(filePath4);
-        await activityTabPage.addAttachment(filePath5);
-        await activityTabPage.addAttachment(filePath6);
+        await activityTabPage.addAttachment([filePath4]);
+        await activityTabPage.addAttachment([filePath5]);
+        await activityTabPage.addAttachment([filePath6]);
         await activityTabPage.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
@@ -1172,11 +1172,11 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg21: Show less missing for body text');
         // Verify logs with more than 5 lines  with more than 4 attachment
         await activityTabPage.addActivityNote(addNoteBodyText2);
-        await activityTabPage.addAttachment(filePath7);
-        await activityTabPage.addAttachment(filePath8);
-        await activityTabPage.addAttachment(filePath9);
-        await activityTabPage.addAttachment(filePath10);
-        await activityTabPage.addAttachment(filePath11);
+        await activityTabPage.addAttachment([filePath7]);
+        await activityTabPage.addAttachment([filePath8]);
+        await activityTabPage.addAttachment([filePath9]);
+        await activityTabPage.addAttachment([filePath10]);
+        await activityTabPage.addAttachment([filePath11]);
         await activityTabPage.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
@@ -1269,9 +1269,9 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg8: BodyText is missing');
         // Verify logs with 5 lines  with 3 attachment
         await activityTabPage.addActivityNote(addNoteBodyText1);
-        await activityTabPage.addAttachment(filePath1);
-        await activityTabPage.addAttachment(filePath2);
-        await activityTabPage.addAttachment(filePath3);
+        await activityTabPage.addAttachment([filePath1]);
+        await activityTabPage.addAttachment([filePath2]);
+        await activityTabPage.addAttachment([filePath3]);
         await activityTabPage.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
@@ -1282,9 +1282,9 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg14: Show more link is displayed');
         // Verify logs with more than 5 lines  with 3 attachment
         await activityTabPage.addActivityNote(addNoteBodyText2);
-        await activityTabPage.addAttachment(filePath4);
-        await activityTabPage.addAttachment(filePath5);
-        await activityTabPage.addAttachment(filePath6);
+        await activityTabPage.addAttachment([filePath4]);
+        await activityTabPage.addAttachment([filePath5]);
+        await activityTabPage.addAttachment([filePath6]);
         await activityTabPage.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
@@ -1296,11 +1296,11 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg21: Show less missing for body text');
         // Verify logs with more than 5 lines  with more than 4 attachment
         await activityTabPage.addActivityNote(addNoteBodyText2);
-        await activityTabPage.addAttachment(filePath7);
-        await activityTabPage.addAttachment(filePath8);
-        await activityTabPage.addAttachment(filePath9);
-        await activityTabPage.addAttachment(filePath10);
-        await activityTabPage.addAttachment(filePath11);
+        await activityTabPage.addAttachment([filePath7]);
+        await activityTabPage.addAttachment([filePath8]);
+        await activityTabPage.addAttachment([filePath9]);
+        await activityTabPage.addAttachment([filePath10]);
+        await activityTabPage.addAttachment([filePath11]);
         await activityTabPage.clickOnPostButton();
         await utilCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
