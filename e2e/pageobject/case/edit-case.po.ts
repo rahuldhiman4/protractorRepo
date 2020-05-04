@@ -350,11 +350,6 @@ class CaseEditPage {
         return await $(this.selectors.requesterPersonNameLink).click();
     }
 
-    async clickOnRequesterMail(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personEmailLink)));
-        return await $$(this.selectors.personEmailLink).get(0).click();
-    }
-
     async getSelectCaseTemplate(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.selectCaseTemplate)));
         return await $(this.selectors.selectCaseTemplate).getText();

@@ -10,7 +10,7 @@ export class Utility {
         dropDownInput: 'input.form-control',
         dropDownNoneOpt: '.dropdown_select__btn',
         dropDownOption: '.dropdown_select__menu-content button',
-        warningOk: '.modal-content .btn-primary, .d-modal__footer button[class*="d-button d-button_primary"]',
+        warningOk: '.modal-content adapt-button.btn-primary, .d-modal__footer button[class*="d-button d-button_primary"]',
         warningCancel: '.modal-content .btn-secondary, .d-modal__footer button[class*="d-button d-button_secondary"]',
         warningDialog: '.modal-content .modal-title, .modal-content .d-modal__title',
         warningDialogMsg: '.modal-content .modal-body, .modal-content .d-modal__content-item',

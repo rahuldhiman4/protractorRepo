@@ -128,7 +128,7 @@ describe("Attachment", () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         var caseData = {
             "Requester": "qtao",
-            "Summary": "Test case for DRDMV-8377RandVal" + summary,
+            "Summary": "Test case for DRDMV-11713",
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
@@ -353,11 +353,15 @@ describe("Attachment", () => {
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
-        await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf', '../../data/ui/attachment/bwfPdf1.pdf', '../../data/ui/attachment/bwfPdf2.pdf', '../../data/ui/attachment/bwfPdf3.pdf', '../../data/ui/attachment/bwfPdf4.pdf', '../../data/ui/attachment/bwfWord1.rtf', '../../data/ui/attachment/bwfWord2.rtf', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf', '../../data/ui/attachment/bwfPdf1.pdf', '../../data/ui/attachment/bwfPdf2.pdf', '../../data/ui/attachment/bwfPdf3.pdf', '../../data/ui/attachment/bwfPdf4.pdf', '../../data/ui/attachment/bwfWord1.rtf', '../../data/ui/attachment/bwfWord2.rtf', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf', '../../data/ui/attachment/bwfPdf1.pdf', '../../data/ui/attachment/bwfPdf2.pdf', '../../data/ui/attachment/bwfPdf3.pdf', '../../data/ui/attachment/bwfPdf4.pdf', '../../data/ui/attachment/bwfWord1.rtf', '../../data/ui/attachment/bwfWord2.rtf']);
+        await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf', '../../data/ui/attachment/bwfPdf1.pdf', '../../data/ui/attachment/bwfPdf2.pdf', '../../data/ui/attachment/bwfPdf3.pdf', '../../data/ui/attachment/bwfPdf4.pdf', '../../data/ui/attachment/bwfWord1.rtf', '../../data/ui/attachment/bwfWord2.rtf']);
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        await activityTabPo.addActivityNote('DRDMV-11701,DRDMV-11706 Note');
+        await activityTabPo.addAttachment(['../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf', '../../data/ui/attachment/bwfPdf1.pdf', '../../data/ui/attachment/bwfPdf2.pdf', '../../data/ui/attachment/bwfPdf3.pdf', '../../data/ui/attachment/bwfPdf4.pdf', '../../data/ui/attachment/bwfWord1.rtf', '../../data/ui/attachment/bwfWord2.rtf', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf', '../../data/ui/attachment/bwfPdf1.pdf', '../../data/ui/attachment/bwfPdf2.pdf', '../../data/ui/attachment/bwfPdf3.pdf', '../../data/ui/attachment/bwfPdf4.pdf', '../../data/ui/attachment/bwfWord1.rtf', '../../data/ui/attachment/bwfWord2.rtf']);
+        await activityTabPo.clickOnPostButton();
+        await utilityCommon.waitUntilSpinnerToHide();
         await viewCasePo.clickAttachmentsLink();
-        await expect(await attachmentBladePo.getAttachmentNameCount('articleStatus')).toEqual(6);
+        await expect(await attachmentBladePo.getAttachmentNameCount('articleStatus')).toEqual(9);
         await expect(await attachmentBladePo.getAttachmentSize()).toBe('1 - 50 of 60');
         await attachmentBladePo.clickOnPaginationNextButton();
         await expect(await attachmentBladePo.getAttachmentSize()).toBe('51 - 60 of 60');
@@ -405,8 +409,8 @@ describe("Attachment", () => {
         await attachmentBladePo.clickOnAllCheckboxButton();
         await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[0]}`)).toBeTruthy('File is delete sucessfully');
         await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[1]}`)).toBeTruthy('File is delete sucessfully');
-
         await attachmentBladePo.clickOnDownloadButton();
+        await utilityCommon.acceptOrRejectBrowserPopup(true);
         // Failling here because of mulitple download pop is not get handlled.
         let fileName2: string[] = ['articleStatus', 'bwfJpg'];
         let j: number;

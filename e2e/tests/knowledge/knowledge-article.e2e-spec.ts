@@ -126,10 +126,11 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.setReferenceValue('KnowledgeReference1164' + randomStr)
             await createKnowledgePage.selectKnowledgeSet('HR');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await utilityCommon.waitUntilPopUpDisappear();
             expect(await previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy();
             await previewKnowledgePo.clickOnBackButton();
-            await utilityCommon.refresh();
-            await navigationPage.gotoKnowledgeConsole();
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await utilityGrid.clearFilter();
             await utilityGrid.searchRecord('Knowledge1164' + randomStr);
             expect(await knowledgeConsolePo.isValueDisplayedInGrid('Title')).toContain('Knowledge1164' + randomStr, 'value is not displaying in Grid');
