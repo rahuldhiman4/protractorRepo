@@ -31,8 +31,8 @@ class CaseAccessTab {
         await $$(this.selectors.searchInput).first().clear();
         await $$(this.selectors.searchInput).first().sendKeys(agentName);
         await $$(this.selectors.agents).first().click();
-        await $$(this.selectors.agentAssignWriteAccess).get(1).click();
-        await $$(this.selectors.agentAddButton).get(3).click();
+        await $(this.selectors.agentAssignWriteAccess).click();
+        await $$(this.selectors.agentAddButton).click();
     }
 
     async isAgentNameOrSupportGroupNameDisplayed(agentNameOrSupportGroupName: string): Promise<boolean> {
