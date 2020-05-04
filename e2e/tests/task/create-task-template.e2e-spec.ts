@@ -345,7 +345,7 @@ describe('Create Task Template', () => {
         await expect(viewTaskTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
         await expect(viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
         await expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
-    });//, 180 * 1000);
+    });
 
     it('[DRDMV-7151]: [Automatic Task] - Automatic Task: Social: System Comments', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -429,9 +429,6 @@ describe('Create Task Template', () => {
         
         //Add Automation Task templates in Case
         await viewCasePage.clickOnTab('Case Access');
-        await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-        await caseAccessTabPo.selectCompany('Petramco','Select Company');
-        await caseAccessTabPo.selectSupportGroup('Staffing','Select Support Group');
         await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
         await caseAccessTabPo.selectAgentWithWriteAccess('Qiwei Liu');
         await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
@@ -489,7 +486,7 @@ describe('Create Task Template', () => {
         await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
         await expect(activityTabPo.getTaskActivity('attachment')).toContain('attachment');
         await expect(activityTabPo.getTaskActivity('abcde')).toContain('abcde');
-    }, 340 * 1000);
+    }, 400 * 1000);
 
     //ankagraw Raised Bug 
     it('[DRDMV-3768]: [Task Template Console] Filter menu verification', async () => {
