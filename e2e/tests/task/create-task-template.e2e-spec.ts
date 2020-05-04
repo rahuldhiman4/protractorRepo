@@ -34,7 +34,7 @@ let filePath = '../../data/ui/attachment/bwfPdf.pdf';
 describe('Create Task Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('qkatawazi');
+        await loginPage.login("qkatawazi");
     });
 
     afterAll(async () => {
@@ -378,17 +378,23 @@ describe('Create Task Template', () => {
         await viewTask.clickOnViewCase();
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus();
+        await viewCasePage.clickAddTaskButton();
+        await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
+        await viewTask.clickOnChangeStatus();
+        await updateStatusBladePo.changeStatus('Completed');
+        await updateStatusBladePo.setStatusReason('Successful');
+        await viewTask.clickOnSaveStatus();
+        expect(await viewTask.getTaskStatusValue()).toContain('Completed');
+        await expect(activityTabPo.getAllTaskActivity('Completed')).toContain('Completed');
+        await viewTask.clickOnViewCase();
+        await utilityCommon.clickOnWarningOk();
         await updateStatusBladePo.changeCaseStatus('Resolved');
         await updateStatusBladePo.setStatusReason('Auto Resolved');
         await updateStatusBladePo.clickSaveStatus();
-        await viewCasePage.openTaskCard(1);
-        await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
-        await activityTabPo.getFirstPostContent();
-        await expect(viewTask.getTaskStatusValue()).toBe("Completed");
-        await expect(activityTabPo.getTaskActivity('Assigned')).toBe('Assigned');
-        await expect(activityTabPo.getTaskActivity('In Progress')).toBe('In Progress');
-        await expect(activityTabPo.getTaskActivity('Completed')).toBe('Completed');
-    });//, 180 * 1000);
+        await viewCasePage.clickOnTaskLink(templateData4.templateSummary);
+        await expect(activityTabPo.getTaskActivity('Assigned')).toContain('Assigned');
+        await expect(activityTabPo.getTaskActivity('In Progress')).toContain('In Progress');
+    }, 350 * 1000);
 
     it('[DRDMV-5326]: [Permission] [Task Template] Access to Activity Feed records of the Task created using template', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -416,50 +422,57 @@ describe('Create Task Template', () => {
         await changeAssignmentBladePo.selectSupportGroup('Employee Relations');
         await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Employee Relations');
         await changeAssignmentBladePo.clickOnAssignButton();
+        await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         let caseId = await viewCasePage.getCaseID();
-        //await viewCasePage.clickAddTaskButton();
-
+        
         //Add Automation Task templates in Case
         await viewCasePage.clickOnTab('Case Access');
         await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
         await caseAccessTabPo.selectCompany('Petramco','Select Company');
         await caseAccessTabPo.selectSupportGroup('Staffing','Select Support Group');
+        await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
+        await caseAccessTabPo.selectAgentWithWriteAccess('Qiwei Liu');
+        await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+        await caseAccessTabPo.selectCompany('Petramco','Select Company');
+        await caseAccessTabPo.selectSupportGroup('Staffing','Select Support Group');
         await viewCasePage.clickOnTab('Tasks');
         await viewCasePage.clickAddTaskButton();
-
+        
         //Add Automation Task templates in Case
+        await manageTask.addTaskFromTaskTemplate(`${taskTemplateSummary}`);
         await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
         await expect(viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed")
         await viewTask.clickOnViewCase();
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus();
-        await viewCasePage.openTaskCard(1);
+        await viewCasePage.clickAddTaskButton();
         await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
-        await activityTabPo.getFirstPostContent();
         await viewTask.clickOnEditTask();
         await editTaskPo.clickOnChangeAssignementButton();
         await changeAssignmentBladePo.selectCompany('Petramco');
         await changeAssignmentBladePo.selectSupportGroup('Risk Management');
+        await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Risk Management');
         await changeAssignmentBladePo.clickOnAssignButton();
-        await expect(activityTabPo.getTaskActivity('Risk Management')).toBe('Risk Management');
+        await editTaskPo.clickOnSaveButton();
+        await expect(activityTabPo.getAllTaskActivity('Risk Management')).toContain('Risk Management');
         await activityTabPo.addActivityNote("abcde");
         await activityTabPo.clickOnPostButton();
-        await expect(activityTabPo.getTaskActivity('abcde')).toBe('abcde');
+        await expect(activityTabPo.getTaskActivity('abcde')).toContain('abcde');
         await activityTabPo.addActivityNote("attachment");
-        await activityTabPo.addAttachment(filePath);
+        await activityTabPo.addAttachment([filePath]);
         await activityTabPo.clickOnPostButton();
-        await expect(activityTabPo.getTaskActivity('attachment')).toBe('attachment');
+        await expect(activityTabPo.getTaskActivity('attachment')).toContain('attachment');
         await navigationPage.signOut();
         await loginPage.login('qcolumbcille');
         await navigationPage.gotoTaskConsole();
         await utilityGrid.clearFilter();
-        await taskConsole.setTaskSearchBoxValue(taskTemplateName);
-        expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe("", " Case Id Displayed in Task console");
-        await utilityGrid.searchAndOpenHyperlink(taskTemplateName);
-        await expect(activityTabPo.getTaskActivity('attachment')).toBe('attachment');
-        await expect(activityTabPo.getTaskActivity('abcde')).toBe('abcde');
+        await taskConsole.setTaskSearchBoxValue(`${taskTemplateSummary}`);
+        expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe('', "Case Id Displayed in Task console");
+        await utilityGrid.searchAndOpenHyperlink(`${taskTemplateSummary}`);
+        await expect(activityTabPo.getTaskActivity('attachment')).toContain('attachment');
+        await expect(activityTabPo.getTaskActivity('abcde')).toContain('abcde');
         await navigationPage.signOut();
         await loginPage.login('qliu');
         await navigationPage.gotoCaseConsole();
@@ -470,14 +483,15 @@ describe('Create Task Template', () => {
         await changeAssignmentBladePo.selectSupportGroup('Facilities');
         await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
         await changeAssignmentBladePo.clickOnAssignButton();
+        await editCasePo.clickOnAssignToMe();
         await editCasePo.clickSaveCase();
-        await viewCasePage.openTaskCard(1);
+        await viewCasePage.clickAddTaskButton();
         await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
-        await expect(activityTabPo.getTaskActivity('attachment')).toBe('attachment');
-        await expect(activityTabPo.getTaskActivity('abcde')).toBe('abcde');
-    });//, 240 * 1000);
+        await expect(activityTabPo.getTaskActivity('attachment')).toContain('attachment');
+        await expect(activityTabPo.getTaskActivity('abcde')).toContain('abcde');
+    }, 340 * 1000);
 
-    //ankagraw
+    //ankagraw Raised Bug 
     it('[DRDMV-3768]: [Task Template Console] Filter menu verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'taskTemplateWithYesResolve' + randomStr;
@@ -496,7 +510,10 @@ describe('Create Task Template', () => {
         month[9] = "October";
         month[10] = "November";
         month[11] = "December";
-        var dateFormate = month[createdDate.getMonth()] + " " + createdDate.getDate() + ", " + createdDate.getFullYear() + " " + createdDate.toLocaleTimeString();
+        let dateFormateValue:string = month[createdDate.getMonth()];
+        let dateFormateNew:string = dateFormateValue.substring(0,3);
+        let dateFormate:string = dateFormateNew + " " + createdDate.getDate() + ", " + createdDate.getFullYear() + " " + createdDate.toLocaleTimeString();
+        
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
             .toEqual('Task Templates - Business Workflows');
@@ -514,9 +531,18 @@ describe('Create Task Template', () => {
         await editTaskTemplate.clickOnEditMetadataLink();
         await editTaskTemplate.selectTemplateStatus('Draft');
         await editTaskTemplate.clickOnSaveMetadata();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplateName);
+        await editTaskTemplate.clickOnEditMetadataLink();
+        await editTaskTemplate.selectTemplateStatus('Inactive');
+        await editTaskTemplate.clickOnSaveMetadata();
+     
         let modifiedDate = new Date();
-        let modifiedDateFormate = month[modifiedDate.getMonth()] + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + modifiedDate.toLocaleTimeString();
-
+        let monthValue:string = month[modifiedDate.getMonth()];
+        let modifiedMonthValue = monthValue.substring(0,3);
+        let modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + modifiedDate.toLocaleTimeString();
+        
         let addColoumn: string[] = ['Display ID'];
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
@@ -525,8 +551,8 @@ describe('Create Task Template', () => {
         await utilGrid.addFilter("Support Group", 'Compensation and Benefits', 'text');
         expect(await utilGrid.isGridRecordPresent('Compensation and Benefits')).toBeTruthy('Compensation and Benefits not present');
         await utilGrid.clearFilter();
-        await utilGrid.addFilter("Modified Date", dateFormate + ":" + modifiedDateFormate, 'date');
-        expect(await utilGrid.isGridRecordPresent(`${taskTemplateName}`)).toBeTruthy(`${taskTemplateName}`);
+        await utilGrid.addFilter("Modified Date", dateFormate + "-" + modifiedDateFormate, 'date');
+        expect(await utilGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy(taskTemplateName);
         await utilGrid.clearFilter();
         await utilGrid.addFilter("Template Name", 'Code of Conduct', 'text');
         expect(await utilGrid.isGridRecordPresent('Code of Conduct')).toBeTruthy('Code of Conduct not present');
@@ -541,10 +567,10 @@ describe('Create Task Template', () => {
         expect(await utilGrid.isGridRecordPresent('Draft')).toBeTruthy('Draft not present');
         await utilGrid.clearFilter();
         await utilGrid.addFilter("Template Status", 'Inactive', 'checkbox');
-        expect(await utilGrid.isGridRecordPresent('Inactive')).toBeTruthy('Active not present');
+        expect(await utilGrid.isGridRecordPresent('Inactive')).toBeTruthy('Inactive not present');
         await utilGrid.clearFilter();
         await utilGrid.addFilter("Display ID", taskTemplateId, 'text');
         expect(await utilGrid.isGridRecordPresent(taskTemplateId)).toBeTruthy(taskTemplateId + '  not present');
         await utilGrid.clearFilter();
-    });//, 150 * 1000);
+    });//, 150 * 1000);	
 });

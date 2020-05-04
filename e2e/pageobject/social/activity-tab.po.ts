@@ -55,10 +55,10 @@ class ActivityTabPage {
 
         AttachedfileName: '.activity__wrapper .bwf-attachment-container__file-name',
         refreshButton: '.tab-content .bwf-button-link[aria-label="Refresh"]',
-        attachmentField: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] input[type="file"]',
+        attachmentField: '.attachment-button input[type="file"]',
         showMoreEmailActivity: '.activity__wrapper button[aria-label="Show more"]',
         expandAllAttachmentActivity : '.activity__wrapper .d-icon-plus',
-        allTaskActivity: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .fields .value',
+        allTaskActivity: 'div.activity__body div',
         taskActivity: '.fields .value',
         showMoreLink: 'button[aria-label="Show more"]',
         emailBodyImage: '.email-body img',
@@ -218,10 +218,10 @@ class ActivityTabPage {
         return cellText;
     }
 
-    async addAttachment(fileToUpload: string): Promise<void> {
-        const absolutePath = resolve(__dirname, fileToUpload);
-        console.log(absolutePath);
-        await $(this.selectors.attachmentField).sendKeys(absolutePath);
+    async addAttachment(fileToUpload: string[]): Promise<void> {
+        const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
+        console.log(absPathArray);
+        await $(this.selectors.attachmentField).sendKeys(absPathArray.join('\n'));
     }
 
     async isFileAttachedOnActivity(): Promise<boolean> {
@@ -370,6 +370,7 @@ class ActivityTabPage {
     async addActivityNote(addNoteText: string): Promise<void> {
         await this.clickActivityNoteTextBox();
         await browser.waitForAngularEnabled(false);
+        await browser.sleep(10000);
         await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
         await $('.cke_editable_themed').sendKeys(addNoteText);
         await browser.switchTo().defaultContent();
@@ -540,7 +541,7 @@ class ActivityTabPage {
     async clickOnHyperlinkFromActivity(bodyText: string, authorText: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personLink)));
         //        browser.sleep(3000);
-        var customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='log-item__body']//a[text()="${authorText}"]`;
+        let  customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='activity__body']//a[text()="${authorText}"]`;
         //        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customXpath))));
         await element(by.xpath(customXpath)).click();
         //        await utilCommon.waitUntilSpinnerToHide();

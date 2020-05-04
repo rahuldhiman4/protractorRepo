@@ -971,7 +971,7 @@ describe("Create Case", () => {
             expect(await activityPo.isTextPresentInActivityLog("Assigned Group")).toBeTruthy("Text is not present in activiy tab4");
             expect(await activityPo.isTextPresentInActivityLog("AU Support 1")).toBeTruthy("Text is not present in activiy tab5");
             await activityTabPo.addActivityNote(activityNoteText);
-            await activityTabPo.addAttachment(filePath);
+            await activityTabPo.addAttachment([filePath]);
             await activityTabPo.clickOnPostButton();
             await expect(activityTabPo.isTextPresentInNote(activityNoteText)).toBeTruthy('Private Note is not Added');
             expect(await activityTabPo.isAttachmentInActivity('bwfPdf.pdf')).toBeTruthy('File is not present on activity');

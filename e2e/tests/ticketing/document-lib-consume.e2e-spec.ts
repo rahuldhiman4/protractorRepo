@@ -1422,7 +1422,7 @@ describe('Document Library Consume UI', () => {
             await previewCasePo.clickGoToCaseButton();
             let caseId = await viewCasePo.getCaseID();
             await activityTabPo.addActivityNote(addNoteText);
-            await activityTabPo.addAttachment(excelFile);
+            await activityTabPo.addAttachment([excelFile]);
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[0]);
             await activityTabPo.clickOnAttachLink();
