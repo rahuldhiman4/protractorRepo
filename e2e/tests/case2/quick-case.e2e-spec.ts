@@ -32,8 +32,8 @@ describe("Quick Case", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        // await testData771();
-        // await testData797();
+        await testData771();
+        await testData797();
     });
 
     afterEach(async () => {
