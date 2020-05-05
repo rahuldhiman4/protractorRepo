@@ -249,7 +249,7 @@ describe('Notes template', () => {
         await editNotetemplate.changeLanguageValue('Italian (Italy)');
         await expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
         await editNotetemplate.clickOnCancelButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnWarningOk();
         //await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
@@ -259,7 +259,7 @@ describe('Notes template', () => {
         await editNotetemplate.changeLanguageValue('Italian (Italy)');
         await expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.')
         await editNotetemplate.clickOnCancelButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnWarningOk();
         //await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
@@ -269,7 +269,7 @@ describe('Notes template', () => {
         await editNotetemplate.changeLanguageValue('Italian (Italy)');
         await expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
         await editNotetemplate.clickOnCancelButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnWarningOk();
         //await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
@@ -279,7 +279,7 @@ describe('Notes template', () => {
         await editNotetemplate.changeLanguageValue('Italian (Italy)');
         await expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
         await editNotetemplate.clickOnCancelButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnWarningOk();
         //await utilCommon.waitUntilSpinnerToHide();
     });//, 230 * 1000);
 
@@ -359,6 +359,7 @@ describe('Notes template', () => {
             await apiHelper.apiLogin('franz');
             let newCase1 = await apiHelper.createCase(caseData1);
             let displayId: string = newCase1.displayId;
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await notesTemplateUsage.clickOnRequsterName();
@@ -375,6 +376,7 @@ describe('Notes template', () => {
             let newCase2 = await apiHelper.createCase(caseData2);
             console.log("case is created ===", newCase2.displayId);
             let displayIdnew: string = newCase2.displayId;
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayIdnew);
             await notesTemplateUsage.clickOnRequsterName();
@@ -424,6 +426,7 @@ describe('Notes template', () => {
             await apiHelper.apiLogin('fritz');
             let newCaseTemplate = await apiHelper.createCase(caseData);
             let displayId: string = newCaseTemplate.displayId;
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePage.clickAddTaskButton();
