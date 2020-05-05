@@ -177,12 +177,12 @@ export class Utility {
 
     async waitUntilSpinnerToHide(): Promise<void> {
         try {
-            await browser.wait(this.EC.presenceOf($('.d-preloader')), 5 * 1000);
+            await browser.wait(this.EC.presenceOf($('.d-preloader')), 5000);
             await browser.wait(this.EC.or(async () => {
                 await $$('.d-preloader').each(async function (element) {
                     await element.getAttribute('innerHTML') == null;
                 });
-            }), 7 * 1000);
+            }), 7000);
         } catch (error) {
             console.log('Spinner not present on the page');
         }
@@ -367,7 +367,7 @@ export class Utility {
     async getAllPopupMsg(): Promise<string[]> {
         await browser.waitForAngularEnabled(false);
         let arr: string[] = [];
-        await browser.wait(this.EC.visibilityOf($$(this.selectors.popUpMsgLocator).last()));
+        await browser.wait(this.EC.visibilityOf($$(this.selectors.popUpMsgLocator).last()), 5000);
         let msgLocator = await $$(this.selectors.popUpMsgLocator);
         for (let i: number = 0; i < msgLocator.length; i++) {
             arr[i] = await msgLocator[i].getText();

@@ -98,7 +98,7 @@ node("${NodeName}"){
           '${FILE, path="e2e/reports/spec-jira-report/CycleReport.html"}'
           +
           "</table>",
-        to: "prasad_vidhate@bmc.com;sunil_patil@bmc.com;pravin_ajagunde@bmc.com;tushar_garud@bmc.com;anant_sahitya@bmc.com;swapnil_khobragade_tp@bmc.com;ankush_agrawal_tp@bmc.com;pravin_tidke_tp@bmc.com;kiran_gaikwad_tp@bmc.com;naziya_mujawar@bmc.com;rahul_dhiman_tp@bmc.com;rajan_bangar_tp@bmc.com;apurva_deshmukh_tp@bmc.com;ashish_gabhane@bmc.com;swapnil_yelkar@bmc.com",
+        to: "prasad_vidhate@bmc.com;sunil_patil@bmc.com;pravin_ajagunde@bmc.com;tushar_garud@bmc.com;anant_sahitya@bmc.com;swapnil_khobragade_tp@bmc.com;ankush_agrawal_tp@bmc.com;pravin_tidke_tp@bmc.com;kiran_gaikwad_tp@bmc.com;naziya_mujawar@bmc.com;rahul_dhiman_tp@bmc.com;rajan_bangar_tp@bmc.com;apurva_deshmukh_tp@bmc.com;ashish_gabhane@bmc.com;swapnil_yelkar@bmc.com;sushrut_sawarkar@bmc.com",
         from: "jenkins@noreply",
         attachmentsPattern: '**/*jira-report.csv'
       )

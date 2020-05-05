@@ -77,17 +77,17 @@ class EditKnowledgeAccess {
     }
 
     async clickCloseKnowledgeAccessBlade():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeKnowledgeAccessBlade)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeKnowledgeAccessBlade)), 3000);
         await $(this.selectors.closeKnowledgeAccessBlade).click();
     }
 
     async clickAddSupportGroupAccessButton():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addSupportGroupAccess)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addSupportGroupAccess)), 3000);
         await $(this.selectors.addSupportGroupAccess).click();
     }
 
     async selectSupportGroupWriteAccess():Promise<void>{
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.isWriteAccessCheckbox)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.isWriteAccessCheckbox)), 3000);
         await $(this.selectors.isWriteAccessCheckbox).click();
     }
 
