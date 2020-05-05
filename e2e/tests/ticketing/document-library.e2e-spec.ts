@@ -653,7 +653,7 @@ describe('Document Library', () => {
         expect(await editKnowledgeMetaDataPo.isAttachDocumentBladeDisplayed()).toBeFalsy('Attach Document Blade is displayed');
         await utilityCommon.refresh();
         await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-    });
+    }, 270 * 1000);
 
     //kgaikwad
     it('[DRDMV-13083]: Verify Knowledge Users will not be able to view document Managment link', async () => {
