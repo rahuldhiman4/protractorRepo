@@ -538,7 +538,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 150 * 1000);
+    }, 270 * 1000);//, 150 * 1000);
 
     //ankagraw
     it('[DRDMV-8868]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', async () => {
@@ -567,20 +567,20 @@ describe("Create Case", () => {
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.searchAndOpenCaseTemplate(caseTemplateData.templateName);
-            expect(await caseTemplatePreview.isCaseSummaryHeaderDisplayed('Case Summary')).toBeTruthy();
-            expect(await caseTemplatePreview.isCaseCompanyTitleDisplayed('Case Company')).toBeTruthy();
-            expect(await caseTemplatePreview.isCaseStatusTitleDisplayed('Case Status')).toBeTruthy();
-            expect(await caseTemplatePreview.isCasePriorityTitleDisplayed('Case Priority')).toBeTruthy();
-            expect(await caseTemplatePreview.isCaseCategoryTier1TitleDisplayed('Case Category Tier 1')).toBeTruthy();
-            expect(await caseTemplatePreview.isCaseCategoryTier2TitleDisplayed('Case Category Tier 2')).toBeTruthy();
-            expect(await caseTemplatePreview.isCaseCategoryTier3TitleDisplayed('Case Category Tier 3')).toBeTruthy();
-            expect(await caseTemplatePreview.isCaseCategoryTier4TitleDisplayed('Case Category Tier 4')).toBeTruthy();
-            expect(await caseTemplatePreview.isFlowsetTitleDisplayed('Flowset')).toBeTruthy();
-            expect(await caseTemplatePreview.isLabelTitleDisplayed('Label')).toBeTruthy();
-            expect(await caseTemplatePreview.isCaseDescriptionTitleDisplayed('Case Description')).toBeTruthy();
-            expect(await caseTemplatePreview.isSupportCompanyTitleDisplayed('Support Company')).toBeTruthy();
-            expect(await caseTemplatePreview.isSupportGroupTitleDisplayed('Support Group')).toBeTruthy();
-            expect(await caseTemplatePreview.isAssigneeTitleDisplayed()).toBeTruthy();
+            expect(await caseTemplatePreview.isCaseSummaryHeaderDisplayed('Case Summary')).toBeTruthy('Case Summary is not getting displayed');
+            expect(await caseTemplatePreview.isCaseCompanyTitleDisplayed('Case Company')).toBeTruthy('Case Company is not getting displayed');
+            expect(await caseTemplatePreview.isCaseStatusTitleDisplayed('Case Status')).toBeTruthy('Case Status is not getting displayed');
+            expect(await caseTemplatePreview.isCasePriorityTitleDisplayed('Case Priority')).toBeTruthy('Case Priority is not getting displayed');
+            expect(await caseTemplatePreview.isCaseCategoryTier1TitleDisplayed('Case Category Tier 1')).toBeTruthy('Case Category Tier 1 is not getting displayed');
+            expect(await caseTemplatePreview.isCaseCategoryTier2TitleDisplayed('Case Category Tier 2')).toBeTruthy('Case Category Tier 2 is not getting displayed');
+            expect(await caseTemplatePreview.isCaseCategoryTier3TitleDisplayed('Case Category Tier 3')).toBeTruthy('Case Category Tier 3 is not getting displayed');
+            expect(await caseTemplatePreview.isCaseCategoryTier4TitleDisplayed('Case Category Tier 4 is not getting displayed')).toBeTruthy();
+            expect(await caseTemplatePreview.isFlowsetTitleDisplayed('Flowset')).toBeTruthy('Flowset is not getting displayed');
+            expect(await caseTemplatePreview.isLabelTitleDisplayed('Label')).toBeTruthy('Label is not getting displayed');
+            expect(await caseTemplatePreview.isCaseDescriptionTitleDisplayed('Case Description')).toBeTruthy('Case Description is not getting displayed');
+            expect(await caseTemplatePreview.isSupportCompanyTitleDisplayed('Support Company')).toBeTruthy('Support Company is not getting displayed');
+            expect(await caseTemplatePreview.isSupportGroupTitleDisplayed('Support Group')).toBeTruthy('Support Group is not getting displayed');
+            expect(await caseTemplatePreview.isAssigneeTitleDisplayed()).toBeTruthy('Assignee is not getting displayed');
             expect(await caseTemplatePreview.getCaseTemplateName()).toBe(caseTemplateData.templateName);
             expect(await caseTemplatePreview.getCaseSummary()).toBe(caseTemplateData.templateSummary);
             expect(await caseTemplatePreview.getCaseCompanyValue()).toBe('Petramco');
@@ -595,16 +595,16 @@ describe("Create Case", () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddTaskFromTemplateButton();
             await manageTask.searchTaskAndClickOnLink(templateData.templateName);
-            expect(await taskTemplatePreview.isTaskSummaryTitleDisplayed('Task Summary')).toBeTruthy();
-            expect(await taskTemplatePreview.isTaskCompanyTitleDisplayed('Task Company')).toBeTruthy();
-            expect(await taskTemplatePreview.isTaskPriorityTitleDisplayed('Task Priority')).toBeTruthy();
-            expect(await taskTemplatePreview.isTaskCategoryTier1TitleDisplayed('Task Category Tier 1')).toBeTruthy();
-            expect(await taskTemplatePreview.isTaskCategoryTier2TitleDisplayed('Task Category Tier 2')).toBeTruthy();
-            expect(await taskTemplatePreview.isTaskCategoryTier3TitleDisplayed('Task Category Tier 3')).toBeTruthy();
-            expect(await taskTemplatePreview.isTaskCategoryTier4TitleDisplayed('Task Category Tier 4')).toBeTruthy();
-            expect(await taskTemplatePreview.isTaskTypeTitleDisplayed('Task Type')).toBeTruthy();
-            expect(await taskTemplatePreview.isLabelTitleDisplayed('Label')).toBeTruthy();
-            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed('Task Description')).toBeTruthy();
+            expect(await taskTemplatePreview.isTaskSummaryTitleDisplayed('Task Summary')).toBeTruthy('Task Summary is not getting displayed');
+            expect(await taskTemplatePreview.isTaskCompanyTitleDisplayed('Task Company')).toBeTruthy('Task Company is not getting displayed');
+            expect(await taskTemplatePreview.isTaskPriorityTitleDisplayed('Task Priority')).toBeTruthy('Task Priority is not getting displayed');
+            expect(await taskTemplatePreview.isTaskCategoryTier1TitleDisplayed('Task Category Tier 1')).toBeTruthy('Task Category Tier 1 is not getting displayed');
+            expect(await taskTemplatePreview.isTaskCategoryTier2TitleDisplayed('Task Category Tier 2')).toBeTruthy('Task Category Tier 2 is not getting displayed');
+            expect(await taskTemplatePreview.isTaskCategoryTier3TitleDisplayed('Task Category Tier 3')).toBeTruthy('Task Category Tier 3 is not getting displayed');
+            expect(await taskTemplatePreview.isTaskCategoryTier4TitleDisplayed('Task Category Tier 4')).toBeTruthy('Task Category Tier 4 is not getting displayed');
+            expect(await taskTemplatePreview.isTaskTypeTitleDisplayed('Task Type')).toBeTruthy('Task Type is not getting displayed');
+            expect(await taskTemplatePreview.isLabelTitleDisplayed('Label')).toBeTruthy('Label is not getting displayed');
+            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed('Task Description is not getting displayed')).toBeTruthy();
             expect(await taskTemplatePreview.getTaskTemplateName()).toBe(templateData.templateName);
             expect(await taskTemplatePreview.getTaskSummary()).toBe(templateData.templateSummary);
             expect(await taskTemplatePreview.getTaskCompany()).toBe("Petramco");
@@ -897,7 +897,7 @@ describe("Create Case", () => {
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clearCaseSummary();
             await editCasePage.clickSaveCase();
-            expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
         } catch (error) {
             throw error;
         } finally {
@@ -973,12 +973,12 @@ describe("Create Case", () => {
             await activityTabPo.addActivityNote(activityNoteText);
             await activityTabPo.addAttachment([filePath]);
             await activityTabPo.clickOnPostButton();
-            await expect(activityTabPo.isTextPresentInNote(activityNoteText)).toBeTruthy('Private Note is not Added');
+            await expect(activityTabPo.isTextPresentInActivityLog(activityNoteText)).toBeTruthy('Private Note is not Added');
             expect(await activityTabPo.isAttachmentInActivity('bwfPdf.pdf')).toBeTruthy('File is not present on activity');
             await activityTabPo.addActivityNote(randomStr);
             await activityTabPo.clickPublicCheckbox();
             await activityTabPo.clickOnPostButton();
-            expect(await activityTabPo.isTextPresentInNote(randomStr)).toBeTruthy('Public Note is not Added');
+            expect(await activityTabPo.isTextPresentInActivityLog(randomStr)).toBeTruthy('Public Note is not Added');
             await viewCasePage.clickAttachmentsLink();
             await attachmentBladePage.searchAndSelectCheckBox('bwfPdf');
             expect(await attachmentBladePage.isDownloadButtonEnabled()).toBeTruthy('Download button is disabled');
@@ -991,7 +991,7 @@ describe("Create Case", () => {
             await loginPage.login('qkatawazi');
         }
     }, 270 * 1000);
-    
+
     it('[DRDMV-11700]: Verify  sort on all attachments grid', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -999,19 +999,15 @@ describe("Create Case", () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('adam');
         await createCasePage.setSummary(caseSummary);
-        let fileName: string[] = ['bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf'];
-        for (let i: number = 0; i < fileName.length; i++) {
-            await editCasePage.addDescriptionAttachment(`../../data/ui/attachment/${fileName[i]}`);
-        }
+        await createCasePage.addDescriptionAttachment(['../../data/ui/attachment/bwfPdf.pdf', '../../data/ui/attachment/bwfPdf1.pdf', '../../data/ui/attachment/bwfPdf2.pdf', '../../data/ui/attachment/bwfPdf3.pdf', '../../data/ui/attachment/bwfPdf4.pdf']);
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await activityTabPo.addActivityNote(activityNoteText);
         let fileName1: string[] = ['bwfWord1.rtf', 'bwfWord2.rtf', 'demo.txt', 'bwfJson1.json', 'bwfJson2.json'];
-        const filesToUpload1 = fileName1.map((file)=>{return `../../data/ui/attachment/${file}`});
-        await adhoctaskTemplate.addAttachmentInDescription(filesToUpload1);
+        const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
+        await activityTabPo.addAttachment(filesToUpload1);
         await activityTabPo.clickOnPostButton();
-        await utilCommon.waitUntilSpinnerToHide();
-        await utilCommon.waitUntilSpinnerToHide();
+        await utilityCommon.waitUntilSpinnerToHide();
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickAddAdhocTaskButton();
         expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
@@ -1019,34 +1015,31 @@ describe("Create Case", () => {
         await adhoctaskTemplate.setDescription("Description");
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeTruthy('Attachment button is disabled');
         let fileName2: string[] = ['bwfXsl.xsl', 'bwfXml.xml', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
-        const filesToUpload2 = fileName2.map((file)=>{return `../../data/ui/attachment/${file}`});
+        const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
         await adhoctaskTemplate.addAttachmentInDescription(filesToUpload2);
         await adhoctaskTemplate.clickOnSaveAdhoctask();
         await manageTask.clickOnCloseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await viewCasePage.clickAttachmentsLink();
-        await attachmentBladePage.clickOnColumnHeader('Attachment');
+        await attachmentBladePage.clickOnColumnHeader('Attachment', true);
         expect(await attachmentBladePage.isAttachTableColumnSorted('Attachment', true)).toBeTruthy("Attachment Not Sorted Desecnding");
         await attachmentBladePage.clickOnPaginationNextButton();
-        await attachmentBladePage.clickOnColumnHeader('Attachment');
+        await attachmentBladePage.clickOnColumnHeader('Attachment', false);
         expect(await attachmentBladePage.isAttachTableColumnSorted('Attachment')).toBeTruthy("Attachment Not Sorted Ascending");
-
-        await attachmentBladePage.clickOnColumnHeader('Attached to');
+        await attachmentBladePage.clickOnColumnHeader('Attached to', true);
         expect(await attachmentBladePage.isAttachTableColumnSorted('Attached to', true)).toBeTruthy("Attached to Not Sorted Desecnding");
         await attachmentBladePage.clickOnPaginationNextButton();
-        await attachmentBladePage.clickOnColumnHeader('Attached to');
+        await attachmentBladePage.clickOnColumnHeader('Attached to', false);
         expect(await attachmentBladePage.isAttachTableColumnSorted('Attached to')).toBeTruthy("Attached to Not Sorted Ascending");
-
-        await attachmentBladePage.clickOnColumnHeader('Media type');
+        await attachmentBladePage.clickOnColumnHeader('Media type', true);
         expect(await attachmentBladePage.isAttachTableColumnSorted('Media type', true)).toBeTruthy("Media type Not Sorted Desecnding");
         await attachmentBladePage.clickOnPaginationNextButton();
-        await attachmentBladePage.clickOnColumnHeader('Media type');
+        await attachmentBladePage.clickOnColumnHeader('Media type', false);
         expect(await attachmentBladePage.isAttachTableColumnSorted('Media type')).toBeTruthy("Media type Not Sorted Ascending");
-
-        await attachmentBladePage.clickOnColumnHeader('Created date');
+        await attachmentBladePage.clickOnColumnHeader('Created date', true);
         expect(await attachmentBladePage.isAttachTableColumnSorted('Created date', true)).toBeTruthy("Created date Not Sorted Desecnding");
         await attachmentBladePage.clickOnPaginationNextButton();
-        await attachmentBladePage.clickOnColumnHeader('Created date');
+        await attachmentBladePage.clickOnColumnHeader('Created date', false);
         expect(await attachmentBladePage.isAttachTableColumnSorted('Created date')).toBeTruthy("Created date Not Sorted Ascending");
     }, 400 * 1000);
 });

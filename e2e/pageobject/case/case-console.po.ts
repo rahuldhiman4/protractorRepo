@@ -55,7 +55,7 @@ class CaseConsolePage {
 
     async searchAndOpenCase(caseId: string): Promise<void> {
         await utilityGrid.clearFilter();
-        await utilityGrid.searchAndOpenHyperlink(caseId);
+        await utilityGrid.searchAndOpenHyperlink(caseId, this.selectors.guid);
     }
 
     async isCaseIdPresent(caseId: string): Promise<boolean> {

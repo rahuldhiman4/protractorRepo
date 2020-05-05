@@ -38,8 +38,8 @@ class ComposeMail {
         attachmentField: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .attachment-button input[type="file"]',
         numberIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__numberedlist_icon',
         attachmentView: 'span.bwf-attachment-container__file-name',
-        warningMessage:'.modal-content .modal-body, .modal-content .d-modal__content-item',
-        toCcInput:'.adapt-mt-input-container input',
+        warningMessage: '.modal-content .modal-body, .modal-content .d-modal__content-item',
+        toCcInput: '.adapt-mt-input-container input',
     }
 
     async clickOnTableIcon(): Promise<void> {
@@ -62,8 +62,8 @@ class ComposeMail {
         let locator = `table[summary='${summary}'] tr`;
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame(element(by.css('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame')).getWebElement());
-        let rowLocator = await $$(locator).get(row-1);
-        await rowLocator.$$('td').get(column-1).click();
+        let rowLocator = await $$(locator).get(row - 1);
+        await rowLocator.$$('td').get(column - 1).click();
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
     }
@@ -72,8 +72,8 @@ class ComposeMail {
         await browser.waitForAngularEnabled(false);
         let locator = `table[summary='${summary}'] tr`;
         await browser.switchTo().frame(element(by.css('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame')).getWebElement());
-        let rowLocator = await $$(locator).get(row-1);
-        await rowLocator.$$('td').get(column-1).sendKeys(value);
+        let rowLocator = await $$(locator).get(row - 1);
+        await rowLocator.$$('td').get(column - 1).sendKeys(value);
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
     }
@@ -125,17 +125,17 @@ class ComposeMail {
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame($('.cke_panel.cke_combopanel iframe.cke_panel_frame').getWebElement());
         let locator = `a[title="${value}"]`;
-        await browser.wait(this.EC.elementToBeClickable($(locator)));
+        await browser.wait(this.EC.elementToBeClickable($(locator)), 4000);
         await $(locator).click();
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
     }
 
     async isUserPopulatedInToOrCc(value: string, emailToOrCCValue): Promise<boolean> {
-        if(value=='To'){
+        if (value == 'To') {
             await $$(this.selectors.toCcInput).get(0).clear();
             await $$(this.selectors.toCcInput).get(0).sendKeys(emailToOrCCValue);
-        }else{
+        } else {
             await $$(this.selectors.toCcInput).get(1).clear();
             await $$(this.selectors.toCcInput).get(1).sendKeys(emailToOrCCValue);
         }
@@ -198,11 +198,11 @@ class ComposeMail {
     }
 
     async addAttachment(fileToUpload: string[]): Promise<void> {
-        const absPathArray=fileToUpload.map((curStr)=>{return resolve(__dirname, curStr)});
+        const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
         await $(this.selectors.attachmentField).sendKeys(absPathArray.join('\n'));
     }
 
-  async clickOnSelectTempalteButton(): Promise<void> {
+    async clickOnSelectTempalteButton(): Promise<void> {
         await $(this.selectors.selectEmailTemplateLink).click();
     }
 
@@ -274,27 +274,31 @@ class ComposeMail {
     }
 
     async isSelectEmailTemplateButtonPresent(): Promise<boolean> {
-        return await $(this.selectors.selectEmailTemplateLink).isDisplayed();
+        if (await $(this.selectors.selectEmailTemplateLink).isPresent()) {
+            return await $(this.selectors.selectEmailTemplateLink).isDisplayed();
+        }
+        return $(this.selectors.selectEmailTemplateLink).isPresent();
     }
+
 
     async isComposeEmailUIDisplay(): Promise<boolean> {
         return await $(this.selectors.composeEmailUI).isDisplayed();
     }
 
     async isToOrCCInputTetxboxPresent(value: String): Promise<boolean> {
-        let countNum:number=await $$(`.adapt-mt-input-container`).count();
-        if(value=='To' && countNum==2){
-        return await $$(`.adapt-mt-input-container`).get(0).isDisplayed();
-        }else if(countNum==2){
+        let countNum: number = await $$(`.adapt-mt-input-container`).count();
+        if (value == 'To' && countNum == 2) {
+            return await $$(`.adapt-mt-input-container`).get(0).isDisplayed();
+        } else if (countNum == 2) {
             return await $$(`.adapt-mt-input-container`).get(1).isDisplayed();
         }
     }
 
     async setToOrCCInputTetxbox(value: String, emailIdForToOrCc: string): Promise<void> {
-        if(value=='To'){
+        if (value == 'To') {
             await $$(this.selectors.toCcInput).get(0).clear();
             await $$(this.selectors.toCcInput).get(0).sendKeys(emailIdForToOrCc);
-        }else{
+        } else {
             await $$(this.selectors.toCcInput).get(1).clear();
             await $$(this.selectors.toCcInput).get(1).sendKeys(emailIdForToOrCc);
         }

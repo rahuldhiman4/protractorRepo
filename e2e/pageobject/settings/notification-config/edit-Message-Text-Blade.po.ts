@@ -81,7 +81,7 @@ class EditMessageTextBlade {
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame($('.cke_panel.cke_combopanel iframe.cke_panel_frame').getWebElement());
         let locator = `a[title="${value}"]`;
-        await browser.wait(this.EC.elementToBeClickable($(locator)));
+        await browser.wait(this.EC.elementToBeClickable($(locator)), 3000);
         await $(locator).click();
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
