@@ -489,6 +489,7 @@ describe('Email', () => {
         await apiHelper.apiLogin('fritz');
         var newCaseTemplate = await apiHelper.createCase(caseData);
         var displayId: string = newCaseTemplate.displayId;
+        await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePo.clickAddTaskButton();
