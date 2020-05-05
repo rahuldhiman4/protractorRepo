@@ -31,6 +31,7 @@ export enum Knowledge {
 export enum MenuItemStatus {
     Active = 0,
     Inactive = 5,
+    Deprecated = 10 
 }
 
 export enum NotificationType {
