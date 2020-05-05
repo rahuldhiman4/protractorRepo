@@ -5,7 +5,7 @@ import utilityCommon from '../../utils/utility.common';
 class ViewTask {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        statusDropDown: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"]',
+        statusDropDown: '8b4cef48-0a4c-4ec1-bc4c-cce47179c964',
         saveStatus: '[rx-view-component-id="6759ba60-df0d-4d5e-8eb9-5101490fd4d4"] button',
         cancleStatus: '[rx-view-component-id="debcdc88-fb42-4003-96d6-1eeb807206b7"] button',
         allStatus: '.dropdown_select__menu .dropdown-item',
