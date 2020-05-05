@@ -80,7 +80,6 @@ describe('Knowledge Article', () => {
         finally {
             await navigationPage.signOut();
             await loginPage.login('peter');
-            await utilCommon.waitUntilSpinnerToHide();
         }
     });//, 140 * 1000);
 
@@ -104,10 +103,6 @@ describe('Knowledge Article', () => {
         }
         catch (e) {
             throw e;
-        }
-        finally {
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
         }
     });
 
@@ -139,13 +134,13 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
     });//, 200 * 1000);
 
     //ptidke
+    //Bug='DRDMV-21644
     it('[DRDMV-2374]: [Edit Knowledge Article] Article creation not possible by selecting disabled templates', async () => {
         try {
             await navigationPage.gotoSettingsPage();
@@ -165,8 +160,7 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         }
     });
 
@@ -194,6 +188,8 @@ describe('Knowledge Article', () => {
     //ptidke
     it('[DRDMV-3095]: Submitter can cancel the article from Draft status_Submitter is assignee', async () => {
         try {
+            await apiHelper.apiLogin("tadmin");
+            apiHelper.deleteKnowledgeApprovalMapping();
             let knowledgeTitile = 'knowledge3095' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);
             let articleData = {
@@ -209,20 +205,20 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(displayID);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(displayID);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status Not set');
-            await editKnowledgePage.setKnowledgeStatus('Canceled');
+            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status Not set');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with contributor
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile1 = 'knowledgeContributor3095' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);
@@ -235,18 +231,18 @@ describe('Knowledge Article', () => {
                 "company": "Petramco"
             }
             let kkohriId = await apiHelper.createKnowledgeArticle(articleData1);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(kkohriId.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(kkohriId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status Not set');
-            await editKnowledgePage.setKnowledgeStatus('Canceled');
+            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status Not set');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile2 = 'knowledgePublisher3095' + randomStr;
             await apiHelper.apiLogin(knowledgePublisherUser);
@@ -260,18 +256,18 @@ describe('Knowledge Article', () => {
             }
             let kmillsId = await apiHelper.createKnowledgeArticle(articleData2);
             console.log(kmillsId);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(kmillsId.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(kmillsId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status Not set');
-            await editKnowledgePage.setKnowledgeStatus('Canceled');
+            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status Not set');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
-            //login with publisher
+            //login with coach
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile3 = 'knowledgeCoachUser3095' + randomStr;
             await apiHelper.apiLogin(knowledgeCoachUser);
@@ -284,13 +280,13 @@ describe('Knowledge Article', () => {
                 "company": "Petramco"
             }
             let kWilliamsonId = await apiHelper.createKnowledgeArticle(articleData3);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(kWilliamsonId.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(kWilliamsonId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status Not set');
-            await editKnowledgePage.setKnowledgeStatus('Canceled');
+            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status Not set');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
         catch (e) {
             throw e;
@@ -330,6 +326,8 @@ describe('Knowledge Article', () => {
     //ptidke
     it('[DRDMV-3093]: Submitter can cancel the article from In Progress status_Submitter is assignee', async () => {
         try {
+            await apiHelper.apiLogin("tadmin");
+            apiHelper.deleteKnowledgeApprovalMapping();
             let knowledgeTitile = 'knowledge3093' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);
             let articleData = {
@@ -344,18 +342,18 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
-            await editKnowledgePage.setKnowledgeStatus('Canceled');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
+            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status not Set');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with contributor
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile1 = 'knowledgeContributor3093' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);
@@ -368,16 +366,16 @@ describe('Knowledge Article', () => {
                 "company": "Petramco"
             }
             let kkohriId = await apiHelper.createKnowledgeArticle(articleData1);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(kkohriId.displayId);
-            await editKnowledgePage.setKnowledgeStatus('Canceled');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(kkohriId.displayId);
+            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status Not set');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile2 = 'knowledgePublisher3093' + randomStr;
             await apiHelper.apiLogin(knowledgePublisherUser);
@@ -390,16 +388,16 @@ describe('Knowledge Article', () => {
                 "company": "Petramco"
             }
             let kmillsId = await apiHelper.createKnowledgeArticle(articleData2);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(kmillsId.displayId);
-            await editKnowledgePage.setKnowledgeStatus('Canceled');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(kmillsId.displayId);
+            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status not set');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile3 = 'knowledgeCoachUser3093' + randomStr;
             await apiHelper.apiLogin(knowledgeCoachUser);
@@ -412,11 +410,11 @@ describe('Knowledge Article', () => {
                 "company": "Petramco"
             }
             let kWilliamsonId = await apiHelper.createKnowledgeArticle(articleData3);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(kWilliamsonId.displayId);
-            await editKnowledgePage.setKnowledgeStatus('Canceled');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(kWilliamsonId.displayId);
+            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status not set');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
         catch (e) {
             throw e;
@@ -428,6 +426,7 @@ describe('Knowledge Article', () => {
     }, 380 * 1000);
 
     //ptidke
+    //Bug("DRDMV-21601")
     it('[DRDMV-2586]: [Flag an Article] Flag an article and post a comment', async () => {
         try {
             let knowledgeTitile = 'knowledge2586' + randomStr;
@@ -444,20 +443,19 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(KADetails.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             await navigationPage.signOut();
             //login with contributor
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile1 = 'knowledgeContributor2586' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);
@@ -470,18 +468,17 @@ describe('Knowledge Article', () => {
                 "company": "Petramco"
             }
             let kkohriId = await apiHelper.createKnowledgeArticle(articleData1);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(kkohriId.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(kkohriId.displayId);
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(kkohriId.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile2 = 'knowledgePublisher2586' + randomStr;
             await apiHelper.apiLogin(knowledgePublisherUser);
@@ -494,18 +491,17 @@ describe('Knowledge Article', () => {
                 "company": "Petramco"
             }
             let kmillsId = await apiHelper.createKnowledgeArticle(articleData2);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(kmillsId.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(kmillsId.displayId);
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(kmillsId.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile3 = 'knowledgeCoachUser2586' + randomStr;
             await apiHelper.apiLogin(knowledgeCoachUser);
@@ -518,13 +514,12 @@ describe('Knowledge Article', () => {
                 "company": "Petramco"
             }
             let kWilliamsonId = await apiHelper.createKnowledgeArticle(articleData3);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(kWilliamsonId.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(kWilliamsonId.displayId);
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(kWilliamsonId.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
         }
         catch (e) {
             throw e;
@@ -533,30 +528,38 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 300 * 1000);
+    }, 400 * 1000);
 
     it('[DRDMV-1064]:[Create Mode] Removing sections with the Remove button', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates');
-        await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
-        await createKnowledgeArticleTemplatePo.setTemplateName('template1064' + randomStr);
-        await createKnowledgeArticleTemplatePo.clickOnAddSection();
-        await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
-        await createKnowledgeArticleTemplatePo.setSectionTitle('First' + randomStr);
-        await editKnowledgeArticleTemplatePo.clickOnCancelButton();
-        expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
-        expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
-        expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
-        await utilCommon.clickOnWarningOk();
-        await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
-        await createKnowledgeArticleTemplatePo.setTemplateName('template1064' + randomStr);
-        await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
-        await createKnowledgeArticleTemplatePo.clickOnAddSection();
-        await createKnowledgeArticleTemplatePo.setDescription('DescriptionOFKA');
-        await createKnowledgeArticleTemplatePo.setSectionTitle('Second' + randomStr);
-        await createKnowledgeArticleTemplatePo.clickOnSaveButton();
-        await utilGrid.searchAndOpenHyperlink('template1064' + randomStr);
-        expect(await editKnowledgeArticleTemplatePo.getSectionTitleValue('First' + randomStr)).toBeFalsy('removed section is Present');
+        try {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates');
+            await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
+            await createKnowledgeArticleTemplatePo.setTemplateName('template1064' + randomStr);
+            await createKnowledgeArticleTemplatePo.clickOnAddSection();
+            await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
+            await createKnowledgeArticleTemplatePo.setSectionTitle('First' + randomStr);
+            await editKnowledgeArticleTemplatePo.clickOnCancelButton();
+            expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
+            expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
+            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            await utilCommon.clickOnWarningOk();
+            await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
+            await createKnowledgeArticleTemplatePo.setTemplateName('template1064' + randomStr);
+            await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
+            await createKnowledgeArticleTemplatePo.clickOnAddSection();
+            await createKnowledgeArticleTemplatePo.setDescription('DescriptionOFKA');
+            await createKnowledgeArticleTemplatePo.setSectionTitle('Second' + randomStr);
+            await createKnowledgeArticleTemplatePo.clickOnSaveButton();
+            await utilGrid.searchAndOpenHyperlink('template1064' + randomStr);
+            expect(await editKnowledgeArticleTemplatePo.getSectionTitleValue('First' + randomStr)).toBeFalsy('removed section is Present');
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        }
     });
 
     it('[DRDMV-2444]: KA Console - Article Navigation', async () => {
@@ -570,12 +573,7 @@ describe('Knowledge Article', () => {
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         let knowledgeDisplayID = knowledgeArticleData.displayId;
         await navigationPage.gotoKnowledgeConsole();
-        await utilityGrid.clearFilter();
         expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-        await utilityGrid.clearFilter();
-        await utilityGrid.searchAndOpenHyperlink(knowledgeDisplayID);
-        expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
-        await navigationPage.gotoKnowledgeConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(knowledgeDisplayID);
         expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit link is not displaying');
@@ -598,8 +596,8 @@ describe('Knowledge Article', () => {
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.gotoKnowledgeConsole();
-        await utilGrid.clearFilter();
-        await utilGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         await editKnowledgePage.clickChangeAssignmentButton();
         await changeAssignmentBladePo.clickOnAssignToMeCheckBox();
@@ -629,14 +627,14 @@ describe('Knowledge Article', () => {
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.gotoKnowledgeConsole();
-        await utilGrid.clearFilter();
-        await utilGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         await editKnowledgePage.clickChangeAssignmentButton();
-        expect(await changeAssignmentBladePo.isCompanyDrpDwnDisplayed()).toBeTruthy();
-        expect(await changeAssignmentBladePo.isAssignToMeCheckBoxPresent()).toBeTruthy();
-        expect(await changeAssignmentBladePo.isSupportGroupDrpDwnDisplayed()).toBeTruthy();
-        expect(await changeAssignmentBladePo.isSearchInputBoxPresent()).toBeTruthy();
+        expect(await changeAssignmentBladePo.isCompanyDrpDwnDisplayed()).toBeTruthy("Company dropdown not displayed");
+        expect(await changeAssignmentBladePo.isSupportGroupDrpDwnDisplayed()).toBeTruthy("SupportGroup dropdown not displayed");
+        expect(await changeAssignmentBladePo.isSearchInputBoxPresent()).toBeTruthy("Search Box not present");
+        expect(await changeAssignmentBladePo.isAssignToMeCheckBoxSelected()).toBeFalsy("AssignToMe checkbox shouldbe unchecked");
         await changeAssignmentBladePo.selectCompany('Petramco');
         await changeAssignmentBladePo.selectSupportGroup('Compensation and Benefits');
         await changeAssignmentBladePo.selectAssignee('Peter Kahn');
@@ -658,14 +656,14 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
         await createKnowledgePage.setReferenceValue('Refrence values');
         await createKnowledgePage.clickOnDiscardButton();
-        await utilCommon.clickOnWarningCancel();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("No");
         expect(await createKnowledgePage.getKnowledgeSetValue()).toContain('HR', 'expected Value not present');
         expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitle, 'expected Value not present');
         await createKnowledgePage.clickOnDiscardButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
-        await utilGrid.clearFilter();
-        await utilGrid.searchRecord(knowledgeTitle);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchRecord(knowledgeTitle);
         expect(await knowledgeConsolePo.isValueDisplayedInGrid('Title') == knowledgeTitle).toBeFalsy('KA is present');
     });
 
@@ -717,8 +715,8 @@ describe('Knowledge Article', () => {
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.gotoKnowledgeConsole();
-        await utilGrid.clearFilter();
-        await utilGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
         await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
         await feedbackBladeKnowledgeArticlePo.selectFlag(true);
         await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
@@ -746,14 +744,13 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.selectCategoryTier3Option('Payment');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('full view of article is not displayed');
         }
         catch (e) {
             throw e;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
@@ -792,8 +789,8 @@ describe('Knowledge Article', () => {
             let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleDataFirst);
             let knowledgeArticleDataSecond = await apiHelper.createKnowledgeArticle(articleDataSecond);
             await navigationPage.gotoKnowledgeConsole()
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.selectFlag(true);
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
@@ -804,8 +801,8 @@ describe('Knowledge Article', () => {
             expect(await activityTabPo.getFirstPostContent()).toContain('Peter Kahn flagged the article', 'content not displaying on Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
             await navigationPage.gotoKnowledgeConsole();
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(knowledgeArticleDataSecond.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleDataSecond.displayId);
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(knowledgeTitileSecond);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
@@ -815,9 +812,9 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(knowledgeArticleDataSecond.displayId);
+            await utilityCommon.switchToNewTab(1);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleDataSecond.displayId);
             await viewKnowledgeArticlePo.clickOnUnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(knowledgeTitileSecond);
             await flagUnflagKnowledgePo.clickOnUnFlageButtonOnBlade();
@@ -825,11 +822,11 @@ describe('Knowledge Article', () => {
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills unflagged the article', 'content not displaying on Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitileSecond, 'content not displaying on Activity');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+            await utilityCommon.switchToNewTab(1);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             await viewKnowledgeArticlePo.clickOnUnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(knowledgeTitile);
             await flagUnflagKnowledgePo.clickOnUnFlageButtonOnBlade();
@@ -837,7 +834,6 @@ describe('Knowledge Article', () => {
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills unflagged the article', 'content not displaying on Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         } catch (e) {
             throw e;
         }
@@ -864,33 +860,32 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
             await navigationPage.gotoKnoweldgeConsoleFromKM();
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
             await editKnowledgePage.setKnowledgeStatus('Published');
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
             await navigationPage.gotoKnoweldgeConsoleFromKM();
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
             await editKnowledgePage.setKnowledgeStatus('Closed');
             expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
             await navigationPage.gotoKnoweldgeConsoleFromKM();
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(KADetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
             expect(await viewKnowledgeArticlePo.isStatusChangeBladePresent()).toBeFalsy('status changes blade is peresent');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with coach
-            let knowledgeTitilecoach = 'knowledge2746' + randomStr;
             await apiHelper.apiLogin(knowledgeCoachUser);
             let articleDataCoach = {
                 "knowledgeSet": "HR",
@@ -903,29 +898,29 @@ describe('Knowledge Article', () => {
             let KACoachDetails = await apiHelper.createKnowledgeArticle(articleDataCoach);
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
             await navigationPage.gotoKnoweldgeConsoleFromKM();
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
 
             await editKnowledgePage.setKnowledgeStatus('Published');
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
             await navigationPage.gotoKnoweldgeConsoleFromKM();
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
 
             await editKnowledgePage.setKnowledgeStatus('Closed');
             expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
             await navigationPage.gotoKnoweldgeConsoleFromKM();
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
             expect(await viewKnowledgeArticlePo.isStatusChangeBladePresent()).toBeFalsy('status changes blade is peresent');
         }
@@ -933,7 +928,6 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
@@ -956,7 +950,7 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
         await createKnowledgePage.setReferenceValue('reference values are as follows');
         await createKnowledgePage.clickChangeTemplateButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await createKnowledgePage.clickOnTemplate('Question');
         expect(createKnowledgePage.getTemplatePreviewText()).toContain('Question', 'Preview is not present');
         expect(createKnowledgePage.isKnoledgeSetTemplateIsDisplayed()).toBeTruthy('style is not present');
@@ -964,7 +958,7 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.setValueInRTF('Question', 'frist values are as follows');
         await createKnowledgePage.clickChangeTemplateButton();
         await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitile);
-        await utilCommon.clickOnWarningCancel();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("No");
         expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitile, 'expected Value not present');
         await createKnowledgePage.selectKnowledgeSet('HR');
         await createKnowledgePage.clickOnSaveKnowledgeButton();

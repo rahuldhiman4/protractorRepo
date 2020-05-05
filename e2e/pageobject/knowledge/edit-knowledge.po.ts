@@ -47,7 +47,6 @@ class EditKnowledgePage {
         await $(this.selectors.statusChange).click();
         await utilityCommon.selectDropDown('6f8e4177-cad6-4d59-9467-074b688aa06e', newStatus);
         await $(this.selectors.statusSaveBtn).click();
-        //await utilCommon.waitUntilPopUpDisappear();
     }
 
     async getStatusValue(): Promise<string> {
