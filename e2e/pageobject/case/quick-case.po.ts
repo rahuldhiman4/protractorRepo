@@ -21,13 +21,13 @@ class QuickCasePage {
         requesters: '.bwf-select-list .bwf-selectable-list-item',
         pinFirstRecommendedCase: 'svg.adapt-icon',
         requester: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .ac-person-full-name',
-        arrowFirstRecommendedCase: '[class="bwf-search-result ng-tns-c36-9 ng-star-inserted"] .list__item__preview-icon',
-        arrowFirstRecommendedKnowledge: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"] .list__item__preview-icon .adapt-icon',
+        arrowFirstRecommendedCase: '[rx-view-component-id="b01aa3f3-0371-4b7e-a956-b1cf025927d6"] .list__item__preview-icon',
+        arrowFirstRecommendedKnowledge: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"] .list__item__preview-icon',
         roleDropDown: '.sr-preview-pane .sr-preview-item-header .btn-secondary',
         sourceValue: '.sr-select-bar .btn-xs',
         roleValue: '.select_option_container span',
         descriptionText: '.sr-input-wrapper .large',
-        resources: 'bwf-smart-recorder-results .d-icon-infinity',
+        resources: 'bwf-smart-recorder-results div.sr-result-placeholder div',
         advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select label',
         startOverButton: '.sr-footer .text-muted .btn-secondary',
         recommendedKnowledge: 'bwf-search-result-fields .bwf-search-fields__title-text',
@@ -144,8 +144,8 @@ class QuickCasePage {
     }
 
     async clickArrowFirstRecommendedCase(): Promise<void> {
-        // await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
-        await element(by.xpath(this.selectors.arrowFirstRecommendedCase)).click();
+        //await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.arrowFirstRecommendedCase))));
+        await element(by.css(this.selectors.arrowFirstRecommendedCase)).click();
     }
 
     async clickArrowFirstRecommendedKnowledge(): Promise<void> {
@@ -191,11 +191,11 @@ class QuickCasePage {
     }
 
     async getDescriptionDetails(): Promise<string> {
-        return await $(this.selectors.descriptionText).getAttribute('aria-label');
+        return browser.element(by.css(this.selectors.descriptionText)).getText();
     }
 
     async getResourcesText(): Promise<string> {
-        return await $(this.selectors.resources).getText();
+        return await $$(this.selectors.resources).get(1).getText();
     }
 
     async selectRoleValue(value: string): Promise<void> {

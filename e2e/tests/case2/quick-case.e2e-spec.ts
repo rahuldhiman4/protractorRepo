@@ -146,7 +146,7 @@ describe("Quick Case", () => {
         await quickCase.selectRequesterName('brain');
         expect(await quickCase.getDrpDownValueByIndex(4)).toBe('Related to');
         await quickCase.selectDrpDownValueByIndex('Target', 1);
-        expect(await quickCase.isCreateButtonDisabled()).toBeFalsy('Save button Enabled');
+        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy('Save button Enabled');
         await quickCase.selectRequesterName('kye');
         expect(await quickCase.getDrpDownValueByIndex(5)).toBe('The requester of the case');
         expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Target');
@@ -620,7 +620,7 @@ describe("Quick Case", () => {
         await resources.selectAdvancedSearchFilterOption('Site','Canberra');
         await resources.clickOnAdvancedSearchFiltersButton('Apply');
         expect(await quickCasePo.getKnowledgeArticleID()).toContain('KA-', 'KA ID not correct');
-        expect(await quickCasePo.getKnowledgeArticleInfo()).toContain('knowledge35428j8lf38xb8', 'title not correct');
+        expect(await quickCasePo.getKnowledgeArticleInfo()).toContain(knowledgeTitile, 'title not correct');
         expect(await quickCasePo.getKnowledgeArticleInfo()).toContain('Fritz Schulz', 'Author not correct');
         expect(await quickCasePo.getKnowledgeArticleInfo()).toContain('In Progress', 'status not correct');
         expect(await quickCasePo.getKnowledgeArticleInfo()).toContain(dateFormate, 'KA ID not correct');
@@ -657,8 +657,8 @@ describe("Quick Case", () => {
     //ptidke
     it('[DRDMV-773]: [Quick Case] Case template selection via !', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName = randomStr + 'caseTemplateDRDMV773Active';
-        let casTemplateSummary = randomStr + 'CaseSummaryDRDMV773Active';
+        let caseTemplateName = randomStr + 'template773Active';
+        let casTemplateSummary = randomStr + 'CaseSummary773Active';
         let templateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${casTemplateSummary}`,
@@ -671,7 +671,7 @@ describe("Quick Case", () => {
         await apiHelper.apiLogin('fritz');
         await apiHelper.createCaseTemplate(templateData);
 
-        let caseTemplateDraft = randomStr + 'caseTemplateDraftDRDMV-773';
+        let caseTemplateDraft = randomStr + 'templateDraft773';
         let casTemplateSummaryDraft = randomStr + 'caseTemplateDraftSummaryDRDMV-773';
         let templateDataDraft = {
             "templateName": `${caseTemplateDraft}`,
@@ -685,7 +685,7 @@ describe("Quick Case", () => {
         await apiHelper.apiLogin('fritz');
         await apiHelper.createCaseTemplate(templateDataDraft);
 
-        let caseTemplatePsilon = randomStr + 'caseTemplatePsilonDRDMV773';
+        let caseTemplatePsilon = randomStr + 'templatePsilon773';
         let casTemplateSummaryPsilon = randomStr + 'caseTemplatePsilonSummaryDRDMV773';
         let templateDataPsilon = {
             "templateName": `${caseTemplatePsilon}`,
@@ -712,7 +712,7 @@ describe("Quick Case", () => {
         expect(await quickCase.selectCaseTemplate(caseTemplateDraft)).toBeFalsy('template is present');
     }, 500 * 1000);
 
-    //ptidke
+    //ptidke raised defect DRDMV-21664
     it('[DRDMV-741]: [Quick Case] UI validation including Source field in Quick Case', async () => {
         let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -750,7 +750,6 @@ describe("Quick Case", () => {
         expect(await quickCase.isValuePresentInSourceDropDown(activeSourceNotUI)).toBeFalsy(activeSourceNotUI + 'is present');
     });
 
-    // Failed due to defect
     //ankagraw
     it('[DRDMV-796]: [Quick Case] Resources preview', async () => {
         let userData1 = {
@@ -763,7 +762,6 @@ describe("Quick Case", () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = randomStr + 'caseTemplateName';
         let casTemplateSummary = 'CaseSummaryName' + randomStr;
-        let knowledgeTitile = 'knowledge2985' + randomStr;
         let manualTaskTemplateData = {
             "templateName": `manualTaskTemplateDraft ${randomStr}`,
             "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
@@ -797,12 +795,13 @@ describe("Quick Case", () => {
 
         let knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'SMEReview', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Published')).toBeTruthy('Status Not Set');
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'SMEReview', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qkatawazi', 'Compensation and Benefits','Petramco')).toBeTruthy('Status Not Set');
 
         await navigationPage.gotoQuickCase();
-        await quickCase.selectRequesterName('Person1');
+        await quickCase.selectRequesterName('adam');
         await quickCase.selectCaseTemplate(`${caseTemplateName}`);
+        await quickCase.setCaseSummary(`${caseTemplateName}`);
         await quickCase.clickArrowFirstRecommendedCase();
         expect(await previewCaseTemplateCasesPo.getCaseSummary()).toBe(`${casTemplateSummary}`);
         expect(await previewCaseTemplateCasesPo.getCaseStatus()).toBe("In Progress");
@@ -816,15 +815,13 @@ describe("Quick Case", () => {
         expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
         await previewKnowledgePo.clickOnBackButton();
         await quickCase.createCaseButton();
-        expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
-        expect(await previewCasePo.isRequesterNameDisplayed('Person1 Person1')).toBeTruthy();
+        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+        expect(await previewCasePo.isRequesterNameDisplayed('Adam Pavlik')).toBeTruthy();
         expect(await previewCasePo.isCaseSummaryDisplayed(`${caseTemplateName}`)).toBeTruthy();
         expect(await previewCasePo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();
-        expect(await previewCasePo.isRequesterEmailIdDisplayed('test@petramco.com')).toBeTruthy();
-        expect(await previewCasePo.isDescriptionDisplayed('Person1 Person1 2bvfcaseTemplateName')).toBeTruthy();
-        await previewCasePo.clickOncreateNewCaseButton();
-        expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
-    }, 480 * 1000);
+        expect(await previewCasePo.isRequesterEmailIdDisplayed('apavlik@petramco.com')).toBeTruthy();
+        expect(await previewCasePo.isDescriptionDisplayed('Adam Pavlik '+ `${caseTemplateName}`)).toBeTruthy();
+    }, 500 * 1000);
 
     //radhiman
     it('[DRDMV-18972]: Populating fields in Quick Case if only Required parameter is specified', async () => {
@@ -867,7 +864,6 @@ describe("Quick Case", () => {
     });
 
     //radhiman
-    //Bug('DRDMV-21607)
     it('[DRDMV-18980]: Populating fields in Quick Case with Required and one optional parameter', async () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18980';
@@ -896,7 +892,6 @@ describe("Quick Case", () => {
     });
 
     //radhiman
-    //Bug(DRDMV-21151)
     it('[DRDMV-18983]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18983';
