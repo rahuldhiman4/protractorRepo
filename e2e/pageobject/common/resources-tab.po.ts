@@ -1,4 +1,4 @@
-import { $, $$, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
+import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
 
 export class Resources {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -47,19 +47,20 @@ export class Resources {
     }
 
 
-    async selectAdvancedSearchFilterOption(searchFilter: string ,searchFilterOption: string): Promise<void> {
-        const advancedSearchFilterDropDown = await element(by.xpath(`//label[contains(text(),'${searchFilter}')]/parent::div/following-sibling::button`));
-        const advancedSearchFilterInput = await element(by.css("input[placeholder='Filter options']"));
-        const advancedSearchFilterOption = await element(by.css('button[role="option"]'));
-        //        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterDropDown));
-        await advancedSearchFilterDropDown.click();
-        //        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterInput));
-        await advancedSearchFilterInput.sendKeys(searchFilterOption);
-        //        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterOption));
-        await advancedSearchFilterOption.click();
+    async selectAdvancedSearchFilterOption(dropDownLabel: string, dropDownValue: string): Promise<void> {
+        await browser.wait(this.EC.presenceOf($$('.dropdown.dropdown_select').last()), 5000);
+        const dropDown: ElementFinder[] = await $$('.dropdown.dropdown_select');
+        for (let i: number = 0; i < dropDown.length; i++) {
+            let dropDownLabelText: string = await dropDown[i].$('.form-control-label').getText();
+            if (dropDownLabelText === dropDownLabel) {
+                await dropDown[i].$('button').click();
+                await dropDown[i].$('input').sendKeys(dropDownValue);
+                await element(by.cssContainingText('[role="option"] span', dropDownValue)).click();
+            }
+        }
     }
 
-    async isAdvancedSearchFilterOptionDropDownValueDisplayed(data: string[],dropDownNumber:number): Promise<boolean> {
+    async isAdvancedSearchFilterOptionDropDownValueDisplayed(data: string[], dropDownNumber: number): Promise<boolean> {
         let arr: string[] = [];
         await $$('.advance-search button.dropdown-toggle').get(dropDownNumber).click();
         let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
@@ -100,4 +101,5 @@ export class Resources {
         }
     }
 }
+
 export default new Resources();
