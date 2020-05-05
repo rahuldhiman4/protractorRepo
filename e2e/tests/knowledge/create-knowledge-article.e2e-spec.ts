@@ -14,7 +14,6 @@ import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-bla
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
 
@@ -88,7 +87,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.clickAssignToMeButton();
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             await editKnowledgePage.verifyKnowledgeMetadata('Assignee', 'Qadim Katawazi');
             await editKnowledgePage.verifyKnowledgeMetadata('Assigned Group', 'Compensation and Benefits');
         }
@@ -96,9 +95,6 @@ describe('Knowledge Article', () => {
             throw error;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
@@ -119,9 +115,9 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             await editKnowledgePage.setKnowledgeStatus(knowledgeData.DraftStatus);
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilityCommon.waitUntilPopUpDisappear();
             await editKnowledgePage.setKnowledgeStatusWithoutSave(knowledgeData.ReviewStatus);
             expect(await editKnowledgePage.isReviewerCompanyFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
             expect(await editKnowledgePage.isReviewerBusinessUnitFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
@@ -139,14 +135,14 @@ describe('Knowledge Article', () => {
             await changeAssignmentBlade.clickOnAssignButton();
             await browser.sleep(1000);
             await editKnowledgePage.clickSaveStatusBtn();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilityCommon.waitUntilPopUpDisappear();
             await editKnowledgePage.isReviewPendingButtonDisplayed();
         }
         catch (error) {
             throw error;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         }
     });
 
@@ -165,10 +161,9 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.clickChangeAssignmentButton();
-            await changeAssignmentBlade.isAssignToMeCheckBoxPresent();
             await changeAssignmentBlade.isCompanyDrpDwnDisplayed();
             await changeAssignmentBlade.isBuisnessUnitDrpDwnDisplayed();
             await changeAssignmentBlade.isDepartmentDrpDwnDisplayed();
@@ -188,7 +183,7 @@ describe('Knowledge Article', () => {
             throw error;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         }
     });//, 240 * 1000);
 
@@ -203,7 +198,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.DraftStatus);
             await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.PublishedStatus);
             await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.RetiredStatus);
@@ -213,7 +208,7 @@ describe('Knowledge Article', () => {
             throw error;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         }
     });
 
@@ -228,10 +223,10 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
         await createKnowledgePage.clickChangeAssignmentButton();
-        await changeAssignmentBlade.isAssignToMeCheckBoxPresent();
-        await changeAssignmentBlade.isCompanyDrpDwnDisplayed();
-        await changeAssignmentBlade.isBuisnessUnitDrpDwnDisplayed();
-        await changeAssignmentBlade.isDepartmentDrpDwnDisplayed();
+        expect(await changeAssignmentBlade.isCompanyDrpDwnDisplayed()).toBeTruthy("Company dropdown not displayed");
+        expect(await changeAssignmentBlade.isSupportGroupDrpDwnDisplayed()).toBeTruthy("SupportGroup dropdown not displayed");
+        expect(await changeAssignmentBlade.isSearchInputBoxPresent()).toBeTruthy("Search Box not present");
+        expect(await changeAssignmentBlade.isAssignToMeCheckBoxSelected()).toBeFalsy("AssignToMe checkbox shouldbe unchecked");
         await expect(changeAssignmentBlade.isAssignButtonDisabled()).toBeTruthy();
         await changeAssignmentBlade.selectCompany(knowledgeData.Company);
         await changeAssignmentBlade.selectBusinessUnit(businessData.orgName);
@@ -357,7 +352,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
@@ -374,11 +369,11 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
             await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
@@ -391,7 +386,7 @@ describe('Knowledge Article', () => {
             expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
             await editKnowledgePage.setKnowledgeStatus('Closed');
             expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             //login with coachlet
             let knowledgeTitileCoach = 'knowledgeCoach2985' + randomStr;
             await apiHelper.apiLogin(knowledgeCoachUser);
@@ -405,7 +400,7 @@ describe('Knowledge Article', () => {
             }
             let KACoachDetails = await apiHelper.createKnowledgeArticle(articleDataCoach);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);  
+            await utilityCommon.switchToNewTab(1);  
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
@@ -421,7 +416,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
             await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
             await navigationPage.gotoKnowledgeConsole();
@@ -436,7 +431,6 @@ describe('Knowledge Article', () => {
             expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
             await editKnowledgePage.setKnowledgeStatus('Closed');
             expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
         catch (e) {
             throw e;
@@ -475,9 +469,9 @@ describe('Knowledge Article', () => {
             expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
             expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnWarningCancel();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("No");
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
@@ -501,9 +495,9 @@ describe('Knowledge Article', () => {
             expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
             expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnWarningCancel();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("No");
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
@@ -527,9 +521,9 @@ describe('Knowledge Article', () => {
             expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
             expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnWarningCancel();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("No");
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
@@ -537,7 +531,6 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgeCoachUser);
@@ -553,9 +546,9 @@ describe('Knowledge Article', () => {
             expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
             expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnWarningCancel();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("No");
             await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
@@ -568,7 +561,6 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
@@ -592,7 +584,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('kmills');
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             let knowledgeGridColumnFields: string[] = ["Review Status"];
             let columnName: string[] = ["Review Status"];
@@ -621,7 +613,6 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
@@ -645,7 +636,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('kmills');
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             let knowledgeGridColumnFields: string[] = ["Review Status"];
             let columnName: string[] = ["Review Status"];
@@ -674,7 +665,6 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
@@ -697,7 +687,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('kmills');
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Compensation and Benefits', 'Peter Kahn');
@@ -717,7 +707,6 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
@@ -767,7 +756,6 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
@@ -820,7 +808,7 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await previewKnowledgePo.clickOnBackButton();
         }
     });//, 150 * 1000);

@@ -12,9 +12,9 @@ class ChangeAssignmentBlade {
                 assignToMeCheckBox: '.checkbox__input',
                 searchAsignee: '[class="search-input"] .adapt-search-field-wrapper input',
                 assignee: '.person__info .name',
-                filterDropdowns: '[rx-view-component-id="f95c0ee2-cc2f-4c9e-975a-449f71aeba83"] button.dropdown-toggle',
+                filterDropdowns: '.flex-wrap button.dropdown-toggle',
                 businessUnit: 'selectedBusinessUnitId',
-                supportGroupName: '.rx-assignment-person-info',
+                supportGroupName: '.person__info',
                 department: 'selectedDepartmentId',
                 supportGroup: 'selectedSupportGroupId',
         }
@@ -32,11 +32,6 @@ class ChangeAssignmentBlade {
         async getSupportGroupDefaultValue(): Promise<string> {
                 //        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.company))));
                 return await $$(this.selectors.filterDropdowns).get(3).getText();
-        }
-
-        async isAssignToMeCheckBoxPresent(): Promise<boolean> {
-                //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignToMeCheckBox)));
-                return await $(this.selectors.assignToMeCheckBox).isDisplayed();
         }
 
         async isSearchInputBoxPresent(): Promise<boolean> {
@@ -106,11 +101,6 @@ class ChangeAssignmentBlade {
         async clickOnCancelButton(): Promise<void> {
                 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
                 await $(this.selectors.cancelButton).click();
-        }
-
-        async verifyMultipleSupportGrpMessageDisplayed(): Promise<void> {
-                //        await browser.wait(this.EC.visibilityOf($(this.selectors.multipleSuppGrpMsg)));
-                expect(await $(this.selectors.multipleSuppGrpMsg).getText()).toBe('You belong to multiple support groups. Select a specific support group to continue.');
         }
 
         async selectCompany(companyValue: string): Promise<void> {

@@ -29,7 +29,6 @@ export class GridOperations {
         if (guid) { searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator; }
         await $(searchTextBoxLocator).clear();
         await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
-        await utilityCommon.waitUntilSpinnerToHide();
     }
 
     async isGridRecordPresent(searchRecord: string, guid?: string): Promise<boolean> {
@@ -135,13 +134,13 @@ export class GridOperations {
             gridHeaders = `[rx-view-component-id='${guid}'] ` + gridHeaders;
             gridCellData = `[rx-view-component-id='${guid}'] ` + gridCellData;
         }
-        let headersLocator = await $$(gridHeaders);
-        for (let i: number = 0; i < await headersLocator.length; i++) {
+        let forLimit = await $$(gridHeaders).count();
+        for (let i: number = 0; i < forLimit; i++) {
             count = count + 1;
-            let tempLocator = await $$(gridHeaders).get(i);
-            if (await tempLocator.getText() == columnName) { break; }
+            let gridText = (await $$(gridHeaders).get(i).getAttribute('innerText')).trim();
+            if (gridText == columnName) { break; }
         }
-        return await $$(gridCellData).get(count - 1).getAttribute('innerText');
+        return (await $$(gridCellData).get(count - 1).getAttribute('innerText')).trim();
     }
 
     async getAllValuesFromColumn(columnHeader: string, guid?: string): Promise<string[]> {
