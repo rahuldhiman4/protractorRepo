@@ -529,7 +529,7 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        let activityText = await $$('.activity .pt-2 [style="position: relative;"] .ng-star-inserted').first();
+        let activityText = await $$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first();
         let value = await activityText.getText();
         return value.includes(bodyText) ? true:false;
     }

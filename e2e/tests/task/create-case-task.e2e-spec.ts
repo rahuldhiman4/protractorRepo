@@ -792,7 +792,7 @@ describe('Create Case Task', () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
-        await expect(viewTask.getTaskStatusValue()).toBe("Completed");
+        expect(await viewTask.getTaskStatusValue()).toBe("Completed");
 
         //Quick Case 
         await navigationPage.gotoQuickCase();

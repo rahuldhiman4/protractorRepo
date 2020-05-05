@@ -1039,7 +1039,7 @@ class ApiHelper {
                 "id": "450000471",
                 "value": `${valueOfVisiable}`
             }
-            menuItemData.fieldInstances["450000471"] = uiVisiablePayload;
+            menuItemData.fieldInstances[450000471] = uiVisiablePayload;
         }
         const menuItem = await coreApi.createRecordInstance(menuItemData);
         const menuItemDetails = await axios.get(
