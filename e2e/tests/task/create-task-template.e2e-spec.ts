@@ -387,7 +387,7 @@ describe('Create Task Template', () => {
         expect(await viewTask.getTaskStatusValue()).toContain('Completed');
         await expect(activityTabPo.getAllTaskActivity('Completed')).toContain('Completed');
         await viewTask.clickOnViewCase();
-        await utilityCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await updateStatusBladePo.changeCaseStatus('Resolved');
         await updateStatusBladePo.setStatusReason('Auto Resolved');
         await updateStatusBladePo.clickSaveStatus();

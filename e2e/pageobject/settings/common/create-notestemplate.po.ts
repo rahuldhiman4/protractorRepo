@@ -54,7 +54,7 @@ class createNotesTemplate {
     }
 
     async clickOnInsertFieldLink(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.insertField)));
+       // await browser.wait(this.EC.elementToBeClickable($(this.selectors.insertField)),3000);
         await $(this.selectors.insertField).click();
     }
 

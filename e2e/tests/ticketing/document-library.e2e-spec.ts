@@ -240,7 +240,7 @@ describe('Document Library', () => {
         let dropDownValues: string[] = ["Published", "Draft"];
         expect(await editDocumentLibraryPo.isStatusDropDownvalueMatches(dropDownValues)).toBeTruthy('Values of status drop down is not matches');
         await editDocumentLibraryPo.clickOnCancelButton();
-        await utilityCommon.clickOnWarningOk();
+        await utilCommon.clickOnWarningOk();
         let column: string[] = ["Author"];
         await documentLibraryConsolePo.addColumnOnGrid(column);
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);

@@ -100,7 +100,7 @@ describe('Edit Case', () => {
         await browser.navigate().back();
         await viewCasePage.clickOnRequesterMail();
         await composemailPage.clickOnDiscardButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
    
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');

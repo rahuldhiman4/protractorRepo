@@ -90,33 +90,8 @@ class AttachmentBlade {
         return await $(this.selectors.attachmentSize).getText();
     }
 
-    async clickOnColumnHeader(columnHeader: string, descending: boolean): Promise<void> {
-        let classValue: string = undefined;
-        if(descending) classValue = 'icon-desc';
-        else classValue = 'icon-asc';
-        let headerSortSelector = `.c-header-container svg path.${classValue}`;
-        switch (columnHeader) {
-            case "Attachment": {
-                await $$(headerSortSelector).get(0).click();
-                break;
-            }
-            case "Attached to": {
-                await $$(headerSortSelector).get(1).click();
-                break;
-            }
-            case "Media type": {
-                await $$(headerSortSelector).get(2).click();
-                break;
-            }
-            case "Created date": {
-                await $$(headerSortSelector).get(3).click();
-                break;
-            }
-            default: {
-                console.log(columnHeader, ' is not a valid parameter');
-                break;
-            }
-    }
+    async clickOnColumnHeader(columnHeader: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.columnnHeader, columnHeader)).click();
 }
 
     async isAttachmentPresent(attachmentName: string): Promise<boolean> {
@@ -191,51 +166,6 @@ class AttachmentBlade {
         return await $(this.selectors.close).isDisplayed();
     }
 
-    async isAttachTableColumnSorted(columnName: string, isDesecndingOrder?: boolean): Promise<boolean> {
-        switch (columnName) {
-            case "Attachment": {
-                return await this.isTableColumnSorted(this.selectors.attachmentColoumnValues, isDesecndingOrder);
-            }
-            case "Attached to": {
-                return await this.isTableColumnSorted(this.selectors.attachedToColoumnValues, isDesecndingOrder);
-            }
-            case "Media type": {
-                return await this.isTableColumnSorted(this.selectors.mediaTypemediaTypeColoumnValues, isDesecndingOrder);
-            }
-            case "Created date": {
-                return await this.isTableColumnSorted(this.selectors.createdDateColoumnValues, isDesecndingOrder);
-            }
-            default: {
-                console.log(columnName, ' is not a valid parameter');
-                break;
-            }
-        }
-
-    }
-
-    async isTableColumnSorted(allelementLocator: string, isDescendingOrder?: boolean): Promise<boolean> {
-        let allElements = $$(allelementLocator);
-        let originalArray: string[] = [], i = 0, processedArray: string[] = [];
-        for (i = 0; i < (await allElements).length; i++) {
-            await allElements.get(i).getText().then(async (text) => {
-                originalArray.push(text);
-            });
-        }
-        processedArray = originalArray.slice();
-        if (isDescendingOrder) {
-            // Descending         
-            processedArray.sort((a, b) => 0 - (a > b ? 1 : -1));
-        }
-        else {
-            // Ascending
-            originalArray.sort((a, b) => 0 - (a > b ? -1 : 1));
-        }
-        console.log("UI column values: ", originalArray);
-        console.log("Sorted array: ", processedArray);
-        return processedArray.length === originalArray.length && processedArray.every(
-            (value, index) => (value === originalArray[index])
-        );
-    }
 }
 
 export default new AttachmentBlade();
