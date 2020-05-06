@@ -8,7 +8,7 @@ class EditKnowledgePage {
         statusChange: 'ux-status-transition .status-transition',
         statusSaveBtn: '[rx-view-component-id="e45ca390-e752-4bd5-97c7-69618d609d59"] button',
         changeReviewerBtn: '[rx-view-component-id="f8c32272-6166-4001-a2dc-60762b5f6d69"] button',
-        assigneToMeReviewerAssign: '[rx-view-component-id="38145a40-54e3-4e12-95b6-db53dced601d"] button',
+        assigneToMeReviewerAssign: '[rx-view-component-id="7b202136-47a8-4234-b369-c300297055c6"] button',
         reviewerCompanyfldStatusBlade: '[rx-view-component-id="b4f529dc-f3b8-476a-b25d-40f5e6b71b5f"] button',
         reviewerBUfldStatusBlade: '[rx-view-component-id="bd3d17d2-074a-41e6-8d27-c5d47c6b6a63"] button',
         reviewerDepfldStatusBlade: '[rx-view-component-id="a70e47b4-b9fb-4a34-86ac-b263178e39ed"] button',
@@ -21,6 +21,7 @@ class EditKnowledgePage {
         saveButtonONKA: '[rx-view-component-id="813f61fe-28db-4d22-bfa5-4055e8a583fc"] button',
         editRegionGuid: 'd5c6cfef-2d53-48df-a03a-1a3e8381eef5',
         editSiteGuid: 'aa218b2b-4fa3-4525-82f3-3e0f9bfc4193',
+        statusChangeDrpDwnGuid: '6f8e4177-cad6-4d59-9467-074b688aa06e',
         knowledgeTitle: '[rx-view-component-id="cd9b041b-6a82-4322-8a07-165a370ad0dd"] input',
         statusChnageBlade: '.dp-wrapper',
         knowledgeReviewHeader: '[rx-view-component-id="1d906e6a-cf0e-4358-94e8-d86ff0733068"] span',
@@ -43,15 +44,12 @@ class EditKnowledgePage {
     }
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
-        await utilityCommon.selectDropDown('6f8e4177-cad6-4d59-9467-074b688aa06e', newStatus);
+        await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, newStatus);
         await $(this.selectors.statusSaveBtn).click();
     }
 
     async getStatusValue(): Promise<string> {
-        //        await utilCommon.waitUntilPopUpDisappear();
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         return await $(this.selectors.statusChange).getText();
     }
 
@@ -63,21 +61,17 @@ class EditKnowledgePage {
     async setKnowledgeStatusAndVerifyAssignmentNotAppear(newStatus: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
-        await utilCommon.selectDropDownWithName('Status', newStatus);
+        await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, newStatus);
         expect(await $(this.selectors.assigneToMeReviewerAssign).isDisplayed()).toBeFalsy();
         await $(this.selectors.statusSaveBtn).click();
-        //        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async setKnowledgeStatusWithoutSave(newStatus: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
-        await utilCommon.selectDropDownWithName('Status', newStatus);
+        await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, newStatus);
     }
 
     async clickSaveStatusBtn(): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.statusSaveBtn)));
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusSaveBtn)));
         await $(this.selectors.statusSaveBtn).click();
     }
 
@@ -87,10 +81,7 @@ class EditKnowledgePage {
     }
 
     async saveKnowledgeMedataDataChanges(): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveBtnEditMetadata)));
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveBtnEditMetadata)));
         await $(this.selectors.saveBtnEditMetadata).click();
-        //        await utilCommon.waitUntilPopUpDisappear();
     }
 
     async verifyKnowledgeMetadata(fldName: String, fldVal: String): Promise<void> {
@@ -114,11 +105,11 @@ class EditKnowledgePage {
     }
 
     async updateRegionDropDownOption(guid: string, fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.editRegionGuid, fieldOption);
+        await utilityCommon.selectDropDown(this.selectors.editRegionGuid, fieldOption);
     }
 
     async updateSiteDropDownOption(guid: string, fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.editSiteGuid, fieldOption);
+        await utilityCommon.selectDropDown(this.selectors.editSiteGuid, fieldOption);
     }
 
     async isChangeReviewerButtonPresent(): Promise<Boolean> {
@@ -131,13 +122,12 @@ class EditKnowledgePage {
         await $(this.selectors.changeReviewerBtn).click();
     }
 
-    async isAssignToMeButtonPresent(): Promise<Boolean> {
+    async isAssignToMeReviewerBladePresent(): Promise<Boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneToMeReviewerAssign)));
         return await $(this.selectors.assigneToMeReviewerAssign).isDisplayed();
     }
 
     async isReviewerCompanyFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerCompanyfldStatusBlade)));
         return await $(this.selectors.reviewerCompanyfldStatusBlade).getAttribute("disabled") == "true";
     }
 
@@ -272,7 +262,7 @@ class EditKnowledgePage {
     }
 
     async selectIsExternalOption(isExternalOption: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.selectIsExternalGUID, isExternalOption);
+        await utilityCommon.selectDropDown(this.selectors.selectIsExternalGUID, isExternalOption);
     }
 
     async enterKeyword(keyword: string): Promise<void> {

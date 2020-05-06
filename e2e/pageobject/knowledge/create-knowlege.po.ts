@@ -26,7 +26,7 @@ class CreateKnowledgePage {
         discardButton: '[rx-view-component-id="0b2d73c8-de57-460b-909c-17e2ae50ea5b"] button',
         knowledgeSetValue: '[rx-view-component-id="80a2cd78-e9a5-4997-b7bb-6fadf918bd3e"] button',
         knowledgeTemplateStyle: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .create-ka-template__style-label',
-        knowledgePreview: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .create-ka-template__preview',
+        knowledgePreview: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .create-ka-template',
         selectDifferentTemplate: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .group-buttons button.btn-secondary',
         changeTemplate: '[rx-view-component-id="64e29650-ca7f-4b3d-a2af-826be22f8e0f"] button',
         categoryTier1Value: '[rx-view-component-id="b51fcb01-f3d1-4da2-a42d-ffc5873a21b3"] button',
@@ -55,7 +55,7 @@ class CreateKnowledgePage {
         await $(this.selectors.discardButton).click();
     }
 
-    async isKnoledgeSetTemplateIsDisplayed(): Promise<boolean> {
+    async isKnowledgeStyleTemplateDisplayed(): Promise<boolean> {
         return await $(this.selectors.knowledgeTemplateStyle).isDisplayed();
     }
 
@@ -217,10 +217,6 @@ class CreateKnowledgePage {
     async getCreateKnowledgeHeader(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.createKnowledgeTitle)));
         return await $(this.selectors.createKnowledgeHeader).getText();
-    }
-
-    async setValueInRTF(fieldName: string, value: string): Promise<void> {
-        await $(`[aria-label=${fieldName}] div`).sendKeys(value);
     }
 }
 

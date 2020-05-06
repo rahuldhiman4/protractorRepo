@@ -10,8 +10,6 @@ export class Utility {
         dropDownInput: 'input.form-control',
         dropDownNoneOpt: '.dropdown_select__btn',
         dropDownOption: '.dropdown_select__menu-content button',
-        warningOk: '.modal-content adapt-button.btn-primary, .d-modal__footer button[class*="d-button d-button_primary"]',
-        warningCancel: '.modal-content .btn-secondary, .d-modal__footer button[class*="d-button d-button_secondary"]',
         warningDialog: '.modal-content .modal-title, .modal-content .d-modal__title',
         warningDialogMsg: '.modal-content .modal-body, .modal-content .d-modal__content-item',
         popUpMsgLocator: '.a-toast__details div',
@@ -124,32 +122,17 @@ export class Utility {
         });
     }
 
-    async clickOnWarningOk(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningOk)), 2000).then(async (result) => {
-            if (result) {
-                await $(this.selectors.warningOk).click();
-            }
-        });
-    }
-
-    async clickOnWarningCancel(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningCancel)), 2000).then(async (result) => {
-            if (result) {
-                await $(this.selectors.warningCancel).click();
-            }
-        });
-    }
-
     async selectToggleButton(guid: string, value: boolean): Promise<void> {
         const togglebutton = await $(`[rx-view-component-id="${guid}"]`);
         if (value) {
-            let element = await togglebutton.$('.d-icon-check')
+            let element = await togglebutton.$('button[rx-id="true-button"]')
             let isclicked = await element.getAttribute('aria-pressed');
             if (isclicked == 'false') {
                 await element.click();
             }
-        } else {
-            let element = await togglebutton.$('.d-icon-circle_slash_o')
+        }
+        else{
+            let element = await togglebutton.$('button[rx-id="false-button"]')
             let isclicked = await element.getAttribute('aria-pressed');
             if (isclicked == 'false') {
                 await element.click();

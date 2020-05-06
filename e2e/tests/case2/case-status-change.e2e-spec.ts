@@ -262,7 +262,7 @@ describe('Case Status Change', () => {
         await updateStatusBladePo.changeCaseStatus(statusInProgress);
         expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
         await updateStatusBladePo.clickCancelButton();
-        await utilityCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
 
         await navigationPage.gotoCreateCase();
@@ -277,7 +277,7 @@ describe('Case Status Change', () => {
         await updateStatusBladePo.changeCaseStatus(statusInProgress);
         expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
         await updateStatusBladePo.clickCancelButton();
-        await utilityCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
 
         await navigationPage.gotoCreateCase();
@@ -643,7 +643,7 @@ describe('Case Status Change', () => {
             await editCasePage.updateCaseSummary(summary1);
             await expect(editCasePage.isSaveCaseEnable()).toBeFalsy("Save button Visible");
             await editCasePage.clickOnCancelCaseButton();
-            await utilityCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickEditCaseButton();
