@@ -147,7 +147,6 @@ class ViewCasePage {
 
     async getTextOfStatus(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.editLink)));
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.statusChange)));
         return await $(this.selectors.statusChange).getText();
     }
 

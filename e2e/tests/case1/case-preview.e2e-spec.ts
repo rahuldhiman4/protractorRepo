@@ -11,6 +11,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import previewCasePo from '../../pageobject/case/case-preview.po';
+import resources from '../../pageobject/common/resources-tab.po';
 
 describe("Case Preview", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -92,7 +93,7 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCategoryTier2Displayed('-')).toBeTruthy('CategoryTier2 is missing');
         expect(await casePreviewPo.isCategoryTier3Displayed('-')).toBeTruthy('CategoryTier3 is missing');
         expect(await casePreviewPo.isAssigneeDisplayed('None')).toBeTruthy('Assignee name is missing');
-        expect(await casePreviewPo.isAssignedGroupDisplayed('AU Support 1')).toBeTruthy('Assigned group name is missing');
+        expect(await casePreviewPo.isAssignedGroupDisplayed('Workforce Administration')).toBeTruthy('Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
@@ -187,9 +188,10 @@ describe("Case Preview", () => {
 
     //kgaikwad
     it('[DRDMV-13644]: Create a Case via Quick Case by pinning articles and cases and check Case Preview on save', async () => {
-        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let RecommendedKnowledgeStr = "Recommended Knowledge";
+        let applyBtn = "Apply";
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName = 'caseTemplateName' + randomStr;
+        let caseTemplateName = randomStr + 'caseTemplateName';
         let templateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemplateName}`,
@@ -203,25 +205,49 @@ describe("Case Preview", () => {
             "supportGroup": "Facilities",
             "caseStatus": "Assigned"
         }
+        let articleData1 = {
+            "knowledgeSet": "HR",
+            "title": `${caseTemplateName}`,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignee": "kayo",
+            "assigneeSupportGroup": "US Support 1",
+            "company": "Petramco",
+            "categoryTier1": "Applications",
+            "region": "Australia",
+            "site": "Canberra",
+        }
+        let caseData = {
+            "Requester": "qtao",
+            "Summary": `${caseTemplateName}`,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
         await apiHelper.apiLogin('qtao');
         await apiHelper.createCaseTemplate(templateData);
+        await apiHelper.createKnowledgeArticle(articleData1);
+        await apiHelper.createCase(caseData)
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName('qkatawazi');
         await quickCasePo.selectCaseTemplate(caseTemplateName);
-        await quickCasePo.setCaseSummary(caseSummary);
+        await quickCasePo.setCaseSummary(caseTemplateName);
         await quickCasePo.pinRecommendedCases(1);
+        await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+        await resources.enterAdvancedSearchText(caseTemplateName);
+        await resources.clickOnAdvancedSearchSettingsIconToOpen();
+        await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
+        await quickCasePo.pinRecommendedKnowledgeArticles(1);
         await quickCasePo.saveCase();
 
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('failureMsg: Case Preview Title is missing');
-        expect(await casePreviewPo.isCaseSummaryDisplayed(caseSummary)).toBeTruthy('failureMsg: Summary is missing');
+        expect(await casePreviewPo.isCaseSummaryDisplayed(caseTemplateName)).toBeTruthy('failureMsg: Summary is missing');
         expect(await casePreviewPo.isCaseIdDisplayed()).toBeTruthy('failureMsg: Case ID is missing');
         expect(await casePreviewPo.isPriorityDisplayed('Low')).toBeTruthy('failureMsg: Priority is missing');
         expect(await casePreviewPo.isCaseStatusDisplayed('Assigned')).toBeTruthy('failureMsg: Case Status is missing');
         expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('failureMsg: Requester name is missing');
         expect(await casePreviewPo.isRequesterPhoneDisplayed('+15123431923')).toBeTruthy('Requester phone number is missing');
         expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('failureMsg: Requester email id is missing');
-        expect(await casePreviewPo.isCaseTemplateDisplayed('Change My Legal Name')).toBeFalsy('failureMsg: Case Template is displayed');
-        expect(await casePreviewPo.isDescriptionDisplayed('Qadim Katawazi '+ caseTemplateName + caseSummary)).toBeTruthy('failureMsg: Description is missing');
+        expect(await casePreviewPo.isCaseTemplateDisplayed('Change My Legal Name')).toBeFalsy('failureMsg: Case Template is displayed');       
+        expect(await casePreviewPo.isDescriptionDisplayed('Qadim Katawazi'+ " " +caseTemplateName)).toBeTruthy('failureMsg: Description is missing');
         expect(await casePreviewPo.isCategoryTier1Displayed('Purchasing Card')).toBeTruthy('failureMsg: CategoryTier1 is missing');
         expect(await casePreviewPo.isCategoryTier2Displayed('Policies')).toBeTruthy('failureMsg: CategoryTier2 is missing');
         expect(await casePreviewPo.isCategoryTier3Displayed('Card Issuance')).toBeTruthy('failureMsg: CategoryTier3 is missing');

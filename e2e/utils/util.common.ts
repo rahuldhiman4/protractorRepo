@@ -49,7 +49,7 @@ export class Util {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
         const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
-        //        await browser.wait(this.EC.elementToBeClickable(dropDownBoxElement));
+        //await browser.wait(this.EC.elementToBeClickable(dropDownBoxElement));
         await dropDownBoxElement.click();
         //        await browser.wait(this.EC.visibilityOf(dropDownInputElement));
         await dropDownInputElement.sendKeys(value);

@@ -1,4 +1,4 @@
-import { $, $$, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilGrid from '../../utils/util.grid';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -76,6 +76,7 @@ class ManageTaskBlade {
         //        await browser.wait(this.EC.elementToBeClickable(element(by.linkText(taskSummary))));
         // await element(by.partialLinkText(taskSummary)).click();
         //        await utilCommon.waitUntilSpinnerToHide();
+        //await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText('.task .task-summary-wrapper a', taskSummary))),3000);
         await element(by.cssContainingText('.task .task-summary-wrapper a', taskSummary)).click();
     }
 

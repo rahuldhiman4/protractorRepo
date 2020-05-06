@@ -128,7 +128,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
-    });//, 140 * 1000);
+    },250 * 1000);
 
     //ptidke
     it('[DRDMV-16027]: [Design Time] Verify case Business analyst is able create ,edit and delete Task Notes template', async () => {
@@ -160,7 +160,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
-    }, 270 * 1000);
+    }, 300 * 1000);
 
     //ptidke
     it('[DRDMV-16181]: [Design Time] Knowledge user is able to create,edit(update), Delete Knowledge Notes Template', async () => {
@@ -203,7 +203,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
         }
-    });//, 200 * 1000);
+    },300 * 1000);
 
     //ptidke
     it('[DRDMV-15999]: [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
@@ -281,7 +281,7 @@ describe('Notes template', () => {
         await editNotetemplate.clickOnCancelButton();
         await utilityCommon.clickOnWarningOk();
         //await utilCommon.waitUntilSpinnerToHide();
-    },250 * 1000);
+    },270 * 1000);
 
     //ptidke
     it('[DRDMV-16040]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {

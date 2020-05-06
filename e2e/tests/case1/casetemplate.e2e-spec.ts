@@ -248,7 +248,7 @@ describe('Case Template', () => {
         await expect(await viewCaseTemplate.getOwnerGroupValue()).toContain(caseTemplateRequiredFields.supportGroup);
         await expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Petramco');
         await expect(await viewCaseTemplate.getTemplateStatusValue()).toContain(caseTemplateRequiredFields.templateStatus);
-    }, 280 * 1000);
+    }, 350 * 1000);
 
     //ptidke
     it('[DRDMV-1229]: [Case Template Console] Search by Summary and Display ID on the Case Template Console', async () => {

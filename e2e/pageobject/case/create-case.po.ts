@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { $, $$, by, element, protractor, ProtractorExpectedConditions} from "protractor";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser} from "protractor";
 import utilityCommon from '../../utils/utility.common';
 import selectCasetemplateBladePo from './select-casetemplate-blade.po';
 import utilGrid from '../../utils/util.grid';
@@ -149,9 +149,9 @@ class CreateCasePage {
     }
 
     async selectRequester(requester: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterInput)));
+        //await browser.wait(this.EC.visibilityOf($(this.selectors.requesterInput)));
         await $(this.selectors.requesterInput).sendKeys(requester);
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesters)));
+        //await browser.wait(this.EC.visibilityOf($(this.selectors.requesters)));
         await $$(this.selectors.requesters).first().click();
     }
 
@@ -244,9 +244,9 @@ class CreateCasePage {
     }
 
     async setContactName(contact: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.contactInput)));
+        //await browser.wait(this.EC.visibilityOf($(this.selectors.contactInput)));
         await $(this.selectors.contactInput).sendKeys(contact);
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.contacts)));
+        //await browser.wait(this.EC.visibilityOf($(this.selectors.contacts)));
         await $$(this.selectors.contacts).first().click();
     }
 

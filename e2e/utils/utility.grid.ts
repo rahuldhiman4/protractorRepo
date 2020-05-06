@@ -2,7 +2,6 @@ import { $, $$, Key, element, by, ElementFinder, browser, protractor } from 'pro
 import utilityCommon from '../utils/utility.common';
 
 export class GridOperations {
-
     selectors = {
         searchTextBox: '.adapt-search-triggerable input',
         clearSearchBoxButton: '.adapt-search-triggerable .adapt-search-clear',
