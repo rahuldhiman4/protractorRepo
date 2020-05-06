@@ -249,7 +249,7 @@ describe('Notes template', () => {
         await editNotetemplate.changeLanguageValue('Italian (Italy)');
         await expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
         await editNotetemplate.clickOnCancelButton();
-        await utilityCommon.clickOnWarningOk();
+        await utilCommon.clickOnWarningOk();
         //await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
@@ -259,7 +259,7 @@ describe('Notes template', () => {
         await editNotetemplate.changeLanguageValue('Italian (Italy)');
         await expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.')
         await editNotetemplate.clickOnCancelButton();
-        await utilityCommon.clickOnWarningOk();
+        await utilCommon.clickOnWarningOk();
         //await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
@@ -269,7 +269,7 @@ describe('Notes template', () => {
         await editNotetemplate.changeLanguageValue('Italian (Italy)');
         await expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
         await editNotetemplate.clickOnCancelButton();
-        await utilityCommon.clickOnWarningOk();
+        await utilCommon.clickOnWarningOk();
         //await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
@@ -279,7 +279,7 @@ describe('Notes template', () => {
         await editNotetemplate.changeLanguageValue('Italian (Italy)');
         await expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
         await editNotetemplate.clickOnCancelButton();
-        await utilityCommon.clickOnWarningOk();
+        await utilCommon.clickOnWarningOk();
         //await utilCommon.waitUntilSpinnerToHide();
     },270 * 1000);
 

@@ -125,7 +125,7 @@ describe('Knowledge Article', () => {
             expect(await editKnowledgePage.isReviewerGrpFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
             expect(await editKnowledgePage.isReviewerFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
             expect(await statusBladeKnowledgeArticlePo.isChangeReviewerButtonPresent()).toBeTruthy();
-            expect(await editKnowledgePage.isAssignToMeButtonPresent()).toBeTruthy();
+            expect(await editKnowledgePage.isAssignToMeReviewerBladePresent()).toBeTruthy();
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
             await changeAssignmentBlade.selectCompany(knowledgeData.Company);
             await changeAssignmentBlade.selectBusinessUnit(businessData.orgName);

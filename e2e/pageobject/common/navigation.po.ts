@@ -261,7 +261,7 @@ class NavigationPage {
 
     async signOut(): Promise<void> {
         try {
-            if((await browser.getCurrentUrl()).includes("isettings")){await this.switchToAngularTab();}
+            await this.switchToAngularTab();
             await utilityCommon.refresh();
             if (await this.isHambergerIconPresent()) {
                 await $(this.selectors.hamburgerIcon).click();
