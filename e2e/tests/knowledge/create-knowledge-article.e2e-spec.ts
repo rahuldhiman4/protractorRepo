@@ -117,6 +117,7 @@ describe('Knowledge Article', () => {
             await previewKnowledgePo.clickOnViewArticleLink();
             await utilityCommon.switchToNewTab(1);
             await editKnowledgePage.setKnowledgeStatus(knowledgeData.DraftStatus);
+            await utilityCommon.waitUntilPopUpDisappear();
             await editKnowledgePage.setKnowledgeStatusWithoutSave(knowledgeData.ReviewStatus);
             expect(await editKnowledgePage.isReviewerCompanyFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
             expect(await editKnowledgePage.isReviewerBusinessUnitFieldDisbaledOnStatusChangeBlade()).toBeTruthy();

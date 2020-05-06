@@ -140,6 +140,7 @@ describe('Knowledge Article', () => {
     });//, 200 * 1000);
 
     //ptidke
+    //Bug='DRDMV-21644
     it('[DRDMV-2374]: [Edit Knowledge Article] Article creation not possible by selecting disabled templates', async () => {
         try {
             await navigationPage.gotoSettingsPage();

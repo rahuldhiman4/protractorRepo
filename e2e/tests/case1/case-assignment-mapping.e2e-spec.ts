@@ -228,7 +228,7 @@ describe("Create Case Assignment Mapping", () => {
         await createCasePage.selectCategoryTier1("Facilities");
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
-        expect(await viewCasePage.getAssignedGroupText()).toBe("AU Support 1");
+        expect(await viewCasePage.getAssignedGroupText()).toBe("AU Support 2");
     }, 260 * 1000);
 
     //radhiman

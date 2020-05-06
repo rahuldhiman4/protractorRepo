@@ -39,7 +39,7 @@ describe('Document Library Consume UI', () => {
         await loginPage.login('qkatawazi');
         // Create User and assigned Document Manager Permission to agent
         await apiHelper.apiLogin('tadmin');
-        var caseAgentuserData = {
+        let caseAgentuserData = {
             "firstName": "caseAgent2",
             "lastName": "user2",
             "userId": loginId,
@@ -73,7 +73,7 @@ describe('Document Library Consume UI', () => {
 
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        var caseData =
+        let caseData =
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
@@ -81,8 +81,8 @@ describe('Document Library Consume UI', () => {
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qkatawazi');
-        var newCase = await apiHelper.createCase(caseData);
-        var caseId: string = newCase.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
         await caseConsolePo.searchAndOpenCase(caseId);
         await browser.sleep(5000);
         await viewCasePo.clickEditCaseButton();
@@ -141,7 +141,7 @@ describe('Document Library Consume UI', () => {
 
             await navigationPage.gotoCaseConsole();
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            var caseData =
+            let caseData =
             {
                 "Requester": "qtao",
                 "Summary": "Test case for DRDMV-8377RandVal" + summary,
@@ -149,8 +149,8 @@ describe('Document Library Consume UI', () => {
                 "Assignee": "qkatawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
-            var newCase = await apiHelper.createCase(caseData);
-            var caseId: string = newCase.displayId;
+            let newCase = await apiHelper.createCase(caseData);
+            let caseId: string = newCase.displayId;
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnAttachLink();
@@ -569,7 +569,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 800 * 1000);
+    }, 900 * 1000);
 
     //kgaikwad
     it('[DRDMV-13479]: Add Activity - Case business analyst attaches published document from document library who has read access to that document', async () => {
@@ -663,7 +663,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 620 * 1000);
+    }, 700 * 1000);
 
     //kgaikwad
     it('[DRDMV-13463]: Edit Case - Case business analyst attaches published document from document library who has write access to that document', async () => {
@@ -1052,7 +1052,7 @@ describe('Document Library Consume UI', () => {
 
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        var caseData =
+        let caseData =
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
@@ -1060,8 +1060,8 @@ describe('Document Library Consume UI', () => {
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin(loginId);
-        var newCase = await apiHelper.createCase(caseData);
-        var caseId: string = newCase.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
         await caseConsolePo.searchAndOpenCase(caseId);
         await viewCasePo.clickEditCaseButton();
         await editCasePo.updateCaseSummary(publishDocLibData1.docLibTitle);
@@ -1212,7 +1212,7 @@ describe('Document Library Consume UI', () => {
             let username = `${loginId2}@petramco.com`;
             let password = 'Password_1234';
             await apiHelper.apiLogin('tadmin');
-            var caseAgentuserData = {
+            let caseAgentuserData = {
                 "firstName": "CaseManager",
                 "lastName": "WithDocManager",
                 "userId": loginId2,
@@ -1368,7 +1368,7 @@ describe('Document Library Consume UI', () => {
         await attachDocumentBladePo.searchRecord('%');
         await expect(await attachDocumentBladePo.isPaginationPresent()).toBeTruthy('Failure: Pagination is missing');
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
-        await resources.selectAdvancedSearchFilterOption('Operational Category 1', 'Applications');
+        await resources.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Applications');
         await resources.selectAdvancedSearchFilterOption('Region', 'Australia');
         await resources.selectAdvancedSearchFilterOption('Site', 'Canberra');
         await resources.clickOnAdvancedSearchFiltersButton('Apply');
