@@ -8,7 +8,6 @@ class NavigationPage {
         settingsButton: '[title="My Application Settings"]',
         profileMenu: 'rx-shell adapt-profile button',
         helpIcon: '//*[@class="d-n-menu__link d-icon-left-question_circle"]',
-        knowledgeConsoleFromKM: '[rx-view-component-id="3313266f-6ed4-47ee-ab90-54aab5bf3e99"] a',
         knowledgeConsoleTitle: '[rx-view-component-id="11f37569-5ecd-4239-aaa7-075d1874b1d1"] span',
         hamburgerIcon: '.a-hamburger',
         hamburgerHelpIcon: '[class="d-n-hamburger__nav-link d-icon-left-question_circle"]',
@@ -28,8 +27,8 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return createCase;
         } else {
-            await element(by.cssContainingText(this.selectors.menu, 'Create')).click();
-            return await element(by.cssContainingText(this.selectors.menu, 'Case')).isDisplayed();
+            await element(by.cssContainingText(this.selectors.menu, /^Create$/)).click();
+            return await element(by.cssContainingText(this.selectors.menu, /^Case$/)).isDisplayed();
         }
     }
 
@@ -52,8 +51,8 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return createKnowledge;
         } else {
-            await element(by.cssContainingText(this.selectors.menu, 'Create')).click();
-            return await element(by.cssContainingText(this.selectors.menu, 'Knowledge')).isDisplayed();
+            await element(by.cssContainingText(this.selectors.menu, /^Create$/)).click();
+            return await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).isDisplayed();
         }
     }
 
@@ -65,8 +64,8 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return caseConsole;
         } else {
-            await element(by.cssContainingText(this.selectors.menu, 'Workspace')).click();
-            return await element(by.cssContainingText(this.selectors.menu, 'Case')).isDisplayed();
+            await element(by.cssContainingText(this.selectors.menu, /^Workspace$/)).click();
+            return await element(by.cssContainingText(this.selectors.menu, /^Case$/)).isDisplayed();
         }
     }
 
@@ -78,8 +77,8 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return knowledgeConsole;
         } else {
-            await element(by.cssContainingText(this.selectors.menu, 'Workspace')).click();
-            return await element(by.cssContainingText(this.selectors.menu, 'Knowledge')).isDisplayed();
+            await element(by.cssContainingText(this.selectors.menu, /^Workspace$/)).click();
+            return await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).isDisplayed();
         }
     }
 
@@ -91,8 +90,8 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return taskConsole;
         } else {
-            await element(by.cssContainingText(this.selectors.menu, 'Workspace')).click();
-            return await element(by.cssContainingText(this.selectors.menu, 'Task')).isDisplayed();
+            await element(by.cssContainingText(this.selectors.menu, /^Workspace$/)).click();
+            return await element(by.cssContainingText(this.selectors.menu, /^Task$/)).isDisplayed();
         }
     }
 
@@ -113,64 +112,64 @@ class NavigationPage {
     }
 
     async gotoKnoweldgeConsoleFromKM(): Promise<void> {
-        await this.switchToAngularTab();
-        await $(this.selectors.knowledgeConsoleFromKM).click();
+        if((await browser.getCurrentUrl()).includes("isettings")){await this.switchToAngularTab();}
+        await element(by.cssContainingText('.a-menu__link[type="button"]', 'Knowledge Console')).click();
     }
 
     async gotoCaseConsole(): Promise<void> {
-        await this.switchToAngularTab();
+        if((await browser.getCurrentUrl()).includes("isettings")){await this.switchToAngularTab();}
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Workspace')).click();
             await element(by.buttonText('Case ')).click();
         } else {
-            await element(by.cssContainingText(this.selectors.menu, 'Workspace')).click();
-            await element(by.cssContainingText(this.selectors.menu, 'Case')).click();
+            await element(by.cssContainingText(this.selectors.menu, /^Workspace$/)).click();
+            await element(by.cssContainingText(this.selectors.menu, /^Case$/)).click();
         }
         await browser.wait(this.EC.titleContains('Cases - Business Workflows'), 10000);
     }
 
     async gotoKnowledgeConsole(): Promise<void> {
-        await this.switchToAngularTab();
+        if((await browser.getCurrentUrl()).includes("isettings")){await this.switchToAngularTab();}
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Workspace')).click();
             await element(by.buttonText('Knowledge ')).click();
         } else {
-            await element(by.cssContainingText(this.selectors.menu, 'Workspace')).click();
-            await element(by.cssContainingText(this.selectors.menu, 'Knowledge')).click();
+            await element(by.cssContainingText(this.selectors.menu, /^Workspace$/)).click();
+            await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).click();
         }
         await browser.wait(this.EC.titleContains('Knowledge Articles - Business Workflows'), 10000);
     }
 
     async gotoTaskConsole(): Promise<void> {
-        await this.switchToAngularTab();
+        if((await browser.getCurrentUrl()).includes("isettings")){await this.switchToAngularTab();}
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Workspace')).click();
             await element(by.buttonText('Task ')).click();
         } else {
-            await element(by.cssContainingText(this.selectors.menu, 'Workspace')).click();
-            await element(by.cssContainingText(this.selectors.menu, 'Task')).click();
+            await element(by.cssContainingText(this.selectors.menu, /^Workspace$/)).click();
+            await element(by.cssContainingText(this.selectors.menu, /^Task$/)).click();
         }
         await browser.wait(this.EC.titleContains('Tasks - Business Workflows'), 10000);
     }
 
     async gotoCreateCase(): Promise<void> {
-        await this.switchToAngularTab();
+        if((await browser.getCurrentUrl()).includes("isettings")){await this.switchToAngularTab();}
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Create')).click();
             await element(by.buttonText('Case ')).click();
         } else {
-            await element(by.cssContainingText(this.selectors.menu, 'Create')).click();
-            await element(by.cssContainingText(this.selectors.menu, 'Case')).click();
+            await element(by.cssContainingText(this.selectors.menu, /^Create$/)).click();
+            await element(by.cssContainingText(this.selectors.menu, /^Case$/)).click();
         }
         await browser.wait(this.EC.titleContains('Case Create - Business Workflows'), 10000);
     }
 
     async gotoQuickCase(): Promise<void> {
-        await this.switchToAngularTab();
+        if((await browser.getCurrentUrl()).includes("isettings")){await this.switchToAngularTab();}
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.buttonText('Quick Case ')).click();
@@ -181,20 +180,20 @@ class NavigationPage {
     }
 
     async gotoCreateKnowledge(): Promise<void> {
-        await this.switchToAngularTab();
+        if((await browser.getCurrentUrl()).includes("isettings")){await this.switchToAngularTab();}
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Create')).click();
             await element(by.buttonText('Knowledge ')).click();
         } else {
-            await element(by.cssContainingText(this.selectors.menu, 'Create')).click();
-            await element(by.cssContainingText(this.selectors.menu, 'Knowledge')).click();
+            await element(by.cssContainingText(this.selectors.menu, /^Create$/)).click();
+            await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).click();
         }
         await browser.wait(this.EC.titleContains('Knowledge Article Templates Preview'), 10000);
     }
 
     async gotoPersonProfile(): Promise<void> {
-        await this.switchToAngularTab();
+        if((await browser.getCurrentUrl()).includes("isettings")){await this.switchToAngularTab();}
         await utilityCommon.refresh();
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
@@ -207,7 +206,7 @@ class NavigationPage {
     }
 
     async gotoSettingsPage(): Promise<void> {
-        await this.switchToAngularTab();
+        if((await browser.getCurrentUrl()).includes("isettings")){await this.switchToAngularTab();}
         await $(this.selectors.settingsButton).click();
         await this.switchToAngularJsTab();
     }
@@ -262,7 +261,7 @@ class NavigationPage {
 
     async signOut(): Promise<void> {
         try {
-            await this.switchToAngularTab();
+            if((await browser.getCurrentUrl()).includes("isettings")){await this.switchToAngularTab();}
             await utilityCommon.refresh();
             if (await this.isHambergerIconPresent()) {
                 await $(this.selectors.hamburgerIcon).click();
@@ -280,8 +279,8 @@ class NavigationPage {
     }
 
     async switchToAnotherApplication(applicationName: string): Promise<void> {
-        await this.switchToAngularTab();
-        await element(by.cssContainingText(this.selectors.menu, 'Business Workflows')).click();
+        if((await browser.getCurrentUrl()).includes("isettings")){await this.switchToAngularTab();}
+        await element(by.cssContainingText(this.selectors.menu, /^Business Workflows$/)).click();
         await element(by.cssContainingText(this.selectors.menu, applicationName)).click();
     }
 
