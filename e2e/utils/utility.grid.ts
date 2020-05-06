@@ -212,6 +212,7 @@ export class GridOperations {
     async addFilter(fieldName: string, textValue: string, type: string, guid?: string): Promise<void> {
         let guidId: string = "";
         if (guid) {
+            guidId = `[rx-view-component-id="${guid}"] `;
             this.selectors.refreshIcon = `[rx-view-component-id="${guid}"] ` + this.selectors.refreshIcon;
         }
         await $(guidId + this.selectors.filterPresetBtn).click();
@@ -255,8 +256,8 @@ export class GridOperations {
     }
 
     async searchAndSelectGridRecord(recordName: string, guid?: string): Promise<void> {
-        let selectCheckbox= '.ui-chkbox-box';
-        let selectRadioButton= '.radio__label input';
+        let selectCheckbox = '.ui-chkbox-box';
+        let selectRadioButton = '.radio__label input';
         if (guid) {
             await this.searchRecord(recordName, guid);
             selectCheckbox = `[rx-view-component-id="${guid}"] ` + selectCheckbox;

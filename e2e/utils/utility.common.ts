@@ -210,12 +210,12 @@ export class Utility {
     }
 
     async isFieldLabelDisplayed(guid: string, fieldName: string): Promise<boolean> {
-        let fieldLabel = `[rx-view-component-id='${guid}'] rx-text-field label`;
+        let fieldLabel = `[rx-view-component-id='${guid}'] rx-read-only-field label, [rx-view-component-id='${guid}'] label.d-textfield__label span`;
         return await element(by.cssContainingText(fieldLabel, fieldName)).isPresent().then(async (result) => {
             if (result) {
                 return await element(by.cssContainingText(fieldLabel, fieldName)).getText() == fieldName ? true : false;
             } else {
-                console.log("Flowset not present");
+                console.log(fieldName," not present");
                 return false;
             }
         });

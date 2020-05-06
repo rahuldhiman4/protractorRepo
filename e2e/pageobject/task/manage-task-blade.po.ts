@@ -60,7 +60,7 @@ class ManageTaskBlade {
     }
 
     async searchTaskAndClickOnLink(input: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(input);
+        await utilityGrid.searchAndOpenHyperlink(input);
     }
 
     async clickOnRefreshButton(): Promise<void> {
