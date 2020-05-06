@@ -7,7 +7,7 @@ class ActivityTabPage {
     selectors = {
         addNoteBox: '.textfield__wrapper .form-control',
         addNoteBoxEdit: '.bwf-activity-add-note textarea',
-        personPopup: '.popup-person',
+        personPopup: '.cke_autocomplete_panel .cke_autocomplete_selected',
         addNotePostButton: '.activity-feed-note-buttons__right .btn-primary',
         addNoteCancelButton: '.activity-feed-note-buttons__right .btn-secondary',
         addNoteAttachLink: '.activity-note .bwf-button-link',
@@ -66,7 +66,7 @@ class ActivityTabPage {
         logTitle: '.activity-title',
         showLessLink: 'button[aria-label="Show less"]',
         showMoreLinkForAttachment: '.rx-attachment-show-text[aria-label="Show more attachments"]',
-        showLessLinkForAttachment: '.rx-attachment-show-text[aria-label="Show less attachments"]',
+        showLessLinkForAttachment: '.activity__wrapper .flex-wrap button span',
         lockIcon: '.d-icon-lock',
         activityLogList: '.activity__wrapper',
     }
@@ -92,10 +92,10 @@ class ActivityTabPage {
     }
 
     async isAddNoteTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.collapse-block div div[style="position: relative;"]', bodyText)).isDisplayed().then(async (result) => {
-            if (result) return true;
-            else return false;
-        });
+        let getTextmsg= await $$('.activity__wrapper .collapse-block div div[style="position: relative;"]').get(activityNumber - 1).getText();
+        if(getTextmsg.trim().includes(bodyText)){
+            return true;
+            } else return false;
     }
 
     async isLogIconDisplayedInActivity(iconName: string, activityNumber: number): Promise<boolean> {
@@ -148,7 +148,7 @@ class ActivityTabPage {
     }
 
     async clickShowMoreLinkInActivity(activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLink).isDisplayed().then(async (link) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLink).isPresent().then(async (link) => {
             if (link) {
                 await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showMoreLink).click();
                 return true;
@@ -166,24 +166,25 @@ class ActivityTabPage {
     }
 
     async clickShowMoreLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.activity__wrapper .flex-wrap button span').isPresent().then(async (link) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.flex-wrap button span').isPresent().then(async (link) => {
             if (link) {
-                let showMoreTextName = await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.activity__wrapper .flex-wrap button span').getText();
-                if (showMoreTextName.trim() == '1 more') {
-                    await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.activity__wrapper .flex-wrap button span').click();
+                let showMoreTextName = await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.flex-wrap button span').getText();
+                if (showMoreTextName.trim().includes('more')) {
+                    await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.flex-wrap button').click();
                     return true;
                 }
-
             } else return false;
         });
     }
 
-
     async clickShowLessLinkInAttachmentActivity(activityNumber: number): Promise<boolean> {
         return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showLessLinkForAttachment).isPresent().then(async (link) => {
             if (link) {
-                await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showLessLinkForAttachment).click();
-                return true;
+                let showLessTextName = await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showLessLinkForAttachment).getText();
+                if (showLessTextName.trim().includes('Show less')) {
+                    await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.flex-wrap button').click();
+                    return true;
+                }
             } else return false;
         });
     }
@@ -378,25 +379,34 @@ class ActivityTabPage {
     }
 
     async addPersonInActivityNote(tagPerson: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBoxEdit)));
-        await $(this.selectors.addNoteBoxEdit).sendKeys(`@${tagPerson}`);
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)));
-        await $(this.selectors.personPopup).click();
-        //        await utilCommon.waitUntilSpinnerToHide();
+        await browser.waitForAngularEnabled(false);
+        await browser.sleep(10000);
+        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
+        await $('.cke_editable_themed').sendKeys(`@${tagPerson}`);
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        await $$(this.selectors.personPopup).first().click();
     }
 
     async clearActivityNote(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBoxEdit)));
-        await $(this.selectors.addNoteBoxEdit).clear();
-        //        await browser.wait(this.EC.visibilityOf($(`${this.selectors.addNotePostButton}[disabled]`)));
+        await browser.waitForAngularEnabled(false);
+        await browser.sleep(10000);
+        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
+        await $('.cke_editable_themed').clear();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
     }
 
     async getPersonCount(tagPerson: string): Promise<number> {
         await this.clickActivityNoteTextBox();
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBoxEdit)));
-        await $(this.selectors.addNoteBoxEdit).sendKeys(tagPerson);
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.personPopup)));
-        return await $$(this.selectors.personPopup).count();
+        await browser.waitForAngularEnabled(false);
+        await browser.sleep(10000);
+        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
+        await $('.cke_editable_themed').sendKeys(tagPerson);
+        let countPerson= await $$(this.selectors.personPopup).count();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        return countPerson;
     }
 
     async clickOnPostButton(): Promise<void> {
