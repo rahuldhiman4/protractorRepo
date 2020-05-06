@@ -64,7 +64,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
-    });//, 150 * 1000);
+    },280 * 1000);
 
     //ptidke
     it('[DRDMV-16010]: [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {
@@ -96,7 +96,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
-    }, 320 * 1000);
+    }, 350 * 1000);
 
     //ptidke
     it('[DRDMV-16028]: [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
@@ -128,7 +128,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
-    });//, 140 * 1000);
+    },250 * 1000);
 
     //ptidke
     it('[DRDMV-16027]: [Design Time] Verify case Business analyst is able create ,edit and delete Task Notes template', async () => {
@@ -160,7 +160,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
-    }, 270 * 1000);
+    }, 300 * 1000);
 
     //ptidke
     it('[DRDMV-16181]: [Design Time] Knowledge user is able to create,edit(update), Delete Knowledge Notes Template', async () => {
@@ -203,7 +203,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
         }
-    });//, 200 * 1000);
+    },300 * 1000);
 
     //ptidke
     it('[DRDMV-15999]: [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
@@ -281,7 +281,7 @@ describe('Notes template', () => {
         await editNotetemplate.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
         //await utilCommon.waitUntilSpinnerToHide();
-    });//, 230 * 1000);
+    },270 * 1000);
 
     //ptidke
     it('[DRDMV-16040]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
@@ -359,6 +359,7 @@ describe('Notes template', () => {
             await apiHelper.apiLogin('franz');
             let newCase1 = await apiHelper.createCase(caseData1);
             let displayId: string = newCase1.displayId;
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await notesTemplateUsage.clickOnRequsterName();
@@ -375,6 +376,7 @@ describe('Notes template', () => {
             let newCase2 = await apiHelper.createCase(caseData2);
             console.log("case is created ===", newCase2.displayId);
             let displayIdnew: string = newCase2.displayId;
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayIdnew);
             await notesTemplateUsage.clickOnRequsterName();
@@ -424,6 +426,7 @@ describe('Notes template', () => {
             await apiHelper.apiLogin('fritz');
             let newCaseTemplate = await apiHelper.createCase(caseData);
             let displayId: string = newCaseTemplate.displayId;
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePage.clickAddTaskButton();

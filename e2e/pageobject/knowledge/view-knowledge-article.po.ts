@@ -135,6 +135,7 @@ class ViewKnowledgePage {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.tab)),3000);
         await element(by.cssContainingText(this.selectors.tab, tabName)).click();
     }
 

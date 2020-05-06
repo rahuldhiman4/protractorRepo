@@ -1,5 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions, browser } from "protractor";
-import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 
 class FeedbackKnowledgeBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -10,8 +10,9 @@ class FeedbackKnowledgeBlade {
         cancelButton:'[rx-view-component-id="c703f100-ad49-46ea-8081-7bf7e669bf4f"] button',
         flagArticle:'[rx-view-component-id="8eb31993-888c-4a17-be30-4d91cbcdb10b"] label',
     }
+    
     async selectFlag(value:boolean):Promise<void>{
-        await utilCommon.selectToggleButton(this.selectors.feedbackFlag,value);
+        await utilityCommon.selectToggleButton(this.selectors.feedbackFlag,value);
     }
 
      async setTextInTellUsMore(value:string):Promise<void>{

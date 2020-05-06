@@ -2,7 +2,6 @@ import { $, $$, Key, element, by, ElementFinder, browser, protractor } from 'pro
 import utilityCommon from '../utils/utility.common';
 
 export class GridOperations {
-
     selectors = {
         searchTextBox: '.adapt-search-triggerable input',
         clearSearchBoxButton: '.adapt-search-triggerable .adapt-search-clear',
@@ -29,7 +28,6 @@ export class GridOperations {
         if (guid) { searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator; }
         await $(searchTextBoxLocator).clear();
         await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
-        await utilityCommon.waitUntilSpinnerToHide();
     }
 
     async isGridRecordPresent(searchRecord: string, guid?: string): Promise<boolean> {
@@ -135,13 +133,13 @@ export class GridOperations {
             gridHeaders = `[rx-view-component-id='${guid}'] ` + gridHeaders;
             gridCellData = `[rx-view-component-id='${guid}'] ` + gridCellData;
         }
-        let headersLocator = await $$(gridHeaders);
-        for (let i: number = 0; i < await headersLocator.length; i++) {
+        let forLimit = await $$(gridHeaders).count();
+        for (let i: number = 0; i < forLimit; i++) {
             count = count + 1;
-            let tempLocator = await $$(gridHeaders).get(i);
-            if (await tempLocator.getText() == columnName) { break; }
+            let gridText = (await $$(gridHeaders).get(i).getAttribute('innerText')).trim();
+            if (gridText == columnName) { break; }
         }
-        return await $$(gridCellData).get(count - 1).getAttribute('innerText');
+        return (await $$(gridCellData).get(count - 1).getAttribute('innerText')).trim();
     }
 
     async getAllValuesFromColumn(columnHeader: string, guid?: string): Promise<string[]> {
@@ -213,6 +211,7 @@ export class GridOperations {
     async addFilter(fieldName: string, textValue: string, type: string, guid?: string): Promise<void> {
         let guidId: string = "";
         if (guid) {
+            guidId = `[rx-view-component-id="${guid}"] `;
             this.selectors.refreshIcon = `[rx-view-component-id="${guid}"] ` + this.selectors.refreshIcon;
         }
         await $(guidId + this.selectors.filterPresetBtn).click();
@@ -256,8 +255,8 @@ export class GridOperations {
     }
 
     async searchAndSelectGridRecord(recordName: string, guid?: string): Promise<void> {
-        let selectCheckbox= '.ui-chkbox-box';
-        let selectRadioButton= '.radio__label input';
+        let selectCheckbox = '.ui-chkbox-box';
+        let selectRadioButton = '.radio__label input';
         if (guid) {
             await this.searchRecord(recordName, guid);
             selectCheckbox = `[rx-view-component-id="${guid}"] ` + selectCheckbox;

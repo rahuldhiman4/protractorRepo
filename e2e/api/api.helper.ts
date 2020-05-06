@@ -205,8 +205,17 @@ class ApiHelper {
                 "value": `${statusValue}`
             }
             templateData.fieldInstances["450000021"] = caseTemplateStatus;
-
         }
+
+        if (data.caseStatus) {
+            let statusGuid =  await coreApi.getStatusGuid('com.bmc.dsm.case-lib', constants.CaseStatus[data.caseStatus]);
+            let caseTemplateStatusGuid = {
+                "id": "450000010",
+                "value": `${statusGuid}`
+            }
+            templateData.fieldInstances["450000010"] = caseTemplateStatusGuid;
+        } 
+
         if (data.categoryTier1) {
             let category1Value = await coreApi.getCategoryGuid(data.categoryTier1);
             templateData.fieldInstances["1000000063"].value = category1Value;
@@ -1039,7 +1048,7 @@ class ApiHelper {
                 "id": "450000471",
                 "value": `${valueOfVisiable}`
             }
-            menuItemData.fieldInstances["450000471"] = uiVisiablePayload;
+            menuItemData.fieldInstances[450000471] = uiVisiablePayload;
         }
         const menuItem = await coreApi.createRecordInstance(menuItemData);
         const menuItemDetails = await axios.get(

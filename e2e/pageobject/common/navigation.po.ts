@@ -160,7 +160,7 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Create')).click();
-            await element(by.buttonText('Case ')).click();
+            await element(by.cssContainingText('.a-hamburger__content.submenu [id="submenu_4"] button', /^Case $/)).click();
         } else {
             await element(by.cssContainingText(this.selectors.menu, /^Create$/)).click();
             await element(by.cssContainingText(this.selectors.menu, /^Case$/)).click();
@@ -184,7 +184,7 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Create')).click();
-            await element(by.buttonText('Knowledge ')).click();
+            await element(by.cssContainingText('.a-hamburger__content.submenu [id="submenu_4"] button', /^Knowledge $/)).click();
         } else {
             await element(by.cssContainingText(this.selectors.menu, /^Create$/)).click();
             await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).click();
@@ -261,7 +261,7 @@ class NavigationPage {
 
     async signOut(): Promise<void> {
         try {
-            if((await browser.getCurrentUrl()).includes("isettings")){await this.switchToAngularTab();}
+            await this.switchToAngularTab();
             await utilityCommon.refresh();
             if (await this.isHambergerIconPresent()) {
                 await $(this.selectors.hamburgerIcon).click();

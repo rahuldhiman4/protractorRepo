@@ -20,13 +20,13 @@ class AttachmentBlade {
         paginationPreviousButton: '.content-outlet .page-prev',
         refreshButton: '.d-icon-refresh',
         selectedCheckBoxCount: '.bwf-case-attachment__footer-button .bwf-case-attachment__footer-button__selected-files-label',
-        attachmentColoumnValues: 'tbody tr td:nth-of-type(2) div:nth-of-type(2)',
+        attachmentColoumnValues: '[rx-view-component-id="adb9ac10-3732-4fd9-8af3-29bec77272b4"] .attachment-view-thumbnail__title-text',
         attachmentColoumnHeader: 'table thead tr th:nth-of-type(2) div',
-        attachedToColoumnValues: 'tbody tr td:nth-of-type(3) div',
+        attachedToColoumnValues: '[rx-view-component-id="adb9ac10-3732-4fd9-8af3-29bec77272b4"] td:nth-of-type(3)',
         attachedToColoumnHeader: 'table thead tr th:nth-of-type(3) div',
-        mediaTypemediaTypeColoumnValues: 'tbody tr td:nth-of-type(4) div',
+        mediaTypemediaTypeColoumnValues: '[rx-view-component-id="adb9ac10-3732-4fd9-8af3-29bec77272b4"] td:nth-of-type(4)',
         mediaTypeColoumnHeader: 'table thead tr th:nth-of-type(4) div',
-        createdDateColoumnValues: 'tbody tr td:nth-of-type(5) div',
+        createdDateColoumnValues: '[rx-view-component-id="adb9ac10-3732-4fd9-8af3-29bec77272b4"] td:nth-of-type(5)',
         createdDateColoumnHeader: 'table thead tr th:nth-of-type(5) div',
         attachmentName: 'table .attachment-view-thumbnail__title-text',
     }
@@ -92,7 +92,7 @@ class AttachmentBlade {
 
     async clickOnColumnHeader(columnHeader: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.columnnHeader, columnHeader)).click();
-    }
+}
 
     async isAttachmentPresent(attachmentName: string): Promise<boolean> {
         return await utilityGrid.isGridRecordPresent(attachmentName, this.selectors.gridGuid);
@@ -166,27 +166,6 @@ class AttachmentBlade {
         return await $(this.selectors.close).isDisplayed();
     }
 
-    async isAttachTableColumnSorted(columnName: string, isDesecndingOrder?: boolean): Promise<boolean> {
-        switch (columnName) {
-            case "Attachment": {
-                return await utilGrid.isTableColumnSorted(this.selectors.attachmentColoumnValues, isDesecndingOrder);
-            }
-            case "Attached to": {
-                return await utilGrid.isTableColumnSorted(this.selectors.attachedToColoumnValues, isDesecndingOrder);
-            }
-            case "Media type": {
-                return await utilGrid.isTableColumnSorted(this.selectors.mediaTypemediaTypeColoumnValues, isDesecndingOrder);
-            }
-            case "Created date": {
-                return await utilGrid.isTableColumnSorted(this.selectors.createdDateColoumnValues, isDesecndingOrder);
-            }
-            default: {
-                console.log(columnName, ' is not a valid parameter');
-                break;
-            }
-        }
-
-    }
 }
 
 export default new AttachmentBlade();

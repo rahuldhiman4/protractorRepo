@@ -10,8 +10,6 @@ export class Utility {
         dropDownInput: 'input.form-control',
         dropDownNoneOpt: '.dropdown_select__btn',
         dropDownOption: '.dropdown_select__menu-content button',
-        warningOk: '.modal-content adapt-button.btn-primary, .d-modal__footer button[class*="d-button d-button_primary"]',
-        warningCancel: '.modal-content .btn-secondary, .d-modal__footer button[class*="d-button d-button_secondary"]',
         warningDialog: '.modal-content .modal-title, .modal-content .d-modal__title',
         warningDialogMsg: '.modal-content .modal-body, .modal-content .d-modal__content-item',
         popUpMsgLocator: '.a-toast__details div',
@@ -124,32 +122,17 @@ export class Utility {
         });
     }
 
-    async clickOnWarningOk(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningOk)), 2000).then(async (result) => {
-            if (result) {
-                await $(this.selectors.warningOk).click();
-            }
-        });
-    }
-
-    async clickOnWarningCancel(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningCancel)), 2000).then(async (result) => {
-            if (result) {
-                await $(this.selectors.warningCancel).click();
-            }
-        });
-    }
-
     async selectToggleButton(guid: string, value: boolean): Promise<void> {
         const togglebutton = await $(`[rx-view-component-id="${guid}"]`);
         if (value) {
-            let element = await togglebutton.$('.d-icon-check')
+            let element = await togglebutton.$('button[rx-id="true-button"]')
             let isclicked = await element.getAttribute('aria-pressed');
             if (isclicked == 'false') {
                 await element.click();
             }
-        } else {
-            let element = await togglebutton.$('.d-icon-circle_slash_o')
+        }
+        else{
+            let element = await togglebutton.$('button[rx-id="false-button"]')
             let isclicked = await element.getAttribute('aria-pressed');
             if (isclicked == 'false') {
                 await element.click();
@@ -177,12 +160,12 @@ export class Utility {
 
     async waitUntilSpinnerToHide(): Promise<void> {
         try {
-            await browser.wait(this.EC.presenceOf($('.d-preloader')), 5 * 1000);
+            await browser.wait(this.EC.presenceOf($('.d-preloader')), 5000);
             await browser.wait(this.EC.or(async () => {
                 await $$('.d-preloader').each(async function (element) {
                     await element.getAttribute('innerHTML') == null;
                 });
-            }), 7 * 1000);
+            }), 7000);
         } catch (error) {
             console.log('Spinner not present on the page');
         }
@@ -210,12 +193,12 @@ export class Utility {
     }
 
     async isFieldLabelDisplayed(guid: string, fieldName: string): Promise<boolean> {
-        let fieldLabel = `[rx-view-component-id='${guid}'] rx-text-field label`;
+        let fieldLabel = `[rx-view-component-id='${guid}'] rx-read-only-field label, [rx-view-component-id='${guid}'] label.d-textfield__label span`;
         return await element(by.cssContainingText(fieldLabel, fieldName)).isPresent().then(async (result) => {
             if (result) {
                 return await element(by.cssContainingText(fieldLabel, fieldName)).getText() == fieldName ? true : false;
             } else {
-                console.log("Flowset not present");
+                console.log(fieldName," not present");
                 return false;
             }
         });
@@ -367,7 +350,7 @@ export class Utility {
     async getAllPopupMsg(): Promise<string[]> {
         await browser.waitForAngularEnabled(false);
         let arr: string[] = [];
-        await browser.wait(this.EC.visibilityOf($$(this.selectors.popUpMsgLocator).last()));
+        await browser.wait(this.EC.visibilityOf($$(this.selectors.popUpMsgLocator).last()), 5000);
         let msgLocator = await $$(this.selectors.popUpMsgLocator);
         for (let i: number = 0; i < msgLocator.length; i++) {
             arr[i] = await msgLocator[i].getText();

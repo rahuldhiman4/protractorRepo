@@ -9,6 +9,7 @@ import documentTemplateConsolePo from '../../pageobject/settings/document-manage
 import editDocumentTemplatePo from '../../pageobject/settings/document-management/edit-document-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import utilCommon from '../../utils/util.common';
 
 describe('Document Template', () => {
     beforeAll(async () => {
@@ -86,7 +87,7 @@ describe('Document Template', () => {
         expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody)).toBeTruthy('Document body text is missing');
         expect(await editDocumentTemplatePo.isDocumentBodyImgDisplay()).toBeTruthy('Document body Img text is missing');
         await editDocumentTemplatePo.clickOnCancelButton();
-        await utilityCommon.clickOnWarningOk();
+        await utilCommon.clickOnWarningOk();
         await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal2);
         expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal2)).toBeTruthy('Template Name is missing for Global company');
         expect(await editDocumentTemplatePo.isCompanyNameDisplayed('- Global -')).toBeTruthy('Global Company Name is missing ');
@@ -95,7 +96,7 @@ describe('Document Template', () => {
         expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody)).toBeTruthy('Document body text is missing of Global company');
         expect(await editDocumentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('company drop down is enabled of Global company');
         await editDocumentTemplatePo.clickOnCancelButton();
-        await utilityCommon.clickOnWarningOk();
+        await utilCommon.clickOnWarningOk();
 
         await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
         expect(await editDocumentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company Drop down is not disabled');
@@ -112,7 +113,7 @@ describe('Document Template', () => {
         expect(await editDocumentTemplatePo.isDescriptionValueDisplayed(description2)).toBeTruthy('Description2 Name is missing');
         expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody2)).toBeTruthy('Document body2 text is missing');
         await editDocumentTemplatePo.clickOnCancelButton();
-        await utilityCommon.clickOnWarningOk();
+        await utilCommon.clickOnWarningOk();
         await documentTemplateConsolePo.searchOnGridConsole(templateRandVal1);
 
         await navigationPage.signOut();
@@ -127,8 +128,8 @@ describe('Document Template', () => {
         await documentTemplateConsolePo.clearGridSearchBox();
         await documentTemplateConsolePo.selectCheckBox(templateRandVal2);
         await documentTemplateConsolePo.clickOnDeleteButton();
-        await utilityCommon.clickOnWarningOk();
+        await utilCommon.clickOnWarningOk();
 
         expect(await documentTemplateConsolePo.isGridRecordPresent(templateRandVal2)).toBeFalsy('template name is preset on grid');
-    }, 350 * 1000);
+    }, 490 * 1000);
 })

@@ -433,7 +433,7 @@ describe("Attachment", () => {
         await viewCasePo.clickAttachmentsLink();
         await attachmentBladePo.clickOnAllCheckboxButton();
         await expect(await attachmentBladePo.getCountOfSelectedCheckBox()).toBe('10/10 files selected', 'selected checkbox count is missing for page1');
-        await attachmentBladePo.clickOnColumnHeader('Attachments ');
+        await attachmentBladePo.clickOnColumnHeader('Attachments');
         await attachmentBladePo.clickOnPaginationNextButton();
         await attachmentBladePo.clickOnAllCheckboxButton();
         await expect(await attachmentBladePo.getCountOfSelectedCheckBox()).toBe('2/2 files selected', 'selected checkbox count is missing for page2');

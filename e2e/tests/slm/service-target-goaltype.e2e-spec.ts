@@ -68,6 +68,9 @@ describe('Service Level Management - Goal Type Tests', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let goalTypeTitle = 'New Goal Type' + randomStr;
 
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type');
+
         //when Goal Type created with mandatory details
         await createGoalType.clickCreateGoalTypeConfigButton();
         await createGoalType.enterGoalTypeName(goalTypeTitle);
