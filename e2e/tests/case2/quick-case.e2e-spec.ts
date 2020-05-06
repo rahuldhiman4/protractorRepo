@@ -245,7 +245,7 @@ describe("Quick Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 500 * 1000);
+    }, 600 * 1000);
 
     //apdeshmu
     it('[DRDMV-786]:[Quick Case] Case creation with all case statuses in template', async () => {
@@ -347,6 +347,8 @@ describe("Quick Case", () => {
         let caseTemplateName = randomStr + 'NameInDraftStatus';
         let casTemplateSummary = randomStr + 'SummaryInDraftStatus';
         let caseTempalteDescription = randomStr + 'DRDMV-795Description';
+        console.log(casTemplateSummary + " " +caseTempalteDescription);
+        
         let CaseTemplateDataInDraftStatus = {
             "templateName": caseTemplateName,
             "templateSummary": casTemplateSummary,
@@ -384,7 +386,7 @@ describe("Quick Case", () => {
         await editCaseTemplate.clickOnEditCaseTemplateMetadata();
         await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
         await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilityCommon.waitUntilPopUpDisappear();
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
         expect(await quickCase.selectCaseTemplate(caseTemplateName)).toBeTruthy("template not present1");
@@ -809,6 +811,10 @@ describe("Quick Case", () => {
         expect(await previewCaseTemplateCasesPo.getCaseTemplateName()).toBe(`${caseTemplateName}`);
         expect(await previewCaseTemplateCasesPo.getCasePriority()).toBe("Medium");
         await previewCaseTemplateCasesPo.clickOnBackButton();
+        await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+        await resources.enterAdvancedSearchText(caseTemplateName);
+        await resources.clickOnAdvancedSearchSettingsIconToOpen();
+        await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await quickCase.clickArrowFirstRecommendedKnowledge();
         expect(await previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy('View article link not present');
         expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Knowledge status not present');

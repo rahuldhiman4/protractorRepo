@@ -649,7 +649,7 @@ describe('Knowledge Article', () => {
         expect(await createKnowledgePage.isTemplatePresent('KCS')).toBeTruthy('Template is not present');
         expect(await createKnowledgePage.isTemplatePresent('How To')).toBeTruthy('Template is not present');
         await createKnowledgePage.clickOnTemplate('Reference');
-        expect(createKnowledgePage.isKnoledgeSetTemplateIsDisplayed()).toBeTruthy('style is not present');
+        expect(createKnowledgePage.isKnowledgeStyleTemplateDisplayed()).toBeTruthy('style is not present');
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
         await createKnowledgePage.selectKnowledgeSet('HR');
         expect(await createKnowledgePage.isSaveButtonEnabled()).toBeFalsy('save button not disabled');
@@ -664,7 +664,7 @@ describe('Knowledge Article', () => {
         expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
         await utilityGrid.clearFilter();
         await utilityGrid.searchRecord(knowledgeTitle);
-        expect(await knowledgeConsolePo.isValueDisplayedInGrid('Title') == knowledgeTitle).toBeFalsy('KA is present');
+        expect(await utilityGrid.getNumberOfRecordsInGrid()).toEqual(0);
     });
 
     it('[DRDMV-5158]: Click on thumbs up and thumbs down', async () => {
@@ -846,6 +846,8 @@ describe('Knowledge Article', () => {
     //ptidke
     it('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {
         try {
+            await apiHelper.apiLogin("tadmin");
+            apiHelper.deleteKnowledgeApprovalMapping();
             let knowledgeTitile = 'knowledge2746' + randomStr;
             await apiHelper.apiLogin(knowledgePublisherUser);
             let articleData = {
@@ -870,7 +872,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
-            await editKnowledgePage.setKnowledgeStatus('Published');
+            await editKnowledgePage.setKnowledgeStatus('Publish Approval');
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
             await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilityGrid.clearFilter();
@@ -909,7 +911,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
 
-            await editKnowledgePage.setKnowledgeStatus('Published');
+            await editKnowledgePage.setKnowledgeStatus('Publish Approval');
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
             await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilityGrid.clearFilter();
@@ -940,27 +942,29 @@ describe('Knowledge Article', () => {
         expect(await createKnowledgePage.isTemplatePresent('KCS')).toBeTruthy('Template is not present');
         expect(await createKnowledgePage.isTemplatePresent('Reference')).toBeTruthy('Template is not present');
         expect(await createKnowledgePage.isTemplatePresent('How To')).toBeTruthy('Template is not present');
-        await createKnowledgePage.clickOnTemplate('Environment');
-        expect(createKnowledgePage.getTemplatePreviewText()).toContain('Environment', 'Preview is not present');
-        expect(createKnowledgePage.isKnoledgeSetTemplateIsDisplayed()).toBeTruthy('style is not present');
+        await createKnowledgePage.clickOnTemplate('KCS');
+        expect(createKnowledgePage.getTemplatePreviewText()).toContain('KCS', 'Preview is not present');
+        expect(createKnowledgePage.isKnowledgeStyleTemplateDisplayed()).toBeTruthy('style is not present');
         await createKnowledgePage.clickOnSelectDifferentTemplate();
         await createKnowledgePage.clickOnTemplate('Reference');
         expect(createKnowledgePage.getTemplatePreviewText()).toContain('Reference', 'Preview is not present');
-        expect(createKnowledgePage.isKnoledgeSetTemplateIsDisplayed()).toBeTruthy('style is not present');
+        expect(createKnowledgePage.isKnowledgeStyleTemplateDisplayed()).toBeTruthy('style is not present');
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge Template Reference');
         await createKnowledgePage.setReferenceValue('reference values are as follows');
         await createKnowledgePage.clickChangeTemplateButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-        await createKnowledgePage.clickOnTemplate('Question');
-        expect(createKnowledgePage.getTemplatePreviewText()).toContain('Question', 'Preview is not present');
-        expect(createKnowledgePage.isKnoledgeSetTemplateIsDisplayed()).toBeTruthy('style is not present');
+        await createKnowledgePage.clickOnTemplate('How To');
+        expect(createKnowledgePage.getTemplatePreviewText()).toContain('How To', 'Preview is not present');
+        expect(createKnowledgePage.isKnowledgeStyleTemplateDisplayed()).toBeTruthy('style is not present');
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
-        await createKnowledgePage.setValueInRTF('Question', 'frist values are as follows');
-        await createKnowledgePage.clickChangeTemplateButton();
         await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitile);
+        await createKnowledgePage.setReferenceValue('reference values are as follows');
+        await createKnowledgePage.clickChangeTemplateButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("No");
         expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitile, 'expected Value not present');
         await createKnowledgePage.selectKnowledgeSet('HR');
         await createKnowledgePage.clickOnSaveKnowledgeButton();
+        await utilityCommon.waitUntilPopUpDisappear();
     });
 })

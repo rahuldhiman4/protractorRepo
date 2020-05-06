@@ -85,7 +85,7 @@ export class Resources {
         return await element(by.cssContainingText('.pull-right .d-button_small', buttonText)).isEnabled();
     }
     async getAdvancedSearchResultForParticularSection(headingType: string): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
+        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
         const searchResult = await element(by.xpath(`//*[contains(@title,"${headingType}")]/..//*[contains(@class,"bwf-search-fields__title-text")]`))
         return await searchResult.getText();
     }

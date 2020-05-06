@@ -50,7 +50,7 @@ class CreateCaseTemplate {
 
     async clickSaveCaseTemplate(): Promise<void> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)),3000);
         await $(this.selectors.saveButton).click();
         //        await browser.wait(this.EC.elementToBeClickable($(viewCaseTemplate.selectors.identityValidationValue)));
     }

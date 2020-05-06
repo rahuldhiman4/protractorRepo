@@ -1,5 +1,5 @@
 import utilityCommon from '../../../utils/utility.common';
-import { $, protractor, ProtractorExpectedConditions, $$ } from "protractor";
+import { $, protractor, element, by, ProtractorExpectedConditions, $$ } from "protractor";
 
 class PreviewCaseTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -99,7 +99,15 @@ class PreviewCaseTemplateBlade {
     }
 
     async isCaseDescriptionTitleDisplayed(caseDescription:string): Promise<boolean> {
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseDescription,caseDescription);
+        let fieldLabel = '[rx-view-component-id="169adf6c-7674-448b-9732-0eecbebae380"] label span';
+        return await element(by.cssContainingText(fieldLabel, caseDescription)).isPresent().then(async (result) => {
+            if (result) {
+                return await element(by.cssContainingText(fieldLabel, caseDescription)).getText() == caseDescription ? true : false;
+            } else {
+                console.log(caseDescription," not present");
+                return false;
+            }
+        });
     }
 
     async isSupportGroupTitleDisplayed(supportGroup:string): Promise<boolean> {

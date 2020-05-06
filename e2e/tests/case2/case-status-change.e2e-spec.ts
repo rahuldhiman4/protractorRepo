@@ -262,7 +262,7 @@ describe('Case Status Change', () => {
         await updateStatusBladePo.changeCaseStatus(statusInProgress);
         expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
         await updateStatusBladePo.clickCancelButton();
-        await utilityCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
 
         await navigationPage.gotoCreateCase();
@@ -277,7 +277,7 @@ describe('Case Status Change', () => {
         await updateStatusBladePo.changeCaseStatus(statusInProgress);
         expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
         await updateStatusBladePo.clickCancelButton();
-        await utilityCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
 
         await navigationPage.gotoCreateCase();
@@ -292,7 +292,7 @@ describe('Case Status Change', () => {
         expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
         await updateStatusBladePo.changeCaseStatus(statusInProgress);
         expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
-    }, 250 * 1000);
+    }, 300 * 1000);
 
     //kgaikwad
     it('[DRDMV-1227]: [Case Status] Case status change from Canceled', async () => {
@@ -467,8 +467,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLinkOnManageTask(manualSummary);
+            await viewCasePage.clickOnTaskLink(manualSummary);
             expect(await viewTask.getTaskStatusValue()).toBe('Canceled', 'canceled status not found');
         } catch (e) {
             throw e;
@@ -476,7 +475,7 @@ describe('Case Status Change', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 370 * 1000);
+    }, 500 * 1000);
 
     //apdeshmu
     it('[DRDMV-1196]: [Case Status] Case status change from Resolved', async () => {
@@ -643,7 +642,7 @@ describe('Case Status Change', () => {
             await editCasePage.updateCaseSummary(summary1);
             await expect(editCasePage.isSaveCaseEnable()).toBeFalsy("Save button Visible");
             await editCasePage.clickOnCancelCaseButton();
-            await utilityCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickEditCaseButton();
@@ -705,7 +704,7 @@ describe('Case Status Change', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 520 * 1000);
+    }, 600 * 1000);
 
     //apdeshmu
     it('[DRDMV-1200]: [Case Status] Case status change from Pending', async () => {
@@ -812,7 +811,7 @@ describe('Case Status Change', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 420 * 1000);
+    }, 500 * 1000);
 
     //apdeshmu
     it('[DRDMV-4680]: [Status Blade] Case Status Blade view', async () => {

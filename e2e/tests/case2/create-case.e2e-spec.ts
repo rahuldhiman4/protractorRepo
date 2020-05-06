@@ -37,6 +37,7 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
+import utilityGrid from '../../utils/utility.grid';
 
 describe("Create Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -554,6 +555,7 @@ describe("Create Case", () => {
             "templateName": `Case template ${randomStr}`,
             "templateStatus": "Active",
             "templateSummary": `Summary ${randomStr}`,
+            "caseStatus": "New",
         }
 
         let newTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
@@ -1021,25 +1023,14 @@ describe("Create Case", () => {
         await manageTask.clickOnCloseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await viewCasePage.clickAttachmentsLink();
-        await attachmentBladePage.clickOnColumnHeader('Attachment', true);
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Attachment', true)).toBeTruthy("Attachment Not Sorted Desecnding");
-        await attachmentBladePage.clickOnPaginationNextButton();
-        await attachmentBladePage.clickOnColumnHeader('Attachment', false);
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Attachment')).toBeTruthy("Attachment Not Sorted Ascending");
-        await attachmentBladePage.clickOnColumnHeader('Attached to', true);
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Attached to', true)).toBeTruthy("Attached to Not Sorted Desecnding");
-        await attachmentBladePage.clickOnPaginationNextButton();
-        await attachmentBladePage.clickOnColumnHeader('Attached to', false);
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Attached to')).toBeTruthy("Attached to Not Sorted Ascending");
-        await attachmentBladePage.clickOnColumnHeader('Media type', true);
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Media type', true)).toBeTruthy("Media type Not Sorted Desecnding");
-        await attachmentBladePage.clickOnPaginationNextButton();
-        await attachmentBladePage.clickOnColumnHeader('Media type', false);
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Media type')).toBeTruthy("Media type Not Sorted Ascending");
-        await attachmentBladePage.clickOnColumnHeader('Created date', true);
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Created date', true)).toBeTruthy("Created date Not Sorted Desecnding");
-        await attachmentBladePage.clickOnPaginationNextButton();
-        await attachmentBladePage.clickOnColumnHeader('Created date', false);
-        expect(await attachmentBladePage.isAttachTableColumnSorted('Created date')).toBeTruthy("Created date Not Sorted Ascending");
+
+        expect(await utilityGrid.isGridColumnSorted('Attachments', 'desc')).toBeTruthy("Attachment Not Sorted Desecnding");
+        expect(await utilityGrid.isGridColumnSorted('Attachments', 'asc')).toBeTruthy("Attachment Not Sorted Asecnding");
+        expect(await utilityGrid.isGridColumnSorted('Attached to', 'desc')).toBeTruthy("Attached to Not Sorted Desecnding");
+        expect(await utilityGrid.isGridColumnSorted('Attached to', 'asc')).toBeTruthy("Attached to Not Sorted Asecnding");
+        expect(await utilityGrid.isGridColumnSorted('Media type', 'desc')).toBeTruthy("Media type Not Sorted Desecnding");
+        expect(await utilityGrid.isGridColumnSorted('Media type', 'asc')).toBeTruthy("Media type Not Sorted Asecnding");
+        expect(await utilityGrid.isGridColumnSorted('Created date', 'desc')).toBeTruthy("Created date Not Sorted Desecnding");
+        expect(await utilityGrid.isGridColumnSorted('Created date', 'asc')).toBeTruthy("Created date Not Sorted Asecnding");
     }, 400 * 1000);
 });
