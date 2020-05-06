@@ -185,7 +185,7 @@ describe('Document Library', () => {
         expect(await editDocumentLibraryPo.isaddSupportGroupDropDownDisabled()).toBeTruthy('add Support Group Drop Down field is enabled');
         expect(await editDocumentLibraryPo.isAddSupportDepartmentAddButtonDisabled()).toBeTruthy('Add Support Department Add Button is enabled');
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete button is enabled');
-        expect(await editDocumentLibraryPo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');  //defect https://jira.bmc.com/browse/DRDMV-21556
+        expect(await editDocumentLibraryPo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');  //defect https://jira.bmc.com/browse/DRDMV-21604
     }, 260 * 1000);
 
     //kgaikwad
@@ -353,7 +353,7 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 320 * 1000);
+    }, 450 * 1000);
 
     //kgaikwad
     it('[DRDMV-13072]: Verify error should be thrown when write access SG is added in read access', async () => {
@@ -448,7 +448,7 @@ describe('Document Library', () => {
         let newTime: string[] = newtime[3].split(":");
         await expect(newTime[0] + ":" + newTime[1]).toBe(systemTime[0] + ":" + systemTime[1]);
         await documentLibraryConsolePo.removeColumnOnGrid(column);
-    });
+    }, 330 * 1000);
     //kgaikwad
     it('[DRDMV-13088]: Verify read access component UI', async () => {
         let filePath = 'e2e/data/ui/attachment/demo.txt';
@@ -515,7 +515,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.clickOnSaveButton();
         expect(await utilCommon.isErrorMsgPresent()).toBeTruthy('Error msg not present');
-    });//, 240 * 1000);
+    }, 280 * 1000);
 
     //apdeshmu
     it('[DRDMV-13012]: Verify that single file can be attach per document', async () => {
@@ -585,7 +585,7 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 350 * 1000);
+    }, 600 * 1000);
 
     it('[DRDMV-12954]: Verify Create view of Document library', async () => {
         await navigationPage.gotoSettingsPage();
@@ -648,11 +648,12 @@ describe('Document Library', () => {
         expect(await createKnowlegePo.isAttachDocumentBladeDisplayed()).toBeFalsy('Attach Document Blade is displayed');
         await createKnowlegePo.clickOnSaveKnowledgeButton();
         await previewKnowledgePo.clickOnViewArticleLink();
-
         await utilityCommon.switchToNewTab(1);
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         expect(await editKnowledgeMetaDataPo.isAttachDocumentBladeDisplayed()).toBeFalsy('Attach Document Blade is displayed');
-    });
+        await utilityCommon.refresh();
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+    }, 270 * 1000);
 
     //kgaikwad
     it('[DRDMV-13083]: Verify Knowledge Users will not be able to view document Managment link', async () => {
