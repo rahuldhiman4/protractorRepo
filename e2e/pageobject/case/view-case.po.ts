@@ -55,7 +55,7 @@ class ViewCasePage {
     }
 
     async isGroupNameDisplayed(groupName: string): Promise<boolean> {
-        return await $(`[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .group-container__name__title[title=${groupName}]}`).isDisplayed();
+        return await $(`[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .group-container__name__title[title=${groupName}]`).isDisplayed();
     }
 
     async isAttachedDocumentPresent(fileName: string): Promise<boolean> {

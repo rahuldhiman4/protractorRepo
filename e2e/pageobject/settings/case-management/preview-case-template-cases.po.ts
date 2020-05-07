@@ -24,7 +24,7 @@ class PreviewCaseTemplateBlade {
         supportCompany: 'a6a721e0-4a98-4d1f-85a8-27c7075a5a2a',
         assignee: '.person-main label',
         backButton: '[rx-view-component-id="83c4c73b-86b4-4894-b4c2-4d0525bed20d"] button',
-        dynamicFieldsName:'[rx-view-component-id="313a405e-5bc2-4a7a-98eb-6aeaab59b6aa"] span'
+        dynamicFieldsName:'[rx-view-component-id="3cacaba4-7a3b-411f-85c1-cb76bb7bc789"] span'
     }
 
     async clickOnBackButton(): Promise<void> {
@@ -124,7 +124,7 @@ class PreviewCaseTemplateBlade {
     }
 
     async isGroupDisplayed(groupName:string):Promise<boolean>{
-        return await $(`[rx-view-component-id="313a405e-5bc2-4a7a-98eb-6aeaab59b6aa"] .group-container__name div[title=${groupName}]`).isDisplayed();
+        return await $(`[rx-view-component-id="3cacaba4-7a3b-411f-85c1-cb76bb7bc789"] .group-container__name div[title=${groupName}]`).isDisplayed();
     }
 
     async isDynamicFieldDisplayed(fieldName:string):Promise<boolean>{

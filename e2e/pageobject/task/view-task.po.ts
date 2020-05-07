@@ -361,10 +361,6 @@ class ViewTask {
     async getAssignedCompanyText(): Promise<string> {
         return await $(this.selectors.assignedCompanyValue).getText();
     }
-              
-    async isManageDynamicFieldLinkDisplayed(): Promise<boolean> {
-        return await $(this.selectors.manageDynamicField).isDisplayed();
-    }
 
     async isDynamicFieldPresent(): Promise<boolean> {
         return await $(this.selectors.dynamicFieldsName).isPresent();

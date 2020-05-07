@@ -1,6 +1,7 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, Key } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 
+
 class QuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -245,14 +246,27 @@ class QuickCasePage {
         await $(`div[title=${templateName}]`).click();
     }
 
-    async clickOnRecommandedCase(caseID: string): Promise<void> {
-        let recommandedCount: number = await $$('.km-group-list-item__title').count();
-        for (let i = 0; i < recommandedCount; i++) {
-            let value = await $$('.km-group-list-item__title').get(i).getText();
-            if (value == caseID) {
-                await $$('.km-group-list-item__title').get(i).click();
+    async setSummaryAndClickOnRecommandedCase(caseID: string,caseSummary:string): Promise<boolean> {
+        
+        let success: boolean = false;
+        for (let i: number = 0; i <= 3; i++) {
+		 await $(this.selectors.smartSearchTextBox).sendKeys(caseSummary);
+            browser.sleep(1000);
+            success = await $(`div[title=${caseID}]`).isPresent().then(async (result) => {
+                if (result) {
+                   await $(`div[title=${caseID}]`).click();
+                    return true;
+                } else false;
+            });
+            if (success) break;
+            else {
+                for (let j: number = 0; j < caseSummary.length; j++) {
+                    await $(this.selectors.smartSearchTextBox).sendKeys(protractor.Key.BACK_SPACE);
+                }
+                continue;
             }
         }
+        return success;
     }
 }
 export default new QuickCasePage();
