@@ -251,21 +251,22 @@ describe('Case Data Store', () => {
             await requesterResponseBladePo.clickOkButton();
             await quickCasePo.gotoCaseButton();
             //verify fields shoule be empty values on case view
-            expect(await viewCasePo.getValueOfDynamicFields('temp')).toBe('');
-            expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('');
-            expect(await viewCasePo.getValueOfDynamicFields('temp2')).toBe('');
-            expect(await viewCasePo.getValueOfDynamicFields('temp4')).toBe('');
-            expect(await viewCasePo.getValueOfDynamicFields('temp3')).toBe('');
-            expect(await viewCasePo.getValueOfDynamicFields('temp5')).toBe('');
-            expect(await viewCasePo.getValueOfDynamicFields('dynamicList')).toBe('');
-            expect(await viewCasePo.getValueOfDynamicFields('attachment1')).toBe('');
-            expect(await viewCasePo.getValueOfDynamicFields('temp6')).toBe('');
-            expect(await viewCasePo.getValueOfDynamicFields('temp7')).toBe('');
-            expect(await viewCasePo.getValueOfDynamicFields('temp8')).toBe('');
-            expect(await viewCasePo.getValueOfDynamicFields('temp9')).toBe('');
-            expect(await viewCasePo.getValueOfDynamicFields('temp10')).toBe('');
-            expect(await viewCasePo.getValueOfDynamicFields('temp11')).toBe('');
-            expect(await viewCasePo.getValueOfDynamicFields('temp12')).toBe('');
+            //https://jira.bmc.com/browse/DRDMV-21677
+            expect(await viewCasePo.getValueOfDynamicFields('temp')).toBe('-');
+            expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('-');
+            expect(await viewCasePo.getValueOfDynamicFields('temp2')).toBe('-');
+            expect(await viewCasePo.getValueOfDynamicFields('temp4')).toBe('-');
+            expect(await viewCasePo.getValueOfDynamicFields('temp3')).toBe('-');
+            expect(await viewCasePo.getValueOfDynamicFields('temp5')).toBe('-');
+            expect(await viewCasePo.getValueOfDynamicFields('dynamicList')).toBe('-');
+            expect(await viewCasePo.getValueOfDynamicFields('attachment1')).toBe('-');
+            expect(await viewCasePo.getValueOfDynamicFields('temp6')).toBe('-');
+            expect(await viewCasePo.getValueOfDynamicFields('temp7')).toBe('-');
+            expect(await viewCasePo.getValueOfDynamicFields('temp8')).toBe('-');
+            expect(await viewCasePo.getValueOfDynamicFields('temp9')).toBe('-');
+            expect(await viewCasePo.getValueOfDynamicFields('temp10')).toBe('-');
+            expect(await viewCasePo.getValueOfDynamicFields('temp11')).toBe('-');
+            expect(await viewCasePo.getValueOfDynamicFields('temp12')).toBe('-');
         } catch (e) { throw e }
         finally {
             await navigationPage.signOut();

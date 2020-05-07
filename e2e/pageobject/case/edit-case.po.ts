@@ -58,12 +58,12 @@ class CaseEditPage {
         closedTip: '.bwf-attachment-container__remove .d-icon-cross',
         attachmentField: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .bwf-attachment-button input',
         dynamicFieldDate: '[class="input-group"] input[ng-model="date"]',
-        dynamicBooleanValue: 'button[aria-label="True"]',
+        dynamicBooleanValue: 'button.d-icon-check_adapt',
         dynamicFieldDateTime: 'input[ng-model="datetime"]',
         dynamicFieldTime: '.dynamic-time-field input[ng-model="hours"]',
-        dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .label-wrapper span',
+        dynamicFieldsName: '[rx-view-component-id="465ce519-19f3-4d8f-8725-888255768aa7"] label',
         dynamicFieldInput: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] input',
-        dynamicAttachmentField:'[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .bwf-attachment-button input',
+        dynamicAttachmentField: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .bwf-attachment-button input',
         tabText: '.nav-link-wrapper',
     }
 
@@ -375,11 +375,15 @@ class CaseEditPage {
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
-        let dynamicFieldLocator = `[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group[title="${fieldName}"]`;
-        return await $(dynamicFieldLocator).isPresent().then(async (result) => {
-           if(result) return await $(dynamicFieldLocator).isDisplayed();
-           else console.log('dynamic field is not present');
-        });
+        let dynamicFieldLocator = `.simple-field label`;
+        let dynamicFields: number = await $$(dynamicFieldLocator).count();
+        for (let i = 0; i < dynamicFields; i++) {
+            let field = await (await $$(dynamicFieldLocator).get(i).getText()).trim();
+            if (fieldName == field) {
+                return true;
+            }
+        }
+        return false;
     }
 
     async addAttachment(attachmentField: string, fileToUpload: string): Promise<void> {
@@ -400,11 +404,11 @@ class CaseEditPage {
     }
 
     async setDynamicFieldValue(fieldName: string, fieldValue: string): Promise<void> {
-        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
-        for (let i = 0; i < dynamicFields; i++) {
-            let field = await $$(this.selectors.dynamicFieldsName).get(i).getText();
-            if (fieldName == field) {
-                await $$(this.selectors.dynamicFieldInput).get(i).sendKeys(fieldValue);
+        let grandParents: number = await $$('bwf-text-field').count();
+        for (let i = 0; i < grandParents; i++) {
+            let labelvalue = await $$('bwf-text-field').get(i).$('label').getText();
+            if (labelvalue = fieldName) {
+                $$('bwf-text-field').get(i).$('input').sendKeys(fieldValue);
             }
         }
     }

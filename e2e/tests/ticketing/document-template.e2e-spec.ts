@@ -9,7 +9,7 @@ import documentTemplateConsolePo from '../../pageobject/settings/document-manage
 import editDocumentTemplatePo from '../../pageobject/settings/document-management/edit-document-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import utilCommon from 'e2e/utils/util.common';
+import utilCommon from '../../utils/util.common';
 
 describe('Document Template', () => {
     beforeAll(async () => {
