@@ -145,7 +145,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 270 * 1000);
+    }, 350 * 1000);
 
     //kgaikwad
     it('[DRDMV-18031]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
@@ -202,7 +202,7 @@ describe("Create Case", () => {
         await caseConsolePage.searchAndOpenCase(caseId1);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
-    });//, 180 * 1000);
+    },280 * 1000);
 
     //ankagraw
     it('[DRDMV-16081]: Verify allow case reopen tag in case template', async () => {
@@ -280,7 +280,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 490 * 1000);
+    }, 650 * 1000);
 
     //ankagraw
     it('[DRDMV-1191,DRDMV-1198]: [Case Creation] Case creation with/without mandatory fields populated ', async () => {
@@ -354,7 +354,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });//, 200 * 1000);
+    },250 * 1000);
 
     //ankagraw
     it('[DRDMV-11856]: [Case Creation] create case with Global case template without flowset ', async () => {
@@ -392,7 +392,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 250 * 1000);
+    },300 * 1000);
 
     //ankagraw
     it('[DRDMV-16076]: Reopen configurations available on Case Template Create screen ', async () => {
@@ -473,7 +473,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 570 * 1000);
+    }, 700 * 1000);
 
     //ankagraw
     it('[DRDMV-1237]: [Global navigation] Navigation to Workspaces and Create subitems in the Shell ', async () => {
@@ -539,7 +539,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 270 * 1000);//, 150 * 1000);
+    }, 270 * 1000);
 
     //ankagraw
     it('[DRDMV-8868]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', async () => {
@@ -569,6 +569,7 @@ describe("Create Case", () => {
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.searchAndOpenCaseTemplate(caseTemplateData.templateName);
+            await selectCaseTemplateBlade.clickOnCaseTemplateLink();
             expect(await caseTemplatePreview.isCaseSummaryHeaderDisplayed('Case Summary')).toBeTruthy('Case Summary is not getting displayed');
             expect(await caseTemplatePreview.isCaseCompanyTitleDisplayed('Case Company')).toBeTruthy('Case Company is not getting displayed');
             expect(await caseTemplatePreview.isCaseStatusTitleDisplayed('Case Status')).toBeTruthy('Case Status is not getting displayed');
@@ -619,7 +620,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 180 * 1000);
+    },350 * 1000);
 
     //ankagraw
     it('[DRDMV-12061]: [ Task ] - Verify create case with Global task template having assignment', async () => {
@@ -698,7 +699,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 360 * 1000);
+    }, 500 * 1000);
 
     //ankagraw
     it('[DRDMV-15974]: Verify the status transition Closed->New is available only when Closed case is Reopened', async () => {
@@ -775,7 +776,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 450 * 1000);
+    }, 800 * 1000);
 
     //ankagraw
     it('[DRDMV-5479,DRDMV-1192]: Verify case assignment on Create Case', async () => {
@@ -813,7 +814,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 200 * 1000);
+    },350 * 1000);
 
     //ankagraw
     it('[DRDMV-11818]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
@@ -992,8 +993,9 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 270 * 1000);
+    }, 350 * 1000);
 
+    
     it('[DRDMV-11700]: Verify  sort on all attachments grid', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
