@@ -2,9 +2,9 @@
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
-const { SpecReporter } = require('jasmine-spec-reporter');
-var HtmlReporter = require('protractor-beautiful-reporter');
-const specJsonReporter = require('./reporters/spec-json-reporter/jasmine-spec-json-reporter');
+const { SpecReporter } = require("jasmine-spec-reporter");
+var HtmlReporter = require("protractor-beautiful-reporter");
+const specJsonReporter = require("./reporters/spec-json-reporter/jasmine-spec-json-reporter");
 
 /**
  * @type { import("protractor").Config }
@@ -14,48 +14,49 @@ exports.config = {
   getPageTimeout: 60 * 1000,
 
   capabilities: {
-    browserName: 'chrome',
-    'chromeOptions': {
+    browserName: "chrome",
+    "goog:chromeOptions": {
+      w3c: false,
+    },
+    chromeOptions: {
       prefs: {
         download: {
-          'prompt_for_download': false,
-          'directory_upgrade': true,
-          'default_directory': process.cwd() + '\\e2e\\data\\downloads'
-        }
-      }
+          prompt_for_download: false,
+          directory_upgrade: true,
+          default_directory: process.cwd() + "\\e2e\\data\\downloads",
+        },
+      },
     },
-    'shardTestFiles': true,
-    'maxInstances': 1,
-    'idle-duration': 5,
   },
 
   suites: {
-    attachment: ['./tests/attachment/*.e2e-spec.ts'],
-    case1: ['./tests/case1/*.e2e-spec.ts'],
-    case2: ['./tests/case2/*.e2e-spec.ts'],
-    cognitive: ['./tests/cognitive/*.e2e-spec.ts'],
-    email: ['./tests/email/*.e2e-spec.ts'],
-    flowset: ['./tests/flowset/*.e2e-spec.ts'],
-    knowledge: ['./tests/knowledge/*.e2e-spec.ts'],
-    notification: ['./tests/notification/*.e2e-spec.ts'],
-    slm: ['./tests/slm/*.e2e-spec.ts'],
-    social: ['./tests/social/*.e2e-spec.ts'],
-    task: ['./tests/task/*.e2e-spec.ts'],
-    ticketing: ['./tests/ticketing/*.e2e-spec.ts'],
+    attachment: ["./tests/attachment/*.e2e-spec.ts"],
+    case1: ["./tests/case1/*.e2e-spec.ts"],
+    case2: ["./tests/case2/*.e2e-spec.ts"],
+    cognitive: ["./tests/cognitive/*.e2e-spec.ts"],
+    email: ["./tests/email/*.e2e-spec.ts"],
+    flowset: ["./tests/flowset/*.e2e-spec.ts"],
+    knowledge: ["./tests/knowledge/*.e2e-spec.ts"],
+    notification: ["./tests/notification/*.e2e-spec.ts"],
+    slm: ["./tests/slm/*.e2e-spec.ts"],
+    social: ["./tests/social/*.e2e-spec.ts"],
+    task: ["./tests/task/*.e2e-spec.ts"],
+    ticketing: ["./tests/ticketing/*.e2e-spec.ts"],
   },
 
-  directConnect: false,
+  //directConnect: false,
+  seleniumAddress: "http://clm-pun-u8picl:4444/wd/hub",
   //baseUrl: 'http://clm-pun-t3erts.bmc.com:8008',
-  baseUrl: 'http://clm-aus-t5jj96.bmc.com:8008',
-  framework: 'jasmine',
+  baseUrl: "http://clm-aus-t5jj96.bmc.com:8008",
+  framework: "jasmine",
   jasmineNodeOpts: {
     showColors: true,
     defaultTimeoutInterval: 240 * 1000,
-    print: function () { }
+    print: function () {},
   },
 
   async onPrepare() {
-    let globals = require('protractor/built');
+    let globals = require("protractor/built");
     let browser = globals.browser;
     //await browser.waitForAngularEnabled(false);
 
@@ -87,21 +88,24 @@ exports.config = {
     // };
     // browser.addMockModule('disableAnimation', disableAnimation);
 
-    require('ts-node').register({
-      project: require('path').join(__dirname, './tsconfig.json')
+    require("ts-node").register({
+      project: require("path").join(__dirname, "./tsconfig.json"),
     });
 
-    jasmine.getEnv().addReporter(new SpecReporter({
-      spec: {
-        displayStacktrace: true
-      }
-    }));
+    jasmine.getEnv().addReporter(
+      new SpecReporter({
+        spec: {
+          displayStacktrace: true,
+        },
+      })
+    );
 
-    jasmine.getEnv().addReporter(new HtmlReporter({
-      baseDirectory: 'e2e/reports/screenshots'
-    }).getJasmine2Reporter());
+    jasmine.getEnv().addReporter(
+      new HtmlReporter({
+        baseDirectory: "e2e/reports/screenshots",
+      }).getJasmine2Reporter()
+    );
 
     jasmine.getEnv().addReporter(specJsonReporter);
   },
-
 };
