@@ -4,6 +4,8 @@ import { browser } from 'protractor';
 
 const recordInstanceUri = "api/rx/application/record/recordinstance";
 const dynamicDataUri = "api/com.bmc.dsm.ticketing-lib/dynamicdata/definition";
+const documentUri = "api/com.bmc.dsm.ticketing-lib/definition/document";
+const processDefUri = "api/com.bmc.dsm.ticketing-lib/definition/process";
 let FormData = require('form-data');
 let fs = require('fs');
 
@@ -331,6 +333,23 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async createDocumentForAutoTaskTemplate(jsonBody): Promise<AxiosResponse> {
+        const newRecord = await axios.post(
+            documentUri,
+            jsonBody
+        );
+        console.log('Document for Process API Status =============>', newRecord.status);
+        return newRecord;
+    }
+
+    async createProcessForAutoTaskTemplate(jsonBody): Promise<AxiosResponse> {
+        const newRecord = await axios.post(
+            processDefUri,
+            jsonBody
+        );
+        console.log('Document for Process API Status =============>', newRecord.status);
+        return newRecord;
+    }
 }
 
 export default new ApiCoreUtil();

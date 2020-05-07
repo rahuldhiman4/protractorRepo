@@ -63,11 +63,11 @@ describe('Login and create case from API', () => {
 
     it('create auto task template', async () => {
         let templateData = {
-            "templateName": "task template 1",
-            "templateSummary": "task template summary 1",
+            "templateName": "task template new 1",
+            "templateSummary": "task template summary new 1",
             "templateStatus": "Active",
-            "processBundle": "com.bmc.arsys.rx.approval",
-            "processName": "Approval Process 1",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": "Task Process new 1",
         }
 
         await apiHelper.apiLogin('qkatawazi');
