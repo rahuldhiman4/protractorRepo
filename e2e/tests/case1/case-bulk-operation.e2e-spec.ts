@@ -75,7 +75,8 @@ describe('Case Bulk Operation', () => {
         }
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qing Yuan");
-        expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
+        expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
+
         await utilityCommon.closePopUpMessage();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.searchAndOpenHyperlink(caseId[i]);
@@ -104,12 +105,12 @@ describe('Case Bulk Operation', () => {
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[1]);
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qiao Feng");
-        expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
+        expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
         await utilityCommon.closePopUpMessage();
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[2]);
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qing Yuan");
-        expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
+        expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
         try {
             await navigationPage.signOut();
             await loginPage.login("qfeng");
@@ -164,7 +165,8 @@ describe('Case Bulk Operation', () => {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId2);
             await caseConsolePage.clickOnChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qianru Tao");
-            expect(await utilityCommon.getAllPopupMsg()).toContain("You do not have permission to perform this operation. Please contact your system administrator.");
+            expect(await utilityCommon.isPopUpMessagePresent('You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy();
+
         }
         catch (ex) {
             throw ex;
@@ -204,7 +206,7 @@ describe('Case Bulk Operation', () => {
 
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, "Risk Management", "Quenton Annis");
-        expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
+        expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
         await utilityCommon.closePopUpMessage();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.searchAndOpenHyperlink(caseId[i]);
@@ -231,7 +233,8 @@ describe('Case Bulk Operation', () => {
         }
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qing Yuan");
-        expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
+        expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
+
         await utilityCommon.closePopUpMessage();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.searchAndOpenHyperlink(caseId[i]);
@@ -274,7 +277,7 @@ describe('Case Bulk Operation', () => {
         await changeAssignmentBladePo.selectSupportGroup("BulkOperationSupportGroup");
         await changeAssignmentBladePo.selectAssignee("BOPerson lnPerson");
         await changeAssignmentBladePo.clickOnAssignButton();
-        expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
+        expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
 
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.searchAndOpenHyperlink(caseId[i]);
@@ -308,7 +311,7 @@ describe('Case Bulk Operation', () => {
 
             await caseConsolePage.clickOnChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee(petramcoStr, compensationAndBenefitsStr, 'Qadim Katawazi');
-            expect(await utilityCommon.getAllPopupMsg()).toContain("The selected case(s) have been successfully assigned.");
+            expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
 
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.searchAndOpenHyperlink(caseId[i]);
@@ -351,7 +354,7 @@ describe('Case Bulk Operation', () => {
 
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignmentBladePo.setAssignee(petramcoStr, compensationAndBenefitsStr, 'Qadim Katawazi');
-        expect(await utilityCommon.getAllPopupMsg()).toContain("Cases in closed or canceled status cannot be modified. Please update the selected cases.");
+        expect(await utilityCommon.isPopUpMessagePresent('Cases in closed or canceled status cannot be modified. Please update the selected cases.')).toBeTruthy();
         await utilityCommon.closePopUpMessage();
     });
 })

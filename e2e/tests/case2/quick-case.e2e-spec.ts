@@ -130,8 +130,7 @@ describe("Quick Case", () => {
         await quickCase.selectRequesterName('Person1 Person1');
         await quickCase.setCaseSummary('caseSummary');
         await quickCase.createCaseButton();
-        let msgs: string[] = ["Saved successfully."];
-        await expect(await utilityCommon.isPopupMsgsMatches(msgs)).toBeTruthy("Success Messsage not present");
+        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Success message not validated'); 
         await quickCase.gotoCaseButton();
         expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
     });
@@ -813,8 +812,7 @@ describe("Quick Case", () => {
         expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
         await previewKnowledgePo.clickOnBackButton();
         await quickCase.createCaseButton();
-        let msgs: string[] = ["Saved successfully."];
-            await expect(await utilityCommon.isPopupMsgsMatches(msgs)).toBeTruthy("Success Messsage not present");
+        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Success message not validated'); 
         expect(await previewCasePo.isRequesterNameDisplayed('Adam Pavlik')).toBeTruthy();
         expect(await previewCasePo.isCaseSummaryDisplayed(casTemplateSummary)).toBeTruthy();
         expect(await previewCasePo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();

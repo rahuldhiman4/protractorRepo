@@ -77,8 +77,7 @@ class ManageTaskBlade {
         //        await browser.wait(this.EC.elementToBeClickable(element(by.linkText(taskSummary))));
         // await element(by.partialLinkText(taskSummary)).click();
         //        await utilCommon.waitUntilSpinnerToHide();
-        //await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText('.task .task-summary-wrapper a', taskSummary))),3000);
-        await element(by.cssContainingText('.task .task-summary-wrapper a', taskSummary)).click();
+        await element(by.cssContainingText('.task-summary-wrapper a', taskSummary)).click();
     }
 
     async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {

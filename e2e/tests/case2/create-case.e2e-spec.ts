@@ -900,8 +900,7 @@ describe("Create Case", () => {
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clearCaseSummary();
             await editCasePage.clickSaveCase();
-            let msgs: string[] = ["Resolve the field validation errors and then try again."];
-            await expect(await utilityCommon.isPopupMsgsMatches(msgs)).toBeTruthy("Expected Messsage not present");
+            expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy(); 
         } catch (error) {
             throw error;
         } finally {
