@@ -87,7 +87,7 @@ export class Resources {
     }
     async getAdvancedSearchResultForParticularSection(headingType: string): Promise<string> {
         //await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
-        const searchResult = await $$(this.selectors.knowledgeTitle).first().getAttribute("title");
+        const searchResult = await element(by.xpath(`//div[contains(@class,'list__item')]//../div[contains(@class,'bwf-search-fields__title-text')][contains(@title,'${headingType}')]`)).getText();
         return await searchResult;
     }
 
