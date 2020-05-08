@@ -138,6 +138,10 @@ class EditTask {
         await $(this.selectors.taskSummary).clear();
         await $(this.selectors.taskSummary).sendKeys(summary);
     }
+
+    async isAssignmentSectionDisplayed():Promise<boolean>{
+        return await $(this.selectors.assignToMe).isDisplayed();
+    }
 }
 
 export default new EditTask();

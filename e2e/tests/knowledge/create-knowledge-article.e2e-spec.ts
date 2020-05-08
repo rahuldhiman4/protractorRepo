@@ -338,6 +338,8 @@ describe('Knowledge Article', () => {
 
     it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
         try {
+            await apiHelper.apiLogin("tadmin");
+            await apiHelper.deleteKnowledgeApprovalMapping();
             let knowledgeTitile = 'knowledge2985' + randomStr;
             await apiHelper.apiLogin(knowledgePublisherUser);
             let articleData = {
@@ -369,7 +371,6 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
             await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
@@ -382,7 +383,7 @@ describe('Knowledge Article', () => {
             await reviewCommentsPo.clickApprovedButton();
             await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
-            await editKnowledgePage.setKnowledgeStatus('Retired');
+            await editKnowledgePage.setKnowledgeStatus('Retired Approval');
             expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
             await editKnowledgePage.setKnowledgeStatus('Closed');
             expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');

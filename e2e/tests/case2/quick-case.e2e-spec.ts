@@ -62,7 +62,7 @@ describe("Quick Case", () => {
             await utilityCommon.refresh();
             await quickCasePo.selectRequesterName('Adam Pavlik');
             await quickCasePo.setCaseSummary(categoryvalues[i]);
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             let qcSummary = await quickCasePo.isCaseSummaryPresentInRecommendedCases(categoryvalues[0]);
             qcSummary = false ? result = false : result = true;
             await expect(result).toBeTruthy(`FailureMsg: Case Summary does not match for ${categoryvalues[i]}`);
@@ -130,7 +130,7 @@ describe("Quick Case", () => {
         await quickCase.selectRequesterName('Person1 Person1');
         await quickCase.setCaseSummary('caseSummary');
         await quickCase.createCaseButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Success message not validated');
+        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Success message not validated'); 
         await quickCase.gotoCaseButton();
         expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
     });
@@ -257,6 +257,7 @@ describe("Quick Case", () => {
         let templateData1 = {
             "templateName": caseTemplateName1,
             "templateSummary": caseTemplateName1,
+            "categoryTier1": "Phones",
             "templateStatus": "Active",
             "company": "Petramco",
             "caseStatus": "New"
@@ -339,12 +340,12 @@ describe("Quick Case", () => {
     it('[DRDMV-795]: [Quick Case] Case template search in Resources', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = randomStr + 'templateDraft';
-        let casTemplateSummary = randomStr + 'SummaryDraft';
+        let caseTemplateSummary = randomStr + 'SummaryDraft';
         let caseTempalteDescription = randomStr + 'Description';
         
         let CaseTemplateDataInDraftStatus = {
             "templateName": caseTemplateName,
-            "templateSummary": casTemplateSummary,
+            "templateSummary": caseTemplateSummary,
             "caseStatus": "InProgress",
             "templateStatus": "Draft",
             "description": caseTempalteDescription,
@@ -385,10 +386,12 @@ describe("Quick Case", () => {
         expect(await quickCase.selectCaseTemplate(caseTemplateName)).toBeTruthy("template not present1");
         await quickCase.clickStartOverButton();
         await quickCase.selectRequesterName('adam');
-        await quickCase.setCaseSummary(casTemplateSummary);
+        await quickCase.selectCaseTemplate(caseTemplateName);
+        await quickCase.setCaseSummary(caseTemplateSummary);
         expect(await resources.getAdvancedSearchResultForParticularSection(caseTemplateName)).toEqual(caseTemplateName);
         await quickCase.clickStartOverButton();
         await quickCase.selectRequesterName('adam');
+        await quickCase.selectCaseTemplate(caseTemplateName);
         await quickCase.setCaseSummary(caseTempalteDescription);
         expect(await resources.getAdvancedSearchResultForParticularSection(caseTemplateName)).toEqual(caseTemplateName);
     }, 900 * 1000);
@@ -466,6 +469,8 @@ describe("Quick Case", () => {
         await apiHelper.createCase(caseData);
         await apiHelper.createKnowledgeArticle(articleData1);
         try {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(caseTemplateName);
@@ -479,7 +484,7 @@ describe("Quick Case", () => {
             await resources.enterAdvancedSearchText(caseTemplateName);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
-            await quickCase.clickArrowFirstRecommendedKnowledge();
+            await quickCase.pinRecommendedKnowledgeArticles(1);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePage.getCaseSummary()).toBe(caseTemplateName, "Template is not Found");
@@ -509,7 +514,6 @@ describe("Quick Case", () => {
             await loginPage.login('qkatawazi');
         }
     }, 550 * 1000);
-
     it('[DRDMV-624]:  Advanced Search UI verification on the Quick Case view', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let knowledgeTitile = 'knowledge3542' + randomStr;
@@ -770,7 +774,7 @@ describe("Quick Case", () => {
             "company": "Petramco",
             "supportGroup": "Facilities",
             "ownerGroup": "Facilities",
-            "priority": "Low",
+            "casePriority": "Low",
         }
 
         let articleData = {
@@ -781,7 +785,7 @@ describe("Quick Case", () => {
             "assigneeSupportGroup": "AU Support 3",
             "company": "Petramco"
         }
-        
+
         await apiHelper.apiLogin('qkatawazi');
         let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
         let newCaseTemplate = await apiHelper.createCaseTemplate(CaseTemplateData);
@@ -800,7 +804,7 @@ describe("Quick Case", () => {
         expect(await previewCaseTemplateCasesPo.getCaseStatus()).toBe("In Progress");
         expect(await previewCaseTemplateCasesPo.getCaseCompanyValue()).toBe("Petramco");
         expect(await previewCaseTemplateCasesPo.getCaseTemplateName()).toBe(caseTemplateName);
-        expect(await previewCaseTemplateCasesPo.getCasePriority()).toBe("Medium");
+        expect(await previewCaseTemplateCasesPo.getCasePriority()).toBe("Low");
         await previewCaseTemplateCasesPo.clickOnBackButton();
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
         await resources.enterAdvancedSearchText(caseTemplateName);
@@ -812,12 +816,12 @@ describe("Quick Case", () => {
         expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
         await previewKnowledgePo.clickOnBackButton();
         await quickCase.createCaseButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Success message not validated'); 
         expect(await previewCasePo.isRequesterNameDisplayed('Adam Pavlik')).toBeTruthy();
         expect(await previewCasePo.isCaseSummaryDisplayed(casTemplateSummary)).toBeTruthy();
         expect(await previewCasePo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();
         expect(await previewCasePo.isRequesterEmailIdDisplayed('apavlik@petramco.com')).toBeTruthy();
-        expect(await previewCasePo.isDescriptionDisplayed('Adam Pavlik '+ `${caseTemplateName}`)).toBeTruthy();
+        expect(await previewCasePo.isDescriptionDisplayed('Adam Pavlik ' + `${caseTemplateName}`)).toBeTruthy();
     }, 500 * 1000);
 
     //radhiman

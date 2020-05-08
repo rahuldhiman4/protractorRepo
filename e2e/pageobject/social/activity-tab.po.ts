@@ -219,6 +219,13 @@ class ActivityTabPage {
         return cellText;
     }
 
+    async getColorFontStyleOfText(rowNumber:number, columnNumber: number, value: string): Promise<string> {
+        let row = await $$('.activity .email-body table tr').get(rowNumber-1);
+        let cell = await row.$$('td').get(columnNumber-1);
+        let locator = `span[style='${value}']`;
+        return await cell.$(locator).getText();
+    }
+
     async addAttachment(fileToUpload: string[]): Promise<void> {
         const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
         console.log(absPathArray);
@@ -534,12 +541,12 @@ class ActivityTabPage {
 
     async isTextPresentInActivityLog(caseActivityLogText: string): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
-        try {
-            return await element(by.cssContainingText(this.selectors.activityLog, caseActivityLogText)).isDisplayed();
+        let activityValue:string = "";
+        let countVal = await $$(this.selectors.activityLog).count();
+        for (let i: number = 0; i < countVal; i++) {
+            activityValue = activityValue + await $$(this.selectors.activityLog).get(i).getText();
         }
-        catch (e) {
-            return false;
-        }
+        return await activityValue.includes(caseActivityLogText);
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {

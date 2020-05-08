@@ -5,11 +5,12 @@ import utilityCommon from '../../utils/utility.common';
 class ViewTask {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        dropDownOption: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"] .dropdown_select__menu-content button',
         statusDropDown: '8b4cef48-0a4c-4ec1-bc4c-cce47179c964',
         saveStatus: '[rx-view-component-id="6759ba60-df0d-4d5e-8eb9-5101490fd4d4"] button',
         cancleStatus: '[rx-view-component-id="debcdc88-fb42-4003-96d6-1eeb807206b7"] button',
         allStatus: '.dropdown_select__menu .dropdown-item',
-        updateStatusDropDown: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"] .form-control',
+        updateStatusDropDown: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"] button',
         taskTypeValue: '[rx-view-component-id="057f2521-313b-40c9-be56-829827512abf"] .read-only-content',
         editButton: '.float-right',
         categoryTier1Value: '[rx-view-component-id="909ad3ad-6706-4d46-bb5a-bc48fa6ca98e"] .read-only-content',
@@ -28,7 +29,7 @@ class ViewTask {
         caseIdText: '.rx-record-preview-card__field .rx-record-preview-card__value',
         caseSummary: '.rx-record-preview-card__field .rx-record-preview-card__value',
         taskSummary: '[rx-view-component-id="fa66e566-757c-4d10-a850-9ea3bd037707"] span',
-        taskStatus: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] .status-transition',
+        taskStatus: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] span',
         requesterName: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-name .person-link',
         requesterContact: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-phone-link',
         requesterMail: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .bwf-person-email button',
@@ -42,8 +43,9 @@ class ViewTask {
         attachmentFile: '.justify-content-start .bwf-attachment-container__file-name',
         attachmentpath: '.rx-attachment-view .d-icon-cross',
         showMore:'.rx-attachment-show-text',
-        dynamicFieldsName:'[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] span',
-        dynamicFieldsValue:'[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] p',
+        dynamicFieldsName:'[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] label',
+        dynamicFieldsValue:'[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .read-only-content',
+        assignmentSection:'[rx-view-component-id="a202d36e-32db-4093-9c92-c4f7a514f3d7"] .person-badge',
         assignedGroupValue:'[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] .read-only-content',
         assignedCompanyValue:'[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] .read-only-content',
         businessUnitValue:'[rx-view-component-id="4ad9dc88-aa95-4fb7-8128-7df004dfca8f"] .read-only-content', 
@@ -77,8 +79,18 @@ class ViewTask {
         await $(this.selectors.requesterMail).click();
     }
 
-    async allTaskOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.taskStatusGuid, list);
+    async allTaskOptionsPresent(data: string[]): Promise<boolean> {
+        let arr: string[] = [];
+        let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
+            arr[i] = ab;
+        }
+        arr = arr.sort();
+        data = data.sort();
+        return arr.length === data.length && arr.every(
+            (value, index) => (value === data[index])
+        );
     }
 
     async clickOnChangeStatus(): Promise<void> {
@@ -362,8 +374,22 @@ class ViewTask {
         return await $(this.selectors.assignedCompanyValue).getText();
     }
 
-    async isDynamicFieldPresent(): Promise<boolean> {
+    async isDynamicFieldPresent(fieldName:string):Promise<boolean>{
+        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
+        for (let i = 0; i < dynamicFields; i++) {
+            let field = await (await $$(this.selectors.dynamicFieldsName).get(i).getText()).trim();
+            if (fieldName == field) {
+                return true;
+            }
+        }
+        return false;
+    }
+    async isDynamicFieldSectionPresent(): Promise<boolean>{
         return await $(this.selectors.dynamicFieldsName).isPresent();
+    }
+
+    async isAssignmentSectionDisplayed():Promise<boolean>{
+        return await $(this.selectors.assignmentSection).isDisplayed();
     }
 }
 
