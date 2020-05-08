@@ -1,4 +1,4 @@
-import { browser } from "protractor";
+import { browser } from 'protractor';
 import apiHelper from '../../api/api.helper';
 import attachmentBladePo from '../../pageobject/attachment/attachment-blade.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
@@ -11,16 +11,16 @@ import viewCasePo from '../../pageobject/case/view-case.po';
 import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
 import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
-import loginPage from "../../pageobject/common/login.po";
+import loginPage from '../../pageobject/common/login.po';
 import navigationPage from "../../pageobject/common/navigation.po";
-import { default as resources, default as resourcesTabPo } from '../../pageobject/common/resources-tab.po';
+import resourcesTabPo from '../../pageobject/common/resources-tab.po';
 import composeMailPo from '../../pageobject/email/compose-mail.po';
 import documentLibraryConsolePo from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
-import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
+import adhoctaskTemplate from '../../pageobject/task/create-adhoc-task.po';
 import editTaskPo from '../../pageobject/task/edit-task.po';
-import { default as manageTask } from "../../pageobject/task/manage-task-blade.po";
+import manageTask from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
@@ -84,7 +84,6 @@ describe('Document Library Consume UI', () => {
         let newCase = await apiHelper.createCase(caseData);
         let caseId: string = newCase.displayId;
         await caseConsolePo.searchAndOpenCase(caseId);
-        await browser.sleep(5000);
         await viewCasePo.clickEditCaseButton();
         await editCasePo.clickOnAttachLink();
         await attachDocumentBladePo.searchAndAttachDocument(publishDocData.docLibTitle);
@@ -663,7 +662,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 700 * 1000);
+    }, 830 * 1000);
 
     //kgaikwad
     it('[DRDMV-13463]: Edit Case - Case business analyst attaches published document from document library who has write access to that document', async () => {
@@ -1202,7 +1201,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 850 * 1000);
+    }, 900 * 1000);
 
     //kgaikwad
     it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
@@ -1367,11 +1366,11 @@ describe('Document Library Consume UI', () => {
         await attachDocumentBladePo.isDocumentLibaryPresent(publish[0]);
         await attachDocumentBladePo.searchRecord('%');
         await expect(await attachDocumentBladePo.isPaginationPresent()).toBeTruthy('Failure: Pagination is missing');
-        await resources.clickOnAdvancedSearchSettingsIconToOpen();
-        await resources.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Applications');
-        await resources.selectAdvancedSearchFilterOption('Region', 'Australia');
-        await resources.selectAdvancedSearchFilterOption('Site', 'Canberra');
-        await resources.clickOnAdvancedSearchFiltersButton('Apply');
+        await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+        await resourcesTabPo.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Applications');
+        await resourcesTabPo.selectAdvancedSearchFilterOption('Region', 'Australia');
+        await resourcesTabPo.selectAdvancedSearchFilterOption('Site', 'Canberra');
+        await resourcesTabPo.clickOnAdvancedSearchFiltersButton('Apply');
         await attachDocumentBladePo.selectDocument();
         await attachDocumentBladePo.clickOnAttachButton();
         await activityTabPo.clickOnAttachLink();
@@ -1429,7 +1428,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
             await activityTabPo.clickOnPostButton();
             await utilityCommon.waitUntilSpinnerToHide();
-            await expect (await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed')
+            await expect(await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed')
 
             await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
             await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
@@ -1456,7 +1455,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(caseId);
-            await expect (await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed');
+            await expect(await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed');
             await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg:bwfJpg.jpg Attached Document is missing');
             await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
