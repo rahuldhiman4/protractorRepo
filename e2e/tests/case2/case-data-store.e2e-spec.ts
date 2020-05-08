@@ -421,34 +421,39 @@ describe('Case Data Store', () => {
         await viewCasetemplatePo.clickEditTemplateMetaData();
         await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
         await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-        await navigationPage.gotoQuickCase();
-        await quickCasePo.selectRequesterName('qtao');
-        await quickCasePo.selectCaseTemplate(caseTemplateName);
-        await quickCasePo.createCaseButton();
-        await quickCasePo.gotoCaseButton();
+        await navigationPage.gotoCreateCase();
+        await createCasePo.selectRequester('qtao');
+        await createCasePo.setSummary('Summary');
+        await createCasePo.clickSelectCaseTemplateButton();
+        await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
+        await createCasePo.clickAssignToMeButton();
+        await createCasePo.clickSaveCaseButton();
+        await previewCasePo.clickGoToCaseButton();
+        await utilityCommon.waitUntilPopUpDisappear();
         //edit case
         await viewCasePo.clickEditCaseButton();
-        await editCasePo.setDynamicFieldValue(field1InGroup, field2InGroup);
-        await editCasePo.setDynamicFieldValue(field2InGroup, '88888888899');
+        await editCasePo.setDynamicFieldValue(field1InGroup, 'New values for field 1 group');
+        await editCasePo.setDynamicFieldValue(field2InGroup, '8888899');
         await editCasePo.clickOnTrueValueOfDynamicField();
-        await editCasePo.setDynamicFieldValue(field1OutSideGroup, field2InGroup);
-        await editCasePo.setDynamicFieldValue(field2OutSideGroup, '8888545888');
+        await editCasePo.setDynamicFieldValue(field1OutSideGroup, 'field1 outside group');
+        await editCasePo.setDynamicFieldValue(field2OutSideGroup, '809888');
         await editCasePo.clickSaveCase();
         //field on case profile
-        expect(await viewCasePo.getValueOfDynamicFields(field4OutSideGroup)).toBeTruthy('field not present');
-        expect(await viewCasePo.getValueOfDynamicFields(field3OutSideGroup)).toBeTruthy('field not present');
-        expect(await viewCasePo.getValueOfDynamicFields(field2OutSideGroup)).toBeTruthy('field not present');
-        expect(await viewCasePo.getValueOfDynamicFields(field1OutSideGroup)).toBeTruthy('field not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed(field4OutSideGroup)).toBeTruthy('field not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed(field3OutSideGroup)).toBeTruthy('field not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed(field2OutSideGroup)).toBeTruthy('field not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed(field1OutSideGroup)).toBeTruthy('field not present');
         expect(await viewCasePo.isGroupNameDisplayed(groupName)).toBeTruthy('group not present');
-        expect(await viewCasePo.getValueOfDynamicFields(field1InGroup)).toBeTruthy('field not present');
-        expect(await viewCasePo.getValueOfDynamicFields(field2InGroup)).toBeTruthy('field not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed(field1InGroup)).toBeTruthy('field not present');
+        expect(await viewCasePo.isDynamicFieldDisplayed(field2InGroup)).toBeTruthy('field not present');
         //entered field validation
-        expect(await viewCasePo.getValueOfDynamicFields(field1InGroup)).toBe(field2InGroup);
-        expect(await viewCasePo.getValueOfDynamicFields(field2InGroup)).toBe('88888888899');
-        expect(await viewCasePo.getValueOfDynamicFields(field4OutSideGroup)).toBe('Yes');
-        expect(await viewCasePo.getValueOfDynamicFields(field1OutSideGroup)).toBe(field2InGroup);
-        expect(await viewCasePo.getValueOfDynamicFields(field2OutSideGroup)).toBe('8888545888');
-    });//, 180 * 1000);
+        await console.log('new done');
+        expect(await viewCasePo.getValueOfDynamicFields(field1InGroup)).toBe('New values for field 1 group');
+        expect(await viewCasePo.getValueOfDynamicFields(field2InGroup)).toBe('8888899');
+        expect(await viewCasePo.getValueOfDynamicFields(field4OutSideGroup)).toBe('True');
+        expect(await viewCasePo.getValueOfDynamicFields(field1OutSideGroup)).toBe('field1 outside group');
+        expect(await viewCasePo.getValueOfDynamicFields(field2OutSideGroup)).toBe('809888');
+    }, 200 * 1000);
 
     //ptidke
     it('[DRDMV-13140]:[Dynamic Data] [UI] -Dynamic Fields display on Task Template Edit view UI', async () => {
@@ -509,7 +514,7 @@ describe('Case Data Store', () => {
         for (let i = 0; i < arr.length; i++) {
             expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
         }
-        expect(await viewTaskPo.isManageDynamicFieldLinkDisplayed()).toBeFalsy('Link is present');
+        expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeFalsy('Link is present');
         //draft only
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
@@ -518,7 +523,7 @@ describe('Case Data Store', () => {
         for (let i = 0; i < arr.length; i++) {
             expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
         }
-        expect(await viewTaskPo.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link is not present');
+        expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link is not present');
         //edit
         await viewTaskTemplate.clickOnEditLink();
         expect(await editTaskTemplate.isMangeDynamicFieldLinkDisplayed()).toBeTruthy('link not present');
@@ -533,7 +538,7 @@ describe('Case Data Store', () => {
         for (let i = 0; i < arr.length; i++) {
             expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
         }
-        expect(await viewTaskPo.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link is not present');
+        expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link is not present');
         //edit
         await viewTaskTemplate.clickOnEditLink();
         expect(await editTaskTemplate.isMangeDynamicFieldLinkDisplayed()).toBeTruthy('link not present');
@@ -594,7 +599,7 @@ describe('Case Data Store', () => {
                 expect(await previewCaseTemplateCasesPo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
             }
             await previewCaseTemplateCasesPo.clickOnBackButton();
-            await selectCasetemplateBladePo.clickOnCancelButton();
+            await utilityCommon.refresh();
             await navigationPage.gotoCaseConsole();
         } catch (e) {
             throw e;
@@ -630,7 +635,7 @@ describe('Case Data Store', () => {
             await quickCasePo.selectCaseTemplate(caseTemplateName);
             await quickCasePo.createCaseButton();
             //case preview
-            await utilCommon.waitUntilSpinnerToHide();
+            await utilityCommon.waitUntilSpinnerToHide();
             expect(await casePreviewPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
             expect(await casePreviewPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');
             for (let i = 0; i < dynamicFields.length; i++) {
@@ -640,8 +645,7 @@ describe('Case Data Store', () => {
             let caseID = await viewCasePo.getCaseID();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qkatawazi');
-            await quickCasePo.selectCaseTemplate(caseTemplateName);
-            await quickCasePo.clickOnRecommandedCase(caseID);
+            await quickCasePo.setSummaryAndClickOnRecommandedCase(caseID,caseTemplateName);
             //case preview
             await utilCommon.waitUntilSpinnerToHide();
             expect(await casePreviewPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
@@ -693,8 +697,8 @@ describe('Case Data Store', () => {
     it('[DRDMV-13114]:[Dynamic Data] - Add all type of dynamic fields in Case Template', async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
-        let caseTemplateName = randomStr + 'caseTemplateDRDMV-13131';
-        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13131';
+        let caseTemplateName = randomStr + 'caseTemplateDRDMV-13114';
+        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13114';
         let casetemplateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,

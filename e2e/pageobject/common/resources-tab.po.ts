@@ -12,6 +12,7 @@ export class Resources {
         smartSearchResult: 'bwf-smart-recorder-results h1',
         advancedSearchButton: 'span.d-icon-search',
         backButton: 'span.d-icon-angle_left',
+        knowledgeTitle: '[rx-view-component-id="aacf8477-f930-4983-820d-1b9fa12441c0"] div.bwf-search-fields__title-text'
     }
 
     async isSearchRecordEmpty(recordNumber: number): Promise<boolean> {
@@ -86,8 +87,8 @@ export class Resources {
     }
     async getAdvancedSearchResultForParticularSection(headingType: string): Promise<string> {
         //await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
-        const searchResult = await element(by.xpath(`//*[contains(@title,"${headingType}")]/..//*[contains(@class,"bwf-search-fields__title-text")]`))
-        return await searchResult.getText();
+        const searchResult = await $$(this.selectors.knowledgeTitle).first().getAttribute("title");
+        return await searchResult;
     }
 
     async getCountOfHeading(headerName: string): Promise<string> {

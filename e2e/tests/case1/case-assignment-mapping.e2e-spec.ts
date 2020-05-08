@@ -273,7 +273,7 @@ describe("Create Case Assignment Mapping", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 280 * 1000);
+    }, 400 * 1000);
 
     //radhiman
     it('[DRDMV-1212]: [Assignment Mapping] Configuring an Assignment Mapping', async () => {
