@@ -541,7 +541,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
             await activityTabPo.clickOnPostButton();
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
@@ -553,7 +553,7 @@ describe('Document Library Consume UI', () => {
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await activityTabPo.clickOnPostButton();
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
             await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
@@ -635,7 +635,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
             await activityTabPo.clickOnPostButton();
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
@@ -647,7 +647,7 @@ describe('Document Library Consume UI', () => {
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await activityTabPo.clickOnPostButton();
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
             await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
@@ -910,7 +910,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
             await activityTabPo.clickOnPostButton();
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
@@ -922,7 +922,7 @@ describe('Document Library Consume UI', () => {
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await activityTabPo.clickOnPostButton();
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
             await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
@@ -1047,7 +1047,7 @@ describe('Document Library Consume UI', () => {
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName('qtao');
         await quickCasePo.setCaseSummary(publishDocLibData1.docLibTitle);
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await quickCasePo.isRecommendedKnowledgeEmpty()).toBeTruthy('FailuerMsg: Recommended knowledge is not empty');
 
         await navigationPage.gotoCaseConsole();
@@ -1377,7 +1377,7 @@ describe('Document Library Consume UI', () => {
         await activityTabPo.clickOnAttachLink();
         await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
         await activityTabPo.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
         await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
         await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
@@ -1428,7 +1428,7 @@ describe('Document Library Consume UI', () => {
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
             await activityTabPo.clickOnPostButton();
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await expect (await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed')
 
             await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');

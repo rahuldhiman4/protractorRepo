@@ -21,7 +21,7 @@ class UpdateStatus {
     }
 
     async allStatusReasonOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilityCommon.isDropDownValueDisplayed(this.selectors.caseStatusReasonDropDownGuid, list);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.caseStatusReasonDropDownGuid, list);
     }
 
     async clearStatusReason(): Promise<void> {
@@ -100,7 +100,7 @@ class UpdateStatus {
     }
 
     async allStatusOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilityCommon.isDropDownValueDisplayed(this.selectors.caseStatusDropDownGuid, list);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.caseStatusDropDownGuid, list);
     }
 
 }
