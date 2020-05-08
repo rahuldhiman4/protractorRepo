@@ -269,7 +269,7 @@ describe('Case And Employee Relationship', () => {
         await utilityGrid.searchAndOpenHyperlink(caseId);
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.removeRelatedPerson("Harry Potter");
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         expect(await relatedTabPage.isRelatedPersonPresent("Harry Potter")).toBeFalsy("Harry Potter is still related to Case: " + caseId);
 
         await navigationPage.gotoPersonProfile();
@@ -313,7 +313,7 @@ describe('Case And Employee Relationship', () => {
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
         await quickCase.setCaseSummary(randomStr);
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         await quickCase.pinFirstRecommendedCase();
         await quickCase.createCaseButton();
         await quickCase.gotoCaseButton();

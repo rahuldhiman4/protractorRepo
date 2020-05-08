@@ -121,11 +121,11 @@ export class Util {
     }
 
     async isErrorMsgPresent(): Promise<boolean> {
-        return await $(this.selectors.errorMsg).isDisplayed();
+            return await $(this.selectors.errorMsg).isDisplayed();
     }
 
-    async isPopUpMessagePresent(expectedMsg: string): Promise<boolean> {
-        let arr: string[] = await this.getAllPopupMsg();
+    async isPopUpMessagePresent(expectedMsg: string, expectedNoOfMsgs?: number): Promise<boolean> {
+        let arr: string[] = await this.getAllPopupMsg(expectedNoOfMsgs);
         return arr.includes(expectedMsg);
     }
 
@@ -315,26 +315,39 @@ export class Util {
         return date + '/' + month + '/' + year;
     }
 
-    async isPopupMsgsMatches(msgs: string[]): Promise<boolean> {
-        let arr: string[] = await this.getAllPopupMsg();
+    async isPopupMsgsMatches(msgs: string[], expectedNoOfMsgs?: number): Promise<boolean> {
+        let arr: string[] = await this.getAllPopupMsg(expectedNoOfMsgs);
         msgs.sort();
+        arr.sort();
         return arr.length === msgs.length && arr.every(
-            (value, index) => (value === msgs[index])
+            (value, index) => (value.includes(msgs[index]))
         );
     }
 
-    async getAllPopupMsg(): Promise<string[]> {
+    async getAllPopupMsg(expectedNoOfMsgs?: number): Promise<string[]> {
         await browser.waitForAngularEnabled(false);
         let arr: string[] = [];
-        await browser.wait(this.EC.visibilityOf($$(this.selectors.popUpMsgLocator).last()), 5000);
-        let msgLocator = await $$(this.selectors.popUpMsgLocator);
-        for (let i: number = 0; i < msgLocator.length; i++) {
-            arr[i] = await msgLocator[i].getText();
+        if (expectedNoOfMsgs) {
+            if (await browser.wait(this.EC.or(async () => {
+                let count = await $$(this.selectors.popUpMsgLocator).count();
+                return count == expectedNoOfMsgs;
+            }), 5000)) {
+                let msgLocator = await $$(this.selectors.popUpMsgLocator);
+                for (let i = 0; i < msgLocator.length; i++) {
+                    arr[i] = await msgLocator[i].getText();
+                }
+            }
+        }
+        else {
+            await browser.wait(this.EC.visibilityOf($$(this.selectors.popUpMsgLocator).last()), 5000);
+            let msgLocator = await $$(this.selectors.popUpMsgLocator);
+            for (let i: number = 0; i < msgLocator.length; i++) {
+                arr[i] = await msgLocator[i].getText();
+            }
         }
         await browser.waitForAngularEnabled(true);
         return arr;
     }
-
 }
 
 export default new Util();

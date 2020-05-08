@@ -900,7 +900,8 @@ describe("Create Case", () => {
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clearCaseSummary();
             await editCasePage.clickSaveCase();
-            expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
+            let msgs: string[] = ["Resolve the field validation errors and then try again."];
+            await expect(await utilityCommon.isPopupMsgsMatches(msgs)).toBeTruthy("Expected Messsage not present");
         } catch (error) {
             throw error;
         } finally {
@@ -1011,7 +1012,7 @@ describe("Create Case", () => {
         const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
         await activityTabPo.addAttachment(filesToUpload1);
         await activityTabPo.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickAddAdhocTaskButton();
         expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();

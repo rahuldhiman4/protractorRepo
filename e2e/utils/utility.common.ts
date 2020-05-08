@@ -14,7 +14,7 @@ export class Utility {
         warningDialogMsg: '.modal-content .modal-body, .modal-content .d-modal__content-item',
         popUpMsgLocator: '.a-toast__details div',
         popupMsgTitle: '.a-toast__summary',
-        closeTipMsg: '.a-toast__close_button',
+        closeTipMsg: '.a-toast__close-button',
         dropDownChoice: '.dropdown-item',
         dateFieldPicker: 'input.i-date-time',
         yearDate: 'div.a3t-calendar--controls-line[aria-label="Choose year"]',
@@ -27,18 +27,6 @@ export class Utility {
         meridiemClock: '.a3t-clock--control-item',
         okDateTimePicker: '.btn-primary',
         clearDateTimePicker: '.btn-secondary',
-    }
-
-    async isWarningDialogBoxDisplayed(): Promise<boolean> {
-        return await $(this.selectors.warningDialog).isPresent();
-    }
-
-    async getWarningDialogTitle(): Promise<string> {
-        return await $(this.selectors.warningDialog).getText();
-    }
-
-    async getWarningMessageTextKnowledgeStyle(): Promise<string> {
-        return await $(this.selectors.warningDialogMsg).getText();
     }
 
     async selectDropDown(guid: string, value: string): Promise<void> {
@@ -55,7 +43,6 @@ export class Utility {
             await option.click();
         });
     }
-
 
     async clearDropDown(guid: string): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
@@ -76,7 +63,7 @@ export class Utility {
         if (count >= 1) { return true; } else { return false; }
     }
 
-    async isDropDownValueDisplayed(guid: string, data: string[]): Promise<boolean> {
+    async isAllDropDownValuesMatches(guid: string, data: string[]): Promise<boolean> {
         let arr: string[] = [];
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
@@ -95,19 +82,6 @@ export class Utility {
 
     async scrollUpOrDownTillElement(element: string): Promise<void> {
         await browser.executeScript("arguments[0].scrollIntoView();", $(`${element}`).getWebElement());
-    }
-
-    async isSuccessMsgAppeared(): Promise<boolean> {
-        return await $(this.selectors.popupMsgTitle).getText() == 'Success';
-    }
-
-    async isErrorMsgAppeared(): Promise<boolean> {
-        return await $(this.selectors.popupMsgTitle).getText() == 'Script Error';
-    }
-
-    async isPopUpMessagePresent(expectedMsg: string): Promise<boolean> {
-        let arr: string[] = await this.getAllPopupMsg();
-        return arr.includes(expectedMsg);
     }
 
     async waitUntilPopUpDisappear(): Promise<void> {
@@ -158,18 +132,18 @@ export class Utility {
         });
     }
 
-    async waitUntilSpinnerToHide(): Promise<void> {
-        try {
-            await browser.wait(this.EC.presenceOf($('.d-preloader')), 5000);
-            await browser.wait(this.EC.or(async () => {
-                await $$('.d-preloader').each(async function (element) {
-                    await element.getAttribute('innerHTML') == null;
-                });
-            }), 7000);
-        } catch (error) {
-            console.log('Spinner not present on the page');
-        }
-    }
+    // async waitUntilSpinnerToHide(): Promise<void> {
+    //     try {
+    //         await browser.wait(this.EC.presenceOf($('.d-preloader')), 5000);
+    //         await browser.wait(this.EC.or(async () => {
+    //             await $$('.d-preloader').each(async function (element) {
+    //                 await element.getAttribute('innerHTML') == null;
+    //             });
+    //         }), 7000);
+    //     } catch (error) {
+    //         console.log('Spinner not present on the page');
+    //     }
+    // }
 
     /*Work as same as String.format i.e. first parameter is a string with multiple variables embedded and other parameters will replace the embedded variables of first string
     Example: 
@@ -231,10 +205,6 @@ export class Utility {
         let filePath: string = 'e2e/data/downloads/' + fileName;
         await browser.sleep(5000);
         return await fs.existsSync(filePath);
-    }
-
-    async getWarningDialogMsg(): Promise<string> {
-        return await $(this.selectors.warningDialogMsg).getText();
     }
 
     async getCurrentDate(): Promise<string> {
@@ -339,21 +309,34 @@ export class Utility {
         await dateFieldGuid.$(this.selectors.okDateTimePicker).click();
     }
 
-    async isAllPopupMsgsMatches(msgs: string[]): Promise<boolean> {
-        let arr: string[] = await this.getAllPopupMsg();
+    async isPopupMsgsMatches(msgs: string[], expectedNoOfMsgs?: number): Promise<boolean> {
+        let arr: string[] = await this.getAllPopupMsg(expectedNoOfMsgs);
         msgs.sort();
         return arr.length === msgs.length && arr.every(
             (value, index) => (value === msgs[index])
         );
     }
 
-    async getAllPopupMsg(): Promise<string[]> {
+    async getAllPopupMsg(expectedNoOfMsgs?: number): Promise<string[]> {
         await browser.waitForAngularEnabled(false);
         let arr: string[] = [];
-        await browser.wait(this.EC.visibilityOf($$(this.selectors.popUpMsgLocator).last()), 5000);
-        let msgLocator = await $$(this.selectors.popUpMsgLocator);
-        for (let i: number = 0; i < msgLocator.length; i++) {
-            arr[i] = await msgLocator[i].getText();
+        if (expectedNoOfMsgs) {
+            if (await browser.wait(this.EC.or(async () => {
+                let count = await $$(this.selectors.popUpMsgLocator).count();
+                return count == expectedNoOfMsgs;
+            }), 5000)) {
+                let msgLocator = await $$(this.selectors.popUpMsgLocator);
+                for (let i = 0; i < msgLocator.length; i++) {
+                    arr[i] = await msgLocator[i].getText();
+                }
+            }
+        }
+        else {
+            await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)), 5000);
+            let msgLocator = await $$(this.selectors.popUpMsgLocator);
+            for (let i: number = 0; i < msgLocator.length; i++) {
+                arr[i] = await msgLocator[i].getText();
+            }
         }
         await browser.waitForAngularEnabled(true);
         return arr;

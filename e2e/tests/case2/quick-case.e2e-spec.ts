@@ -62,7 +62,7 @@ describe("Quick Case", () => {
             await utilityCommon.refresh();
             await quickCasePo.selectRequesterName('Adam Pavlik');
             await quickCasePo.setCaseSummary(categoryvalues[i]);
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             let qcSummary = await quickCasePo.isCaseSummaryPresentInRecommendedCases(categoryvalues[0]);
             qcSummary = false ? result = false : result = true;
             await expect(result).toBeTruthy(`FailureMsg: Case Summary does not match for ${categoryvalues[i]}`);
@@ -130,7 +130,8 @@ describe("Quick Case", () => {
         await quickCase.selectRequesterName('Person1 Person1');
         await quickCase.setCaseSummary('caseSummary');
         await quickCase.createCaseButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Success message not validated');
+        let msgs: string[] = ["Saved successfully."];
+        await expect(await utilityCommon.isPopupMsgsMatches(msgs)).toBeTruthy("Success Messsage not present");
         await quickCase.gotoCaseButton();
         expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
     });
@@ -812,7 +813,8 @@ describe("Quick Case", () => {
         expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
         await previewKnowledgePo.clickOnBackButton();
         await quickCase.createCaseButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+        let msgs: string[] = ["Saved successfully."];
+            await expect(await utilityCommon.isPopupMsgsMatches(msgs)).toBeTruthy("Success Messsage not present");
         expect(await previewCasePo.isRequesterNameDisplayed('Adam Pavlik')).toBeTruthy();
         expect(await previewCasePo.isCaseSummaryDisplayed(casTemplateSummary)).toBeTruthy();
         expect(await previewCasePo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();

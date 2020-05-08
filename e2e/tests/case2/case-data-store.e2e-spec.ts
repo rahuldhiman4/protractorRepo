@@ -635,7 +635,7 @@ describe('Case Data Store', () => {
             await quickCasePo.selectCaseTemplate(caseTemplateName);
             await quickCasePo.createCaseButton();
             //case preview
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             expect(await casePreviewPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
             expect(await casePreviewPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');
             for (let i = 0; i < dynamicFields.length; i++) {

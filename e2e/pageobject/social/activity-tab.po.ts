@@ -219,6 +219,13 @@ class ActivityTabPage {
         return cellText;
     }
 
+    async getColorFontStyleOfText(rowNumber:number, columnNumber: number, value: string): Promise<string> {
+        let row = await $$('.activity .email-body table tr').get(rowNumber-1);
+        let cell = await row.$$('td').get(columnNumber-1);
+        let locator = `span[style='${value}']`;
+        return await cell.$(locator).getText();
+    }
+
     async addAttachment(fileToUpload: string[]): Promise<void> {
         const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
         console.log(absPathArray);

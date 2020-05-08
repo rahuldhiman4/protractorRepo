@@ -861,7 +861,6 @@ describe('Case Status Change', () => {
             await caseConsole.searchAndOpenCase(caseId2);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickCancelButton();
-            expect(await utilityCommon.getWarningDialogMsg()).toContain('You have unsaved data. Do you want to continue without saving?');
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         } catch (e) {
             throw e;

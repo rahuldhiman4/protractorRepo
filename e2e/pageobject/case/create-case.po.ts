@@ -184,7 +184,7 @@ class CreateCasePage {
     }
 
     async allPriorityOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilityCommon.isDropDownValueDisplayed(this.selectors.priorityGuid, list);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.priorityGuid, list);
     }
 
     async setDescription(description: string): Promise<void> {
@@ -216,8 +216,6 @@ class CreateCasePage {
     async clickSaveCaseButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
         await $(this.selectors.saveCaseButton).click();
-        //        await utilityCommon.waitUntilPopUpDisappear();
-        //        await utilityCommon.waitUntilSpinnerToHide();
     }
 
     async isSaveCaseButtonEnabled(): Promise<boolean> {
