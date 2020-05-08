@@ -84,7 +84,7 @@ describe('Case Activity', () => {
             await activityTabPage.selectFilterCheckBox('Feedback');
             await activityTabPage.addAuthorOnFilter('Angelina Jolie');
             await activityTabPage.clickOnFilterApplyButton();
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
             // ii) Selected Filters are displayed in Activity with first filter and + other selected filters
             expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'), 'General Notes is missing';
@@ -853,7 +853,7 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote('step 2nd added ' + taskBodyText);
         await activityTabPage.addAttachment([filePath]);
         await activityTabPage.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.getFirstPostContent()).toContain('step 2nd added ' + taskBodyText);
         expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('file is not present');
         await activityTabPage.clickAttachedFile('bwfPdf.pdf');
@@ -876,7 +876,7 @@ describe('Case Activity', () => {
             await activityTabPage.addAttachment(['../../data/ui/attachment/demo.txt']);
         }
         await activityTabPage.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.getFirstPostContent()).toContain(textWithMultipleAttachment);
         await activityTabPage.clickShowMoreLinkInAttachmentActivity(1);
         expect(await activityTabPage.getCountAttachedFiles('demo.txt')).toBe(6);
@@ -896,19 +896,19 @@ describe('Case Activity', () => {
             let newCase = await apiHelper.createCase(caseData);
             let caseId: string = newCase.displayId;
             await caseConsolePo.searchAndOpenCase(caseId);
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await caseConsolePo.searchAndOpenCase(caseId);
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await activityTabPo.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi  viewed the case. ')).toEqual(1);
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             await utilityCommon.refresh();
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             await navigationPage.gotoPersonProfile();
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await personProfilePo.getCaseViewCount(' Viewed the  ' + caseId)).toEqual(1);
         } catch (e) {
             throw e;
@@ -950,17 +950,17 @@ describe('Case Activity', () => {
             await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskTemplateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
             // Goto case   
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             // Goto Quick Case
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qtao');
 
             await quickCasePo.setCaseSummary(caseData.Summary);
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
             await quickCasePo.gotoCaseButton();
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             await navigationPage.gotoQuickCase();
             await utilityCommon.refresh();
@@ -986,7 +986,7 @@ describe('Case Activity', () => {
             await relatedCaseTab.clickOnCaseSummaryLink(caseData.Summary);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing');
             await activityTabPage.clickOnRefreshButton();
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Elizabeth Peters  viewed the case. ')).toEqual(1);
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
         } catch (e) {
@@ -1075,7 +1075,7 @@ describe('Case Activity', () => {
             await activityTabPage.addActivityNote('From DRDMV-18052');
             await activityTabPage.addPersonInActivityNote('fritz');
             await activityTabPage.clickOnPostButton();
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await notificationPo.clickOnNotificationIcon();
@@ -1124,13 +1124,13 @@ describe('Case Activity', () => {
         // Verify logs with 5 lines or less than 5 lines
         await activityTabPage.addActivityNote(addNoteBodyText1);
         await activityTabPage.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg1: BodyText is missing');
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg2: Show more link is displayed');
         // Verify logs with more than 5 lines
         await activityTabPage.addActivityNote(addNoteBodyText2);
         await activityTabPage.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
@@ -1141,7 +1141,7 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(addNoteBodyText1);
         await activityTabPage.addAttachment([filePath1,filePath2]);
         await activityTabPage.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
         await expect(await activityTabPage.isAttachedFileNameDisplayed('articleStatus.png')).toBeTruthy(`FailureMsg9: ${filePath1} is missing`);
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy(`FailureMsg10: ${filePath2} is missing`);
@@ -1151,7 +1151,7 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(addNoteBodyText2);
         await activityTabPage.addAttachment([filePath4,filePath5]);
         await activityTabPage.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy(`FailureMsg15: ${filePath4} is missing`);
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg3.jpg')).toBeTruthy(`FailureMsg16: ${filePath5} is missing`);
@@ -1163,7 +1163,7 @@ describe('Case Activity', () => {
         await activityTabPage.addAttachment([filePath7,filePath8,filePath9,filePath10,filePath11]);
 
         await activityTabPage.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
@@ -1239,13 +1239,13 @@ describe('Case Activity', () => {
         // Verify logs with 5 lines or less than 5 lines
         await activityTabPage.addActivityNote(addNoteBodyText1);
         await activityTabPage.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg1: BodyText is missing');
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg2: Show more link is displayed');
         // Verify logs with more than 5 lines
         await activityTabPage.addActivityNote(addNoteBodyText2);
         await activityTabPage.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
@@ -1256,7 +1256,7 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(addNoteBodyText1);
         await activityTabPage.addAttachment([filePath1,filePath2]);
         await activityTabPage.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
         await expect(await activityTabPage.isAttachedFileNameDisplayed('articleStatus.png')).toBeTruthy(`FailureMsg9: ${filePath1} is missing`);
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy(`FailureMsg10: ${filePath2} is missing`);
@@ -1266,7 +1266,7 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(addNoteBodyText2);
         await activityTabPage.addAttachment([filePath4,filePath5]);
         await activityTabPage.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy(`FailureMsg15: ${filePath4} is missing`);
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg3.jpg')).toBeTruthy(`FailureMsg16: ${filePath5} is missing`);
@@ -1277,7 +1277,7 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(addNoteBodyText2);
         await activityTabPage.addAttachment([filePath7,filePath8,filePath9,filePath10,filePath11]);
         await activityTabPage.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
@@ -1371,7 +1371,7 @@ describe('Case Activity', () => {
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.clickOnPostButton();
-            await utilityCommon.waitUntilSpinnerToHide();
+            // await utilityCommon.waitUntilSpinnerToHide();
 
             // verify flag in activity
             await expect(await activityTabPage.isLogIconDisplayedInActivity('flag', 5)).toBeTruthy('FailureMsg: Note pencil icon is missing')

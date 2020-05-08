@@ -825,9 +825,9 @@ describe("Compose Email", () => {
             expect(await activityTabPo.getTextOnActivityTable(1, 4)).toContain('FirstLeftAlign');
             expect(await activityTabPo.getTextOnActivityTable(1, 5)).toContain('FirstRightAlign');
             expect(await activityTabPo.getTextOnActivityTable(1, 6)).toContain('FirstCenterAlign');
-            expect(await activityTabPo.getTextOnActivityTable(1, 7)).toContain('SettingColor');
-            expect(await activityTabPo.getTextOnActivityTable(1, 8)).toContain('SettingFontSize');
-            expect(await activityTabPo.getTextOnActivityTable(1, 9)).toContain('SettingFontType');
+            expect(await activityTabPo.getColorFontStyleOfText(1, 7, "color:#3498db;")).toContain('SettingColor');
+            expect(await activityTabPo.getColorFontStyleOfText(1, 8, "font-size:18px;")).toContain('SettingFontSize');
+            expect(await activityTabPo.getColorFontStyleOfText(1, 9, "font-family:Courier New,Courier,monospace;")).toContain('SettingFontType');
             await activityTabPo.clickOnHyperlink('http://www.google.com');
             await browser.waitForAngularEnabled(false);
             expect(await browser.getTitle()).toContain('Google');

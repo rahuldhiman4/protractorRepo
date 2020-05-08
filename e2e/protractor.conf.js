@@ -15,9 +15,6 @@ exports.config = {
 
   capabilities: {
     browserName: "chrome",
-    "goog:chromeOptions": {
-      w3c: false,
-    },
     chromeOptions: {
       prefs: {
         download: {
@@ -44,8 +41,8 @@ exports.config = {
     ticketing: ["./tests/ticketing/*.e2e-spec.ts"],
   },
 
-  baseUrl: 'http://clm-pun-t3erts.bmc.com:8008',
-  //baseUrl: "http://clm-aus-t5jj96.bmc.com:8008",
+  baseUrl: "http://clm-aus-squo6y.bmc.com:8008",
+  // baseUrl: "http://clm-aus-sqg6c3.bmc.com:8008",
   framework: "jasmine",
   jasmineNodeOpts: {
     showColors: true,

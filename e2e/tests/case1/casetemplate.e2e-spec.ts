@@ -20,6 +20,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilCommon from '../../utils/util.common';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
@@ -354,7 +355,7 @@ describe('Case Template', () => {
         await expect(await editCaseTemplate.isSaveButtonOnMetaDataIsDisabled()).toBeTruthy();
     });
 
-    //ptidke APIFail
+    //ptidke 
     it('[DRDMV-19741]:[RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = 'caseTemplateName' + randomStr;
@@ -366,12 +367,13 @@ describe('Case Template', () => {
             "company": "Petramco",
             "resolveCaseonLastTaskCompletion": "1",
             "assignee": "Fritz",
-            "supportGroup": "Facilities"
+            "supportGroup": "Facilities",
+            "caseStatus": "Assigned"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
         let taskTemplateNameWithYesValue = 'taskTemplateWithYesResolve' + randomStr;
-        let taskTemplateSummaryYesValue = 'taskSummaryYesResolved' + randomStr;
+        let taskTemplateSummaryYesValue = 'taskYesResolved' + randomStr;
         let taskTemplateDataSet = {
             "templateName": `${taskTemplateNameWithYesValue}`,
             "templateSummary": `${taskTemplateSummaryYesValue}`,
@@ -395,7 +397,7 @@ describe('Case Template', () => {
         }
         let newCaseTemplateOne = await apiHelper.createCaseTemplate(templateDataSet);
         let manualTask = 'ManualTaskTemp' + randomStr;
-        let ManualTaskTempSummary = 'ManualTaskTemplateSummary' + randomStr;
+        let ManualTaskTempSummary = 'ManualTaskSumm' + randomStr;
         let taskTemplateData = {
             "templateName": `${manualTask}`,
             "templateSummary": `${ManualTaskTempSummary}`,
@@ -423,11 +425,11 @@ describe('Case Template', () => {
         //await utilCommon.waitUntilPopUpDisappear();
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus();
-        await expect(await viewCasePo.clickOnTaskLink(ManualTaskTempSummary)).toBeTruthy();
-        await viewCasePo.clickOnTaskLink(ManualTaskTempSummary);
+        await viewCasePo.openTaskCard(1);
+        await manageTaskBladePo.clickTaskLinkOnManageTask(ManualTaskTempSummary);          
         await viewTaskPo.clickOnChangeStatus();
         await viewTaskPo.changeTaskStatus('Completed');
-        await updateStatusBladePo.setStatusReason('Done');
+        await updateStatusBladePo.setStatusReason('Successful');
         await viewTaskPo.clickOnSaveStatus();
         await viewTaskPo.clickOnViewCase();
         await expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
@@ -443,13 +445,15 @@ describe('Case Template', () => {
         await expect(await viewCasePo.isCoreTaskPresent(taskTemplateSummaryYesValue)).toBeTruthy();
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus();
-        await viewCasePo.clickOnTaskLink(taskTemplateSummaryYesValue);
+        await viewCasePo.openTaskCard(1);
+        await manageTaskBladePo.clickTaskLinkOnManageTask(taskTemplateSummaryYesValue);
+        await viewTaskPo.clickOnChangeStatus();
         await viewTaskPo.changeTaskStatus('Completed');
-        await updateStatusBladePo.setStatusReason('Done');
+        await updateStatusBladePo.setStatusReason('Successful');
         await viewTaskPo.clickOnSaveStatus();
         await viewTaskPo.clickOnViewCase();
         await expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
-    });//, 140 * 1000);
+    },250 * 1000);
 
     //ptidke
     it('[DRDMV-19734]:[RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case Template view Look & Feel after adding new configuration field', async () => {

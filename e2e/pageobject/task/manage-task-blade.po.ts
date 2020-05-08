@@ -24,12 +24,13 @@ class ManageTaskBlade {
         await $(this.selectors.addTaskFromTemplateButton).click();
     }
 
-    async getSortedValuesFromColumn(columnHeader: string): Promise<boolean> {
-        return await utilityGrid.isGridColumnSorted(columnHeader, 'asc', this.selectors.taskTemplateGuid);
+    async isSortedValuesFromColumn(columnHeader: string): Promise<boolean> {
+        return await utilityGrid.isGridColumnSorted(columnHeader, 'asc');
     }
 
+
     async getFilterValue(copy: string): Promise<boolean> {
-        let arr: string[] = await utilGrid.getAllValuesFromColoumn((this.selectors.taskTemplateGuid), 'Task Type');
+        let arr: string[] = await utilityGrid.getAllValuesFromColumn('Task Type');
         let filtered: string[] = arr.filter(function (el) {
             return el == copy;
         });
@@ -76,8 +77,7 @@ class ManageTaskBlade {
         //        await browser.wait(this.EC.elementToBeClickable(element(by.linkText(taskSummary))));
         // await element(by.partialLinkText(taskSummary)).click();
         //        await utilCommon.waitUntilSpinnerToHide();
-        //await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText('.task .task-summary-wrapper a', taskSummary))),3000);
-        await element(by.cssContainingText('.task .task-summary-wrapper a', taskSummary)).click();
+        await element(by.cssContainingText('.task-summary-wrapper a', taskSummary)).click();
     }
 
     async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {
