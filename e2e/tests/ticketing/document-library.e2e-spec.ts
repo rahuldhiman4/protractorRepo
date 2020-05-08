@@ -621,7 +621,7 @@ describe('Document Library', () => {
     });//, 120 * 1000);
 
     //kgaikwad
-    fit('[DRDMV-13079]: Verify document will not appear in knowledge article searches	', async () => {
+    it('[DRDMV-13079]: Verify document will not appear in knowledge article searches	', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
