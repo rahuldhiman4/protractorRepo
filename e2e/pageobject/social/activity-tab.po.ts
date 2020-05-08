@@ -378,9 +378,9 @@ class ActivityTabPage {
     async addActivityNote(addNoteText: string): Promise<void> {
         await this.clickActivityNoteTextBox();
         await browser.waitForAngularEnabled(false);
-        await browser.wait(this.EC.visibilityOf($('iframe.cke_wysiwyg_frame')), 4000); 
+        await browser.wait(this.EC.visibilityOf($('iframe.cke_wysiwyg_frame')), 4000); 
         await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
-        await browser.wait(this.EC.elementToBeClickable($('.cke_editable_themed')), 4000); 
+        await browser.wait(this.EC.elementToBeClickable($('.cke_editable_themed')), 4000); 
         await $('.cke_editable_themed').sendKeys(addNoteText);
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
@@ -388,9 +388,9 @@ class ActivityTabPage {
 
     async addPersonInActivityNote(tagPerson: string): Promise<void> {
         await browser.waitForAngularEnabled(false);
-        await browser.wait(this.EC.visibilityOf($('iframe.cke_wysiwyg_frame')), 4000); 
+        await browser.wait(this.EC.visibilityOf($('iframe.cke_wysiwyg_frame')), 4000); 
         await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
-        await browser.wait(this.EC.elementToBeClickable($('.cke_editable_themed')), 4000); 
+        await browser.wait(this.EC.elementToBeClickable($('.cke_editable_themed')), 4000); 
         await $('.cke_editable_themed').sendKeys(`@${tagPerson}`);
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
@@ -399,9 +399,9 @@ class ActivityTabPage {
 
     async clearActivityNote(): Promise<void> {
         await browser.waitForAngularEnabled(false);
-        await browser.wait(this.EC.visibilityOf($('iframe.cke_wysiwyg_frame')), 4000); 
+        await browser.wait(this.EC.visibilityOf($('iframe.cke_wysiwyg_frame')), 4000); 
         await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
-        await browser.wait(this.EC.elementToBeClickable($('.cke_editable_themed')), 4000); 
+        await browser.wait(this.EC.elementToBeClickable($('.cke_editable_themed')), 4000); 
         await $('.cke_editable_themed').clear();
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
@@ -410,9 +410,9 @@ class ActivityTabPage {
     async getPersonCount(tagPerson: string): Promise<number> {
         await this.clickActivityNoteTextBox();
         await browser.waitForAngularEnabled(false);
-        await browser.wait(this.EC.visibilityOf($('iframe.cke_wysiwyg_frame')), 4000); 
+        await browser.wait(this.EC.visibilityOf($('iframe.cke_wysiwyg_frame')), 4000); 
         await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
-        await browser.wait(this.EC.elementToBeClickable($('.cke_editable_themed')), 4000); 
+        await browser.wait(this.EC.elementToBeClickable($('.cke_editable_themed')), 4000); 
         await $('.cke_editable_themed').sendKeys(tagPerson);
         let countPerson= await $$(this.selectors.personPopup).count();
         await browser.switchTo().defaultContent();

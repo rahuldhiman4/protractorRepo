@@ -1,6 +1,7 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, Key } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 
+
 class QuickCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -26,7 +27,7 @@ class QuickCasePage {
         roleDropDown: '.sr-preview-pane .sr-preview-item-header .btn-secondary',
         sourceValue: '.sr-select-bar .btn-xs',
         roleValue: '.select_option_container span',
-        descriptionText: '.sr-input-wrapper .large',
+        descriptionText: 'div.sr-placeholder div.large',
         resources: 'bwf-smart-recorder-results div.sr-result-placeholder div',
         advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select label',
         startOverButton: '.sr-footer .text-muted .btn-secondary',
@@ -34,6 +35,7 @@ class QuickCasePage {
         recommendedKnowledgeEmpty: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"] .bwf-search-result p',
         recommendedCaseGuid: '[rx-view-component-id="c0487804-1748-4995-99c9-69e6ad217c74"]',
         recommendedKnowledgeGuid: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"]',
+        dropdownSourceValue: '.dropdown-item span',
     }
 
     async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
@@ -205,9 +207,9 @@ class QuickCasePage {
 
     async isValuePresentInSourceDropDown(value: string): Promise<boolean> {
         await $(this.selectors.sourceValue).click();
-        let dropdownValues: number = await $(this.selectors.sourceValue).count();
+        let dropdownValues: number = await $$(this.selectors.dropdownSourceValue).count();
         for (let i = 0; i < dropdownValues; i++) {
-            let souceValue = await $(this.selectors.sourceValue).get(i).getText();
+            let souceValue = await $$(this.selectors.dropdownSourceValue).get(i).getText();
             if (souceValue == value) {
                 return true;
             }
@@ -217,7 +219,7 @@ class QuickCasePage {
 
     async selectSourceValue(value: string): Promise<void> {
         await $(this.selectors.sourceValue).click();
-        await browser.element(by.cssContainingText(this.selectors.sourceValue, value)).click();
+        await browser.element(by.cssContainingText(this.selectors.dropdownSourceValue, value)).click();
     }
 
     async getSelectedSourceValue(): Promise<string> {
@@ -244,14 +246,27 @@ class QuickCasePage {
         await $(`div[title=${templateName}]`).click();
     }
 
-    async clickOnRecommandedCase(caseID: string): Promise<void> {
-        let recommandedCount: number = await $$('.km-group-list-item__title').count();
-        for (let i = 0; i < recommandedCount; i++) {
-            let value = await $$('.km-group-list-item__title').get(i).getText();
-            if (value == caseID) {
-                await $$('.km-group-list-item__title').get(i).click();
+    async setSummaryAndClickOnRecommandedCase(caseID: string,caseSummary:string): Promise<boolean> {
+        
+        let success: boolean = false;
+        for (let i: number = 0; i <= 3; i++) {
+		 await $(this.selectors.smartSearchTextBox).sendKeys(caseSummary);
+            browser.sleep(1000);
+            success = await $(`div[title=${caseID}]`).isPresent().then(async (result) => {
+                if (result) {
+                   await $(`div[title=${caseID}]`).click();
+                    return true;
+                } else false;
+            });
+            if (success) break;
+            else {
+                for (let j: number = 0; j < caseSummary.length; j++) {
+                    await $(this.selectors.smartSearchTextBox).sendKeys(protractor.Key.BACK_SPACE);
+                }
+                continue;
             }
         }
+        return success;
     }
 }
 export default new QuickCasePage();
