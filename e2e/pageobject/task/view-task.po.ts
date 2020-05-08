@@ -5,11 +5,12 @@ import utilityCommon from '../../utils/utility.common';
 class ViewTask {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        dropDownOption: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"] .dropdown_select__menu-content button',
         statusDropDown: '8b4cef48-0a4c-4ec1-bc4c-cce47179c964',
         saveStatus: '[rx-view-component-id="6759ba60-df0d-4d5e-8eb9-5101490fd4d4"] button',
         cancleStatus: '[rx-view-component-id="debcdc88-fb42-4003-96d6-1eeb807206b7"] button',
         allStatus: '.dropdown_select__menu .dropdown-item',
-        updateStatusDropDown: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"] .form-control',
+        updateStatusDropDown: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"] button',
         taskTypeValue: '[rx-view-component-id="057f2521-313b-40c9-be56-829827512abf"] .read-only-content',
         editButton: '.float-right',
         categoryTier1Value: '[rx-view-component-id="909ad3ad-6706-4d46-bb5a-bc48fa6ca98e"] .read-only-content',
@@ -28,7 +29,7 @@ class ViewTask {
         caseIdText: '.rx-record-preview-card__field .rx-record-preview-card__value',
         caseSummary: '.rx-record-preview-card__field .rx-record-preview-card__value',
         taskSummary: '[rx-view-component-id="fa66e566-757c-4d10-a850-9ea3bd037707"] span',
-        taskStatus: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] .status-transition',
+        taskStatus: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] span',
         requesterName: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-name .person-link',
         requesterContact: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-phone-link',
         requesterMail: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .bwf-person-email button',
@@ -77,8 +78,18 @@ class ViewTask {
         await $(this.selectors.requesterMail).click();
     }
 
-    async allTaskOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.taskStatusGuid, list);
+    async allTaskOptionsPresent(data: string[]): Promise<boolean> {
+        let arr: string[] = [];
+        let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
+            arr[i] = ab;
+        }
+        arr = arr.sort();
+        data = data.sort();
+        return arr.length === data.length && arr.every(
+            (value, index) => (value === data[index])
+        );
     }
 
     async clickOnChangeStatus(): Promise<void> {

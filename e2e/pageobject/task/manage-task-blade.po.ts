@@ -24,12 +24,13 @@ class ManageTaskBlade {
         await $(this.selectors.addTaskFromTemplateButton).click();
     }
 
-    async getSortedValuesFromColumn(columnHeader: string): Promise<boolean> {
-        return await utilityGrid.isGridColumnSorted(columnHeader, 'asc', this.selectors.taskTemplateGuid);
+    async isSortedValuesFromColumn(columnHeader: string): Promise<boolean> {
+        return await utilityGrid.isGridColumnSorted(columnHeader, 'asc');
     }
 
+
     async getFilterValue(copy: string): Promise<boolean> {
-        let arr: string[] = await utilGrid.getAllValuesFromColoumn((this.selectors.taskTemplateGuid), 'Task Type');
+        let arr: string[] = await utilityGrid.getAllValuesFromColumn('Task Type');
         let filtered: string[] = arr.filter(function (el) {
             return el == copy;
         });

@@ -1,7 +1,5 @@
 import { browser } from "protractor";
-import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from "../../api/api.helper";
-import { CASE_MANAGEMENT_LIB_PROCESS, SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
 import caseConsolePage from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
@@ -493,11 +491,7 @@ describe('Create Case Task', () => {
     //ankagraw
     it('[DRDMV-7149]: [Automatic Task] - Automated Task Status transition validation', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await apiHelper.apiLogin('tadmin');
-        let social_Service = SOCIAL_SERVICE_PROCESS;
-        let social_Service_Process = social_Service.name + randomStr;
-        social_Service.name = social_Service_Process;
-        await apiCoreUtil.createProcess(social_Service);
+
         let automationTaskTemplate = 'Automatic task' + Math.floor(Math.random() * 1000000);
         let automationTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
         let createCase = 'Create Case task' + Math.floor(Math.random() * 1000000);
@@ -509,11 +503,11 @@ describe('Create Case Task', () => {
             "templateSummary": automationTaskSummary,
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
-            "processName": social_Service.name + randomStr,
+            "processName": processName,
         }
         //Automation Task template
         await apiHelper.apiLogin('qkatawazi');
-        let temp1 = await apiHelper.createAutomatedTaskTemplate(templateData);
+        await apiHelper.createAutomatedTaskTemplate(templateData);
 
         //case create
         try {
@@ -619,50 +613,51 @@ describe('Create Case Task', () => {
     //ankagraw
     it('[DRDMV-7141,DRDMV-7122]: [Automatic Task] - Task template selection Console: Verify Task Type column, filter', async () => {
         try {
-            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let templateData1 = {
-                "templateName": `manualTaskTemplateActive ${randomStr}`,
-                "templateSummary": `manualTaskTemplateActive ${randomStr}`,
-                "templateStatus": "Active",
-            }
-            let templateData2 = {
-                "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
-                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
-                "templateStatus": "Active",
-                "processBundle": "com.bmc.dsm.case-lib",
-                "processName": `Case Process 1 ${randomStr}`,
-            }
-
-            await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createAutomatedTaskTemplate(templateData2);
-            await apiHelper.createManualTaskTemplate(templateData1);
-
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('adam');
-            await createCasePage.setSummary('set summary');
-            await createCasePage.clickAssignToMeButton();
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            await viewCasePage.clickAddTaskButton();
-            await manageTask.clickAddTaskFromTemplateButton();
-            await utilityGrid.clearFilter();
-            await expect(manageTask.getSortedValuesFromColumn('Task Type')).toBeTruthy();
-            await manageTask.clickonColumnHeader('Task Type');
-            await expect(manageTask.getSortedValuesFromColumn('Task Type')).toBeTruthy();
-            await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Manual');
-            await expect(await manageTask.getFilterValue('Manual')).toBeTruthy();
-            await utilityGrid.clearFilter();
-            await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Automated');
-            //await utilCommon.waitUntilSpinnerToHide();
-            await expect(await manageTask.getFilterValue('Automated')).toBeTruthy();
-            await utilGrid.clearFilter();
-            await utilCommon.waitUntilSpinnerToHide();
-        } catch (error) {
-            throw expect;
-        } finally {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData1 = {
+            "templateName": `manualTaskTemplateActive ${randomStr}`,
+            "templateSummary": `manualTaskTemplateActive ${randomStr}`,
+            "templateStatus": "Active",
         }
+        let templateData2 = {
+            "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateStatus": "Active",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": `Case Process 1 ${randomStr}`,
+        }
+
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createAutomatedTaskTemplate(templateData2);
+        await apiHelper.createManualTaskTemplate(templateData1);
+
+        await navigationPage.gotoCreateCase();
+        await createCasePage.selectRequester('adam');
+        await createCasePage.setSummary('set summary');
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await previewCasePo.clickGoToCaseButton();
+        await viewCasePage.clickAddTaskButton();
+        await manageTask.clickAddTaskFromTemplateButton();
+        await utilityGrid.clearFilter();
+        await manageTask.clickonColumnHeader('Task Type');
+        await expect(await utilityGrid.isGridColumnSorted('Task Type', 'asc')).toBeTruthy();
+        await manageTask.clickonColumnHeader('Task Type');
+        await expect(await utilityGrid.isGridColumnSorted('Task Type', 'desc')).toBeTruthy();
+        await utilityGrid.addFilter('Task Type', 'Manual', 'checkbox');
+        await expect(await manageTask.getFilterValue('Manual')).toBeTruthy();
+        await utilityGrid.clearFilter();
+        await utilityGrid.addFilter('Task Type', 'Automated', 'checkbox');
+        //await utilCommon.waitUntilSpinnerToHide();
+        await expect(await manageTask.getFilterValue('Automated')).toBeTruthy();
+        await utilGrid.clearFilter();
+        await utilCommon.waitUntilSpinnerToHide();
+         } catch (error) {
+             throw expect;
+         } finally {
+             await navigationPage.signOut();
+             await loginPage.login('qkatawazi');
+         }
     });
 
     //ankagraw
@@ -771,7 +766,7 @@ describe('Create Case Task', () => {
         let casTemplateSummary = 'CaseSummaryName' + randomStr;
         let CaseTemplateData = {
             "templateName": caseTemplateName,
-            "templateSummary":casTemplateSummary,
+            "templateSummary": casTemplateSummary,
             "caseStatus": "InProgress",
             "templateStatus": "Active",
             "assignee": "Fritz",
@@ -843,17 +838,12 @@ describe('Create Case Task', () => {
     it('[DRDMV-7154,DRDMV-7153]: [Automatic Task] - Task Activation when multiple Tasks are on same sequence', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
-        await apiHelper.apiLogin('tadmin');
-        let case_management = CASE_MANAGEMENT_LIB_PROCESS;
-        let case_Management_Process = case_management.name + randomStr;
-        case_management.name = case_Management_Process;
-        await apiCoreUtil.createProcess(case_management);
         let templateData = {
             "templateName": `FirstAutomatedTaskTemplateActive ${randomStr}`,
             "templateSummary": `AutomatedTaskTemplateSummaryActive ${randomStr}`,
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
-            "processName": case_Management_Process,
+            "processName": 'case_Management_Process' + randomStr,
         }
 
         let templateData1 = {
@@ -861,7 +851,7 @@ describe('Create Case Task', () => {
             "templateSummary": `SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`,
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
-            "processName": case_Management_Process,
+            "processName": 'case_Management_Process123' + randomStr,
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -967,17 +957,13 @@ describe('Create Case Task', () => {
 
     it('[DRDMV-7143,DRDMV-7144]: [Automatic Task] - Task Activation behaviour immediately after creation when Task is at seq 1', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await apiHelper.apiLogin('tadmin');
-        let case_management = CASE_MANAGEMENT_LIB_PROCESS;
-        let case_Management_Process = case_management.name + randomStr;
-        case_management.name = case_Management_Process;
-        await apiCoreUtil.createProcess(case_management);
+
         let templateData = {
             "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
             "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
-            "processName": case_Management_Process,
+            "processName": 'case_Management_Process' + randomStr,
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createAutomatedTaskTemplate(templateData);
