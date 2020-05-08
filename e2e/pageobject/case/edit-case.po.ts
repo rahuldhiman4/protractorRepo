@@ -407,7 +407,7 @@ class CaseEditPage {
         let grandParents: number = await $$('bwf-text-field').count();
         for (let i = 0; i < grandParents; i++) {
             let labelvalue = await $$('bwf-text-field').get(i).$('label').getText();
-            if (labelvalue = fieldName) {
+            if (labelvalue == fieldName) {
                 $$('bwf-text-field').get(i).$('input').sendKeys(fieldValue);
             }
         }

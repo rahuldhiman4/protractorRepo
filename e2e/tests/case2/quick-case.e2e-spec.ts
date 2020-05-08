@@ -186,7 +186,6 @@ describe("Quick Case", () => {
     //apdeshmu
     it('[DRDMV-1087]:[Quick Case] Case Template search via !', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let assignmentMappingName = "DRDMV-1087 " + randomStr;
         let caseTemplateName = randomStr + "Petramco";
         let caseTemplateName1 = randomStr + "Psilon";
         let threeCharacterString = randomStr.substr(0, 3);
@@ -250,18 +249,14 @@ describe("Quick Case", () => {
     //apdeshmu
     it('[DRDMV-786]:[Quick Case] Case creation with all case statuses in template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName1 = randomStr + "DRDMV1087Petramco1";
-        let caseTemplateName2 = randomStr + "DRDMV1087Petramco2";
-        let caseTemplateName3 = randomStr + "DRDMV1087Petramco3";
-        let caseTemplateName4 = randomStr + "DRDMV1087Petramco4";
+        let caseTemplateName1 = randomStr + "Petramco1";
+        let caseTemplateName2 = randomStr + "Petramco2";
+        let caseTemplateName3 = randomStr + "Petramco3";
+        let caseTemplateName4 = randomStr + "Petramco4";
 
         let templateData1 = {
             "templateName": caseTemplateName1,
             "templateSummary": caseTemplateName1,
-            "categoryTier1": "Purchasing Card",
-            "categoryTier2": "Policies",
-            "categoryTier3": "Card Issuance",
-            "casePriority": "Low",
             "templateStatus": "Active",
             "company": "Petramco",
             "caseStatus": "New"
@@ -298,7 +293,6 @@ describe("Quick Case", () => {
             "ownerGroup": "Facilities"
         }
         try {
-            console.log("Template Name" + caseTemplateName1);
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData1);
             await apiHelper.createCaseTemplate(templateData2);
@@ -344,10 +338,9 @@ describe("Quick Case", () => {
     //ankagraw
     it('[DRDMV-795]: [Quick Case] Case template search in Resources', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName = randomStr + 'NameInDraftStatus';
-        let casTemplateSummary = randomStr + 'SummaryInDraftStatus';
-        let caseTempalteDescription = randomStr + 'DRDMV-795Description';
-        console.log(casTemplateSummary + " " +caseTempalteDescription);
+        let caseTemplateName = randomStr + 'templateDraft';
+        let casTemplateSummary = randomStr + 'SummaryDraft';
+        let caseTempalteDescription = randomStr + 'Description';
         
         let CaseTemplateDataInDraftStatus = {
             "templateName": caseTemplateName,
@@ -361,7 +354,7 @@ describe("Quick Case", () => {
             "ownerGroup": "Facilities"
         }
         let CaseTemplateDataWithDifferentOrganization = {
-            "templateName": `${randomStr}` + 'WithDifferentOrganization',
+            "templateName": `${randomStr}` + 'WithOtherOrg',
             "templateSummary": `${randomStr}`,
             "caseStatus": "InProgress",
             "templateStatus": "Active",
@@ -379,7 +372,7 @@ describe("Quick Case", () => {
         expect(await quickCase.selectCaseTemplate(caseTemplateName)).toBeFalsy("Draft case template present");
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
-        expect(await quickCase.selectCaseTemplate(`${randomStr}` + 'WithDifferentOrganization')).toBeFalsy('Different organization case template present');
+        expect(await quickCase.selectCaseTemplate(`${randomStr}` + 'WithOtherOrg')).toBeFalsy('Different organization case template present');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplateName);
@@ -403,9 +396,8 @@ describe("Quick Case", () => {
     //apdeshmu 
     it('[DRDMV-767]:[Quick Case] Case creation with template (end-to-end)', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let assignmentMappingName = "DRDMV-1087 " + randomStr;
-        let caseTemplateName = randomStr + "DRDMV-1087 Petramco";
-        let caseTemplateSummary = 'CaseSummaryName' + randomStr;
+        let assignmentMappingName = "DRDMV-767" + randomStr;
+        let caseTemplateName = randomStr + "767Petramco";
         let tasktemplateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemplateName}`,
@@ -418,7 +410,7 @@ describe("Quick Case", () => {
         }
         let CaseTemplateData = {
             "templateName": `${caseTemplateName}`,
-            "templateSummary": `${caseTemplateSummary}`,
+            "templateSummary": `${caseTemplateName}`,
             "caseStatus": "InProgress",
             "templateStatus": "Active",
             "assignee": "Fritz",
@@ -450,7 +442,7 @@ describe("Quick Case", () => {
             "categoryTier3": "Card Issuance",
             "priority": "Low",
         }
-        let articleData = {
+        let articleData1 = {
             "knowledgeSet": "HR",
             "title": caseTemplateName,
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
@@ -463,6 +455,7 @@ describe("Quick Case", () => {
             "assigneeSupportGroup": "AU Support 3",
             "company": "Petramco",
         }
+       
         await apiHelper.apiLogin('fritz');
         let automationTaskTemplate = await apiHelper.createAutomatedTaskTemplate(tasktemplateData);
         let newCaseTemplate = await apiHelper.createCaseTemplate(CaseTemplateData);
@@ -471,7 +464,7 @@ describe("Quick Case", () => {
         await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automationTaskTemplate.displayId);
         await apiHelper.createCaseAssignmentMapping(assignmentData);
         await apiHelper.createCase(caseData);
-        await apiHelper.createKnowledgeArticle(articleData);
+        await apiHelper.createKnowledgeArticle(articleData1);
         try {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
@@ -479,27 +472,24 @@ describe("Quick Case", () => {
             await quickCasePo.selectRequesterName("fritz");
             await quickCase.selectDrpDownValueByIndex('Another person contacting on behalf of the requester', 1);
             await quickCasePo.selectRequesterName("chetan");
-            await quickCasePo.setCaseSummary(caseTemplateName);
+            await quickCase.setCaseSummary(caseTemplateName);
             await utilCommon.waitUntilSpinnerToHide();
             await quickCase.pinRecommendedCases(1);
             await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
             await resources.enterAdvancedSearchText(caseTemplateName);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
-            await quickCasePo.pinRecommendedKnowledgeArticles(1);
+            await quickCase.clickArrowFirstRecommendedKnowledge();
             await quickCasePo.saveCase();
-            await utilCommon.waitUntilSpinnerToHide();
-            await utilCommon.waitUntilPopUpDisappear();
             await previewCasePo.clickGoToCaseButton();
-            await utilCommon.waitUntilSpinnerToHide();
-            expect(await viewCasePage.getCaseSummary()).toBe(`${caseTemplateName}`, "Template is not Found");
+            expect(await viewCasePage.getCaseSummary()).toBe(caseTemplateName, "Template is not Found");
             expect(await viewCasePage.getCategoryTier1Value()).toBe('Purchasing Card', "Category is not displaying");
             expect(await viewCasePage.getCategoryTier2Value()).toBe('Policies', "Category is not displaying");
             expect(await viewCasePage.getCategoryTier3Value()).toBe('Card Issuance', "Category is not displaying");
             expect(await viewCasePage.getCaseStatusValue()).toBe('In Progress', "Status is not displaying");
             expect(await viewCasePage.getAssignedGroupText()).toBe('Facilities');
             expect(await viewCasePage.getAssignedCompanyText()).toBe('Petramco');
-            expect(await viewCasePage.getCaseTemplateText()).toBe(`${caseTemplateName}`);
+            expect(await viewCasePage.getCaseTemplateText()).toBe(caseTemplateName);
             expect(await activityPo.isTextPresentInActivityLog("created the case")).toBeTruthy("Text is not present in activiy tab1");
             expect(await activityPo.isTextPresentInActivityLog("created the case")).toBeTruthy("Text is not present in activiy tab1");
             await utilityCommon.scrollUpOrDownTillElement(viewCasePage.selectors.addedTaskFromCaseTemplate);
@@ -659,8 +649,8 @@ describe("Quick Case", () => {
     //ptidke
     it('[DRDMV-773]: [Quick Case] Case template selection via !', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName = randomStr + 'template773Active';
-        let casTemplateSummary = randomStr + 'CaseSummary773Active';
+        let caseTemplateName = randomStr + 'templateActive';
+        let casTemplateSummary = randomStr + 'SummaryActive';
         let templateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${casTemplateSummary}`,
@@ -673,8 +663,8 @@ describe("Quick Case", () => {
         await apiHelper.apiLogin('fritz');
         await apiHelper.createCaseTemplate(templateData);
 
-        let caseTemplateDraft = randomStr + 'templateDraft773';
-        let casTemplateSummaryDraft = randomStr + 'caseTemplateDraftSummaryDRDMV-773';
+        let caseTemplateDraft = randomStr + 'templateDraft';
+        let casTemplateSummaryDraft = randomStr + 'SummaryDraft';
         let templateDataDraft = {
             "templateName": `${caseTemplateDraft}`,
             "templateSummary": `${casTemplateSummaryDraft}`,
@@ -687,8 +677,8 @@ describe("Quick Case", () => {
         await apiHelper.apiLogin('fritz');
         await apiHelper.createCaseTemplate(templateDataDraft);
 
-        let caseTemplatePsilon = randomStr + 'templatePsilon773';
-        let casTemplateSummaryPsilon = randomStr + 'caseTemplatePsilonSummaryDRDMV773';
+        let caseTemplatePsilon = randomStr + 'PsilonTemplate';
+        let casTemplateSummaryPsilon = randomStr + 'PsilonSummary';
         let templateDataPsilon = {
             "templateName": `${caseTemplatePsilon}`,
             "templateSummary": `${casTemplateSummaryPsilon}`,
@@ -698,11 +688,13 @@ describe("Quick Case", () => {
         await apiHelper.apiLogin('gwixillian');
         await apiHelper.createCaseTemplate(templateDataPsilon);
         await navigationPage.gotoQuickCase();
-        expect(await quickCase.selectCaseTemplate(caseTemplateName)).toBeFalsy('template is present');
         await quickCase.selectRequesterName('adam');
-        expect(await quickCase.selectCaseTemplate(caseTemplateDraft)).toBeFalsy('template is present');
+        expect(await quickCase.selectCaseTemplate(caseTemplateName)).toBeTruthy('template is present1');
+        await quickCase.selectRequesterName('adam');
+        expect(await quickCase.selectCaseTemplate(caseTemplateDraft)).toBeFalsy('template is present2');
         await quickCase.selectRequesterName('fritz');
-        expect(await quickCase.selectCaseTemplate(caseTemplatePsilon)).toBeFalsy('template is present');
+        expect(await quickCase.selectCaseTemplate(caseTemplatePsilon)).toBeFalsy('template is present3');
+        await quickCase.clickStartOverButton();
         await quickCase.selectRequesterName('fritz');
         await quickCase.selectCaseTemplate(caseTemplateName);
         await quickCase.createCaseButton();
@@ -711,10 +703,10 @@ describe("Quick Case", () => {
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
         await quickCase.selectRoleValue('Related to');
-        expect(await quickCase.selectCaseTemplate(caseTemplateDraft)).toBeFalsy('template is present');
-    }, 500 * 1000);
+        expect(await quickCase.selectCaseTemplate(caseTemplateDraft)).toBeFalsy('template is present4');
+    }, 700 * 1000);
 
-    //ptidke raised defect DRDMV-21664
+    //ptidke 
     it('[DRDMV-741]: [Quick Case] UI validation including Source field in Quick Case', async () => {
         let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -750,7 +742,7 @@ describe("Quick Case", () => {
         expect(await quickCase.isValuePresentInSourceDropDown(sourceDeprecated741)).toBeFalsy(sourceDeprecated741 + 'is present');
         expect(await quickCase.isValuePresentInSourceDropDown(inActiveSource741)).toBeFalsy(inActiveSource741 + 'is present');
         expect(await quickCase.isValuePresentInSourceDropDown(activeSourceNotUI)).toBeFalsy(activeSourceNotUI + 'is present');
-    });
+    },250 * 1000);
 
     //ankagraw
     it('[DRDMV-796]: [Quick Case] Resources preview', async () => {
@@ -762,7 +754,7 @@ describe("Quick Case", () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.createNewUser(userData1);
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName = randomStr + 'caseTemplateName';
+        let caseTemplateName = randomStr + 'Template';
         let casTemplateSummary = 'CaseSummaryName' + randomStr;
         let manualTaskTemplateData = {
             "templateName": `manualTaskTemplateDraft ${randomStr}`,
@@ -777,7 +769,8 @@ describe("Quick Case", () => {
             "assignee": "Fritz",
             "company": "Petramco",
             "supportGroup": "Facilities",
-            "ownerGroup": "Facilities"
+            "ownerGroup": "Facilities",
+            "priority": "Low",
         }
 
         let articleData = {
@@ -788,13 +781,12 @@ describe("Quick Case", () => {
             "assigneeSupportGroup": "AU Support 3",
             "company": "Petramco"
         }
-
+        
         await apiHelper.apiLogin('qkatawazi');
         let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
         let newCaseTemplate = await apiHelper.createCaseTemplate(CaseTemplateData);
         await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-
         let knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'SMEReview', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
@@ -803,12 +795,11 @@ describe("Quick Case", () => {
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
         await quickCase.selectCaseTemplate(`${caseTemplateName}`);
-        await quickCase.setCaseSummary(`${caseTemplateName}`);
         await quickCase.clickArrowFirstRecommendedCase();
         expect(await previewCaseTemplateCasesPo.getCaseSummary()).toBe(`${casTemplateSummary}`);
         expect(await previewCaseTemplateCasesPo.getCaseStatus()).toBe("In Progress");
         expect(await previewCaseTemplateCasesPo.getCaseCompanyValue()).toBe("Petramco");
-        expect(await previewCaseTemplateCasesPo.getCaseTemplateName()).toBe(`${caseTemplateName}`);
+        expect(await previewCaseTemplateCasesPo.getCaseTemplateName()).toBe(caseTemplateName);
         expect(await previewCaseTemplateCasesPo.getCasePriority()).toBe("Medium");
         await previewCaseTemplateCasesPo.clickOnBackButton();
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
@@ -823,7 +814,7 @@ describe("Quick Case", () => {
         await quickCase.createCaseButton();
         expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
         expect(await previewCasePo.isRequesterNameDisplayed('Adam Pavlik')).toBeTruthy();
-        expect(await previewCasePo.isCaseSummaryDisplayed(`${caseTemplateName}`)).toBeTruthy();
+        expect(await previewCasePo.isCaseSummaryDisplayed(casTemplateSummary)).toBeTruthy();
         expect(await previewCasePo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();
         expect(await previewCasePo.isRequesterEmailIdDisplayed('apavlik@petramco.com')).toBeTruthy();
         expect(await previewCasePo.isDescriptionDisplayed('Adam Pavlik '+ `${caseTemplateName}`)).toBeTruthy();
