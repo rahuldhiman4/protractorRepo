@@ -412,27 +412,24 @@ describe('Dynamic data', () => {
         expect(await editCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('field is not present');
         // attach files in field 1
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await editCasePo.addAttachment('attachment1', `../../data/ui/attachment/${fileName1[i]}`);
-        }
-        //attachment2 add 1 file 
-        await editCasePo.addAttachment('attachment2', '../../data/ui/attachment/demo.txt');
+        const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
+        await editCasePo.addAttachment('attachment1', filesToUpload1);
         //attachment3 add 1 file 
-        let fileName2: string[] = ['bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf'];
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await editCasePo.addAttachment('attachment1', `../../data/ui/attachment/${fileName2[i]}`);
-        }
+        let fileName2: string[] = ['bwfWord1.rtf','bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf','bwfWord2.rtf'];
+        const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
+        await editCasePo.addAttachment('attachment1', filesToUpload2);
+        await editCasePo.addAttachment('attachment2', ['../../data/ui/attachment/demo.txt']);
         await editCasePo.clickSaveCase();
         //verify show more and show less button
-        expect(await viewCasePo.getShowMoreLessAttachmentsLinkText()).toContain('Show more');
-        await viewCasePo.clickShowMoreLink();
-        expect(await viewCasePo.getShowMoreLessAttachmentsLinkText()).toContain('Show less');
+        expect(await viewCasePo.getShowMoreLessAttachmentsLinkText('attachment1')).toContain('Show more');
+        await viewCasePo.clickShowMoreLink('attachment1');
         //verify attached files on case view
         expect(await viewCasePo.isFileDisplayed('bwfJpg3.jpg')).toBeTruthy('File is not present');
         expect(await viewCasePo.isFileDisplayed('bwfJpg.jpg')).toBeTruthy('File is not present');
         expect(await viewCasePo.isFileDisplayed('demo.txt')).toBeTruthy('File is not present');
         expect(await viewCasePo.isFileDisplayed('bwfWord1.rtf')).toBeTruthy('File is not present');
         expect(await viewCasePo.isFileDisplayed('articleStatus.png')).toBeTruthy('File is not present');
+        expect(await viewCasePo.getShowMoreLessAttachmentsLinkText('attachment1')).toContain('Show less');
     }, 300 * 1000);
 
     it('[DRDMV-13947]: [Dynamic Data] [Attachment] - Task UI when it has Dynamic Fields including Attachment', async () => {
@@ -468,27 +465,25 @@ describe('Dynamic data', () => {
         await editTaskPo.clickOnAssignToMe();
         // attach files in field 1
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await editTaskPo.addAttachmentInDynamicField('attachment1', `../../data/ui/attachment/${fileName1[i]}`);
-        }
+        const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
+            await editTaskPo.addAttachmentInDynamicField('attachment1',filesToUpload1);
         //attachment2 add 1 file 
-        await editTaskPo.addAttachmentInDynamicField('attachment2', '../../data/ui/attachment/demo.txt');
+        await editTaskPo.addAttachmentInDynamicField('attachment2', ['../../data/ui/attachment/demo.txt']);
         //attachment3 add 1 file 
-        let fileName2: string[] = ['bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf'];
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await editTaskPo.addAttachmentInDynamicField('attachment1', `../../data/ui/attachment/${fileName2[i]}`);
-        }
+        let fileName2: string[] = ['bwfWord1.rtf','bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord2.rtf'];
+        const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
+            await editTaskPo.addAttachmentInDynamicField('attachment1', filesToUpload2);
         await editTaskPo.clickOnSaveButton();
         //verify show more and show less button
-        expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText()).toContain('Show more');
+        expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText()).toContain('more');
         await viewTaskPo.clickShowMoreShowLessLink();
-        expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText()).toContain('Show less');
         //verify attached files on case view
         expect(await viewTaskPo.isFileDisplayed('bwfJpg3.jpg')).toBeTruthy('File is not present');
         expect(await viewTaskPo.isFileDisplayed('bwfJpg.jpg')).toBeTruthy('File is not present');
         expect(await viewTaskPo.isFileDisplayed('demo.txt')).toBeTruthy('File is not present');
         expect(await viewTaskPo.isFileDisplayed('bwfWord1.rtf')).toBeTruthy('File is not present');
         expect(await viewTaskPo.isFileDisplayed('articleStatus.png')).toBeTruthy('File is not present');
+        expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText()).toContain('Show less');
     });
 
     it('[DRDMV-13948]: [Dynamic Data] [Attachment] - Add different type of files in attachment fields', async () => {
@@ -523,23 +518,22 @@ describe('Dynamic data', () => {
         expect(await editCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('field is not present');
         // attach files in field 1
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfPdf4.pdf', 'bwfWord1.rtf'];
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await editCasePo.addAttachment('attachment1', `../../data/ui/attachment/${fileName1[i]}`);
-        }
+        const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
+        await editCasePo.addAttachment('attachment1', filesToUpload1);
         await editCasePo.clickSaveCase();
         //download the file
         await viewCasePo.clickOnDownloadFile('articleStatus.png');
-        expect(await utilCommon.isFileDownloaded('articleStatus.png')).toBeTruthy('failureMsg: articleStatus.png File is not downloaded.');
+        expect(await utilityCommon.isFileDownloaded('articleStatus.png')).toBeTruthy('failureMsg: articleStatus.png File is not downloaded.');
         await viewCasePo.clickOnDownloadFile('bwfJpg4.jpg');
-        expect(await utilCommon.isFileDownloaded('bwfJpg4.jpg')).toBeTruthy('failureMsg: bwfJpg4.jpg File is not downloaded.');
+        expect(await utilityCommon.isFileDownloaded('bwfJpg4.jpg')).toBeTruthy('failureMsg: bwfJpg4.jpg File is not downloaded.');
         await viewCasePo.clickOnDownloadFile('bwfJson1.json');
-        expect(await utilCommon.isFileDownloaded('bwfJson1.json')).toBeTruthy('failureMsg: bwfJson1.json File is not downloaded.');
+        expect(await utilityCommon.isFileDownloaded('bwfJson1.json')).toBeTruthy('failureMsg: bwfJson1.json File is not downloaded.');
         await viewCasePo.clickOnDownloadFile('bwfPdf4.pdf');
-        expect(await utilCommon.isFileDownloaded('bwfPdf4.pdf')).toBeTruthy('failureMsg: bwfPdf4.pdf File is not downloaded.');
+        expect(await utilityCommon.isFileDownloaded('bwfPdf4.pdf')).toBeTruthy('failureMsg: bwfPdf4.pdf File is not downloaded.');
         await viewCasePo.clickOnDownloadFile('bwfWord1.rtf');
-        expect(await utilCommon.isFileDownloaded('bwfWord1.rtf')).toBeTruthy('failureMsg: bwfWord1.rtf File is not downloaded.');
+        expect(await utilityCommon.isFileDownloaded('bwfWord1.rtf')).toBeTruthy('failureMsg: bwfWord1.rtf File is not downloaded.');
         for (let i: number = 0; i <= fileName1.length; i++) {
-            expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[i]}`)).toBeTruthy('FailuerMsg: File is delete sucessfully');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1[i]}`)).toBeTruthy('FailuerMsg: File is delete sucessfully');
         }
         await apiHelper.apiLogin('tadmin');
         let recDeleted = await apiHelper.deleteDynamicFieldAndGroup();
@@ -569,18 +563,17 @@ describe('Dynamic data', () => {
         await editTaskPo.clickOnAssignToMe();
         //attachment3 add 1 file 
         let fileName2: string[] = ['bwfJpg.jpg', 'bwfPdf.pdf', 'bwfWord2.rtf'];
-        for (let i: number = 0; i < fileName1.length; i++) {
-            await editTaskPo.addAttachmentInDynamicField('attachment1', `../../data/ui/attachment/${fileName2[i]}`);
-        }
+        const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
+        await editTaskPo.addAttachmentInDynamicField('attachment1',filesToUpload2);
         await editTaskPo.clickOnSaveButton();
         await viewCasePo.clickOnDownloadFile('bwfJpg.jpg');
-        expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is not downloaded.');
+        expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is not downloaded.');
         await viewCasePo.clickOnDownloadFile('bwfPdf.pdf');
-        expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('failureMsg: bwfPdf.pdf File is not downloaded.');
+        expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('failureMsg: bwfPdf.pdf File is not downloaded.');
         await viewCasePo.clickOnDownloadFile('bwfWord2.rtf');
-        expect(await utilCommon.isFileDownloaded('bwfWord2.rtf')).toBeTruthy('failureMsg: bwfWord2.rtf File is not downloaded.');
+        expect(await utilityCommon.isFileDownloaded('bwfWord2.rtf')).toBeTruthy('failureMsg: bwfWord2.rtf File is not downloaded.');
         for (let i: number = 0; i <= fileName2.length; i++) {
-            expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName2[i]}`)).toBeTruthy('FailuerMsg: File is delete sucessfully');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2[i]}`)).toBeTruthy('FailuerMsg: File is delete sucessfully');
         }
     });
 
@@ -715,7 +708,7 @@ describe('Dynamic data', () => {
         await editCasePo.setDynamicFieldValue('temp1', '333');
         await editCasePo.setDateValueInDynamicField('2020-03-01');
         await editCasePo.clickOnTrueValueOfDynamicField();
-        await editCasePo.addAttachment('attachment2', '../../data/ui/attachment/demo.txt');
+        await editCasePo.addAttachment('attachment2', ['../../data/ui/attachment/demo.txt']);
         await editCasePo.setDateTimeDynamicFieldValue('2020-03-04');
         await editCasePo.setTimeInDynamicField('02');
         await editCasePo.selectValueFromList('dynamicList', 'listvalues');
@@ -761,7 +754,7 @@ describe('Dynamic data', () => {
         expect(await requesterResponseBladePo.isDynamicFieldDisplayed('attachment1')).toBeFalsy('field is present');
         await requesterResponseBladePo.clickOkButton();
         await quickCasePo.gotoCaseButton();
-        let empty = '';
+        let empty = '-';
         //verify fields shoule be empty values on case view
         expect(await viewCasePo.getValueOfDynamicFields('temp')).toBe(empty);
         expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe(empty);
@@ -830,10 +823,10 @@ describe('Dynamic data', () => {
         await editTaskPo.clickOnAssignToMe();
         await editTaskPo.setDateValueInDynamicField('wrong date')
         await editTaskPo.clickOnSaveButton();
-        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
         await editTaskPo.setDateTimeDynamicFieldValue('wrongdatetime');
         await editTaskPo.clickOnSaveButton();
-        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
         //  await utilCommon.waitUntilPopUpDisappear();
         await editTaskPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
@@ -847,7 +840,7 @@ describe('Dynamic data', () => {
         //verify update values on case view
         expect(await viewTaskPo.getValueOfDynamicFields('temp2')).toBe('Mar 1, 2020');
         expect(await viewTaskPo.getValueOfDynamicFields('temp4')).toBe('Mar 4, 2020 12:00 AM');
-        expect(await viewTaskPo.getValueOfDynamicFields('temp1')).toBe('');
+        expect(await viewTaskPo.getValueOfDynamicFields('temp1')).toBe('-');
 
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAddTaskButton();
@@ -858,10 +851,10 @@ describe('Dynamic data', () => {
         await editTaskPo.clickOnAssignToMe();
         await editTaskPo.setDateValueInDynamicField('wrong date')
         await editTaskPo.clickOnSaveButton();
-        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
         await editTaskPo.setDateTimeDynamicFieldValue('wrongdatetime');
         await editTaskPo.clickOnSaveButton();
-        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
         await editTaskPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
         await viewTaskPo.clickOnEditTask();
@@ -882,17 +875,17 @@ describe('Dynamic data', () => {
         await utilCommon.waitUntilPopUpDisappear();
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus('In Progress');
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilityCommon.waitUntilPopUpDisappear();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.clickTaskLinkOnManageTask(automatedTaskSummary);
         await viewTaskPo.clickOnEditTask();
         await editTaskPo.setDynamicFieldValue('automatedText', 'sssssss');
         await editTaskPo.setDateValueInDynamicField('wrong date')
         await editTaskPo.clickOnSaveButton();
-        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
         await editTaskPo.setDateTimeDynamicFieldValue('wrongdatetime');
         await editTaskPo.clickOnSaveButton();
-        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
         await editTaskPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
         await viewTaskPo.clickOnEditTask();
@@ -975,7 +968,6 @@ describe('Dynamic data', () => {
         await quickCasePo.selectCaseTemplate(caseTemplateName);
         await quickCasePo.createCaseButton();
         await quickCasePo.gotoCaseButton();
-
         expect(await viewCasePo.isDynamicFieldDisplayed('temp')).toBeTruthy('dynamic fields not present');
         expect(await viewCasePo.isDynamicFieldDisplayed('temp1')).toBeTruthy('dynamic fields not present');
         expect(await viewCasePo.isDynamicFieldDisplayed('temp2')).toBeTruthy('dynamic fields not present');
@@ -990,18 +982,18 @@ describe('Dynamic data', () => {
         await editCasePo.setDynamicFieldValue('temp', 'newtemp');
         await editCasePo.setDynamicFieldValue('temp1', 'newtempres');
         await editCasePo.clickSaveCase();
-        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
         await editCasePo.setDateValueInDynamicField('wrong date')
         await editCasePo.clickSaveCase();
-        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
         await editCasePo.setDateTimeDynamicFieldValue('wrongdatetime');
         await editCasePo.clickSaveCase();
-        expect(await utilCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
         await editCasePo.clickOnCancelCaseButton();
         await utilCommon.clickOnWarningOk();
-        expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('', 'field should be empty');
-        expect(await viewCasePo.getValueOfDynamicFields('temp2')).toBe('', 'field should be empty');
-        expect(await viewCasePo.getValueOfDynamicFields('temp4')).toBe('', 'field should be empty');
+        expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('-', 'field should be empty');
+        expect(await viewCasePo.getValueOfDynamicFields('temp2')).toBe('-', 'field should be empty');
+        expect(await viewCasePo.getValueOfDynamicFields('temp4')).toBe('-', 'field should be empty');
     }, 940 * 1000);
 
     //ptidke
@@ -1026,7 +1018,6 @@ describe('Dynamic data', () => {
         await createCasePo.clickSaveCaseButton();
         expect(await requesterResponseBladePo.isRequesterBladePresent()).toBeFalsy('requester Blade is not present');
         await previewCasePo.clickGoToCaseButton();
-        await utilCommon.waitUntilSpinnerToHide();
         expect(await viewCasePo.isDynamicFieldDisplayed('temp')).toBeTruthy('dynamic fields not present');
         expect(await viewCasePo.isDynamicFieldDisplayed('temp1')).toBeTruthy('dynamic fields not present');
         expect(await viewCasePo.isDynamicFieldDisplayed('temp2')).toBeTruthy('dynamic fields not present');
