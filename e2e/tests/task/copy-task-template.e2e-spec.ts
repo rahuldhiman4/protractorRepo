@@ -16,6 +16,7 @@ import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Copy Task Template', () => {
     beforeAll(async () => {
@@ -32,13 +33,12 @@ describe('Copy Task Template', () => {
     });
 
     it('[DRDMV-14214]: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {
-
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let automatedTaskTemplate1 = 'DRDMV14214AutomationTask' + randomStr;
-            let automatedTaskSummary1 = 'DRDMV14214AutomationSummary1' + randomStr;
+            let automatedTaskSummary1 = 'TSummary1' + randomStr;
             let automatedTaskTemplate2 = 'DRDMV14214AutomationTask2' + randomStr;
-            let automatedTaskSummary2 = randomStr +'DRDMV14214AutomationSummary2' ;
+            let automatedTaskSummary2 = randomStr + 'TSummary2';
             let processName = 'DRDMV14214ProcessName' + randomStr;
 
             //Automation Task template
@@ -79,9 +79,11 @@ describe('Copy Task Template', () => {
             await manageTask.addTaskFromTaskTemplate(automatedTaskSummary2);
             await manageTask.clickOnCloseButton();
             await updateStatusBladePo.changeCaseStatus("In Progress");
-            await updateStatusBladePo.clickSaveStatus();
-            await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLinkOnManageTask(automatedTaskSummary2);
+            await updateStatusBladePo.clickSaveStatus('In Progress');
+            await utilityCommon.waitUntilPopUpDisappear();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(automatedTaskSummary2);
             await expect(await viewTask.getTaskStatusValue()).toBe('Completed');
         } catch (e) {
             throw e;
@@ -421,9 +423,11 @@ describe('Copy Task Template', () => {
             //await browser.sleep(2000);
             await manageTask.clickOnCloseButton();
             await updateStatusBladePo.changeCaseStatus("In Progress");
-            await updateStatusBladePo.clickSaveStatus();
-            await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLinkOnManageTask(updatedTaskSummary);
+            await updateStatusBladePo.clickSaveStatus('In Progress');
+            await utilityCommon.waitUntilPopUpDisappear();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(updatedTaskSummary);
             await expect(await viewTask.getTaskStatusValue()).toBe('Completed');
         } catch (e) {
             throw e;
