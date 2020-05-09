@@ -8,7 +8,9 @@ class StatusConfigPage {
         editLifeCycleButton: 'button.btn-edit-status-transition',
         localizeButton: '.status-name_label button',
         newStatusInput: '.default-locale-title input',
-        settingPanelButtons: '.status-setting-panel .action-button',
+        statusAddModalBtns: '.modal-content .status-settings_button-bar button',
+        settingPanelButtons: '.status-settings_button-bar .action-button',
+        localizedBtn : '.rx-template-editor-text-fields .d-icon-field_text_mapmarker',
         localizeMenuButtons: '.status-settings_button-bar button',
         status: '.v-line',
         deleteButton: '.d-button_action-clear',
@@ -32,15 +34,17 @@ class StatusConfigPage {
     async setStatusReason(newStatus: string): Promise<void> {
         await $(this.selectors.manageLink).click();
         await $(this.selectors.addStatusReason).click();
-        await $(this.selectors.addStatusReason).click();
+        await $(this.selectors.localizeButton).click();
         await $(this.selectors.newStatusInput).clear();
         await $(this.selectors.newStatusInput).sendKeys(newStatus);
         await $$(this.selectors.localizeMenuButtons).first().click();
-        await $$(this.selectors.settingPanelButtons).first().click();
-
+        await $$(this.selectors.statusAddModalBtns).first().click();
+        await this.saveSetting();
     }
 
+
     async saveSetting(): Promise<void> {
+        await browser.sleep(2000);
         await $$(this.selectors.settingPanelButtons).first().click();
     }
 
@@ -97,7 +101,10 @@ class StatusConfigPage {
     }
 
     async isDeleteButtonDisplayed(): Promise<boolean> {
-        return await $(this.selectors.deleteButton).isDisplayed();
+        return await $(this.selectors.deleteButton).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.deleteButton).isDisplayed();
+            else return false;
+        });
     }
 
     async clickOnDeleteButton(): Promise<void> {
@@ -169,7 +176,18 @@ class StatusConfigPage {
         await $(this.selectors.newStatusInput).clear();
         await $(this.selectors.newStatusInput).sendKeys(newStatus);
         await $$(this.selectors.localizeMenuButtons).first().click();
-        await $$(this.selectors.settingPanelButtons).first().click();
+        await this.saveSetting();
+    }
+
+    async updateExistingStatusName(name:string): Promise<void>{
+        await $(this.selectors.localizeButton).click();
+        await $(this.selectors.newStatusInput).clear();
+        await $(this.selectors.newStatusInput).sendKeys(name);
+        await $$(this.selectors.localizeMenuButtons).first().click();
+    }
+
+    async cancelSettingChange():Promise<void>{
+        await $$(this.selectors.settingPanelButtons).last().click();
     }
 
     async addCustomStatus(status1: string, status2: string, newStatus: string): Promise<void> {
@@ -201,7 +219,7 @@ class StatusConfigPage {
             await $(this.selectors.newStatusInput).clear();
             await $(this.selectors.newStatusInput).sendKeys(newStatus);
             await $$(this.selectors.localizeMenuButtons).first().click();
-            await $$(this.selectors.settingPanelButtons).first().click();
+            await this.saveSetting();
         }
     }
 }

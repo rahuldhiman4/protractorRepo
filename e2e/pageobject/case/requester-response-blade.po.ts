@@ -5,7 +5,7 @@ class RequesterResponseBlade {
     selectors = {
         bladeHeading: '.dp-title',
         dynamicFieldsName: '.simple-field label.form-control-label',
-        okButton:'[rx-view-component-id="d459dabe-1ccb-4776-b121-874ed4ded902"] button',
+        okButton:'[rx-view-component-id="d459dabe-1ccb-4776-b121-874ed4ded902"] button', 
     }
 
     async isDynamicFieldDisplayed(fieldName:string):Promise<boolean>{

@@ -81,7 +81,7 @@ describe('Service Target Tests for Tasks', () => {
             await adhoctaskTemplate.selectCategoryTier1('Applications');
             await adhoctaskTemplate.selectCategoryTier2('Social');
             await adhoctaskTemplate.selectCategoryTier3('Chatter');
-            //await adhoctaskTemplate.selectLabel('test');
+            // await adhoctaskTemplate.selectLabel('test');
             await adhoctaskTemplate.clickOnSaveAdhoctask();
             //Update the case status to In Progress
             await manageTaskBladePo.clickOnCloseButton();

@@ -43,8 +43,9 @@ class ViewTask {
         attachmentFile: '.justify-content-start .bwf-attachment-container__file-name',
         attachmentpath: '.rx-attachment-view .d-icon-cross',
         showMore:'.rx-attachment-show-text',
-        dynamicFieldsName:'[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] span',
-        dynamicFieldsValue:'[rx-view-component-id="f59b655f-9312-4508-a9ad-e32ed0c95c41"] p',
+        dynamicFieldsName:'[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] label',
+        dynamicFieldsValue:'[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .read-only-content',
+        assignmentSection:'[rx-view-component-id="a202d36e-32db-4093-9c92-c4f7a514f3d7"] .person-badge',
         assignedGroupValue:'[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] .read-only-content',
         assignedCompanyValue:'[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] .read-only-content',
         businessUnitValue:'[rx-view-component-id="4ad9dc88-aa95-4fb7-8128-7df004dfca8f"] .read-only-content', 
@@ -373,8 +374,22 @@ class ViewTask {
         return await $(this.selectors.assignedCompanyValue).getText();
     }
 
-    async isDynamicFieldPresent(): Promise<boolean> {
+    async isDynamicFieldPresent(fieldName:string):Promise<boolean>{
+        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
+        for (let i = 0; i < dynamicFields; i++) {
+            let field = await (await $$(this.selectors.dynamicFieldsName).get(i).getText()).trim();
+            if (fieldName == field) {
+                return true;
+            }
+        }
+        return false;
+    }
+    async isDynamicFieldSectionPresent(): Promise<boolean>{
         return await $(this.selectors.dynamicFieldsName).isPresent();
+    }
+
+    async isAssignmentSectionDisplayed():Promise<boolean>{
+        return await $(this.selectors.assignmentSection).isDisplayed();
     }
 }
 

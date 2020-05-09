@@ -84,6 +84,11 @@ export class Utility {
         await browser.executeScript("arguments[0].scrollIntoView();", $(`${element}`).getWebElement());
     }
 
+    async isPopUpMessagePresent(expectedMsg: string, expectedNoOfMsgs?: number): Promise<boolean> {
+        let arr: string[] = await this.getAllPopupMsg(expectedNoOfMsgs);
+        return arr.includes(expectedMsg);
+    }
+
     async waitUntilPopUpDisappear(): Promise<void> {
         await browser.wait(this.EC.invisibilityOf($(this.selectors.popUpMsgLocator)), 5000);
     }
@@ -105,7 +110,7 @@ export class Utility {
                 await element.click();
             }
         }
-        else{
+        else {
             let element = await togglebutton.$('button[rx-id="false-button"]')
             let isclicked = await element.getAttribute('aria-pressed');
             if (isclicked == 'false') {
@@ -172,7 +177,7 @@ export class Utility {
             if (result) {
                 return await element(by.cssContainingText(fieldLabel, fieldName)).getText() == fieldName ? true : false;
             } else {
-                console.log(fieldName," not present");
+                console.log(fieldName, " not present");
                 return false;
             }
         });
@@ -312,8 +317,9 @@ export class Utility {
     async isPopupMsgsMatches(msgs: string[], expectedNoOfMsgs?: number): Promise<boolean> {
         let arr: string[] = await this.getAllPopupMsg(expectedNoOfMsgs);
         msgs.sort();
+        arr.sort();
         return arr.length === msgs.length && arr.every(
-            (value, index) => (value === msgs[index])
+            (value, index) => (value.includes(msgs[index]))
         );
     }
 
@@ -360,8 +366,8 @@ export class Utility {
         await browser.waitForAngularEnabled(true);
     }
 
-    async clickOnApplicationWarningYesNoButton(buttonName:string): Promise<void> {
-        await element(by.cssContainingText('.modal-footer adapt-button',buttonName)).click();
+    async clickOnApplicationWarningYesNoButton(buttonName: string): Promise<void> {
+        await element(by.cssContainingText('.modal-footer adapt-button', buttonName)).click();
     }
 }
 

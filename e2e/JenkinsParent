@@ -31,6 +31,7 @@ properties([
 node("${NODE}"){
     stage('Clone & Build'){
         bat """if exist "./artefact" RMDIR /S /Q "./artefact" """
+        bat "IF EXIST e2e\\reports RMDIR /S /Q e2e\\reports"
         git branch: 'master',
 	    credentialsId: '807c8e4d-6d6c-47e1-a62e-ef2de91d6dce',
 	    url: 'https://github.bmc.com/DSM-Apps/bwf-e2e-protractor.git'

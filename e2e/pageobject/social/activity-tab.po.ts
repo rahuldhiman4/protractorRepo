@@ -541,12 +541,12 @@ class ActivityTabPage {
 
     async isTextPresentInActivityLog(caseActivityLogText: string): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
-        try {
-            return await element(by.cssContainingText(this.selectors.activityLog, caseActivityLogText)).isDisplayed();
+        let activityValue:string = "";
+        let countVal = await $$(this.selectors.activityLog).count();
+        for (let i: number = 0; i < countVal; i++) {
+            activityValue = activityValue + await $$(this.selectors.activityLog).get(i).getText();
         }
-        catch (e) {
-            return false;
-        }
+        return await activityValue.includes(caseActivityLogText);
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
