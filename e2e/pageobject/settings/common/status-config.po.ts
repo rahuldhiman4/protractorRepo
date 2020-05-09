@@ -38,12 +38,13 @@ class StatusConfigPage {
         await $(this.selectors.newStatusInput).clear();
         await $(this.selectors.newStatusInput).sendKeys(newStatus);
         await $$(this.selectors.localizeMenuButtons).first().click();
-        await browser.sleep(2000);
         await $$(this.selectors.statusAddModalBtns).first().click();
-        await $$(this.selectors.settingPanelButtons).first().click();
+        await this.saveSetting();
     }
 
+
     async saveSetting(): Promise<void> {
+        await browser.sleep(2000);
         await $$(this.selectors.settingPanelButtons).first().click();
     }
 
@@ -175,7 +176,7 @@ class StatusConfigPage {
         await $(this.selectors.newStatusInput).clear();
         await $(this.selectors.newStatusInput).sendKeys(newStatus);
         await $$(this.selectors.localizeMenuButtons).first().click();
-        await $$(this.selectors.settingPanelButtons).first().click();
+        await this.saveSetting();
     }
 
     async updateExistingStatusName(name:string): Promise<void>{
@@ -218,7 +219,7 @@ class StatusConfigPage {
             await $(this.selectors.newStatusInput).clear();
             await $(this.selectors.newStatusInput).sendKeys(newStatus);
             await $$(this.selectors.localizeMenuButtons).first().click();
-            await $$(this.selectors.settingPanelButtons).first().click();
+            await this.saveSetting();
         }
     }
 }

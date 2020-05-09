@@ -403,6 +403,8 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.cancelSettingChange();
         await statusConfigPo.clickOnBackButton();
         await statusConfigPo.clickEditLifeCycleLink();
+        await statusConfigPo.clickEditStatus("Staged");
         await statusConfigPo.renameExistingStatus('Update');
     });
-});
+
+})
