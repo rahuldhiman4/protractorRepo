@@ -84,11 +84,7 @@ describe('Case Activity', () => {
             await activityTabPage.selectFilterCheckBox('Feedback');
             await activityTabPage.addAuthorOnFilter('Angelina Jolie');
             await activityTabPage.clickOnFilterApplyButton();
-<<<<<<< HEAD
-            await utilityCommon.waitUntilSpinnerToHide();
-=======
             // await utilityCommon.waitUntilSpinnerToHide();
->>>>>>> 2161502377f0fef9d9b5b22e945a7b2aec0db68c
             expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
             // ii) Selected Filters are displayed in Activity with first filter and + other selected filters
             expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'), 'General Notes is missing';
@@ -142,7 +138,7 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(caseBodyText);
         await activityTabPage.addPersonInActivityNote('Elizabeth Jeffries');
         await activityTabPage.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText, 'Elizabeth Jeffries')).toBeTruthy('PersonName is not displayed correctly');
         await activityTabPage.clickOnHyperlinkFromActivity(1, 'Elizabeth Jeffries');
         expect(await personProfilePo.getPersonName()).toBe('Elizabeth Jeffries'), 'Elizabeth Jeffries name is missing';
