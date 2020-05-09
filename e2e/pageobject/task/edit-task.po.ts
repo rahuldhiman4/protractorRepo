@@ -21,6 +21,7 @@ class EditTask {
         dynamicDate: '[class="input-group"] input[ng-model="date"]',
         dynamicDateTime: 'input[ng-model="datetime"]',
         taskSummary: '[rx-view-component-id="1261e01e-00fb-4e2c-b2ac-72e837f9fcea"] input',
+        dynamicFieldName: '[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] label'
     }
 
     async isAutomatedTaskTypeDisabled(): Promise<boolean> {
@@ -118,16 +119,25 @@ class EditTask {
     }
 
     async isDynamicFieldDisplayed(value: string): Promise<boolean> {
-        return await $(`.textfield[title=${value}]`).isPresent().then(async (result) => {
-            if (result) return await $(`.textfield[title=${value}]`).isDisplayed();
-            else return false;
-        });
+        let dynamicFieldCount = await $$(this.selectors.dynamicFieldName).count();
+        for (let i = 0; i < dynamicFieldCount; i++) {
+            let fieldLabel = await (await $$(this.selectors.dynamicFieldName).get(i).getText()).trim();
+            if (value == fieldLabel) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    async addAttachmentInDynamicField(attachmentField: string, fileToUpload: string): Promise<void> {
-        const absolutePath = resolve(__dirname, fileToUpload);
-        let attachmentLocator = `input[name=${attachmentField}]`;
-        await $(attachmentLocator).sendKeys(absolutePath);
+    async addAttachmentInDynamicField(attachmentField: string, fileToUpload: string[]): Promise<void> {
+        let dynamicField = await $$('[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .form-group').count();
+        const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
+        for (let i = 0; i < dynamicField; i++) {
+            let labelvalue = await (await $$(this.selectors.dynamicFieldName).get(i).getText()).trim();
+            if (labelvalue == attachmentField) {
+               await $$('[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .form-group').get(i).$('bwf-attachment-button input[type="file"]').sendKeys(absPathArray.join('\n'))
+            }
+        }
     }
 
     async setDynamicFieldValue(fieldName: string, fieldValue: string): Promise<void> {

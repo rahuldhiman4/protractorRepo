@@ -5,6 +5,7 @@ class AttachmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
+        row: '[rx-view-component-id="adb9ac10-3732-4fd9-8af3-29bec77272b4"] .at-row',
         gridGuid: 'adb9ac10-3732-4fd9-8af3-29bec77272b4',
         columnnHeader: '.c-header-container .c-header-name',
         selectCheckbox: '.ui-chkbox-box',
@@ -92,11 +93,16 @@ class AttachmentBlade {
 
     async clickOnColumnHeader(columnHeader: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.columnnHeader, columnHeader)).click();
-}
+    }
 
     async isAttachmentPresent(attachmentName: string): Promise<boolean> {
-        return await utilityGrid.isGridRecordPresent(attachmentName, this.selectors.gridGuid);
-    }
+        await this.searchRecord(attachmentName);
+        return await $(this.selectors.row).isPresent().then(async (link) => {
+            if (link) {
+                return await $(this.selectors.row).isDisplayed();
+            } else return false;
+        });
+  }
 
     async getAttachmentNameCount(attachmentName: string): Promise<number> {
         return await $$(`.attachment-view-thumbnail__title-text[title='${attachmentName}']`).count();
@@ -139,7 +145,7 @@ class AttachmentBlade {
 
     async clickOnFileName(attachment: string): Promise<void> {
         await this.searchRecord(attachment);
-        await element(by.cssContainingText(this.selectors.attachmentName, attachment)).click(); 
+        await element(by.cssContainingText(this.selectors.attachmentName, attachment)).click();
     }
 
     async clickOnDownloadButton(): Promise<void> {

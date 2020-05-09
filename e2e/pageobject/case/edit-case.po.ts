@@ -61,7 +61,7 @@ class CaseEditPage {
         dynamicBooleanValue: 'button.d-icon-check_adapt',
         dynamicFieldDateTime: 'input[ng-model="datetime"]',
         dynamicFieldTime: '.dynamic-time-field input[ng-model="hours"]',
-        dynamicFieldsName: '[rx-view-component-id="465ce519-19f3-4d8f-8725-888255768aa7"] label',
+        dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group label',
         dynamicFieldInput: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] input',
         dynamicAttachmentField: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .bwf-attachment-button input',
         tabText: '.nav-link-wrapper',
@@ -386,13 +386,13 @@ class CaseEditPage {
         return false;
     }
 
-    async addAttachment(attachmentField: string, fileToUpload: string): Promise<void> {
-        const absolutePath = resolve(__dirname, fileToUpload);
-        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
-        for (let i = 0; i < dynamicFields; i++) {
-            let field = await $$(this.selectors.dynamicFieldsName).get(i).getText();
-            if (attachmentField == field) {
-                await $$(this.selectors.dynamicAttachmentField).get(i).sendKeys(absolutePath);
+    async addAttachment(attachmentField: string, fileToUpload: string[]): Promise<void> {
+        const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
+        let dynamicFieldLabel: number = await $$(this.selectors.dynamicFieldsName).count();
+        for (let i = 0; i < dynamicFieldLabel; i++) {
+            let labelvalue = await (await $$(this.selectors.dynamicFieldsName).get(i).getText()).trim();
+            if (labelvalue == attachmentField) {
+                await $$('[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group').get(i).$('bwf-attachment-button input[type="file"]').sendKeys(absPathArray.join('\n'))
             }
         }
     }
@@ -404,8 +404,8 @@ class CaseEditPage {
     }
 
     async setDynamicFieldValue(fieldName: string, fieldValue: string): Promise<void> {
-        let grandParents: number = await $$('bwf-text-field').count();
-        for (let i = 0; i < grandParents; i++) {
+        let dynamicTextFields: number = await $$('bwf-text-field').count();
+        for (let i = 0; i < dynamicTextFields; i++) {
             let labelvalue = await $$('bwf-text-field').get(i).$('label').getText();
             if (labelvalue == fieldName) {
                 $$('bwf-text-field').get(i).$('input').sendKeys(fieldValue);

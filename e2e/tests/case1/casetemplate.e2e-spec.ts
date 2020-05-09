@@ -32,7 +32,7 @@ describe('Case Template', () => {
     });
 
     afterAll(async () => {
-        await navigationPage.signOut();
+         await navigationPage.signOut();
     });
 
     afterEach(async () => {
@@ -127,42 +127,12 @@ describe('Case Template', () => {
     });//, 160 * 1000);
 
     //ptidke
-    it('[DRDMV-10476]: Case Template creation with Template validation as OPTIONAL using tadmin login', async () => {
-        try {
-            await navigationPage.signOut();
-            await loginPage.login('tadmin');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            let caseTemplateName: string = await caseTemplateAllFields.templateName + Math.floor(Math.random() * 100000);
-            caseTemplateAllFields.templateName = caseTemplateName;
-            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-            await createCaseTemplate.setTemplateName(caseTemplateName);
-            await createCaseTemplate.setCompanyName(caseTemplateAllFields.company);
-            await createCaseTemplate.setCaseSummary(caseTemplateAllFields.templateSummary);
-            await createCaseTemplate.setOwnerCompanyValue(caseTemplateAllFields.ownerCompany)
-            await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
-            await createCaseTemplate.setOwnerGroupDropdownValue(caseTemplateAllFields.ownerGroup);
-            await createCaseTemplate.setTemplateStatusDropdownValue(caseTemplateAllFields.templateStatus)
-            await createCaseTemplate.setIdentityValidationValue(caseTemplateAllFields.identityValidation)
-            await createCaseTemplate.clickSaveCaseTemplate();
-            //await utilCommon.waitUntilPopUpDisappear();
-            await expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(caseTemplateName);
-            await expect(await viewCaseTemplate.getIdentityValdationValue()).toContain(caseTemplateAllFields.identityValidation);
-        } catch (e) {
-            throw e;
-        } finally {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        }
-    });//, 200 * 1000);
-
-    //ptidke
     it('[DRDMV-10479]: Case Template NOT created with Template validation as OPTIONAL using Case Agent login', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('franz');
             await navigationPage.gotoSettingsPage();   
-            expect(await navigationPage.getSettingPanelText()).toContain("Configuration options not created for these settings");
+            expect(await navigationPage.getSettingPanelText()).toContain("Select a configuration option from the navigation menu to show configuration content here");
         } catch (e) {
             throw e;
         } finally {
@@ -196,7 +166,7 @@ describe('Case Template', () => {
         await editCasetemplatePo.changeAssignmentMethodValue(caseTemplateAllFields.assignmentMethod);
         await expect(await editCasetemplatePo.getValueOfAssignmentMethod()).toContain(caseTemplateAllFields.assignmentMethod);
         await editCaseTemplate.clickSaveCaseTemplate();
-    });
+    },300*1000);
 
     //ptidke
     it('[DRDMV-14880]: Verify Case assignment method is set to None by default in a New/already existing Case template', async () => {
@@ -249,7 +219,7 @@ describe('Case Template', () => {
         await expect(await viewCaseTemplate.getOwnerGroupValue()).toContain(caseTemplateRequiredFields.supportGroup);
         await expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Petramco');
         await expect(await viewCaseTemplate.getTemplateStatusValue()).toContain(caseTemplateRequiredFields.templateStatus);
-    }, 350 * 1000);
+    }, 380 * 1000);
 
     //ptidke
     it('[DRDMV-1229]: [Case Template Console] Search by Summary and Display ID on the Case Template Console', async () => {
@@ -327,7 +297,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 300 * 1000);
+    }, 320 * 1000);
 
     //ptidke
     it('[DRDMV-12578]:Case BA from other than case template owner group can NOT update the template', async () => {
