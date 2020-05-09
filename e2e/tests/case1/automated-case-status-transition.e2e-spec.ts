@@ -143,7 +143,7 @@ describe('Automated Case Status Transition', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
         }
-    }, 420 * 1000);
+    }, 470 * 1000);
 
     //asahitya
     it('[DRDMV-17561]: Toggle status for Automatic case status transition configuration rule', async () => {

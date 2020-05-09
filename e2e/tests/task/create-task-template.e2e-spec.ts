@@ -435,14 +435,16 @@ describe('Create Task Template', () => {
         await viewCasePage.clickAddTaskButton();
         
         //Add Automation Task templates in Case
-        await manageTask.addTaskFromTaskTemplate(`${taskTemplateSummary}`);
-        await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
+        await manageTask.addTaskFromTaskTemplate(taskTemplateSummary);
+        await manageTask.clickTaskLinkOnManageTask(taskTemplateSummary);
         await expect(viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed")
         await viewTask.clickOnViewCase();
         await updateStatusBladePo.changeCaseStatus('In Progress');
-        await updateStatusBladePo.clickSaveStatus();
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
+        await updateStatusBladePo.clickSaveStatus('In Progress');
+        await utilityCommon.waitUntilPopUpDisappear();
+        await navigationPage.gotoTaskConsole();
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(taskTemplateSummary);
         await viewTask.clickOnEditTask();
         await editTaskPo.clickOnChangeAssignementButton();
         await changeAssignmentBladePo.selectCompany('Petramco');
@@ -462,9 +464,9 @@ describe('Create Task Template', () => {
         await loginPage.login('qcolumbcille');
         await navigationPage.gotoTaskConsole();
         await utilityGrid.clearFilter();
-        await taskConsole.setTaskSearchBoxValue(`${taskTemplateSummary}`);
+        await taskConsole.setTaskSearchBoxValue(taskTemplateSummary);
         expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe('', "Case Id Displayed in Task console");
-        await utilityGrid.searchAndOpenHyperlink(`${taskTemplateSummary}`);
+        await utilityGrid.searchAndOpenHyperlink(taskTemplateSummary);
         await expect(activityTabPo.getTaskActivity('attachment')).toContain('attachment');
         await expect(activityTabPo.getTaskActivity('abcde')).toContain('abcde');
         await navigationPage.signOut();
@@ -479,8 +481,10 @@ describe('Create Task Template', () => {
         await changeAssignmentBladePo.clickOnAssignButton();
         await editCasePo.clickOnAssignToMe();
         await editCasePo.clickSaveCase();
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
+        await utilityCommon.waitUntilPopUpDisappear();
+        await navigationPage.gotoTaskConsole();
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(taskTemplateSummary);
         await expect(activityTabPo.getTaskActivity('attachment')).toContain('attachment');
         await expect(activityTabPo.getTaskActivity('abcde')).toContain('abcde');
     }, 500 * 1000);

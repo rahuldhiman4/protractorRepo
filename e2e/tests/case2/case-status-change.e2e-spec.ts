@@ -12,7 +12,6 @@ import { default as updateStatusBlade, default as updateStatusBladePo } from '..
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 
 describe('Case Status Change', () => {
@@ -160,7 +159,7 @@ describe('Case Status Change', () => {
         await editCasePage.clearCaseSummary();
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
-        //        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         await editCasePage.updateCaseSummary('Pending AC');
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
@@ -205,6 +204,7 @@ describe('Case Status Change', () => {
         await updateStatusBladePo.setStatusReason('Approval');
         await updateStatusBladePo.clickSaveStatus();
         await expect(await utilityCommon.getAllPopupMsg()).toContain('Case status updated to Pending for Approval only when approval is initiated. You cannot manually select this status.');
+        await utilityCommon.closePopUpMessage();
         await updateStatusBladePo.setStatusReason('Customer Response');
         await updateStatusBladePo.clickSaveStatus();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
@@ -338,7 +338,7 @@ describe('Case Status Change', () => {
         await editCasePage.clearCaseSummary();
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
-        //        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         await editCasePage.updateCaseSummary('pendingAC');
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
@@ -373,7 +373,7 @@ describe('Case Status Change', () => {
             await editCasePage.clearCaseSummary();
             await editCasePage.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
-            //        await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await editCasePage.updateCaseSummary('pendingAC');
             await editCasePage.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');

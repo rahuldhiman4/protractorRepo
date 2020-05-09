@@ -36,7 +36,6 @@ describe("Case Preview", () => {
         await quickCasePo.selectRequesterName('qkatawazi');
         await quickCasePo.setCaseSummary(caseSummary);
         await quickCasePo.saveCase();
-        await utilityCommon.waitUntilPopUpDisappear();
         await casePreviewPo.clickOnViewCaseLink();
         await utilityCommon.switchToNewTab(1);
         expect(await viewCasePo.getCaseSummary()).toBe(caseSummary);
