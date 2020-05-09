@@ -31,11 +31,11 @@ class TaskGridPage {
     }
 
     async clickOnColumnAndIsColumnSortedAsending(colounm: string): Promise<boolean> {
-        return await utilityGrid.isGridColumnSorted(colounm, 'asc', this.selectors.taskGuid);
+        return await utilityGrid.isGridColumnSorted(colounm, 'asc');
     }
 
     async clickOnColumnAndIsColumnSortedDescending(colounm: string): Promise<boolean> {
-        return await utilityGrid.isGridColumnSorted(colounm, 'desc', this.selectors.taskGuid);
+        return await utilityGrid.isGridColumnSorted(colounm, 'desc');
     }
 
     async clickonColumnHeader(value: string): Promise<void> {
@@ -44,7 +44,7 @@ class TaskGridPage {
     }
 
     async isTaskTypeFilterValue(taskTypeValue: string): Promise<boolean> {
-        let arr: string[] = await utilGrid.getAllValuesFromColoumn((this.selectors.taskGuid), 'Task Type');
+        let arr: string[] = await utilityGrid.getAllValuesFromColumn('Task Type');
         let unique = arr.filter(function (elem, index, self) {
             return index === self.indexOf(elem);
         });

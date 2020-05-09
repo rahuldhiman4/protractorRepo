@@ -35,6 +35,7 @@ describe('Create Task Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
+        await foundationData12111("Petramco");
     });
 
     afterAll(async () => {
@@ -44,6 +45,28 @@ describe('Create Task Template', () => {
     afterEach(async () => {
         await utilityCommon.refresh();
     });
+
+    async function foundationData12111(company: string) {
+        const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
+        const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
+        const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+        const personDataFile = require('../../data/ui/foundation/person.ui.json');
+        await apiHelper.apiLogin('tadmin');
+        let businessData = businessDataFile['BusinessUnitData12111'];
+        let departmentData = departmentDataFile['DepartmentData12111'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData12111'];
+        let personData = personDataFile['PersonData12111'];
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        departmentData.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData);
+        suppGrpData.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData);
+        await apiHelper.createNewUser(personData);
+        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
+        await apiHelper.associatePersonToCompany(personData.userId, company)
+    }
 
     //ankagraw
     it('[DRDMV-3817,DRDMV-3819]: [Task Template] Task Template Create view (UI verification)', async () => {
@@ -189,7 +212,7 @@ describe('Create Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 250 * 1000);
+    }, 300 * 1000);
 
     //ankagraw
     it('[DRDMV-12567]: Case BA from task template owner group can update the template', async () => {
@@ -281,30 +304,8 @@ describe('Create Task Template', () => {
         }
     });//, 220 * 1000);
 
-    async function foundationData(company: string) {
-        const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
-        const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
-        const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
-        const personDataFile = require('../../data/ui/foundation/person.ui.json');
-        await apiHelper.apiLogin('tadmin');
-        let businessData = businessDataFile['BusinessUnitData12111'];
-        let departmentData = departmentDataFile['DepartmentData12111'];
-        let suppGrpData = supportGrpDataFile['SuppGrpData12111'];
-        let personData = personDataFile['PersonData12111'];
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
-        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
-        departmentData.relatedOrgId = businessUnitId;
-        let depId = await apiHelper.createDepartment(departmentData);
-        suppGrpData.relatedOrgId = depId;
-        await apiHelper.createSupportGroup(suppGrpData);
-        await apiHelper.createNewUser(personData);
-        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
-        await apiHelper.associatePersonToCompany(personData.userId, company)
-    }
 
     it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Verify Company, Business Unit, Department and Support Group selection hierarchy in Change Owner.', async () => {
-        await foundationData("Petramco");
         const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
         const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
         const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
@@ -345,7 +346,7 @@ describe('Create Task Template', () => {
         await expect(viewTaskTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
         await expect(viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
         await expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
-    });
+    });//, 240 * 1000);
 
     it('[DRDMV-7151]: [Automatic Task] - Automatic Task: Social: System Comments', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -378,22 +379,18 @@ describe('Create Task Template', () => {
         await viewTask.clickOnViewCase();
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus();
+        await utilityCommon.waitUntilPopUpDisappear();
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
-        await viewTask.clickOnChangeStatus();
-        await updateStatusBladePo.changeStatus('Completed');
-        await updateStatusBladePo.setStatusReason('Successful');
-        await viewTask.clickOnSaveStatus();
         expect(await viewTask.getTaskStatusValue()).toContain('Completed');
         await expect(activityTabPo.getAllTaskActivity('Completed')).toContain('Completed');
+        await expect(activityTabPo.getTaskActivity('Assigned')).toContain('Assigned');
+        await expect(activityTabPo.getTaskActivity('In Progress')).toContain('In Progress');
         await viewTask.clickOnViewCase();
-        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await updateStatusBladePo.changeCaseStatus('Resolved');
         await updateStatusBladePo.setStatusReason('Auto Resolved');
         await updateStatusBladePo.clickSaveStatus();
-        await viewCasePage.clickOnTaskLink(templateData4.templateSummary);
-        await expect(activityTabPo.getTaskActivity('Assigned')).toContain('Assigned');
-        await expect(activityTabPo.getTaskActivity('In Progress')).toContain('In Progress');
+        await utilityCommon.waitUntilPopUpDisappear();
     }, 350 * 1000);
 
     it('[DRDMV-5326]: [Permission] [Task Template] Access to Activity Feed records of the Task created using template', async () => {
@@ -486,9 +483,9 @@ describe('Create Task Template', () => {
         await manageTask.clickTaskLinkOnManageTask(`${taskTemplateSummary}`);
         await expect(activityTabPo.getTaskActivity('attachment')).toContain('attachment');
         await expect(activityTabPo.getTaskActivity('abcde')).toContain('abcde');
-    }, 400 * 1000);
+    }, 500 * 1000);
 
-    //ankagraw Raised Bug 
+    //ankagraw
     it('[DRDMV-3768]: [Task Template Console] Filter menu verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'taskTemplateWithYesResolve' + randomStr;

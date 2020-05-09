@@ -145,7 +145,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 270 * 1000);
+    }, 350 * 1000);
 
     //kgaikwad
     it('[DRDMV-18031]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
@@ -202,7 +202,7 @@ describe("Create Case", () => {
         await caseConsolePage.searchAndOpenCase(caseId1);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
-    });//, 180 * 1000);
+    },280 * 1000);
 
     //ankagraw
     it('[DRDMV-16081]: Verify allow case reopen tag in case template', async () => {
@@ -280,7 +280,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 490 * 1000);
+    }, 650 * 1000);
 
     //ankagraw
     it('[DRDMV-1191,DRDMV-1198]: [Case Creation] Case creation with/without mandatory fields populated ', async () => {
@@ -354,7 +354,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });//, 200 * 1000);
+    },250 * 1000);
 
     //ankagraw
     it('[DRDMV-11856]: [Case Creation] create case with Global case template without flowset ', async () => {
@@ -392,7 +392,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 250 * 1000);
+    },300 * 1000);
 
     //ankagraw
     it('[DRDMV-16076]: Reopen configurations available on Case Template Create screen ', async () => {
@@ -473,7 +473,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 570 * 1000);
+    }, 700 * 1000);
 
     //ankagraw
     it('[DRDMV-1237]: [Global navigation] Navigation to Workspaces and Create subitems in the Shell ', async () => {
@@ -502,15 +502,14 @@ describe("Create Case", () => {
 
     //ankagraw
     it('[DRDMV-7027]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
-        await navigationPage.gotoCaseConsole();
         await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
         await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
         await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
         await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
+        await utilityCommon.refresh();
         await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
         await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
         await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
-        //        browser.sleep(3000);
         try {
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -518,6 +517,7 @@ describe("Create Case", () => {
             await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
             await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
             await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
+            await utilityCommon.refresh();
             await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
             await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
             await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
@@ -529,6 +529,7 @@ describe("Create Case", () => {
             await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
             await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
             await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
+            await utilityCommon.refresh();
             await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
             await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
             await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
@@ -539,9 +540,9 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 270 * 1000);//, 150 * 1000);
+    }, 270 * 1000);
 
-    //ankagraw
+    //ankagraw Bug- DRDMV-21671,DRDMV-21669
     it('[DRDMV-8868]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData = {
@@ -569,6 +570,7 @@ describe("Create Case", () => {
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.searchAndOpenCaseTemplate(caseTemplateData.templateName);
+            await selectCaseTemplateBlade.clickOnCaseTemplateLink();
             expect(await caseTemplatePreview.isCaseSummaryHeaderDisplayed('Case Summary')).toBeTruthy('Case Summary is not getting displayed');
             expect(await caseTemplatePreview.isCaseCompanyTitleDisplayed('Case Company')).toBeTruthy('Case Company is not getting displayed');
             expect(await caseTemplatePreview.isCaseStatusTitleDisplayed('Case Status')).toBeTruthy('Case Status is not getting displayed');
@@ -619,7 +621,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 180 * 1000);
+    },350 * 1000);
 
     //ankagraw
     it('[DRDMV-12061]: [ Task ] - Verify create case with Global task template having assignment', async () => {
@@ -698,7 +700,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 360 * 1000);
+    }, 500 * 1000);
 
     //ankagraw
     it('[DRDMV-15974]: Verify the status transition Closed->New is available only when Closed case is Reopened', async () => {
@@ -775,7 +777,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 450 * 1000);
+    }, 800 * 1000);
 
     //ankagraw
     it('[DRDMV-5479,DRDMV-1192]: Verify case assignment on Create Case', async () => {
@@ -813,7 +815,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 200 * 1000);
+    },350 * 1000);
 
     //ankagraw
     it('[DRDMV-11818]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
@@ -865,7 +867,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 300 * 1000);
+    }, 400 * 1000);
 
     //ankagraw
     it('[DRDMV-1614]: [Case] Fields validation for case in New status ', async () => {
@@ -899,14 +901,14 @@ describe("Create Case", () => {
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clearCaseSummary();
             await editCasePage.clickSaveCase();
-            expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy(); 
         } catch (error) {
             throw error;
         } finally {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });//, 240 * 1000);
+    });
 
     it('[DRDMV-1620]: [Case] Fields validation for case in Closed status ', async () => {
         try {
@@ -992,8 +994,9 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 270 * 1000);
+    }, 350 * 1000);
 
+    //Bug -DRDMV-21676
     it('[DRDMV-11700]: Verify  sort on all attachments grid', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1009,7 +1012,7 @@ describe("Create Case", () => {
         const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
         await activityTabPo.addAttachment(filesToUpload1);
         await activityTabPo.clickOnPostButton();
-        await utilityCommon.waitUntilSpinnerToHide();
+        // await utilityCommon.waitUntilSpinnerToHide();
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickAddAdhocTaskButton();
         expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();

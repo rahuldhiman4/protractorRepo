@@ -129,7 +129,7 @@ describe('Case Status Change', () => {
         expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
         expect(await caseConsole.isCaseStatusPresent(statusPending)).toBeTruthy("Status Pending not matching");
         expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
-    }, 410 * 1000);
+    }, 450 * 1000);
 
     //kgaikwad
     it('[DRDMV-1618]: [Case] Fields validation for case in Resolved status', async () => {
@@ -395,7 +395,7 @@ describe('Case Status Change', () => {
             let summary2: string = randomStr + "Summary 2";
             let summary3 = randomStr + "Summary 3";
             let manualTask = 'manual task' + randomStr;
-            let manualSummary = 'manualSummary' + randomStr;
+            let manualSummary = 'manual' + randomStr;
             let caseData1 =
             {
                 "Requester": "qtao",
@@ -467,7 +467,8 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
-            await viewCasePage.clickOnTaskLink(manualSummary);
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLinkOnManageTask(manualSummary);
             expect(await viewTask.getTaskStatusValue()).toBe('Canceled', 'canceled status not found');
         } catch (e) {
             throw e;
@@ -861,7 +862,6 @@ describe('Case Status Change', () => {
             await caseConsole.searchAndOpenCase(caseId2);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickCancelButton();
-            expect(await utilityCommon.getWarningDialogMsg()).toContain('You have unsaved data. Do you want to continue without saving?');
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         } catch (e) {
             throw e;

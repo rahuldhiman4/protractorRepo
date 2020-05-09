@@ -388,7 +388,7 @@ describe('Copy Task Template', () => {
             await taskTemplatePage.selectCompanyByName('Petramco');
             await taskTemplatePage.selectTemplateStatus('Active');
             await taskTemplatePage.clickOnSaveTaskTemplate();
-            //await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.waitUntilPopUpDisappear();
 
             await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
@@ -431,7 +431,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 400 * 1000);
+    }, 420 * 1000);
 
     it('[DRDMV-13737]: [Negative] Try to copy Automated template with same process Name and different field data', async () => {
         try {
@@ -462,10 +462,8 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.setNewProcessName(processName);
             await copyTemplatePage.clickSaveCopytemplate();
-            let successmsg: string[] = ["Saved successfully."];
-            await expect(await utilCommon.isPopupMsgsMatches(successmsg)).toBeTruthy("Saved successfully not present");
-            await expect(await utilCommon.isErrorMsgPresent()).toBeTruthy('Error msg not present');
-
+            let msgs: string[] = ["Saved successfully.", "Duplicate process name"];
+            await expect(await utilCommon.isPopupMsgsMatches(msgs, 2)).toBeTruthy("Messsages not present");
         } catch (e) {
             throw e;
         } finally {

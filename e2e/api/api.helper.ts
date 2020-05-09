@@ -35,6 +35,7 @@ import { ADHOC_TASK_PAYLOAD, UPDATE_TASK_STATUS, TASK_CREATION_FROM_TEMPLATE } f
 import { KNOWLEDGE_APPROVAL_CONFIG, KNOWLEDGE_APPROVAL_FLOW_CONFIG } from '../data/api/knowledge/knowledge-approvals-config.api';
 import { APPROVAL_ACTION } from "../data/api/approval/approval.action.api";
 import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge-article-external.api";
+import { AUTO_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, EXTERNAL_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -208,13 +209,13 @@ class ApiHelper {
         }
 
         if (data.caseStatus) {
-            let statusGuid =  await coreApi.getStatusGuid('com.bmc.dsm.case-lib', constants.CaseStatus[data.caseStatus]);
+            let statusGuid = await coreApi.getStatusGuid('com.bmc.dsm.case-lib', constants.CaseStatus[data.caseStatus]);
             let caseTemplateStatusGuid = {
                 "id": "450000010",
                 "value": `${statusGuid}`
             }
             templateData.fieldInstances["450000010"] = caseTemplateStatusGuid;
-        } 
+        }
 
         if (data.categoryTier1) {
             let category1Value = await coreApi.getCategoryGuid(data.categoryTier1);
@@ -367,8 +368,7 @@ class ApiHelper {
     }
 
     async createManualTaskTemplate(data: ITaskTemplate): Promise<IIDs> {
-        let templateDataFile = await require('../data/api/task/task.template.api.json');
-        let templateData = await templateDataFile.ManualTaskTemplate;
+        let templateData = MANUAL_TASK_TEMPLATE_PAYLOAD;
         templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
@@ -410,10 +410,7 @@ class ApiHelper {
     }
 
     async createExternalTaskTemplate(data: ITaskTemplate): Promise<IIDs> {
-
-        let templateDataFile = await require('../data/api/task/task.template.api.json');
-        let templateData = await templateDataFile.ExternalTaskTemplate;
-
+        let templateData = EXTERNAL_TASK_TEMPLATE_PAYLOAD;
         templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
@@ -433,10 +430,7 @@ class ApiHelper {
     }
 
     async createAutomatedTaskTemplate(data: ITaskTemplate): Promise<IIDs> {
-
-        let templateDataFile = await require('../data/api/task/task.template.api.json');
-        let templateData = await templateDataFile.AutoTaskTemplateNewProcess;
-
+        let templateData = AUTO_TASK_TEMPLATE_PAYLOAD;
         templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
@@ -489,8 +483,22 @@ class ApiHelper {
         const taskTemplateDetails = await axios.get(
             await newTaskTemplate.headers.location
         );
-        console.log('New Automated Task Template Details API Status =============>', taskTemplateDetails.status);
 
+        let docData = DOC_FOR_AUTO_TASK_TEMPLATE;
+        docData.targetTemplateId = taskTemplateDetails.data.id;
+        docData.targetTemplateName = data.templateName;
+        let newAutoTemplateDoc: AxiosResponse = await coreApi.createDocumentForAutoTaskTemplate(docData);
+        console.log('Create Document for Automated Task Template API Status =============>', newAutoTemplateDoc.status);
+
+        let processData = PROCESS_FOR_AUTO_TASK_TEMPLATE;
+        processData.targetTemplateId = taskTemplateDetails.data.id;
+        processData.targetTemplateName = data.templateName;
+        processData.targetProcess = data.processBundle + ":" + data.processName;
+        data.company ? processData.targetProcessTag = await apiCoreUtil.getOrganizationGuid(data.company) : processData.targetProcessTag;
+        let newAutoTemplateProcess: AxiosResponse = await coreApi.createProcessForAutoTaskTemplate(processData);
+        console.log('Create Process for Automated Task Template API Status =============>', newAutoTemplateProcess.status);
+
+        console.log('New Automated Task Template Details API Status =============>', taskTemplateDetails.status, newAutoTemplateDoc.status, newAutoTemplateProcess.status);
         return {
             id: taskTemplateDetails.data.id,
             displayId: taskTemplateDetails.data.displayId
@@ -705,8 +713,8 @@ class ApiHelper {
         let taskTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid);
         let taskSummary = taskTemplateJsonData.fieldInstances[8].value;
 
-        oneTaskFlowProcess.flowElements[2].inputMap[0].expression = `"${taskSummary}"`;
-        oneTaskFlowProcess.flowElements[2].inputMap[3].expression = `"${taskTemplateGuid}"`;
+        oneTaskFlowProcess.flowElements[2].inputMap[1].expression = `"${taskSummary}"`;
+        oneTaskFlowProcess.flowElements[2].inputMap[2].expression = `"${taskTemplateGuid}"`;
 
         let processGuid = await coreApi.createProcess(oneTaskFlowProcess);
         console.log('New Process Created =============>', oneTaskFlowProcess.name, "=====GUID:", processGuid);
@@ -967,10 +975,10 @@ class ApiHelper {
 
     async deleteEmailOrNotificationTemplate(emailTemplateName: string, company?: string): Promise<boolean> {
         let emailTemplateGuid;
-        if(company){
-            emailTemplateGuid = await coreApi.getEmailTemplateGuid(emailTemplateName,company);
+        if (company) {
+            emailTemplateGuid = await coreApi.getEmailTemplateGuid(emailTemplateName, company);
         }
-        else{emailTemplateGuid = await coreApi.getEmailTemplateGuid(emailTemplateName);}
+        else { emailTemplateGuid = await coreApi.getEmailTemplateGuid(emailTemplateName); }
         return await coreApi.deleteRecordInstance('com.bmc.dsm.notification-lib:NotificationTemplate', emailTemplateGuid);
     }
 
@@ -1588,11 +1596,11 @@ class ApiHelper {
         return response.status == 200;
     }
 
-    async updateKnowledgeArticleExternalFlag(articleGuid: string, isExternal: boolean): Promise<boolean>{
+    async updateKnowledgeArticleExternalFlag(articleGuid: string, isExternal: boolean): Promise<boolean> {
         KNOWLEDGE_ARTICLE_EXTERNAL_FLAG.id = articleGuid;
-        isExternal? KNOWLEDGE_ARTICLE_EXTERNAL_FLAG.fieldInstances[302312186].value = 0: KNOWLEDGE_ARTICLE_EXTERNAL_FLAG.fieldInstances[302312186].value = 1;
+        isExternal ? KNOWLEDGE_ARTICLE_EXTERNAL_FLAG.fieldInstances[302312186].value = 0 : KNOWLEDGE_ARTICLE_EXTERNAL_FLAG.fieldInstances[302312186].value = 1;
         let response = await coreApi.updateRecordInstance('com.bmc.dsm.knowledge:Knowledge Article Template', articleGuid, KNOWLEDGE_ARTICLE_EXTERNAL_FLAG);
-        
+
         console.log('Update Knowledge Article External Flag API Status =============>', response.status);
         return response.status == 204;
     }

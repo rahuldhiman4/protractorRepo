@@ -1436,83 +1436,100 @@ export const CASE_TEMPLATE_LONG_FIELDS = {
     ]
 };
 export const CASE_TEMPLATE_WITH_REQUESTER={
-    "templateRecordDefinition": "com.bmc.dsm.case-lib:Case Template",
-    "templateId": " ",
-    "name": "casetemplate",
-    "status": 0,
-    "processName": null,
+    "name": null,
     "processDocumentDefinitionId": null,
+    "processInputDocName": null,
+    "processName": null,
+    "templateId": "",
+    "id": null,
     "attributeDefinitions": [
-        {
-            "name": "GroupLocalCaseTemplate",
-            "description": "GroupLocalCaseTemplate",
-            "externalId": "",
-            "type": "GROUP_FIELD",
-            "active": true,
-            "published": false,
-            "shouldPublish": false,
-            "attributes": [
-                {
-                    "name": "LocalNonConfidential",
-                    "description": "LocalNonConfidentialDesc",
-                    "dataType": "TEXT",
-                    "required": false,
-                    "confidential": false,
-                    "dataProviderUserRole": "Requester"
-                },
-                {
-                    "name": "LocalConfidentail",
-                    "description": "LocalConfidentialDesc",
-                    "dataType": "NUMBER",
-                    "required": false,
-                    "confidential": false,
-                    "dataProviderUserRole": "Requester",
-                    "type": "SIMPLE_FIELD"
-                }
-            ]
-        },
-        {
-            "name": "PulishCaseTemplateData",
-            "description": "PulishCaseTemplateData",
-            "externalId": "",
-            "type": "GROUP_FIELD",
-            "active": true,
-            "attributes": [
-                {
-                    "name": "nonConfidentialPulic",
-                    "description": "nonConfidentialPulicDesc",
-                    "dataType": "BOOLEAN",
-                    "required": false,
-                    "confidential": false,
-                    "dataProviderUserRole": "Requester"
-                },
-                {
-                    "name": "confidentialPublic",
-                    "description": "confidentialPublicDesc",
-                    "dataType": "DATE",
-                    "required": false,
-                    "confidential": false,
-                    "dataProviderUserRole": "Requester"
-                }
-            ],
-            "published": false,
-            "shouldPublish": true
-        },
-        {
-            "name": "OuterNonConfidential",
-            "description": "OuterNonConfidentialDesc",
-            "dataType": "TIME",
-            "required": false,
-            "confidential": false,
-            "dataProviderUserRole": "Requester"
-        },
-        {
-            "name": "OuterConfidential",
-            "description": "OuterConfidentialDesc",
+      {
+        "name": "GroupOne",
+        "description": "GroupOne",
+        "externalId": "",
+        "type": "GROUP_FIELD",
+        "active": true,
+        "attributes": [
+          {
+            "name": "FieldGroup1",
+            "description": "FieldGroup1",
             "dataType": "TEXT",
             "required": false,
             "confidential": false,
-            "dataProviderUserRole": "Requester"
-        }
-    ]
-};
+            "dataProviderUserRole": "Requester",
+            "dataProviderApplication": "",
+            "active": true,
+            "externalId": "",
+            "attachmentGroupId": null,
+            "type": "SIMPLE_FIELD",
+            "hidden": false
+          },
+          {
+            "name": "Field2Group1",
+            "description": "Field2Group1",
+            "dataType": "TEXT",
+            "required": false,
+            "confidential": false,
+            "dataProviderUserRole": "Requester",
+            "dataProviderApplication": "",
+            "active": true,
+            "attachmentGroupId": null,
+            "type": "SIMPLE_FIELD",
+            "hidden": false
+          }
+        ],
+        "published": false,
+        "shouldPublish": false
+      },
+      {
+        "name": "GroupTwo",
+        "description": "GroupTwo",
+        "externalId": "",
+        "type": "GROUP_FIELD",
+        "active": true,
+        "attributes": [
+          {
+            "name": "Field2Group2",
+            "description": "Field2Group2",
+            "dataType": "TEXT",
+            "required": false,
+            "confidential": false,
+            "dataProviderUserRole": "Requester",
+            "dataProviderApplication": "",
+            "active": true,
+            "type": "SIMPLE_FIELD",
+            "hidden": false
+          },
+          {
+            "name": "FieldGroup2",
+            "description": "FieldGroup2",
+            "dataType": "TEXT",
+            "required": false,
+            "confidential": false,
+            "dataProviderUserRole": "Requester",
+            "dataProviderApplication": "",
+            "active": true,
+            "attachmentGroupId": null,
+            "type": "SIMPLE_FIELD",
+            "hidden": false
+          }
+        ],
+        "published": false,
+        "shouldPublish": false
+      },
+      {
+        "name": "Field1Outside",
+        "description": "Field1Outside",
+        "dataType": "TEXT",
+        "required": false,
+        "confidential": false,
+        "dataProviderUserRole": "Requester",
+        "dataProviderApplication": "",
+        "active": true,
+        "attachmentGroupId": null,
+        "type": "SIMPLE_FIELD",
+        "hidden": false
+      }
+    ],
+    "templateRecordDefinition": "com.bmc.dsm.case-lib:Case Template"
+  };
