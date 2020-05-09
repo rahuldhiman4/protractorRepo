@@ -210,9 +210,9 @@ class ActivityTabPage {
         return cellText;
     }
 
-    async getColorFontStyleOfText(rowNumber:number, columnNumber: number, value: string): Promise<string> {
-        let row = await $$('.activity .email-body table tr').get(rowNumber-1);
-        let cell = await row.$$('td').get(columnNumber-1);
+    async getColorFontStyleOfText(rowNumber: number, columnNumber: number, value: string): Promise<string> {
+        let row = await $$('.activity .email-body table tr').get(rowNumber - 1);
+        let cell = await row.$$('td').get(columnNumber - 1);
         let locator = `span[style='${value}']`;
         return await cell.$(locator).getText();
     }
@@ -365,27 +365,29 @@ class ActivityTabPage {
     }
 
     async addActivityNote(addNoteText: string): Promise<void> {
-        let searchBoxdisplay= await $(this.selectors.addNoteBox).isPresent();
-        if(searchBoxdisplay==true){
+        let searchBoxdisplay = await $(this.selectors.addNoteBox).isPresent();
+        if (searchBoxdisplay == true) {
             await this.clickActivityNoteTextBox();
         }
-            await $(this.selectors.activityNoteCKEditor).isPresent().then(async (result) => {
-                if (result) {
-                    await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 10000).then(async () => {
-                        await $(this.selectors.activityNoteTextArea).sendKeys(addNoteText);
-                    });
-                }
-            });
+        await $(this.selectors.activityNoteCKEditor).isPresent().then(async (result) => {
+            if (result) {
+                await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 10000).then(async () => {
+                    await $(this.selectors.activityNoteTextArea).sendKeys(addNoteText);
+                });
+            }
+        });
     }
 
     async addPersonInActivityNote(tagPerson: string): Promise<void> {
         await this.addActivityNote(`@${tagPerson}`)
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopupCkEditor)), 10000); 
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopupCkEditor)), 10000);
         await $$(this.selectors.personPopupCkEditor).first().click();
     }
 
     async clearActivityNote(): Promise<void> {
-        await $('.cke_editable_themed').clear();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 10000).then(async () => {
+            await $(this.selectors.activityNoteTextArea).clear();
+        });
     }
 
     async getPersonCount(tagPerson: string): Promise<number> {
@@ -515,7 +517,7 @@ class ActivityTabPage {
 
     async isTextPresentInActivityLog(caseActivityLogText: string): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
-        let activityValue:string = "";
+        let activityValue: string = "";
         let countVal = await $$(this.selectors.activityLog).count();
         for (let i: number = 0; i < countVal; i++) {
             activityValue = activityValue + await $$(this.selectors.activityLog).get(i).getText();
@@ -534,8 +536,8 @@ class ActivityTabPage {
         return await element.all(by.cssContainingText(this.selectors.logTitle, TitleText)).count();
     }
 
-    async clickOnHyperlinkFromActivity(activityNumber: number, authorText: string): Promise<void> {
-        await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.activity__wrapper div a', authorText)).click();
+    async clickOnHyperlinkFromActivity(activityNumber: number, linkText: string): Promise<void> {
+        await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.activity__wrapper div a', linkText)).click();
     }
 
     async isHyperlinkOfActivityDisplay(bodyText: string, authorText: string): Promise<boolean> {
@@ -648,7 +650,7 @@ class ActivityTabPage {
     async clickAttachedFile(fileName: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).click();
     }
-    
+
     async getCountAttachedFiles(fileName: string): Promise<number> {
         return await element.all(by.cssContainingText(this.selectors.AttachedfileName, fileName)).count();
     }
