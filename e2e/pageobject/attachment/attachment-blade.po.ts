@@ -96,7 +96,6 @@ class AttachmentBlade {
     }
 
     async isAttachmentPresent(attachmentName: string): Promise<boolean> {
-        // return await utilityGrid.isGridRecordPresent(attachmentName, this.selectors.gridGuid);
         await this.searchRecord(attachmentName);
         return await $(this.selectors.row).isPresent().then(async (link) => {
             if (link) {
