@@ -35,7 +35,7 @@ describe("Attachment", () => {
     afterAll(async () => {
         await navigationPage.signOut();
     });
-    
+
     //kgaikwad
     it('[DRDMV-11707,DRDMV-11703,DRDMV-11704]: Upload attachment while creating case via BWF & verify all attachments Grid	', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -261,7 +261,7 @@ describe("Attachment", () => {
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf', 'bwfXlsx.xlsx', 'demo.txt'];
-        await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf', '../../data/ui/attachment/bwfPdf1.pdf', '../../data/ui/attachment/bwfPdf2.pdf', '../../data/ui/attachment/bwfPdf3.pdf', '../../data/ui/attachment/bwfPdf4.pdf', '../../data/ui/attachment/bwfWord1.rtf', '../../data/ui/attachment/bwfWord2.rtf', '../../data/ui/attachment/bwfXlsx.xlsx', '../../data/ui/attachment/demo.txt']); 
+        await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf', '../../data/ui/attachment/bwfPdf1.pdf', '../../data/ui/attachment/bwfPdf2.pdf', '../../data/ui/attachment/bwfPdf3.pdf', '../../data/ui/attachment/bwfPdf4.pdf', '../../data/ui/attachment/bwfWord1.rtf', '../../data/ui/attachment/bwfWord2.rtf', '../../data/ui/attachment/bwfXlsx.xlsx', '../../data/ui/attachment/demo.txt']);
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
@@ -393,7 +393,7 @@ describe("Attachment", () => {
         await expect(await attachmentBladePo.isAttachmentPresent('bwfJpg')).toBeFalsy('bwfJpg Attachment displayed on grid');
         await expect(await attachmentBladePo.isAttachmentPresent('bwfXlsx')).toBeFalsy('bwfXlsx Attachment displayed on grid');
         await attachmentBladePo.clickOnCloseButton();
-    });
+    }, 600 * 1000);
 
     //kgaikwad
     it('[DRDMV-11702]: Multiple attachments download', async () => {
@@ -402,7 +402,7 @@ describe("Attachment", () => {
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg'];
-         await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/articleStatus.png','../../data/ui/attachment/bwfJpg.jpg']);
+        await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg']);
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
@@ -427,7 +427,7 @@ describe("Attachment", () => {
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf'];
-        await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg',  '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf']);
+        await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf']);
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
