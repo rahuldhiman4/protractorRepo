@@ -180,7 +180,7 @@ describe("Attachment", () => {
         await attachmentBladePo.clickOnDownloadButton();
         expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
         await attachmentBladePo.clickOnCloseButton();
-        await activityTabPo.clickOnHyperlinkFromActivity(caseBodyText, 'Qianru Tao');
+        await activityTabPo.clickOnHyperlinkFromActivity(1, 'Qianru Tao');
         expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is delete sucessfully');
         await navigationPage.gotoPersonProfile();

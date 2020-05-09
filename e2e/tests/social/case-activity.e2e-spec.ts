@@ -97,10 +97,10 @@ describe('Case Activity', () => {
             await activityTabPage.closeNmoreLink();
             await activityTabPage.clickOnNmoreLink();
             expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'), 'General Notes is missing';
-            expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 4 more');
+            expect(await activityTabPage.getTextOfNmoreLink()).toBe('4 Show more');
             await activityTabPage.removeFilterList();
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
-            expect(await activityTabPage.getTextOfNmoreLink()).toBe('+ 3 more');
+            expect(await activityTabPage.getTextOfNmoreLink()).toBe('3 Show more');
             await activityTabPage.closeNmoreLink();
             // await utilCommon.waitUntilSpinnerToHide();
             // iv)- Click on + n more button (- Selected filter list is displayed )
@@ -138,9 +138,10 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(caseBodyText);
         await activityTabPage.addPersonInActivityNote('Elizabeth Jeffries');
         await activityTabPage.clickOnPostButton();
+        await utilityCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText, 'Elizabeth Jeffries')).toBeTruthy('PersonName is not displayed correctly');
-        await activityTabPage.clickOnHyperlinkFromActivity(caseBodyText, 'Elizabeth Jeffries');
-        expect(await personProfilePo.getPersonName()).toBe('Elizabeth Jeffries '), 'Elizabeth Jeffries name is missing';
+        await activityTabPage.clickOnHyperlinkFromActivity(1, 'Elizabeth Jeffries');
+        expect(await personProfilePo.getPersonName()).toBe('Elizabeth Jeffries'), 'Elizabeth Jeffries name is missing';
     });
 
     //kgaikwad
@@ -155,7 +156,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToNewTab(1);
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             // 2nd step: From Task Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Task
             await activityTabPage.clickOnFilterButton();
@@ -193,7 +194,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isEmailPresentOnUserPopUp('ajolie@petramco.com')).toBeTruthy('Email is Not Present On Author List PopUp');
             await expect(await activityTabPage.isPhoneNumberPresentOnUserPopUp('+12124021501')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
             await expect(await activityTabPage.isCompanyPresentOnUserPopUp('Petramco')).toBeTruthy('Company is Not Present On Author List PopUp');
-            await activityTabPage.removeAuthorFromFilter();
+            await activityTabPage.clearAuthorSearchBoxOnFilter();
             // 5th Step: User is selected and Author field gets disabled.
             await activityTabPage.addAuthorOnFilter('Angelina Jolie');
             await expect(await activityTabPage.isAuthorBoxEmpty()).toBeFalsy('Author field is empty');
@@ -379,7 +380,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isEmailPresentOnUserPopUp('ajolie@petramco.com')).toBeTruthy('Email is Not Present On Author List PopUp');
         await expect(await activityTabPage.isPhoneNumberPresentOnUserPopUp('+12124021501')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
         await expect(await activityTabPage.isCompanyPresentOnUserPopUp('Petramco')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
-        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.clearAuthorSearchBoxOnFilter();
         // 5th Step: User is selected and Author field gets disabled.       
         await activityTabPage.addAuthorOnFilter('Angelina Jolie');
         await expect(await activityTabPage.isAuthorBoxEmpty()).toBeFalsy('Author field is empty');
@@ -734,6 +735,7 @@ describe('Case Activity', () => {
         await createCase.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await expect(await activityTabPage.getPersonCount('Hi hello @Allen')).toBeGreaterThan(3);
+        await activityTabPage.clickOnRefreshButton();
         await activityTabPage.clearActivityNote();
         await activityTabPage.addPersonInActivityNote('Angelina');//FirstName
         await activityTabPage.addPersonInActivityNote('Steyn');//LastName
@@ -764,9 +766,9 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnPostButton();
             let caseIdText: string = await viewCasePo.getCaseID();
             // Redirect on person profile
-            await activityTabPage.clickOnHyperlinkFromActivity(caseBodyText, 'Qadim Katawazi');
+            await activityTabPage.clickOnHyperlinkFromActivity(1, 'Qadim Katawazi');
             await expect(browser.getTitle()).toBe('Person Profile - Business Workflows');
-            await activityTabPage.clickOnHyperlinkFromActivity(caseBodyText, caseIdText);
+            await activityTabPage.clickOnHyperlinkFromActivity(1, caseIdText);
 
             // 3nd step verification, From Case > Activity > Task related note > Click on Person name
             await viewCasePo.clickAddTaskButton();
@@ -781,14 +783,14 @@ describe('Case Activity', () => {
 
             // View Case Page
             await viewTaskPo.clickOnViewCase();
-            await activityTabPage.clickOnHyperlinkFromActivity(taskBodyText, 'Qadim Katawazi');
-            await activityTabPage.clickOnHyperlinkFromActivity(caseBodyText, caseIdText);
+            await activityTabPage.clickOnHyperlinkFromActivity(1, 'Qadim Katawazi');
+            await activityTabPage.clickOnHyperlinkFromActivity(2, caseIdText);
 
             // 4th step From Case > Activity > Click on Task ID from Task comment
-            await activityTabPage.clickOnHyperlinkFromActivity(taskBodyText, taskId);
+            await activityTabPage.clickOnHyperlinkFromActivity(1, taskId);
 
             // 5th step verification Open Task > Click on Person Name from Activity
-            await activityTabPage.clickOnHyperlinkFromActivity(taskBodyText, 'Qadim Katawazi');
+            await activityTabPage.clickOnHyperlinkFromActivity(1, 'Qadim Katawazi');
 
             // 6th step verification
             // Open KA > Click on Person Name from Activity, On Crate Knowlege Page
@@ -807,7 +809,7 @@ describe('Case Activity', () => {
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(knowledgeBodyText);
             await activityTabPage.clickOnPostButton();
-            await activityTabPage.clickOnHyperlinkFromActivity(knowledgeBodyText, 'Qadim Katawazi');
+            await activityTabPage.clickOnHyperlinkFromActivity(1, 'Qadim Katawazi');
         } catch (e) {
             throw e;
         } finally {
@@ -816,7 +818,6 @@ describe('Case Activity', () => {
     }, 250 * 1000);
 
     // ptidke
-    // Done
     it('[DRDMV-7152]: [Automatic Task] - Automatic Task: Social: Manual Comments', async () => {
         // Create automated task template
         let autoTemplateData = {
@@ -952,6 +953,7 @@ describe('Case Activity', () => {
             // Goto case   
             await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+     
             // Goto Quick Case
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qtao');
@@ -962,6 +964,7 @@ describe('Case Activity', () => {
             await quickCasePo.gotoCaseButton();
             await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+          
             await navigationPage.gotoQuickCase();
             await utilityCommon.refresh();
             await quickCasePo.selectRequesterName('qtao');
@@ -995,7 +998,7 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 450 * 1000);
+    }, 600 * 1000);
 
     //kgaikwad
     it('[DRDMV-16591]: Check case count is changed with different permission of user read/write/no access to the case', async () => {
@@ -1203,8 +1206,7 @@ describe('Case Activity', () => {
     });//, 150 * 1000);
 
     //kgaikwad
-    // Done
-    it('[DRDMV-16765]:Validate Show More/Less option in KA Activity Tab', async () => {
+   it('[DRDMV-16765]:Validate Show More/Less option in KA Activity Tab', async () => {
         let randomValues1 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues2 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues3 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1411,4 +1413,5 @@ describe('Case Activity', () => {
             await loginPage.login('qkatawazi');
         }
     });//, 220 * 1000);
+
 })

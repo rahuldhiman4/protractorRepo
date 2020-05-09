@@ -127,6 +127,11 @@ class EditKnowledgePage {
         return await $(this.selectors.assigneToMeReviewerAssign).isDisplayed();
     }
 
+    async clickAssignToMeReviewerBlade(): Promise<void> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneToMeReviewerAssign)));
+         await $(this.selectors.assigneToMeReviewerAssign).click();
+    }
+
     async isReviewerCompanyFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
         return await $(this.selectors.reviewerCompanyfldStatusBlade).getAttribute("disabled") == "true";
     }
