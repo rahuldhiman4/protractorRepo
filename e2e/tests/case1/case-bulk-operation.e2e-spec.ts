@@ -106,7 +106,6 @@ describe('Case Bulk Operation', () => {
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qiao Feng");
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
-        await utilityCommon.closePopUpMessage();
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[2]);
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qing Yuan");
@@ -207,7 +206,6 @@ describe('Case Bulk Operation', () => {
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, "Risk Management", "Quenton Annis");
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
-        await utilityCommon.closePopUpMessage();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.searchAndOpenHyperlink(caseId[i]);
             expect(await activityPo.isTextPresentInActivityLog("Qianru Tao")).toBeTruthy("Text is not present in activiy tab1");
@@ -355,6 +353,5 @@ describe('Case Bulk Operation', () => {
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignmentBladePo.setAssignee(petramcoStr, compensationAndBenefitsStr, 'Qadim Katawazi');
         expect(await utilityCommon.isPopUpMessagePresent('Cases in closed or canceled status cannot be modified. Please update the selected cases.')).toBeTruthy();
-        await utilityCommon.closePopUpMessage();
     });
 })

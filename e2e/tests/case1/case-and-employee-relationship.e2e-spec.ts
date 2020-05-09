@@ -106,7 +106,7 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedTabPage.getRelatedPersonEmail('Bobby Hill')).toBe('bhill@petramco.com');
         expect(await relatedTabPage.getRelatedPersonPhoneNumber('Bobby Hill')).toBe('+556132296002');
         expect(await relatedTabPage.getRelatedPersonRelationship('Bobby Hill')).toBe('Former Manager');
-        expect(await relatedTabPage.getRelatedPersonSite('Bobby Hill')).toBe('Houston\n2101 CityWest Blvd., Houston, Texas, 77042, United States');
+        expect(await relatedTabPage.getRelatedPersonSite('Bobby Hill')).toBe('Houston\n2101 CityWest Blvd., Houston, Texas, 77042, United States ');
         expect(await relatedTabPage.isEmailLinkNotPresent('Bobby Hill')).toBeTruthy('Email should not be a clickable link');
     });//, 150 * 1000);
 
@@ -191,7 +191,7 @@ describe('Case And Employee Relationship', () => {
         await utilityGrid.searchAndOpenHyperlink(caseId2);
         await viewCasePo.clickOnTab('Related Cases');
         expect(await relatedCasePage.isCasePresent(caseId3)).toBeTruthy();
-    });//, 180 * 1000);
+    }, 260*1000);//, 180 * 1000);
 
     //asahitya
     it('[DRDMV-16243]: Check details shown for Employees on Related People tab', async () => {
@@ -209,7 +209,7 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedTabPage.getRelatedPersonPhoneNumber('Qianru Tao')).toBe("+15123431921", "Related Person Phone number does not match");
         expect(await relatedTabPage.getRelatedPersonEmail('Qianru Tao')).toBe("qtao@petramco.com", "Related Person Email ID does not match");
         expect(await relatedTabPage.getRelatedPersonRelationship('Qianru Tao')).toBe("Inspector", "Related Person Relationship does not match");
-        expect(await relatedTabPage.getRelatedPersonSite('Qianru Tao')).toBe("Houston\n2101 CityWest Blvd., Houston, Texas, 77042, United States", "Related Person Phone number does not match");
+        expect(await relatedTabPage.getRelatedPersonSite('Qianru Tao')).toBe("Houston\n2101 CityWest Blvd., Houston, Texas, 77042, United States ", "Related Person Phone number does not match");
     });
 
     //asahitya
