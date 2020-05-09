@@ -330,7 +330,7 @@ class ViewCasePage {
         }
     }
 
-    async clickShowMoreLink(label?: string): Promise<void> {
+    async clickShowMoreShowLessLink(label?: string): Promise<void> {
         if (label) {
             let dynamicAttachment = await $$('[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group').count();
             for (let i = 0; i < dynamicAttachment; i++) {
@@ -389,11 +389,11 @@ class ViewCasePage {
                 return await $$(this.selectors.dynamicFieldsValue).get(i).getText();
             }
         }
-        return null;
+        return undefined;
     }
 
     async clickOnRequesterMail(): Promise<void> {
-        return await $(this.selectors.personEmailLink).click();
+        await $(this.selectors.personEmailLink).click();
     }
 
 }

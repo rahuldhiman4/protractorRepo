@@ -422,7 +422,7 @@ describe('Dynamic data', () => {
         await editCasePo.clickSaveCase();
         //verify show more and show less button
         expect(await viewCasePo.getShowMoreLessAttachmentsLinkText('attachment1')).toContain('Show more');
-        await viewCasePo.clickShowMoreLink('attachment1');
+        await viewCasePo.clickShowMoreShowLessLink('attachment1');
         //verify attached files on case view
         expect(await viewCasePo.isFileDisplayed('bwfJpg3.jpg')).toBeTruthy('File is not present');
         expect(await viewCasePo.isFileDisplayed('bwfJpg.jpg')).toBeTruthy('File is not present');
