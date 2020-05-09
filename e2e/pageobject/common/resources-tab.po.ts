@@ -47,17 +47,23 @@ export class Resources {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
     }
 
-
     async selectAdvancedSearchFilterOption(dropDownLabel: string, dropDownValue: string): Promise<void> {
-        await browser.wait(this.EC.presenceOf($$('.dropdown.dropdown_select').last()), 5000);
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$('.dropdown.dropdown_select').count();
+            return count >= 1;
+        }),3000);
         const dropDown: ElementFinder[] = await $$('.dropdown.dropdown_select');
         for (let i: number = 0; i < dropDown.length; i++) {
-            let dropDownLabelText: string = await dropDown[i].$('.form-control-label').getText();
-            if (dropDownLabelText === dropDownLabel) {
-                await dropDown[i].$('button').click();
-                await dropDown[i].$('input').sendKeys(dropDownValue);
-                await element(by.cssContainingText('[role="option"] span', dropDownValue)).click();
-            }
+            await dropDown[i].$('.form-control-label').isPresent().then(async (result) => {
+                if (result) {
+                    let dropDownLabelText: string = await dropDown[i].$('.form-control-label').getText();
+                    if (dropDownLabelText === dropDownLabel) {
+                        await dropDown[i].$('button').click();
+                        await dropDown[i].$('input').sendKeys(dropDownValue);
+                        await element(by.cssContainingText('[role="option"] span', dropDownValue)).click();
+                    }
+                }
+            });
         }
     }
 
@@ -87,8 +93,8 @@ export class Resources {
     }
     async getAdvancedSearchResultForParticularSection(headingType: string): Promise<string> {
         //await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
-        const searchResult = await element(by.xpath(`//div[contains(@class,'list__item')]//../div[contains(@class,'bwf-search-fields__title-text')][contains(@title,'${headingType}')]`)).getText();
-        return await searchResult;
+        const searchResult = await element(by.xpath(`//*[contains(@title,"${headingType}")]/..//*[contains(@class,"bwf-search-fields__title-text")]`));
+        return await searchResult.getText();
     }
 
     async getCountOfHeading(headerName: string): Promise<string> {
