@@ -71,6 +71,7 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.selectCategoryTier2('Social');
         await adhoctaskTemplate.selectCategoryTier3('Chatter');
         await adhoctaskTemplate.clickOnSaveAdhoctask();
+        await utilityCommon.waitUntilPopUpDisappear();
         expect(await manageTask.isTaskLinkOnManageTask(summary)).toBeTruthy();
     });
 
@@ -94,7 +95,7 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.selectCategoryTier3('Chatter');
         //await adhoctaskTemplate.selectLabel('test');
         await adhoctaskTemplate.clickOnSaveAdhoctask();
-
+        await utilityCommon.waitUntilPopUpDisappear();
         await manageTask.clickTaskLinkOnManageTask(summary);
         expect(await viewTask.isTaskSummaryDisplayed()).toBeTruthy();
         expect(await viewTask.isTaskIdTextDisplayed()).toBeTruthy();
@@ -131,7 +132,7 @@ describe('Create Adhoc task', () => {
         expect(await adhoctaskTemplate.isProcessFieldPresent()).toBeFalsy();
         await adhoctaskTemplate.setDescription("Description")
         await adhoctaskTemplate.clickOnSaveAdhoctask();
-
+        await utilityCommon.waitUntilPopUpDisappear();
         await manageTask.clickTaskLinkOnManageTask(summary);
         expect(await viewTask.getTaskTypeValue()).toBe('Manual');
         expect(await viewTask.isProcessNameValue()).toBeFalsy();
@@ -154,7 +155,7 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.selectPriority('High');
         await adhoctaskTemplate.clickOnSaveAdhoctask();
-
+        await utilityCommon.waitUntilPopUpDisappear();
         await manageTask.clickTaskLinkOnManageTask(summary);
         expect(await viewTask.isCaseSummaryDisplayed()).toBeTruthy("case summary is displayed ");
         expect(await viewTask.isRequesterNameDisplayed()).toBeTruthy("requester name is displayed ");
