@@ -174,7 +174,7 @@ class NavigationPage {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.buttonText('Quick Case ')).click();
         } else {
-            await $$('button.a-menu__link').first().click();
+            await element(by.cssContainingText('button.a-menu__link','Quick Case ')).click();
         }
         await browser.wait(this.EC.titleContains('Case Create - Quick Case - Business Workflows'), 10000);
     }

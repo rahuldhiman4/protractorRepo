@@ -64,7 +64,7 @@ describe('Person Profile test', () => {
         expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
         expect(await personProfile.getContactNumber()).toBe("+19255553456", "Phone number mismatch");
         expect(await personProfile.getEmail()).toBe("elizabeth.peters@petramco.com", "Email mismatch");
-        expect(await personProfile.getSite()).toBe("Rochester\n70 Linden Oaks, Rochester, New York, 14625, United States", "Site mismatch");
+        expect(await personProfile.getSite()).toBe("Rochester\n70 Linden Oaks, Rochester, New York, 14625, United States ", "Site mismatch");
         expect(await personProfile.getManagerName()).toBe("Hannah Haas", "Manager name mismatch");
         await personProfile.clickOnTab("Requested Cases");
         await personProfile.clickOnTab("Assigned Cases");
@@ -79,7 +79,7 @@ describe('Person Profile test', () => {
         expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
         expect(await personProfile.getContactNumber()).toBe("+12135559393", "Phone number mismatch");
         expect(await personProfile.getEmail()).toBe("hannah.haas@petramco.com", "Email mismatch");
-        expect(await personProfile.getSite()).toBe("Aichi\n4-6-23 Meieki, Nakamura-ku, Nagoya-shi, Nagoya-shi, Aichi, 450-0002, Japan");
+        expect(await personProfile.getSite()).toBe("Aichi\n4-6-23 Meieki, Nakamura-ku, Nagoya-shi, Nagoya-shi, Aichi, 450-0002, Japan ");
         await personProfile.clickOnTab("Requested Cases");
         await personProfile.clickOnTab("Assigned Cases");
         await personProfile.clickOnTab("Support Groups");

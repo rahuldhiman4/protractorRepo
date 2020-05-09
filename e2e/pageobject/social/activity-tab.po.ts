@@ -1,47 +1,39 @@
 import { resolve } from "path";
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { ElementFinder, $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        addNoteBox: '.textfield__wrapper .form-control',
-        addNoteBoxEdit: '.bwf-activity-add-note textarea',
-        personPopup: '.cke_autocomplete_panel .cke_autocomplete_selected',
+        activityNoteCKEditor: 'bwf-rich-text-editor[style="display: block;"]',
+        activityNoteTextArea: '.cke_enable_context_menu',
+        addNoteBox: '.textfield__wrapper .form-control[placeholder="Add a note"]',
+        personPopup: '.dropdown-menu .popup-template',
+        personPopupCkEditor: '.cke_autocomplete_panel li',
         addNotePostButton: '.activity-feed-note-buttons__right .btn-primary',
         addNoteCancelButton: '.activity-feed-note-buttons__right .btn-secondary',
-        addNoteAttachLink: '.activity-note .bwf-button-link',
         addNoteNotesTemplate: '.activity-note .d-icon-note_pencil',
         activityLog: '.activity__body .activity-title, .activity__body [style="position: relative;"], .activity__body .field, .activity__body .value',
-        personLink: 'bwf-activity-title a[href].ng-star-inserted',
         filterButton: '.d-icon-filter',
         filterCheckbox: '.checkbox__label span',
         filterAuthor: '.dropdown input[placeholder="Enter name, email, or login ID"]',
         filterPopupApplyOrClearButton: '.filter-options button span',
-        // activityText: '[rx-view-component-id="34167059-11d4-4e85-8a58-e501544e2461"] [title="Activity"]',
-        // FilterTask: '[rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .d-tag-label',
         FilterPopUp: '.bwf-activity-log-filter button[aria-expanded]',
-
-        filterApplyButtonEnableDisabled: '.filter-options .btn-primary[disabled="disabled"]',
+        filterApplyButtonEnableDisabled: '.filter-options button[disabled="disabled"]',
         filterLists: '.a-tag-active .bwf-text-overflow-ellipsis',
         nMoreButton: '.bwf-show-more .dropdown-toggle span',
-        // closeNmoreLink: '.activity-log-filter',
         removeIconFilterList: '.d-flex .close-inverse',
         activityTab: '.nav-link-wrapper',
         appliedActivityFilter: '.a-tag .bwf-text-overflow-ellipsis',
-        authorCloseButton: '.bwf-flexi-type-ahead .d-icon-cross',
+        authorCloseButton: '.d-icon-cross[aria-label="Clear Author"]',
         imgPersonProfilePopUp: '.person-image img[src]',
         namePersonProfilePopUp: '.popup-info .popup-person',
         companyPersonProfilePopUp: '.popup-info .popup-organization',
         emailPersonProfilePopUp: '.popup-info .popup-email',
         phoneNumberPersonProfilePopUp: '.popup-info .popup-phone-number',
-        // authorFieldEmpty: '.d-textfield__label .ng-not-empty',
         attachmentLink: '.bwf-attachment-button button',
-
-        // emailContent: '.log-item__content email',
         emailReply: '.bwf-button-link[aria-label="Reply"]',
         emailReplyAll: '.bwf-button-link[aria-label="Reply All"]',
-
         dwpRatingText: 'bwf-activity-dwp-survey .activity-title',
         dwpSurveyText: '.dwp-answer strong, .dwp-answer div, .dwp-answer',
         viewSurveyBtn: '.dwp-survey-list button',
@@ -51,25 +43,24 @@ class ActivityTabPage {
         dwpIcon: 'bwf-activity-dwp-survey .activity__icon',
         dwpFeedback: '.dp-content .dwp-comment',
         logItems: '.activity  .activity__body',
-        // body: '.log-item__body .body',
-
         AttachedfileName: '.activity__wrapper .bwf-attachment-container__file-name',
         refreshButton: '.tab-content .bwf-button-link[aria-label="Refresh"]',
         attachmentField: '.attachment-button input[type="file"]',
         showMoreEmailActivity: '.activity__wrapper button[aria-label="Show more"]',
-        expandAllAttachmentActivity : '.activity__wrapper .d-icon-plus',
+        expandAllAttachmentActivity: '.activity__wrapper .d-icon-plus',
         allTaskActivity: 'div.activity__body div',
         taskActivity: '.fields .value',
         showMoreLink: 'button[aria-label="Show more"]',
         emailBodyImage: '.email-body img',
-        publicCheckbox: '.bwf-activity-add-note .checkbox__input',
+        publicCheckbox: '.checkbox__label input',
         logTitle: '.activity-title',
         showLessLink: 'button[aria-label="Show less"]',
         showMoreLinkForAttachment: '.rx-attachment-show-text[aria-label="Show more attachments"]',
         showLessLinkForAttachment: '.activity__wrapper .flex-wrap button span',
         lockIcon: '.d-icon-lock',
-        activityLogList: '.activity__wrapper',
+        activityLogList: '.activity .activity__wrapper',
     }
+
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
         return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isDisplayed().then(async (result) => {
             if (result) return true;
@@ -92,10 +83,10 @@ class ActivityTabPage {
     }
 
     async isAddNoteTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
-        let getTextmsg= await $$('.activity__wrapper .collapse-block div div[style="position: relative;"]').get(activityNumber - 1).getText();
-        if(getTextmsg.trim().includes(bodyText)){
+        let getTextmsg = await $$('.activity__wrapper .collapse-block div div[style="position: relative;"]').get(activityNumber - 1).getText();
+        if (getTextmsg.trim().includes(bodyText)) {
             return true;
-            } else return false;
+        } else return false;
     }
 
     async isLogIconDisplayedInActivity(iconName: string, activityNumber: number): Promise<boolean> {
@@ -213,15 +204,15 @@ class ActivityTabPage {
         return await $$(locator).first().getText();
     }
 
-    async getTextOnActivityTable(rowNumber:number, columnNumber: number): Promise<string>{
-        let row = await $$('.activity .email-body table tr').get(rowNumber-1);
-        let cellText = await row.$$('td').get(columnNumber-1).getText();
+    async getTextOnActivityTable(rowNumber: number, columnNumber: number): Promise<string> {
+        let row = await $$('.activity .email-body table tr').get(rowNumber - 1);
+        let cellText = await row.$$('td').get(columnNumber - 1).getText();
         return cellText;
     }
 
-    async getColorFontStyleOfText(rowNumber:number, columnNumber: number, value: string): Promise<string> {
-        let row = await $$('.activity .email-body table tr').get(rowNumber-1);
-        let cell = await row.$$('td').get(columnNumber-1);
+    async getColorFontStyleOfText(rowNumber: number, columnNumber: number, value: string): Promise<string> {
+        let row = await $$('.activity .email-body table tr').get(rowNumber - 1);
+        let cell = await row.$$('td').get(columnNumber - 1);
         let locator = `span[style='${value}']`;
         return await cell.$(locator).getText();
     }
@@ -370,54 +361,39 @@ class ActivityTabPage {
     }
 
     async clickActivityNoteTextBox(): Promise<void> {
-        //        browser.sleep(3000);
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteBox)));
         await $(this.selectors.addNoteBox).click();
     }
 
     async addActivityNote(addNoteText: string): Promise<void> {
-        await this.clickActivityNoteTextBox();
-        await browser.waitForAngularEnabled(false);
-        await browser.wait(this.EC.visibilityOf($('iframe.cke_wysiwyg_frame')), 4000); 
-        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
-        await browser.wait(this.EC.elementToBeClickable($('.cke_editable_themed')), 4000); 
-        await $('.cke_editable_themed').sendKeys(addNoteText);
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
+        let searchBoxdisplay = await $(this.selectors.addNoteBox).isPresent();
+        if (searchBoxdisplay == true) {
+            await this.clickActivityNoteTextBox();
+        }
+        await $(this.selectors.activityNoteCKEditor).isPresent().then(async (result) => {
+            if (result) {
+                await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 10000).then(async () => {
+                    await $(this.selectors.activityNoteTextArea).sendKeys(addNoteText);
+                });
+            }
+        });
     }
 
     async addPersonInActivityNote(tagPerson: string): Promise<void> {
-        await browser.waitForAngularEnabled(false);
-        await browser.wait(this.EC.visibilityOf($('iframe.cke_wysiwyg_frame')), 4000); 
-        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
-        await browser.wait(this.EC.elementToBeClickable($('.cke_editable_themed')), 4000); 
-        await $('.cke_editable_themed').sendKeys(`@${tagPerson}`);
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
-        await $$(this.selectors.personPopup).first().click();
+        await this.addActivityNote(`@${tagPerson}`)
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopupCkEditor)), 10000);
+        await $$(this.selectors.personPopupCkEditor).first().click();
     }
 
     async clearActivityNote(): Promise<void> {
-        await browser.waitForAngularEnabled(false);
-        await browser.wait(this.EC.visibilityOf($('iframe.cke_wysiwyg_frame')), 4000); 
-        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
-        await browser.wait(this.EC.elementToBeClickable($('.cke_editable_themed')), 4000); 
-        await $('.cke_editable_themed').clear();
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 10000).then(async () => {
+            await $(this.selectors.activityNoteTextArea).clear();
+        });
     }
 
     async getPersonCount(tagPerson: string): Promise<number> {
         await this.clickActivityNoteTextBox();
-        await browser.waitForAngularEnabled(false);
-        await browser.wait(this.EC.visibilityOf($('iframe.cke_wysiwyg_frame')), 4000); 
-        await browser.switchTo().frame(await $('iframe.cke_wysiwyg_frame').getWebElement());
-        await browser.wait(this.EC.elementToBeClickable($('.cke_editable_themed')), 4000); 
-        await $('.cke_editable_themed').sendKeys(tagPerson);
-        let countPerson= await $$(this.selectors.personPopup).count();
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
-        return countPerson;
+        await this.addActivityNote(tagPerson);
+        return await $$(this.selectors.personPopupCkEditor).count();
     }
 
     async clickOnPostButton(): Promise<void> {
@@ -470,7 +446,7 @@ class ActivityTabPage {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).click();
         await $(this.selectors.filterAuthor).sendKeys(AuthorName);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)), 2000);
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)), 2000);
         await $(this.selectors.personPopup).click();
     }
 
@@ -541,7 +517,7 @@ class ActivityTabPage {
 
     async isTextPresentInActivityLog(caseActivityLogText: string): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
-        let activityValue:string = "";
+        let activityValue: string = "";
         let countVal = await $$(this.selectors.activityLog).count();
         for (let i: number = 0; i < countVal; i++) {
             activityValue = activityValue + await $$(this.selectors.activityLog).get(i).getText();
@@ -550,30 +526,32 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first()),3000);
+        await browser.wait(this.EC.visibilityOf($$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first()), 3000);
         let activityText = await $$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first();
         let value = await activityText.getText();
-        return value.includes(bodyText) ? true:false;
+        return value.includes(bodyText) ? true : false;
     }
 
     async getCaseViewCount(TitleText: string): Promise<number> {
         return await element.all(by.cssContainingText(this.selectors.logTitle, TitleText)).count();
     }
 
-    async clickOnHyperlinkFromActivity(bodyText: string, authorText: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personLink)));
-        //        browser.sleep(3000);
-        let  customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='activity__body']//a[text()="${authorText}"]`;
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customXpath))));
-        await element(by.xpath(customXpath)).click();
-        //        await utilCommon.waitUntilSpinnerToHide();
+    async clickOnHyperlinkFromActivity(activityNumber: number, linkText: string): Promise<void> {
+        await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.activity__wrapper div a', linkText)).click();
     }
 
     async isHyperlinkOfActivityDisplay(bodyText: string, authorText: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personLink)));
-        var customXpath = `//*[text()="${bodyText}"]//ancestor::div[@class='log-item__body']//a[text()="${authorText}"]`;
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customXpath))));
-        return await element(by.xpath(customXpath)).isDisplayed();
+        let bodyTextActivityElement: ElementFinder[] = await $$('.activity__wrapper .collapse-block div');
+        for (let i = 0; i < bodyTextActivityElement.length; i++) {
+            let bodyTextActivity = await bodyTextActivityElement[i].getText();
+            if (bodyTextActivity.includes(bodyText)) {
+                return await element(by.cssContainingText('.activity__wrapper .collapse-block div a', authorText)).isPresent().then(async (link) => {
+                    if (link) {
+                        return await element(by.cssContainingText('.activity__wrapper .collapse-block div a', authorText)).isDisplayed();
+                    } else return false;
+                });
+            }
+        }
     }
 
     async clickOnAttachLink(): Promise<void> {
@@ -586,10 +564,11 @@ class ActivityTabPage {
     }
 
     async isLinkedTextPresentInBodyOfFirstActivity(value: string): Promise<boolean> {
-        var firstActivity = await $$('.activity_logs [role="listitem"]').first();
-        //        await browser.wait(this.EC.visibilityOf(firstActivity));
-        //        await browser.wait(this.EC.elementToBeClickable(firstActivity.$('.body a[title]')));
-        return await element(by.cssContainingText('.activity_logs [role="listitem"] .body a[title]', value)).isDisplayed();
+        return await element(by.cssContainingText('.activity__wrapper .collapse-block div a', value)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.cssContainingText('.activity__wrapper .collapse-block div a', value)).isDisplayed();
+            } else return false;
+        });
     }
 
     async openSurveyReport(): Promise<void> {
@@ -671,7 +650,7 @@ class ActivityTabPage {
     async clickAttachedFile(fileName: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).click();
     }
-    
+
     async getCountAttachedFiles(fileName: string): Promise<number> {
         return await element.all(by.cssContainingText(this.selectors.AttachedfileName, fileName)).count();
     }
@@ -683,7 +662,7 @@ class ActivityTabPage {
     async isAttachmentInActivity(bodyText: string): Promise<boolean> {
         let attachmentText = await $$('.activity .pt-2 .bwf-attachment-container__file-name').first();
         let value = await attachmentText.getText();
-        return value.includes(bodyText) ? true:false;
+        return value.includes(bodyText) ? true : false;
     }
 }
 
