@@ -412,16 +412,16 @@ describe('Dynamic data', () => {
         expect(await editCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('field is not present');
         // attach files in field 1
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
-        const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
+        let filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
         await editCasePo.addAttachment('attachment1', filesToUpload1);
         //attachment3 add 1 file 
-        let fileName2: string[] = ['bwfWord1.rtf','bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf','bwfWord2.rtf'];
-        const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
+        let fileName2: string[] = ['bwfWord1.rtf', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord2.rtf'];
+        let filesToUpload2 = fileName2.map((file1) => { return `../../data/ui/attachment/${file1}` });
         await editCasePo.addAttachment('attachment1', filesToUpload2);
         await editCasePo.addAttachment('attachment2', ['../../data/ui/attachment/demo.txt']);
         await editCasePo.clickSaveCase();
         //verify show more and show less button
-        expect(await viewCasePo.getShowMoreLessAttachmentsLinkText('attachment1')).toContain('Show more');
+        expect(await viewCasePo.getShowMoreLessAttachmentsLinkText('attachment1')).toContain('more');
         await viewCasePo.clickShowMoreShowLessLink('attachment1');
         //verify attached files on case view
         expect(await viewCasePo.isFileDisplayed('bwfJpg3.jpg')).toBeTruthy('File is not present');
@@ -466,31 +466,31 @@ describe('Dynamic data', () => {
         // attach files in field 1
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
         const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
-            await editTaskPo.addAttachmentInDynamicField('attachment1',filesToUpload1);
+        await editTaskPo.addAttachmentInDynamicField('attachment1', filesToUpload1);
         //attachment2 add 1 file 
         await editTaskPo.addAttachmentInDynamicField('attachment2', ['../../data/ui/attachment/demo.txt']);
         //attachment3 add 1 file 
-        let fileName2: string[] = ['bwfWord1.rtf','bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord2.rtf'];
-        const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
-            await editTaskPo.addAttachmentInDynamicField('attachment1', filesToUpload2);
+        let fileName2: string[] = ['bwfWord1.rtf', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord2.rtf'];
+        let filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
+        await editTaskPo.addAttachmentInDynamicField('attachment1', filesToUpload2);
         await editTaskPo.clickOnSaveButton();
         //verify show more and show less button
-        expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText()).toContain('more');
-        await viewTaskPo.clickShowMoreShowLessLink();
+        expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText('attachment1')).toContain('more');
+        await viewTaskPo.clickShowMoreShowLessLink('attachment1');
         //verify attached files on case view
         expect(await viewTaskPo.isFileDisplayed('bwfJpg3.jpg')).toBeTruthy('File is not present');
         expect(await viewTaskPo.isFileDisplayed('bwfJpg.jpg')).toBeTruthy('File is not present');
         expect(await viewTaskPo.isFileDisplayed('demo.txt')).toBeTruthy('File is not present');
         expect(await viewTaskPo.isFileDisplayed('bwfWord1.rtf')).toBeTruthy('File is not present');
         expect(await viewTaskPo.isFileDisplayed('articleStatus.png')).toBeTruthy('File is not present');
-        expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText()).toContain('Show less');
+        expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText('attachment1')).toContain('Show less');
     });
 
     it('[DRDMV-13948]: [Dynamic Data] [Attachment] - Add different type of files in attachment fields', async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
-        let caseTemplateName = 'caseTemplateDRDMV-13567' + randomStr;
-        let caseTemaplateSummary = 'caseTemplateDRDMV-13567' + randomStr;
+        let caseTemplateName = 'caseTemplateDRDMV-13948' + randomStr;
+        let caseTemaplateSummary = 'caseTemplateDRDMV-13948' + randomStr;
         let casetemplateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
@@ -521,6 +521,7 @@ describe('Dynamic data', () => {
         const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
         await editCasePo.addAttachment('attachment1', filesToUpload1);
         await editCasePo.clickSaveCase();
+        await viewCasePo.clickShowMoreShowLessLink('attachment1');
         //download the file
         await viewCasePo.clickOnDownloadFile('articleStatus.png');
         expect(await utilityCommon.isFileDownloaded('articleStatus.png')).toBeTruthy('failureMsg: articleStatus.png File is not downloaded.');
@@ -564,8 +565,9 @@ describe('Dynamic data', () => {
         //attachment3 add 1 file 
         let fileName2: string[] = ['bwfJpg.jpg', 'bwfPdf.pdf', 'bwfWord2.rtf'];
         const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
-        await editTaskPo.addAttachmentInDynamicField('attachment1',filesToUpload2);
+        await editTaskPo.addAttachmentInDynamicField('attachment1', filesToUpload2);
         await editTaskPo.clickOnSaveButton();
+        await viewTaskPo.clickShowMoreShowLessLink('attachment1');
         await viewCasePo.clickOnDownloadFile('bwfJpg.jpg');
         expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is not downloaded.');
         await viewCasePo.clickOnDownloadFile('bwfPdf.pdf');
@@ -613,12 +615,13 @@ describe('Dynamic data', () => {
             "templateName": `${automatedTask}`,
             "templateSummary": `${automatedTaskSummary}`,
             "templateStatus": "Active",
-            "processBundle": "com.bmc.arsys.rx.approval",
-            "processName": "Approval Process 1",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": "case Managment Process",
         }
         await apiHelper.apiLogin('qkatawazi');
         let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automationTemplateData);
         await apiHelper.createDynamicDataOnTemplate(autoTaskTemplate.id, 'AUTOMATED_TASK_TEMPLATE_LONG__DYNAMIC');
+        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary('new cases');
@@ -739,10 +742,14 @@ describe('Dynamic data', () => {
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
         await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_REQUESTER_DYNAMIC_FIELDS');
-        await navigationPage.gotoQuickCase();
-        await quickCasePo.selectRequesterName('qkatawazi');
-        await quickCasePo.selectCaseTemplate(caseTemplateName);
-        await quickCasePo.createCaseButton();
+        await navigationPage.gotoCaseConsole();
+        await navigationPage.gotoCreateCase();
+        await createCasePo.selectRequester('qkatawazi');
+        await createCasePo.setSummary('Summary');
+        await createCasePo.clickSelectCaseTemplateButton();
+        await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
+        await createCasePo.clickAssignToMeButton();
+        await createCasePo.clickSaveCaseButton();
         expect(await requesterResponseBladePo.getBladeHeading()).toContain("Requester's Response");
         expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp')).toBeTruthy('field not present');
         expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp1')).toBeTruthy('field not present');
@@ -753,7 +760,7 @@ describe('Dynamic data', () => {
         expect(await requesterResponseBladePo.isDynamicFieldDisplayed('dynamicList')).toBeTruthy('field not present');
         expect(await requesterResponseBladePo.isDynamicFieldDisplayed('attachment1')).toBeFalsy('field is present');
         await requesterResponseBladePo.clickOkButton();
-        await quickCasePo.gotoCaseButton();
+        await previewCasePo.clickGoToCaseButton();
         let empty = '-';
         //verify fields shoule be empty values on case view
         expect(await viewCasePo.getValueOfDynamicFields('temp')).toBe(empty);
@@ -799,8 +806,8 @@ describe('Dynamic data', () => {
             "templateName": `${automatedTask}`,
             "templateSummary": `${automatedTaskSummary}`,
             "templateStatus": "Active",
-            "processBundle": "com.bmc.arsys.rx.approval",
-            "processName": "Approval Process 1",
+            "processBundle": "ccom.bmc.dsm.case-lib",
+            "processName": "Case Managment 1",
         }
         await apiHelper.apiLogin('qkatawazi');
         let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automationTemplateData);
@@ -838,9 +845,9 @@ describe('Dynamic data', () => {
         await editTaskPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         //verify update values on case view
-        expect(await viewTaskPo.getValueOfDynamicFields('temp2')).toBe('Mar 1, 2020');
-        expect(await viewTaskPo.getValueOfDynamicFields('temp4')).toBe('Mar 4, 2020 12:00 AM');
-        expect(await viewTaskPo.getValueOfDynamicFields('temp1')).toBe('-');
+        expect(await viewTaskPo.getDynamicFieldValue('temp2')).toBe('Mar 1, 2020');
+        expect(await viewTaskPo.getDynamicFieldValue('temp4')).toBe('Mar 4, 2020 12:00 AM');
+        expect(await viewTaskPo.getDynamicFieldValue('temp1')).toBe('-');
 
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAddTaskButton();
@@ -865,9 +872,9 @@ describe('Dynamic data', () => {
         await editTaskPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         //verify update values on case view
-        expect(await viewTaskPo.getValueOfDynamicFields('externalDate')).toBe('Mar 1, 2020');
-        expect(await viewTaskPo.getValueOfDynamicFields('externalDateTime')).toBe('Mar 4, 2020 12:00 AM');
-        expect(await viewTaskPo.getValueOfDynamicFields('externalNumber')).toBe('');
+        expect(await viewTaskPo.getDynamicFieldValue('externalDate')).toBe('Mar 1, 2020');
+        expect(await viewTaskPo.getDynamicFieldValue('externalDateTime')).toBe('Mar 4, 2020 12:00 AM');
+        expect(await viewTaskPo.getDynamicFieldValue('externalNumber')).toBe('');
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickEditCaseButton();
         await editCasePo.clickOnAssignToMe();
@@ -893,11 +900,11 @@ describe('Dynamic data', () => {
         await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
         await editTaskPo.setDynamicFieldValue('automatedNumber', 'values');
         await editTaskPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilityCommon.waitUntilPopUpDisappear();
         //verify update values on case view
-        expect(await viewTaskPo.getValueOfDynamicFields('automatedDate')).toBe('Mar 1, 2020');
-        expect(await viewTaskPo.getValueOfDynamicFields('automatedDateTime')).toBe('Mar 4, 2020 12:00 AM');
-        expect(await viewTaskPo.getValueOfDynamicFields('automatedNumber')).toBe('');
+        expect(await viewTaskPo.getDynamicFieldValue('automatedDate')).toBe('Mar 1, 2020');
+        expect(await viewTaskPo.getDynamicFieldValue('automatedDateTime')).toBe('Mar 4, 2020 12:00 AM');
+        expect(await viewTaskPo.getDynamicFieldValue('automatedNumber')).toBe('');
     }, 270 * 1000);
 
     //ptidke

@@ -47,7 +47,7 @@ class ViewCasePage {
         caseTemplate: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .read-only-content',
         sourceValue: '[rx-view-component-id="8abd013f-26cd-4aa5-a3bb-63b063d3a7ec"] .read-only-content',
         showMore: '.btn-link .ng-star-inserted',
-        dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group label',
+        dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] label',
         dynamicFieldsValue: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .read-only-content',
         slaProgressBar: '.progress-bar',
         tab: '.nav-item button',

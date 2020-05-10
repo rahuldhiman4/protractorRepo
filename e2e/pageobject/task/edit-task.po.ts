@@ -141,7 +141,13 @@ class EditTask {
     }
 
     async setDynamicFieldValue(fieldName: string, fieldValue: string): Promise<void> {
-        await $(`adapt-textfield[title=${fieldName}] input`).sendKeys(fieldValue);
+        let dynamicTextFields: number = await $$('bwf-text-field').count();
+        for (let i = 0; i < dynamicTextFields; i++) {
+            let labelvalue = await $$('bwf-text-field').get(i).$('label').getText();
+            if (labelvalue == fieldName) {
+                $$('bwf-text-field').get(i).$('input').sendKeys(fieldValue);
+            }
+        }
     }
 
     async updateTaskSummary(summary: string): Promise<void> {
