@@ -58,6 +58,8 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();
             await utilityCommon.switchToNewTab(1);
+            await utilityCommon.refresh();
+            await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             // 2nd Step: Inspect Case Activity UI - Click on Filter       
             await activityTabPage.clickOnFilterButton();
@@ -157,6 +159,8 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();
             await utilityCommon.switchToNewTab(1);
+            await utilityCommon.refresh();
+            await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             // 2nd step: From Task Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Task
             await activityTabPage.clickOnFilterButton();
@@ -213,6 +217,18 @@ describe('Case Activity', () => {
     //kgaikwad
     it('[DRDMV-16773]: [-ve] - Person details displayed in Activity who have long name', async () => {
         try {
+            let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Create manual task template
+            let manualTemplateData = {
+                "templateName": "DRDMV-16773_task template" + summary,
+                "templateSummary": "DRDMV-16773_Manual_task template summary" + summary,
+                "templateStatus": "Active",
+                "company": '- Global -'
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(manualTemplateData);
+
             let caseBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let taskBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let knowledgeBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -229,8 +245,8 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText, 'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
             // 2nd Step: Open Task from pre condition and inspect its activities
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate('File Report');
-            await manageTaskBladePo.clickTaskLinkOnManageTask('File Report');
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateName);
+            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
             await activityTabPage.addActivityNote(taskBodyText);
             await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
             await activityTabPage.clickOnPostButton();
@@ -245,6 +261,8 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();
             await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.refresh();
+            await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(knowledgeBodyText);
             await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
@@ -255,7 +273,7 @@ describe('Case Activity', () => {
         } finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
-    });
+    }, 600 * 1000);
 
     //kgaikwad
     it('[DRDMV-16733]: Case Activity Filter UI validation', async () => {
@@ -335,6 +353,18 @@ describe('Case Activity', () => {
 
     //kgaikwad
     it('[DRDMV-16760]: From Task Activity Filters > Person search behavior in Author field', async () => {
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // Create manual task template
+        let manualTemplateData = {
+            "templateName": "DRDMV-21617_task template" + summary,
+            "templateSummary": "DRDMV-21617_Manual_task template summary" + summary,
+            "templateStatus": "Active",
+            "company": '- Global -'
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createManualTaskTemplate(manualTemplateData);
+
         // 1st step: Logged in successfully and Task profile gets opened
         await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -342,8 +372,8 @@ describe('Case Activity', () => {
         await createCase.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.addTaskFromTaskTemplate('File Report');
-        await manageTaskBladePo.clickTaskLinkOnManageTask('File Report');
+        await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
         // 2nd step: From Task Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Task
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.addAuthorOnFilter('Elizabeth Peters');
@@ -434,6 +464,17 @@ describe('Case Activity', () => {
 
     //kgaikwad
     it('[DRDMV-16759]: Task Activity Filter UI validation', async () => {
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // Create manual task template
+        let manualTemplateData = {
+            "templateName": "DRDMV-21617_task template" + summary,
+            "templateSummary": "DRDMV-21617_Manual_task template summary" + summary,
+            "templateStatus": "Active",
+            "company": '- Global -'
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createManualTaskTemplate(manualTemplateData);
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -443,8 +484,8 @@ describe('Case Activity', () => {
 
         // On view case page.
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.addTaskFromTaskTemplate('File Report');
-        await manageTaskBladePo.clickTaskLinkOnManageTask('File Report');
+        await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
 
         // 2nd step: Inspect Task Activity UI - Click on FIlter
         await activityTabPage.clickOnFilterButton();
@@ -727,6 +768,7 @@ describe('Case Activity', () => {
     }, 330 * 1000);
 
     //kgaikwad
+    // Ok
     it('[DRDMV-18048]: While adding a note on Case one or more agent can be tagged in Comment', async () => {
         await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -749,11 +791,24 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
+    // LFail Done
     it('[DRDMV-16754]: Drill Down to different screens from Activities', async () => {
         try {
             let caseBodyText = "This is unique caseActivity text " + Math.floor(Math.random() * 1000000);
             let taskBodyText = "This is unique TaskActivity text " + Math.floor(Math.random() * 1000000);
             let knowledgeBodyText = "This is unique KnowledgeActivity text " + Math.floor(Math.random() * 1000000);
+            let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Create manual task template
+            let manualTemplateData = {
+                "templateName": "DRDMV-21617_task template" + summary,
+                "templateSummary": "DRDMV-21617_Manual_task template summary" + summary,
+                "templateStatus": "Active",
+                "company": '- Global -'
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(manualTemplateData);
+
             await navigationPage.gotoCreateCase();
             await createCase.selectRequester('Al Allbrook');
             await createCase.setSummary('test case for DRDMV-16754');
@@ -772,8 +827,8 @@ describe('Case Activity', () => {
 
             // 3nd step verification, From Case > Activity > Task related note > Click on Person name
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate('File Report');
-            await manageTaskBladePo.clickTaskLinkOnManageTask('File Report');
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
+            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
 
             // View task page
             await expect(browser.getTitle()).toBe('Task Edit - Business Workflows');
@@ -805,6 +860,7 @@ describe('Case Activity', () => {
 
             // View Knowledege Page
             await utilityCommon.switchToNewTab(1);
+            await utilityCommon.refresh();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('knowoledge Edit link is missing');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(knowledgeBodyText);
@@ -818,7 +874,6 @@ describe('Case Activity', () => {
     }, 250 * 1000);
 
     // ptidke
-    // Done
     it('[DRDMV-7152]: [Automatic Task] - Automatic Task: Social: Manual Comments', async () => {
         // Create automated task template
         let autoTemplateData = {
@@ -899,6 +954,7 @@ describe('Case Activity', () => {
             let caseId: string = newCase.displayId;
             await caseConsolePo.searchAndOpenCase(caseId);
             // await utilityCommon.waitUntilSpinnerToHide();
+            await activityTabPo.clickOnRefreshButton();
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await caseConsolePo.searchAndOpenCase(caseId);
@@ -907,6 +963,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi  viewed the case. ')).toEqual(1);
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             await utilityCommon.refresh();
+            await activityTabPage.clickOnRefreshButton();
             // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             await navigationPage.gotoPersonProfile();
@@ -1056,16 +1113,17 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 210 * 1000);
+    }, 700 * 1000);
 
     //kgaikwad
+    // Defect
     it('[DRDMV-18052]: Alert Notification should be send to tagged persons other than Assignee and Requester', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             // Create Case
             let caseData = {
                 "Requester": "Fritz",
-                "Summary": "DRDMV-16591_TC" + summary,
+                "Summary": "DRDMV-18052_TC" + summary,
                 "Support Group": "Compensation and Benefits",
                 "Assignee": "qtao"
             }
@@ -1141,7 +1199,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg8: BodyText is missing');
         // Verify logs with 5 lines  with 3 attachment
         await activityTabPage.addActivityNote(addNoteBodyText1);
-        await activityTabPage.addAttachment([filePath1,filePath2]);
+        await activityTabPage.addAttachment([filePath1, filePath2]);
         await activityTabPage.clickOnPostButton();
         // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
@@ -1151,7 +1209,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg14: Show more link is displayed');
         // Verify logs with more than 5 lines  with 3 attachment
         await activityTabPage.addActivityNote(addNoteBodyText2);
-        await activityTabPage.addAttachment([filePath4,filePath5]);
+        await activityTabPage.addAttachment([filePath4, filePath5]);
         await activityTabPage.clickOnPostButton();
         // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
@@ -1162,7 +1220,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg21: Show less missing for body text');
         // Verify logs with more than 5 lines  with more than 4 attachment
         await activityTabPage.addActivityNote(addNoteBodyText2);
-        await activityTabPage.addAttachment([filePath7,filePath8,filePath9,filePath10,filePath11]);
+        await activityTabPage.addAttachment([filePath7, filePath8, filePath9, filePath10, filePath11]);
 
         await activityTabPage.clickOnPostButton();
         // await utilityCommon.waitUntilSpinnerToHide();
@@ -1205,7 +1263,7 @@ describe('Case Activity', () => {
     });//, 150 * 1000);
 
     //kgaikwad
-   it('[DRDMV-16765]:Validate Show More/Less option in KA Activity Tab', async () => {
+    it('[DRDMV-16765]:Validate Show More/Less option in KA Activity Tab', async () => {
         let randomValues1 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues2 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues3 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1235,7 +1293,8 @@ describe('Case Activity', () => {
         await createKnowlegePo.clickOnSaveKnowledgeButton();
         await previewKnowledgePo.clickOnViewArticleLink();
         await utilityCommon.switchToNewTab(1);
-        await expect (await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
+        await utilityCommon.refresh();
+        await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
         await viewKnowledgeArticlePo.clickOnTab('Activity');
         // Verify logs with 5 lines or less than 5 lines
         await activityTabPage.addActivityNote(addNoteBodyText1);
@@ -1255,7 +1314,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg8: BodyText is missing');
         // Verify logs with 5 lines  with 3 attachment
         await activityTabPage.addActivityNote(addNoteBodyText1);
-        await activityTabPage.addAttachment([filePath1,filePath2]);
+        await activityTabPage.addAttachment([filePath1, filePath2]);
         await activityTabPage.clickOnPostButton();
         // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
@@ -1265,7 +1324,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg14: Show more link is displayed');
         // Verify logs with more than 5 lines  with 3 attachment
         await activityTabPage.addActivityNote(addNoteBodyText2);
-        await activityTabPage.addAttachment([filePath4,filePath5]);
+        await activityTabPage.addAttachment([filePath4, filePath5]);
         await activityTabPage.clickOnPostButton();
         // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
@@ -1276,7 +1335,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg21: Show less missing for body text');
         // Verify logs with more than 5 lines  with more than 4 attachment
         await activityTabPage.addActivityNote(addNoteBodyText2);
-        await activityTabPage.addAttachment([filePath7,filePath8,filePath9,filePath10,filePath11]);
+        await activityTabPage.addAttachment([filePath7, filePath8, filePath9, filePath10, filePath11]);
         await activityTabPage.clickOnPostButton();
         // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
@@ -1315,7 +1374,7 @@ describe('Case Activity', () => {
 
         await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
 
-    },400 * 1000);
+    }, 400 * 1000);
 
     //kgaikwad
     it('[DRDMV-16764]:Validate all type of social activities are displayed correctly in KA Activity tab', async () => {
@@ -1348,7 +1407,7 @@ describe('Case Activity', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "SMEReview", "KMills", "GB Support 2", "Petramco")).toBeTruthy("Article with SME Review status not updated.");
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-            await expect (await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
+            await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
 
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(flag);
