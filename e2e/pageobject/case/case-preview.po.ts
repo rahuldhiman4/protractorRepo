@@ -30,7 +30,7 @@ class CasePreview {
         source: '[rx-view-component-id="669b71fd-6e23-4625-91f6-139208e47538"] div[title]',
         label: '[rx-view-component-id="ab146574-d991-43bd-8a7b-0be34019164c"] div[title]',
         caseSite: '[rx-view-component-id="974e5fdd-5992-4f87-a640-267c4cc3daae"] div[title]',
-        dynamicFieldsName:'[rx-view-component-id="40c6dac1-3d7a-402d-9d78-6ba29bb1c1f1"] .form-group label',
+        dynamicFieldsName:'[rx-view-component-id="40c6dac1-3d7a-402d-9d78-6ba29bb1c1f1"] label',
         backButton:'[rx-view-component-id="1483f92a-0736-4316-b2e5-084927069d38"] button'
     }
 

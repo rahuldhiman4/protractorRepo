@@ -17,15 +17,14 @@ import selectTaskTemplate from "../../pageobject/settings/task-management/consol
 import createTaskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
-import caseConsole from "../../pageobject/case/case-console.po";
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Data Store', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -452,7 +451,7 @@ describe('Case Data Store', () => {
         expect(await viewCasePo.getValueOfDynamicFields(field4OutSideGroup)).toBe('True');
         expect(await viewCasePo.getValueOfDynamicFields(field1OutSideGroup)).toBe('field1 outside group');
         expect(await viewCasePo.getValueOfDynamicFields(field2OutSideGroup)).toBe('809888');
-    }, 200 * 1000);
+    }, 300 * 1000);
 
     //ptidke
     it('[DRDMV-13140]:[Dynamic Data] [UI] -Dynamic Fields display on Task Template Edit view UI', async () => {
@@ -631,7 +630,7 @@ describe('Case Data Store', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             let caseTemplateName = randomStr + 'caseTemplateDRDMV-13131';
-            let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13131';
+            let caseTemaplateSummary = randomStr + 'caseTemplateSummaryDRDMV-13131';
             let casetemplateData = {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${caseTemaplateSummary}`,
@@ -658,7 +657,7 @@ describe('Case Data Store', () => {
             await quickCasePo.selectRequesterName('qkatawazi');
             await quickCasePo.setSummaryAndClickOnRecommandedCase(caseID, caseTemplateName);
             //case preview
-            await utilCommon.waitUntilSpinnerToHide();
+            // await utilCommon.waitUntilSpinnerToHide();
             expect(await casePreviewPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
             expect(await casePreviewPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');
             for (let i = 0; i < dynamicFields.length; i++) {
@@ -707,7 +706,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 280 * 1000);
+    }, 350 * 1000);
 
     //ptidke
     it('[DRDMV-13114]:[Dynamic Data] - Add all type of dynamic fields in Case Template', async () => {
