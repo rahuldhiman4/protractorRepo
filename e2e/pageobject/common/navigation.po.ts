@@ -39,7 +39,7 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(0).click();
             return quickCase;
         } else {
-            return await $$('button.a-menu__link').first().getText() == 'Quick Case';
+            return await element(by.cssContainingText('button.a-menu__link','Quick Case ')).isPresent();
         }
     }
 
