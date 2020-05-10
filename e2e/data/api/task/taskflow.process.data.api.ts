@@ -1,102 +1,18 @@
 export const ONE_TASKFLOW = {
-    "name": "com.bmc.dsm.bwfa:MyOneTaskProcess",
-    "description": "Case - TaskFlow Sample Process",
-    "overlayGroupId": "Petramco",
-    "developerId": "com.bmc.dsm",
-    "scope": "PUBLIC",
-    "internal": true,
-    "guid": "IDGADGG8ECDC0AQ0AFDKQJCDEGR7LH",
-    "flowElements": [
-        {
-            "resourceType": "com.bmc.arsys.rx.services.process.domain.EndEventDefinition",
-            "lastUpdateTime": "2020-05-08T07:35:44.362+0000",
-            "lastChangedBy": "Fritz",
-            "owner": "Fritz",
-            "name": "End",
-            "tags": null,
-            "description": null,
-            "overlayGroupId": null,
-            "developerId": null,
-            "internal": false,
-            "guid": "rx-2d0772ed-34f8-4d6d-85d0-1716c1173a54",
-            "event": null
-        },
-        {
-            "resourceType": "com.bmc.arsys.rx.services.process.domain.StartEventDefinition",
-            "lastUpdateTime": "2020-05-08T07:35:44.362+0000",
-            "lastChangedBy": "Fritz",
-            "owner": "Fritz",
-            "name": "Start",
-            "tags": null,
-            "description": null,
-            "overlayGroupId": null,
-            "developerId": null,
-            "internal": false,
-            "guid": "rx-0a8debc5-6f52-4dd0-92f6-9f0596628644"
-        },
-        {
-            "resourceType": "com.bmc.arsys.rx.services.process.domain.CallActivityDefinition",
-            "name": "CreateTask",
-            "description": null,
-            "multiInstanceLoopDefinition": null,
-            "calledProcessDefinitionName": "com.bmc.dsm.task-lib:Create Task",
-            "inputMap": [
-                {
-                    "assignTarget": "caseId",
-                    "expression": "${processContext.CaseId}"
-                },
-                {
-                    "assignTarget": "taskSummary",
-                    "expression": "\"My One Task Process\""
-                },
-                {
-                    "assignTarget": "taskTemplateId",
-                    "expression": "\"templateId\""
-                },
-                {
-                    "assignTarget": "activityId",
-                    "expression": "\"rx-35fd70f3-4ed3-4604-9749-58bd25ddc684\""
-                }
-            ],
-            "outputMap": [
-                {
-                    "assignTarget": "DynamicData",
-                    "expression": "${activityResults.rx-35fd70f3-4ed3-4604-9749-58bd25ddc684.DynamicData}"
-                }
-            ],
-            "guid": "rx-35fd70f3-4ed3-4604-9749-58bd25ddc684"
-        },
-        {
-            "resourceType": "com.bmc.arsys.rx.services.process.domain.SequenceFlowDefinition",
-            "name": "Sequence Flow",
-            "description": "",
-            "sourceNode": "rx-0a8debc5-6f52-4dd0-92f6-9f0596628644",
-            "guid": "rx-d3e8c7b9-52c3-47ab-817f-3aa2c7d90b7e",
-            "targetNode": "rx-35fd70f3-4ed3-4604-9749-58bd25ddc684"
-        },
-        {
-            "resourceType": "com.bmc.arsys.rx.services.process.domain.SequenceFlowDefinition",
-            "name": "Sequence Flow",
-            "description": "",
-            "sourceNode": "rx-35fd70f3-4ed3-4604-9749-58bd25ddc684",
-            "guid": "rx-5a0ce0d7-f8d8-42b2-b44d-afbb11d45229",
-            "targetNode": "rx-2d0772ed-34f8-4d6d-85d0-1716c1173a54"
-        }
-    ],
+    "name": "com.bmc.dsm.case-lib:MyOneTaskProcess",
+    "guid": "rx-3b50828e-c651-4fa4-aa0b-e445bc2a0060",
+    "description": null,
+    "runAsUser": false,
+    "isEnabled": true,
     "inputParams": [
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.record.ObjectFieldDefinition",
-            "lastUpdateTime": "2020-05-08T07:35:44.362+0000",
-            "lastChangedBy": "Fritz",
-            "owner": "dev_girish",
             "name": "DynamicData",
             "tags": null,
             "description": "",
             "overlayGroupId": null,
             "developerId": null,
-            "internal": false,
             "id": 450000151,
-            "fieldOption": "OPTIONAL",
             "permissions": null,
             "fieldTypeName": "com.bmc.arsys.rx.services.process.domain.record.ObjectFieldType",
             "isInherited": false,
@@ -106,22 +22,18 @@ export const ONE_TASKFLOW = {
             "allowPermissionsOverlay": true,
             "allowOtherPropertiesOverlay": true,
             "auditOption": null,
-            "documentDefinitionName": "com.bmc.dsm.bwfa:asd",
-            "anyUserAllowedToSubmit": false
+            "documentDefinitionName": "com.bmc.dsm.ticketing-lib:Sample JSON Document",
+            "anyUserAllowedToSubmit": false,
+            "fieldOption": "OPTIONAL"
         },
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.record.RecordInstanceFieldDefinition",
-            "lastUpdateTime": "2020-05-08T07:35:44.362+0000",
-            "lastChangedBy": "Fritz",
-            "owner": "dev_girish",
             "name": "CaseRecord",
             "tags": null,
             "description": "",
             "overlayGroupId": null,
             "developerId": null,
-            "internal": false,
             "id": 450000152,
-            "fieldOption": "OPTIONAL",
             "permissions": null,
             "fieldTypeName": "com.bmc.arsys.rx.services.process.domain.record.RecordInstanceFieldType",
             "isInherited": false,
@@ -133,21 +45,17 @@ export const ONE_TASKFLOW = {
             "auditOption": null,
             "recordDefinitionName": "com.bmc.dsm.case-lib:Case",
             "useSampleData": false,
-            "anyUserAllowedToSubmit": false
+            "anyUserAllowedToSubmit": false,
+            "fieldOption": "OPTIONAL"
         },
         {
             "resourceType": "com.bmc.arsys.rx.standardlib.record.CharacterFieldDefinition",
-            "lastUpdateTime": "2020-05-08T07:35:44.362+0000",
-            "lastChangedBy": "Fritz",
-            "owner": "dev_girish",
             "name": "CaseId",
             "tags": null,
             "description": "",
             "overlayGroupId": null,
             "developerId": null,
-            "internal": false,
             "id": 450000153,
-            "fieldOption": "REQUIRED",
             "permissions": null,
             "fieldTypeName": "com.bmc.arsys.rx.services.record.domain.DefaultFieldType",
             "isInherited": false,
@@ -164,38 +72,97 @@ export const ONE_TASKFLOW = {
             "shouldPersistEncrypted": false,
             "shouldPersistHashed": false,
             "associationGuid": null,
-            "anyUserAllowedToSubmit": false
+            "anyUserAllowedToSubmit": false,
+            "identityField": false,
+            "fieldOption": "REQUIRED"
         }
     ],
-    "outputParams": [
-
-    ],
-    "localVariables": [
-
-    ],
-    "contextKeyParam": "CaseId",
-    "isEnabled": true,
-    "permissions": [
+    "outputParams": [],
+    "flowElements": [
         {
-            "ownerId": {
-                "value": -74004,
-                "type": "ROLE",
-                "name": "Case Application Access"
-            },
-            "type": "READ"
+            "resourceType": "com.bmc.arsys.rx.services.process.domain.SequenceFlowDefinition",
+            "name": "Sequence Flow",
+            "tags": null,
+            "description": "",
+            "overlayGroupId": null,
+            "developerId": null,
+            "guid": "rx-8ed42d89-fab1-44f9-880e-26dec6e6798f",
+            "sourceNode": "rx-479bdead-4573-4224-9da8-3682db35d558",
+            "targetNode": "rx-794ebe3c-15f9-4630-8c29-863ff6d03251",
+            "condition": ""
+        },
+        {
+            "resourceType": "com.bmc.arsys.rx.services.process.domain.EndEventDefinition",
+            "name": "End",
+            "tags": null,
+            "description": null,
+            "overlayGroupId": null,
+            "developerId": null,
+            "guid": "rx-c8f0fd5d-7c59-4ba3-a391-0e50e2097f12",
+            "event": null
+        },
+        {
+            "resourceType": "com.bmc.arsys.rx.services.process.domain.CallActivityDefinition",
+            "name": "com.bmc.dsm.task-lib:Create Task",
+            "tags": null,
+            "description": "",
+            "overlayGroupId": null,
+            "developerId": null,
+            "guid": "rx-794ebe3c-15f9-4630-8c29-863ff6d03251",
+            "multiInstanceLoopDefinition": null,
+            "calledProcessDefinitionName": "com.bmc.dsm.task-lib:Create Task",
+            "sampleProcessDefinitionName": "",
+            "inputMap": [
+                {
+                    "assignTarget": "taskSummary",
+                    "expression": "\"My one task process\""
+                },
+                {
+                    "assignTarget": "activityId",
+                    "expression": "\"rx-c93a929d-432a-4c8f-9639-cb44446217e9\""
+                },
+                {
+                    "assignTarget": "caseId",
+                    "expression": "${processContext.CaseId}"
+                },
+                {
+                    "assignTarget": "taskTemplateId",
+                    "expression": "\"templateId\""
+                }
+            ],
+            "outputMap": []
+        },
+        {
+            "resourceType": "com.bmc.arsys.rx.services.process.domain.SequenceFlowDefinition",
+            "name": "Sequence Flow",
+            "tags": null,
+            "description": "",
+            "overlayGroupId": null,
+            "developerId": null,
+            "guid": "rx-0230efaa-f997-4712-b13f-d0b889065774",
+            "sourceNode": "rx-794ebe3c-15f9-4630-8c29-863ff6d03251",
+            "targetNode": "rx-c8f0fd5d-7c59-4ba3-a391-0e50e2097f12",
+            "condition": ""
+        },
+        {
+            "resourceType": "com.bmc.arsys.rx.services.process.domain.StartEventDefinition",
+            "name": "Start",
+            "tags": null,
+            "description": null,
+            "overlayGroupId": null,
+            "developerId": null,
+            "guid": "rx-479bdead-4573-4224-9da8-3682db35d558"
         }
     ],
-    "layout": "{\"cells\":[{\"id\":\"2d0772ed-34f8-4d6d-85d0-1716c1173a54\",\"position\":{\"x\":900,\"y\":375},\"size\":{\"width\":30,\"height\":30},\"type\":\"rx.EndEvent\",\"z\":2,\"attrs\":{\".label\":{\"text\":\"\"}}},{\"id\":\"0a8debc5-6f52-4dd0-92f6-9f0596628644\",\"position\":{\"x\":550,\"y\":375},\"size\":{\"width\":30,\"height\":30},\"type\":\"rx.StartEvent\",\"z\":6,\"attrs\":{\".label\":{\"text\":\"\"}}},{\"collapsedSize\":{\"width\":90,\"height\":60},\"content\":\"MyOneTask\",\"expanded\":false,\"id\":\"35fd70f3-4ed3-4604-9749-58bd25ddc684\",\"position\":{\"x\":705,\"y\":355},\"size\":{\"width\":90,\"height\":60},\"type\":\"rx.CallActivity.com.bmc.dsm.task-lib.Create Task\",\"z\":7},{\"flowType\":\"normal\",\"id\":\"d3e8c7b9-52c3-47ab-817f-3aa2c7d90b7e\",\"labels\":[{\"attrs\":{\"text\":{\"text\":\"\"}},\"position\":\"0.5\"}],\"source\":{\"id\":\"0a8debc5-6f52-4dd0-92f6-9f0596628644\"},\"target\":{\"id\":\"35fd70f3-4ed3-4604-9749-58bd25ddc684\"},\"type\":\"rx.SequenceFlow\",\"z\":8},{\"flowType\":\"normal\",\"id\":\"5a0ce0d7-f8d8-42b2-b44d-afbb11d45229\",\"labels\":[{\"attrs\":{\"text\":{\"text\":\"\"}},\"position\":\"0.5\"}],\"source\":{\"id\":\"35fd70f3-4ed3-4604-9749-58bd25ddc684\"},\"target\":{\"id\":\"2d0772ed-34f8-4d6d-85d0-1716c1173a54\"},\"type\":\"rx.SequenceFlow\",\"z\":9}]}",
-    "artifacts": [
-
-    ],
-    "runAsUser": false,
-    "synchronous": true,
-    "overlayDescriptor": null,
+    "artifacts": [],
+    "layout": "{\"cells\":[{\"id\":\"479bdead-4573-4224-9da8-3682db35d558\",\"position\":{\"x\":50,\"y\":375},\"size\":{\"width\":30,\"height\":30},\"type\":\"rx.StartEvent\",\"z\":1,\"attrs\":{\".label\":{\"text\":\"\"}}},{\"id\":\"c8f0fd5d-7c59-4ba3-a391-0e50e2097f12\",\"position\":{\"x\":900,\"y\":375},\"size\":{\"width\":30,\"height\":30},\"type\":\"rx.EndEvent\",\"z\":2,\"attrs\":{\".label\":{\"text\":\"\"}}},{\"collapsedSize\":{\"width\":90,\"height\":60},\"content\":\"Create Task\",\"expanded\":false,\"id\":\"794ebe3c-15f9-4630-8c29-863ff6d03251\",\"position\":{\"x\":430,\"y\":305},\"size\":{\"width\":90,\"height\":60},\"type\":\"rx.CallActivity\",\"z\":6},{\"flowType\":\"normal\",\"id\":\"8ed42d89-fab1-44f9-880e-26dec6e6798f\",\"labels\":[{\"attrs\":{\"text\":{\"text\":\"\"}},\"position\":\"0.5\"}],\"source\":{\"id\":\"479bdead-4573-4224-9da8-3682db35d558\"},\"target\":{\"id\":\"794ebe3c-15f9-4630-8c29-863ff6d03251\"},\"type\":\"rx.SequenceFlow\",\"z\":7},{\"flowType\":\"normal\",\"id\":\"0230efaa-f997-4712-b13f-d0b889065774\",\"labels\":[{\"attrs\":{\"text\":{\"text\":\"\"}},\"position\":\"0.5\"}],\"source\":{\"id\":\"794ebe3c-15f9-4630-8c29-863ff6d03251\"},\"target\":{\"id\":\"c8f0fd5d-7c59-4ba3-a391-0e50e2097f12\"},\"type\":\"rx.SequenceFlow\",\"z\":8}]}",
     "allowOverlay": false,
-    "localizableStrings": {
-
-    }
+    "scope": "BUNDLE",
+    "localVariables": [],
+    "permissions": [],
+    "tags": null,
+    "contextKeyParam": null,
+    "localizableStrings": {}
 };
 
 export const TWO_TASKFLOW_SEQUENTIAL = {

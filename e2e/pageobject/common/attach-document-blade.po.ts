@@ -75,7 +75,7 @@ class AttachDocumentBlade {
         await $(this.selectors.searchBox).clear();
         await $(this.selectors.searchBox).sendKeys(documentName + protractor.Key.ENTER);
         let i: number;
-        for (i = 0; i <= 10; i++) {
+        for (i = 0; i <= 5; i++) {
             let bolnVal: boolean = await $(this.selectors.iconCircle).isPresent();
             if (bolnVal == false) {
                 await browser.sleep(3000);
