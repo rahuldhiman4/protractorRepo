@@ -5,7 +5,7 @@ class PreviewTaskTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         taskummary: '[rx-view-component-id="a790b9d4-46d5-408c-8f86-4e04a683bc3d"] span',
-        taskSummaryValue: '[rx-view-component-id="a790b9d4-46d5-408c-8f86-4e04a683bc3d"] p',
+        taskSummaryValue: '[rx-view-component-id="a790b9d4-46d5-408c-8f86-4e04a683bc3d"] div.read-only-content',
         taskTemplateName: '[rx-view-component-id="227ba62e-b3ee-4f84-958c-7d2c7f2d2be3"] span',
         taskCompany: '44e56c5d-b8d5-4f23-b4b6-da4d8baa43e9',
         taskCompanyValue: '[rx-view-component-id="44e56c5d-b8d5-4f23-b4b6-da4d8baa43e9"] .d-textfield__rx-value',

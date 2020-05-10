@@ -8,7 +8,6 @@ import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import resources from '../../pageobject/common/resources-tab.po';
@@ -191,6 +190,7 @@ describe("Case Preview", () => {
         let applyBtn = "Apply";
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = randomStr + 'caseTemplateName';
+        let assignmentMappingName = "DRDMV-13644" + randomStr;
         let templateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemplateName}`,
@@ -215,26 +215,29 @@ describe("Case Preview", () => {
             "region": "Australia",
             "site": "Canberra",
         }
-        let caseData = {
+        let caseData =
+        {
             "Requester": "qtao",
             "Summary": `${caseTemplateName}`,
             "Support Group": "Compensation and Benefits",
-            "Assignee": "qkatawazi"
+            "Assignee": "qkatawazi",
+            "Status": "3000",
         }
         await apiHelper.apiLogin('qtao');
+        await apiHelper.createCase(caseData);
         await apiHelper.createCaseTemplate(templateData);
         await apiHelper.createKnowledgeArticle(articleData1);
-        await apiHelper.createCase(caseData)
+
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName('qkatawazi');
         await quickCasePo.selectCaseTemplate(caseTemplateName);
         await quickCasePo.setCaseSummary(caseTemplateName);
-        await quickCasePo.pinRecommendedCases(1);
         await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
         await resources.enterAdvancedSearchText(caseTemplateName);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await quickCasePo.pinRecommendedKnowledgeArticles(1);
+        await quickCasePo.pinRecommendedCases(1);
         await quickCasePo.saveCase();
 
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('failureMsg: Case Preview Title is missing');

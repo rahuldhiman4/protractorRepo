@@ -149,7 +149,7 @@ export class Util {
     }
 
     async waitUntilPopUpDisappear(): Promise<void> {
-        await browser.wait(this.EC.invisibilityOf($(this.selectors.popUpMsgLocator)), 5000);
+        await browser.wait(this.EC.invisibilityOf($(this.selectors.popUpMsgLocator)), 10000);
     }
 
     async closePopUpMessage(): Promise<void> {
@@ -328,13 +328,27 @@ export class Util {
         await browser.waitForAngularEnabled(false);
         let arr: string[] = [];
         if (expectedNoOfMsgs) {
+            let count = 0;
+            let i = 0;
+            arr[i] = await $$(this.selectors.popUpMsgLocator).first().getText();
+            let prevVal = arr[0];
             if (await browser.wait(this.EC.or(async () => {
-                let count = await $$(this.selectors.popUpMsgLocator).count();
-                return count == expectedNoOfMsgs;
-            }), 5000)) {
-                let msgLocator = await $$(this.selectors.popUpMsgLocator);
-                for (let i = 0; i < msgLocator.length; i++) {
-                    arr[i] = await msgLocator[i].getText();
+                count = await $$(this.selectors.popUpMsgLocator).count();
+                let temp = await $$(this.selectors.popUpMsgLocator).first().getText();
+                if (temp != prevVal) {
+                    i++;
+                    arr[i] = temp;
+                    prevVal = temp;
+                }
+                // console.log("i= ",i," and count is ",count," and array is ",arr)
+                return (count == expectedNoOfMsgs) || (arr.length == expectedNoOfMsgs);
+            }), 8000)) {
+                if (count == expectedNoOfMsgs) {
+                    let msgLocator = await $$(this.selectors.popUpMsgLocator);
+                    for (let j = 0; j < msgLocator.length; j++) {
+                        arr[j] = await msgLocator[j].getText();
+                    }
+                    // console.log("arr[j]: ",arr);
                 }
             }
         }

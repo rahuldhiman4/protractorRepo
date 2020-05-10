@@ -311,7 +311,7 @@ describe('Create Case Task', () => {
         await expect(editTaskTemplate.getTaskTypeValue()).toBe('Automated');
         await expect(editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
         await expect(editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
-    }, 280 * 1000);
+    }, 350 * 1000);
 
     //ankagraw
     it('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: [ Task ] - Verify Associated menu for Task will show global configuration values as well	 ', async () => {
@@ -376,7 +376,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 290 * 1000);
+    }, 350 * 1000);
 
     //ankagraw
     it('[DRDMV-12558]: Task Template submitter from different company of owner group can edit the template', async () => {
@@ -658,7 +658,7 @@ describe('Create Case Task', () => {
              await navigationPage.signOut();
              await loginPage.login('qkatawazi');
          }
-    });
+    }, 300 * 1000);
 
     //ankagraw
     it('[DRDMV-2475]: [Permissions] Settings menu for Case Functional Roles', async () => {

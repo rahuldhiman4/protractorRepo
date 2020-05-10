@@ -647,7 +647,7 @@ describe("Compose Email", () => {
             await navigationPage.signOut();
             await loginPage.login("qtao");
         }
-    }, 400 * 1000);
+    }, 440 * 1000);
 
     it('[DRDMV-9033]: Negative - Verify Discard button on adding attachment in Compose Email', async () => {
         await navigationPage.gotoCaseConsole();

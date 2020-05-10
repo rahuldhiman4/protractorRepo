@@ -46,8 +46,8 @@ class ViewCasePage {
         attachmentFile: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .bwf-attachment-container__file-name',
         caseTemplate: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .read-only-content',
         sourceValue: '[rx-view-component-id="8abd013f-26cd-4aa5-a3bb-63b063d3a7ec"] .read-only-content',
-        showMore: '.rx-attachment-show-text',
-        dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group label',
+        showMore: '.btn-link .ng-star-inserted',
+        dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] label',
         dynamicFieldsValue: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .read-only-content',
         slaProgressBar: '.progress-bar',
         tab: '.nav-item button',
@@ -316,16 +316,43 @@ class ViewCasePage {
     async getSourceValue(): Promise<string> {
         return await $(this.selectors.sourceValue).getText();
     }
-    async getShowMoreLessAttachmentsLinkText(): Promise<string> {
-        return await $(this.selectors.showMore).getText();
+    async getShowMoreLessAttachmentsLinkText(label?: string): Promise<string> {
+        if (label) {
+            let dynamicAttachment = await $$('[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group').count();
+            for (let i = 0; i < dynamicAttachment; i++) {
+                let fieldName = await $$('[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group label').get(i).getText();
+                if (fieldName == label) {
+                    return $$('[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group').get(i).$(this.selectors.showMore).getText();
+                }
+            }
+        } else {
+            return $$(this.selectors.showMore).first().getText();
+        }
     }
 
-    async clickShowMoreLink(): Promise<void> {
-        return await $(this.selectors.showMore).click();
+    async clickShowMoreShowLessLink(label?: string): Promise<void> {
+        if (label) {
+            let dynamicAttachment = await $$('[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group').count();
+            for (let i = 0; i < dynamicAttachment; i++) {
+                let fieldName = await $$('[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group label').get(i).getText();
+                if (fieldName == label) {
+                    await $$('[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group').get(i).$(this.selectors.showMore).click();
+                }
+            }
+        } else {
+            await $$(this.selectors.showMore).first().click();
+        }
     }
 
     async isFileDisplayed(fileName: string): Promise<boolean> {
-        return await $(`.rx-attachment-view-thumbnail [alt=${fileName}]`).isDisplayed();
+        let fileCount: number = await $$('span.bwf-attachment-container__file-name').count();
+        for (let i = 0; i < fileCount; i++) {
+            let fileNameText = await $$('span.bwf-attachment-container__file-name').get(i).getText();
+            if (fileName == fileNameText) {
+                return true;
+            }
+        }
+        return false;
     }
 
     async getSlaBarColor(): Promise<string> {
@@ -334,7 +361,13 @@ class ViewCasePage {
     }
 
     async clickOnDownloadFile(fileName: string): Promise<void> {
-        await $(`div[aria-label="Download attachment ${fileName}"]`).click();
+        let fileCount: number = await $$('span.bwf-attachment-container__file-name').count();
+        for (let i = 0; i < fileCount; i++) {
+            let fileNameText = await $$('span.bwf-attachment-container__file-name').get(i).getText();
+            if (fileName == fileNameText) {
+                await $$('span.bwf-attachment-container__file-name').get(i).click();
+            }
+        }
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
@@ -356,11 +389,11 @@ class ViewCasePage {
                 return await $$(this.selectors.dynamicFieldsValue).get(i).getText();
             }
         }
-        return null;
+        return undefined;
     }
 
     async clickOnRequesterMail(): Promise<void> {
-        return await $(this.selectors.personEmailLink).click();
+        await $(this.selectors.personEmailLink).click();
     }
 
 }

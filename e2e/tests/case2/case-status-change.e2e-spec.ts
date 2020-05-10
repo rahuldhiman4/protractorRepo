@@ -292,7 +292,7 @@ describe('Case Status Change', () => {
         expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
         await updateStatusBladePo.changeCaseStatus(statusInProgress);
         expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
-    }, 300 * 1000);
+    }, 340 * 1000);
 
     //kgaikwad
     it('[DRDMV-1227]: [Case Status] Case status change from Canceled', async () => {

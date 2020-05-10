@@ -89,11 +89,11 @@ describe('Document Library Consume UI', () => {
         await attachDocumentBladePo.searchAndAttachDocument(publishDocData.docLibTitle);
         await editCasePo.clickSaveCase();
         await viewCasePo.clickAttachmentsLink();
-        await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is delete sucessfully');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('bwfJpg');
         await attachmentBladePo.clickOnDownloadButton();
-        await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('bwfJpg.jpg File is not downloaded.');
-        await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is delete sucessfully');
+        expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('bwfJpg.jpg File is not downloaded.');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is delete sucessfully');
         await attachmentBladePo.clickOnCloseButton();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
@@ -106,10 +106,10 @@ describe('Document Library Consume UI', () => {
         await navigationPage.gotoCaseConsole();
         await caseConsolePo.searchAndOpenCase(caseId);
         await viewCasePo.clickAttachmentsLink();
-        await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('failureMsg: Fail to delete bwfJpg.jpg file');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('failureMsg: Fail to delete bwfJpg.jpg file');
         await attachmentBladePo.searchAndSelectCheckBox('bwfJpg');
         await attachmentBladePo.clickOnDownloadButton();
-        await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is not downloaded.');
+        expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is not downloaded.');
     }, 450 * 1000);
 
     //kgaikwad
@@ -160,16 +160,16 @@ describe('Document Library Consume UI', () => {
             await viewCasePo.clickOnTab('Case Access');
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('qstrong');
-            await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Quin Strong')).toBeTruthy('Failuer: Quanah George Agent Name is missing');
+            expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Quin Strong')).toBeTruthy('Failuer: Quanah George Agent Name is missing');
             await navigationPage.gotoCaseConsole();
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(caseId);
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: Attached Document is missing');
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeFalsy('FailuerMsg: Attached Document is displyaed');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: File is delete sucessfully');
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: Attached Document is missing');
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeFalsy('FailuerMsg: Attached Document is displyaed');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: File is not downloaded.');
         } catch (e) {
             throw e;
         } finally {
@@ -263,32 +263,32 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
 
             await attachDocumentBladePo.searchRecord(publishDocLibData2.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13524_publish_document3 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13524_publish_document3 doc is displayed');
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13524_draft_document doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13524_draft_document doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
             await editTaskPo.clickOnSaveButton();
 
-            await expect(await viewTaskPo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
+            expect(await viewTaskPo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await viewTaskPo.clickOnAttachedDocumentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.clickOnAttachButton();
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
             await editTaskPo.clickOnAttachButton();
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await editTaskPo.clickOnSaveButton();
-            await expect(await viewTaskPo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
+            expect(await viewTaskPo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await viewTaskPo.clickOnAttachedDocumentFile('bwfPdf.pdf');
-            await expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
-            await expect(await viewTaskPo.isAttachedDocumentPresent('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+            expect(await viewTaskPo.isAttachedDocumentPresent('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
             await viewTaskPo.clickOnAttachedDocumentFile('bwfXlsx.xlsx');
-            await expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         } catch (e) {
             throw e;
         } finally {
@@ -351,10 +351,10 @@ describe('Document Library Consume UI', () => {
 
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
             await attachDocumentBladePo.searchRecord(publishDocLibData1.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData1.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13507_publish_document1 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData1.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13507_publish_document1 doc is displayed');
 
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: publishDocLib3 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: publishDocLib3 doc is displayed');
 
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument();
@@ -362,10 +362,10 @@ describe('Document Library Consume UI', () => {
             await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
 
             await viewCasePo.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
@@ -375,15 +375,15 @@ describe('Document Library Consume UI', () => {
             await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
-            await expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
-            await expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         } catch (e) {
             throw e;
         } finally {
@@ -442,18 +442,18 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
 
             await attachDocumentBladePo.searchRecord(publishDocLibData2.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13449_publish_document3 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13449_publish_document3 doc is displayed');
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
             await editCasePo.clickSaveCase();
 
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
@@ -461,15 +461,15 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await editCasePo.clickSaveCase();
 
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfPdf.pdf');
-            await expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
-
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+            await viewCasePo.clickShowMoreShowLessLink();
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfXlsx.xlsx');
-            await expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         } catch (e) {
             throw e;
         } finally {
@@ -533,18 +533,18 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
 
             await attachDocumentBladePo.searchRecord(publishDocLibData2.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13480_publish_document3 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13480_publish_document3 doc is displayed');
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13480_draft_document doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13480_draft_document doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
             await activityTabPo.clickOnPostButton();
             // await utilityCommon.waitUntilSpinnerToHide();
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
 
             await activityTabPo.addActivityNote(addNoteText);
             await activityTabPo.clickOnAttachLink();
@@ -553,15 +553,15 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await activityTabPo.clickOnPostButton();
             // await utilityCommon.waitUntilSpinnerToHide();
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
-            await expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
-            await expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         } catch (e) {
             throw e;
         } finally {
@@ -627,18 +627,18 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
 
             await attachDocumentBladePo.searchRecord(publishDocLibData2.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13479_publish_document3 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13479_publish_document3 doc is displayed');
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
             await activityTabPo.clickOnPostButton();
             // await utilityCommon.waitUntilSpinnerToHide();
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
 
             await activityTabPo.addActivityNote(addNoteText);
             await activityTabPo.clickOnAttachLink();
@@ -647,15 +647,15 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await activityTabPo.clickOnPostButton();
             // await utilityCommon.waitUntilSpinnerToHide();
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
-            await expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
-            await expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         } catch (e) {
             throw e;
         } finally {
@@ -715,18 +715,18 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
 
             await attachDocumentBladePo.searchRecord(publishDocLibData2.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13463_publish_document3 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13463_publish_document3 doc is displayed');
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13463_draft_document doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13463_draft_document doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
             await editCasePo.clickSaveCase();
 
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
@@ -734,15 +734,15 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await editCasePo.clickSaveCase();
 
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfPdf.pdf');
-            await expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
-
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+            await viewCasePo.clickShowMoreShowLessLink();
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfXlsx.xlsx');
-            await expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         } catch (e) {
             throw e;
         } finally {
@@ -805,10 +805,10 @@ describe('Document Library Consume UI', () => {
 
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
             await attachDocumentBladePo.searchRecord(publishDocLibData1.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData1.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13506_publish_document3 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData1.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13506_publish_document3 doc is displayed');
 
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13506_draft_document doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13506_draft_document doc is displayed');
 
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument();
@@ -816,10 +816,10 @@ describe('Document Library Consume UI', () => {
             await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
 
             await viewCasePo.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
@@ -829,15 +829,15 @@ describe('Document Library Consume UI', () => {
             await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
-            await expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
-            await expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         } catch (e) {
             throw e;
         } finally {
@@ -902,18 +902,18 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
 
             await attachDocumentBladePo.searchRecord(publishDocLibData2.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: publishDocLib3 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: publishDocLib3 doc is displayed');
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
             await activityTabPo.clickOnPostButton();
             // await utilityCommon.waitUntilSpinnerToHide();
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
 
             await activityTabPo.addActivityNote(addNoteText);
             await activityTabPo.clickOnAttachLink();
@@ -922,15 +922,15 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await activityTabPo.clickOnPostButton();
             // await utilityCommon.waitUntilSpinnerToHide();
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
-            await expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
-            await expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         } catch (e) {
             throw e;
         } finally {
@@ -991,18 +991,18 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
 
             await attachDocumentBladePo.searchRecord(publishDocLibData2.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: publishDocLib3 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: publishDocLib3 doc is displayed');
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
             await editCasePo.clickSaveCase();
 
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
@@ -1010,15 +1010,15 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await editCasePo.clickSaveCase();
 
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfPdf.pdf');
-            await expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
-
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+            await viewCasePo.clickShowMoreShowLessLink();
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfXlsx.xlsx');
-            await expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         } catch (e) {
             throw e;
         } finally {
@@ -1047,7 +1047,7 @@ describe('Document Library Consume UI', () => {
         await quickCasePo.selectRequesterName('qtao');
         await quickCasePo.setCaseSummary(publishDocLibData1.docLibTitle);
         // await utilityCommon.waitUntilSpinnerToHide();
-        await expect(await quickCasePo.isRecommendedKnowledgeEmpty()).toBeTruthy('FailuerMsg: Recommended knowledge is not empty');
+        expect(await quickCasePo.isRecommendedKnowledgeEmpty()).toBeTruthy('FailuerMsg: Recommended knowledge is not empty');
 
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1066,10 +1066,10 @@ describe('Document Library Consume UI', () => {
         await editCasePo.updateCaseSummary(publishDocLibData1.docLibTitle);
         await editCasePo.clickSaveCase();
         await viewCasePo.clickOnTab('Resources')
-        await expect(await resourcesTabPo.isSearchRecordEmpty(1)).toBeTruthy('Failuer1: Knowledge Article is not empty');
+        expect(await resourcesTabPo.isSearchRecordEmpty(1)).toBeTruthy('Failuer1: Knowledge Article is not empty');
         await resourcesTabPo.clickOnAdvancedSearchOptions('Knowledge Articles ');
         await resourcesTabPo.searchTextAndEnter(publishDocLibData1.docLibTitle);
-        await expect(await resourcesTabPo.isSearchRecordEmpty(1)).toBeTruthy('Failuer2: Knowledge Article is not empty');
+        expect(await resourcesTabPo.isSearchRecordEmpty(1)).toBeTruthy('Failuer2: Knowledge Article is not empty');
     }, 400 * 1000);
 
     //kgaikwad
@@ -1161,21 +1161,20 @@ describe('Document Library Consume UI', () => {
 
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
             await attachDocumentBladePo.searchRecord(publishDocLibData1.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData1.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13517_publish_document3 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData1.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13517_publish_document3 doc is displayed');
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
-
             await adhoctaskTemplate.clickOnSaveAdhoctask();
+            await utilityCommon.waitUntilPopUpDisappear();
             await manageTask.clickOnCloseButton();
-
             await viewCasePo.clickOnTaskLink(adhocTaskSummary1);
-            await expect(await viewTaskPo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
+            expect(await viewTaskPo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await viewTaskPo.clickOnAttachedDocumentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
             await utilityCommon.scrollUpOrDownTillElement(viewTaskPo.selectors.viewCaseLink);
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAddTaskButton();
@@ -1186,15 +1185,16 @@ describe('Document Library Consume UI', () => {
             await adhoctaskTemplate.clickOnAttachButton();
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await adhoctaskTemplate.clickOnSaveAdhoctask();
+            await utilityCommon.waitUntilPopUpDisappear();
             await manageTask.clickTaskLinkOnManageTask(adhocTaskSummary2);
-            await expect(await viewTaskPo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
+            expect(await viewTaskPo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await viewTaskPo.clickOnAttachedDocumentFile('bwfPdf.pdf');
-            await expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
-            await expect(await viewTaskPo.isAttachedDocumentPresent('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+            expect(await viewTaskPo.isAttachedDocumentPresent('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
             await viewTaskPo.clickOnAttachedDocumentFile('bwfXlsx.xlsx');
-            await expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         } catch (e) {
             throw e;
         } finally {
@@ -1271,9 +1271,9 @@ describe('Document Library Consume UI', () => {
 
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
             await attachDocumentBladePo.searchRecord(publishDocLibData1.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData1.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13508_publish_document3 doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData1.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13508_publish_document3 doc is displayed');
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
-            await expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13508_draft_document doc is displayed');
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13508_draft_document doc is displayed');
 
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument();
@@ -1281,10 +1281,10 @@ describe('Document Library Consume UI', () => {
             await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
 
             await viewCasePo.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
@@ -1294,15 +1294,15 @@ describe('Document Library Consume UI', () => {
             await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
-            await expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
-            await expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         } catch (e) {
             throw e;
         } finally {
@@ -1352,20 +1352,20 @@ describe('Document Library Consume UI', () => {
         await activityTabPo.clickOnAttachLink();
         await attachDocumentBladePo.clickOnAdvanceSearchButton();
         await attachDocumentBladePo.searchRecord(publish[0]);
-        await expect(await attachDocumentBladePo.isBladeTitleDisplayed()).toBeTruthy(': Attach Document Blade title is missing');
-        await expect(await attachDocumentBladePo.getTextOfDocumentListHeading()).toContain('Document Library ');
-        await expect(await attachDocumentBladePo.isAttachFromLocalDriveButtonDisplayed()).toBeTruthy('Failure: Attach from local drive button is missing');
-        await expect(await attachDocumentBladePo.isAttachButtonDisplayed()).toBeTruthy('Failure: Attach button is missing');
-        await expect(await attachDocumentBladePo.isCancelButtonDisplayed()).toBeTruthy('Failure: cancel button is missing');
-        await expect(await attachDocumentBladePo.isDocumentTitleDisplayed(publish[0])).toBeTruthy('Failure: bwfJpg.jpg file name is missing');
+        expect(await attachDocumentBladePo.isBladeTitleDisplayed()).toBeTruthy(': Attach Document Blade title is missing');
+        expect(await attachDocumentBladePo.getTextOfDocumentListHeading()).toContain('Document Library ');
+        expect(await attachDocumentBladePo.isAttachFromLocalDriveButtonDisplayed()).toBeTruthy('Failure: Attach from local drive button is missing');
+        expect(await attachDocumentBladePo.isAttachButtonDisplayed()).toBeTruthy('Failure: Attach button is missing');
+        expect(await attachDocumentBladePo.isCancelButtonDisplayed()).toBeTruthy('Failure: cancel button is missing');
+        expect(await attachDocumentBladePo.isDocumentTitleDisplayed(publish[0])).toBeTruthy('Failure: bwfJpg.jpg file name is missing');
         let objDate: Date = new Date();
         let numYear: number = objDate.getFullYear();
         let year = new Number(numYear).toString();
-        await expect(await attachDocumentBladePo.isUpdatedDateDisplayed(year)).toBeTruthy('Failure: cancel button is missing');
-        await expect(await attachDocumentBladePo.isDocumentAttachmentNameDisplayed('bwfJpg.jpg')).toBeTruthy('Failure: attached file name is missing');
+        expect(await attachDocumentBladePo.isUpdatedDateDisplayed(year)).toBeTruthy('Failure: cancel button is missing');
+        expect(await attachDocumentBladePo.isDocumentAttachmentNameDisplayed('bwfJpg.jpg')).toBeTruthy('Failure: attached file name is missing');
         await attachDocumentBladePo.isDocumentLibaryPresent(publish[0]);
         await attachDocumentBladePo.searchRecord('%');
-        await expect(await attachDocumentBladePo.isPaginationPresent()).toBeTruthy('Failure: Pagination is missing');
+        expect(await attachDocumentBladePo.isPaginationPresent()).toBeTruthy('Failure: Pagination is missing');
         await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
         await resourcesTabPo.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Applications');
         await resourcesTabPo.selectAdvancedSearchFilterOption('Region', 'Australia');
@@ -1377,15 +1377,15 @@ describe('Document Library Consume UI', () => {
         await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
         await activityTabPo.clickOnPostButton();
         // await utilityCommon.waitUntilSpinnerToHide();
-        await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
-        await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
+        expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
         await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
-        await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
+        expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
 
-        await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf Attached Document is missing');
-        await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
+        expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf Attached Document is missing');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
         await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
-        await expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+        expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
     }, 800 * 1000);
 
     //kgaikwad
@@ -1428,58 +1428,58 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
             await activityTabPo.clickOnPostButton();
             // await utilityCommon.waitUntilSpinnerToHide();
-            await expect (await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed')
+            expect(await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed')
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
-            await expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is not downloaded.');
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailureMsg:bwfXlsx.xlsx Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailureMsg:bwfXlsx.xlsx Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
-            await expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
 
             await viewCasePo.clickOnTab('Case Access');
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('qstrong');
-            await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Quin Strong')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
+            expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Quin Strong')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
             await caseAccessTabPo.selectAndAddAgent('qgeorge');
-            await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Quanah George')).toBeTruthy('Failuer: Quanah George Agent Name is missing');
+            expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Quanah George')).toBeTruthy('Failuer: Quanah George Agent Name is missing');
 
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(caseId);
-            await expect(await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed');
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg:bwfJpg.jpg Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
+            expect(await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg:bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg:bwfPdf.pdf Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg:bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
-            await expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is not downloaded.');
 
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailureMsg:bwfXlsx.xlsx Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailureMsg:bwfXlsx.xlsx Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
-            await expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
 
             await navigationPage.signOut();
             await loginPage.loginWithCredentials('qgeorge@petramco.com', 'Password_1234');
             await caseConsolePo.searchAndOpenCase(caseId);
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailureMsg:bwfXlsx.xlsx Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is delete sucessfully');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailureMsg:bwfXlsx.xlsx Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
-            await expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeFalsy('FailureMsg:bwfJpg.jpg Attached Document is displayed');
-            await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeFalsy('FailureMsg:bwfPdf.pdf Attached Document is displayed');
+            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeFalsy('FailureMsg:bwfJpg.jpg Attached Document is displayed');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeFalsy('FailureMsg:bwfPdf.pdf Attached Document is displayed');
         } catch (e) {
             throw e;
         } finally {
@@ -1535,24 +1535,24 @@ describe('Document Library Consume UI', () => {
             await editCasePo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publishDocLibData2.docLibTitle);
             await editCasePo.clickSaveCase();
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
 
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfPdf.pdf');
-            await expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is not downloaded.');
 
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(caseId);
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
-            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfJpg.jpg');
-            await expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeFalsy('FailuerMsg: bwfPdf.pdf Attached Document is displayed');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeFalsy('FailuerMsg: bwfPdf.pdf Attached Document is displayed');
 
             await navigationPage.signOut();
             await loginPage.login(loginId);
@@ -1564,12 +1564,12 @@ describe('Document Library Consume UI', () => {
             await changeAssignmentBladePo.selectAssignee('Quanah George');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
-            await expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
+            expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
             await navigationPage.signOut();
             await loginPage.loginWithCredentials('qgeorge@petramco.com', 'Password_1234');
             await caseConsolePo.searchAndOpenCase(caseId);
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeFalsy('FailureMsg: bwfJpg.jpg Attached Document is displayed');
-            await expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeFalsy('FailureMsg: bwfPdf.pdf Attached Document is displayed');
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeFalsy('FailureMsg: bwfJpg.jpg Attached Document is displayed');
+            expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeFalsy('FailureMsg: bwfPdf.pdf Attached Document is displayed');
         } catch (e) {
             throw e;
         } finally {

@@ -138,5 +138,9 @@
 	"kwilliams": {
 		"userName": "kwilliams@petramco.com",
 		"userPassword": "Password_1234"
+	},
+	"rrovnitov": {
+		"userName": "rrovnitov@petramco.com",
+		"userPassword": "Password_1234"
 	}
 }

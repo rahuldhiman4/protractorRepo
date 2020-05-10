@@ -347,7 +347,7 @@ describe("Create Case Assignment Mapping", () => {
         await changeAssignmentPage.selectAssignee('fnPerson11825 lnPerson11825');
         await changeAssignmentPage.clickOnAssignButton();
         await createCasePage.clickSaveCaseButton();
-        await utilityCommon.waitUntilPopUpDisappear();
+        await utilityCommon.closePopUpMessage();
         await previewCasePo.clickGoToCaseButton();
         expect(await viewCasePage.getAssignedGroupText()).toBe(suppGrpData.orgName, "Support Group Not Populated");
         expect(await viewCasePage.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
@@ -371,7 +371,7 @@ describe("Create Case Assignment Mapping", () => {
         await changeAssignmentPage.clickOnAssignButton();
         await editTaskPo.updateTaskSummary(summary);
         await editTaskPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await utilCommon.scrollUpOrDownTillElement(viewTask.selectors.assignedGroupValue);
         expect(await viewTask.getAssignedGroupText()).toBe(suppGrpData.orgName, "Support Group Not Populated");
         expect(await viewTask.getAssigneeText()).toContain('fnPerson11825 lnPerson11825', "assignee is not available");
