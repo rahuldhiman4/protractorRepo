@@ -17,7 +17,7 @@ import selectTaskTemplate from "../../pageobject/settings/task-management/consol
 import createTaskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
-import taskConsole from "../../pageobject/task/console-task.po";
+import caseConsole from "../../pageobject/case/case-console.po";
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
@@ -656,7 +656,7 @@ describe('Case Data Store', () => {
             let caseID = await viewCasePo.getCaseID();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qkatawazi');
-            await quickCasePo.setSummaryAndClickOnRecommandedCase(caseID,caseTemplateName);
+            await quickCasePo.setSummaryAndClickOnRecommandedCase(caseID, caseTemplateName);
             //case preview
             await utilCommon.waitUntilSpinnerToHide();
             expect(await casePreviewPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
@@ -689,12 +689,12 @@ describe('Case Data Store', () => {
             expect(requesterResponseBladePo.isDynamicGroupDisplayed('GroupTwo'));
             let dynamicFieldsReqester: string[] = ['FieldGroup1', 'Field2Group1', 'FieldGroup2', 'Field2Group2', 'Field1Outside'];
             for (let i = 0; i < dynamicFieldsReqester.length; i++) {
-                expect(await requesterResponseBladePo.isDynamicFieldDisplayed(dynamicFieldsReqester[i])).toBeTruthy(dynamicFieldsReqester[i]+'field not present');
+                expect(await requesterResponseBladePo.isDynamicFieldDisplayed(dynamicFieldsReqester[i])).toBeTruthy(dynamicFieldsReqester[i] + 'field not present');
             }
             await requesterResponseBladePo.clickOkButton();
             await utilCommon.waitUntilSpinnerToHide();
             //requester case preview
-    
+
             expect(await casePreviewPo.isGroupDisplayed('GroupTwo')).toBeTruthy('group is not present');
             expect(await casePreviewPo.isGroupDisplayed('GroupOne')).toBeTruthy('group is not present');
             for (let i = 0; i < dynamicFieldsReqester.length; i++) {
@@ -771,7 +771,7 @@ describe('Case Data Store', () => {
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `Case Process 1 ${randomStr}`,
         }
-        console.log( `Automate13610${randomStr}`);
+        console.log(`Automate13610${randomStr}`);
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createAutomatedTaskTemplate(templateData);
         await navigationPage.gotoSettingsPage();
@@ -781,11 +781,12 @@ describe('Case Data Store', () => {
         expect(await editTaskTemplate.isAutomatedTaskTypeDisabled()).toBeTruthy('not disabled');
         expect(await editTaskTemplate.isProcessNameDisabled()).toBeTruthy('not disabled');
         await editTaskTemplate.selectTaskCategoryTier1('Accounts Receivable');
-        await editTaskTemplate.setSummary('update'+randomStr);
+        await editTaskTemplate.setSummary('update' + randomStr);
         await editTaskTemplate.selectPriorityValue('High');
         await editTaskTemplate.clickOnSaveButton();
         expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Accounts Receivable');
-        expect(await viewTaskTemplate.getSummaryValue()).toBe('update'+randomStr);
+        expect(await viewTaskTemplate.getSummaryValue()).toBe('update' + randomStr);
         expect(await viewTaskTemplate.getPriorityValue()).toBe('High');
     });//, 240 * 1000);
+
 })

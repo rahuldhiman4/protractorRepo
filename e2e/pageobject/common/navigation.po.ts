@@ -39,7 +39,7 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(0).click();
             return quickCase;
         } else {
-            return await $$('button.a-menu__link').first().getText() == 'Quick Case';
+            return await element(by.cssContainingText('button.a-menu__link','Quick Case ')).isPresent();
         }
     }
 
@@ -284,10 +284,13 @@ class NavigationPage {
         await element(by.cssContainingText(this.selectors.menu, applicationName)).click();
     }
 
-    
-    async getSettingPanelText(): Promise<String> {
-        let titleName = await $(this.selectors.panelHeadingOfSetting).getText();
-        return titleName;
+    async isSettingPanelTextMatches(text: string): Promise<boolean> {
+        let settingPaneltextLocator =  await element(by.cssContainingText(this.selectors.panelHeadingOfSetting, text));
+        return await $(this.selectors.panelHeadingOfSetting).isPresent().then(async (result) => {
+            await browser.wait(this.EC.visibilityOf(settingPaneltextLocator), 6000);
+            if (result) return await settingPaneltextLocator.isDisplayed();
+            else return false;
+        });
     }
 
     async switchToAngularJsTab(): Promise<void> {
