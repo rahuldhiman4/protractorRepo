@@ -214,7 +214,7 @@ class ActivityTabPage {
         let row = await $$('.activity .email-body table tr').get(rowNumber - 1);
         let cell = await row.$$('td').get(columnNumber - 1);
         let locator = `span[style='${value}']`;
-        return await cell.$(locator).getText();
+        return await cell.$(locator).getAttribute('innerHTML');
     }
 
     async addAttachment(fileToUpload: string[]): Promise<void> {
