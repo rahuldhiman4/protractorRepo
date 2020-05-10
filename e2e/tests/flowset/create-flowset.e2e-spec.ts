@@ -282,5 +282,5 @@ describe('Create Flowset', () => {
         await utilGrid.clearFilter();
 
         await consoleFlowset.removeColumn(["ID", 'Display ID']);
-    });
+    },620*1000);
 });

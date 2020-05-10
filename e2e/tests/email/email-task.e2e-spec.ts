@@ -58,8 +58,8 @@ describe('Email', () => {
             "templateName": `${automatedTaskTemplateName}`,
             "templateSummary": `${automatedTaskSummary}`,
             "templateStatus": "Active",
-            "processBundle": "com.bmc.arsys.rx.approval",
-            "processName": "Approval Process 1",
+            "processBundle": "com.bmc.dsm.case-lib",
+            "processName": "Auto Process",
         }
         await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
 
@@ -187,7 +187,7 @@ describe('Email', () => {
         //verify activity email post
         await emailPo.clickOnSendButton();
         expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
-    });//, 160 * 1000);
+    }, 300 * 1000);
 
     it('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -634,5 +634,5 @@ describe('Email', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         }
-    }, 320 * 1000);
+    }, 380 * 1000);
 })
