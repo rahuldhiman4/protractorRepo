@@ -245,8 +245,6 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText, 'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
             // 2nd Step: Open Task from pre condition and inspect its activities
             await viewCasePo.clickAddTaskButton();
-            console.log(manualTemplateData.templateName);
-            console.log(manualTemplateData.templateSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateName);
             await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
             await activityTabPage.addActivityNote(taskBodyText);
@@ -964,7 +962,7 @@ describe('Case Activity', () => {
             await activityTabPo.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi  viewed the case. ')).toEqual(1);
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
-            await browser.refresh();
+            await utilityCommon.refresh();
             await activityTabPage.clickOnRefreshButton();
             // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
