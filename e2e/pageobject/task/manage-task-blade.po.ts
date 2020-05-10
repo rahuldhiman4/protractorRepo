@@ -112,6 +112,7 @@ class ManageTaskBlade {
 
     async addTaskFromTaskTemplate(templateSummary: string): Promise<void> {
         await this.clickAddTaskFromTemplateButton();
+        await utilityGrid.clearFilter();
         await utilityGrid.searchAndSelectGridRecord(templateSummary);
         await this.clickOnTaskGridSaveButton();
     }

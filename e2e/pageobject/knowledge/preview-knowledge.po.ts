@@ -23,6 +23,7 @@ class PreviewKnowledge {
     }
 
     async clickOnViewArticleLink(): Promise<void> {
+        await browser.sleep(3000);
         await $(this.selectors.viewArticle).click();
     }
 
