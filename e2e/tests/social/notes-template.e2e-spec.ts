@@ -260,7 +260,6 @@ describe('Notes template', () => {
         await expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.')
         await editNotetemplate.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-        //await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
@@ -270,7 +269,6 @@ describe('Notes template', () => {
         await expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
         await editNotetemplate.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-        //await utilCommon.waitUntilSpinnerToHide();
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
@@ -280,8 +278,7 @@ describe('Notes template', () => {
         await expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
         await editNotetemplate.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-        //await utilCommon.waitUntilSpinnerToHide();
-    },270 * 1000);
+    },300 * 1000);
 
     //ptidke
     it('[DRDMV-16040]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {

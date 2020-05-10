@@ -487,7 +487,7 @@ describe('Create Task Template', () => {
         await utilityGrid.searchAndOpenHyperlink(taskTemplateSummary);
         await expect(activityTabPo.getTaskActivity('attachment')).toContain('attachment');
         await expect(activityTabPo.getTaskActivity('abcde')).toContain('abcde');
-    }, 500 * 1000);
+    }, 550 * 1000);
 
     //ankagraw
     it('[DRDMV-3768]: [Task Template Console] Filter menu verification', async () => {
@@ -570,5 +570,5 @@ describe('Create Task Template', () => {
         await utilGrid.addFilter("Display ID", taskTemplateId, 'text');
         expect(await utilGrid.isGridRecordPresent(taskTemplateId)).toBeTruthy(taskTemplateId + '  not present');
         await utilGrid.clearFilter();
-    });//, 150 * 1000);	
+    }, 300 * 1000);	
 });
