@@ -54,7 +54,6 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return createKnowledge;
         } else {
-            await element(by.cssContainingText(this.selectors.menu, /^Create$/)).click();
             return await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).isDisplayed();
         }
     }
@@ -80,8 +79,7 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return knowledgeConsole;
         } else {
-            await element(by.cssContainingText(this.selectors.menu, /^Workspace$/)).click();
-            return await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).isDisplayed();
+          return await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).isDisplayed();
         }
     }
 
@@ -93,7 +91,6 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return taskConsole;
         } else {
-            await element(by.cssContainingText(this.selectors.menu, /^Workspace$/)).click();
             return await element(by.cssContainingText(this.selectors.menu, /^Task$/)).isDisplayed();
         }
     }

@@ -84,8 +84,8 @@ export class Utility {
         await browser.executeScript("arguments[0].scrollIntoView();", $(`${element}`).getWebElement());
     }
 
-    async isPopUpMessagePresent(expectedMsg: string, expectedNoOfMsgs?: number): Promise<boolean> {
-        let arr: string[] = await this.getAllPopupMsg(expectedNoOfMsgs);
+    async isPopUpMessagePresent(expectedMsg: string, actualNumberOfPopups?: number): Promise<boolean> {
+        let arr: string[] = await this.getAllPopupMsg(actualNumberOfPopups);
         return arr.includes(expectedMsg);
     }
 
@@ -139,19 +139,6 @@ export class Utility {
             await browser.switchTo().window(handles[0]);
         });
     }
-
-    // async waitUntilSpinnerToHide(): Promise<void> {
-    //     try {
-    //         await browser.wait(this.EC.presenceOf($('.d-preloader')), 5000);
-    //         await browser.wait(this.EC.or(async () => {
-    //             await $$('.d-preloader').each(async function (element) {
-    //                 await element.getAttribute('innerHTML') == null;
-    //             });
-    //         }), 7000);
-    //     } catch (error) {
-    //         console.log('Spinner not present on the page');
-    //     }
-    // }
 
     /*Work as same as String.format i.e. first parameter is a string with multiple variables embedded and other parameters will replace the embedded variables of first string
     Example: 
@@ -317,8 +304,8 @@ export class Utility {
         await dateFieldGuid.$(this.selectors.okDateTimePicker).click();
     }
 
-    async isPopupMsgsMatches(msgs: string[], expectedNoOfMsgs?: number): Promise<boolean> {
-        let arr: string[] = await this.getAllPopupMsg(expectedNoOfMsgs);
+    async isPopupMsgsMatches(msgs: string[], actualNumberOfPopups?: number): Promise<boolean> {
+        let arr: string[] = await this.getAllPopupMsg(actualNumberOfPopups);
         msgs.sort();
         arr.sort();
         return arr.length === msgs.length && arr.every(
@@ -326,10 +313,10 @@ export class Utility {
         );
     }
 
-    async getAllPopupMsg(expectedNoOfMsgs?: number): Promise<string[]> {
+    async getAllPopupMsg(actualNumberOfPopups?: number): Promise<string[]> {
         await browser.waitForAngularEnabled(false);
         let arr: string[] = [];
-        if (expectedNoOfMsgs) {
+        if (actualNumberOfPopups) {
             let count = 0;
             let i = 0;
             arr[i] = await $$(this.selectors.popUpMsgLocator).first().getText();
@@ -343,9 +330,9 @@ export class Utility {
                     prevVal = temp;
                 }
                 // console.log("i= ",i," and count is ",count," and array is ",arr)
-                return (count == expectedNoOfMsgs) || (arr.length == expectedNoOfMsgs);
+                return (count == actualNumberOfPopups) || (arr.length == actualNumberOfPopups);
             }), 8000)) {
-                if (count == expectedNoOfMsgs) {
+                if (count == actualNumberOfPopups) {
                     let msgLocator = await $$(this.selectors.popUpMsgLocator);
                     for (let j = 0; j < msgLocator.length; j++) {
                         arr[j] = await msgLocator[j].getText();
@@ -355,11 +342,8 @@ export class Utility {
             }
         }
         else {
-            await browser.wait(this.EC.visibilityOf($$(this.selectors.popUpMsgLocator).last()), 5000);
-            let msgLocator = await $$(this.selectors.popUpMsgLocator);
-            for (let i: number = 0; i < msgLocator.length; i++) {
-                arr[i] = await msgLocator[i].getText();
-            }
+            await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)), 10000);
+            arr[0] = await $$(this.selectors.popUpMsgLocator).first().getText();
         }
         await browser.waitForAngularEnabled(true);
         return arr;

@@ -124,8 +124,8 @@ export class Util {
             return await $(this.selectors.errorMsg).isDisplayed();
     }
 
-    async isPopUpMessagePresent(expectedMsg: string, expectedNoOfMsgs?: number): Promise<boolean> {
-        let arr: string[] = await this.getAllPopupMsg(expectedNoOfMsgs);
+    async isPopUpMessagePresent(expectedMsg: string, actualNumberOfPopups?: number): Promise<boolean> {
+        let arr: string[] = await this.getAllPopupMsg(actualNumberOfPopups);
         return arr.includes(expectedMsg);
     }
 
@@ -158,6 +158,9 @@ export class Util {
             for (let i = 0; i < popups.length; i++) {
                 await popups[i].click();
             }
+        }).catch(async () => {
+            await this.waitUntilPopUpDisappear();
+            console.log('Popup is already closed');
         });
     }
 
@@ -315,8 +318,8 @@ export class Util {
         return date + '/' + month + '/' + year;
     }
 
-    async isPopupMsgsMatches(msgs: string[], expectedNoOfMsgs?: number): Promise<boolean> {
-        let arr: string[] = await this.getAllPopupMsg(expectedNoOfMsgs);
+    async isPopupMsgsMatches(msgs: string[], actualNumberOfPopups?: number): Promise<boolean> {
+        let arr: string[] = await this.getAllPopupMsg(actualNumberOfPopups);
         msgs.sort();
         arr.sort();
         return arr.length === msgs.length && arr.every(
@@ -324,10 +327,10 @@ export class Util {
         );
     }
 
-    async getAllPopupMsg(expectedNoOfMsgs?: number): Promise<string[]> {
+    async getAllPopupMsg(actualNumberOfPopups?: number): Promise<string[]> {
         await browser.waitForAngularEnabled(false);
         let arr: string[] = [];
-        if (expectedNoOfMsgs) {
+        if (actualNumberOfPopups) {
             let count = 0;
             let i = 0;
             arr[i] = await $$(this.selectors.popUpMsgLocator).first().getText();
@@ -341,9 +344,9 @@ export class Util {
                     prevVal = temp;
                 }
                 // console.log("i= ",i," and count is ",count," and array is ",arr)
-                return (count == expectedNoOfMsgs) || (arr.length == expectedNoOfMsgs);
+                return (count == actualNumberOfPopups) || (arr.length == actualNumberOfPopups);
             }), 8000)) {
-                if (count == expectedNoOfMsgs) {
+                if (count == actualNumberOfPopups) {
                     let msgLocator = await $$(this.selectors.popUpMsgLocator);
                     for (let j = 0; j < msgLocator.length; j++) {
                         arr[j] = await msgLocator[j].getText();
@@ -353,7 +356,7 @@ export class Util {
             }
         }
         else {
-            await browser.wait(this.EC.visibilityOf($$(this.selectors.popUpMsgLocator).last()), 5000);
+            await browser.wait(this.EC.visibilityOf($$(this.selectors.popUpMsgLocator).last()), 10000);
             let msgLocator = await $$(this.selectors.popUpMsgLocator);
             for (let i: number = 0; i < msgLocator.length; i++) {
                 arr[i] = await msgLocator[i].getText();

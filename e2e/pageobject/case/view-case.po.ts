@@ -1,5 +1,6 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import updateStatusBlade from '../../pageobject/common/update.status.blade.po';
+import utilityCommon from '../../utils/utility.common';
 
 class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -188,6 +189,7 @@ class ViewCasePage {
     }
 
     async openTaskCard(taskCardNumber: number): Promise<void> {
+        await utilityCommon.scrollUpOrDownTillElement(this.selectors.taskCardArrow);
         await $$(this.selectors.taskCardArrow).get(taskCardNumber - 1).click();
     }
 
