@@ -32,7 +32,7 @@ describe('Case Template', () => {
     });
 
     afterAll(async () => {
-         await navigationPage.signOut();
+        await navigationPage.signOut();
     });
 
     afterEach(async () => {
@@ -132,7 +132,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('franz');
             await navigationPage.gotoSettingsPage();   
-            expect(await navigationPage.getSettingPanelText()).toContain("Select a configuration option from the navigation menu to show configuration content here");
+            expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
         } catch (e) {
             throw e;
         } finally {
@@ -166,7 +166,7 @@ describe('Case Template', () => {
         await editCasetemplatePo.changeAssignmentMethodValue(caseTemplateAllFields.assignmentMethod);
         await expect(await editCasetemplatePo.getValueOfAssignmentMethod()).toContain(caseTemplateAllFields.assignmentMethod);
         await editCaseTemplate.clickSaveCaseTemplate();
-    },300*1000);
+    });
 
     //ptidke
     it('[DRDMV-14880]: Verify Case assignment method is set to None by default in a New/already existing Case template', async () => {
@@ -219,7 +219,7 @@ describe('Case Template', () => {
         await expect(await viewCaseTemplate.getOwnerGroupValue()).toContain(caseTemplateRequiredFields.supportGroup);
         await expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Petramco');
         await expect(await viewCaseTemplate.getTemplateStatusValue()).toContain(caseTemplateRequiredFields.templateStatus);
-    }, 380 * 1000);
+    }, 450 * 1000);
 
     //ptidke
     it('[DRDMV-1229]: [Case Template Console] Search by Summary and Display ID on the Case Template Console', async () => {
@@ -281,14 +281,14 @@ describe('Case Template', () => {
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('fritz');
             await quickCasePo.selectCaseTemplate(caseTemplateName);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy();
         } catch (e) {
             throw e;
@@ -297,7 +297,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 320 * 1000);
+    }, 300 * 1000);
 
     //ptidke
     it('[DRDMV-12578]:Case BA from other than case template owner group can NOT update the template', async () => {
@@ -392,7 +392,7 @@ describe('Case Template', () => {
         await editCasePo.clickOnChangeCaseTemplate();
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateNameWithNoValue);
         await editCasePo.clickSaveCase();
-        //await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus();
         await viewCasePo.openTaskCard(1);
@@ -423,7 +423,7 @@ describe('Case Template', () => {
         await viewTaskPo.clickOnSaveStatus();
         await viewTaskPo.clickOnViewCase();
         await expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
-    },250 * 1000);
+    },300 * 1000);
 
     //ptidke
     it('[DRDMV-19734]:[RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case Template view Look & Feel after adding new configuration field', async () => {
@@ -592,7 +592,7 @@ describe('Case Template', () => {
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateNamePsilon);
             await createCasePo.clickSaveCaseButton();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             expect(await previewCasePo.isCaseTemplateDisplayed(caseTemplateNamePsilon)).toBeTruthy("Template is not selected");
         } catch (e) {
             throw e;

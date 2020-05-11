@@ -94,7 +94,7 @@ describe('Acknowledgment Template', () => {
         await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
         await utilCommon.waitUntilSpinnerToHide();
         expect(await consoleAcknowledgmentTemplatePo.isGridRecordPresent(templateName2)).toBeFalsy('Public template name is preset on grid')
-    }, 330 * 1000);
+    }, 380 * 1000);
 
     //kgaikwad
     it('[DRDMV-10900,DRDMV-10924,DRDMV-10923]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
@@ -187,7 +187,7 @@ describe('Acknowledgment Template', () => {
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Search Subject is missing in column');
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('Petramco');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Search Company is missing in column');
-    }, 530 * 1000);
+    }, 590 * 1000);
 
     //ptidke
     it('[DRDMV-10902]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
@@ -247,5 +247,5 @@ describe('Acknowledgment Template', () => {
         await utilCommon.closePopUpMessage();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-    }, 330 * 1000);
+    }, 360 * 1000);
 })

@@ -13,6 +13,9 @@ class NavigationPage {
         hamburgerHelpIcon: '[class="d-n-hamburger__nav-link d-icon-left-question_circle"]',
         closeHambergerMenu: 'button.close.close-inverse',
         panelHeadingOfSetting: 'rx-administration-settings .rx-admin-settings .panel-heading h4',
+        adaptIconTiles: 'button.d-icon-tiles',
+        TileSearchInput: 'input.adapt-search-field',
+        TileSearchResult: 'button.a-dropdown__link',
     }
 
     async isHambergerIconPresent(): Promise<boolean> {
@@ -39,7 +42,7 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(0).click();
             return quickCase;
         } else {
-            return await $$('button.a-menu__link').first().getText() == 'Quick Case';
+            return await element(by.cssContainingText('button.a-menu__link','Quick Case ')).isPresent();
         }
     }
 
@@ -280,14 +283,20 @@ class NavigationPage {
 
     async switchToAnotherApplication(applicationName: string): Promise<void> {
         if((await browser.getCurrentUrl()).includes("isettings")){await this.switchToAngularTab();}
-        await element(by.cssContainingText(this.selectors.menu, /^Business Workflows$/)).click();
-        await element(by.cssContainingText(this.selectors.menu, applicationName)).click();
+        await $(this.selectors.adaptIconTiles).click();
+        await $(this.selectors.TileSearchInput).clear();
+        await $(this.selectors.TileSearchInput).click();
+        await $(this.selectors.TileSearchInput).sendKeys(applicationName);
+        await element(by.cssContainingText(this.selectors.TileSearchResult, applicationName)).click();
     }
 
-    
-    async getSettingPanelText(): Promise<String> {
-        let titleName = await $(this.selectors.panelHeadingOfSetting).getText();
-        return titleName;
+    async isSettingPanelTextMatches(text: string): Promise<boolean> {
+        let settingPaneltextLocator =  await element(by.cssContainingText(this.selectors.panelHeadingOfSetting, text));
+        return await $(this.selectors.panelHeadingOfSetting).isPresent().then(async (result) => {
+            await browser.wait(this.EC.visibilityOf(settingPaneltextLocator), 6000);
+            if (result) return await settingPaneltextLocator.isDisplayed();
+            else return false;
+        });
     }
 
     async switchToAngularJsTab(): Promise<void> {

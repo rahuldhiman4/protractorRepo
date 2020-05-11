@@ -280,7 +280,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 650 * 1000);
+    }, 800 * 1000);
 
     //ankagraw
     it('[DRDMV-1191,DRDMV-1198]: [Case Creation] Case creation with/without mandatory fields populated ', async () => {
@@ -542,7 +542,7 @@ describe("Create Case", () => {
         }
     }, 270 * 1000);
 
-    //ankagraw Bug- DRDMV-21671,DRDMV-21669
+    //ankagraw Bug- DRDMV-21746
     it('[DRDMV-8868]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData = {

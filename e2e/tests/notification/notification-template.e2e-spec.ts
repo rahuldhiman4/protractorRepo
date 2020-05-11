@@ -56,5 +56,5 @@ describe("Notification Template", () => {
         await utilityCommon.refresh();
         await notificationTempGridPage.searchTemplate(notificationData[expectedJsonName].CopiedTemplateName);
         expect(await notificationTempGridPage.getValueOnAssignmentConfigGrid("Template Name")).toBe(notificationData[expectedJsonName].CopiedTemplateName);
-    });
+    },320*1000);
 })

@@ -17,15 +17,14 @@ import selectTaskTemplate from "../../pageobject/settings/task-management/consol
 import createTaskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
-import taskConsole from "../../pageobject/task/console-task.po";
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Data Store', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -452,7 +451,7 @@ describe('Case Data Store', () => {
         expect(await viewCasePo.getValueOfDynamicFields(field4OutSideGroup)).toBe('True');
         expect(await viewCasePo.getValueOfDynamicFields(field1OutSideGroup)).toBe('field1 outside group');
         expect(await viewCasePo.getValueOfDynamicFields(field2OutSideGroup)).toBe('809888');
-    }, 200 * 1000);
+    }, 300 * 1000);
 
     //ptidke
     it('[DRDMV-13140]:[Dynamic Data] [UI] -Dynamic Fields display on Task Template Edit view UI', async () => {
@@ -631,7 +630,7 @@ describe('Case Data Store', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             let caseTemplateName = randomStr + 'caseTemplateDRDMV-13131';
-            let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13131';
+            let caseTemaplateSummary = randomStr + 'caseTemplateSummaryDRDMV-13131';
             let casetemplateData = {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${caseTemaplateSummary}`,
@@ -656,9 +655,9 @@ describe('Case Data Store', () => {
             let caseID = await viewCasePo.getCaseID();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qkatawazi');
-            await quickCasePo.setSummaryAndClickOnRecommandedCase(caseID,caseTemplateName);
+            await quickCasePo.setSummaryAndClickOnRecommandedCase(caseID, caseTemplateName);
             //case preview
-            await utilCommon.waitUntilSpinnerToHide();
+            // await utilCommon.waitUntilSpinnerToHide();
             expect(await casePreviewPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
             expect(await casePreviewPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');
             for (let i = 0; i < dynamicFields.length; i++) {
@@ -689,12 +688,12 @@ describe('Case Data Store', () => {
             expect(requesterResponseBladePo.isDynamicGroupDisplayed('GroupTwo'));
             let dynamicFieldsReqester: string[] = ['FieldGroup1', 'Field2Group1', 'FieldGroup2', 'Field2Group2', 'Field1Outside'];
             for (let i = 0; i < dynamicFieldsReqester.length; i++) {
-                expect(await requesterResponseBladePo.isDynamicFieldDisplayed(dynamicFieldsReqester[i])).toBeTruthy(dynamicFieldsReqester[i]+'field not present');
+                expect(await requesterResponseBladePo.isDynamicFieldDisplayed(dynamicFieldsReqester[i])).toBeTruthy(dynamicFieldsReqester[i] + 'field not present');
             }
             await requesterResponseBladePo.clickOkButton();
             await utilCommon.waitUntilSpinnerToHide();
             //requester case preview
-    
+
             expect(await casePreviewPo.isGroupDisplayed('GroupTwo')).toBeTruthy('group is not present');
             expect(await casePreviewPo.isGroupDisplayed('GroupOne')).toBeTruthy('group is not present');
             for (let i = 0; i < dynamicFieldsReqester.length; i++) {
@@ -707,7 +706,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 280 * 1000);
+    }, 350 * 1000);
 
     //ptidke
     it('[DRDMV-13114]:[Dynamic Data] - Add all type of dynamic fields in Case Template', async () => {
@@ -771,7 +770,7 @@ describe('Case Data Store', () => {
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `Case Process 1 ${randomStr}`,
         }
-        console.log( `Automate13610${randomStr}`);
+        console.log(`Automate13610${randomStr}`);
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createAutomatedTaskTemplate(templateData);
         await navigationPage.gotoSettingsPage();
@@ -781,11 +780,12 @@ describe('Case Data Store', () => {
         expect(await editTaskTemplate.isAutomatedTaskTypeDisabled()).toBeTruthy('not disabled');
         expect(await editTaskTemplate.isProcessNameDisabled()).toBeTruthy('not disabled');
         await editTaskTemplate.selectTaskCategoryTier1('Accounts Receivable');
-        await editTaskTemplate.setSummary('update'+randomStr);
+        await editTaskTemplate.setSummary('update' + randomStr);
         await editTaskTemplate.selectPriorityValue('High');
         await editTaskTemplate.clickOnSaveButton();
         expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Accounts Receivable');
-        expect(await viewTaskTemplate.getSummaryValue()).toBe('update'+randomStr);
+        expect(await viewTaskTemplate.getSummaryValue()).toBe('update' + randomStr);
         expect(await viewTaskTemplate.getPriorityValue()).toBe('High');
     });//, 240 * 1000);
+
 })

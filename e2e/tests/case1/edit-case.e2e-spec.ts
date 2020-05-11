@@ -155,6 +155,6 @@ describe('Edit Case', () => {
         await changeAssignmentPage.selectAssigneeAsSupportGroup('Compensation and Benefits');
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
     });//, 170 * 1000);
 });

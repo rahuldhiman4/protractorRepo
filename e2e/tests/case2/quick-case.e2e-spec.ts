@@ -257,7 +257,6 @@ describe("Quick Case", () => {
         let templateData1 = {
             "templateName": caseTemplateName1,
             "templateSummary": caseTemplateName1,
-            "categoryTier1": "Phones",
             "templateStatus": "Active",
             "company": "Petramco",
             "caseStatus": "New"
@@ -296,6 +295,9 @@ describe("Quick Case", () => {
         try {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData1);
+            await apiHelper.createCaseTemplate(templateData2);
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createCaseTemplate(templateData3);
             await apiHelper.createCaseTemplate(templateData2);
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(templateData3);
@@ -665,7 +667,8 @@ describe("Quick Case", () => {
         expect(await composeMail.isAttachLinkPresent()).toBeTruthy('Attach Link is  missing');
         expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
         expect(await composeMail.isDiscardButtonPresent()).toBeTruthy('Discard Button is missing');
-        await composeMail.closeComposeEmail();
+        await composeMail.clickOnDiscardButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
 
     //ptidke

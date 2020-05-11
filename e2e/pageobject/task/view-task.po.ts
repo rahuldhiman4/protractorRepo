@@ -42,14 +42,14 @@ class ViewTask {
         saveAdhocTask: '[rx-view-component-id="a19228d0-81a9-4b19-9cb3-b5bd9550966f"] button',
         attachmentFile: '.justify-content-start .bwf-attachment-container__file-name',
         attachmentpath: '.rx-attachment-view .d-icon-cross',
-        showMore: '[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .btn-link .ng-star-inserted',
+        showMore: 'button.btn span.ng-star-inserted',
         dynamicFieldsName: '[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] label',
         dynamicFieldsValue: '[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .read-only-content',
-        assignmentSection:'[rx-view-component-id="a202d36e-32db-4093-9c92-c4f7a514f3d7"] .person-badge',
-        assignedGroupValue:'[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] .read-only-content',
-        assignedCompanyValue:'[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] .read-only-content',
-        businessUnitValue:'[rx-view-component-id="4ad9dc88-aa95-4fb7-8128-7df004dfca8f"] .read-only-content', 
-        departmentValue:'[rx-view-component-id="411571a0-2577-4403-bcf2-3999dc84f5df"] .read-only-content',
+        assignmentSection: '[rx-view-component-id="a202d36e-32db-4093-9c92-c4f7a514f3d7"] .person-badge',
+        assignedGroupValue: '[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] .read-only-content',
+        assignedCompanyValue: '[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] .read-only-content',
+        businessUnitValue: '[rx-view-component-id="4ad9dc88-aa95-4fb7-8128-7df004dfca8f"] .read-only-content',
+        departmentValue: '[rx-view-component-id="411571a0-2577-4403-bcf2-3999dc84f5df"] .read-only-content',
         manageDynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] button',
         emailLink: '[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button',
         tab: 'button[role="tab"] span.nav-link-wrapper',
@@ -74,7 +74,7 @@ class ViewTask {
     async clickOnAttachedDocumentFile(fileName: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.attachmentFile, fileName)).click();
     }
-    
+
     async clickOnRequesterEmail(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesterEmailLink)));
         await $(this.selectors.requesterMail).click();
@@ -317,13 +317,34 @@ class ViewTask {
         await $(this.selectors.saveAdhocTask).click();
     }
 
-    async getShowMoreLessAttachmentsLinkText(): Promise<string> {
-        return await $(this.selectors.showMoreLessAttachmentLink).getText();
+    async getShowMoreLessAttachmentsLinkText(label?: string): Promise<string> {
+        if (label) {
+            let dynamicAttachment = await $$('[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .form-group').count();
+            for (let i = 0; i < dynamicAttachment; i++) {
+                let fieldName = await $$('[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .form-group label').get(i).getText();
+                if (fieldName == label) {
+                    return await $$('[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .form-group').get(i).$(this.selectors.showMore).getText();
+                }
+            }
+        } else {
+            return await $$(this.selectors.showMore).first().getText();
+        }
     }
 
-    async clickShowMoreShowLessLink(): Promise<void> {
-        return await $(this.selectors.showMoreLessAttachmentLink).click();
+    async clickShowMoreShowLessLink(label?: string): Promise<void> {
+        if (label) {
+            let dynamicAttachment = await $$('[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .form-group').count();
+            for (let i = 0; i < dynamicAttachment; i++) {
+                let fieldName = await $$('[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .form-group label').get(i).getText();
+                if (fieldName == label) {
+                    await $$('[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .form-group').get(i).$(this.selectors.showMore).click();
+                }
+            }
+        } else {
+            await $$(this.selectors.showMore).first().click();
+        }
     }
+
 
     async isFileDisplayed(fileName: string): Promise<boolean> {
         let fileCount: number = await $$('span.bwf-attachment-container__file-name').count();
@@ -337,7 +358,14 @@ class ViewTask {
     }
 
     async getDynamicFieldName(fieldName: string): Promise<string> {
-        return await $(`.fields-container .form-group label[title=${fieldName}]`).getText();
+        let dynamicFields: number = await $$('.fields-container .form-group label').count();
+        for (let i = 0; i < dynamicFields; i++) {
+            let field = await $$('.fields-container .form-group label').get(i).getText();
+            if (fieldName == field) {
+                return await $$('.fields-container .form-group label').get(i).getText();
+            }
+        }
+        return null;
     }
 
     async getDynamicFieldValue(fieldName: string): Promise<string> {
@@ -346,17 +374,6 @@ class ViewTask {
             let field = await $$('.fields-container .form-group label').get(i).getText();
             if (fieldName == field) {
                 return await $$('.fields-container .form-group .read-only-content').get(i).getText();
-            }
-        }
-        return null;
-    }
-
-    async getValueOfDynamicFields(fieldName: string): Promise<string> {
-        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
-        for (let i = 0; i < dynamicFields; i++) {
-            let field = await $$(this.selectors.dynamicFieldsName).get(i).getText();
-            if (fieldName == field) {
-                return await $$(this.selectors.dynamicFieldsValue).get(i).getText();
             }
         }
         return null;
@@ -382,7 +399,7 @@ class ViewTask {
         return await $(this.selectors.assignedCompanyValue).getText();
     }
 
-    async isDynamicFieldPresent(fieldName:string):Promise<boolean>{
+    async isDynamicFieldPresent(fieldName: string): Promise<boolean> {
         let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
         for (let i = 0; i < dynamicFields; i++) {
             let field = await (await $$(this.selectors.dynamicFieldsName).get(i).getText()).trim();
@@ -392,11 +409,11 @@ class ViewTask {
         }
         return false;
     }
-    async isDynamicFieldSectionPresent(): Promise<boolean>{
+    async isDynamicFieldSectionPresent(): Promise<boolean> {
         return await $(this.selectors.dynamicFieldsName).isPresent();
     }
 
-    async isAssignmentSectionDisplayed():Promise<boolean>{
+    async isAssignmentSectionDisplayed(): Promise<boolean> {
         return await $(this.selectors.assignmentSection).isDisplayed();
     }
 }
