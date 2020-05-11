@@ -1252,6 +1252,7 @@ describe('Case Activity', () => {
 
     //kgaikwad
     it('[DRDMV-16765]:Validate Show More/Less option in KA Activity Tab', async () => {
+        try{
         let randomValues1 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues2 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues3 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1361,7 +1362,13 @@ describe('Case Activity', () => {
         await expect(await utilityCommon.isFileDownloaded('bwfJson5.json')).toBeTruthy('FailureMsg41: bwfJson5.json File is not downloaded.');
 
         await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
-
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        }
     }, 400 * 1000);
 
     //kgaikwad
