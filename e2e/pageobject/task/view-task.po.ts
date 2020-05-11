@@ -42,7 +42,7 @@ class ViewTask {
         saveAdhocTask: '[rx-view-component-id="a19228d0-81a9-4b19-9cb3-b5bd9550966f"] button',
         attachmentFile: '.justify-content-start .bwf-attachment-container__file-name',
         attachmentpath: '.rx-attachment-view .d-icon-cross',
-        showMore: 'button.btn span.ng-star-inserted',
+        showMore: 'bwf-attachment-viewer .btn-link .ng-star-inserted',
         dynamicFieldsName: '[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] label',
         dynamicFieldsValue: '[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .read-only-content',
         assignmentSection: '[rx-view-component-id="a202d36e-32db-4093-9c92-c4f7a514f3d7"] .person-badge',
