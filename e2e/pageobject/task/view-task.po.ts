@@ -345,7 +345,6 @@ class ViewTask {
         }
     }
 
-
     async isFileDisplayed(fileName: string): Promise<boolean> {
         let fileCount: number = await $$('span.bwf-attachment-container__file-name').count();
         for (let i = 0; i < fileCount; i++) {
@@ -358,22 +357,22 @@ class ViewTask {
     }
 
     async getDynamicFieldName(fieldName: string): Promise<string> {
-        let dynamicFields: number = await $$('.fields-container .form-group label').count();
+        let dynamicFields: number = await $$('.fields-container label').count();
         for (let i = 0; i < dynamicFields; i++) {
-            let field = await $$('.fields-container .form-group label').get(i).getText();
+            let field = await $$('.fields-container label').get(i).getText();
             if (fieldName == field) {
-                return await $$('.fields-container .form-group label').get(i).getText();
+                return await $$('.fields-container label').get(i).getText();
             }
         }
         return null;
     }
 
     async getDynamicFieldValue(fieldName: string): Promise<string> {
-        let dynamicFields: number = await $$('.fields-container .form-group label').count();
+        let dynamicFields: number = await $$('.fields-container label').count();
         for (let i = 0; i < dynamicFields; i++) {
-            let field = await $$('.fields-container .form-group label').get(i).getText();
+            let field = await $$('.fields-container label').get(i).getText();
             if (fieldName == field) {
-                return await $$('.fields-container .form-group .read-only-content').get(i).getText();
+                return await $$('.fields-container .read-only-content').get(i).getText();
             }
         }
         return null;

@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions, ElementFinder } from "protractor";
 
 class ChangeAssignmentOldBlade {
         EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -120,18 +120,23 @@ class ChangeAssignmentOldBlade {
         }
 
         async selectBusinessUnit(businessUnit: string): Promise<void> {
-                const businessUnitDropDown = await $$(this.selectors.assignmentDropDownList).get(1);
-                //        await browser.wait(this.EC.elementToBeClickable(businessUnitDropDown.$('button')));
-                await businessUnitDropDown.$('button').click();
-                //        await browser.wait(this.EC.visibilityOf(businessUnitDropDown.$('input')));
-                await businessUnitDropDown.$('input').sendKeys(businessUnit);
-                //        await browser.wait(this.EC.or(async () => {
-                //            let count = await businessUnitDropDown.$$(this.selectors.selectOptions).count();
-                //            return count >= 1;
-                //        }));
-                let option = await element(by.cssContainingText(this.selectors.selectOptions, businessUnit));
-                //        await browser.wait(this.EC.elementToBeClickable(option));
-                await option.click();
+                await browser.wait(this.EC.or(async () => {
+                        let count = await $$('.rx-assignment-select').count();
+                        return count >= 1;
+                }), 3000);
+                const dropDown: ElementFinder[] = await $$('.rx-assignment-select');
+                for (let i: number = 0; i < dropDown.length; i++) {
+                        await dropDown[i].$('.rx-assignment-select-label').isPresent().then(async (result) => {
+                                if (result) {
+                                        let dropDownLabelText: string = await dropDown[i].$('.rx-assignment-select-label').getText();
+                                        if (dropDownLabelText === 'Business Unit') {
+                                                await dropDown[i].$('.d-icon-angle_down').click();
+                                                await dropDown[i].$('input').sendKeys(businessUnit);
+                                                await element(by.cssContainingText("li[ng-repeat*='option']", businessUnit)).click();
+                                        }
+                                }
+                        });
+                }
         }
 
         async selectDepartment(department: string): Promise<void> {
