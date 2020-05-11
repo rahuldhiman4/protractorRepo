@@ -113,7 +113,7 @@ describe('Document Library Consume UI', () => {
     }, 450 * 1000);
 
     //kgaikwad
-    fit('[DRDMV-13533]: Access to the documents attached on case when agent has read access to the case', async () => {
+    it('[DRDMV-13533]: Access to the documents attached on case when agent has read access to the case', async () => {
         try {
             let publishDocLibData1 = {
                 docLibTitle: 'drdmv13533_publish_document1',
