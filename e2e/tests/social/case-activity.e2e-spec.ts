@@ -19,7 +19,7 @@ import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po'
 import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import notificationPo from '../../pageobject/notification/notification.po';
-import { default as activityTabPage, default as activityTabPo } from '../../pageobject/social/activity-tab.po';
+import activityTabPage from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
@@ -419,7 +419,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isAuthorBoxEmpty()).toBeTruthy('Author field is not empty');
         // ii) - Select another user and click on Apply
         await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
-    });//, 140 * 1000);
+    }, 270 * 1000);
 
     //kgaikwad
     it('[DRDMV-16734]: From Case Activity Filters > Person search behavior in Author field', async () => {
@@ -788,10 +788,9 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isLinkedTextPresentInBodyOfFirstActivity('Dale Steyn')).toBeTruthy("LastName user is not present");
         await expect(await activityTabPage.isLinkedTextPresentInBodyOfFirstActivity('Allen Border')).toBeTruthy("EmailID user is not present");
         await expect(await activityTabPage.isLinkedTextPresentInBodyOfFirstActivity('Qianru Tao')).toBeTruthy("LoginID user is not present");
-    });
+    }, 300 * 1000);
 
     //kgaikwad
-    // LFail Done
     it('[DRDMV-16754]: Drill Down to different screens from Activities', async () => {
         try {
             let caseBodyText = "This is unique caseActivity text " + Math.floor(Math.random() * 1000000);
@@ -871,7 +870,7 @@ describe('Case Activity', () => {
         } finally {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         }
-    }, 250 * 1000);
+    }, 300 * 1000);
 
     // ptidke
     it('[DRDMV-7152]: [Automatic Task] - Automatic Task: Social: Manual Comments', async () => {
@@ -910,7 +909,6 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote('step 2nd added ' + taskBodyText);
         await activityTabPage.addAttachment([filePath]);
         await activityTabPage.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.getFirstPostContent()).toContain('step 2nd added ' + taskBodyText);
         expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('file is not present');
         await activityTabPage.clickAttachedFile('bwfPdf.pdf');
@@ -933,11 +931,10 @@ describe('Case Activity', () => {
             await activityTabPage.addAttachment(['../../data/ui/attachment/demo.txt']);
         }
         await activityTabPage.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.getFirstPostContent()).toContain(textWithMultipleAttachment);
         await activityTabPage.clickShowMoreLinkInAttachmentActivity(1);
         expect(await activityTabPage.getCountAttachedFiles('demo.txt')).toBe(6);
-    });//, 150 * 1000);
+    }, 270 * 1000);
 
     //kgaikwad
     it('[DRDMV-16582]: Check case view count log is displayed on the activity feed of case along with name of user and time', async () => {
@@ -953,21 +950,14 @@ describe('Case Activity', () => {
             let newCase = await apiHelper.createCase(caseData);
             let caseId: string = newCase.displayId;
             await caseConsolePo.searchAndOpenCase(caseId);
-            // await utilityCommon.waitUntilSpinnerToHide();
-            await activityTabPo.clickOnRefreshButton();
+            await activityTabPage.clickOnRefreshButton();
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await caseConsolePo.searchAndOpenCase(caseId);
-            // await utilityCommon.waitUntilSpinnerToHide();
-            await activityTabPo.clickOnRefreshButton();
+            await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi  viewed the case. ')).toEqual(1);
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
-            await utilityCommon.refresh();
-            await activityTabPage.clickOnRefreshButton();
-            // await utilityCommon.waitUntilSpinnerToHide();
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             await navigationPage.gotoPersonProfile();
-            // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await personProfilePo.getCaseViewCount(' Viewed the  ' + caseId)).toEqual(1);
         } catch (e) {
             throw e;
@@ -975,7 +965,7 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 240 * 1000);
+    }, 270 * 1000);
 
     //kgaikwad
     it('[DRDMV-16589]: Check case view count is not increased by opening same case by different places', async () => {
@@ -1045,7 +1035,6 @@ describe('Case Activity', () => {
             await relatedCaseTab.clickOnCaseSummaryLink(caseData.Summary);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing');
             await activityTabPage.clickOnRefreshButton();
-            // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Elizabeth Peters  viewed the case. ')).toEqual(1);
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
         } catch (e) {
@@ -1132,10 +1121,9 @@ describe('Case Activity', () => {
             let newCase = await apiHelper.createCase(caseData);
             let caseId: string = newCase.displayId;
             await caseConsolePo.searchAndOpenCase(caseId);
-            await activityTabPage.addActivityNote('From DRDMV-18052');
+            await activityTabPage.addActivityNote('From DRDMV-18052 ');
             await activityTabPage.addPersonInActivityNote('fritz');
             await activityTabPage.clickOnPostButton();
-            // await utilityCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await notificationPo.clickOnNotificationIcon();
