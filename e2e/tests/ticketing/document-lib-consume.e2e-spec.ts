@@ -113,7 +113,7 @@ describe('Document Library Consume UI', () => {
     }, 450 * 1000);
 
     //kgaikwad
-    it('[DRDMV-13533]: Access to the documents attached on case when agent has read access to the case', async () => {
+    fit('[DRDMV-13533]: Access to the documents attached on case when agent has read access to the case', async () => {
         try {
             let publishDocLibData1 = {
                 docLibTitle: 'drdmv13533_publish_document1',
@@ -1566,7 +1566,7 @@ describe('Document Library Consume UI', () => {
             await changeAssignmentBladePo.selectAssignee('Quanah George');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
-            expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Popup message not present");
             await navigationPage.signOut();
             await loginPage.loginWithCredentials('qgeorge@petramco.com', 'Password_1234');
             await caseConsolePo.searchAndOpenCase(caseId);

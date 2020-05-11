@@ -276,5 +276,5 @@ describe('Menu Item', () => {
         expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(resolutionCodeRandVal), 'Menu Option column value is missing for resolution code';
         expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Status')).toBe('Active'), 'Status column value is missing for resolution code';
 
-    }, 260 * 1000);
+    }, 300 * 1000);
 })
