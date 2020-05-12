@@ -158,6 +158,9 @@ export class Util {
             for (let i = 0; i < popups.length; i++) {
                 await popups[i].click();
             }
+        }).catch(async () => {
+            await this.waitUntilPopUpDisappear();
+            console.log('Popup is already closed');
         });
     }
 

@@ -163,7 +163,7 @@ describe('Dynamic data', () => {
         await addFieldsPopPo.clickOnOkButtonOfEditor();
         await createDocumentTemplatePo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-    }, 630 * 1000);
+    }, 760 * 1000);
 
     it('[DRDMV-19270]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
         await apiHelper.apiLogin('tadmin');
@@ -378,7 +378,7 @@ describe('Dynamic data', () => {
         expect(await createNotestemplatePo.isDynamicFieldDisplayedInBody('Additional Site Details')).toBeTruthy();
         await createNotestemplatePo.clickOnSaveButton();
         expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-    }, 270 * 1000);
+    }, 670 * 1000);
 
     it('[DRDMV-13567]: [Dynamic Data] [Attachment] - Case UI when it has Dynamic Fields including Attachment', async () => {
         await apiHelper.apiLogin('tadmin');
@@ -499,6 +499,7 @@ describe('Dynamic data', () => {
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
         await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
+        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary('new cases');
@@ -539,8 +540,8 @@ describe('Dynamic data', () => {
         await apiHelper.apiLogin('tadmin');
         let recDeleted = await apiHelper.deleteDynamicFieldAndGroup();
         console.log("Record deleted...", recDeleted);
-        let taskTemplateName = 'ManualtaskDRDMV-13947' + randomStr;
-        let manualTaskSummary = 'ManualSummaryDRDMV-13947' + randomStr;
+        let taskTemplateName = 'ManualtaskDRDMV-13948' + randomStr;
+        let manualTaskSummary = 'ManualSummaryDRDMV-13948' + randomStr;
         let templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
@@ -586,8 +587,8 @@ describe('Dynamic data', () => {
         let dynamicfield4 = 'temp1theNewDynamicFieldsIsgettingMouseOveredMouseOvered';
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
-        let taskTemplateName = 'ManualtaskDRDMV-13947' + randomStr;
-        let manualTaskSummary = 'ManualSummaryDRDMV-13947' + randomStr;
+        let taskTemplateName = 'ManualtaskDRDMV-13161' + randomStr;
+        let manualTaskSummary = 'ManualSummaryDRDMV-13161' + randomStr;
         let templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
@@ -595,8 +596,8 @@ describe('Dynamic data', () => {
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_LONG__DYNAMIC_FIELDS');
-        let externalTask = 'externalTaskDRDMV-13947' + randomStr;
-        let externalTaskSummary = 'externalSummaryDRDMV-13947' + randomStr;
+        let externalTask = 'externalTaskDRDMV-13161' + randomStr;
+        let externalTaskSummary = 'externalSummaryDRDMV-13161' + randomStr;
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
         let externalTemplateData = {
@@ -609,14 +610,15 @@ describe('Dynamic data', () => {
         await apiHelper.createDynamicDataOnTemplate(externalTaskTemplate.id, 'EXTERNAL_TASK_TEMPLATE_LONG__DYNAMIC');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
-        let automatedTask = 'automatedTaskDRDMV-13947' + randomStr;
-        let automatedTaskSummary = 'automatedSummaryDRDMV-13947' + randomStr;
+        let automatedTask = 'automatedTaskDRDMV-13161' + randomStr;
+        let automatedTaskSummary = 'automatedSummaryDRDMV-13161' + randomStr;
+        let processName='automated process'+randomStr;
         let automationTemplateData = {
             "templateName": `${automatedTask}`,
             "templateSummary": `${automatedTaskSummary}`,
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
-            "processName": "case Managment Process",
+            "processName": `${processName}`,
         }
         await apiHelper.apiLogin('qkatawazi');
         let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automationTemplateData);
@@ -624,13 +626,14 @@ describe('Dynamic data', () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qkatawazi');
+        await createCasePo.clickAssignToMeButton();
         await createCasePo.setSummary('new cases');
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         let caseId = await viewCasePo.getCaseID();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
         await manageTaskBladePo.addTaskFromTaskTemplate(automatedTask);
+        await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTask);
         await utilCommon.waitUntilPopUpDisappear();
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
@@ -643,8 +646,8 @@ describe('Dynamic data', () => {
         await editTaskPo.setDynamicFieldValue(dynamicfield1, dynamicfield2);
         await editTaskPo.setDynamicFieldValue(dynamicfield2, dynamicfield1);
         await editTaskPo.clickOnAssignToMe();
-        await editTaskPo.setDynamicFieldValue(dynamicfield3, dynamicfield4);
         await editTaskPo.setDynamicFieldValue(dynamicfield4, '100');
+        await editTaskPo.setDynamicFieldValue(dynamicfield3, dynamicfield4);
         await editTaskPo.clickOnSaveButton();
         //verify input field values are peresent are not 
         expect(await viewTaskPo.getDynamicFieldValue(dynamicfield1)).toContain(dynamicfield2);
@@ -653,6 +656,8 @@ describe('Dynamic data', () => {
         expect(await viewTaskPo.getDynamicFieldValue(dynamicfield4)).toContain('100');
         await navigationPage.gotoCaseConsole();
         await caseConsolePo.searchAndOpenCase(caseId);
+        await updateStatusBladePo.changeCaseStatus('In Progress');
+        await updateStatusBladePo.clickSaveStatus('In Progress');
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
         //verify dynamic field on external task
@@ -712,19 +717,19 @@ describe('Dynamic data', () => {
         await editCasePo.setDateValueInDynamicField('2020-03-01');
         await editCasePo.clickOnTrueValueOfDynamicField();
         await editCasePo.addAttachment('attachment2', ['../../data/ui/attachment/demo.txt']);
-        await editCasePo.setDateTimeDynamicFieldValue('2020-03-04');
+        await editCasePo.setDateTimeDynamicFieldValue('04-01-2022 05:11 PM');
         await editCasePo.setTimeInDynamicField('02');
-        await editCasePo.selectValueFromList('dynamicList', 'listvalues');
+         await editCasePo.selectValueFromList('dynamicList', 'listvalues');
         await editCasePo.clickSaveCase();
         await utilCommon.waitUntilPopUpDisappear();
         //verify update values on case view
         expect(await viewCasePo.getValueOfDynamicFields('temp')).toBe('newtemp');
         expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('333');
-        expect(await viewCasePo.getValueOfDynamicFields('temp2')).toBe('Mar 1, 2020');
-        expect(await viewCasePo.getValueOfDynamicFields('temp4')).toBe('Mar 4, 2020 12:00 AM');
-        expect(await viewCasePo.getValueOfDynamicFields('temp3')).toBe('Yes');
-        expect(await viewCasePo.getValueOfDynamicFields('temp5')).toBe('2:00 AM');
-        expect(await viewCasePo.getValueOfDynamicFields('dynamicList')).toBe('listvalues');
+        expect(await viewCasePo.getValueOfDynamicFields('temp2')).toContain('Mar 1, 2020');
+        expect(await viewCasePo.getValueOfDynamicFields('temp4')).toContain('Mar 4, 2020 12:00 AM');
+        expect(await viewCasePo.getValueOfDynamicFields('temp3')).toContain('True');
+        expect(await viewCasePo.getValueOfDynamicFields('temp5')).toContain('2:00 AM');
+        expect(await viewCasePo.getValueOfDynamicFields('dynamicList')).toContain('listvalues');
         expect(await viewCasePo.getValueOfDynamicFields('attachment2')).toContain('demo.txt');
     });//, 230 * 1000);
 

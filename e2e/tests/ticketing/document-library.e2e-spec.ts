@@ -514,7 +514,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.clickOnSaveButton();
-        expect(await utilCommon.isErrorMsgPresent()).toBeTruthy('Error msg not present');
+        expect(await utilCommon.isPopUpMessagePresent("ERROR (525): The file type is not supported. com.bmc.dsm.knowledge:Knowledge Article : Attachment 1 : Test.exe")).toBeTruthy('Error msg not present');
     }, 280 * 1000);
 
     //apdeshmu

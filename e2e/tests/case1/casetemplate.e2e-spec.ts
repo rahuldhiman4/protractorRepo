@@ -427,25 +427,33 @@ describe('Case Template', () => {
 
     //ptidke
     it('[DRDMV-19734]:[RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case Template view Look & Feel after adding new configuration field', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-        let caseTemplateName: string = await caseTemplateAllFields.templateName + Math.floor(Math.random() * 100000);
-        caseTemplateAllFields.templateName = caseTemplateName;
-        await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-        await createCaseTemplate.setTemplateName(caseTemplateName);
-        await createCaseTemplate.setCompanyName(caseTemplateAllFields.company);
-        await createCaseTemplate.setCaseSummary(caseTemplateAllFields.templateSummary);
-        await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
-        await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
-        await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
-        await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
-        await createCaseTemplate.clickSaveCaseTemplate();
-        //await utilCommon.waitUntilPopUpDisappear();
-        await expect(await viewCaseTemplate.getResolveCaseOnLastTaskCompletionValue()).toContain('Yes');
-        await editCaseTemplate.clickEditCaseTemplate();
-        await editCaseTemplate.isResolveCaseOnLastTaskCompletion(false);
-        await editCaseTemplate.clickSaveCaseTemplate();
-        await expect(await viewCaseTemplate.getResolveCaseOnLastTaskCompletionValue()).toContain('No');
+        try {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            let caseTemplateName: string = await caseTemplateAllFields.templateName + Math.floor(Math.random() * 100000);
+            caseTemplateAllFields.templateName = caseTemplateName;
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.setTemplateName(caseTemplateName);
+            await createCaseTemplate.setCompanyName(caseTemplateAllFields.company);
+            await createCaseTemplate.setCaseSummary(caseTemplateAllFields.templateSummary);
+            await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
+            await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
+            await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
+            await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
+            await createCaseTemplate.clickSaveCaseTemplate();
+            //await utilCommon.waitUntilPopUpDisappear();
+            await expect(await viewCaseTemplate.getResolveCaseOnLastTaskCompletionValue()).toContain('Yes');
+            await editCaseTemplate.clickEditCaseTemplate();
+            await editCaseTemplate.isResolveCaseOnLastTaskCompletion(false);
+            await editCaseTemplate.clickSaveCaseTemplate();
+            await expect(await viewCaseTemplate.getResolveCaseOnLastTaskCompletionValue()).toContain('No');
+        } catch (e) {
+            throw e;
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
     });
 
     //ptidke
@@ -529,7 +537,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 400 * 1000)
+    }, 500 * 1000)
 
     //apdeshmu 
     it('[DRDMV-769]: [Case Creation] [Template Selection] Applying a Template to a Case', async () => {

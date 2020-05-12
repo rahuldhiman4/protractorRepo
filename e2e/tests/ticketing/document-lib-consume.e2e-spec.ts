@@ -1566,7 +1566,7 @@ describe('Document Library Consume UI', () => {
             await changeAssignmentBladePo.selectAssignee('Quanah George');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
-            expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Popup message not present");
             await navigationPage.signOut();
             await loginPage.loginWithCredentials('qgeorge@petramco.com', 'Password_1234');
             await caseConsolePo.searchAndOpenCase(caseId);
