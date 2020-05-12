@@ -163,7 +163,7 @@ describe('Dynamic data', () => {
         await addFieldsPopPo.clickOnOkButtonOfEditor();
         await createDocumentTemplatePo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-    }, 760 * 1000);
+    }, 810 * 1000);
 
     it('[DRDMV-19270]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
         await apiHelper.apiLogin('tadmin');
@@ -578,7 +578,7 @@ describe('Dynamic data', () => {
         for (let i: number = 0; i <= fileName2.length; i++) {
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2[i]}`)).toBeTruthy('FailuerMsg: File is delete sucessfully');
         }
-    });
+    },320*1000);
 
     it('[DRDMV-13161]: [-ve] [Dynamic Data] - Task UI with dynamic data having long description/labels with large data in different fields', async () => {
         let dynamicfield1 = 'theNewDynamicFieldsIsgettingMouseOveredMouseOvered';
@@ -689,7 +689,7 @@ describe('Dynamic data', () => {
         //verify input field values are peresent are not 
         expect(await viewTaskPo.getDynamicFieldValue('temp1theNewautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('300');
         expect(await viewTaskPo.getDynamicFieldValue('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered');
-    }, 320 * 1000);
+    }, 400 * 1000);
 
     // ptidke
     it('[DRDMV-13128]: [Dynamic Data] - Create Case with Case Template having dynamic fields and Update dynamic fields data in Case', async () => {
