@@ -1239,7 +1239,7 @@ describe('Case Activity', () => {
 
         await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
 
-    });//, 150 * 1000);
+    }, 270 * 1000);
 
     //kgaikwad
     it('[DRDMV-16765]:Validate Show More/Less option in KA Activity Tab', async () => {
