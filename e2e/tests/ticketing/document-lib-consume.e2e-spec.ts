@@ -1343,8 +1343,7 @@ describe('Document Library Consume UI', () => {
         await editDocumentLibraryPo.setSite('Canberra');
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-        // //Create Case
+        // Create Case
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qtao');
         await createCasePo.setSummary(caseSummary);
@@ -1566,7 +1565,6 @@ describe('Document Library Consume UI', () => {
             await changeAssignmentBladePo.selectAssignee('Quanah George');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
-            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Popup message not present");
             await navigationPage.signOut();
             await loginPage.loginWithCredentials('qgeorge@petramco.com', 'Password_1234');
             await caseConsolePo.searchAndOpenCase(caseId);

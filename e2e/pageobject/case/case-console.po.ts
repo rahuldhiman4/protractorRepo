@@ -23,8 +23,7 @@ class CaseConsolePage {
     }
 
     async setCaseSearchBoxValue(input: string): Promise<void> {
-        await utilityGrid.searchRecord(input, this.selectors.guid);
-//        await utilCommon.waitUntilSpinnerToHide();
+        await utilityGrid.searchRecord(input);
     }
 
     async clickFirstLinkInCaseSearchGrid(): Promise<void> {
@@ -55,7 +54,7 @@ class CaseConsolePage {
 
     async searchAndOpenCase(caseId: string): Promise<void> {
         await utilityGrid.clearFilter();
-        await utilityGrid.searchAndOpenHyperlink(caseId, this.selectors.guid);
+        await utilityGrid.searchAndOpenHyperlink(caseId);
     }
 
     async isCaseIdPresent(caseId: string): Promise<boolean> {

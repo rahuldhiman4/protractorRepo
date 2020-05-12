@@ -356,7 +356,7 @@ export class Util {
             }
         }
         else {
-            await browser.wait(this.EC.visibilityOf($$(this.selectors.popUpMsgLocator).last()), 10000);
+            await browser.wait(this.EC.visibilityOf($$(this.selectors.popUpMsgLocator).first()), 10000);
             let msgLocator = await $$(this.selectors.popUpMsgLocator);
             for (let i: number = 0; i < msgLocator.length; i++) {
                 arr[i] = await msgLocator[i].getText();
