@@ -175,7 +175,8 @@ class ViewTask {
 
     async getTaskStatusValue(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)));
-        return await $(this.selectors.taskStatus).getText();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)),4000);
+        return await (await $(this.selectors.taskStatus).getText()).trim();
     }
 
     async isEditLinkDisplayed(): Promise<boolean> {
