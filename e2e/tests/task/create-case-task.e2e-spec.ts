@@ -430,7 +430,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 290 * 1000);
+    }, 330 * 1000);
 
     //ankagraw
     it('[DRDMV-12582]: Task Template access when owner group from different company is applied', async () => {
@@ -898,7 +898,7 @@ describe('Create Case Task', () => {
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickTaskLinkOnManageTask(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Completed");
-    });//, 240 * 1000);
+    }, 280 * 1000);//, 240 * 1000);
 
     it('[DRDMV-7145]: [Automatic task] - Task Activation based on its sequence no.', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1117,6 +1117,6 @@ describe('Create Case Task', () => {
         await caseConsolePage.searchAndOpenCase(canceled);
         await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy("Add task button Visible");
 
-    }, 450 * 1000);
+    }, 500 * 1000);
 
 });
