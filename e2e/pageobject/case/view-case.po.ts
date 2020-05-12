@@ -52,7 +52,6 @@ class ViewCasePage {
         dynamicFieldsValue: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .read-only-content',
         slaProgressBar: '.progress-bar',
         tab: '.nav-item button',
-        personEmailLink: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .bwf-person-email button',
     }
 
     async isGroupNameDisplayed(groupName: string): Promise<boolean> {
@@ -393,11 +392,6 @@ class ViewCasePage {
         }
         return undefined;
     }
-
-    async clickOnRequesterMail(): Promise<void> {
-        await $(this.selectors.personEmailLink).click();
-    }
-
 }
 
 export default new ViewCasePage();

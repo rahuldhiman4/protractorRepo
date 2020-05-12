@@ -272,15 +272,10 @@ export class GridOperation {
     }
 
     async searchOnGridConsole(searchValue: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchInput)));
         await $(this.selectors.searchInput).clear();
         await $(this.selectors.searchInput).sendKeys(searchValue);
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchIcon)));
         await $(this.selectors.searchIcon).click();
-        //        await utilCommon.waitUntilSpinnerToHide();
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.refreshButton)));
         await $(this.selectors.refreshButton).click();
-        //        await browser.sleep(1000);
     }
 
     async searchAndSelectGridRecord(searchValue: string, guid?: string): Promise<void> {
