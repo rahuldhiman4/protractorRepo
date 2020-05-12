@@ -98,7 +98,7 @@ describe('Edit Case', () => {
         await editCasePage.clickOnRequesterName();
         await expect(personProfilePage.getPersonName()).toBe('Adam Pavlik');
         await browser.navigate().back();
-        await viewCasePage.clickOnRequesterMail();
+        await viewCasePage.clickOnRequestersEmail();
         await composemailPage.clickOnDiscardButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
    

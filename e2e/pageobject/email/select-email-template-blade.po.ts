@@ -57,11 +57,11 @@ class SelectEmailTemplateBlad {
     }
 
     async searchEmailTemplate(templateName: string): Promise<void> {
-        await utilGrid.searchOnGridConsole(templateName);
+        await utilityGrid.searchRecord(templateName, this.selectors.gridGuid);
     }
 
     async getGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnHeader, this.selectors.gridGuid);
     }
 }
 

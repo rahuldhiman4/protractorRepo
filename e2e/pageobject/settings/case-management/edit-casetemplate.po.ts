@@ -283,6 +283,18 @@ class EditCaseTemplate {
     async isOwnerCompanyRequiredTextPresent(): Promise<boolean> {
         return await utilCommon.isRequiredTagToField(this.selectors.ownerCompany);
     }
+
+    async allStatusOptionsPresent(list: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.caseStatus, list);
+    }
+
+    async allTemplateStatusOptionsPresent(list: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.templateStatusDropdown, list);
+    }
+
+    async allPriorityOptionsPresent(list: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.priorityGuid, list);
+    }
 }
 
 export default new EditCaseTemplate();
