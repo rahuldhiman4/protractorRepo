@@ -15,10 +15,6 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
-import createCasePo from '../../pageobject/case/create-case.po';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 describe('Case Activity', () => {
 
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -35,8 +31,6 @@ describe('Case Activity', () => {
     afterEach(async () => {
         await utilityCommon.refresh();
     });
-
-
 
     //kgaikwad
     it('[DRDMV-21617]:Verify the Availability and UI of new CK Editor', async () => {
@@ -68,7 +62,6 @@ describe('Case Activity', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(autoTemplateData);
 
-
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // For External
             let externalTemplateData: ITaskTemplate = {
@@ -90,7 +83,7 @@ describe('Case Activity', () => {
 
             await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
-            console.log('>>>>>>>>>>>',newCase.displayId);
+            console.log('>>>>>>>>>>>', newCase.displayId);
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
 
             // Adding Task
@@ -141,8 +134,8 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
 
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        // Profile View CK Editor
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Profile View CK Editor
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
@@ -188,7 +181,7 @@ describe('Case Activity', () => {
             await activityTabPage.clickMaximizeMinimizeIcon();
             await activityTabPage.clickOnCancelButton();
 
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto Manual Task
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
@@ -233,9 +226,9 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
             await viewTaskPo.clickOnViewCase();
-           
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-            // Goto Auto Task
+
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Goto Automated Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
             await browser.sleep(10000);
@@ -385,7 +378,7 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-        }, 900 * 1000);
+    }, 900 * 1000);
 
 
 
