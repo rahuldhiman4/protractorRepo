@@ -856,6 +856,7 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
             knowledgeArticleData.fieldInstances[302300502].value = data.title;
             knowledgeArticleData.fieldInstances[302312187].value = data.templateId;
+            knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
             knowledgeArticleData.fieldInstances[1000000063].value = data.categoryTier1 ? await apiCoreUtil.getCategoryGuid(data.categoryTier1) : knowledgeArticleData.fieldInstances[1000000063].value;
             knowledgeArticleData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : knowledgeArticleData.fieldInstances[1000000064].value;
             knowledgeArticleData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : knowledgeArticleData.fieldInstances[1000000065].value;
@@ -890,6 +891,7 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
             knowledgeArticleData.fieldInstances[302300502].value = data.title;
             knowledgeArticleData.fieldInstances[302312187].value = data.templateId;
+            knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
             knowledgeArticleData.fieldInstances[1000000063].value = data.categoryTier1 ? await apiCoreUtil.getCategoryGuid(data.categoryTier1) : knowledgeArticleData.fieldInstances[1000000063].value;
             knowledgeArticleData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : knowledgeArticleData.fieldInstances[1000000064].value;
             knowledgeArticleData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : knowledgeArticleData.fieldInstances[1000000065].value;
@@ -955,7 +957,7 @@ class ApiHelper {
         }
 
         let knowledgeArticleResponse: AxiosResponse = await coreApi.updateRecordInstance("com.bmc.dsm.knowledge:Knowledge Article Template", articleGuid, knowledgeArticleData);
-        console.log("Status", knowledgeArticleResponse.status);
+        console.log("Update Knowledge Article Status ========>", knowledgeArticleResponse.status);
         return knowledgeArticleResponse.status == 204;
     }
 

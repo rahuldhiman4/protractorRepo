@@ -51,7 +51,7 @@ export class Resources {
         await browser.wait(this.EC.or(async () => {
             let count = await $$('.dropdown.dropdown_select').count();
             return count >= 1;
-        }),3000);
+        }), 3000);
         const dropDown: ElementFinder[] = await $$('.dropdown.dropdown_select');
         for (let i: number = 0; i < dropDown.length; i++) {
             await dropDown[i].$('.form-control-label').isPresent().then(async (result) => {
@@ -106,6 +106,27 @@ export class Resources {
                 return count.substring(1, count.length - 1);
             }
         }
+    }
+
+    async isRecommendedKnowledgePresent(knowledgeTitle: string): Promise<boolean> {
+        return this.isResourcePresent(knowledgeTitle);
+    }
+
+    async isRecommendedTemplatePresent(caseTemplateName: string): Promise<boolean> {
+        return this.isResourcePresent(caseTemplateName);
+    }
+
+    async isRecommendedCasePresent(caseSummary: string): Promise<boolean> {
+        return this.isResourcePresent(caseSummary);
+    }
+
+    async isResourcePresent(resourceName: string): Promise<boolean> {
+        // need to wait until spinner to hide (three dots)
+        return await $(`[title="${resourceName}"]`).isPresent().then(async (link) => {
+            if (link) {
+                return await $(`[title="${resourceName}"]`).isDisplayed();
+            } else return false;
+        });
     }
 }
 
