@@ -2,12 +2,12 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
-import composeMail from '../../pageobject/email/compose-mail.po';
 import { default as quickCase, default as quickCasePo } from "../../pageobject/case/quick-case.po";
 import { default as viewCasePage, default as viewCasePo } from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';
+import composeMail from '../../pageobject/email/compose-mail.po';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import editCaseTemplate from "../../pageobject/settings/case-management/edit-casetemplate.po";
@@ -32,8 +32,8 @@ describe("Quick Case", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        // await testData771();
-        // await testData797();
+        await testData771();
+        await testData797();
     });
 
     afterEach(async () => {
@@ -871,7 +871,7 @@ describe("Quick Case", () => {
         };
 
         console.log(publishedKA_Name, unPublishedKA_Name);
-        
+
         await apiHelper.apiLogin('kmills');
         // Draft article
         articleData.title = unPublishedKA_Name;

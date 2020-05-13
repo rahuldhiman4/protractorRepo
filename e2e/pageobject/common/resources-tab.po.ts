@@ -1,6 +1,4 @@
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
-import utilityCommon from 'e2e/utils/utility.common';
-import { AssertionError } from 'assert';
 
 export class Resources {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
