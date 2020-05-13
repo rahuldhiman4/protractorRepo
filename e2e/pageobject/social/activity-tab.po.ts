@@ -680,22 +680,6 @@ class ActivityTabPage {
         return value.includes(bodyText) ? true : false;
     }
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     async clickMaximizeMinimizeIcon(): Promise<void> {
         await $(this.selectors.maximizeMinimizeicon).click();
     }
@@ -759,24 +743,15 @@ class ActivityTabPage {
         return islinkDisplayed;
     }
 
-    async isLinkDisplayedActivityNote(value: string): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 3000);
-        let locator = `[href='${value}']`;
-        let islinkDisplayed: boolean = await $(locator).isDisplayed();
-        return islinkDisplayed;
-    }
-
-    async getColorOrFontOfTextComposeEmail(value: string): Promise<string> {
-        let locator = `td span[style='${value}']`;
-        let isColorDisplayed = await $(locator).getText();
-        return isColorDisplayed;
-    }
-
     async selectColor(colorValue: string): Promise<void> {
         await $(this.selectors.colorIcon).click();
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame(await $('iframe.cke_panel_frame').getWebElement());
         let locator: string = `a[title="${colorValue}"]`;
         await browser.wait(this.EC.elementToBeClickable($(locator)), 2000);
         await $(locator).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
     }
 }
 
