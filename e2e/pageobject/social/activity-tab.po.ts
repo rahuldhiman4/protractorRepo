@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { ElementFinder, $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { Key, ElementFinder, $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 class ActivityTabPage {
@@ -59,6 +59,21 @@ class ActivityTabPage {
         showLessLinkForAttachment: '.activity__wrapper .flex-wrap button span',
         lockIcon: '.d-icon-lock',
         activityLogList: '.activity .activity__wrapper',
+
+
+        // CK Editor email
+        linkIcon: '.cke_toolbar .cke_button__link_icon',
+        boldIcon: '.cke_button__bold_icon',
+        italicIcon: '.cke_button__italic_icon',
+        underLineIcon: '.cke_button__underline_icon',
+        leftAlignIcon: '.cke_button__justifyleft_icon',
+        centerAlignIcon: '.cke_button__justifycenter_icon',
+        rightAlignIcon: '.cke_button__justifyright_icon',
+        colorIcon: '.cke_button__textcolor',
+        numberIcon: '.cke_button__numberedlist_icon',
+        bulletIcon: '.cke_button__bulletedlist_icon',
+        addNotePublicCheckBoxToolTip: '.d-icon-question_circle_o',
+        maximizeMinimizeicon: '.cke_button__maximize_icon',
     }
 
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
@@ -663,6 +678,105 @@ class ActivityTabPage {
         let attachmentText = await $$('.activity .pt-2 .bwf-attachment-container__file-name').first();
         let value = await attachmentText.getText();
         return value.includes(bodyText) ? true : false;
+    }
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    async clickMaximizeMinimizeIcon(): Promise<void> {
+        await $(this.selectors.maximizeMinimizeicon).click();
+    }
+
+    async isPublicCheckBoxToolTipIconDisplayed(): Promise<boolean> {
+        return await $(this.selectors.addNotePublicCheckBoxToolTip).isDisplayed().then(async (link) => {
+            if (link) {
+                await $(this.selectors.addNotePublicCheckBoxToolTip).isDisplayed();
+                return true;
+            } else return false;
+        });
+    }
+
+    async clickOnLinkIcon(): Promise<void> {
+        await $(this.selectors.linkIcon).click();
+        await browser.sleep(2000);
+    }
+
+    async clickOnBoldIcon(): Promise<void> {
+        await $(this.selectors.boldIcon).click();
+    }
+
+    async clickOnItalicIcon(): Promise<void> {
+        await $(this.selectors.italicIcon).click();
+    }
+
+    async clickOnUnderLineIcon(): Promise<void> {
+        await $(this.selectors.underLineIcon).click();
+    }
+
+    async clickOnLeftAlignIcon(): Promise<void> {
+        await $(this.selectors.leftAlignIcon).click();
+    }
+
+    async clickOnRightAlignIcon(): Promise<void> {
+        await $(this.selectors.rightAlignIcon).click();
+    }
+
+    async clickOnCenterAlignIcon(): Promise<void> {
+        await $(this.selectors.centerAlignIcon).click();
+    }
+
+    async setInsertRemoveNumberList(value: string): Promise<void> {
+        await $(this.selectors.activityNoteTextArea).sendKeys(Key.CONTROL, Key.END);
+        await $(this.selectors.activityNoteTextArea).sendKeys(Key.ENTER);
+        await $(this.selectors.numberIcon).click();
+        await $(this.selectors.activityNoteTextArea).sendKeys(value);
+    }
+
+    async setInsertRemoveBulletedList(value: string): Promise<void> {
+        await $(this.selectors.activityNoteTextArea).sendKeys(Key.CONTROL, Key.END);
+        await $(this.selectors.activityNoteTextArea).sendKeys(Key.ENTER);
+        await $(this.selectors.bulletIcon).click();
+        await $(this.selectors.activityNoteTextArea).sendKeys(value);
+    }
+    
+    async setLinkActivityNote(value: string): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 3000);
+        let locator = `[href='${value}']`;
+        let islinkDisplayed: boolean = await $(locator).isDisplayed();
+        return islinkDisplayed;
+    }
+
+    async isLinkDisplayedActivityNote(value: string): Promise<boolean> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 3000);
+        let locator = `[href='${value}']`;
+        let islinkDisplayed: boolean = await $(locator).isDisplayed();
+        return islinkDisplayed;
+    }
+
+    async getColorOrFontOfTextComposeEmail(value: string): Promise<string> {
+        let locator = `td span[style='${value}']`;
+        let isColorDisplayed = await $(locator).getText();
+        return isColorDisplayed;
+    }
+
+    async selectColor(colorValue: string): Promise<void> {
+        await $(this.selectors.colorIcon).click();
+        let locator: string = `a[title="${colorValue}"]`;
+        await browser.wait(this.EC.elementToBeClickable($(locator)), 2000);
+        await $(locator).click();
     }
 }
 
