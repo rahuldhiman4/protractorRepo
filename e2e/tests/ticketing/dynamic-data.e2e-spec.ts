@@ -102,7 +102,7 @@ describe('Dynamic data', () => {
         await addFieldsPopPo.navigateToDynamicFieldInCaseTemplate(globalcaseTemplateName);
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField1')).toBeTruthy();
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField2')).toBeTruthy();
-        expect(await addFieldsPopPo.isCaseTemplatePresent(caseTemplateName)).toBeFalsy()
+        expect(await addFieldsPopPo.isCaseTemplatePresent(caseTemplateName)).toBeFalsy();
         await addFieldsPopPo.clickOnOkButtonOfEditor();
         await createNotificationTemplatePo.selectEvent('Approval');
         await createNotificationTemplatePo.selectModuleName('Cases');
@@ -122,7 +122,7 @@ describe('Dynamic data', () => {
         await addFieldsPopPo.navigateToDynamicFieldInTaskTemplate(globalTaskTemplateName);
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalTaskField1')).toBeTruthy();
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalTaskField2')).toBeTruthy();
-        expect(await addFieldsPopPo.isCaseTemplatePresent(taskTemplateName)).toBeFalsy()
+        expect(await addFieldsPopPo.isCaseTemplatePresent(taskTemplateName)).toBeFalsy();
         await addFieldsPopPo.clickOnOkButtonOfEditor();
         await createNotificationTemplatePo.selectEvent('Approval');
         await createNotificationTemplatePo.selectModuleName('Tasks');
@@ -163,7 +163,7 @@ describe('Dynamic data', () => {
         await addFieldsPopPo.clickOnOkButtonOfEditor();
         await createDocumentTemplatePo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-    }, 760 * 1000);
+    }, 810 * 1000);
 
     it('[DRDMV-19270]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
         await apiHelper.apiLogin('tadmin');
@@ -578,7 +578,7 @@ describe('Dynamic data', () => {
         for (let i: number = 0; i <= fileName2.length; i++) {
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2[i]}`)).toBeTruthy('FailuerMsg: File is delete sucessfully');
         }
-    });
+    }, 320 * 1000);
 
     it('[DRDMV-13161]: [-ve] [Dynamic Data] - Task UI with dynamic data having long description/labels with large data in different fields', async () => {
         let dynamicfield1 = 'theNewDynamicFieldsIsgettingMouseOveredMouseOvered';
@@ -612,7 +612,7 @@ describe('Dynamic data', () => {
         await apiHelper.deleteDynamicFieldAndGroup();
         let automatedTask = 'automatedTaskDRDMV-13161' + randomStr;
         let automatedTaskSummary = 'automatedSummaryDRDMV-13161' + randomStr;
-        let processName='automated process'+randomStr;
+        let processName = 'automated process' + randomStr;
         let automationTemplateData = {
             "templateName": `${automatedTask}`,
             "templateSummary": `${automatedTaskSummary}`,
@@ -689,7 +689,7 @@ describe('Dynamic data', () => {
         //verify input field values are peresent are not 
         expect(await viewTaskPo.getDynamicFieldValue('temp1theNewautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('300');
         expect(await viewTaskPo.getDynamicFieldValue('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered');
-    }, 320 * 1000);
+    }, 400 * 1000);
 
     // ptidke
     it('[DRDMV-13128]: [Dynamic Data] - Create Case with Case Template having dynamic fields and Update dynamic fields data in Case', async () => {
@@ -719,7 +719,7 @@ describe('Dynamic data', () => {
         await editCasePo.addAttachment('attachment2', ['../../data/ui/attachment/demo.txt']);
         await editCasePo.setDateTimeDynamicFieldValue('04-01-2022 05:11 PM');
         await editCasePo.setTimeInDynamicField('02');
-         await editCasePo.selectValueFromList('dynamicList', 'listvalues');
+        await editCasePo.selectValueFromList('dynamicList', 'listvalues');
         await editCasePo.clickSaveCase();
         await utilCommon.waitUntilPopUpDisappear();
         //verify update values on case view
@@ -833,12 +833,12 @@ describe('Dynamic data', () => {
         await editTaskPo.setDynamicFieldValue('temp', 'sssssss');
         await editTaskPo.setDynamicFieldValue('temp1', 'sssssss');
         await editTaskPo.clickOnAssignToMe();
-        await editTaskPo.setDateValueInDynamicField('wrong date')
+        await editTaskPo.setDateValueInDynamicField('wrong date');
         await editTaskPo.clickOnSaveButton();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
         await editTaskPo.setDateTimeDynamicFieldValue('wrongdatetime');
         await editTaskPo.clickOnSaveButton();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
         //  await utilCommon.waitUntilPopUpDisappear();
         await editTaskPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
@@ -861,12 +861,12 @@ describe('Dynamic data', () => {
         await viewTaskPo.clickOnEditTask();
         await editTaskPo.setDynamicFieldValue('externalText', 'sssssss');
         await editTaskPo.clickOnAssignToMe();
-        await editTaskPo.setDateValueInDynamicField('wrong date')
+        await editTaskPo.setDateValueInDynamicField('wrong date');
         await editTaskPo.clickOnSaveButton();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
         await editTaskPo.setDateTimeDynamicFieldValue('wrongdatetime');
         await editTaskPo.clickOnSaveButton();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
         await editTaskPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
         await viewTaskPo.clickOnEditTask();
@@ -892,12 +892,12 @@ describe('Dynamic data', () => {
         await manageTaskBladePo.clickTaskLinkOnManageTask(automatedTaskSummary);
         await viewTaskPo.clickOnEditTask();
         await editTaskPo.setDynamicFieldValue('automatedText', 'sssssss');
-        await editTaskPo.setDateValueInDynamicField('wrong date')
+        await editTaskPo.setDateValueInDynamicField('wrong date');
         await editTaskPo.clickOnSaveButton();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
         await editTaskPo.setDateTimeDynamicFieldValue('wrongdatetime');
         await editTaskPo.clickOnSaveButton();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
         await editTaskPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
         await viewTaskPo.clickOnEditTask();
@@ -943,7 +943,7 @@ describe('Dynamic data', () => {
         await dynamicFieldsPo.setFieldName('news' + randomStr);
         await dynamicFieldsPo.setDescriptionName('newDescri' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
-        expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.');
+        expect(await utilityCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy("Wrong pop up message");
         await dynamicFieldsPo.setFieldName('newName' + randomStr);
         await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
@@ -954,7 +954,7 @@ describe('Dynamic data', () => {
         await dynamicFieldsPo.setFieldName('newName' + randomStr);
         await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
-        expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.');
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy('Wrong pop up message');
         await dynamicFieldsPo.setFieldName('newNameUpdate' + randomStr);
         await dynamicFieldsPo.setDescriptionName('NewUpdatedDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
@@ -994,13 +994,13 @@ describe('Dynamic data', () => {
         await editCasePo.setDynamicFieldValue('temp', 'newtemp');
         await editCasePo.setDynamicFieldValue('temp1', 'newtempres');
         await editCasePo.clickSaveCase();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
-        await editCasePo.setDateValueInDynamicField('wrong date')
+        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
+        await editCasePo.setDateValueInDynamicField('wrong date');
         await editCasePo.clickSaveCase();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
         await editCasePo.setDateTimeDynamicFieldValue('wrongdatetime');
         await editCasePo.clickSaveCase();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.')
+        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
         await editCasePo.clickOnCancelCaseButton();
         await utilCommon.clickOnWarningOk();
         expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('-', 'field should be empty');

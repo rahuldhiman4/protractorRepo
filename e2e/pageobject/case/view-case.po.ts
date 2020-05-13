@@ -36,9 +36,9 @@ class ViewCasePage {
         caseSite: '[rx-view-component-id="4a58cc3b-e699-4357-a68a-482163d6cbbe"] .read-only-content',
         inprogressErrorMsg: '[rx-view-component-id="dd40ce76-9d16-4c6a-b1a1-16fe6aa6721f"] p',
         label: '[rx-view-component-id="2415f5bb-1b76-4359-a034-ff16f8e26f7b"] .read-only-content',
-        resolutionCodeText: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] button',
+        resolutionCodeText: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] label',
         resolutionDescriptionText: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .bwf-read-only-content',
-        resolutionCodeValue: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] button',
+        resolutionCodeValue: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] .read-only-content',
         resolutionDescriptionValue: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .bwf-read-only-content',
         priority: '[rx-view-component-id="7b47ca08-e9d4-4656-8f96-3bc751c098b0"] .selection-field',
         emailLink: '[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
@@ -87,7 +87,7 @@ class ViewCasePage {
     }
 
     async getResolutionCodeValue(): Promise<string> {
-        return await (await $(this.selectors.resolutionCodeValue).getText()).trim();
+        return (await $(this.selectors.resolutionCodeValue).getText()).trim();
     }
 
     async getResolutionDescription(): Promise<string> {

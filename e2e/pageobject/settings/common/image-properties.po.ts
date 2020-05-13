@@ -77,7 +77,9 @@ class ImagePropertiesPopUp {
 
     async clickOnTab(menuName: string): Promise<void> {
         let tab = `.cke_dialog_tab[title="${menuName}"]`;
-        await $(tab).click();
+        await browser.wait(this.EC.elementToBeClickable($(tab)), 3000).then(async () => {
+            await $(tab).click();
+        });
     }
 
     async addAttachment(fileToUpload: string): Promise<void> {
