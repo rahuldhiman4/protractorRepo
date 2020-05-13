@@ -854,4 +854,41 @@ describe("Compose Email", () => {
             await loginPage.login('qtao');
         }
     }, 650 * 1000);
+
+    //radhiman
+    //Bug-21778
+    it('[DRDMV-10388]: Search on Email Template Grid on Compose Email UI', async () => {
+        await navigationPage.gotoCaseConsole();
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await apiHelper.apiLogin('qkatawazi');
+        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomString;
+        let emailDescription: string = await emailTemplateData['emailTemplateWithMandatoryField'].Description + randomString;
+        let emailSubject: string = await emailTemplateData['emailTemplateWithMandatoryField'].EmailMessageSubject + randomString;
+        emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
+        emailTemplateData['emailTemplateWithMandatoryField'].Description = emailDescription;
+        emailTemplateData['emailTemplateWithMandatoryField'].EmailMessageSubject = emailSubject;
+        await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+        let caseData =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-10388 RandVal" + randomString,
+            "Support Group": "Compensation and Benefits",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin('qtao');
+        let newCase = await apiHelper.createCase(caseData);
+        await utilityGrid.clearFilter();
+        await caseConsole.searchAndOpenCase(newCase.displayId);
+        await viewCasePo.clickOnEmailLink();
+        await composeMail.clickOnSelectEmailTemplateLink();
+        let columns: string[] = ["Description"];
+        await selectEmailTemplateBladePo.addGridColumn(columns);
+        await emailTemplateBladePo.searchEmailTemplate(emailTemplateName);
+        expect (await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
+        await emailTemplateBladePo.searchEmailTemplate(emailDescription);
+        expect (await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
+        await emailTemplateBladePo.searchEmailTemplate(emailSubject);
+        expect (await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
+        await selectEmailTemplateBladePo.removeGridColumn(columns);
+    });
 })

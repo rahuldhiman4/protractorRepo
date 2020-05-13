@@ -19,7 +19,7 @@ import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po'
 import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import notificationPo from '../../pageobject/notification/notification.po';
-import { default as activityTabPage, default as activityTabPo } from '../../pageobject/social/activity-tab.po';
+import activityTabPage from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
@@ -86,7 +86,6 @@ describe('Case Activity', () => {
             await activityTabPage.selectFilterCheckBox('Feedback');
             await activityTabPage.addAuthorOnFilter('Angelina Jolie');
             await activityTabPage.clickOnFilterApplyButton();
-            // await utilityCommon.waitUntilSpinnerToHide();
             expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
             // ii) Selected Filters are displayed in Activity with first filter and + other selected filters
             expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'), 'General Notes is missing';
@@ -94,7 +93,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
             expect(await activityTabPage.getTextFromFilterList('Unflag')).toBe('Unflag'), 'Unflag is missing';
             expect(await activityTabPage.getTextFromFilterList('Feedback')).toBe('Feedback'), 'Feedback is missing';
-            expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie'), 'Author: ajolie is missing';
+            expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie'), 'Author: ajolie is missing';
             // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
             await activityTabPage.closeNmoreLink();
             await activityTabPage.clickOnNmoreLink();
@@ -110,7 +109,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
             expect(await activityTabPage.getTextFromFilterList('Unflag')).toBe('Unflag'), 'Assignment Change is missing';
             expect(await activityTabPage.getTextFromFilterList('Feedback')).toBe('Feedback'), 'Feedback is missing';
-            expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author: ajolie'), 'Author: ajolie is missing';
+            expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie'), 'Author: ajolie is missing';
             await activityTabPage.closeNmoreLink();
             //  v) - That particular filter is removed.
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
@@ -140,7 +139,6 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(caseBodyText);
         await activityTabPage.addPersonInActivityNote('Elizabeth Jeffries');
         await activityTabPage.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText, 'Elizabeth Jeffries')).toBeTruthy('PersonName is not displayed correctly');
         await activityTabPage.clickOnHyperlinkFromActivity(1, 'Elizabeth Jeffries');
         expect(await personProfilePo.getPersonName()).toBe('Elizabeth Jeffries'), 'Elizabeth Jeffries name is missing';
@@ -212,7 +210,7 @@ describe('Case Activity', () => {
         } finally {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
-    });
+    }, 350 * 1000);
 
     //kgaikwad
     it('[DRDMV-16773]: [-ve] - Person details displayed in Activity who have long name', async () => {
@@ -349,7 +347,7 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.clickOnFilterClearButton();
         await expect(await activityTabPage.isfilterPresent()).not.toBeTruthy('filter displayed');
-    });//, 140 * 1000);
+    }, 340 * 1000);
 
     //kgaikwad
     it('[DRDMV-16760]: From Task Activity Filters > Person search behavior in Author field', async () => {
@@ -419,7 +417,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isAuthorBoxEmpty()).toBeTruthy('Author field is not empty');
         // ii) - Select another user and click on Apply
         await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
-    });//, 140 * 1000);
+    }, 270 * 1000);
 
     //kgaikwad
     it('[DRDMV-16734]: From Case Activity Filters > Person search behavior in Author field', async () => {
@@ -464,12 +462,12 @@ describe('Case Activity', () => {
 
     //kgaikwad
     it('[DRDMV-16759]: Task Activity Filter UI validation', async () => {
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // Create manual task template
         let manualTemplateData = {
-            "templateName": "DRDMV-21617_task template" + summary,
-            "templateSummary": "DRDMV-21617_Manual_task template summary" + summary,
+            "templateName": "DRDMV-21617_task template" + randomString,
+            "templateSummary": "DRDMV-21617_Manual_task template summary" + randomString,
             "templateStatus": "Active",
             "company": '- Global -'
         }
@@ -572,9 +570,9 @@ describe('Case Activity', () => {
             "processName": "Case Process ",
         }
 
-        autoTemplateData.templateName = autoTemplateData.templateName + randomStr;
-        autoTemplateData.templateSummary = autoTemplateData.templateSummary + randomStr;
-        autoTemplateData.processName = autoTemplateData.processName + randomStr;
+        autoTemplateData.templateName = autoTemplateData.templateName + randomString;
+        autoTemplateData.templateSummary = autoTemplateData.templateSummary + randomString;
+        autoTemplateData.processName = autoTemplateData.processName + randomString;
 
         await apiHelper.apiLogin('qkatawazi');
         let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(autoTemplateData);
@@ -765,7 +763,7 @@ describe('Case Activity', () => {
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.clickOnFilterClearButton();
         await expect(await activityTabPage.isfilterPresent()).not.toBeTruthy('filter displayed');
-    }, 330 * 1000);
+    }, 420 * 1000);
 
     //kgaikwad
     // Ok
@@ -788,7 +786,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isLinkedTextPresentInBodyOfFirstActivity('Dale Steyn')).toBeTruthy("LastName user is not present");
         await expect(await activityTabPage.isLinkedTextPresentInBodyOfFirstActivity('Allen Border')).toBeTruthy("EmailID user is not present");
         await expect(await activityTabPage.isLinkedTextPresentInBodyOfFirstActivity('Qianru Tao')).toBeTruthy("LoginID user is not present");
-    });
+    }, 300 * 1000);
 
     //kgaikwad
     // LFail Done
@@ -871,10 +869,11 @@ describe('Case Activity', () => {
         } finally {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         }
-    }, 250 * 1000);
+    }, 300 * 1000);
 
     // ptidke
     it('[DRDMV-7152]: [Automatic Task] - Automatic Task: Social: Manual Comments', async () => {
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         // Create automated task template
         let autoTemplateData = {
             "templateName": "auto task DRDMV-7152 template",
@@ -884,9 +883,9 @@ describe('Case Activity', () => {
             "processName": "Case Process ",
         }
 
-        autoTemplateData.templateName = autoTemplateData.templateName + randomStr;
-        autoTemplateData.templateSummary = autoTemplateData.templateSummary + randomStr;
-        autoTemplateData.processName = autoTemplateData.processName + randomStr;
+        autoTemplateData.templateName = autoTemplateData.templateName + randomString;
+        autoTemplateData.templateSummary = autoTemplateData.templateSummary + randomString;
+        autoTemplateData.processName = autoTemplateData.processName + randomString;
         await apiHelper.apiLogin('fritz');
         let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(autoTemplateData);
         console.log("Automated task Template created===", autoTaskTemplate.id);
@@ -910,7 +909,6 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote('step 2nd added ' + taskBodyText);
         await activityTabPage.addAttachment([filePath]);
         await activityTabPage.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.getFirstPostContent()).toContain('step 2nd added ' + taskBodyText);
         expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('file is not present');
         await activityTabPage.clickAttachedFile('bwfPdf.pdf');
@@ -933,11 +931,10 @@ describe('Case Activity', () => {
             await activityTabPage.addAttachment(['../../data/ui/attachment/demo.txt']);
         }
         await activityTabPage.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
         expect(await activityTabPage.getFirstPostContent()).toContain(textWithMultipleAttachment);
         await activityTabPage.clickShowMoreLinkInAttachmentActivity(1);
         expect(await activityTabPage.getCountAttachedFiles('demo.txt')).toBe(6);
-    });//, 150 * 1000);
+    }, 270 * 1000);
 
     //kgaikwad
     it('[DRDMV-16582]: Check case view count log is displayed on the activity feed of case along with name of user and time', async () => {
@@ -952,14 +949,13 @@ describe('Case Activity', () => {
             await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
             let caseId: string = newCase.displayId;
+            await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
-            // await utilityCommon.waitUntilSpinnerToHide();
-            await activityTabPo.clickOnRefreshButton();
+            await activityTabPage.clickOnRefreshButton();
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await caseConsolePo.searchAndOpenCase(caseId);
-            // await utilityCommon.waitUntilSpinnerToHide();
-            await activityTabPo.clickOnRefreshButton();
+            await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi  viewed the case. ')).toEqual(1);
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             await utilityCommon.refresh();
@@ -967,7 +963,6 @@ describe('Case Activity', () => {
             // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             await navigationPage.gotoPersonProfile();
-            // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await personProfilePo.getCaseViewCount(' Viewed the  ' + caseId)).toEqual(1);
         } catch (e) {
             throw e;
@@ -975,17 +970,17 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 240 * 1000);
+    }, 270 * 1000);
 
     //kgaikwad
     it('[DRDMV-16589]: Check case view count is not increased by opening same case by different places', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             // Create Task Template
             let manualTaskTemplateData = {
-                "templateName": "DRDMV-16589_tempname_" + randomStr,
-                "templateSummary": "DRDMV-16589_tempSummary_" + randomStr,
+                "templateName": "DRDMV-16589_tempname_" + randomString,
+                "templateSummary": "DRDMV-16589_tempSummary_" + randomString,
                 "templateStatus": "Active",
             }
             await apiHelper.apiLogin('qkatawazi');
@@ -1009,20 +1004,17 @@ describe('Case Activity', () => {
             await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskTemplateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
             // Goto case   
-            // await utilityCommon.waitUntilSpinnerToHide();
+            await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             // Goto Quick Case
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qtao');
-
             await quickCasePo.setCaseSummary(caseData.Summary);
-            // await utilityCommon.waitUntilSpinnerToHide();
             await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
             await quickCasePo.gotoCaseButton();
-            // await utilityCommon.waitUntilSpinnerToHide();
+            await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             await navigationPage.gotoQuickCase();
-            await utilityCommon.refresh();
             await quickCasePo.selectRequesterName('qtao');
             await quickCasePo.setCaseSummary(caseData.Summary);
             await quickCasePo.saveCase();
@@ -1045,7 +1037,6 @@ describe('Case Activity', () => {
             await relatedCaseTab.clickOnCaseSummaryLink(caseData.Summary);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing');
             await activityTabPage.clickOnRefreshButton();
-            // await utilityCommon.waitUntilSpinnerToHide();
             await expect(await activityTabPage.getCaseViewCount('Elizabeth Peters  viewed the case. ')).toEqual(1);
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
         } catch (e) {
@@ -1122,7 +1113,7 @@ describe('Case Activity', () => {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             // Create Case
             let caseData = {
-                "Requester": "Fritz",
+                "Requester": "apavlik",
                 "Summary": "DRDMV-18052_TC" + summary,
                 "Support Group": "Compensation and Benefits",
                 "Assignee": "qtao"
@@ -1132,10 +1123,9 @@ describe('Case Activity', () => {
             let newCase = await apiHelper.createCase(caseData);
             let caseId: string = newCase.displayId;
             await caseConsolePo.searchAndOpenCase(caseId);
-            await activityTabPage.addActivityNote('From DRDMV-18052');
+            await activityTabPage.addActivityNote('From DRDMV-18052 ');
             await activityTabPage.addPersonInActivityNote('fritz');
             await activityTabPage.clickOnPostButton();
-            // await utilityCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await notificationPo.clickOnNotificationIcon();
@@ -1184,13 +1174,11 @@ describe('Case Activity', () => {
         // Verify logs with 5 lines or less than 5 lines
         await activityTabPage.addActivityNote(addNoteBodyText1);
         await activityTabPage.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg1: BodyText is missing');
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg2: Show more link is displayed');
         // Verify logs with more than 5 lines
         await activityTabPage.addActivityNote(addNoteBodyText2);
         await activityTabPage.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
@@ -1201,7 +1189,6 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(addNoteBodyText1);
         await activityTabPage.addAttachment([filePath1, filePath2]);
         await activityTabPage.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
         await expect(await activityTabPage.isAttachedFileNameDisplayed('articleStatus.png')).toBeTruthy(`FailureMsg9: ${filePath1} is missing`);
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy(`FailureMsg10: ${filePath2} is missing`);
@@ -1211,7 +1198,6 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(addNoteBodyText2);
         await activityTabPage.addAttachment([filePath4, filePath5]);
         await activityTabPage.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy(`FailureMsg15: ${filePath4} is missing`);
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg3.jpg')).toBeTruthy(`FailureMsg16: ${filePath5} is missing`);
@@ -1223,7 +1209,6 @@ describe('Case Activity', () => {
         await activityTabPage.addAttachment([filePath7, filePath8, filePath9, filePath10, filePath11]);
 
         await activityTabPage.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
@@ -1260,10 +1245,11 @@ describe('Case Activity', () => {
 
         await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
 
-    });//, 150 * 1000);
+    }, 270 * 1000);
 
     //kgaikwad
     it('[DRDMV-16765]:Validate Show More/Less option in KA Activity Tab', async () => {
+        try{
         let randomValues1 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues2 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues3 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1299,13 +1285,11 @@ describe('Case Activity', () => {
         // Verify logs with 5 lines or less than 5 lines
         await activityTabPage.addActivityNote(addNoteBodyText1);
         await activityTabPage.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg1: BodyText is missing');
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg2: Show more link is displayed');
         // Verify logs with more than 5 lines
         await activityTabPage.addActivityNote(addNoteBodyText2);
         await activityTabPage.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
@@ -1316,7 +1300,6 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(addNoteBodyText1);
         await activityTabPage.addAttachment([filePath1, filePath2]);
         await activityTabPage.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
         await expect(await activityTabPage.isAttachedFileNameDisplayed('articleStatus.png')).toBeTruthy(`FailureMsg9: ${filePath1} is missing`);
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy(`FailureMsg10: ${filePath2} is missing`);
@@ -1326,7 +1309,6 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(addNoteBodyText2);
         await activityTabPage.addAttachment([filePath4, filePath5]);
         await activityTabPage.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy(`FailureMsg15: ${filePath4} is missing`);
         await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg3.jpg')).toBeTruthy(`FailureMsg16: ${filePath5} is missing`);
@@ -1337,7 +1319,6 @@ describe('Case Activity', () => {
         await activityTabPage.addActivityNote(addNoteBodyText2);
         await activityTabPage.addAttachment([filePath7, filePath8, filePath9, filePath10, filePath11]);
         await activityTabPage.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
@@ -1373,7 +1354,13 @@ describe('Case Activity', () => {
         await expect(await utilityCommon.isFileDownloaded('bwfJson5.json')).toBeTruthy('FailureMsg41: bwfJson5.json File is not downloaded.');
 
         await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
-
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        }
     }, 400 * 1000);
 
     //kgaikwad
@@ -1431,7 +1418,6 @@ describe('Case Activity', () => {
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.clickOnPostButton();
-            // await utilityCommon.waitUntilSpinnerToHide();
 
             // verify flag in activity
             await expect(await activityTabPage.isLogIconDisplayedInActivity('flag', 5)).toBeTruthy('FailureMsg: Note pencil icon is missing')

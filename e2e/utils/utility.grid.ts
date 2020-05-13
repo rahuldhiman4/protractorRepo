@@ -133,13 +133,17 @@ export class GridOperations {
             gridHeaders = `[rx-view-component-id='${guid}'] ` + gridHeaders;
             gridCellData = `[rx-view-component-id='${guid}'] ` + gridCellData;
         }
-        let forLimit = await $$(gridHeaders).count();
-        for (let i: number = 0; i < forLimit; i++) {
-            count = count + 1;
-            let gridText = (await $$(gridHeaders).get(i).getAttribute('innerText')).trim();
-            if (gridText == columnName) { break; }
+
+        if (await $$(gridCellData).count() > 0) {
+            let forLimit = await $$(gridHeaders).count();
+            for (let i: number = 0; i < forLimit; i++) {
+                count = count + 1;
+                let gridText = (await $$(gridHeaders).get(i).getAttribute('innerText')).trim();
+                if (gridText == columnName) { break; }
+            }
+            return (await $$(gridCellData).get(count - 1).getAttribute('innerText')).trim();
         }
-        return (await $$(gridCellData).get(count - 1).getAttribute('innerText')).trim();
+        else { return ""; }
     }
 
     async getAllValuesFromColumn(columnHeader: string, guid?: string): Promise<string[]> {

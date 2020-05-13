@@ -21,6 +21,8 @@ import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilCommon from '../../utils/util.common';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import changAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
 
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
@@ -131,7 +133,7 @@ describe('Case Template', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('franz');
-            await navigationPage.gotoSettingsPage();   
+            await navigationPage.gotoSettingsPage();
             expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
         } catch (e) {
             throw e;
@@ -396,7 +398,7 @@ describe('Case Template', () => {
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus();
         await viewCasePo.openTaskCard(1);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(ManualTaskTempSummary);          
+        await manageTaskBladePo.clickTaskLinkOnManageTask(ManualTaskTempSummary);
         await viewTaskPo.clickOnChangeStatus();
         await viewTaskPo.changeTaskStatus('Completed');
         await updateStatusBladePo.setStatusReason('Successful');
@@ -423,29 +425,37 @@ describe('Case Template', () => {
         await viewTaskPo.clickOnSaveStatus();
         await viewTaskPo.clickOnViewCase();
         await expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
-    },300 * 1000);
+    }, 300 * 1000);
 
     //ptidke
     it('[DRDMV-19734]:[RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case Template view Look & Feel after adding new configuration field', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-        let caseTemplateName: string = await caseTemplateAllFields.templateName + Math.floor(Math.random() * 100000);
-        caseTemplateAllFields.templateName = caseTemplateName;
-        await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-        await createCaseTemplate.setTemplateName(caseTemplateName);
-        await createCaseTemplate.setCompanyName(caseTemplateAllFields.company);
-        await createCaseTemplate.setCaseSummary(caseTemplateAllFields.templateSummary);
-        await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
-        await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
-        await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
-        await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
-        await createCaseTemplate.clickSaveCaseTemplate();
-        //await utilCommon.waitUntilPopUpDisappear();
-        await expect(await viewCaseTemplate.getResolveCaseOnLastTaskCompletionValue()).toContain('Yes');
-        await editCaseTemplate.clickEditCaseTemplate();
-        await editCaseTemplate.isResolveCaseOnLastTaskCompletion(false);
-        await editCaseTemplate.clickSaveCaseTemplate();
-        await expect(await viewCaseTemplate.getResolveCaseOnLastTaskCompletionValue()).toContain('No');
+        try {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            let caseTemplateName: string = await caseTemplateAllFields.templateName + Math.floor(Math.random() * 100000);
+            caseTemplateAllFields.templateName = caseTemplateName;
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.setTemplateName(caseTemplateName);
+            await createCaseTemplate.setCompanyName(caseTemplateAllFields.company);
+            await createCaseTemplate.setCaseSummary(caseTemplateAllFields.templateSummary);
+            await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
+            await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
+            await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
+            await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
+            await createCaseTemplate.clickSaveCaseTemplate();
+            //await utilCommon.waitUntilPopUpDisappear();
+            await expect(await viewCaseTemplate.getResolveCaseOnLastTaskCompletionValue()).toContain('Yes');
+            await editCaseTemplate.clickEditCaseTemplate();
+            await editCaseTemplate.isResolveCaseOnLastTaskCompletion(false);
+            await editCaseTemplate.clickSaveCaseTemplate();
+            await expect(await viewCaseTemplate.getResolveCaseOnLastTaskCompletionValue()).toContain('No');
+        } catch (e) {
+            throw e;
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
     });
 
     //ptidke
@@ -529,7 +539,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 400 * 1000)
+    }, 500 * 1000)
 
     //apdeshmu 
     it('[DRDMV-769]: [Case Creation] [Template Selection] Applying a Template to a Case', async () => {
@@ -566,7 +576,7 @@ describe('Case Template', () => {
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(casetemplatePsilon);
-            
+
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('fritz');
             await createCasePo.setSummary(caseTemplateNamePetramco);
@@ -695,6 +705,128 @@ describe('Case Template', () => {
             expect(await viewCasePo.getCategoryTier2Value()).toBe('Policies');
             expect(await viewCasePo.getCategoryTier3Value()).toBe('Card Issuance');
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    }, 300 * 1000);
+
+
+    it('[DRDMV-1215]: [Case Template] Case Status, Template status, Priority, Case Company, Owner population', async () => {
+        try {
+            let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let caseTemplateName = 'caseTemplateName' + randomStr;
+            let caseTemplateSummary = 'CaseSummaryName' + randomStr;
+            let casetemplatePetramco = {
+                "templateName": caseTemplateName,
+                "templateSummary": caseTemplateName,
+                "templateStatus": "Draft",
+                "company": "Petramco",
+                "resolveCaseonLastTaskCompletion": "1",
+                "assignee": "Fritz",
+                "supportGroup": "Facilities",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "caseStatus": "New",
+            }
+
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createCaseTemplate(casetemplatePetramco);
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+            await editCaseTemplate.clickOnEditCaseTemplateMetadata();
+            let templateStatuses: string[] = ["Draft", "Active", "Inactive"];
+            expect(await editCaseTemplate.allTemplateStatusOptionsPresent(templateStatuses)).toBeTruthy();       
+            await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.waitUntilPopUpDisappear();
+            await viewCaseTemplate.clickOnEditCaseTemplateButton();
+            await editCaseTemplate.clickOnChangeAssignmentButton();
+            await changAssignmentOldPage.setAssignee('Petramco', 'Compensation and Benefits', 'Qianru Tao');
+            let statuses: string[] = ["New", "Assigned", "In Progress", "Resolved", "Closed"];
+            expect(await editCaseTemplate.allStatusOptionsPresent(statuses)).toBeTruthy();
+            await editCaseTemplate.clickOnCancelTemplateMetaData();
+            let priority: string[] = ["Critical", "High", "Medium", "Low"];
+            expect(await editCaseTemplate.allPriorityOptionsPresent(priority)).toBeTruthy();            
+            await editCaseTemplate.clickSaveCaseTemplate();
+            expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(caseTemplateName);
+            expect(await viewCaseTemplate.getCategoryTier1()).toContain("Purchasing Card");
+            expect(await viewCaseTemplate.getCategoryTier2()).toContain("Policies");
+            expect(await viewCaseTemplate.getCategoryTier3()).toContain("Card Issuance");
+            expect(await viewCaseTemplate.getCaseCompanyValue()).toContain("Petramco");
+            expect(await viewCaseTemplate.getTemplateStatusValue()).toContain("Draft");
+            expect(await viewCaseTemplate.getAssigneeText()).toContain('Qianru Tao');
+            expect(await viewCaseTemplate.getOwnerGroupValue()).toContain('Compensation and Benefits');
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    }, 300 * 1000);
+
+    it('[DRDMV-8965]: Changing case template for new case status.', async () => {
+        try {
+            let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let caseTemplateName = 'caseTemplateName' + randomStr;
+            let updatedCaseTemplateName = 'updatedCaseTemplateName' + randomStr;
+
+            let casetemplatePetramco1 = {
+                "templateName": caseTemplateName,
+                "templateSummary": caseTemplateName,
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "resolveCaseonLastTaskCompletion": "1",
+                "assignee": "Fritz",
+                "supportGroup": "Facilities",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "caseStatus": "New",
+            }
+            let casetemplatePetramco2 = {
+                "templateName": updatedCaseTemplateName,
+                "templateSummary": updatedCaseTemplateName,
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "resolveCaseonLastTaskCompletion": "1",
+                "assignee": "Fritz",
+                "supportGroup": "Facilities",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "caseStatus": "New",
+            }
+
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createCaseTemplate(casetemplatePetramco1);
+            await apiHelper.createCaseTemplate(casetemplatePetramco2);
+
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('fritz');
+            await createCasePo.setSummary(caseTemplateName);
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateName);
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.clickOnChangeCaseTemplate();
+            await selectCasetemplateBladePo.selectCaseTemplate(updatedCaseTemplateName);
+            await editCasePo.clickSaveCase();
+            expect(await viewCasePo.getPriorityValue()).toBe('Low');
+            expect(await viewCasePo.getCategoryTier1Value()).toBe('Purchasing Card');
+            expect(await viewCasePo.getCategoryTier2Value()).toBe('Policies');
+            expect(await viewCasePo.getCategoryTier3Value()).toBe('Card Issuance');
+            expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
+            await expect(activityTabPo.isTextPresentInActivityLog('applied the template')).toBeTruthy('Private Note is not Added');
         } catch (e) {
             throw e;
         } finally {

@@ -106,6 +106,7 @@ describe('Case Bulk Operation', () => {
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qiao Feng");
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
+        await utilityCommon.closePopUpMessage();
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[2]);
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Qing Yuan");

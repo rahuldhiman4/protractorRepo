@@ -422,12 +422,11 @@ class CaseEditPage {
     }
 
     async setDateTimeDynamicFieldValue(value: string): Promise<void> {
-        await $(this.selectors.dynamicFieldDateTime).sendKeys(value);
+        await utilityCommon.setDateField('376ec3d3-9381-4613-bb06-1e8dbbaf6b18',value);
     }
-
-    async selectValueFromList(fieldName: string, value: string): Promise<void> {
-        await $(`[ng-title=${fieldName}] div.ui-select-match`).click();
-        await $(`div[title=${value}]`).click();
+ 
+     async selectValueFromList(fieldName: string, value: string): Promise<void> {
+        await utilityCommon.selectDropDown('376ec3d3-9381-4613-bb06-1e8dbbaf6b18',value); 
     }
 
     async setTimeInDynamicField(value: string): Promise<void> {

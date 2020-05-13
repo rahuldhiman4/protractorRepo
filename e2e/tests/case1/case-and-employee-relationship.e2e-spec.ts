@@ -191,7 +191,7 @@ describe('Case And Employee Relationship', () => {
         await utilityGrid.searchAndOpenHyperlink(caseId2);
         await viewCasePo.clickOnTab('Related Cases');
         expect(await relatedCasePage.isCasePresent(caseId3)).toBeTruthy();
-    }, 260*1000);//, 180 * 1000);
+    }, 300*1000);
 
     //asahitya
     it('[DRDMV-16243]: Check details shown for Employees on Related People tab', async () => {
@@ -307,6 +307,7 @@ describe('Case And Employee Relationship', () => {
         await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
 
         await utilityCommon.refresh();
+        await browser.sleep(5000); // required for indexing, case will appear in recommended case section
         await utilityGrid.searchAndOpenHyperlink(caseId);
         // This validation is not required as tab click is happening based on Tab text
         //expect(await caseEditPage.getRelatedCasesTabText()).toBe("Related Cases");

@@ -461,7 +461,7 @@ class ActivityTabPage {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).click();
         await $(this.selectors.filterAuthor).sendKeys(AuthorName);
-        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)), 2000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)), 3000);
         await $(this.selectors.personPopup).click();
     }
 

@@ -146,7 +146,7 @@ describe('Create Case Task', () => {
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.clickOnSaveTaskTemplate();
         await expect(viewTasktemplatePage.getTaskCompanyNameValue()).toBe("Petramco");
-        await utilityCommon.waitUntilPopUpDisappear();
+        await utilityCommon.closePopUpMessage();
 
         //case create
         try {
@@ -195,7 +195,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 420 * 1000);
+    }, 500 * 1000);
 
     //ankagraw
     it('[DRDMV-7124]: [Automatic Task] - Task Template UI in Edit mode: New fields validations ', async () => {
@@ -343,7 +343,7 @@ describe('Create Case Task', () => {
         await taskTemplate.selectTaskCategoryTier3(categName3);
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.clickOnSaveTaskTemplate();
-        //await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await expect(await viewTaskTemplate.getCategoryTier1Value()).toBe(globalCategName);
         await expect(viewTaskTemplate.getCategoryTier2Value()).toBe(categName2);
         await expect(viewTaskTemplate.getCategoryTier3Value()).toBe(categName3);
@@ -360,6 +360,7 @@ describe('Create Case Task', () => {
             await createCasePage.selectCategoryTier1(globalCategName);
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            await utilityCommon.closePopUpMessage();
             await expect(viewCasePage.getCategoryTier1Value()).toBe(globalCategName, "Global Category Not Present");
 
             //Got To Another Case
@@ -406,7 +407,7 @@ describe('Create Case Task', () => {
             await taskTemplate.selectOwnerCompany('Psilon');
             await taskTemplate.clickOnSaveTaskTemplate();
             await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Manual');
-            //await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
 
             //search above template
             await navigationPage.gotoSettingsPage();
@@ -418,6 +419,7 @@ describe('Create Case Task', () => {
             await editTaskTemplate.selectTaskCategoryTier2('Social');
             await editTaskTemplate.selectTaskCategoryTier3('Chatter');
             await editTaskTemplate.clickOnSaveButton();
+            await utilCommon.closePopUpMessage();
             await expect(viewTaskTemplate.getTaskDescriptionNameValue()).toBe(description, 'description is not present');
             await expect(viewTaskTemplate.getCategoryTier1Value()).toBe('Applications', 'Applications is not present');
             await expect(viewTaskTemplate.getCategoryTier2Value()).toBe('Social', 'Social is not present');
@@ -428,7 +430,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 270 * 1000);
+    }, 330 * 1000);
 
     //ankagraw
     it('[DRDMV-12582]: Task Template access when owner group from different company is applied', async () => {
@@ -457,7 +459,7 @@ describe('Create Case Task', () => {
         await taskTemplate.selectCompanyByName('Petramco');
         await taskTemplate.selectOwnerGroup('Facilities');
         await taskTemplate.clickOnSaveTaskTemplate();
-        //await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
 
         //search above template
         try {
@@ -536,6 +538,7 @@ describe('Create Case Task', () => {
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Closed');
             await viewTask.clickOnSaveStatus();
+            await utilityCommon.closePopUpMessage();
             await expect(viewTask.getTaskStatusValue()).toBe('Closed');
 
         } catch (e) {
@@ -650,8 +653,7 @@ describe('Create Case Task', () => {
         await utilityGrid.addFilter('Task Type', 'Automated', 'checkbox');
         //await utilCommon.waitUntilSpinnerToHide();
         await expect(await manageTask.getFilterValue('Automated')).toBeTruthy();
-        await utilGrid.clearFilter();
-        await utilCommon.waitUntilSpinnerToHide();
+        await utilityGrid.clearFilter();
          } catch (error) {
              throw expect;
          } finally {
@@ -724,14 +726,17 @@ describe('Create Case Task', () => {
         await editTaskTemplate.clickOnEditMetadataLink();
         await editTaskTemplate.selectTemplateStatus("Active");
         await editTaskTemplate.clickOnSaveMetadata();
+        await utilCommon.closePopUpMessage();
         await expect(viewTaskTemplate.getTemplateStatus()).toBe('Active');
         await editTaskTemplate.clickOnEditMetadataLink();
         await editTaskTemplate.selectTemplateStatus("Inactive");
         await editTaskTemplate.clickOnSaveMetadata();
+        await utilCommon.closePopUpMessage();
         await expect(viewTaskTemplate.getTemplateStatus()).toBe('Inactive');
         await editTaskTemplate.clickOnEditMetadataLink();
         await editTaskTemplate.selectTemplateStatus("Draft");
         await editTaskTemplate.clickOnSaveMetadata();
+        await utilCommon.closePopUpMessage();
         await expect(viewTaskTemplate.getTemplateStatus()).toBe('Draft');
 
         await navigationPage.gotoSettingsPage();
@@ -740,10 +745,12 @@ describe('Create Case Task', () => {
         await editTaskTemplate.clickOnEditMetadataLink();
         await editTaskTemplate.selectTemplateStatus("Inactive");
         await editTaskTemplate.clickOnSaveMetadata();
+        await utilCommon.closePopUpMessage();
         await expect(viewTaskTemplate.getTemplateStatus()).toBe('Inactive');
         await editTaskTemplate.clickOnEditMetadataLink();
         await editTaskTemplate.selectTemplateStatus("Draft");
         await editTaskTemplate.clickOnSaveMetadata();
+        await utilCommon.closePopUpMessage();
         await expect(viewTaskTemplate.getTemplateStatus()).toBe('Draft');
     });//, 150 * 1000);
 
@@ -786,6 +793,7 @@ describe('Create Case Task', () => {
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        await utilityCommon.closePopUpMessage();
         await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
         expect(await viewTask.getTaskStatusValue()).toBe("Completed");
 
@@ -795,6 +803,7 @@ describe('Create Case Task', () => {
         await quickCase.selectCaseTemplate(`${caseTemplateName}`);
         await quickCase.createCaseButton();
         await quickCase.gotoCaseButton();
+        await utilityCommon.closePopUpMessage();
         await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Completed");
 
@@ -830,7 +839,8 @@ describe('Create Case Task', () => {
         await updateStatusBladePo.changeCaseStatus('Canceled');
         await updateStatusBladePo.setStatusReason('Customer Canceled');
         await updateStatusBladePo.clickSaveStatus();
-        await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+        await utilityCommon.closePopUpMessage();
+        await viewCasePage.clickOnTaskLink(` AutomatedTaskTemplateActive ${randomStr} `);
         await expect(viewTask.getTaskStatusValue()).toBe("Canceled");
     });
 
@@ -864,6 +874,7 @@ describe('Create Case Task', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        await utilityCommon.closePopUpMessage();
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`FirstAutomatedTaskTemplateActive ${randomStr}`);
         await manageTask.addTaskFromTaskTemplate(`SecondAutomatedTaskTemplateActive1 ${randomStr}`);
@@ -878,6 +889,7 @@ describe('Create Case Task', () => {
         await viewTask.clickOnViewCase();
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus();
+        await utilityCommon.closePopUpMessage();
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Completed");
@@ -886,7 +898,7 @@ describe('Create Case Task', () => {
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickTaskLinkOnManageTask(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Completed");
-    });//, 240 * 1000);
+    }, 280 * 1000);//, 240 * 1000);
 
     it('[DRDMV-7145]: [Automatic task] - Task Activation based on its sequence no.', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -919,6 +931,7 @@ describe('Create Case Task', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        await utilityCommon.closePopUpMessage();
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
         await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate2 ${randomStr}`);
@@ -938,6 +951,7 @@ describe('Create Case Task', () => {
         await viewTask.clickOnViewCase();
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus();
+        await utilityCommon.closePopUpMessage();
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary1 ${randomStr}`);
         await viewTask.clickOnChangeStatus();
@@ -945,6 +959,7 @@ describe('Create Case Task', () => {
         await viewTask.changeTaskStatus('Completed');
         await updateStatusBladePo.setStatusReason('Successful');
         await viewTask.clickOnSaveStatus();
+        await utilityCommon.closePopUpMessage();
         await viewTask.clickOnViewCase();
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary2 ${randomStr}`);
@@ -1035,6 +1050,7 @@ describe('Create Case Task', () => {
         await createCasePage.setSummary("New case" + randomStr);
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        await utilityCommon.closePopUpMessage();
         await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
@@ -1050,6 +1066,7 @@ describe('Create Case Task', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        await utilityCommon.closePopUpMessage();
         await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
@@ -1100,6 +1117,6 @@ describe('Create Case Task', () => {
         await caseConsolePage.searchAndOpenCase(canceled);
         await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy("Add task button Visible");
 
-    }, 450 * 1000);
+    }, 500 * 1000);
 
 });

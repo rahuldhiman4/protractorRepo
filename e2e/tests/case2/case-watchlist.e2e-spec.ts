@@ -75,6 +75,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
+        await utilityCommon.closePopUpMessage();
         await caseConsole.clickOnWatchlistIcon();
         for (let i: number = 0; i < 3; i++) {
             expect(await caseWatchlist.isCasePresent(caseId[i])).toBeTruthy(caseId[i] + ": Case is not present");
@@ -98,6 +99,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
+        await utilityCommon.closePopUpMessage();
         await caseConsole.clickOnWatchlistIcon();
         await caseWatchlist.selectAllCases();
         expect(await caseWatchlist.isAllCasesSelected()).toBeTruthy("All cases are not selected");
@@ -123,6 +125,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
+        await utilityCommon.closePopUpMessage();
         await caseConsole.clickOnWatchlistIcon();
         expect(await caseWatchlist.isCaseSearchGiveCorrectResult(caseId[0])).toBeTruthy('Unable to find the case');
     });
@@ -157,6 +160,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
+        await utilityCommon.closePopUpMessage();
         await caseConsole.clickOnWatchlistIcon();
         await caseWatchlist.addFilter("Status", "Resolved", 'searchbox');
         expect(await caseWatchlist.isEntireColumnContainsValue("Status", "Resolved")).toBeTruthy("Records are not filtered"); //Need to fix common method written by Ankush
@@ -179,6 +183,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
+        await utilityCommon.closePopUpMessage();
         await caseConsole.clickOnWatchlistIcon();
         await caseWatchlist.selectTwoCases(caseId[0], caseId[1]);
         await caseWatchlist.clickOnRemoveBtn();
@@ -226,6 +231,7 @@ describe('Case Watchlist', () => {
             await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
             await caseWatchlist.saveEvents();
             expect(await utilityCommon.getAllPopupMsg()).toContain("Added 1 selected case(s) to the watchlist.");
+            await utilityCommon.closePopUpMessage();
 
             //login with qtao and update the case assignment and case status
             await navigationPage.signOut();
@@ -237,6 +243,7 @@ describe('Case Watchlist', () => {
             await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
 
             //login with qannis, verify the notifications and remove the case from watchlist
             await navigationPage.signOut();
@@ -261,6 +268,7 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.changeCaseStatus(pendingStr);
             await updateStatusBladePo.setStatusReason(customerResponseStr);
             await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
             await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Peter Kahn");
@@ -300,6 +308,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
         expect(await utilityCommon.getAllPopupMsg()).toContain("Added 1 selected case(s) to the watchlist.");
+        await utilityCommon.closePopUpMessage();
 
         await utilityGrid.searchAndOpenHyperlink(caseId);
         await updateStatusBladePo.changeCaseStatus(inProgressStr);
@@ -345,6 +354,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
+        await utilityCommon.closePopUpMessage();
 
         await updateStatusBladePo.changeCaseStatus(inProgressStr);
         await updateStatusBladePo.clickSaveStatus();
@@ -364,6 +374,7 @@ describe('Case Watchlist', () => {
         await updateStatusBladePo.changeCaseStatus(pendingStr);
         await updateStatusBladePo.setStatusReason(customerResponseStr);
         await updateStatusBladePo.clickSaveStatus();
+        await utilityCommon.closePopUpMessage();
         await viewCasePage.clickEditCaseButton();
         await editCase.clickChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
@@ -400,6 +411,7 @@ describe('Case Watchlist', () => {
         expect(await caseWatchlist.getCloseButtonLabel()).toBe("Close", "Label is not matching");
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
+        await utilityCommon.closePopUpMessage();
         await caseConsole.clickOnWatchlistIcon();
         await caseWatchlist.selectCase(caseId);
         expect(await caseWatchlist.getRemoveButtonLabel()).toBe("Remove", "Label is not matching");
@@ -422,12 +434,14 @@ describe('Case Watchlist', () => {
         await viewCasePage.clickAddToWatchlistLink();
         await caseWatchlist.addWatchlistEvent(caseGroupAssignmentChangesStr);
         await caseWatchlist.saveEvents();
+        await utilityCommon.closePopUpMessage();
 
         //Assign the case to Au Suppport 1 Group
         await viewCasePage.clickEditCaseButton();
         await editCase.clickChangeAssignmentButton();
         await changeAssignment.setAssigneeGroup(auSupport1Str);
         await editCase.clickSaveCase();
+        await utilityCommon.closePopUpMessage();
 
         //Stop watching and change the Group Assignee to Compensation and Benefits
         await viewCasePage.clickStopWatchingLink();
@@ -435,6 +449,7 @@ describe('Case Watchlist', () => {
         await editCase.clickChangeAssignmentButton();
         await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
         await editCase.clickSaveCase();
+        await utilityCommon.closePopUpMessage();
 
         await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
@@ -477,6 +492,7 @@ describe('Case Watchlist', () => {
         await editCase.clickChangeAssignmentButton();
         await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
         await editCase.clickSaveCase();
+        await utilityCommon.closePopUpMessage();
 
         await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
@@ -514,6 +530,7 @@ describe('Case Watchlist', () => {
             await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
             await caseWatchlist.addWatchlistEvent(caseGroupAssignmentChangesStr);
             await caseWatchlist.saveEvents();
+            await utilityCommon.closePopUpMessage();
             await caseConsole.clickOnWatchlistIcon();
             await caseWatchlist.selectCase(caseId);
             await caseWatchlist.clickOnUpdateWatchlistEventsBtn();
@@ -527,7 +544,6 @@ describe('Case Watchlist', () => {
             await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
-            await utilityCommon.waitUntilPopUpDisappear();
             await viewCasePage.clickEditCaseButton();
             await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
@@ -583,6 +599,7 @@ describe('Case Watchlist', () => {
             await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
             await caseWatchlist.saveEvents();
+            await utilityCommon.closePopUpMessage();
 
             //Update case Watch with events Case Status Change and Case Group Assignment change
             await caseConsole.clickOnWatchlistIcon();
@@ -601,7 +618,7 @@ describe('Case Watchlist', () => {
             await utilityCommon.closePopUpMessage();
             await updateStatusBladePo.changeCaseStatus("Assigned");
             await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await utilityCommon.refresh();
             await viewCasePage.clickEditCaseButton();
             await editCase.clickChangeAssignmentButton();
@@ -663,6 +680,7 @@ describe('Case Watchlist', () => {
         await editCase.clickChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
         await editCase.clickSaveCase();
+        await utilityCommon.closePopUpMessage();
 
         //Verification of notifications
         let assignmentNotification1 = utilityCommon.formatString(assignmentNotificationStr, caseId, elizabethPetersStr, qingYuanStr);
@@ -698,6 +716,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
         expect(await utilityCommon.getAllPopupMsg()).toContain("Added 3 selected case(s) to the watchlist.");
+        await utilityCommon.closePopUpMessage();
 
         //Adding the cases to watchlist again
         for (let i: number = 0; i < 3; i++) {
@@ -708,6 +727,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
         expect(await utilityCommon.getAllPopupMsg()).toContain("Added 3 selected case(s) to the watchlist.");
+        await utilityCommon.closePopUpMessage();
     }, 380 * 1000);
 
     it('[DRDMV-16059]: Verify that Save and Close buttons on Event Add are working correctly', async () => {
@@ -769,6 +789,7 @@ describe('Case Watchlist', () => {
             await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
             await caseWatchlist.saveEvents();
             expect(await utilityCommon.getAllPopupMsg()).toContain("Added 1 selected case(s) to the watchlist.");
+            await utilityCommon.closePopUpMessage();
 
             await navigationPage.signOut();
             await loginPage.login(qyuanStr);
@@ -798,6 +819,7 @@ describe('Case Watchlist', () => {
             await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
 
             await navigationPage.signOut();
             await loginPage.login(qannisStr);
@@ -882,6 +904,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
+        await utilityCommon.closePopUpMessage();
 
         //Change the case status and case assignment for second case
         await caseWatchlist.openCase(caseId[1]);
@@ -966,6 +989,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
         await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
         await caseWatchlist.saveEvents();
+        await utilityCommon.closePopUpMessage();
 
         //Change the case status and case assignment for second case
         await caseWatchlist.openCase(caseId[1]);
@@ -975,6 +999,7 @@ describe('Case Watchlist', () => {
         await editCase.clickChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
         await editCase.clickSaveCase();
+        await utilityCommon.closePopUpMessage();
 
         //Verification of notifications
         let assignmentNotification1 = utilityCommon.formatString(assignmentNotificationStr, caseId[0], kasiaOstlunStr, qingYuanStr);
@@ -1022,6 +1047,7 @@ describe('Case Watchlist', () => {
             await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
 
             //Verification of notifications
             let assignmentNotification1 = utilityCommon.formatString(assignmentNotificationStr, caseId, elizabethPetersStr, qianruTaoStr);
@@ -1080,6 +1106,7 @@ describe('Case Watchlist', () => {
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
             await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
             await caseWatchlist.saveEvents();
+            await utilityCommon.closePopUpMessage();
 
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
@@ -1091,6 +1118,7 @@ describe('Case Watchlist', () => {
             await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
 
             await navigationPage.signOut();
             await loginPage.login(qannisStr);
@@ -1112,6 +1140,7 @@ describe('Case Watchlist', () => {
             await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, compensationAndBenefitsStr, "Peter Kahn");
             await editCase.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
 
             await navigationPage.signOut();
             await loginPage.login(qannisStr);

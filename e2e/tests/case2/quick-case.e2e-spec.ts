@@ -298,10 +298,8 @@ describe("Quick Case", () => {
             await apiHelper.createCaseTemplate(templateData2);
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(templateData3);
-            await apiHelper.createCaseTemplate(templateData2);
-            await apiHelper.apiLogin('fritz');
-            await apiHelper.createCaseTemplate(templateData3);
             await apiHelper.createCaseTemplate(templateData4);
+
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(caseTemplateName1);
@@ -383,18 +381,16 @@ describe("Quick Case", () => {
             await editCaseTemplate.clickOnEditCaseTemplateMetadata();
             await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilCommon.waitUntilPopUpDisappear();
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName('adam');
-            expect(await quickCase.selectCaseTemplate(caseTemplateName)).toBeTruthy("template not present1");
+            expect(await quickCase.selectCaseTemplate(`${randomStr}` + 'WithOtherOrg')).toBeFalsy('Different organization case template present');
+            await navigationPage.gotoQuickCase();
             await quickCase.clickStartOverButton();
             await quickCase.selectRequesterName('adam');
-            await quickCase.selectCaseTemplate(caseTemplateName);
+            expect(await quickCase.selectCaseTemplate(caseTemplateName)).toBeTruthy("template not present1");
             await quickCase.setCaseSummary(caseTemplateSummary);
             expect(await resources.getAdvancedSearchResultForParticularSection(caseTemplateName)).toEqual(caseTemplateName);
-            await quickCase.clickStartOverButton();
-            await quickCase.selectRequesterName('adam');
-            await quickCase.selectCaseTemplate(caseTemplateName);
             await quickCase.setCaseSummary(caseTempalteDescription);
             expect(await resources.getAdvancedSearchResultForParticularSection(caseTemplateName)).toEqual(caseTemplateName);
         } catch (e) {

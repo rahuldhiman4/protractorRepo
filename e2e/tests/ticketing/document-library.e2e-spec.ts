@@ -514,7 +514,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.clickOnSaveButton();
-        expect(await utilCommon.isErrorMsgPresent()).toBeTruthy('Error msg not present');
+        expect(await utilCommon.isPopUpMessagePresent("ERROR (525): The file type is not supported. com.bmc.dsm.knowledge:Knowledge Article : Attachment 1 : Test.exe")).toBeTruthy('Error msg not present');
     }, 280 * 1000);
 
     //apdeshmu
@@ -621,7 +621,7 @@ describe('Document Library', () => {
     });//, 120 * 1000);
 
     //kgaikwad
-    it('[DRDMV-13079]: Verify document will not appear in knowledge article searches	', async () => {
+    it('[DRDMV-13079]: Verify document will not appear in knowledge article searches', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();

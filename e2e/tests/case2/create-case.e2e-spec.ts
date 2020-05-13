@@ -115,6 +115,7 @@ describe("Create Case", () => {
             await apiHelper.apiLogin('qkatawazi');
             let newCase1 = await apiHelper.createCase(caseData);
             let caseId: string = newCase1.displayId;
+            console.log(caseId);       
             await navigationPage.signOut();
             await loginPage.login("qtao");
             await caseConsolePage.searchAndOpenCase(caseId);
@@ -354,7 +355,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    },400 * 1000);
+    }, 550 * 1000);
 
     //ankagraw
     it('[DRDMV-11856]: [Case Creation] create case with Global case template without flowset ', async () => {
@@ -392,7 +393,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    },400 * 1000);
+    }, 550 * 1000);
 
     //ankagraw
     it('[DRDMV-16076]: Reopen configurations available on Case Template Create screen ', async () => {
@@ -540,7 +541,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 270 * 1000);
+    }, 450 * 1000);
 
     //ankagraw Bug- DRDMV-21746
     it('[DRDMV-8868]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', async () => {

@@ -270,7 +270,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
             await editTaskPo.clickOnSaveButton();
-
+            await utilityCommon.waitUntilPopUpDisappear();
             expect(await viewTaskPo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await viewTaskPo.clickOnAttachedDocumentFile('bwfJpg.jpg');
@@ -281,10 +281,12 @@ describe('Document Library Consume UI', () => {
             await editTaskPo.clickOnAttachButton();
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await editTaskPo.clickOnSaveButton();
+            await utilityCommon.waitUntilPopUpDisappear();
             expect(await viewTaskPo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await viewTaskPo.clickOnAttachedDocumentFile('bwfPdf.pdf');
             expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+            await viewTaskPo.clickShowMoreShowLessLink();
             expect(await viewTaskPo.isAttachedDocumentPresent('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
             await viewTaskPo.clickOnAttachedDocumentFile('bwfXlsx.xlsx');
@@ -1341,8 +1343,7 @@ describe('Document Library Consume UI', () => {
         await editDocumentLibraryPo.setSite('Canberra');
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-        // //Create Case
+        // Create Case
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qtao');
         await createCasePo.setSummary(caseSummary);
@@ -1564,7 +1565,6 @@ describe('Document Library Consume UI', () => {
             await changeAssignmentBladePo.selectAssignee('Quanah George');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
-            expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
             await navigationPage.signOut();
             await loginPage.loginWithCredentials('qgeorge@petramco.com', 'Password_1234');
             await caseConsolePo.searchAndOpenCase(caseId);
