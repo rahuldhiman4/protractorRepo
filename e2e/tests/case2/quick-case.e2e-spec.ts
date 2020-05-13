@@ -870,8 +870,6 @@ describe("Quick Case", () => {
             "assigneeSupportGroup": "GB Support 2"
         };
 
-        console.log(publishedKA_Name, unPublishedKA_Name);
-
         await apiHelper.apiLogin('kmills');
         // Draft article
         articleData.title = unPublishedKA_Name;
