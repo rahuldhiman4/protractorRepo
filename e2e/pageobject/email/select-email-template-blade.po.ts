@@ -36,6 +36,14 @@ class SelectEmailTemplateBlad {
         return await $(this.selectors.applyButton).isEnabled();
     }
 
+    async addFilter(fldName:string, fldValue:string, type:string): Promise<void>{
+        await utilityGrid.addFilter(fldName,fldValue,type,this.selectors.gridGuid);
+    }
+
+    async clearFilter(): Promise<void>{
+        await utilityGrid.clearFilter(this.selectors.gridGuid);
+    }
+
     async addGridColumn(columnName: string[]): Promise<void> {
         await utilityGrid.addGridColumn(columnName,this.selectors.gridGuid);
     }
