@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions, $$ } from 'protractor';
+import { $, protractor, ProtractorExpectedConditions, $$, browser } from 'protractor';
 class ViewCaseTemplate {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -28,11 +28,11 @@ class ViewCaseTemplate {
         categoryTier1: '[rx-view-component-id="241f0e58-3106-4f8a-a1cc-43554414bb7c"] p',
         categoryTier2: '[rx-view-component-id="4f950be7-d968-41a4-8bb9-018674e53f88"] p',
         categoryTier3: '[rx-view-component-id="a7fbc4bc-23c6-4f92-818a-5554107d04c0"] p',
-        oneTask:'[rx-view-component-id="36ca22f7-98f8-423a-bf39-28361ef29eeb"] .content',
+        oneTask: '[rx-view-component-id="36ca22f7-98f8-423a-bf39-28361ef29eeb"] .rotatable path',
     }
-    
-    async clickOneTask():Promise<void>{
-        await $(this.selectors.oneTask).click()
+
+    async clickOneTask(): Promise<void> {
+        await $(this.selectors.oneTask).click();
     }
 
     async clickEditTemplateMetaData(): Promise<void> {

@@ -152,12 +152,18 @@
         "Requester": "qtao",
         "Summary": "Simple test case summary"
     },
-    "actionableNotification": {
+    "actionableNotificationWithAssignee": {
         "Description": "Actionable Notification Desc",
         "Requester": "qkatawazi",
         "Summary": "Actionable Notification ",
         "Support Group": "Compensation and Benefits",
-        "Assignee": "qtao",
-        "Status": "2000"
+        "Assignee": "qtao"
+    },
+    "actionableNotificationWithoutAssignee": {
+        "Description": "Actionable Notification Desc",
+        "Requester": "qkatawazi",
+        "Summary": "Actionable Notification ",
+        "Support Group": "Compensation and Benefits",
+        "Status": "1000"
     }
 }

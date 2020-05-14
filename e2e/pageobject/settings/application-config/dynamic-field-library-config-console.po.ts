@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, protractor, ProtractorExpectedConditions, promise } from "protractor";
 import utilGrid from '../../../utils/util.grid';
 
 class DynamicFieldLibraryConsole {
@@ -14,6 +14,10 @@ class DynamicFieldLibraryConsole {
         await utilGrid.addGridColumn(this.selectors.gridGuid, columnHeader);
     }
 
+    async isValueDisplayed(columnName: string): Promise<string> {
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnName);
+    }
+
     async removeColumnOnGrid(columnHeader: string[]): Promise<void> {
         await utilGrid.removeGridColumn(this.selectors.gridGuid, columnHeader);
     }
@@ -22,6 +26,22 @@ class DynamicFieldLibraryConsole {
         await $(this.selectors.addDynamicFieldBtn).click();
     }
 
+    async areRequestedColumnMatches(columnNames: string[]): Promise<boolean> {
+        return await utilGrid.areColumnHeaderMatches( this.selectors.gridGuid,columnNames);
+    }
+
+    async addRequestedGridColumn(columnNames:string[]):Promise<void>{
+        await utilGrid.addGridColumn(this.selectors.gridGuid,columnNames);
+    }
+
+    async removeRequestedGridColumn(columnNames:string[]):Promise<void>{
+        await utilGrid.removeGridColumn(this.selectors.gridGuid,columnNames);
+    }
+
+    async isRequestedColumnsSortedAscending(columnName: string): Promise<boolean> {
+        await utilGrid.clearFilter();
+        return await utilGrid.isGridColumnSorted(columnName, "asc", this.selectors.gridGuid);
+    }
 }
 
 export default new DynamicFieldLibraryConsole();

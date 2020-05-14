@@ -59,18 +59,22 @@ export class GridOperations {
     }
 
     async clearFilter(guid?: string): Promise<void> {
+        let appliedPresetFilter = this.selectors.appliedPresetFilter;
+        let filterPresetBtn = this.selectors.filterPresetBtn;
+        let clearBtn = this.selectors.clearBtn;
+        let refreshIcon = this.selectors.refreshIcon;
         if (guid) {
             let gridGuid = `[rx-view-component-id="${guid}"] `;
-            this.selectors.appliedPresetFilter = gridGuid + this.selectors.appliedPresetFilter;
-            this.selectors.filterPresetBtn = gridGuid + this.selectors.filterPresetBtn;
-            this.selectors.clearBtn = gridGuid + this.selectors.clearBtn;
-            this.selectors.refreshIcon = gridGuid + this.selectors.refreshIcon;
+            appliedPresetFilter = gridGuid + appliedPresetFilter;
+            filterPresetBtn = gridGuid + filterPresetBtn;
+            clearBtn = gridGuid + clearBtn;
+            refreshIcon = gridGuid + refreshIcon;
         }
-        await $(this.selectors.appliedPresetFilter).isPresent().then(async (result) => {
+        await $(appliedPresetFilter).isPresent().then(async (result) => {
             if (result) {
-                await $(this.selectors.filterPresetBtn).click();
-                await $$(this.selectors.clearBtn).first().click();
-                await $(this.selectors.refreshIcon).click();
+                await $(filterPresetBtn).click();
+                await $$(clearBtn).first().click();
+                await $(refreshIcon).click();
             } else {
                 console.log("Filters are already cleared");
             }
@@ -214,9 +218,10 @@ export class GridOperations {
 
     async addFilter(fieldName: string, textValue: string, type: string, guid?: string): Promise<void> {
         let guidId: string = "";
+        let refreshIcon = this.selectors.refreshIcon;
         if (guid) {
             guidId = `[rx-view-component-id="${guid}"] `;
-            this.selectors.refreshIcon = `[rx-view-component-id="${guid}"] ` + this.selectors.refreshIcon;
+            refreshIcon = `[rx-view-component-id="${guid}"] ` + refreshIcon;
         }
         await $(guidId + this.selectors.filterPresetBtn).click();
         let filterCount = await $$(this.selectors.filterItems);
@@ -241,7 +246,7 @@ export class GridOperations {
                 break;
             }
         }
-        await $(this.selectors.refreshIcon).click();
+        await $(refreshIcon).click();
     }
 
     async applyPresetFilter(filterName: string, guid?: string): Promise<void> {

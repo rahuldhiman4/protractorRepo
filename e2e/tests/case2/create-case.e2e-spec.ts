@@ -203,7 +203,7 @@ describe("Create Case", () => {
         await caseConsolePage.searchAndOpenCase(caseId1);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
-    },350 * 1000);
+    },450 * 1000);
 
     //ankagraw
     it('[DRDMV-16081]: Verify allow case reopen tag in case template', async () => {

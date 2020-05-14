@@ -5,6 +5,7 @@ import { IKnowledgeArticles } from '../data/api/interface/knowledge.articles.int
 import { IPerson } from '../data/api/interface/person.interface.api';
 import { ISupportGroup } from '../data/api/interface/support.group.interface.api';
 import { ITaskTemplate } from '../data/api/interface/task.template.interface.api';
+import { ICaseApprovalMapping } from '../data/api/interface/case.approval.mapping.interface.api';
 import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
 import * as constants from "../api/constant.api";
@@ -36,6 +37,11 @@ import { KNOWLEDGE_APPROVAL_CONFIG, KNOWLEDGE_APPROVAL_FLOW_CONFIG } from '../da
 import { APPROVAL_ACTION } from "../data/api/approval/approval.action.api";
 import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge-article-external.api";
 import { AUTO_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, EXTERNAL_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
+import { UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.assignment.api';
+import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING } from '../data/api/shared-services/enabling.actionable.notifications.api';
+import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
+import { CASE_APPROVAL_FLOW } from '../data/api/approval/case.approval.flow.api';
+import { CASE_APPROVAL_MAPPING } from '../data/api/approval/case.approval.mapping.api';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -856,6 +862,7 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
             knowledgeArticleData.fieldInstances[302300502].value = data.title;
             knowledgeArticleData.fieldInstances[302312187].value = data.templateId;
+            knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
             knowledgeArticleData.fieldInstances[1000000063].value = data.categoryTier1 ? await apiCoreUtil.getCategoryGuid(data.categoryTier1) : knowledgeArticleData.fieldInstances[1000000063].value;
             knowledgeArticleData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : knowledgeArticleData.fieldInstances[1000000064].value;
             knowledgeArticleData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : knowledgeArticleData.fieldInstances[1000000065].value;
@@ -890,6 +897,7 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
             knowledgeArticleData.fieldInstances[302300502].value = data.title;
             knowledgeArticleData.fieldInstances[302312187].value = data.templateId;
+            knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
             knowledgeArticleData.fieldInstances[1000000063].value = data.categoryTier1 ? await apiCoreUtil.getCategoryGuid(data.categoryTier1) : knowledgeArticleData.fieldInstances[1000000063].value;
             knowledgeArticleData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : knowledgeArticleData.fieldInstances[1000000064].value;
             knowledgeArticleData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : knowledgeArticleData.fieldInstances[1000000065].value;
@@ -955,7 +963,7 @@ class ApiHelper {
         }
 
         let knowledgeArticleResponse: AxiosResponse = await coreApi.updateRecordInstance("com.bmc.dsm.knowledge:Knowledge Article Template", articleGuid, knowledgeArticleData);
-        console.log("Status", knowledgeArticleResponse.status);
+        console.log("Update Knowledge Article Status ========>", knowledgeArticleResponse.status);
         return knowledgeArticleResponse.status == 204;
     }
 
@@ -1583,10 +1591,13 @@ class ApiHelper {
         }
     }
 
-    async approverAction(recordGuid: string, action: string): Promise<boolean> {
+    async approverAction(recordGuid: string, action: string, assignee?: string): Promise<boolean> {
         APPROVAL_ACTION.commands[0].command = action;
         APPROVAL_ACTION.commands[0].requestID = await coreApi.getSignatureInstanceId(recordGuid);
-
+        if (assignee) {
+            APPROVAL_ACTION.commands[0]["assignToApprovers"] = assignee;
+        }
+        
         await browser.sleep(20000);
         let response = await axios.post(
             commandUri,
@@ -1602,6 +1613,66 @@ class ApiHelper {
         let response = await coreApi.updateRecordInstance('com.bmc.dsm.knowledge:Knowledge Article Template', articleGuid, KNOWLEDGE_ARTICLE_EXTERNAL_FLAG);
 
         console.log('Update Knowledge Article External Flag API Status =============>', response.status);
+        return response.status == 204;
+    }
+
+    async changeCaseAssignment(caseGuid: string, supportGroup: string, assignee?: string): Promise<boolean> {
+        UPDATE_CASE_ASSIGNMENT.id = caseGuid;
+        UPDATE_CASE_ASSIGNMENT.fieldInstances[1000000217].value = await coreApi.getSupportGroupGuid(supportGroup);
+        if (assignee) UPDATE_CASE_ASSIGNMENT.fieldInstances[450000152].value = await coreApi.getPersonGuid(assignee);
+        let updateAssignmentResponse = await coreApi.updateRecordInstance('com.bmc.dsm.case-lib:Case', caseGuid, UPDATE_CASE_ASSIGNMENT);
+        console.log('Update Case Assignment API Status =============>', updateAssignmentResponse.status);
+        return updateAssignmentResponse.status == 204;
+    }
+
+    async enableActionableNotificationSetting(): Promise<boolean> {
+        let config = {
+            headers: { 'request-overlay-group': 'Petramco' }
+        };
+
+        ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING.fieldInstances[3205].value = browser.baseUrl + '/';
+        let response = await axios.post(
+            'api/rx/application/record/recordinstance',
+            ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING,
+            config
+        );
+        console.log('Enabling Actionable Notifications API status =============>', response.status);
+        return response.status == 204;
+    }
+
+    async addCaseToWatchlistAllEvents(caseGuid: string): Promise<boolean> {
+        ADD_TO_WATCHLIST.processInputValues.Cases[0][379] = caseGuid;
+        let response = await axios.post(
+            commandUri,
+            ADD_TO_WATCHLIST
+        );
+        console.log('Add Case to Watchlist API status =============>', response.status);
+        return response.status == 200;
+    }
+
+    async createCaseApprovalFlow(data: any): Promise<boolean> {
+        CASE_APPROVAL_FLOW.approvalFlowConfigurationList[0].flowName = data.flowName;
+        CASE_APPROVAL_FLOW.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
+        CASE_APPROVAL_FLOW.approvalFlowConfigurationList[0].qualification = data.qualification;
+        let response = await axios.put(
+            "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.case-lib:Case/flowGroupName/BWFA Group",
+            CASE_APPROVAL_FLOW,
+        )
+        console.log('Case Approval Flow API Status =============>', response.status);
+        return response.status == 204;
+    }
+
+    async createCaseApprovalMapping(data: ICaseApprovalMapping): Promise<boolean>{
+        CASE_APPROVAL_MAPPING.fieldInstances[303715900].value = await coreApi.getStatusGuid('com.bmc.dsm.case-lib', constants.CaseStatus[data.triggerStatus]);
+        CASE_APPROVAL_MAPPING.fieldInstances[450000152].value = constants.CaseStatus[data.triggerStatus];
+        CASE_APPROVAL_MAPPING.fieldInstances[450000153].value = constants.CaseStatus[data.approvedStatus];
+        CASE_APPROVAL_MAPPING.fieldInstances[450000154].value = constants.CaseStatus[data.rejectStatus];
+        CASE_APPROVAL_MAPPING.fieldInstances[450000155].value = constants.CaseStatus[data.errorStatus];
+        CASE_APPROVAL_MAPPING.fieldInstances[450000158].value = constants.CaseStatus[data.noApprovalFoundStatus];
+        CASE_APPROVAL_MAPPING.fieldInstances[1000001437].value = data.mappingName;
+        if(data.company) CASE_APPROVAL_MAPPING.fieldInstances[1000000001].value = await coreApi.getOrganizationGuid(data.company);
+        let response =  await coreApi.createRecordInstance(CASE_APPROVAL_MAPPING);
+        console.log('Case Approval Mapping API Status =============>', response.status);
         return response.status == 204;
     }
 

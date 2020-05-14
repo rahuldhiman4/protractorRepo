@@ -27,6 +27,9 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import previewTaskTemplateCasesPo from '../../pageobject/settings/task-management/preview-task-template-cases.po';
+import dynamicFieldLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-field-library-config-console.po';
+import createDynamicFieldLibraryConfigPo from '../../pageobject/settings/application-config/create-dynamic-field-library-config.po';
+import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 
 describe('Case Data Store', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -808,24 +811,23 @@ describe('Case Data Store', () => {
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_WITH_CONFIDENTIAL');
         await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester('qkatawazi');
+        await createCasePo.selectRequester('qdu');
         await createCasePo.setSummary('new cases');
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.clickAddTaskFromTemplateButton();
-        await utilGrid.searchRecord(taskTemplateName);
-        await utilGrid.gridHyperLink(taskTemplateName);
+        await utilityGrid.searchAndOpenHyperlink(taskTemplateName);
         expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskGroupLocalCaseTemplate')).toBeTruthy();
         expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskPulishCaseTemplateData')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskLocalNonConfidentialDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskLocalConfidentialDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TasknonConfidentialPulicDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskconfidentialPublicDesc')).toBeTruthy();
+        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskLocalNonConfidentialDesc')).toBeTruthy();
+        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskLocalConfidentialDesc')).toBeTruthy();
+        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TasknonConfidentialPulicDesc')).toBeTruthy();
+        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskconfidentialPublicDesc')).toBeTruthy();
         expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterNonConfidentialDesc')).toBeTruthy();
         expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskListOfDataNameDesc')).toBeTruthy();
         expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterConfidentialDesc')).toBeTruthy();
-
+        await utilityCommon.refresh();
         let caseTemplateName = 'caseTemplateNameDRDMV-13153' + randomStr;
         let casTemplateSummary = 'CaseSummaryNameDRDMV-13153' + randomStr;
         let caseTemplateData = {
@@ -841,19 +843,237 @@ describe('Case Data Store', () => {
         await apiHelper.apiLogin('fritz');
         let casetemplateddetails = await apiHelper.createCaseTemplate(caseTemplateData);
         await navigationPage.gotoSettingsPage();
-        await apiHelper.associateCaseTemplateWithOneTaskTemplate(casetemplateddetails.id, tasktemplate.id);
+        await apiHelper.associateCaseTemplateWithOneTaskTemplate(casetemplateddetails.displayId, tasktemplate.displayId);
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         await utilGrid.searchAndOpenHyperlink(caseTemplateName);
         await viewCasetemplatePo.clickOneTask();
-        //defect -https://jira.bmc.com/browse/DRDMV-21774
         expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskGroupLocalCaseTemplate')).toBeTruthy();
         expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskPulishCaseTemplateData')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskLocalNonConfidentialDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskLocalConfidentialDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TasknonConfidentialPulicDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskconfidentialPublicDesc')).toBeTruthy();
+        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskLocalNonConfidentialDesc')).toBeTruthy();
+        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskLocalConfidentialDesc')).toBeTruthy();
+        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TasknonConfidentialPulicDesc')).toBeTruthy();
+        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskconfidentialPublicDesc')).toBeTruthy();
         expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterNonConfidentialDesc')).toBeTruthy();
         expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskListOfDataNameDesc')).toBeTruthy();
         expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterConfidentialDesc')).toBeTruthy();
+    });
+
+    //ptidke
+    it('[DRDMV-13154]: [Dynamic Data] [UI] - Dynamic Fields display on Task Edit view UI', async () => {
+        try {
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            let taskTemplateName = 'ManualtaskDRDMV-13154' + randomStr;
+            let manualTaskSummary = 'ManualSummaryDRDMV-13154' + randomStr;
+            let templateData = {
+                "templateName": `${taskTemplateName}`,
+                "templateSummary": `${manualTaskSummary}`,
+                "templateStatus": "Active",
+            }
+            let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
+            await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
+            let externalTask = 'externalTaskDRDMV-13154' + randomStr;
+            let externalTaskSummary = 'externalSummaryDRDMV-13154' + randomStr;
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            let externalTemplateData = {
+                "templateName": `${externalTask}`,
+                "templateSummary": `${externalTaskSummary}`,
+                "templateStatus": "Active",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTemplateData);
+            await apiHelper.createDynamicDataOnTemplate(externalTaskTemplate.id, 'EXTERNAL_TASK_TEMPLATE__DYNAMIC_FIELDS');
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qkatawazi');
+            await createCasePo.setSummary('new cases');
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
+            await manageTaskBladePo.addTaskFromTaskTemplate(externalTask);
+            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+            // manual task view case
+            let dynamicFields: string[] = ['temp', 'temp1', 'temp2', 'temp3', 'temp4', 'attachment1', 'attachment2', 'attachment3'];
+            for (let i = 0; i < dynamicFields.length; i++) {
+                expect(await viewTaskPo.isDynamicFieldPresent(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
+            }
+            await viewTaskPo.clickOnEditTask();
+            //manual task edit
+            for (let i = 0; i < dynamicFields.length; i++) {
+                expect(await editTaskPo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
+            }
+            await editTaskPo.clickOnCancelButton();
+            await viewTaskPo.clickOnViewCase();
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+            // manual task view case
+            let dynamicFields1: string[] = ['externalText', 'externalNumber', 'externalDate', 'externalBoolean', 'externalDateTime', 'externalTime', 'externalAttachment1'];
+            for (let i = 0; i < dynamicFields1.length; i++) {
+                expect(await viewTaskPo.isDynamicFieldPresent(dynamicFields1[i])).toBeTruthy('field not present ' + dynamicFields1[i]);
+            }
+            await viewTaskPo.clickOnEditTask();
+            //manual task edit
+            for (let i = 0; i < dynamicFields1.length; i++) {
+                expect(await editTaskPo.isDynamicFieldDisplayed(dynamicFields1[i])).toBeTruthy('field not present ' + dynamicFields1[i]);
+            }
+        } catch (e) { throw e }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        }
+    }, 3500 * 1000);
+
+    it('[DRDMV-13120]: [Dynamic Data] - Dynamic fields availability in field library when it is added from Case Template', async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDynamicFieldAndGroup();
+        let caseTemplateName = 'caseTemplateNameDRDMV-13120' + randomStr;
+        let casTemplateSummary = 'CaseSummaryNameDRDMV-13120' + randomStr;
+        let caseTemplateData = {
+            "templateName": `${caseTemplateName}`,
+            "templateSummary": `${casTemplateSummary}`,
+            "templateStatus": "Draft",
+            "resolveCaseonLastTaskCompletion": "1",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
+        }
+        await apiHelper.apiLogin('fritz');
+        let casetemplateddetails = await apiHelper.createCaseTemplate(caseTemplateData);
+        await apiHelper.createDynamicDataOnTemplate(casetemplateddetails.id, 'CASE_TEMPLATE_REQUESTER_DYNAMIC_FIELDS');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await utilGrid.searchAndOpenHyperlink(caseTemplateName)
+        let arr: string[] = ['temp', 'temp1', 'temp2', 'temp3', 'temp4', 'temp5', 'attachment1', 'dynamicList'];
+        for (let i = 0; i < arr.length; i++) {
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed(arr[i])).toBeTruthy('field not presnet ' + arr[i]);
+        }
+        await navigationPage.gotoCaseConsole();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+        for (let i = 0; i < arr.length; i++) {
+            await utilGrid.searchRecord(arr[i]);
+            expect(await dynamicFieldLibraryConfigConsolePo.isValueDisplayed('Field Description')).toContain(arr[i], 'field not peresent ' + arr[i]);
+            await utilGrid.clearGridSearchBox();
+        }
+    });
+
+    it('[DRDMV-13113]: [Dynamic Data] - Available fields from Library when adding field in Case template', async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDynamicFieldAndGroup();
+        let caseTemplateName = 'caseTemplateNameDRDMV-13113' + randomStr;
+        let casTemplateSummary = 'CaseSummaryNameDRDMV-13113' + randomStr;
+        let caseTemplateData = {
+            "templateName": `${caseTemplateName}`,
+            "templateSummary": `${casTemplateSummary}`,
+            "templateStatus": "Draft",
+            "resolveCaseonLastTaskCompletion": "1",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        let casetemplateddetails = await apiHelper.createCaseTemplate(caseTemplateData);
+        await navigationPage.gotoCaseConsole();
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+        //field Text type    
+        await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+        await createDynamicFieldLibraryConfigPo.setFieldName('LibTextField');
+        await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+        await localizeValuePopPo.setLocalizeValue('LibTextField');
+        await localizeValuePopPo.clickOnSaveButton();
+        await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+        await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+        await createDynamicFieldLibraryConfigPo.setFieldValueType('TEXT');
+        await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+        //field Number Type  
+        await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+        await createDynamicFieldLibraryConfigPo.setFieldName('LibNumberField');
+        await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+        await localizeValuePopPo.setLocalizeValue('LibNumberField');
+        await localizeValuePopPo.clickOnSaveButton();
+        await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+        await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+        await createDynamicFieldLibraryConfigPo.setFieldValueType('NUMBER');
+        await createDynamicFieldLibraryConfigPo.clickOnSaveButton()
+        //field Date Type  
+        await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+        await createDynamicFieldLibraryConfigPo.setFieldName('LibDateField');
+        await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+        await localizeValuePopPo.setLocalizeValue('LibDateField');
+        await localizeValuePopPo.clickOnSaveButton();
+        await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+        await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+        await createDynamicFieldLibraryConfigPo.setFieldValueType('DATE');
+        await createDynamicFieldLibraryConfigPo.clickOnSaveButton()
+        //field Boolean Type  
+        await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+        await createDynamicFieldLibraryConfigPo.setFieldName('LibBooleanField');
+        await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+        await localizeValuePopPo.setLocalizeValue('LibBooleanField');
+        await localizeValuePopPo.clickOnSaveButton();
+        await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+        await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+        await createDynamicFieldLibraryConfigPo.setFieldValueType('BOOLEAN');
+        await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+        //field Time Type  
+        await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+        await createDynamicFieldLibraryConfigPo.setFieldName('LibTimeField');
+        await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+        await localizeValuePopPo.setLocalizeValue('LibTimeField');
+        await localizeValuePopPo.clickOnSaveButton();
+        await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+        await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+        await createDynamicFieldLibraryConfigPo.setFieldValueType('TIME');
+        await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+        //field DATE_TIME Type  
+        await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+        await createDynamicFieldLibraryConfigPo.setFieldName('LibDateTimeField');
+        await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+        await localizeValuePopPo.setLocalizeValue('LibDateTimeField');
+        await localizeValuePopPo.clickOnSaveButton();
+        await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+        await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+        await createDynamicFieldLibraryConfigPo.setFieldValueType('DATE_TIME');
+        await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+        //field attachment Type  
+        await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+        await createDynamicFieldLibraryConfigPo.setFieldName('LibattachmentField');
+        await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+        await localizeValuePopPo.setLocalizeValue('LibattachmentField');
+        await localizeValuePopPo.clickOnSaveButton();
+        await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+        await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+        await createDynamicFieldLibraryConfigPo.setFieldValueType('ATTACHMENT');
+        await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+        //field Text Type  
+        await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+        await createDynamicFieldLibraryConfigPo.setFieldName('InactiveField');
+        await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+        await localizeValuePopPo.setLocalizeValue('InactiveField');
+        await localizeValuePopPo.clickOnSaveButton();
+        await createDynamicFieldLibraryConfigPo.setStatusValue('Inactive');
+        await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+        await createDynamicFieldLibraryConfigPo.setFieldValueType('TEXT');
+        await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+        let arr: string[] = ['LibTextField', 'LibNumberField', 'LibDateField', 'LibBooleanField', 'LibDateTimeField', 'LibTimeField', 'LibattachmentField'];
+        //navigate to case template
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await utilGrid.searchAndOpenHyperlink(caseTemplateName)
+        await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+        for (let i = 0; i < arr.length; i++) {
+            expect(await dynamicFieldsPo.isDynamicFieldPresentInDynamicSection(arr[i])).toBeTruthy('field not present'+arr[i]);
+        }
+        await dynamicFieldsPo.searchField('InactiveField');
+        expect(await dynamicFieldsPo.isDynamicFieldPresentInDynamicSection('InactiveField')).toBeFalsy('field present');
+        await dynamicFieldsPo.searchField('LibNumberField');
+        expect(await dynamicFieldsPo.isDynamicFieldPresentInDynamicSection('LibNumberField')).toBeTruthy('field not present LibNumberField');
+        await utilityCommon.refresh();
     });
 })
