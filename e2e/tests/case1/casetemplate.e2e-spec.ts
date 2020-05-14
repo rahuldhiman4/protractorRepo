@@ -656,7 +656,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 310 * 1000);
+    }, 450 * 1000);
 
     it('[DRDMV-1216]: [Case Template] Create Case Template with all fields data populated', async () => {
         try {
@@ -691,7 +691,7 @@ describe('Case Template', () => {
             expect(await viewCaseTemplate.getCaseTemplateNameValue()).toBe(caseTemplateName);
             expect(await viewCaseTemplate.getPriorityValue()).toBe("Low");
             expect(await viewCaseTemplate.getTemplateStatusValue()).toBe("Active");
-            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe("Facilities");
+            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
             expect(await viewCaseTemplate.getCategoryTier2()).toBe("Policies");
             expect(await viewCaseTemplate.getCategoryTier3()).toBe("Card Issuance");
             expect(await viewCaseTemplate.getCategoryTier1()).toBe("Purchasing Card");
@@ -809,7 +809,7 @@ describe('Case Template', () => {
             await apiHelper.createCaseTemplate(casetemplatePetramco2);
 
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('fritz');
+            await createCasePo.selectRequester('adam');
             await createCasePo.setSummary(caseTemplateName);
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
@@ -952,7 +952,6 @@ describe('Case Template', () => {
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateName);
-            await viewCasePo.clickEditCaseButton();
 
             //Login to CA with Same SupportGroup
             await navigationPage.signOut();
@@ -968,4 +967,113 @@ describe('Case Template', () => {
             await loginPage.login('qkatawazi');
         }
     }, 300 * 1000);
+
+    it('[DRDMV-9129]:[Negative Testing] - Verify permission for Case Agent from a different support group to edit case template.', async () => {
+        try {
+            let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let caseTemplateName = 'caseTemplateName' + randomStr;            
+            let casetemplatePetramco = {
+                "templateName": caseTemplateName,
+                "templateSummary": caseTemplateName,
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "resolveCaseonLastTaskCompletion": "1",
+                "assignee": "Fritz",
+                "supportGroup": "Facilities",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "caseStatus": "Assigned",
+            }
+            await apiHelper.apiLogin('frieda');
+            await apiHelper.createCaseTemplate(casetemplatePetramco);
+           
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('adam');
+            await createCasePo.setSummary(caseTemplateName);
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateName);
+            //Login to CM with diffrent support group 
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await caseConsolePo.searchCase(caseTemplateName);
+            expect(await caseConsolePo.isCaseSummaryPresent(caseTemplateName)).toBeFalsy("Case is present for diffrent company");
+            //Login to CM with diffrent company
+            await navigationPage.signOut();
+            await loginPage.login('rrovnitov');
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await caseConsolePo.searchCase(caseTemplateName);
+            expect(await caseConsolePo.isCaseSummaryPresent(caseTemplateName)).toBeFalsy("Case is present for diffrent company");
+       
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    }, 300 * 1000);
+
+    it('[DRDMV-9130]:[Negative Testing] - Verify permission for Case Manager from a different support group to edit case template.', async () => {
+        try {
+            let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let caseTemplateName = 'caseTemplateName' + randomStr;            
+            let casetemplatePetramco = {
+                "templateName": caseTemplateName,
+                "templateSummary": caseTemplateName,
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "resolveCaseonLastTaskCompletion": "1",
+                "assignee": "Fritz",
+                "supportGroup": "Facilities",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "caseStatus": "Assigned",
+            }
+
+            await apiHelper.apiLogin('frieda');
+            await apiHelper.createCaseTemplate(casetemplatePetramco);
+
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('adam');
+            await createCasePo.setSummary(caseTemplateName);
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateName);
+            await viewCasePo.clickEditCaseButton();
+            //Login to CA with diffrent support group 
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await caseConsolePo.searchCase(caseTemplateName);
+            expect(await caseConsolePo.isCaseSummaryPresent(caseTemplateName)).toBeFalsy("Case is present for diffrent company");
+            //Login to CA with diffrent company 
+            await navigationPage.signOut();
+            await loginPage.login('werusha');
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await caseConsolePo.searchCase(caseTemplateName);
+            expect(await caseConsolePo.isCaseSummaryPresent(caseTemplateName)).toBeFalsy("Case is present for diffrent company");  
+        } catch (e) {
+            throw e;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    }, 300 * 1000);   
 })

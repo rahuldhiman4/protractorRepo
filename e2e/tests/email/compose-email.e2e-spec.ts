@@ -26,7 +26,6 @@ import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
 
 let emailTemplateData = require('../../data/ui/email/email.template.api.json');
-let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
 const notifTempGridPageTitle = 'Manage Notification Template - Business Workflows';
 let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
@@ -72,11 +71,11 @@ describe("Compose Email", () => {
     //kgaikwad
     it('[DRDMV-8377]: UI validation Email Option via Create New Case', async () => {
         await navigationPage.gotoCaseConsole();
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
             "Requester": "qkatawazi",
-            "Summary": "Test case for DRDMV-8377RandVal" + summary,
+            "Summary": "Test case for DRDMV-8377RandVal" + randomString,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
@@ -122,11 +121,11 @@ describe("Compose Email", () => {
     //kgaikwad
     it('[DRDMV-8391]: Negative:Compose email discard changes validation', async () => {
         await navigationPage.gotoCaseConsole();
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
             "Requester": "qkatawazi",
-            "Summary": "Test case for DRDMV-8377RandVal" + summary,
+            "Summary": "Test case for DRDMV-8377RandVal" + randomString,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
@@ -143,11 +142,11 @@ describe("Compose Email", () => {
     //kgaikwad
     it('[DRDMV-10453]: Email Template grid columns', async () => {
         await navigationPage.gotoCaseConsole();
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
             "Requester": "qkatawazi",
-            "Summary": "Test case for DRDMV-8377RandVal" + summary,
+            "Summary": "Test case for DRDMV-8377RandVal" + randomString,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
@@ -165,11 +164,11 @@ describe("Compose Email", () => {
     //kgaikwad
     it('[DRDMV-10390]: Visible Columns on Email Template Grid on Compose Email UI', async () => {
         await navigationPage.gotoCaseConsole();
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
             "Requester": "qkatawazi",
-            "Summary": "Test case for DRDMV-8377RandVal" + summary,
+            "Summary": "Test case for DRDMV-8377RandVal" + randomString,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
@@ -190,11 +189,11 @@ describe("Compose Email", () => {
     //kgaikwad
     it('[DRDMV-10409]: Apply button disable', async () => {
         await navigationPage.gotoCaseConsole();
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
             "Requester": "qkatawazi",
-            "Summary": "Test case for DRDMV-8377RandVal" + summary,
+            "Summary": "Test case for DRDMV-8377RandVal" + randomString,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
@@ -211,15 +210,15 @@ describe("Compose Email", () => {
     //kgaikwad
     it('[DRDMV-10394,DRDMV-10397]: Apply Email Template', async () => {
         await navigationPage.gotoCaseConsole();
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
-        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + summary;
+        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomString;
         emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
         let caseData =
         {
             "Requester": "qkatawazi",
-            "Summary": "Test case for DRDMV-10394 RandVal" + summary,
+            "Summary": "Test case for DRDMV-10394 RandVal" + randomString,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
@@ -250,15 +249,15 @@ describe("Compose Email", () => {
     //kgaikwad
     it('[DRDMV-10401,DRDMV-10393]: Email Body override with template details', async () => {
         await navigationPage.gotoCaseConsole();
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
-        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + summary;
+        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomString;
         emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
         let caseData =
         {
             "Requester": "qkatawazi",
-            "Summary": "Test case for DRDMV-10401 RandVal" + summary,
+            "Summary": "Test case for DRDMV-10401 RandVal" + randomString,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
@@ -286,15 +285,15 @@ describe("Compose Email", () => {
     //ptidke
     it('[DRDMV-10398,DRDMV-10396,DRDMV-10402]:Email Template List Update in case compose email', async () => {
         await navigationPage.gotoCaseConsole();
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
-        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + summary;
+        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomString;
         emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
         let caseData =
         {
             "Requester": "qtao",
-            "Summary": "Test case for DRDMV-10398 RandVal" + summary,
+            "Summary": "Test case for DRDMV-10398 RandVal" + randomString,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
@@ -325,17 +324,17 @@ describe("Compose Email", () => {
     //kgaikwad
     it('[DRDMV-10395]: Email template Update', async () => {
         await navigationPage.gotoCaseConsole();
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
-        let emailTemplate1: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + summary;
+        let emailTemplate1: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomString;
         emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplate1;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
-        let emailTemplate2: string = await emailTemplateData['emailTemplateForSalary'].TemplateName + summary;
+        let emailTemplate2: string = await emailTemplateData['emailTemplateForSalary'].TemplateName + randomString;
         emailTemplateData['emailTemplateForSalary'].TemplateName = emailTemplate2;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateForSalary']);
         let caseData = {
             "Requester": "qtao",
-            "Summary": "Test case for DRDMV-10395 RandVal" + summary,
+            "Summary": "Test case for DRDMV-10395 RandVal" + randomString,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         };
@@ -370,11 +369,11 @@ describe("Compose Email", () => {
     //kgaikwad
     it('[DRDMV-8392,DRDMV-10384]: Negative: In Email "To" and "cc" should be user from Foundation data ', async () => {
         await navigationPage.gotoCaseConsole();
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
             "Requester": "qtao",
-            "Summary": "Test case for DRDMV-8392 RandVal" + summary,
+            "Summary": "Test case for DRDMV-8392 RandVal" + randomString,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
@@ -398,13 +397,14 @@ describe("Compose Email", () => {
     });//, 150 * 1000);
 
     it('[DRDMV-20369]: Verify able to apply email template with images tables and hyperlinks ', async () => {
+        let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         try {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             let recDeleted = await apiHelper.deleteDynamicFieldAndGroup();
             console.log("Record deleted...", recDeleted);
-            let caseTemplateName = 'caseTempRDMV-20369lp3ir' + randomStr;
-            let caseTemaplateSummary = 'caseTempRDMV-20369Template' + randomStr;
+            let caseTemplateName = 'caseTempRDMV-20369lp3ir' + randomString;
+            let caseTemaplateSummary = 'caseTempRDMV-20369Template' + randomString;
             var casetemplateData = {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${caseTemaplateSummary}`,
@@ -416,12 +416,12 @@ describe("Compose Email", () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
-            await createEmailTemplatePo.setTemplateName("templateName" + randomStr);
-            console.log("templateName" + randomStr);
+            await createEmailTemplatePo.setTemplateName("templateName" + randomString);
+            console.log("templateName" + randomString);
             await createEmailTemplatePo.selectCompany('Petramco');
             await createEmailTemplatePo.selectStatusDropDown('Active');
-            await createEmailTemplatePo.setDescription(randomStr);
-            await createEmailTemplatePo.setSubject("templateRandomStr" + randomStr);
+            await createEmailTemplatePo.setDescription(randomString);
+            await createEmailTemplatePo.setSubject("templateRandomString" + randomString);
             //adding dynamic fields
             await createEmailTemplatePo.setBody('Setting Body');
             await createEmailTemplatePo.clickOnImageIcon();
@@ -443,7 +443,7 @@ describe("Compose Email", () => {
             await tablePropertiesPo.setValueOfTableProperties('3', tableColumnFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('200', tableHeightFieldIndex);
-            await tablePropertiesPo.setValueOfTableProperties('new' + randomStr, cellCaption);
+            await tablePropertiesPo.setValueOfTableProperties('new' + randomString, cellCaption);
             await tablePropertiesPo.setValueOfTableProperties('tableEmail', cellSummary);
             await tablePropertiesPo.clickOnOkButton();
             //bold
@@ -493,11 +493,10 @@ describe("Compose Email", () => {
             await createEmailTemplatePo.setBody('Ending Email');
             await createEmailTemplatePo.clickOnSaveButton();
             await navigationPage.gotoCaseConsole();
-            let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseData =
             {
                 "Requester": "qtao",
-                "Summary": "Test case for DRDMV-20369 RandVal" + summary,
+                "Summary": "Test case for DRDMV-20369 RandVal" + randomString,
                 "Support Group": "Compensation and Benefits",
                 "Assignee": "qkatawazi"
             }
@@ -509,9 +508,9 @@ describe("Compose Email", () => {
             await viewCasePo.clickOnEmailLink();
             await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMail.clickOnSelectEmailTemplateLink();
-            await emailTemplateBladePo.searchAndSelectEmailTemplate("templateName" + randomStr);
+            await emailTemplateBladePo.searchAndSelectEmailTemplate("templateName" + randomString);
             await emailTemplateBladePo.clickOnApplyButton();
-            expect(await composeMail.getEmailTemplateNameHeading()).toContain("templateName" + randomStr);
+            expect(await composeMail.getEmailTemplateNameHeading()).toContain("templateName" + randomString);
             await composeMail.setEmailBody('this is newly added text');
             await composeMail.clickOnSendButton();
             await utilityCommon.waitUntilPopUpDisappear();
@@ -534,6 +533,7 @@ describe("Compose Email", () => {
     }, 500 * 1000);
 
     it('[DRDMV-20368,DRDMV-20371]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
+        let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         try {
             await navigationPage.signOut();
             await loginPage.login('fritz');
@@ -563,7 +563,7 @@ describe("Compose Email", () => {
             await tablePropertiesPo.setValueOfTableProperties('3', tableColumnFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('200', tableHeightFieldIndex);
-            await tablePropertiesPo.setValueOfTableProperties('new' + randomStr, cellCaption);
+            await tablePropertiesPo.setValueOfTableProperties('new' + randomString, cellCaption);
             await tablePropertiesPo.setValueOfTableProperties('NotiFicationT', cellSummary);
             await tablePropertiesPo.clickOnOkButton();
             //bold
@@ -606,7 +606,7 @@ describe("Compose Email", () => {
             let caseData =
             {
                 "Requester": "qkatawazi",
-                "Summary": "Test case for DRDMV-20368 RandVal" + randomStr,
+                "Summary": "Test case for DRDMV-20368 RandVal" + randomString,
                 "Support Group": "Compensation and Benefits",
                 "Assignee": "qkatawazi"
             }
@@ -651,11 +651,11 @@ describe("Compose Email", () => {
 
     it('[DRDMV-9033]: Negative - Verify Discard button on adding attachment in Compose Email', async () => {
         await navigationPage.gotoCaseConsole();
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
             "Requester": "qtao",
-            "Summary": "Test case for DRDMV-9033 RandVal" + summary,
+            "Summary": "Test case for DRDMV-9033 RandVal" + randomString,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
@@ -673,11 +673,11 @@ describe("Compose Email", () => {
 
     it('[DRDMV-9028]: Send Email to requester with attachments VIA Compose Email', async () => {
         await navigationPage.gotoCaseConsole();
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
             "Requester": "qtao",
-            "Summary": "Test case for DRDMV-9028 RandVal" + summary,
+            "Summary": "Test case for DRDMV-9028 RandVal" + randomString,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
@@ -702,11 +702,11 @@ describe("Compose Email", () => {
 
     it('[DRDMV-9032]: Negative -Verify large number of attachments. Click on Send button in Compose Email', async () => {
         await navigationPage.gotoCaseConsole();
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
             "Requester": "qtao",
-            "Summary": "Test case for DRDMV-9028 RandVal" + summary,
+            "Summary": "Test case for DRDMV-9028 RandVal" + randomString,
             "Support Group": "Compensation and Benefits",
             "Assignee": "qkatawazi"
         }
@@ -730,13 +730,13 @@ describe("Compose Email", () => {
     });//, 200 * 1000);
 
     it('[DRDMV-20365,DRDMV-20366]: Verify Able to insert table,hyperlink, images (All images) and Copy paste images in compose email and its send successfully', async () => {
+        let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         try {
             await navigationPage.gotoCaseConsole();
-            let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseData =
             {
                 "Requester": "qtao",
-                "Summary": "Test case for DRDMV-20365 RandVal" + summary,
+                "Summary": "Test case for DRDMV-20365 RandVal" + randomString,
                 "Support Group": "Compensation and Benefits",
                 "Assignee": "qkatawazi"
             }
@@ -766,7 +766,7 @@ describe("Compose Email", () => {
             await tablePropertiesPo.setValueOfTableProperties('10', tableColumnFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('200', tableHeightFieldIndex);
-            await tablePropertiesPo.setValueOfTableProperties('new' + randomStr, cellCaption);
+            await tablePropertiesPo.setValueOfTableProperties('new' + randomString, cellCaption);
             await tablePropertiesPo.setValueOfTableProperties('tableSummary', cellSummary);
             await tablePropertiesPo.clickOnOkButton();
             //bold
@@ -923,6 +923,7 @@ describe("Compose Email", () => {
         await activityTabPo.clickOnRefreshButton();
         await activityTabPo.clickOnShowMore();
         expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');
+        expect(await activityTabPo.getRecipientInCc()).toContain('CC: Qianru Tao');
         expect(await activityTabPo.getEmailSubject()).toContain(caseId + ':' + caseData.Summary);
 		expect(await activityTabPo.isFileAttachedOnActivity()).toBeTruthy('file is not attached on activity');
 		expect(await activityTabPo.getEmailBody()).toContain('Text added for DRDMV-8388');
