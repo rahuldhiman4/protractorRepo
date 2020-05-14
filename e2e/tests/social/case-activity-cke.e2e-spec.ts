@@ -32,7 +32,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    it('[DRDMV-21617]:Verify the Availability and UI of new CK Editor', async () => {
+    it('[DRDMV-21617,DRDMV-21618]:Verify the Availability and UI of new CK Editor', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let addNoteBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -69,7 +69,7 @@ describe('Case Activity', () => {
                 "templateStatus": "Active",
             };
 
-            // await apiHelper.createExternalTaskTemplate(externalTemplateData);
+            await apiHelper.createExternalTaskTemplate(externalTemplateData);
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create Case
             let caseData = {
@@ -82,7 +82,7 @@ describe('Case Activity', () => {
             let newCase = await apiHelper.createCase(caseData);
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
 
-            // // Adding Task
+            // Adding Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
@@ -93,6 +93,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
             //bold
             await activityTabPage.clickOnBoldIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
             expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await activityTabPage.clickOnBoldIcon();
             await activityTabPage.clearActivityNote();
@@ -171,6 +172,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
             //bold
             await activityTabPage.clickOnBoldIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
             expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await activityTabPage.clickOnBoldIcon();
             await activityTabPage.clearActivityNote();
@@ -246,6 +248,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
             //bold
             await activityTabPage.clickOnBoldIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
             expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await activityTabPage.clickOnBoldIcon();
             await activityTabPage.clearActivityNote();
@@ -319,6 +322,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
             //bold
             await activityTabPage.clickOnBoldIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
             expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await activityTabPage.clickOnBoldIcon();
             await activityTabPage.clearActivityNote();
@@ -392,6 +396,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
             //bold
             await activityTabPage.clickOnBoldIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
             expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await activityTabPage.clickOnBoldIcon();
             await activityTabPage.clearActivityNote();
@@ -472,6 +477,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
             //bold
             await activityTabPage.clickOnBoldIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
             expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await activityTabPage.clickOnBoldIcon();
             await activityTabPage.clearActivityNote();
@@ -560,6 +566,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
             //bold
             await activityTabPage.clickOnBoldIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
             expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await activityTabPage.clickOnBoldIcon();
             await activityTabPage.clearActivityNote();
