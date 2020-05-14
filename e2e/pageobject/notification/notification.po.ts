@@ -8,12 +8,12 @@ class NotificationAlerts {
     }
 
     async clickOnNotificationIcon(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notificationIcon)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notificationIcon)));
         await $(this.selectors.notificationIcon).click();
     }
 
     async isAlertPresent(msg: string): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.notificationButtons).get(0)));
+        //        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.notificationButtons).get(0)));
         let cnt: number = await $$(this.selectors.alerts).count();
         let status = false;
         for (let i = 0; i < cnt; i++) {
@@ -26,6 +26,16 @@ class NotificationAlerts {
         return status;
     }
 
+    async clickOnActonableLink(msg: string): Promise<void> {
+        let cnt: number = await $$(this.selectors.alerts).count();
+        for (let i = 0; i < cnt; i++) {
+            let notification: string = await $$(this.selectors.alerts).get(i).$('.item-content-text p').getText();
+            if (await notification.includes(msg)) {
+                await $$(this.selectors.alerts).get(i).$('.item-content-text p a').click();
+                break;
+            }
+        }
+    }
 }
 
 export default new NotificationAlerts();
