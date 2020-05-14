@@ -156,6 +156,17 @@ class ViewCaseTemplate {
     async getCategoryTier3(): Promise<string> {
         return await $(this.selectors.categoryTier3).getText();
     }
+
+    async isManageDynamicFieldLinkDisplayed(): Promise<boolean> {
+        return await $(this.selectors.manageDynamicField).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.manageDynamicField).isDisplayed();
+            } else {
+                console.log("Managelink not present");
+                return false;
+            }
+        });
+    }
 }
 
 export default new ViewCaseTemplate();

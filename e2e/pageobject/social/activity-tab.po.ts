@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { ElementFinder, $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 
 class ActivityTabPage {
@@ -59,6 +59,27 @@ class ActivityTabPage {
         showLessLinkForAttachment: '.activity__wrapper .flex-wrap button span',
         lockIcon: '.d-icon-lock',
         activityLogList: '.activity .activity__wrapper',
+        linkIcon: '.cke_toolbar .cke_button__link_icon',
+        boldIcon: '.cke_button__bold_icon',
+        italicIcon: '.cke_button__italic_icon',
+        underLineIcon: '.cke_button__underline_icon',
+        leftAlignIcon: '.cke_button__justifyleft_icon',
+        centerAlignIcon: '.cke_button__justifycenter_icon',
+        rightAlignIcon: '.cke_button__justifyright_icon',
+        colorIcon: '.cke_button__textcolor',
+        numberIcon: '.cke_button__numberedlist_icon',
+        bulletIcon: '.cke_button__bulletedlist_icon',
+        addNotePublicCheckBoxToolTip: '.d-icon-question_circle_o',
+        maximizeMinimizeicon: '.cke_button__maximize_icon',
+        maximizeMinimizeWindow: '.cke_button__maximize_label',
+        boldTextCkEditorTextArea: '.cke_enable_context_menu strong',
+        italicTextCkEditorTextArea: '.cke_enable_context_menu em',
+        underlineTextCkEditorTextArea: '.cke_enable_context_menu u',
+        colorTextCkEditorTextArea: '.cke_enable_context_menu span',
+        alignmentTextCkEditorTextArea: '.cke_enable_context_menu div',
+        numberListCkEditorTextArea: '.cke_enable_context_menu ol li',
+        bulletListTextCkEditorTextArea: '.cke_enable_context_menu ul li',
+        linkTextCkEditorTextArea: '.cke_enable_context_menu a',
     }
 
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
@@ -668,6 +689,178 @@ class ActivityTabPage {
         let attachmentText = await $$('.activity .pt-2 .bwf-attachment-container__file-name').first();
         let value = await attachmentText.getText();
         return value.includes(bodyText) ? true : false;
+    }
+
+    async clickMaximizeMinimizeIcon(): Promise<void> {
+        await $(this.selectors.maximizeMinimizeicon).click();
+    }
+
+    async isPublicCheckBoxToolTipIconDisplayed(): Promise<boolean> {
+        return await $(this.selectors.addNotePublicCheckBoxToolTip).isPresent().then(async (link) => {
+            if (link) {
+                await $(this.selectors.addNotePublicCheckBoxToolTip).isDisplayed();
+                return true;
+            } else return false;
+        });
+    }
+
+    async clickOnLinkIcon(): Promise<void> {
+        await $(this.selectors.linkIcon).click();
+        await browser.sleep(2000);
+    }
+
+    async clickOnBoldIcon(): Promise<void> {
+        await $(this.selectors.boldIcon).click();
+    }
+
+    async clickOnItalicIcon(): Promise<void> {
+        await $(this.selectors.italicIcon).click();
+    }
+
+    async clickOnUnderLineIcon(): Promise<void> {
+        await $(this.selectors.underLineIcon).click();
+    }
+
+    async clickOnLeftAlignIcon(): Promise<void> {
+        await $(this.selectors.leftAlignIcon).click();
+    }
+
+    async clickOnRightAlignIcon(): Promise<void> {
+        await $(this.selectors.rightAlignIcon).click();
+    }
+
+    async clickOnCenterAlignIcon(): Promise<void> {
+        await $(this.selectors.centerAlignIcon).click();
+    }
+
+    async setInsertRemoveNumberList(value: string): Promise<void> {
+        await $(this.selectors.activityNoteTextArea).sendKeys(Key.CONTROL, Key.END);
+        await $(this.selectors.activityNoteTextArea).sendKeys(Key.ENTER);
+        await $(this.selectors.numberIcon).click();
+        await $(this.selectors.activityNoteTextArea).sendKeys(value);
+    }
+
+    async setInsertRemoveBulletedList(value: string): Promise<void> {
+        await $(this.selectors.activityNoteTextArea).sendKeys(Key.CONTROL, Key.END);
+        await $(this.selectors.activityNoteTextArea).sendKeys(Key.ENTER);
+        await $(this.selectors.bulletIcon).click();
+        await $(this.selectors.activityNoteTextArea).sendKeys(value);
+    }
+
+    async selectColor(colorValue: string): Promise<void> {
+        await $(this.selectors.colorIcon).click();
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame(await $('iframe.cke_panel_frame').getWebElement());
+        let locator: string = `a[title="${colorValue}"]`;
+        await browser.wait(this.EC.elementToBeClickable($(locator)), 2000);
+        await $(locator).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+    }
+
+    async getTextCkEditorTextArea(): Promise<string> {
+        return await $(this.selectors.activityNoteCKEditor).getText();
+    }
+
+    async isCkEditorDisplayed(): Promise<boolean> {
+        return await $(this.selectors.activityNoteCKEditor).isPresent().then(async (link) => {
+            if (link) {
+                return await $(this.selectors.activityNoteCKEditor).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isBoldTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
+        return element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) {
+                return element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isItalicTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
+        return element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) {
+                return element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, bodyText)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isUnderlineTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
+        return element(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) {
+                return element(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isColorTextDisplayedInCkEditorTextArea(colorCode: string, bodyText: string): Promise<boolean> {
+        return element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, colorCode)).isPresent().then(async (link) => {
+            if (link) {
+                let colorcodeAttribute = await $(this.selectors.italicTextCkEditorTextArea).getAttribute('style') == colorCode ? true : false;
+                if (colorcodeAttribute == true) {
+                    return element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isDisplayed();
+                }
+            } else return false;
+        });
+    }
+
+    async isTextLeftAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
+        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) {
+                return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isTextRightAlignInCkEditorTextArea(allignment: string, bodyText: string): Promise<boolean> {
+        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, allignment)).isPresent().then(async (link) => {
+            if (link) {
+                let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == allignment ? true : false;
+                if (colorcodeAttribute == true) {
+                    return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
+                }
+            } else return false;
+        });
+    }
+
+    async isTextCenterAlignInCkEditorTextArea(allignment: string, bodyText: string): Promise<boolean> {
+        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, allignment)).isPresent().then(async (link) => {
+            if (link) {
+                let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == allignment ? true : false;
+                if (colorcodeAttribute == true) {
+                    return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
+                }
+            } else return false;
+        });
+    }
+
+    async isNumberListDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
+        return element(by.cssContainingText(this.selectors.numberListCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) {
+                return element(by.cssContainingText(this.selectors.numberListCkEditorTextArea, bodyText)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isBulletListDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
+        return element(by.cssContainingText(this.selectors.bulletListTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) {
+                return element(by.cssContainingText(this.selectors.bulletListTextCkEditorTextArea, bodyText)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isLinkDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
+        return element(by.cssContainingText(this.selectors.linkTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) {
+                return element(by.cssContainingText(this.selectors.linkTextCkEditorTextArea, bodyText)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async getTextCkEditorMinimizeOrMiximize(): Promise<string> {
+        return await $(this.selectors.alignmentTextCkEditorTextArea).getText();
     }
 }
 

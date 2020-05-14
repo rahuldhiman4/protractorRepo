@@ -85,8 +85,11 @@ describe('Service Target Tests for Tasks', () => {
             await adhoctaskTemplate.clickOnSaveAdhoctask();
             //Update the case status to In Progress
             await manageTaskBladePo.clickOnCloseButton();
+
+            await browser.sleep(32000);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
+            // await utilityCommon.refresh();
             await manageTask.clickTaskLinkOnManageTask(summary);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
@@ -104,7 +107,7 @@ describe('Service Target Tests for Tasks', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 300 * 1000);
+    }, 360 * 1000);
 
     //skhobrag
     it('[DRDMV-13055]:Create a SVT for tasks type= Manual, Verify Task SLM for Manual Task and Automated Task', async () => {
@@ -174,6 +177,7 @@ describe('Service Target Tests for Tasks', () => {
             await manageTaskBladePo.clickOnCloseButton();
 
             //Update the case status to In Progress
+            await browser.sleep(32000);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await manageTask.clickTaskLinkOnManageTask(manualTaskTemp);
@@ -201,7 +205,7 @@ describe('Service Target Tests for Tasks', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 480 * 1000);
+    }, 550 * 1000);
 
     //skhobrag
     it('[DRDMV-13056]:Create a SVT for tasks type= Automated, verify Manual Task and Automated Task', async () => {
@@ -271,6 +275,7 @@ describe('Service Target Tests for Tasks', () => {
             await manageTaskBladePo.clickOnCloseButton();
 
             //Update the case status to In Progress
+            await browser.sleep(32000);
             await manageTask.clickTaskLinkOnManageTask(automatedTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
@@ -294,7 +299,7 @@ describe('Service Target Tests for Tasks', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 450 * 1000);
+    }, 520 * 1000);
 
     //skhobrag
     it('[DRDMV-13064]:UI Validation for Qualification builder for Task SVT', async () => {
