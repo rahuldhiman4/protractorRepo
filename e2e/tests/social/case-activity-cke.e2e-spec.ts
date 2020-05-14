@@ -15,9 +15,8 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 describe('Case Activity', () => {
-
-    const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -33,10 +32,11 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    it('[DRDMV-21617]:Verify the Availability and UI of new CK Editor', async () => {
+    fit('[DRDMV-21617]:Verify the Availability and UI of new CK Editor', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let addNoteBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let adhocTaskSummary= [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create manual task template
@@ -76,14 +76,13 @@ describe('Case Activity', () => {
             // Create Case
             let caseData = {
                 "Requester": "qtao",
-                "Summary": "DRDMV-21617_TCasfd",
+                "Summary": "DRDMV-21617_TC",
                 "Support Group": "Compensation and Benefits",
                 "Assignee": "qdu"
             }
 
             await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
-            console.log('>>>>>>>>>>>', newCase.displayId);
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
 
             // Adding Task
@@ -231,7 +230,6 @@ describe('Case Activity', () => {
             // Goto Automated Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
-            await browser.sleep(10000);
             await activityTabPage.addActivityNote(addNoteBodyText);
             //bold
             await activityTabPage.clickOnBoldIcon();
@@ -314,11 +312,62 @@ describe('Case Activity', () => {
             await activityTabPage.clickPublicCheckbox();
             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
+            await viewTaskPo.clickOnViewCase();
+
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Goto Adhoc Task
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.clickAddAdhocTaskButton();
+            expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
+            await adhoctaskTemplate.setSummary(adhocTaskSummary);
+            await adhoctaskTemplate.setDescription("Description");
+            await adhoctaskTemplate.clickOnSaveAdhoctask();
+            await manageTaskBladePo.clickOnCloseButton();
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.clickTaskLinkOnManageTask(adhocTaskSummary);
+             await activityTabPage.addActivityNote(addNoteBodyText);
+             //bold
+             await activityTabPage.clickOnBoldIcon();
+             //italic
+             await activityTabPage.clickOnItalicIcon();
+             //underline
+             await activityTabPage.clickOnUnderLineIcon();
+             //left Align
+             await activityTabPage.clickOnLeftAlignIcon();
+             //Right Align
+             await activityTabPage.clickOnRightAlignIcon();
+             //Center Align
+             await activityTabPage.clickOnCenterAlignIcon();
+             //set color
+             await activityTabPage.selectColor('Strong Red');
+             //checking number and bullot points and setting values for them
+             await activityTabPage.setInsertRemoveNumberList('PlusOne');
+             await activityTabPage.setInsertRemoveNumberList('PlusTwo');
+             await activityTabPage.setInsertRemoveNumberList('PlusThree');
+             // checking bullot points
+             await activityTabPage.clearActivityNote();
+             await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+             await activityTabPage.setInsertRemoveBulletedList('BulletTwo');
+             await activityTabPage.setInsertRemoveBulletedList('BulletThree');
+             // Link added
+             await activityTabPage.clearActivityNote();
+             await activityTabPage.clickOnLinkIcon();
+             await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
+             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
+             await linkPropertiesPo.clickOnOkBtn();
+             await activityTabPage.clickOnPostButton();
+ 
+             await activityTabPage.addActivityNote(addNoteBodyText);
+             await activityTabPage.clickMaximizeMinimizeIcon();
+             await activityTabPage.clickMaximizeMinimizeIcon();
+             await activityTabPage.clickPublicCheckbox();
+             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
+             await activityTabPage.clickOnCancelButton();
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create knowledge Article task template
             await navigationPage.gotoCreateKnowledge();
-            await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge Article title is missing';
+            expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge Article title is missing';
             await createKnowlegePo.clickOnTemplate('Reference');
             await createKnowlegePo.clickOnUseSelectedTemplateButton();
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16767');
@@ -379,8 +428,4 @@ describe('Case Activity', () => {
             await loginPage.login('qkatawazi');
         }
     }, 900 * 1000);
-
-
-
-
 })

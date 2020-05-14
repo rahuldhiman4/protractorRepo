@@ -685,7 +685,7 @@ class ActivityTabPage {
     }
 
     async isPublicCheckBoxToolTipIconDisplayed(): Promise<boolean> {
-        return await $(this.selectors.addNotePublicCheckBoxToolTip).isDisplayed().then(async (link) => {
+        return await $(this.selectors.addNotePublicCheckBoxToolTip).isPresent().then(async (link) => {
             if (link) {
                 await $(this.selectors.addNotePublicCheckBoxToolTip).isDisplayed();
                 return true;
@@ -736,13 +736,6 @@ class ActivityTabPage {
         await $(this.selectors.activityNoteTextArea).sendKeys(value);
     }
     
-    async setLinkActivityNote(value: string): Promise<boolean> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 3000);
-        let locator = `[href='${value}']`;
-        let islinkDisplayed: boolean = await $(locator).isDisplayed();
-        return islinkDisplayed;
-    }
-
     async selectColor(colorValue: string): Promise<void> {
         await $(this.selectors.colorIcon).click();
         await browser.waitForAngularEnabled(false);
