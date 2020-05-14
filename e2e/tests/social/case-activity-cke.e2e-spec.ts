@@ -36,7 +36,7 @@ describe('Case Activity', () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let addNoteBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let adhocTaskSummary= [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let adhocTaskSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create manual task template
@@ -59,7 +59,6 @@ describe('Case Activity', () => {
                 "processName": `Case Process ${summary}`,
             }
 
-            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(autoTemplateData);
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -70,8 +69,7 @@ describe('Case Activity', () => {
                 "templateStatus": "Active",
             };
 
-            await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createExternalTaskTemplate(externalTemplateData);
+            // await apiHelper.createExternalTaskTemplate(externalTemplateData);
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create Case
             let caseData = {
@@ -81,11 +79,10 @@ describe('Case Activity', () => {
                 "Assignee": "qdu"
             }
 
-            await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
 
-            // Adding Task
+            // // Adding Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
@@ -93,45 +90,74 @@ describe('Case Activity', () => {
             await manageTaskBladePo.clickOnCloseButton();
 
             await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
             //bold
             await activityTabPage.clickOnBoldIcon();
+            expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            await activityTabPage.clickOnBoldIcon();
+            await activityTabPage.clearActivityNote();
             //italic
             await activityTabPage.clickOnItalicIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Italic In Ck Editor');
+            await activityTabPage.clickOnItalicIcon();
+            await activityTabPage.clearActivityNote();
             //underline
             await activityTabPage.clickOnUnderLineIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Underline In Ck Editor');
+            await activityTabPage.clickOnUnderLineIcon();
+            await activityTabPage.clearActivityNote();
             //left Align
             await activityTabPage.clickOnLeftAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            await activityTabPage.clearActivityNote();
             //Right Align
             await activityTabPage.clickOnRightAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea('text-align: right;', addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
+            await activityTabPage.clickOnRightAlignIcon();
+            await activityTabPage.clearActivityNote();
             //Center Align
             await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea('text-align: center;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.clearActivityNote();
             //set color
             await activityTabPage.selectColor('Strong Red');
-            //checking number and bullot points and setting values for them
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clearActivityNote();
+            //checking number list
             await activityTabPage.setInsertRemoveNumberList('PlusOne');
-            await activityTabPage.setInsertRemoveNumberList('PlusTwo');
-            await activityTabPage.setInsertRemoveNumberList('PlusThree');
-
+            expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.clearActivityNote();
             // checking bullot points
-            await activityTabPage.clearActivityNote();
             await activityTabPage.setInsertRemoveBulletedList('BulletOne');
-            await activityTabPage.setInsertRemoveBulletedList('BulletTwo');
-            await activityTabPage.setInsertRemoveBulletedList('BulletThree');
-
-            // Link added
+            expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
+            // Link added
             await activityTabPage.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
             await linkPropertiesPo.clickOnOkBtn();
+            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
 
             await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await activityTabPage.clickMaximizeMinimizeIcon();
+            expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await activityTabPage.clickMaximizeMinimizeIcon();
             await activityTabPage.clickPublicCheckbox();
             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
+            await activityTabPage.clickActivityNoteTextBox();
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
+
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Profile View CK Editor
@@ -142,43 +168,73 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
 
             await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
             //bold
             await activityTabPage.clickOnBoldIcon();
+            expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            await activityTabPage.clickOnBoldIcon();
+            await activityTabPage.clearActivityNote();
             //italic
             await activityTabPage.clickOnItalicIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Italic In Ck Editor');
+            await activityTabPage.clickOnItalicIcon();
+            await activityTabPage.clearActivityNote();
             //underline
             await activityTabPage.clickOnUnderLineIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Underline In Ck Editor');
+            await activityTabPage.clickOnUnderLineIcon();
+            await activityTabPage.clearActivityNote();
             //left Align
             await activityTabPage.clickOnLeftAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            await activityTabPage.clearActivityNote();
             //Right Align
             await activityTabPage.clickOnRightAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea('text-align: right;', addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
+            await activityTabPage.clickOnRightAlignIcon();
+            await activityTabPage.clearActivityNote();
             //Center Align
             await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea('text-align: center;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.clearActivityNote();
             //set color
             await activityTabPage.selectColor('Strong Red');
-            //checking number and bullot points and setting values for them
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clearActivityNote();
+            //checking number list
             await activityTabPage.setInsertRemoveNumberList('PlusOne');
-            await activityTabPage.setInsertRemoveNumberList('PlusTwo');
-            await activityTabPage.setInsertRemoveNumberList('PlusThree');
-
+            expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.clearActivityNote();
             // checking bullot points
-            await activityTabPage.clearActivityNote();
             await activityTabPage.setInsertRemoveBulletedList('BulletOne');
-            await activityTabPage.setInsertRemoveBulletedList('BulletTwo');
-            await activityTabPage.setInsertRemoveBulletedList('BulletThree');
-
-            // Link added
+            expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
+            // Link added
             await activityTabPage.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
             await linkPropertiesPo.clickOnOkBtn();
+            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
 
             await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await activityTabPage.clickMaximizeMinimizeIcon();
+            expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await activityTabPage.clickMaximizeMinimizeIcon();
+            await activityTabPage.clickPublicCheckbox();
+            expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
+            await activityTabPage.clickActivityNoteTextBox();
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto Manual Task
@@ -187,132 +243,219 @@ describe('Case Activity', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
             await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
             //bold
             await activityTabPage.clickOnBoldIcon();
+            expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            await activityTabPage.clickOnBoldIcon();
+            await activityTabPage.clearActivityNote();
             //italic
             await activityTabPage.clickOnItalicIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Italic In Ck Editor');
+            await activityTabPage.clickOnItalicIcon();
+            await activityTabPage.clearActivityNote();
             //underline
             await activityTabPage.clickOnUnderLineIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Underline In Ck Editor');
+            await activityTabPage.clickOnUnderLineIcon();
+            await activityTabPage.clearActivityNote();
             //left Align
             await activityTabPage.clickOnLeftAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            await activityTabPage.clearActivityNote();
             //Right Align
             await activityTabPage.clickOnRightAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea('text-align: right;', addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
+            await activityTabPage.clickOnRightAlignIcon();
+            await activityTabPage.clearActivityNote();
             //Center Align
             await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea('text-align: center;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.clearActivityNote();
             //set color
             await activityTabPage.selectColor('Strong Red');
-            //checking number and bullot points and setting values for them
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clearActivityNote();
+            //checking number list
             await activityTabPage.setInsertRemoveNumberList('PlusOne');
-            await activityTabPage.setInsertRemoveNumberList('PlusTwo');
-            await activityTabPage.setInsertRemoveNumberList('PlusThree');
+            expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.clearActivityNote();
             // checking bullot points
-            await activityTabPage.clearActivityNote();
             await activityTabPage.setInsertRemoveBulletedList('BulletOne');
-            await activityTabPage.setInsertRemoveBulletedList('BulletTwo');
-            await activityTabPage.setInsertRemoveBulletedList('BulletThree');
-            // Link added
+            expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
+            // Link added
             await activityTabPage.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
             await linkPropertiesPo.clickOnOkBtn();
+            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
 
             await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await activityTabPage.clickMaximizeMinimizeIcon();
+            expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await activityTabPage.clickMaximizeMinimizeIcon();
             await activityTabPage.clickPublicCheckbox();
             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
-            await viewTaskPo.clickOnViewCase();
+            await activityTabPage.clickActivityNoteTextBox();
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto Automated Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
             await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
             //bold
             await activityTabPage.clickOnBoldIcon();
+            expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            await activityTabPage.clickOnBoldIcon();
+            await activityTabPage.clearActivityNote();
             //italic
             await activityTabPage.clickOnItalicIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Italic In Ck Editor');
+            await activityTabPage.clickOnItalicIcon();
+            await activityTabPage.clearActivityNote();
             //underline
             await activityTabPage.clickOnUnderLineIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Underline In Ck Editor');
+            await activityTabPage.clickOnUnderLineIcon();
+            await activityTabPage.clearActivityNote();
             //left Align
             await activityTabPage.clickOnLeftAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            await activityTabPage.clearActivityNote();
             //Right Align
             await activityTabPage.clickOnRightAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea('text-align: right;', addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
+            await activityTabPage.clickOnRightAlignIcon();
+            await activityTabPage.clearActivityNote();
             //Center Align
             await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea('text-align: center;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.clearActivityNote();
             //set color
             await activityTabPage.selectColor('Strong Red');
-            //checking number and bullot points and setting values for them
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clearActivityNote();
+            //checking number list
             await activityTabPage.setInsertRemoveNumberList('PlusOne');
-            await activityTabPage.setInsertRemoveNumberList('PlusTwo');
-            await activityTabPage.setInsertRemoveNumberList('PlusThree');
+            expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.clearActivityNote();
             // checking bullot points
-            await activityTabPage.clearActivityNote();
             await activityTabPage.setInsertRemoveBulletedList('BulletOne');
-            await activityTabPage.setInsertRemoveBulletedList('BulletTwo');
-            await activityTabPage.setInsertRemoveBulletedList('BulletThree');
-            // Link added
+            expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
+            // Link added
             await activityTabPage.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
             await linkPropertiesPo.clickOnOkBtn();
+            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
 
             await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await activityTabPage.clickMaximizeMinimizeIcon();
+            expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await activityTabPage.clickMaximizeMinimizeIcon();
             await activityTabPage.clickPublicCheckbox();
             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
-            await viewTaskPo.clickOnViewCase();
+            await activityTabPage.clickActivityNoteTextBox();
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto External Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLinkOnManageTask(externalTemplateData.templateSummary);
             await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
             //bold
             await activityTabPage.clickOnBoldIcon();
+            expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            await activityTabPage.clickOnBoldIcon();
+            await activityTabPage.clearActivityNote();
             //italic
             await activityTabPage.clickOnItalicIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Italic In Ck Editor');
+            await activityTabPage.clickOnItalicIcon();
+            await activityTabPage.clearActivityNote();
             //underline
             await activityTabPage.clickOnUnderLineIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Underline In Ck Editor');
+            await activityTabPage.clickOnUnderLineIcon();
+            await activityTabPage.clearActivityNote();
             //left Align
             await activityTabPage.clickOnLeftAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            await activityTabPage.clearActivityNote();
             //Right Align
             await activityTabPage.clickOnRightAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea('text-align: right;', addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
+            await activityTabPage.clickOnRightAlignIcon();
+            await activityTabPage.clearActivityNote();
             //Center Align
             await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea('text-align: center;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.clearActivityNote();
             //set color
             await activityTabPage.selectColor('Strong Red');
-            //checking number and bullot points and setting values for them
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clearActivityNote();
+            //checking number list
             await activityTabPage.setInsertRemoveNumberList('PlusOne');
-            await activityTabPage.setInsertRemoveNumberList('PlusTwo');
-            await activityTabPage.setInsertRemoveNumberList('PlusThree');
+            expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.clearActivityNote();
             // checking bullot points
-            await activityTabPage.clearActivityNote();
             await activityTabPage.setInsertRemoveBulletedList('BulletOne');
-            await activityTabPage.setInsertRemoveBulletedList('BulletTwo');
-            await activityTabPage.setInsertRemoveBulletedList('BulletThree');
-            // Link added
+            expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
+            // Link added
             await activityTabPage.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
             await linkPropertiesPo.clickOnOkBtn();
+            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
 
             await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await activityTabPage.clickMaximizeMinimizeIcon();
+            expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await activityTabPage.clickMaximizeMinimizeIcon();
             await activityTabPage.clickPublicCheckbox();
             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
-            await viewTaskPo.clickOnViewCase();
+            await activityTabPage.clickActivityNoteTextBox();
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto Adhoc Task
@@ -325,44 +468,74 @@ describe('Case Activity', () => {
             await manageTaskBladePo.clickOnCloseButton();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLinkOnManageTask(adhocTaskSummary);
-             await activityTabPage.addActivityNote(addNoteBodyText);
-             //bold
-             await activityTabPage.clickOnBoldIcon();
-             //italic
-             await activityTabPage.clickOnItalicIcon();
-             //underline
-             await activityTabPage.clickOnUnderLineIcon();
-             //left Align
-             await activityTabPage.clickOnLeftAlignIcon();
-             //Right Align
-             await activityTabPage.clickOnRightAlignIcon();
-             //Center Align
-             await activityTabPage.clickOnCenterAlignIcon();
-             //set color
-             await activityTabPage.selectColor('Strong Red');
-             //checking number and bullot points and setting values for them
-             await activityTabPage.setInsertRemoveNumberList('PlusOne');
-             await activityTabPage.setInsertRemoveNumberList('PlusTwo');
-             await activityTabPage.setInsertRemoveNumberList('PlusThree');
-             // checking bullot points
-             await activityTabPage.clearActivityNote();
-             await activityTabPage.setInsertRemoveBulletedList('BulletOne');
-             await activityTabPage.setInsertRemoveBulletedList('BulletTwo');
-             await activityTabPage.setInsertRemoveBulletedList('BulletThree');
-             // Link added
-             await activityTabPage.clearActivityNote();
-             await activityTabPage.clickOnLinkIcon();
-             await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
-             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
-             await linkPropertiesPo.clickOnOkBtn();
-             await activityTabPage.clickOnPostButton();
- 
-             await activityTabPage.addActivityNote(addNoteBodyText);
-             await activityTabPage.clickMaximizeMinimizeIcon();
-             await activityTabPage.clickMaximizeMinimizeIcon();
-             await activityTabPage.clickPublicCheckbox();
-             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
-             await activityTabPage.clickOnCancelButton();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
+            //bold
+            await activityTabPage.clickOnBoldIcon();
+            expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            await activityTabPage.clickOnBoldIcon();
+            await activityTabPage.clearActivityNote();
+            //italic
+            await activityTabPage.clickOnItalicIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Italic In Ck Editor');
+            await activityTabPage.clickOnItalicIcon();
+            await activityTabPage.clearActivityNote();
+            //underline
+            await activityTabPage.clickOnUnderLineIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Underline In Ck Editor');
+            await activityTabPage.clickOnUnderLineIcon();
+            await activityTabPage.clearActivityNote();
+            //left Align
+            await activityTabPage.clickOnLeftAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            await activityTabPage.clearActivityNote();
+            //Right Align
+            await activityTabPage.clickOnRightAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea('text-align: right;', addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
+            await activityTabPage.clickOnRightAlignIcon();
+            await activityTabPage.clearActivityNote();
+            //Center Align
+            await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea('text-align: center;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.clearActivityNote();
+            //set color
+            await activityTabPage.selectColor('Strong Red');
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clearActivityNote();
+            //checking number list
+            await activityTabPage.setInsertRemoveNumberList('PlusOne');
+            expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.clearActivityNote();
+            // checking bullot points
+            await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+            expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clearActivityNote();
+            // Link added
+            await activityTabPage.clickOnLinkIcon();
+            await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
+            await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
+            await linkPropertiesPo.clickOnOkBtn();
+            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clickOnPostButton();
+
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
+            await activityTabPage.clickMaximizeMinimizeIcon();
+            expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
+            await activityTabPage.clickMaximizeMinimizeIcon();
+            await activityTabPage.clickPublicCheckbox();
+            expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
+            await activityTabPage.clickOnCancelButton();
+            await activityTabPage.clickActivityNoteTextBox();
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create knowledge Article task template
@@ -384,43 +557,73 @@ describe('Case Activity', () => {
 
             await viewKnowledgeArticlePo.clickOnActivityTab();
             await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
             //bold
             await activityTabPage.clickOnBoldIcon();
+            expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            await activityTabPage.clickOnBoldIcon();
+            await activityTabPage.clearActivityNote();
             //italic
             await activityTabPage.clickOnItalicIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Italic In Ck Editor');
+            await activityTabPage.clickOnItalicIcon();
+            await activityTabPage.clearActivityNote();
             //underline
             await activityTabPage.clickOnUnderLineIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Underline In Ck Editor');
+            await activityTabPage.clickOnUnderLineIcon();
+            await activityTabPage.clearActivityNote();
             //left Align
             await activityTabPage.clickOnLeftAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            await activityTabPage.clearActivityNote();
             //Right Align
             await activityTabPage.clickOnRightAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea('text-align: right;', addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
+            await activityTabPage.clickOnRightAlignIcon();
+            await activityTabPage.clearActivityNote();
             //Center Align
             await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea('text-align: center;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.clearActivityNote();
             //set color
             await activityTabPage.selectColor('Strong Red');
-            //checking number and bullot points and setting values for them
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clearActivityNote();
+            //checking number list
             await activityTabPage.setInsertRemoveNumberList('PlusOne');
-            await activityTabPage.setInsertRemoveNumberList('PlusTwo');
-            await activityTabPage.setInsertRemoveNumberList('PlusThree');
-
+            expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPage.clickOnCenterAlignIcon();
+            await activityTabPage.clearActivityNote();
             // checking bullot points
-            await activityTabPage.clearActivityNote();
             await activityTabPage.setInsertRemoveBulletedList('BulletOne');
-            await activityTabPage.setInsertRemoveBulletedList('BulletTwo');
-            await activityTabPage.setInsertRemoveBulletedList('BulletThree');
-
-            // Link added
+            expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
+            // Link added
             await activityTabPage.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
             await linkPropertiesPo.clickOnOkBtn();
+            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
 
             await activityTabPage.addActivityNote(addNoteBodyText);
+            expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await activityTabPage.clickMaximizeMinimizeIcon();
+            expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await activityTabPage.clickMaximizeMinimizeIcon();
+            await activityTabPage.clickPublicCheckbox();
+            expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
+            await activityTabPage.clickActivityNoteTextBox();
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
         } catch (e) {
             throw e;
         } finally {
