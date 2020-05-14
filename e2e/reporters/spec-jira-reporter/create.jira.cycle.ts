@@ -62,8 +62,6 @@ export class CreateJiraCycle {
     jiraReport = [];
 
     async run() {
-        console.log("Start:", this.getTimeStamp());
-
         this.loadConfig();
         this.filterInputFile();
         let isCycleAndFolderCreated: boolean = await this.createCycleAndFolder();
@@ -81,7 +79,6 @@ export class CreateJiraCycle {
             console.log(`FAILURE::###### Test Cycle details ###### \nFAILURE::Test cycle Name >> ${this.testCycleName} \nFAILURE::Test cycle Id >> ${this.testCycleId}`);
             console.log(`FAILURE::Folder Name >> ${this.folderName} \nFAILURE::Folder Id >> ${this.folderId}`);
         }
-        console.log("End:", this.getTimeStamp());
     }
 
     loadConfig() {
