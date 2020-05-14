@@ -282,6 +282,11 @@ class ActivityTabPage {
         return toRecipient;
     }
 
+    async getRecipientInCc(): Promise<string> {
+        let ccRecipient = await $$('.activity .cc-list').first().getText();
+        return ccRecipient;
+    }
+
     async getEmailSubject(): Promise<string> {
         let subject = await $$('.activity .subject').first().getText();
         return subject;
