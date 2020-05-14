@@ -1,4 +1,6 @@
-import { $, $$,browser, By, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, By, element, protractor, ProtractorExpectedConditions, Key } from "protractor";
+import utilCommon from 'e2e/utils/util.common';
+import utilGrid from 'e2e/utils/util.grid';
 
 class DynamicField {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -22,6 +24,7 @@ class DynamicField {
         target: '[class="group-fields-area flex"]',
         src: '.column-pill-icon',
         downArrow: '.d-icon-right-angle_down',
+        searchField:'.ac-input-search-fields'
     }
 
     async clickOnDynamicField(): Promise<void> {
@@ -116,6 +119,20 @@ class DynamicField {
         await $(this.selectors.disabledhiddenField).click();
     }
 
+    async isDynamicFieldPresentInDynamicSection(value: string): Promise<boolean> {
+        return await $(`.rx-record-grid-column-editor__available-list-inner span[title=${value}]`).isPresent().then(async (result) => {
+            if (result) {
+                return await $(`.rx-record-grid-column-editor__available-list-inner span[title=${value}]`).isDisplayed();
+            } else {
+                return false;
+            }
+        });
+    }
+
+    async searchField(value:string):Promise<void>{
+        await $(this.selectors.searchField).clear();
+        await $(this.selectors.searchField).sendKeys(value+Key.ENTER);
+    }
 }
 
 export default new DynamicField();
