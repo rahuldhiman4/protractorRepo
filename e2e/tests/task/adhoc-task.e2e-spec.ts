@@ -21,6 +21,8 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
 
 describe('Create Adhoc task', () => {
     beforeAll(async () => {
@@ -353,7 +355,7 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.setDescription("Description");
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeTruthy('Attachment button is disabled');
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf', 'bwfXlsx.xlsx', 'demo.txt'];
-        const filesToUpload1 = fileName1.map((file)=>{return `../../data/ui/attachment/${file}`});
+        const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
         await adhoctaskTemplate.addAttachmentInDescription(filesToUpload1);
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeFalsy('Attachment button is enabled');
         expect(await adhoctaskTemplate.getAttachmentLimitWarningText()).toBe('The maximum number of attachments allowed is 20');
@@ -370,4 +372,167 @@ describe('Create Adhoc task', () => {
         await viewTask.clickShowMoreShowLessLink();
         expect(await viewTask.getShowMoreLessAttachmentsLinkText()).toBe('18 more');
     });
+
+    it('[DRDMV-5480]: [Assignment] Changing the Assignment when editing the task by the member of one Support Group', async () => {
+        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData1 = {
+            "templateName": `manualTaskTemplate1 ${randomStr}`,
+            "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+            "templateStatus": "Active",
+        }
+
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createManualTaskTemplate(templateData1);
+        try {
+            //Create Case
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary('Summary ' + summary);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+
+            //Adhoc task validation
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            await adhoctaskTemplate.setSummary("test" + summary);
+            await adhoctaskTemplate.clickOnAssignButton();
+            await adhoctaskTemplate.clickOnSaveAdhoctask();
+            await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
+            await manageTask.clickTaskLinkOnManageTask("test" + summary);
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnAssignToMe();
+            await editTask.clickOnSaveButton();
+            expect((await viewTask.getAssigneeText()).trim()).toBe('Qianru Tao');
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectAssignee("Qadim Katawazi");
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editTask.clickOnSaveButton();
+            expect(await viewTask.getAssigneeText()).toBe('Qadim Katawazi');
+            expect(await activityTabPo.getAllTaskActivity('Qadim Katawazi')).toBe('Qadim Katawazi');
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.clickOnAssignToMeCheckBox();
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editTask.clickOnSaveButton();
+            expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Compensation and Benefits');
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editTask.clickOnSaveButton();
+            expect(await viewTask.getAssignedGroupText()).toBe('Compensation and Benefits');
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.isSupportGroupDrpDwnDisplayed();
+            await changeAssignmentBladePo.setAssignee('Petramco', 'Facilities', 'Franz Schwarz');
+            //await changeAssignmentBladePo.clickOnAssignButton();
+            await editTask.clickOnSaveButton();
+            expect(await activityTabPo.getAllTaskActivity('Franz Schwarz')).toBe('Franz Schwarz');
+            expect(await viewTask.getAssigneeText()).toBe('Franz Schwarz');
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnAssignToMe();
+            await editTask.clickOnSaveButton();
+            expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Compensation and Benefits');
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editTask.clickOnSaveButton();
+            expect(await viewTask.getAssignedGroupText()).toBe('Compensation and Benefits');
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnAssignToMe();
+            await editTask.clickOnSaveButton();
+            expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
+            await viewTask.clickOnViewCase()
+
+            // second task template
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary1 ${randomStr}`);
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnAssignToMe();
+            await editTask.clickOnSaveButton();
+            expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectAssignee("Qadim Katawazi");
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editTask.clickOnSaveButton();
+            expect(await viewTask.getAssigneeText()).toBe('Qadim Katawazi');
+            expect(await activityTabPo.getAllTaskActivity('Qadim Katawazi')).toBe('Qadim Katawazi', "Activity+++");
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.clickOnAssignToMeCheckBox();
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editTask.clickOnSaveButton();
+            expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Compensation and Benefits');
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editTask.clickOnSaveButton();
+            expect(await viewTask.getAssignedGroupText()).toBe('Compensation and Benefits');
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.isSupportGroupDrpDwnDisplayed();
+            await changeAssignmentBladePo.setAssignee('Petramco', 'Facilities', 'Franz Schwarz');
+            //await changeAssignmentBladePo.clickOnAssignButton();
+            await editTask.clickOnSaveButton();
+            expect(await activityTabPo.getAllTaskActivity('Franz Schwarz')).toBe('Franz Schwarz');
+            expect(await viewTask.getAssigneeText()).toBe('Assignee Franz Schwarz');
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnAssignToMe();
+            await editTask.clickOnSaveButton();
+            expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Compensation and Benefits');
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editTask.clickOnSaveButton();
+            expect(await viewTask.getAssignedGroupText()).toBe('Compensation and Benefits');
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnAssignToMe();
+            await editTask.clickOnSaveButton();
+            expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
+
+        } catch (error) {
+            throw error;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        }
+    }, 280 * 1000);
+
+    it('[DRDMV-3828]: [Task Workspace] Task Workspace verification', async () => {
+        await navigationPage.gotoTaskConsole();
+        let allHeaders: string[] = ["Task ID", "Case ID", "Priority", "Task Type", "Status", "Summary", "Assigned Group", "Assignee", "Modified Date", "SLM Status"];
+        let remainingHeaders: string[] = ["Task ID", "Case ID", "Priority", "Task Type", "Status", "Summary", "Assigned Group", "Assignee", "Modified Date"]
+        let removeHeader: string[] = ["SLM Status"];
+        await utilityGrid.areColumnHeaderMatches(allHeaders);
+        await utilityGrid.removeGridColumn(removeHeader);
+        await utilityGrid.areColumnHeaderMatches(remainingHeaders);
+        await utilityGrid.addGridColumn(removeHeader);
+        await utilityGrid.areColumnHeaderMatches(allHeaders);
+        await utilityGrid.isGridColumnSorted("Task ID", "asc");
+        await utilityGrid.isGridColumnSorted("Task ID", "desc");
+        await utilityGrid.isGridColumnSorted("Case ID", "asc");
+        await utilityGrid.isGridColumnSorted("Case ID", "desc");
+        await utilityGrid.isGridColumnSorted("Priority", "asc");
+        await utilityGrid.isGridColumnSorted("Priority", "desc");
+        await utilityGrid.isGridColumnSorted("Task Type", "asc");
+        await utilityGrid.isGridColumnSorted("Task Type", "desc");
+        await utilityGrid.isGridColumnSorted("Status", "asc");
+        await utilityGrid.isGridColumnSorted("Status", "desc");
+        await utilityGrid.isGridColumnSorted("Summary", "asc");
+        await utilityGrid.isGridColumnSorted("Summary", "desc");
+        await utilityGrid.isGridColumnSorted("Assigned Group", "asc");
+        await utilityGrid.isGridColumnSorted("Assigned Group", "desc");
+        await utilityGrid.isGridColumnSorted("Assignee", "asc");
+        await utilityGrid.isGridColumnSorted("Assignee", "desc");
+        await utilityGrid.isGridColumnSorted("Modified Date", "asc");
+        await utilityGrid.isGridColumnSorted("Modified Date", "desc");
+    });
+
 });
