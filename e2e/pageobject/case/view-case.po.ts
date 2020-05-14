@@ -20,6 +20,7 @@ class ViewCasePage {
         requesterName: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .person-main a',
         requesterPhoneNo: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .person-phone-link',
         requesterEmail: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .bwf-button-link',
+        contactEmail: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .bwf-button-link',
         contactPersonDrpDwn: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .d-icon-angle_down',
         contactPersonName: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .person-main a',
         contactPersonContact: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .person-phone-link',
@@ -75,6 +76,10 @@ class ViewCasePage {
     async clickOnRequestersEmail(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesterEmail)));
         await $(this.selectors.requesterEmail).click();
+    }
+
+    async clickOnContactEmail(): Promise<void>{
+        await $(this.selectors.contactEmail).click();
     }
 
     async isEmailLinkPresent(): Promise<boolean> {

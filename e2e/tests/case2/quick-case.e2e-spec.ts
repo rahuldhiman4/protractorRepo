@@ -2,12 +2,12 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
-import composeMail from '../../pageobject/email/compose-mail.po';
 import { default as quickCase, default as quickCasePo } from "../../pageobject/case/quick-case.po";
 import { default as viewCasePage, default as viewCasePo } from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';
+import composeMail from '../../pageobject/email/compose-mail.po';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import editCaseTemplate from "../../pageobject/settings/case-management/edit-casetemplate.po";
@@ -160,7 +160,7 @@ describe("Quick Case", () => {
         await quickCase.saveCase();
         expect(await previewCasePo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy();
         expect(await previewCasePo.isContactNameDisplayed('Al Allbrook')).toBeTruthy();
-    },200 * 1000);
+    }, 200 * 1000);
 
     it('[DRDMV-1205]: [Quick Case] People search', async () => {
         await navigationPage.gotoQuickCase();
@@ -848,7 +848,94 @@ describe("Quick Case", () => {
         expect(await quickCase.isValuePresentInSourceDropDown(inActiveSource741)).toBeFalsy(inActiveSource741 + 'is present');
         expect(await quickCase.isValuePresentInSourceDropDown(activeSourceNotUI)).toBeFalsy(activeSourceNotUI + 'is present');
     }, 250 * 1000);
-  
+
+    // tgarud 
+    it('[DRDMV-559]: [Quick Case] Knowledge article search in Resources', async () => {
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let unPublishedKA_Name = randomStr + ' UnPublished KA'
+        let publishedKA_Name = randomStr + ' Published KA'
+        let closedKA_Name = randomStr + ' Closed KA'
+        let articleData = {
+            "knowledgeSet": "HR",
+            "title": "KnowledgeArticle",
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "keyword": "ArticleKeyword",
+            "articleDesc": "ArticleDescription",
+            "categoryTier1": "Applications",
+            "categoryTier2": "Help Desk",
+            "categoryTier3": "Incident",
+            "region": "Australia",
+            "site": "Canberra",
+            "assignee": "KMills",
+            "assigneeSupportGroup": "GB Support 2"
+        };
+
+        await apiHelper.apiLogin('kmills');
+        // Draft article
+        articleData.title = unPublishedKA_Name;
+        let unPublishedKA = await apiHelper.createKnowledgeArticle(articleData);
+        expect(await apiHelper.updateKnowledgeArticleStatus(unPublishedKA.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
+
+        // Published article
+        articleData.title = publishedKA_Name;
+        articleData.keyword = `${randomStr}_keyword`;
+        articleData.articleDesc = `${randomStr}_description`;
+        let publishedKA = await apiHelper.createKnowledgeArticle(articleData);
+        let publishKA_GUID = publishedKA.id;
+        expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "Draft")).toBeTruthy("Article with Draft status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "SMEReview", "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "PublishApproval")).toBeTruthy("Article with Published status not updated.");
+
+        await browser.sleep(5000); // hardwait to get KA indexed
+        // search draft article, should not find
+        await navigationPage.gotoQuickCase();
+        await quickCase.selectRequesterName('fritz');
+        await quickCase.setCaseSummary(unPublishedKA_Name);
+        expect(await resources.isRecommendedKnowledgePresent(unPublishedKA_Name)).toBeFalsy(`${unPublishedKA_Name} Draft KA not disaplyed in Recommended Knowledge`);
+
+        // search published article by name, should find
+        await quickCase.clickStartOverButton();
+        await quickCase.selectRequesterName('fritz');
+        await quickCase.setCaseSummary(publishedKA_Name);
+        expect(await resources.isRecommendedKnowledgePresent(publishedKA_Name)).toBeTruthy(`${publishedKA_Name} Published KA not disaplyed in Recommended Knowledge`);
+
+        // search published article by keyword, should find.. this is failing keyword based search not working 
+        await quickCase.clickStartOverButton();
+        await quickCase.selectRequesterName('fritz');
+        await quickCase.setCaseSummary(articleData.keyword);
+        expect(await resources.isRecommendedKnowledgePresent(publishedKA_Name)).toBeTruthy(`${publishedKA_Name} Keyword search Published KA not disaplyed in Recommended Knowledge`);
+
+        // search published article by description, should find
+        await quickCase.clickStartOverButton();
+        await quickCase.selectRequesterName('fritz');
+        await quickCase.setCaseSummary(articleData.articleDesc);
+        expect(await resources.isRecommendedKnowledgePresent(publishedKA_Name)).toBeTruthy(`${publishedKA_Name} Description search Published KA not disaplyed in Recommended Knowledge`);
+        // Change KA status to closed so that can be used in last step
+        expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "RetireApproval")).toBeTruthy("Article with Closed status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "Closed")).toBeTruthy("Article with Closed status not updated.");
+        await browser.sleep(3000); // hardwait to reflect KA status as closed
+
+        // search In Progress article, should not find
+        expect(await apiHelper.updateKnowledgeArticleStatus(unPublishedKA.id, "In Progres")).toBeTruthy("Article with Draft status not updated.");
+        await quickCase.clickStartOverButton();
+        await quickCase.selectRequesterName('fritz');
+        await quickCase.setCaseSummary(unPublishedKA_Name);
+        expect(await resources.isRecommendedKnowledgePresent(unPublishedKA_Name)).toBeFalsy(`${unPublishedKA_Name} In Progress KA not disaplyed in Recommended Knowledge`);
+
+        // search Canceled article, should not find
+        expect(await apiHelper.updateKnowledgeArticleStatus(unPublishedKA.id, "Canceled")).toBeTruthy("Article with Canceled status not updated.");
+        await quickCase.clickStartOverButton();
+        await quickCase.selectRequesterName('fritz');
+        await quickCase.setCaseSummary(unPublishedKA_Name);
+        expect(await resources.isRecommendedKnowledgePresent(unPublishedKA_Name)).toBeFalsy(`${unPublishedKA_Name} Canceled KA not disaplyed in Recommended Knowledge`);
+
+        // search Closed article, should not find
+        await quickCase.clickStartOverButton();
+        await quickCase.selectRequesterName('fritz');
+        await quickCase.setCaseSummary(publishedKA_Name);
+        expect(await resources.isRecommendedKnowledgePresent(publishedKA_Name)).toBeFalsy(`${publishedKA_Name} Closed KA disaplyed in Recommended Knowledge`);
+    });
+
     //radhiman
     it('[DRDMV-18972]: Populating fields in Quick Case if only Required parameter is specified', async () => {
         let caseData = require('../../data/ui/case/case.ui.json');

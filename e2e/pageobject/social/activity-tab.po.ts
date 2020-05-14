@@ -297,6 +297,11 @@ class ActivityTabPage {
         return toRecipient;
     }
 
+    async getRecipientInCc(): Promise<string> {
+        let ccRecipient = await $$('.activity .cc-list').first().getText();
+        return ccRecipient;
+    }
+
     async getEmailSubject(): Promise<string> {
         let subject = await $$('.activity .subject').first().getText();
         return subject;
@@ -439,7 +444,7 @@ class ActivityTabPage {
 
     async getTextTaskFilterOption(filterCheckBox: string): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
-        return await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBox)).getText();
+        return await element(by.cssContainingText(`${this.selectors.filterCheckbox}[class*='ng']`, filterCheckBox)).getText();
     }
 
     async isAuthorSearchBoxVisible(): Promise<boolean> {
@@ -449,7 +454,7 @@ class ActivityTabPage {
 
     async getTextOfFilterTaskOptions(filterCheckBoxText: string): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.filterCheckbox)));
-        return await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBoxText)).getText();
+        return await element(by.cssContainingText(`${this.selectors.filterCheckbox}[class*='ng']`, filterCheckBoxText)).getText();
     }
 
     async selectFilterCheckBox(filterCheckBoxText: string): Promise<void> {

@@ -23,7 +23,7 @@ class PreviewTaskTemplateBlade {
         processName: 'f79145f8-5b9f-4ef5-b573-7920752f860a',
         backButton: '[rx-view-component-id="cbb794a3-d696-4fff-81df-27e73e1438d8"] button',
         getTaskCategoryTier4: '[rx-view-component-id="9df7b305-6be0-4f50-8c2f-88a61ed85cb4"] p',
-        dynamicFieldName: '[rx-view-component-id="ef229a94-f3fe-490c-904f-257d06d69194"] span',
+        dynamicFieldName: '[rx-view-component-id="92456067-e396-441c-b1c5-b452bc473991"] span',
     }
 
     async clickOnBackButton(): Promise<void> {
@@ -106,7 +106,7 @@ class PreviewTaskTemplateBlade {
     }
 
     async isDynamicGroupDisplayed(groupName: string): Promise<boolean> {
-        return await $(`[rx-view-component-id="ef229a94-f3fe-490c-904f-257d06d69194"] .group-container__name__title[title=${groupName}]}`).isDisplayed(); 
+        return await $(`[rx-view-component-id="92456067-e396-441c-b1c5-b452bc473991"] .group-container__name__title[title=${groupName}]`).isDisplayed(); 
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
