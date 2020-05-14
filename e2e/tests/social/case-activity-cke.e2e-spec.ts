@@ -32,7 +32,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    fit('[DRDMV-21617]:Verify the Availability and UI of new CK Editor', async () => {
+    it('[DRDMV-21617]:Verify the Availability and UI of new CK Editor', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let addNoteBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
