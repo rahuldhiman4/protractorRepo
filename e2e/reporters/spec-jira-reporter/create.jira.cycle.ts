@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { filter, find, get, isArray } from 'lodash';
 import * as config from './jira.util.config';
 
@@ -24,6 +24,7 @@ export interface IssueKeyDetails {
     issueId: string;
     version: string;
     priority: string;
+    lastExecutionStatus: string;
     totalExecution: number;
     passPercent: number;
 }
@@ -32,6 +33,7 @@ export interface JiraTestDetails {
     JiraId: string,
     Description: string,
     ExecutionStatus: string,
+    IsNewExecutionStatus?: string,
     TotalExecution?: number,
     PassPercent?: number,
     Version?: string,
@@ -122,6 +124,7 @@ export class CreateJiraCycle {
                     JiraId: testResult.jiraId,
                     Description: testResult.description,
                     ExecutionStatus: testResult.status,
+                    IsNewExecutionStatus: "NA",
                     TotalExecution: "NA",
                     PassPercent: "NA",
                     Version: "NA",
@@ -208,12 +211,14 @@ export class CreateJiraCycle {
         }
     }
 
-    async addExecutionToCycle(testInput): Promise<void> {
+    async addExecutionToCycle(testInput: any[]): Promise<void> {
         // create new execution
         let executionIdList = [];
         let apiStatus = -1;
+        let isNewExecutionStatus = "NA";
         for (let i = 0; i < testInput.length; i++) {
             let issueDetails = await this.getIssueDetails(testInput[i].jiraId);
+            testInput[i].status != issueDetails.lastExecutionStatus ? isNewExecutionStatus = "Yes" : isNewExecutionStatus = "No";
             let executionPayload = {
                 "cycleId": `${this.testCycleId}`,
                 "issueId": `${issueDetails.issueId}`,
@@ -244,6 +249,7 @@ export class CreateJiraCycle {
                 JiraId: testInput[i].jiraId,
                 Description: testInput[i].description,
                 ExecutionStatus: testInput[i].status,
+                IsNewExecutionStatus: isNewExecutionStatus,
                 TotalExecution: issueDetails.totalExecution,
                 PassPercent: issueDetails.passPercent,
                 Version: issueDetails.version,
@@ -280,12 +286,23 @@ export class CreateJiraCycle {
             let issueId = issueDetails.data.id;
             let passDetails = 0;
             let totalExe = 0;
+            let lastExecutionStatus = undefined;
 
-            // calculate pass percentage
-            if (this.generateStats.toLowerCase() == 'true') {
-                let passPercent = await this.getTotalExecutionAndPassPercent(issueId);
-                passDetails = passPercent.passPercentage;
-                totalExe = passPercent.totalExecution;
+            // get issue id details
+            let issueIdApiResponse = await this.getIssueIdDetails(issueId);
+            if (issueIdApiResponse) {
+                // Is new status of issue key
+                let lastExecution = issueIdApiResponse.data.executions[0].executionStatus;
+                lastExecution == "1" ? (lastExecutionStatus = "passed")
+                    : ((lastExecution == "2") ? (lastExecutionStatus = "failed")
+                        : (lastExecutionStatus = "skipped"));
+
+                // calculate pass percentage
+                if (this.generateStats.toLowerCase() == 'true') {
+                    let passPercent = await this.getTotalExecutionAndPassPercent(issueId);
+                    passDetails = passPercent.passPercentage;
+                    totalExe = passPercent.totalExecution;
+                }
             }
             const { fixVersions } = issueDetails.data.fields;
             return {
@@ -293,6 +310,7 @@ export class CreateJiraCycle {
                 issueId: issueId,
                 version: fixVersions && isArray(fixVersions) ? get(fixVersions[0], 'name') : null,
                 priority: issueDetails.data.fields.priority.name ? issueDetails.data.fields.priority.name : 'NA',
+                lastExecutionStatus,
                 totalExecution: totalExe,
                 passPercent: passDetails,
             }
@@ -300,24 +318,28 @@ export class CreateJiraCycle {
         } else console.log("Issue details not found....", issueKey);
     }
 
-    async getTotalExecutionAndPassPercent(issueId: string): Promise<ExecutionDetails> {
-        let passPercent: number;
-        let executions: number;
-        let executionDetails = await axios.get(
+    async getIssueIdDetails(issueId: string): Promise<AxiosResponse> {
+        let issueIdDetails = await axios.get(
             "/rest/zapi/latest/execution?issueId=" + issueId
         );
-        console.log('IssueId Details API Status =============>', executionDetails.status);
+        console.log('IssueId Details API Status =============>', issueIdDetails.status);
 
-        if (executionDetails.status == 200) {
-            executions = executionDetails.data.recordsCount;
-            let allExecutions = executionDetails.data.executions;
-            let allPassExecution = allExecutions.filter((execution) => {
-                return execution.executionStatus === '1';
-            });
-            passPercent = allPassExecution.length * 100 / executions;
-        } else {
+        if (issueIdDetails.status == 200) return issueIdDetails;
+        else {
             console.log("Issue details not found....", issueId);
+            return undefined;
         }
+    }
+
+    async getTotalExecutionAndPassPercent(executionDetails: AxiosResponse): Promise<ExecutionDetails> {
+        let passPercent: number;
+        let executions: number;
+        executions = executionDetails.data.recordsCount;
+        let allExecutions = executionDetails.data.executions;
+        let allPassExecution = allExecutions.filter((execution: { executionStatus: string; }) => {
+            return execution.executionStatus === '1';
+        });
+        passPercent = allPassExecution.length * 100 / executions;
         return {
             totalExecution: executions,
             passPercentage: passPercent
@@ -331,7 +353,7 @@ export class CreateJiraCycle {
         if (!fs.existsSync('e2e/reports/spec-jira-report')) {
             fs.mkdirSync('e2e/reports/spec-jira-report');
         }
-        const fields = ['JiraId', 'Description', 'ExecutionStatus', 'TotalExecution', 'PassPercent', 'Version', 'Priority', 'JiraStatus'];
+        const fields = ['JiraId', 'Description', 'ExecutionStatus', 'IsNewExecutionStatus', 'TotalExecution', 'PassPercent', 'Version', 'Priority', 'JiraStatus'];
         const json2csvParser = new Parser({ fields });
         fs.writeFileSync('e2e/reports/spec-jira-report/jira-report.csv', json2csvParser.parse(this.jiraReport.concat(this.invalidJiraTest)));
     }
@@ -392,7 +414,7 @@ export class CreateJiraCycle {
         return year + "-" + month + "-" + day + " " + hour + ":" + minute;
     }
 
-    createHtmlReport(summary) {
+    createHtmlReport(summary: { cycle: string; folder: string; cyclePassPercent: number; pass: number; fail: number; skip: number; total: number; }) {
         let html = pug.renderFile('e2e/reporters/spec-jira-reporter/email-report.pug', summary);
         fs.writeFileSync('e2e/reports/spec-jira-report/CycleReport.html', juice(html));
     }
