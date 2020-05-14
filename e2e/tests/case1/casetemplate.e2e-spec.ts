@@ -54,6 +54,7 @@ describe('Case Template', () => {
         await createCaseTemplate.setCompanyName(caseTemplateAllFields.company);
         await createCaseTemplate.setCaseSummary(caseTemplateAllFields.templateSummary);
         await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
+        await createCaseTemplate.setBusinessUnitDropdownValue(caseTemplateAllFields.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(caseTemplateAllFields.ownerGroup);
         await createCaseTemplate.setTemplateStatusDropdownValue(caseTemplateAllFields.templateStatus)
         await createCaseTemplate.setIdentityValidationValue(caseTemplateAllFields.identityValidation)
@@ -74,6 +75,7 @@ describe('Case Template', () => {
         await createCaseTemplate.setCompanyName(caseTemplateAllFields.company);
         await createCaseTemplate.setCaseSummary(caseTemplateAllFields.templateSummary);
         await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
+        await createCaseTemplate.setBusinessUnitDropdownValue(caseTemplateAllFields.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(caseTemplateAllFields.ownerGroup);
         await createCaseTemplate.setTemplateStatusDropdownValue(caseTemplateAllFields.templateStatus)
         await createCaseTemplate.setIdentityValidationValue(caseTemplateAllFields.identityValidation)
@@ -101,6 +103,7 @@ describe('Case Template', () => {
         await createCaseTemplate.setCompanyName(caseTemplateAllFields.company);
         await createCaseTemplate.setCaseSummary(caseTemplateAllFields.templateSummary);
         await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
+        await createCaseTemplate.setBusinessUnitDropdownValue(caseTemplateAllFields.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(caseTemplateAllFields.ownerGroup);
         await createCaseTemplate.setTemplateStatusDropdownValue(caseTemplateAllFields.templateStatus)
         await createCaseTemplate.setIdentityValidationValue('Enforced')
@@ -121,6 +124,7 @@ describe('Case Template', () => {
         await createCaseTemplate.setCompanyName(caseTemplateAllFields.company);
         await createCaseTemplate.setCaseSummary(caseTemplateAllFields.templateSummary);
         await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
+        await createCaseTemplate.setBusinessUnitDropdownValue(caseTemplateAllFields.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(caseTemplateAllFields.ownerGroup);
         await createCaseTemplate.setTemplateStatusDropdownValue(caseTemplateAllFields.templateStatus)
         await createCaseTemplate.setIdentityValidationValue('None')
@@ -158,6 +162,7 @@ describe('Case Template', () => {
         await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
         await createCaseTemplate.setAssignmentMethodValue('None');
         await expect(await copyCasetemplatePo.getValueOfAssignementMethod()).toContain('None');
+        await createCaseTemplate.setBusinessUnitDropdownValue(caseTemplateAllFields.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(caseTemplateAllFields.ownerGroup);
         await createCaseTemplate.setAssignmentMethodValue(caseTemplateAllFields.assignmentMethod);
         await expect(await copyCasetemplatePo.getValueOfAssignementMethod()).toContain(caseTemplateAllFields.assignmentMethod);
@@ -184,6 +189,7 @@ describe('Case Template', () => {
         await createCaseTemplate.setCaseSummary(caseTemplateAllFields.templateSummary);
         await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
         await expect(await copyCasetemplatePo.getValueOfAssignementMethod()).toContain('None');
+        await createCaseTemplate.setBusinessUnitDropdownValue(caseTemplateAllFields.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(caseTemplateAllFields.ownerGroup);
         await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
         await createCaseTemplate.clickSaveCaseTemplate();
@@ -204,6 +210,7 @@ describe('Case Template', () => {
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         await utilGrid.searchAndOpenHyperlink(caseTemplateName);
         await editCaseTemplate.clickOnEditCaseTemplateMetadata();
+        await createCaseTemplate.setBusinessUnitDropdownValue(caseTemplateRequiredFields.ownerBusinessUnit);
         await editCaseTemplate.changeOwnerGroupDropdownValue(caseTemplateRequiredFields.supportGroup);
         await editCaseTemplate.changeTemplateStatusDropdownValue('Draft');
         await editCaseTemplate.clickOnSaveCaseTemplateMetadata();

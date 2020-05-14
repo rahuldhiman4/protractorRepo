@@ -25,7 +25,7 @@ class AssignmentConfigCreatePage {
         supportGrpDrpDwn: '7a1dfae3-366a-41de-94ca-f38852675c2f',
         assigneeGrpDrpDwn: 'c855a4ae-1283-4369-bbae-8daf38371c16',
         saveButton: '[rx-view-component-id="d7f16b2d-fe68-481b-a0f6-2144bb6403f1"] button',
-        cancelButton: '[rx-view-component-id="8956a9fb-4fbd-4e11-96e8-13dc7bb81abe"] button'
+        cancelButton: '[rx-view-component-id="8956a9fb-4fbd-4e11-96e8-13dc7bb81abe"] button',
     }
 
     async setAssignmentMapName(mappingName:string){
@@ -35,6 +35,10 @@ class AssignmentConfigCreatePage {
 
     async setCompany(company:string){
         await utilCommon.selectDropDown(this.selectors.companyDrpDwn, company);
+    }
+
+    async setBusinessUnit(bu:string){
+        await utilCommon.selectDropDown(this.selectors.businessUnitDrpDwn, bu);
     }
 
     async setFlowset(flowset:string){

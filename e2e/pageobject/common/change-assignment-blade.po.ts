@@ -177,8 +177,9 @@ class ChangeAssignmentBlade {
                 //        });
         }
 
-        async setAssignee(company: string, group: string, assignee: string): Promise<void> {
+        async setAssignee(company: string, bu: string, group: string, assignee: string): Promise<void> {
                 await this.selectCompany(company);
+                await this.selectBusinessUnit(bu);
                 await this.selectSupportGroup(group);
                 await this.selectAssignee(assignee);
                 await this.clickOnAssignButton();
