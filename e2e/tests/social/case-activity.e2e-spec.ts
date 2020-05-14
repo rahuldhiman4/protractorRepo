@@ -789,7 +789,6 @@ describe('Case Activity', () => {
     }, 300 * 1000);
 
     //kgaikwad
-    // LFail Done
     it('[DRDMV-16754]: Drill Down to different screens from Activities', async () => {
         try {
             let caseBodyText = "This is unique caseActivity text " + Math.floor(Math.random() * 1000000);
@@ -958,10 +957,6 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi  viewed the case. ')).toEqual(1);
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
-            await utilityCommon.refresh();
-            await activityTabPage.clickOnRefreshButton();
-            // await utilityCommon.waitUntilSpinnerToHide();
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             await navigationPage.gotoPersonProfile();
             await expect(await personProfilePo.getCaseViewCount(' Viewed the  ' + caseId)).toEqual(1);
         } catch (e) {
@@ -1107,7 +1102,6 @@ describe('Case Activity', () => {
     }, 700 * 1000);
 
     //kgaikwad
-    // Defect
     it('[DRDMV-18052]: Alert Notification should be send to tagged persons other than Assignee and Requester', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
