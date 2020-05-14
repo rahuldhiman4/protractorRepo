@@ -199,7 +199,7 @@ describe('Automated Case Status Transition', () => {
 
     it('[DRDMV-17566]: Automatic status transition of a case - Notification is sent to assignee', async () => {
         //Create the case
-        await apiHelper.apiLogin("qtao");
+        await apiHelper.apiLogin("qfeng");
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['bulkCaseAssignee_Assigned']);
         let caseId = await response.displayId;

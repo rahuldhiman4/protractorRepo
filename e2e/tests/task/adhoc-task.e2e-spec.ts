@@ -427,7 +427,7 @@ describe('Create Adhoc task', () => {
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.isSupportGroupDrpDwnDisplayed();
-            await changeAssignmentBladePo.setAssignee('Petramco', 'Facilities', 'Franz Schwarz');
+            await changeAssignmentBladePo.setAssignee('Petramco', "Facilities Support", 'Facilities', 'Franz Schwarz');
             //await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             expect(await activityTabPo.getAllTaskActivity('Franz Schwarz')).toBe('Franz Schwarz');
@@ -477,7 +477,7 @@ describe('Create Adhoc task', () => {
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.isSupportGroupDrpDwnDisplayed();
-            await changeAssignmentBladePo.setAssignee('Petramco', 'Facilities', 'Franz Schwarz');
+            await changeAssignmentBladePo.setAssignee('Petramco', 'Facilities Support','Facilities', 'Franz Schwarz');
             //await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             expect(await activityTabPo.getAllTaskActivity('Franz Schwarz')).toBe('Franz Schwarz');

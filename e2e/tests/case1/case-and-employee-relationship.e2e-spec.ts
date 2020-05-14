@@ -103,10 +103,10 @@ describe('Case And Employee Relationship', () => {
         await addRelatedPopupPage.addPerson('Bobby Hill', 'Former Manager');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(2);
         expect(await relatedTabPage.getRelatedPersonCompanyName('Bobby Hill')).toBe('Petramco');
-        expect(await relatedTabPage.getRelatedPersonEmail('Bobby Hill')).toBe('bhill@petramco.com');
+        expect(await relatedTabPage.getRelatedPersonEmail('Bobby Hill')).toBe('bhill@bwflabs.localdomain');
         expect(await relatedTabPage.getRelatedPersonPhoneNumber('Bobby Hill')).toBe('+556132296002');
         expect(await relatedTabPage.getRelatedPersonRelationship('Bobby Hill')).toBe('Former Manager');
-        expect(await relatedTabPage.getRelatedPersonSite('Bobby Hill')).toBe('Houston\n2101 CityWest Blvd., Houston, Texas, 77042, United States ');
+        expect(await relatedTabPage.getRelatedPersonSite('Bobby Hill')).toBe('Brasília\nCorporate Financial Center\nSCN – Quadra 02- Bloco A 5º Andar Sala 53, Brasília, Distrito Federal, 70712-900, Brazil ');
         expect(await relatedTabPage.isEmailLinkNotPresent('Bobby Hill')).toBeTruthy('Email should not be a clickable link');
     });//, 150 * 1000);
 
