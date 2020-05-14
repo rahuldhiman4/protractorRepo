@@ -1435,7 +1435,109 @@ export const CASE_TEMPLATE_LONG_FIELDS = {
         }
     ]
 };
-export const CASE_TEMPLATE_WITH_REQUESTER={
+
+export const hiddenField = {
+    "name": "case template",
+    "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
+    "templateId": "nnn",
+    "attributeDefinitions": [{
+        "name": "Field1OutsideDRDMV21415",
+        "description": "Field1OutsideDRDMV21415",
+        "dataType": "TEXT",
+        "required": false,
+        "confidential": false,
+        "dataProviderUserRole": "Agent",
+        "dataProviderApplication": "",
+        "active": true,
+        "attachmentGroupId": null,
+        "type": "SIMPLE_FIELD",
+        "hidden": true
+    }
+    ]
+};
+export const DuplicateOFhiddenFieldDRDMV21418 = {
+    "name": "case template",
+    "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
+    "templateId": "nnn",
+    "attributeDefinitions": [{
+        "name": "Field1OutsideDRDMV21415",
+        "description": "Field1OutsideDRDMV21415",
+        "dataType": "TEXT",
+        "required": false,
+        "confidential": false,
+        "dataProviderUserRole": "Agent",
+        "dataProviderApplication": "",
+        "active": true,
+        "attachmentGroupId": null,
+        "type": "SIMPLE_FIELD",
+        "hidden": false
+    }
+    ]
+};
+export const UnhiddenField = {
+    "name": "Not Applicable",
+    "processDocumentDefinitionId": "",
+    "processInputDocName": "com.bmc.dsm.bwfa:ssss",
+    "processName": null,
+    "templateId": "",
+    "id": "",
+    "attributeDefinitions": [
+        {
+            "name": "Field1OutsideDRDMV21415",
+            "description": "Field1OutsideDRDMV21415",
+            "dataType": "TEXT",
+            "required": false,
+            "confidential": false,
+            "dataProviderUserRole": "Agent",
+            "active": true,
+            "type": "SIMPLE_FIELD",
+            "hidden": false
+        }
+    ],
+    "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template"
+};
+
+export const RequiredHiddenDRDMV21451 = {
+    "name": "case template",
+    "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
+    "templateId": "nnn",
+    "attributeDefinitions": [{
+        "name": "Field1OutsideDRDMV21451",
+        "description": "Field1OutsideDRDMV21451",
+        "dataType": "TEXT",
+        "required": true,
+        "confidential": false,
+        "dataProviderUserRole": "Requester",
+        "dataProviderApplication": "",
+        "active": true,
+        "attachmentGroupId": null,
+        "type": "SIMPLE_FIELD",
+        "hidden": true
+    }
+    ]
+};
+
+export const ConfidentialsHiddenDRDMV21452 = {
+    "name": "case template",
+    "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
+    "templateId": "nnn",
+    "attributeDefinitions": [{
+        "name": "Field1OutsideDRDMV21452",
+        "description": "Field1OutsideDRDMV21452",
+        "dataType": "TEXT",
+        "required": false,
+        "confidential": true,
+        "dataProviderUserRole": "Requester",
+        "dataProviderApplication": "",
+        "active": true,
+        "attachmentGroupId": null,
+        "type": "SIMPLE_FIELD",
+        "hidden": true
+    }
+    ]
+};
+
+export const CASE_TEMPLATE_WITH_REQUESTER = {
     "name": null,
     "processDocumentDefinitionId": null,
     "processInputDocName": null,
@@ -1443,30 +1545,83 @@ export const CASE_TEMPLATE_WITH_REQUESTER={
     "templateId": "",
     "id": null,
     "attributeDefinitions": [
-      {
-        "name": "GroupOne",
-        "description": "GroupOne",
-        "externalId": "",
-        "type": "GROUP_FIELD",
-        "active": true,
-        "attributes": [
-          {
-            "name": "FieldGroup1",
-            "description": "FieldGroup1",
-            "dataType": "TEXT",
-            "required": false,
-            "confidential": false,
-            "dataProviderUserRole": "Requester",
-            "dataProviderApplication": "",
-            "active": true,
+        {
+            "name": "GroupOne",
+            "description": "GroupOne",
             "externalId": "",
-            "attachmentGroupId": null,
-            "type": "SIMPLE_FIELD",
-            "hidden": false
-          },
-          {
-            "name": "Field2Group1",
-            "description": "Field2Group1",
+            "type": "GROUP_FIELD",
+            "active": true,
+            "attributes": [
+                {
+                    "name": "FieldGroup1",
+                    "description": "FieldGroup1",
+                    "dataType": "TEXT",
+                    "required": false,
+                    "confidential": false,
+                    "dataProviderUserRole": "Requester",
+                    "dataProviderApplication": "",
+                    "active": true,
+                    "externalId": "",
+                    "attachmentGroupId": null,
+                    "type": "SIMPLE_FIELD",
+                    "hidden": false
+                },
+                {
+                    "name": "Field2Group1",
+                    "description": "Field2Group1",
+                    "dataType": "TEXT",
+                    "required": false,
+                    "confidential": false,
+                    "dataProviderUserRole": "Requester",
+                    "dataProviderApplication": "",
+                    "active": true,
+                    "attachmentGroupId": null,
+                    "type": "SIMPLE_FIELD",
+                    "hidden": false
+                }
+            ],
+            "published": false,
+            "shouldPublish": false
+        },
+        {
+            "name": "GroupTwo",
+            "description": "GroupTwo",
+            "externalId": "",
+            "type": "GROUP_FIELD",
+            "active": true,
+            "attributes": [
+                {
+                    "name": "Field2Group2",
+                    "description": "Field2Group2",
+                    "dataType": "TEXT",
+                    "required": false,
+                    "confidential": false,
+                    "dataProviderUserRole": "Requester",
+                    "dataProviderApplication": "",
+                    "active": true,
+                    "type": "SIMPLE_FIELD",
+                    "hidden": false
+                },
+                {
+                    "name": "FieldGroup2",
+                    "description": "FieldGroup2",
+                    "dataType": "TEXT",
+                    "required": false,
+                    "confidential": false,
+                    "dataProviderUserRole": "Requester",
+                    "dataProviderApplication": "",
+                    "active": true,
+                    "attachmentGroupId": null,
+                    "type": "SIMPLE_FIELD",
+                    "hidden": false
+                }
+            ],
+            "published": false,
+            "shouldPublish": false
+        },
+        {
+            "name": "Field1Outside",
+            "description": "Field1Outside",
             "dataType": "TEXT",
             "required": false,
             "confidential": false,
@@ -1476,60 +1631,289 @@ export const CASE_TEMPLATE_WITH_REQUESTER={
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
             "hidden": false
-          }
-        ],
-        "published": false,
-        "shouldPublish": false
-      },
-      {
-        "name": "GroupTwo",
-        "description": "GroupTwo",
-        "externalId": "",
-        "type": "GROUP_FIELD",
-        "active": true,
-        "attributes": [
-          {
-            "name": "Field2Group2",
-            "description": "Field2Group2",
-            "dataType": "TEXT",
-            "required": false,
-            "confidential": false,
-            "dataProviderUserRole": "Requester",
-            "dataProviderApplication": "",
-            "active": true,
-            "type": "SIMPLE_FIELD",
-            "hidden": false
-          },
-          {
-            "name": "FieldGroup2",
-            "description": "FieldGroup2",
-            "dataType": "TEXT",
-            "required": false,
-            "confidential": false,
-            "dataProviderUserRole": "Requester",
-            "dataProviderApplication": "",
-            "active": true,
-            "attachmentGroupId": null,
-            "type": "SIMPLE_FIELD",
-            "hidden": false
-          }
-        ],
-        "published": false,
-        "shouldPublish": false
-      },
-      {
-        "name": "Field1Outside",
-        "description": "Field1Outside",
-        "dataType": "TEXT",
-        "required": false,
-        "confidential": false,
-        "dataProviderUserRole": "Requester",
-        "dataProviderApplication": "",
-        "active": true,
-        "attachmentGroupId": null,
-        "type": "SIMPLE_FIELD",
-        "hidden": false
-      }
+        }
     ],
     "templateRecordDefinition": "com.bmc.dsm.case-lib:Case Template"
-  };
+};
+
+export const DynamicGroupContainsHiddenFieldDRDMV21416 = {
+    "name": null,
+    "processDocumentDefinitionId": null,
+    "processInputDocName": null,
+    "processName": null,
+    "templateId": "",
+    "id": null,
+    "attributeDefinitions": [
+        {
+            "name": "GroupOne",
+            "description": "GroupOne",
+            "externalId": "",
+            "type": "GROUP_FIELD",
+            "active": true,
+            "attributes": [
+                {
+                    "name": "FieldGroup1",
+                    "description": "FieldGroup1",
+                    "dataType": "TEXT",
+                    "required": false,
+                    "confidential": false,
+                    "dataProviderUserRole": "Requester",
+                    "dataProviderApplication": "",
+                    "active": true,
+                    "externalId": "",
+                    "attachmentGroupId": null,
+                    "type": "SIMPLE_FIELD",
+                    "hidden": true
+                },
+            ]
+        }
+    ]
+};
+
+export const AllSourceAndTypeDRDMV21515 = {
+    "name":"Not Applicable",
+    "processDocumentDefinitionId":"IDGADGG8ECDC0AQ0JI9JQJ1GGVTOG0",
+    "processInputDocName":"com.bmc.dsm.bwfa:AllTypeOFData",
+    "processName":null,
+    "templateId":"AGGADGG8ECDC0AQ0JI7VQJ1GF8TNYG",
+    //"id":"AGGADGG8ECDC0AQ0JI9JQJ1GGWTOG3",
+    "attributeDefinitions":[
+       {
+          "id":"",
+          "fieldId":"FLD-646e7c60-5424-4e37-a041-35e4b3bc6d66",
+          "name":"Number Field",
+          "description":"Number Field",
+          "dataType":"NUMBER",
+          "required":false,
+          "confidential":false,
+          "dataProviderUserRole":"Requester",
+          "dataProviderApplication":"",
+          "active":true,
+          "externalId":"",
+          "attachmentGroupId":null,
+          "type":"SIMPLE_FIELD",
+          "hidden":true
+       },
+       {
+          "id":"",
+          "fieldId":"FLD-22a1f90f-2369-40f4-b060-27db6e7cb567",
+          "name":"Date Field",
+          "description":"Date Field",
+          "dataType":"DATE",
+          "required":false,
+          "confidential":false,
+          "dataProviderUserRole":"Agent",
+          "dataProviderApplication":"",
+          "active":true,
+          "externalId":"",
+          "attachmentGroupId":null,
+          "type":"SIMPLE_FIELD",
+          "hidden":true
+       },
+       {
+          "id":"",
+          "fieldId":"FLD-ab274061-6c72-48da-a834-647f3e3fb8a1",
+          "name":"Boolean Field",
+          "description":"Boolean Field",
+          "dataType":"BOOLEAN",
+          "required":false,
+          "confidential":false,
+          "dataProviderUserRole":"Task Assignee",
+          "dataProviderApplication":"",
+          "active":true,
+          "externalId":"",
+          "attachmentGroupId":null,
+          "type":"SIMPLE_FIELD",
+          "hidden":true
+       },
+       {
+          "id":"",
+          "fieldId":"FLD-75789cae-abbe-4ddf-84ed-8f2299c4b34d",
+          "name":"List Field",
+          "description":"List Field",
+          "dataType":"LIST",
+          "required":false,
+          "confidential":false,
+          "dataProviderUserRole":"System",
+          "dataProviderApplication":"",
+          "displayDataListDefinitions":[
+             {
+                "nameKey":"new Value1",
+                "displayText":"new Value1"
+             }
+          ],
+          "active":true,
+          "externalId":"",
+          "attachmentGroupId":null,
+          "type":"SIMPLE_FIELD",
+          "hidden":true
+       },
+       {
+          "id":"",
+          "fieldId":"FLD-a0b2eb76-7668-4168-a4b3-943efcb84f2a",
+          "name":"Attachment Field",
+          "description":"Attachment Field",
+          "dataType":"ATTACHMENT",
+          "required":false,
+          "confidential":false,
+          "dataProviderUserRole":"Agent",
+          "dataProviderApplication":"",
+          "active":true,
+          "externalId":"",
+          "attachmentGroupId":null,
+          "type":"SIMPLE_FIELD",
+          "hidden":true
+       },
+       {
+          "id":"",
+          "fieldId":"FLD-be694d80-20e4-4739-9584-b4da2b7b3ac5",
+          "name":"Date and Time",
+          "description":"Date and Time",
+          "dataType":"DATE_TIME",
+          "required":false,
+          "confidential":false,
+          "dataProviderUserRole":"Agent",
+          "dataProviderApplication":"",
+          "active":true,
+          "externalId":"",
+          "attachmentGroupId":null,
+          "type":"SIMPLE_FIELD",
+          "hidden":true
+       },
+       {
+          "id":"",
+          "fieldId":"FLD-83e12be7-8073-4590-9ce3-74207bc2768d",
+          "name":"Time",
+          "description":"Time",
+          "dataType":"TEXT",
+          "required":false,
+          "confidential":false,
+          "dataProviderUserRole":"Agent",
+          "dataProviderApplication":"",
+          "active":true,
+          "externalId":"",
+          "attachmentGroupId":null,
+          "type":"SIMPLE_FIELD",
+          "hidden":true
+       },
+       {
+          "id":"",
+          "fieldId":"FLD-bdae5b8a-c241-4cf6-bce4-0ae8d1b26025",
+          "name":"Number1 field",
+          "description":"Number1 field",
+          "dataType":"NUMBER",
+          "required":false,
+          "confidential":false,
+          "dataProviderUserRole":"Agent",
+          "dataProviderApplication":"",
+          "active":true,
+          "externalId":"",
+          "attachmentGroupId":null,
+          "type":"SIMPLE_FIELD",
+          "hidden":false
+       },
+       {
+          "id":"",
+          "fieldId":"FLD-77d488cd-77c3-4919-85b4-1c9970c3e4ed",
+          "name":"Date1 field",
+          "description":"Date1 field",
+          "dataType":"DATE",
+          "required":false,
+          "confidential":false,
+          "dataProviderUserRole":"Agent",
+          "dataProviderApplication":"",
+          "active":true,
+          "externalId":"",
+          "attachmentGroupId":null,
+          "type":"SIMPLE_FIELD",
+          "hidden":false
+       },
+       {
+          "id":"",
+          "fieldId":"FLD-3061b4c4-f250-4de2-b7d6-dcfe27f2a968",
+          "name":"Boolean1 field",
+          "description":"Boolean1 field",
+          "dataType":"BOOLEAN",
+          "required":false,
+          "confidential":false,
+          "dataProviderUserRole":"Agent",
+          "dataProviderApplication":"",
+          "active":true,
+          "externalId":"",
+          "attachmentGroupId":null,
+          "type":"SIMPLE_FIELD",
+          "hidden":false
+       },
+       {
+          "id":"",
+          "fieldId":"FLD-a1d8415d-92ea-4815-ad80-ecc76bc55ae2",
+          "name":"List1 Field",
+          "description":"List1 Field",
+          "dataType":"LIST",
+          "required":false,
+          "confidential":false,
+          "dataProviderUserRole":"Agent",
+          "dataProviderApplication":"",
+          "displayDataListDefinitions":[
+             {
+                "nameKey":"new Value",
+                "displayText":"new Value"
+             }
+          ],
+          "active":true,
+          "externalId":"",
+          "attachmentGroupId":null,
+          "type":"SIMPLE_FIELD",
+          "hidden":false
+       },
+       {
+          "id":"",
+          "fieldId":"FLD-f88e9391-f598-4a88-904f-a7c15a36ad0a",
+          "name":"Attachment1 Field",
+          "description":"Attachment1 Field",
+          "dataType":"ATTACHMENT",
+          "required":false,
+          "confidential":false,
+          "dataProviderUserRole":"Agent",
+          "dataProviderApplication":"",
+          "active":true,
+          "externalId":"",
+          "attachmentGroupId":null,
+          "type":"SIMPLE_FIELD",
+          "hidden":false
+       },
+       {
+          "id":"",
+          "fieldId":"FLD-de9b7f7a-a6d1-4546-b22d-c66fdc8b7641",
+          "name":"Date1 and time1",
+          "description":"Date1 and time1",
+          "dataType":"DATE_TIME",
+          "required":false,
+          "confidential":false,
+          "dataProviderUserRole":"Agent",
+          "dataProviderApplication":"",
+          "active":true,
+          "externalId":"",
+          "attachmentGroupId":null,
+          "type":"SIMPLE_FIELD",
+          "hidden":false
+       },
+       {
+          "id":"",
+          "fieldId":"FLD-225f68c7-a8db-430e-b5e3-d54806af48b3",
+          "name":"time1",
+          "description":"time1",
+          "dataType":"TIME",
+          "required":false,
+          "confidential":false,
+          "dataProviderUserRole":"Agent",
+          "dataProviderApplication":"",
+          "active":true,
+          "externalId":"",
+          "attachmentGroupId":null,
+          "type":"SIMPLE_FIELD",
+          "hidden":false
+       }
+    ],
+    "templateRecordDefinition":"com.bmc.dsm.task-lib:Task Template"
+ }

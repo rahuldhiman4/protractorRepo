@@ -6,7 +6,7 @@ class CreateDynamicFieldLibrary {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        title: '[class="d-textfield__label d-textfield__item1"]',
+        title: '[class="d-textfield__label d-textfield__item"]',
         cancelButton: '[rx-view-component-id="39134e3e-3a8c-40cd-8a20-b4c90ca7fce9"] button',
         fieldName:'[rx-view-component-id="3f126998-430d-4d80-9061-e6bb90ddcef5"] .d-textfield__input',
         localizeButton:'[rx-view-component-id="827cea0b-82d6-4741-8051-1cc52b83b770"] button',

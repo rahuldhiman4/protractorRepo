@@ -1,6 +1,4 @@
-import { $, $$, By, element, protractor, ProtractorExpectedConditions, Key } from "protractor";
-import utilCommon from 'e2e/utils/util.common';
-import utilGrid from 'e2e/utils/util.grid';
+import { $, $$, Key, By, element, protractor, ProtractorExpectedConditions } from "protractor";
 
 class DynamicField {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -10,6 +8,7 @@ class DynamicField {
         fieldName: '.ac-input-field-name',
         fieldDescription: '.ac-input-description',
         saveButton: '.ac-button-save',
+        cancelButton: '.ac-button-cancel',
         fieldValueType: 'div[aria-label="Field Value Type"]',
         informationSource: '.ui-select-container',
         enabledHiddenField: '[ng-model="field.hidden"] button[aria-label="True"]',
@@ -70,6 +69,10 @@ class DynamicField {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
         //        await utilCommon.waitUntilPopUpDisappear();
+    }
+
+    async clickCancelButton(): Promise<void> {
+        await $(this.selectors.cancelButton).click();
     }
 
     async isFieldDisplayedInFieldSection(fieldName: string): Promise<boolean> {
