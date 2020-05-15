@@ -1,4 +1,4 @@
-import { $, $$,browser, By, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, Key, By, element, protractor, ProtractorExpectedConditions } from "protractor";
 
 class DynamicField {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -8,6 +8,7 @@ class DynamicField {
         fieldName: '.ac-input-field-name',
         fieldDescription: '.ac-input-description',
         saveButton: '.ac-button-save',
+        cancelButton: '.ac-button-cancel',
         fieldValueType: 'div[aria-label="Field Value Type"]',
         informationSource: '.ui-select-container',
         enabledHiddenField: '[ng-model="field.hidden"] button[aria-label="True"]',
@@ -22,6 +23,7 @@ class DynamicField {
         target: '[class="group-fields-area flex"]',
         src: '.column-pill-icon',
         downArrow: '.d-icon-right-angle_down',
+        searchField:'.ac-input-search-fields'
     }
 
     async clickOnDynamicField(): Promise<void> {
@@ -67,6 +69,10 @@ class DynamicField {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
         //        await utilCommon.waitUntilPopUpDisappear();
+    }
+
+    async clickCancelButton(): Promise<void> {
+        await $(this.selectors.cancelButton).click();
     }
 
     async isFieldDisplayedInFieldSection(fieldName: string): Promise<boolean> {
@@ -116,6 +122,20 @@ class DynamicField {
         await $(this.selectors.disabledhiddenField).click();
     }
 
+    async isDynamicFieldPresentInDynamicSection(value: string): Promise<boolean> {
+        return await $(`.rx-record-grid-column-editor__available-list-inner span[title=${value}]`).isPresent().then(async (result) => {
+            if (result) {
+                return await $(`.rx-record-grid-column-editor__available-list-inner span[title=${value}]`).isDisplayed();
+            } else {
+                return false;
+            }
+        });
+    }
+
+    async searchField(value:string):Promise<void>{
+        await $(this.selectors.searchField).clear();
+        await $(this.selectors.searchField).sendKeys(value+Key.ENTER);
+    }
 }
 
 export default new DynamicField();

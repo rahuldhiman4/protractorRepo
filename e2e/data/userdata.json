@@ -142,5 +142,9 @@
 	"rrovnitov": {
 		"userName": "rrovnitov@petramco.com",
 		"userPassword": "Password_1234"
+	},
+	"sasadmin": {
+		"userName": "admin",
+		"userPassword": "Asimil@89"
 	}
 }

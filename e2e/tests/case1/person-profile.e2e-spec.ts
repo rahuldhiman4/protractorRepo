@@ -63,7 +63,7 @@ describe('Person Profile test', () => {
     it('[DRDMV-14023]: Verify My Profile Console', async () => {
         expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
         expect(await personProfile.getContactNumber()).toBe("+19255553456", "Phone number mismatch");
-        expect(await personProfile.getEmail()).toBe("elizabeth.peters@petramco.com", "Email mismatch");
+        expect(await personProfile.getEmail()).toBe("elizabeth@bwflabs.localdomain", "Email mismatch");
         expect(await personProfile.getSite()).toBe("Rochester\n70 Linden Oaks, Rochester, New York, 14625, United States ", "Site mismatch");
         expect(await personProfile.getManagerName()).toBe("Hannah Haas", "Manager name mismatch");
         await personProfile.clickOnTab("Requested Cases");

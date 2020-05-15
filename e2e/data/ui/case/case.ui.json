@@ -22,42 +22,46 @@
     },
     "complexSurvey": {
         "Status": "2000",
-        "Company": "Petramco",
+        "Assigned Company": "Petramco",
         "Description": "This case was created by java integration tests",
-        "Requester": "qtao",
+        "Requester": "qfeng",
         "Priority": "4000",
         "Service Request ID": "12341231",
         "Summary": "Testing case creation with maximal input data",
-        "Support Group": "Compensation and Benefits",
+        "Business Unit": "United States Support",
+        "Support Group": "US Support 3",
         "Assignee": "qkatawazi"
     },
     "DRDMV-14087": {
         "Status": "2000",
-        "Company": "Petramco",
+        "Assigned Company": "Petramco",
         "Description": "This case was created by java integration tests",
         "Requester": "Elizabeth",
         "Priority": "4000",
         "Summary": "Testing case creation with maximal input data",
-        "Support Group": "Compensation and Benefits",
+        "Business Unit": "United States Support",
+        "Support Group": "US Support 3",
         "Assignee": "qkatawazi"
     },
     "DRDMV-14088": {
         "Status": "2000",
-        "Company": "Petramco",
+        "Assigned Company": "Petramco",
         "Description": "This case was created by java integration tests",
         "Requester": "qkatawazi",
         "Priority": "4000",
         "Summary": "Testing case creation with maximal input data",
+        "Business Unit": "HR Support",
         "Support Group": "Compensation and Benefits",
         "Assignee": "Elizabeth"
     },
     "caseData_DRDMV16243": {
         "Status": "2000",
-        "Company": "Petramco",
+        "Assigned Company": "Petramco",
         "Description": "This case was created by java integration tests",
         "Requester": "qkatawazi",
         "Priority": "4000",
         "Summary": "Testing Realated Persons",
+        "Business Unit": "HR Support",
         "Support Group": "Compensation and Benefits",
         "Assignee": "Elizabeth"
     },
@@ -65,29 +69,36 @@
         "Status": "2000",
         "Company": "Petramco",
         "Description": "This case was created by java integration tests",
-        "Requester": "qtao",
+        "Requester": "qkatawazi",
         "Priority": "4000",
         "Summary": "Testing Realated Persons",
-        "Support Group": "Compensation and Benefits",
-        "Assignee": "qtao"
+        "Assigned Company": "Petramco",
+        "Business Unit": "United States Support",
+        "Support Group": "US Support 3",
+        "Assignee": "qfeng"
     },
     "caseWatchlist_Resolved": {
         "Status": "5000",
         "Company": "Petramco",
         "Description": "This case was created by java integration tests",
-        "Requester": "qtao",
+        "Requester": "qkatawazi",
         "Priority": "4000",
         "Summary": "Testing Realated Persons",
-        "Support Group": "Compensation and Benefits",
-        "Assignee": "qtao"
+        "Assigned Company": "Petramco",
+        "Business Unit": "United States Support",
+        "Support Group": "US Support 3",
+        "Assignee": "qfeng"
     },
     "caseWatchlist_1": {
         "Status": "1000",
         "Company": "Petramco",
         "Description": "This case was created by java integration tests",
-        "Requester": "qtao",
+        "Requester": "qkatawazi",
         "Priority": "4000",
-        "Summary": "Testing Realated Persons"
+        "Summary": "Testing Realated Persons",
+        "Assigned Company": "Petramco",
+        "Business Unit": "United States Support",
+        "Support Group": "US Support 3"
     },
     "caseWatchlist_2": {
         "Status": "2000",
@@ -96,48 +107,58 @@
         "Requester": "Elizabeth",
         "Priority": "4000",
         "Summary": "Testing Realated Persons",
-        "Support Group": "Compensation and Benefits",
+        "Assigned Company": "Petramco",
+        "Business Unit": "United States Support",
+        "Support Group": "US Support 3",
         "Assignee": "qkatawazi"
     },
     "bulkCaseAssignee_New": {
         "Description": "My Bulk Case Assignee",
-        "Requester": "qtao",
+        "Requester": "qfeng",
         "Priority": "4000",
         "Summary": "Bulk Case Assignee",
-        "Support Group": "Compensation and Benefits",
+        "Assigned Company": "Petramco",
+        "Business Unit": "United States Support",
+        "Support Group": "US Support 3",
         "Assignee": "qkatawazi",
         "Status": "1000"
     },
     "bulkCaseAssignee_Assigned": {
         "Description": "My Bulk Case Assignee",
-        "Requester": "qtao",
+        "Requester": "qfeng",
         "Priority": "4000",
         "Summary": "Bulk Case Assignee",
-        "Support Group": "Compensation and Benefits",
+        "Assigned Company": "Petramco",
+        "Business Unit": "United States Support",
+        "Support Group": "US Support 3",
         "Assignee": "qkatawazi",
         "Status": "2000"
     },
     "bulkCaseAssignee_InProgress": {
         "Description": "My Bulk Case Assignee",
-        "Requester": "qtao",
+        "Requester": "qfeng",
         "Priority": "4000",
         "Summary": "Bulk Case Assignee",
-        "Support Group": "Compensation and Benefits",
+        "Assigned Company": "Petramco",
+        "Business Unit": "United States Support",
+        "Support Group": "US Support 3",
         "Assignee": "qkatawazi",
         "Status": "3000"
     },
     "bulkCaseAssignee_Resolved": {
         "Description": "My Bulk Case Assignee",
-        "Requester": "qtao",
+        "Requester": "qfeng",
         "Priority": "4000",
         "Summary": "Bulk Case Assignee",
-        "Support Group": "Compensation and Benefits",
+        "Assigned Company": "Petramco",
+        "Business Unit": "United States Support",
+        "Support Group": "US Support 3",
         "Assignee": "qkatawazi",
         "Status": "5000"
     },
     "bulkCaseAssigneeWithAllAssigneeFields": {
         "Description": "My Bulk Case Assignee",
-        "Requester": "qtao",
+        "Requester": "qfeng",
         "Priority": "4000",
         "Summary": "Bulk Case Assignee",
         "Assigned Company": "Petramco",
@@ -149,15 +170,26 @@
     },
     "simpleCase": {
         "Description": "Simple test case desc",
-        "Requester": "qtao",
-        "Summary": "Simple test case summary"
+        "Requester": "qfeng",
+        "Summary": "Simple test case summary",
+        "Business Unit": "United States Support",
+        "Support Group": "US Support 3"
     },
-    "actionableNotification": {
+    "actionableNotificationWithAssignee": {
+        "Description": "Actionable Notification Desc",
+        "Requester": "qkatawazi",
+        "Summary": "Actionable Notification ",
+        "Assigned Company": "Petramco",
+        "Business Unit": "United States Support",
+        "Support Group": "US Support 3",
+        "Assignee": "qfeng",
+        "Status": "2000"
+    },
+    "actionableNotificationWithoutAssignee": {
         "Description": "Actionable Notification Desc",
         "Requester": "qkatawazi",
         "Summary": "Actionable Notification ",
         "Support Group": "Compensation and Benefits",
-        "Assignee": "qtao",
-        "Status": "2000"
+        "Status": "1000"
     }
 }

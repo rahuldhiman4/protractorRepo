@@ -53,6 +53,8 @@ class EditCaseTemplate {
         companyGuid: '39db6cc5-79ae-4934-a4bc-74765278fcda',
         saveTemplateData: '[rx-view-component-id="16f6e232-26f8-4c72-a30a-b4e765fd09b6"] button',
         caseStatusValue: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .ui-select-toggle', 
+        manageDynamicField: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
+        dynamicFieldsName:'[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] span'
     }
 
     async clickOnCopyCaseTemplate(): Promise<void> {
@@ -294,6 +296,28 @@ class EditCaseTemplate {
 
     async allPriorityOptionsPresent(list: string[]): Promise<boolean> {
         return await utilCommon.isDrpDownvalueDisplayed(this.selectors.priorityGuid, list);
+    }
+
+    async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
+        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
+        for (let i = 0; i < dynamicFields; i++) {
+            let field = await $$(this.selectors.dynamicFieldsName).get(i).getText();
+            if (fieldName == field) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    async isManageDynamicFieldLinkDisplayed(): Promise<boolean> {
+        return await $(this.selectors.manageDynamicField).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.manageDynamicField).isDisplayed();
+            } else {
+                console.log("Managelink not present");
+                return false;
+            }
+        });
     }
 }
 
