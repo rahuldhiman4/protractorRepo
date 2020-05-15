@@ -22,7 +22,11 @@ export const CASE_TEMPLATE_PAYLOAD = {
       },
       "300287900": {
         "id": 300287900,
-        "value": "fe6ac9e3407639a147cc153d2144e3bf1346fb2d0283f4f38358cbfb8b24fc8f1276043915cf7a02e2bd94c6b0e63cb16a4319ac2979696b39f3520be822cdba"
+        "value": "99bc0b14a69b6458093b487c47cd310fc591b486cc95611a5d8910763653d58aa5e4b84299c9a4b91f09d4f627c247e78ddae9fdc1f9aeebdc336b77a2806520"
+      },
+      "450000401": {
+        "id": 450000401,
+        "value": "418e2e2d2ed191a494d959573aaf74a03c77b0b6f1f2cdc95ab31d37a4d67e7c4a28a199aee20f1875c64c22476204480461bc34867b181b6da7e390ffc7db5b"
       },
       "301566300": {
         "id": 301566300,
