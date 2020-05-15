@@ -129,7 +129,9 @@ describe("Attachment", () => {
         var caseData = {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-11713",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qkatawazi');
@@ -158,7 +160,9 @@ describe("Attachment", () => {
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qkatawazi');
@@ -199,7 +203,9 @@ describe("Attachment", () => {
         {
             "Requester": "qtao",
             "Summary": caseSummary,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -293,7 +299,9 @@ describe("Attachment", () => {
         {
             "Requester": "qtao",
             "Summary": caseSummary,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
