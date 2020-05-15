@@ -164,7 +164,7 @@ class ChangeAssignmentOldBlade {
                 //            let count = await supportGroupDropDown.$$(this.selectors.selectOptions).count();
                 //            return count >= 1;
                 //        }));
-                let option = await element(by.cssContainingText(this.selectors.selectOptions, supportGroup));
+                let option = await $$(this.selectors.assignmentDropDownList).get(3).element(by.cssContainingText(this.selectors.selectOptions, supportGroup));
                 //        await browser.wait(this.EC.elementToBeClickable(option));
                 await option.click();
         }
