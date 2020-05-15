@@ -968,7 +968,7 @@ describe("Create Case", () => {
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickChangeAssignmentButton();
-            await changeAssignmentPage.setAssignee(petramcoStr, aUsupportStr, kasiaOstlunsStr);
+            await changeAssignmentPage.setAssignee(petramcoStr, 'Australia Support',aUsupportStr, kasiaOstlunsStr);
             await editCasePage.clickSaveCase();
             expect(await activityPo.isTextPresentInActivityLog("Kasia Ostlun")).toBeTruthy("Text is not present in activiy tab1");
             expect(await activityPo.isTextPresentInActivityLog("changed the case assignment")).toBeTruthy("Text is not present in activiy tab2");

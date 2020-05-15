@@ -107,6 +107,7 @@ describe("Create Case Assignment Mapping", () => {
         await AssignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName);
         await AssignmentConfigCreatePage.setCompany("Petramco");
         await AssignmentConfigCreatePage.setSupportCompany("Petramco");
+        await AssignmentConfigCreatePage.setBusinessUnit('Australia Support');
         await AssignmentConfigCreatePage.setSupportGroup("AU Support 1");
         await AssignmentConfigCreatePage.clickonSaveButton();
         await AssignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentMappingName);
@@ -124,6 +125,7 @@ describe("Create Case Assignment Mapping", () => {
         await AssignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName);
         await AssignmentConfigCreatePage.setCompany("- Global -");
         await AssignmentConfigCreatePage.setSupportCompany("Petramco");
+        await AssignmentConfigCreatePage.setBusinessUnit('Australia Support');
         await AssignmentConfigCreatePage.setSupportGroup("AU Support 1");
         await AssignmentConfigCreatePage.clickonSaveButton();
         await AssignmentConfigConsolePage.searchAssignmentConfig(assignmentMappingName);
@@ -141,6 +143,7 @@ describe("Create Case Assignment Mapping", () => {
         await AssignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName);
         await AssignmentConfigCreatePage.setCompany("Petramco");
         await AssignmentConfigCreatePage.setSupportCompany("Petramco");
+        await AssignmentConfigCreatePage.setBusinessUnit('Australia Support');
         await AssignmentConfigCreatePage.setSupportGroup("AU Support 1");
         await AssignmentConfigCreatePage.clickonSaveButton();
         await AssignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentMappingName);
@@ -170,6 +173,7 @@ describe("Create Case Assignment Mapping", () => {
             await AssignmentConfigCreatePage.setCategoryTier3("External");
             await AssignmentConfigCreatePage.setPriority("Low");
             await AssignmentConfigCreatePage.setSupportCompany("Petramco");
+            await AssignmentConfigCreatePage.setBusinessUnit('Australia Support');
             await AssignmentConfigCreatePage.setSupportGroup("AU Support 1");
             await AssignmentConfigCreatePage.clickonSaveButton();
             await AssignmentConfigConsolePage.searchAssignmentConfig(assignmentMappingName);
@@ -206,6 +210,7 @@ describe("Create Case Assignment Mapping", () => {
         await AssignmentConfigCreatePage.setCategoryTier1("Facilities");
         await AssignmentConfigCreatePage.setPriority("Low");
         await AssignmentConfigCreatePage.setSupportCompany("Petramco");
+        await AssignmentConfigCreatePage.setBusinessUnit('Australia Support');
         await AssignmentConfigCreatePage.setSupportGroup("AU Support 1");
         await AssignmentConfigCreatePage.clickonSaveButton();
         await AssignmentConfigConsolePage.searchAssignmentConfig(globalAssignmentMappingName);
@@ -216,6 +221,7 @@ describe("Create Case Assignment Mapping", () => {
         await AssignmentConfigCreatePage.setCategoryTier1("Facilities");
         await AssignmentConfigCreatePage.setPriority("Low");
         await AssignmentConfigCreatePage.setSupportCompany("Petramco");
+        await AssignmentConfigCreatePage.setBusinessUnit('Australia Support');
         await AssignmentConfigCreatePage.setSupportGroup("AU Support 2");
         await AssignmentConfigCreatePage.clickonSaveButton();
         await AssignmentConfigConsolePage.searchAssignmentConfig(companyAssignmentMappingName);
@@ -252,6 +258,7 @@ describe("Create Case Assignment Mapping", () => {
             await AssignmentConfigCreatePage.setCategoryTier2("Repair");
             await AssignmentConfigCreatePage.setPriority("Medium");
             await AssignmentConfigCreatePage.setSupportCompany("Psilon");
+            await AssignmentConfigCreatePage.setBusinessUnit('Psilon Support Org2')
             await AssignmentConfigCreatePage.setSupportGroup("Psilon Support Group2");
             await AssignmentConfigCreatePage.clickonSaveButton();
             await AssignmentConfigConsolePage.searchAssignmentConfig(assignmentMappingName);
