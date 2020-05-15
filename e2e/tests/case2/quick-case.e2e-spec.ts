@@ -277,9 +277,10 @@ describe("Quick Case", () => {
             "templateSummary": caseTemplateName3,
             "caseStatus": "InProgress",
             "templateStatus": "Active",
-            "assignee": "Fritz",
             "company": "Petramco",
+            "businessUnit": "Facilities Support", 
             "supportGroup": "Facilities",
+            "assignee": "Fritz",
             "ownerBU": 'Facilities Support',
             "ownerGroup": "Facilities"
         }
@@ -288,10 +289,11 @@ describe("Quick Case", () => {
             "templateSummary": caseTemplateName4,
             "caseStatus": "Resolved",
             "templateStatus": "Active",
-            "assignee": "Fritz",
             "company": "Petramco",
+            "businessUnit": "Facilities Support", 
             "supportGroup": "Facilities",
-            "ownerBU": 'Facilities Support',
+            "assignee": "Fritz",
+            "ownerBU": "Facilities Support",
             "ownerGroup": "Facilities"
         }
         try {
@@ -351,10 +353,11 @@ describe("Quick Case", () => {
             "caseStatus": "InProgress",
             "templateStatus": "Draft",
             "description": caseTempalteDescription,
-            "assignee": "Fritz",
             "company": "Petramco",
+            "businessUnit": "Facilities Support", 
             "supportGroup": "Facilities",
-            "ownerBU": 'Facilities Support',
+            "assignee": "Fritz",
+            "ownerBU": "Facilities Support",
             "ownerGroup": "Facilities"
         }
         let CaseTemplateDataWithDifferentOrganization = {
@@ -362,10 +365,10 @@ describe("Quick Case", () => {
             "templateSummary": `${randomStr}`,
             "caseStatus": "InProgress",
             "templateStatus": "Active",
-            "assignee": "gderuno",
             "company": "Psilon",
+            "businessUnit": "Psilon Support Org1", 
             "supportGroup": "Psilon Support Group1",
-            "ownerGroup": "Psilon Support Group1"
+            "assignee": "gderuno",
         }
         try {
             await apiHelper.apiLogin('qkatawazi');
@@ -427,8 +430,9 @@ describe("Quick Case", () => {
             "templateStatus": "Active",
             "assignee": "Fritz",
             "company": "Petramco",
+            "businessUnit": "Facilities Support", 
             "supportGroup": "Facilities",
-            "ownerBU": 'Facilities Support',
+            "ownerBU": "Facilities Support",
             "ownerGroup": "Facilities",
             "supportCompany": "Petramco",
             "categoryTier1": "Purchasing Card",
@@ -440,8 +444,10 @@ describe("Quick Case", () => {
         {
             "Requester": "qtao",
             "Summary": caseTemplateName,
-            "Support Group": "Compensation and Benefits",
-            "Assignee": "qkatawazi",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
         }
         let assignmentData =
         {
@@ -683,8 +689,9 @@ describe("Quick Case", () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
+                "businessUnit": "Facilities Support", 
                 "supportGroup": "Facilities",
+                "assignee": "Fritz",
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(templateData);
@@ -697,8 +704,9 @@ describe("Quick Case", () => {
                 "templateStatus": "Draft",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
+                "businessUnit": "Facilities Support", 
                 "supportGroup": "Facilities",
+                "assignee": "Fritz",
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(templateDataDraft);
@@ -761,10 +769,10 @@ describe("Quick Case", () => {
             "templateSummary": `${casTemplateSummary}`,
             "caseStatus": "InProgress",
             "templateStatus": "Active",
-            "assignee": "Fritz",
             "company": "Petramco",
+            "businessUnit": "Facilities Support", 
             "supportGroup": "Facilities",
-            "ownerGroup": "Facilities",
+            "assignee": "Fritz",
             "casePriority": "Low",
         }
 
