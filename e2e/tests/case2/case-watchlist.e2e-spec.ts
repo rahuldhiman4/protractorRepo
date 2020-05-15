@@ -43,15 +43,12 @@ describe('Case Watchlist', () => {
         await loginPage.login(qyuanStr);
         await utilityGrid.clearFilter();
         await apiHelper.apiLogin("tadmin");
-        await apiHelper.updateNotificationEmailListForSupportGroup("Compensation and Benefits", "");
         await apiHelper.setDefaultNotificationForUser(qannisStr, "Alert");
         await apiHelper.setDefaultNotificationForUser(qyuanStr, "Alert");
         await apiHelper.setDefaultNotificationForUser(qtaoStr, "Alert");
     });
 
     afterAll(async () => {
-        await apiHelper.apiLogin("tadmin");
-        await apiHelper.updateNotificationEmailListForSupportGroup("Compensation and Benefits", "hr_cb@petramco.com");
         await navigationPage.signOut();
     });
 
