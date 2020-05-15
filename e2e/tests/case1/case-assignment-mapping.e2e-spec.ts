@@ -297,8 +297,11 @@ describe("Create Case Assignment Mapping", () => {
             "casePriority": "Low",
             "templateStatus": "Active",
             "company": "Petramco",
-            "assignee": "qliu",
-            "supportGroup": "Employee Relations",
+            "businessUnit": "Facilities Support", 
+            "supportGroup": "Facilities",
+            "assignee": "Fritz",
+            "ownerBU": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCaseTemplate(templateData);
@@ -307,8 +310,8 @@ describe("Create Case Assignment Mapping", () => {
         await QuickCasePage.selectCaseTemplate(caseTemplateName);
         await QuickCasePage.saveCase();
         await QuickCasePage.gotoCaseButton();
-        await expect(await viewCasePage.getAssignedGroupText()).toBe("Employee Relations");
-        await expect(await viewCasePage.getAssigneeText()).toBe("Qiwei Liu");
+        await expect(await viewCasePage.getAssignedGroupText()).toBe("Facilities");
+        await expect(await viewCasePage.getAssigneeText()).toBe("Fritz Schulz");
     }, 360 * 1000);
 
     async function foundationData(company: string) {
