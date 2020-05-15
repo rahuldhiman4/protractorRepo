@@ -15,8 +15,10 @@ class EditKnowledgeAccess {
         agentNameOrSupportGroupName: '.rx-case-access-name',
         company: '.flex-item .ac-company-field button',
         supportGroup: '.flex-item .ac-support-group-field button',
+        businessUnit: '.flex-item .ac-business-unit-field button',
         dropdownList: '.options li',
         searchSupportGroup: '[placeholder="Search for Support Groups"]',
+        searchBusinessUnit : '[placeholder="Search for Business Unit"]',
         searchOrganizationName: '[placeholder="Search Organizations"]',
         closeKnowledgeAccessBlade: '[rx-view-component-id="0d8d9c7d-7e85-4277-9452-64fbba8df10d"] button',
         isWriteAccessCheckbox: 'input.ac-assign-support-group-write-group + span',
@@ -73,6 +75,13 @@ class EditKnowledgeAccess {
         await $(this.selectors.searchSupportGroup).sendKeys(SupportValue);
         // await browser.wait(this.EC.visibilityOf($(this.selectors.dropdownList)), 4000);
         let option = await element(by.cssContainingText(this.selectors.dropdownList, SupportValue));
+        await option.click();
+    }
+
+    async selectBusinessUnit(bu: string): Promise<void> {
+        await $(this.selectors.businessUnit).click();
+        await $(this.selectors.searchBusinessUnit).sendKeys(bu);
+        let option = await element(by.cssContainingText(this.selectors.dropdownList, bu));
         await option.click();
     }
 

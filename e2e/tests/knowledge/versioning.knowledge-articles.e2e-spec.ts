@@ -953,6 +953,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
             await editKnowledgeAccessPage.selectCompany('Petramco');
+            await editKnowledgeAccessPage.selectBusinessUnit('HR Support');
             await editKnowledgeAccessPage.selectSupportGroup('Employee Relations');
             await editKnowledgeAccessPage.selectSupportGroupWriteAccess();
             await editKnowledgeAccessPage.clickAddSupportGroupAccessButton();
@@ -1258,6 +1259,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
             await editKnowledgeAccessPage.selectCompany('Petramco');
+            await editKnowledgeAccessPage.selectBusinessUnit('HR Support');
             await editKnowledgeAccessPage.selectSupportGroup('Employee Relations');
             await editKnowledgeAccessPage.selectSupportGroupWriteAccess();
             await editKnowledgeAccessPage.clickAddSupportGroupAccessButton();
@@ -1407,6 +1409,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
             await editKnowledgeAccessPage.selectCompany('Petramco');
+            await editKnowledgeAccessPage.selectBusinessUnit('Australia Support');
             await editKnowledgeAccessPage.selectSupportGroup('AU Support 1');
             await editKnowledgeAccessPage.selectSupportGroupWriteAccess();
             await editKnowledgeAccessPage.clickAddSupportGroupAccessButton();
@@ -1415,12 +1418,14 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
             await editKnowledgeAccessPage.selectCompany('Petramco');
+            await editKnowledgeAccessPage.selectBusinessUnit('India Support');
             await editKnowledgeAccessPage.selectSupportGroup('IN Support 2');
             await editKnowledgeAccessPage.clickAddSupportGroupAccessButton();
             await editKnowledgeAccessPage.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
             await editKnowledgeAccessPage.selectCompany('Petramco');
+            await editKnowledgeAccessPage.selectBusinessUnit('India Support');
             await editKnowledgeAccessPage.selectSupportGroup('IN Support 3');
             await editKnowledgeAccessPage.clickAddSupportGroupAccessButton();
             await editKnowledgeAccessPage.clickCloseKnowledgeAccessBlade();
@@ -1428,6 +1433,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
             await editKnowledgeAccessPage.selectCompany('Petramco');
+            await editKnowledgeAccessPage.selectBusinessUnit('United States Support');
             await editKnowledgeAccessPage.selectSupportGroup('US Support 1');
             await editKnowledgeAccessPage.clickAddSupportGroupAccessButton();
             await editKnowledgeAccessPage.clickCloseKnowledgeAccessBlade();

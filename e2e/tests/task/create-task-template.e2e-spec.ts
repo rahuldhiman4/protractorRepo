@@ -432,6 +432,7 @@ describe('Create Task Template', () => {
         await caseAccessTabPo.selectAgentWithWriteAccess('Qiwei Liu');
         await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
         await caseAccessTabPo.selectCompany('Petramco','Select Company');
+        await caseAccessTabPo.selectBusinessUnit('HR Support', 'Select Business Unit')
         await caseAccessTabPo.selectSupportGroup('Staffing','Select Support Group');
         await viewCasePage.clickOnTab('Tasks');
         await viewCasePage.clickAddTaskButton();

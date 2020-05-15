@@ -149,6 +149,7 @@ describe('Case Status Configuration', () => {
         await createCasePo.setSummary("DRDMV-13899 before configuration");
         await createCasePo.clickChangeAssignmentButton();
         await assignmentBladePO.selectCompany('Phylum');
+        await assignmentBladePO.selectBusinessUnit('Phylum Support Org1');
         await assignmentBladePO.selectSupportGroup('Phylum Support Group1');
         await assignmentBladePO.selectAssignee('phylumfn2');
         await assignmentBladePO.clickOnAssignButton();
