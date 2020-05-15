@@ -153,6 +153,7 @@ describe('Edit Case', () => {
         expect(await activityTabPo.getAllTaskActivity('Facilities')).toBe('Facilities');
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickChangeAssignmentButton();
+        await changeAssignmentPage.selectBusinessUnit('Facilities Support');
         await changeAssignmentPage.selectSupportGroup('Facilities');
         await changeAssignmentPage.selectAssigneeAsSupportGroup('Facilities');
         await changeAssignmentPage.clickOnAssignButton();

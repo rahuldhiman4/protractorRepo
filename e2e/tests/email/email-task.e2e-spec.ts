@@ -615,7 +615,7 @@ describe('Email', () => {
             await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
+            await changeAssignmentBladePo.selectBusinessUnit('HR Support');
             await changeAssignmentBladePo.selectSupportGroup('Compensation and Benefits');
             await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
