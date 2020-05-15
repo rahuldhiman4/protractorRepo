@@ -1171,21 +1171,6 @@ class ApiHelper {
         return updatedOrgData.status == 204;
     }
 
-    async updateNotificationEmailListForSupportGroup(supportGroup: string, notificationList: string): Promise<void> {
-        let supportGroupGuid: string = await coreApi.getSupportGroupGuid(supportGroup);
-        let notificationEmailFile = await require('../data/api/foundation/notifications.email.list.update.api.json');
-        let notificationEmailList = await notificationEmailFile.NotificationEmailList;
-        notificationEmailList["id"] = supportGroupGuid;
-        notificationEmailList.fieldInstances[303500800]["value"] = notificationList;
-        let uri: string = "api/rx/application/record/recordinstance/com.bmc.arsys.rx.foundation%3ASupport%20Group/" + supportGroupGuid;
-        const notificationSetting = await axios.put(
-            uri,
-            notificationEmailList
-        );
-        console.log("Set Notification Email List status ==>>> " + notificationSetting.status);
-    }
-
-
     async updateCaseAccess(caseGuid: string, data: any): Promise<number> {
         let accessFile = await require('../data/api/case/case.access.api.json');
         let caseAccessData = await accessFile.CaseAccess;

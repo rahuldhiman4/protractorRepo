@@ -20,7 +20,7 @@ class QuickCasePage {
         smartSearchText: '.smart-recorder-highlightPerfectMatch',
         createCaseButton: '.d-inline-block [rx-view-component-id="8b88c054-4445-43e4-90f0-72f829571fd5"] button',
         requesters: '.bwf-select-list .bwf-selectable-list-item',
-        pinFirstRecommendedCase: 'svg.adapt-icon',
+        pinFirstRecommendedCase: '.search-item__unpin-icon svg.adapt-icon',
         requester: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .ac-person-full-name',
         arrowFirstRecommendedCase: '[rx-view-component-id="b01aa3f3-0371-4b7e-a956-b1cf025927d6"] .list__item__preview-icon',
         arrowFirstRecommendedKnowledge: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"] .list__item__preview-icon',
@@ -247,7 +247,6 @@ class QuickCasePage {
     }
 
     async setSummaryAndClickOnRecommandedCase(caseID: string,caseSummary:string): Promise<boolean> {
-        
         let success: boolean = false;
         for (let i: number = 0; i <= 3; i++) {
 		 await $(this.selectors.smartSearchTextBox).sendKeys(caseSummary);
@@ -255,6 +254,28 @@ class QuickCasePage {
             success = await $(`div[title=${caseID}]`).isPresent().then(async (result) => {
                 if (result) {
                    await $(`div[title=${caseID}]`).click();
+                    return true;
+                } else false;
+            });
+            if (success) break;
+            else {
+                for (let j: number = 0; j < caseSummary.length; j++) {
+                    await $(this.selectors.smartSearchTextBox).sendKeys(protractor.Key.BACK_SPACE);
+                }
+                continue;
+            }
+        }
+        return success;
+    }
+
+    async setSummaryAndPinRecommandedCase(caseID: string,caseSummary:string): Promise<boolean> {
+        let success: boolean = false;
+        for (let i: number = 0; i <= 3; i++) {
+		 await $(this.selectors.smartSearchTextBox).sendKeys(caseSummary);
+            browser.sleep(1000);
+            success = await $(`div[title=${caseID}]`).isPresent().then(async (result) => {
+                if (result) {
+                   await $(this.selectors.pinFirstRecommendedCase).click();
                     return true;
                 } else false;
             });

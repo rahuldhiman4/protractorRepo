@@ -209,7 +209,7 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedTabPage.getRelatedPersonPhoneNumber('Qianru Tao')).toBe("+15123431921", "Related Person Phone number does not match");
         expect(await relatedTabPage.getRelatedPersonEmail('Qianru Tao')).toBe("qtao@petramco.com", "Related Person Email ID does not match");
         expect(await relatedTabPage.getRelatedPersonRelationship('Qianru Tao')).toBe("Inspector", "Related Person Relationship does not match");
-        expect(await relatedTabPage.getRelatedPersonSite('Qianru Tao')).toBe("Houston\n2101 CityWest Blvd., Houston, Texas, 77042, United States ", "Related Person Phone number does not match");
+        expect(await relatedTabPage.getRelatedPersonSite('Qianru Tao')).toBe("Austin\n10431 Morado Circle\nAvalon Building 5, Austin, Texas, 78759, United States ", "Related Person Phone number does not match");
     });
 
     //asahitya
@@ -248,7 +248,6 @@ describe('Case And Employee Relationship', () => {
         let response = await apiHelper.createCase(caseData['simpleCase']);
         let caseId = await response.displayId;
         let caseGuid = await response.id;
-
         //Write access to qtao
         let caseAccessDataQtao = {
             "operation": operation['addAccess'],
@@ -257,21 +256,18 @@ describe('Case And Employee Relationship', () => {
             "username": 'qtao'
         }
         await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
-
         await navigationPage.gotoCaseConsole();
         await utilityGrid.searchAndOpenHyperlink(caseId);
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Harry Potter', 'Related to');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
-
         await navigationPage.gotoCaseConsole();
         await utilityGrid.searchAndOpenHyperlink(caseId);
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.removeRelatedPerson("Harry Potter");
         // await utilityCommon.waitUntilSpinnerToHide();
         expect(await relatedTabPage.isRelatedPersonPresent("Harry Potter")).toBeFalsy("Harry Potter is still related to Case: " + caseId);
-
         await navigationPage.gotoPersonProfile();
         expect(await relatedTabPage.isRelatedPersonPresent("Brain Adams")).toBeFalsy("Brain Adams is still related to Person Profile");
         expect(await relatedTabPage.isRemoveRelatedPersonIconEnabled("Qiang Du")).toBeFalsy("Cross icon is enabled");
@@ -305,7 +301,6 @@ describe('Case And Employee Relationship', () => {
             "username": 'qtao'
         }
         await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
-
         await utilityCommon.refresh();
         await browser.sleep(5000); // required for indexing, case will appear in recommended case section
         await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -313,13 +308,11 @@ describe('Case And Employee Relationship', () => {
         //expect(await caseEditPage.getRelatedCasesTabText()).toBe("Related Cases");
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
-        await quickCase.setCaseSummary(randomStr);
-        // await utilityCommon.waitUntilSpinnerToHide();
-        await quickCase.pinFirstRecommendedCase();
+        await quickCase.setSummaryAndPinRecommandedCase(caseId2,randomStr);
         await quickCase.createCaseButton();
         await quickCase.gotoCaseButton();
         await viewCasePo.clickOnTab('Related Cases');
         await relatedCasePage.isCasePresent(caseId2);
+        await utilityCommon.refresh();
     });
-
 })
