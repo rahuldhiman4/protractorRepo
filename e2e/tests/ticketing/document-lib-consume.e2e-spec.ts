@@ -1343,6 +1343,7 @@ describe('Document Library Consume UI', () => {
         await editDocumentLibraryPo.setSite('Canberra');
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         // Create Case
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qtao');
@@ -1524,7 +1525,8 @@ describe('Document Library Consume UI', () => {
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Petramco');
-            await changeAssignmentBladePo.selectSupportGroup('Staffing');
+            await changeAssignmentBladePo.selectBusinessUnit('United Kingdom Support');
+            await changeAssignmentBladePo.selectSupportGroup('GB Support 2');
             await changeAssignmentBladePo.selectAssignee('Quin Strong');
             await changeAssignmentBladePo.clickOnAssignButton();
             await createCasePo.clickSaveCaseButton();
@@ -1561,10 +1563,12 @@ describe('Document Library Consume UI', () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Petramco');
-            await changeAssignmentBladePo.selectSupportGroup('Employee Relations');
+            await changeAssignmentBladePo.selectBusinessUnit('United States Support')
+            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
             await changeAssignmentBladePo.selectAssignee('Quanah George');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
+            expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
             await navigationPage.signOut();
             await loginPage.loginWithCredentials('qgeorge@petramco.com', 'Password_1234');
             await caseConsolePo.searchAndOpenCase(caseId);

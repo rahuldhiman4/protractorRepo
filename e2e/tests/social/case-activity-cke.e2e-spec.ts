@@ -12,11 +12,10 @@ import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po'
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import { default as activityTabPage } from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
-import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
-describe('Case Activity', () => {
+describe('Case Activity CKE', () => {
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);

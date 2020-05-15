@@ -231,6 +231,7 @@ describe('Email', () => {
             await browser.sleep(2000);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentBladePo.selectSupportGroup('Facilities');
             await changeAssignmentBladePo.selectAssignee('Fritz Schulz');
             await changeAssignmentBladePo.clickOnAssignButton();
@@ -247,6 +248,7 @@ describe('Email', () => {
             await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentBladePo.selectSupportGroup('Facilities');
             await changeAssignmentBladePo.selectAssignee('Fritz Schulz');
             await changeAssignmentBladePo.clickOnAssignButton();
@@ -498,6 +500,7 @@ describe('Email', () => {
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         await viewTaskPo.clickOnEditTask();
         await editTask.clickOnChangeAssignementButton();
+        await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
         await changeAssignmentBladePo.selectSupportGroup('Facilities');
         await changeAssignmentBladePo.selectAssignee('Fritz Schulz');
         await changeAssignmentBladePo.clickOnAssignButton();
@@ -523,6 +526,7 @@ describe('Email', () => {
         await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
         await viewTaskPo.clickOnEditTask();
         await editTask.clickOnChangeAssignementButton();
+        await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
         await changeAssignmentBladePo.selectSupportGroup('Facilities');
         await changeAssignmentBladePo.selectAssignee('Fritz Schulz');
         await changeAssignmentBladePo.clickOnAssignButton();
@@ -599,6 +603,7 @@ describe('Email', () => {
             await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentBladePo.selectSupportGroup('Facilities');
             await changeAssignmentBladePo.selectAssignee('Fritz Schulz');
             await changeAssignmentBladePo.clickOnAssignButton();
@@ -610,6 +615,7 @@ describe('Email', () => {
             await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentBladePo.selectSupportGroup('Compensation and Benefits');
             await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
