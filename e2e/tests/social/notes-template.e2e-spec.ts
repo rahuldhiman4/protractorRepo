@@ -417,7 +417,9 @@ describe('Notes template', () => {
                 "Requester": "qtao",
                 "Company": "Petramco",
                 "Summary": "Create case for me postman1",
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "Qadim Katawazi"
             };
             await apiHelper.apiLogin('fritz');

@@ -76,7 +76,9 @@ describe("Compose Email", () => {
         {
             "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-8377RandVal" + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -126,7 +128,9 @@ describe("Compose Email", () => {
         {
             "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-8377RandVal" + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -147,7 +151,9 @@ describe("Compose Email", () => {
         {
             "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-8377RandVal" + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -169,7 +175,9 @@ describe("Compose Email", () => {
         {
             "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-8377RandVal" + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -194,7 +202,9 @@ describe("Compose Email", () => {
         {
             "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-8377RandVal" + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -219,7 +229,9 @@ describe("Compose Email", () => {
         {
             "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-10394 RandVal" + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -258,7 +270,9 @@ describe("Compose Email", () => {
         {
             "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-10401 RandVal" + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -294,7 +308,9 @@ describe("Compose Email", () => {
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-10398 RandVal" + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -335,7 +351,9 @@ describe("Compose Email", () => {
         let caseData = {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-10395 RandVal" + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         };
         await apiHelper.apiLogin('qtao');
@@ -374,7 +392,9 @@ describe("Compose Email", () => {
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-8392 RandVal" + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -497,7 +517,9 @@ describe("Compose Email", () => {
             {
                 "Requester": "qtao",
                 "Summary": "Test case for DRDMV-20369 RandVal" + randomString,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi"
             }
             await apiHelper.apiLogin('fritz');
@@ -607,7 +629,9 @@ describe("Compose Email", () => {
             {
                 "Requester": "qkatawazi",
                 "Summary": "Test case for DRDMV-20368 RandVal" + randomString,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi"
             }
             await apiHelper.apiLogin('fritz');
@@ -618,7 +642,7 @@ describe("Compose Email", () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.waitUntilPopUpDisappear();
             let subject = `Fritz Schulz changed the status of ${newCase.displayId} to In Progress`;
-            console.log("Subject of the email: ",subject);
+            console.log("Subject of the email: ", subject);
             await apiHelper.apiLogin('tadmin');
             await browser.sleep(8000);
             let body = await apiHelper.getHTMLBodyOfEmail(subject);
@@ -656,7 +680,9 @@ describe("Compose Email", () => {
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-9033 RandVal" + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -678,7 +704,9 @@ describe("Compose Email", () => {
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-9028 RandVal" + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -707,7 +735,9 @@ describe("Compose Email", () => {
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-9028 RandVal" + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -717,7 +747,7 @@ describe("Compose Email", () => {
         await viewCasePo.clickOnEmailLink();
         await composeMail.setToOrCCInputTetxbox('To', 'franz.schwarz@petramco.com');
         await composeMail.setEmailBody("With mutiple attachmnents");
-        let filesToUpload : string[] = [];
+        let filesToUpload: string[] = [];
         for (let i = 0; i <= 20; i++) {
             filesToUpload.push('../../data/ui/attachment/demo.txt');
         }
@@ -737,7 +767,9 @@ describe("Compose Email", () => {
             {
                 "Requester": "qtao",
                 "Summary": "Test case for DRDMV-20365 RandVal" + randomString,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi"
             }
             await apiHelper.apiLogin('fritz');
@@ -872,7 +904,9 @@ describe("Compose Email", () => {
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-10388 RandVal" + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -884,11 +918,11 @@ describe("Compose Email", () => {
         let columns: string[] = ["Description"];
         await selectEmailTemplateBladePo.addGridColumn(columns);
         await emailTemplateBladePo.searchEmailTemplate(emailTemplateName);
-        expect (await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
+        expect(await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
         await emailTemplateBladePo.searchEmailTemplate(emailDescription);
-        expect (await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
+        expect(await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
         await emailTemplateBladePo.searchEmailTemplate(emailSubject);
-        expect (await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
+        expect(await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
         await selectEmailTemplateBladePo.removeGridColumn(columns);
     });
 
@@ -899,7 +933,9 @@ describe("Compose Email", () => {
         {
             "Requester": "fritz",
             "Summary": "TC DRDMV-8388 " + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Contact": "qtao",
             "Assignee": "qkatawazi"
         }
@@ -925,8 +961,8 @@ describe("Compose Email", () => {
         expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');
         expect(await activityTabPo.getRecipientInCc()).toContain('CC: Qianru Tao');
         expect(await activityTabPo.getEmailSubject()).toContain(caseId + ':' + caseData.Summary);
-		expect(await activityTabPo.isFileAttachedOnActivity()).toBeTruthy('file is not attached on activity');
-		expect(await activityTabPo.getEmailBody()).toContain('Text added for DRDMV-8388');
+        expect(await activityTabPo.isFileAttachedOnActivity()).toBeTruthy('file is not attached on activity');
+        expect(await activityTabPo.getEmailBody()).toContain('Text added for DRDMV-8388');
     });
 
     //radhiman
@@ -946,7 +982,9 @@ describe("Compose Email", () => {
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-10387 RandVal" + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -956,19 +994,19 @@ describe("Compose Email", () => {
         await viewCasePo.clickOnEmailLink();
         await composeMail.clickOnSelectEmailTemplateLink();
         await emailTemplateBladePo.clearFilter();
-        await emailTemplateBladePo.addFilter("Template Name", emailTemplateName,"searchbox");
-        expect (await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
+        await emailTemplateBladePo.addFilter("Template Name", emailTemplateName, "searchbox");
+        expect(await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
         await emailTemplateBladePo.clearFilter();
-        await emailTemplateBladePo.addFilter("Message Subject", emailSubject,"searchbox");
-        expect (await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
+        await emailTemplateBladePo.addFilter("Message Subject", emailSubject, "searchbox");
+        expect(await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
         await emailTemplateBladePo.clearFilter();
-        await emailTemplateBladePo.addFilter("Description", emailDescription,"searchbox");
-        expect (await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
+        await emailTemplateBladePo.addFilter("Description", emailDescription, "searchbox");
+        expect(await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
         await emailTemplateBladePo.clearFilter();
-        await emailTemplateBladePo.addFilter("Company", "Petramco","searchbox");
+        await emailTemplateBladePo.addFilter("Company", "Petramco", "searchbox");
         //Searching and validating with filtering to company as, there can be multiple records for 1 company
         await emailTemplateBladePo.searchEmailTemplate(emailTemplateName);
-        expect (await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);        
+        expect(await emailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
         await emailTemplateBladePo.clearFilter();
     });
 
@@ -979,7 +1017,9 @@ describe("Compose Email", () => {
         {
             "Requester": "fritz",
             "Summary": "TC DRDMV-10399 " + randomString,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Contact": "qtao",
             "Assignee": "qkatawazi"
         }
