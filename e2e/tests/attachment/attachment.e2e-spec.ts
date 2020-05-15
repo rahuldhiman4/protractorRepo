@@ -209,8 +209,8 @@ describe("Attachment", () => {
         // Create Task Template
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTaskTemplateData = {
-            "templateName": `manualTaskTemplateDraft ${randomStr}`,
-            "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
+            "templateName": "manualTaskTemplateDraft" + randomStr,
+            "templateSummary": "manualTaskTemplateDraft" + randomStr,
             "templateStatus": "Active",
         }
         await apiHelper.apiLogin('qkatawazi');
@@ -233,8 +233,8 @@ describe("Attachment", () => {
 
         // //Add Manual task and Automation Task in Case
         await viewCasePo.clickAddTaskButton();
-        await manageTask.addTaskFromTaskTemplate(`manualTaskTemplateDraft ${randomStr}`);
-        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateDraft ${randomStr}`);
+        await manageTask.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
+        await manageTask.clickTaskLinkOnManageTask(manualTaskTemplateData.templateName);
         await activityTabPo.addActivityNote(addNotes);
         await activityTabPo.addAttachment([wordFilePath]);
         await activityTabPo.clickOnPostButton();

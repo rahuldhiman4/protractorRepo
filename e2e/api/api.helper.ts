@@ -258,12 +258,13 @@ class ApiHelper {
             templateData.fieldInstances["450000152"] = caseTemplateDataAssignee;
         }
         if (data.supportGroup) {
-            let companyGuid = await coreApi.getOrganizationGuid(data.company);
-            let caseTemplateDataSupportCompany = {
+            let assignedCompanyGuid = await coreApi.getOrganizationGuid(data.company);
+            let taskTemplateDataassignedCompany = {
                 "id": 450000154,
-                "value": `${companyGuid}`
+                "value": `${assignedCompanyGuid}`
             }
-            templateData.fieldInstances["450000154"] = caseTemplateDataSupportCompany;
+            templateData.fieldInstances["450000154"] = taskTemplateDataassignedCompany;
+
             let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.supportGroup);
             let caseTemplateDataSupportAssignee = {
                 "id": 1000000217,
@@ -271,6 +272,15 @@ class ApiHelper {
             }
             templateData.fieldInstances["1000000217"] = caseTemplateDataSupportAssignee;
         }
+        if (data.businessUnit) {
+            let assigneeBusinessUnit = await coreApi.getBusinessUnitGuid(data.businessUnit);
+            let caseTemplateDataBusinessUnit = {
+                "id": 450000381,
+                "value": `${assigneeBusinessUnit}`
+            }
+            templateData.fieldInstances["450000381"] = caseTemplateDataBusinessUnit;
+        }
+
         if (data.resolveCaseonLastTaskCompletion) {
             let caseTemplateDataresolveCaseonLastTaskCompletion = {
                 "id": 450000166,
@@ -389,18 +399,27 @@ class ApiHelper {
             templateData.fieldInstances["450000152"] = caseTemplateDataAssignee;
         }
         if (data.supportGroup) {
-            let companyGuid = await coreApi.getOrganizationGuid(data.company);
-            let caseTemplateDataSupportCompany = {
-                "id": 450000154,
-                "value": `${companyGuid}`
+            let assignedCompanyGuid = await coreApi.getOrganizationGuid(data.company);
+            let taskTemplateDataassignedCompany = {
+                "id": 450000153,
+                "value": `${assignedCompanyGuid}`
             }
-            templateData.fieldInstances["450000154"] = caseTemplateDataSupportCompany;
+            templateData.fieldInstances["450000153"] = taskTemplateDataassignedCompany;
+
             let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.supportGroup);
-            let caseTemplateDataSupportAssignee = {
+            let caseTemplateDataSupportGroup = {
                 "id": 1000000217,
                 "value": `${assigneeSupportGroup}`
             }
-            templateData.fieldInstances["1000000217"] = caseTemplateDataSupportAssignee;
+            templateData.fieldInstances["1000000217"] = caseTemplateDataSupportGroup;
+        }
+        if (data.businessUnit) {
+            let assigneeBusinessUnit = await coreApi.getBusinessUnitGuid(data.businessUnit);
+            let caseTemplateDataBusinessUnit = {
+                "id": 450000381,
+                "value": `${assigneeBusinessUnit}`
+            }
+            templateData.fieldInstances["450000381"] = caseTemplateDataBusinessUnit;
         }
         let newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
         console.log('Create Manual Task Template API Status =============>', newTaskTemplate.status);
@@ -420,7 +439,41 @@ class ApiHelper {
         templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
+        templateData.fieldInstances[301566300].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
+        templateData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[1000000001].value;
+        if (data.assignee) {
+            let assignee = await coreApi.getPersonGuid(data.assignee);
+            let caseTemplateDataAssignee = {
+                "id": 450000152,
+                "value": `${assignee}`
+            }
+            templateData.fieldInstances["450000152"] = caseTemplateDataAssignee;
+        }
 
+        if (data.supportGroup) {
+            let assignedCompanyGuid = await coreApi.getOrganizationGuid(data.company);
+            let taskTemplateDataassignedCompany = {
+                "id": 450000153,
+                "value": `${assignedCompanyGuid}`
+            }
+            templateData.fieldInstances["450000153"] = taskTemplateDataassignedCompany;
+
+            let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.supportGroup);
+            let caseTemplateDataSupportGroup = {
+                "id": 1000000217,
+                "value": `${assigneeSupportGroup}`
+            }
+            templateData.fieldInstances["1000000217"] = caseTemplateDataSupportGroup;
+        }
+
+        if (data.businessUnit) {
+            let assigneeBusinessUnit = await coreApi.getBusinessUnitGuid(data.businessUnit);
+            let caseTemplateDataBusinessUnit = {
+                "id": 450000381,
+                "value": `${assigneeBusinessUnit}`
+            }
+            templateData.fieldInstances["450000381"] = caseTemplateDataBusinessUnit;
+        }
         let newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
 
         console.log('Create External Task Template API Status =============>', newTaskTemplate.status);
@@ -442,33 +495,6 @@ class ApiHelper {
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[450000154].value = data.processBundle;
         templateData.fieldInstances[450000141].value = data.processName;
-        if (data.assignee) {
-            let assignee = await coreApi.getPersonGuid(data.assignee);
-            let taskTemplateDataAssignee = {
-                "id": 450000152,
-                "value": `${assignee}`
-            }
-            templateData.fieldInstances["450000152"] = taskTemplateDataAssignee;
-        }
-
-        if (data.supportGroup) {
-            let companysupportGroupGuid = await coreApi.getSupportGroupGuid(data.supportGroup);
-            let taskTemplateDataSupportGroup = {
-                "id": 1000000217,
-                "value": `${companysupportGroupGuid}`
-            }
-            templateData.fieldInstances["1000000217"] = taskTemplateDataSupportGroup;
-        }
-
-        if (data.assignedCompany) {
-            let assignedCompanyGuid = await coreApi.getOrganizationGuid(data.assignedCompany);
-            let taskTemplateDataassignedCompany = {
-                "id": 450000153,
-                "value": `${assignedCompanyGuid}`
-            }
-            templateData.fieldInstances["450000153"] = taskTemplateDataassignedCompany;
-        }
-
         if (data.priority) {
             let priority = constants.CasePriority[data.priority];
             let taskTemplateDataPriority = {
