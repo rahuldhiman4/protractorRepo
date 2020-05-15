@@ -164,7 +164,7 @@ class ChangeAssignmentOldBlade {
                 //            let count = await supportGroupDropDown.$$(this.selectors.selectOptions).count();
                 //            return count >= 1;
                 //        }));
-                let option = await element(by.cssContainingText(this.selectors.selectOptions, supportGroup));
+                let option = await $$(this.selectors.assignmentDropDownList).get(3).element(by.cssContainingText(this.selectors.selectOptions, supportGroup));
                 //        await browser.wait(this.EC.elementToBeClickable(option));
                 await option.click();
         }
@@ -181,8 +181,9 @@ class ChangeAssignmentOldBlade {
                 //        });
         }
 
-        async setAssignee(company: string, group: string, assignee: string): Promise<void> {
+        async setAssignee(company: string, bu: string, group: string, assignee: string): Promise<void> {
                 await this.selectCompany(company);
+                await this.selectBusinessUnit(bu)
                 await this.selectSupportGroup(group);
                 await this.selectAssignee(assignee);
                 await this.clickOnAssignButton();

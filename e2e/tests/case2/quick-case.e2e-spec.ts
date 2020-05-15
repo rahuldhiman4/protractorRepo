@@ -280,6 +280,7 @@ describe("Quick Case", () => {
             "assignee": "Fritz",
             "company": "Petramco",
             "supportGroup": "Facilities",
+            "ownerBU": 'Facilities Support',
             "ownerGroup": "Facilities"
         }
         let templateData4 = {
@@ -290,6 +291,7 @@ describe("Quick Case", () => {
             "assignee": "Fritz",
             "company": "Petramco",
             "supportGroup": "Facilities",
+            "ownerBU": 'Facilities Support',
             "ownerGroup": "Facilities"
         }
         try {
@@ -352,6 +354,7 @@ describe("Quick Case", () => {
             "assignee": "Fritz",
             "company": "Petramco",
             "supportGroup": "Facilities",
+            "ownerBU": 'Facilities Support',
             "ownerGroup": "Facilities"
         }
         let CaseTemplateDataWithDifferentOrganization = {
@@ -425,6 +428,7 @@ describe("Quick Case", () => {
             "assignee": "Fritz",
             "company": "Petramco",
             "supportGroup": "Facilities",
+            "ownerBU": 'Facilities Support',
             "ownerGroup": "Facilities",
             "supportCompany": "Petramco",
             "categoryTier1": "Purchasing Card",

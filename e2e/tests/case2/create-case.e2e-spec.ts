@@ -109,13 +109,15 @@ describe("Create Case", () => {
             let caseData = {
                 "Requester": "Fritz",
                 "Summary": "Test case for DRDMV-2530",
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCase1 = await apiHelper.createCase(caseData);
             let caseId: string = newCase1.displayId;
-            console.log(caseId);       
+            console.log(caseId);
             await navigationPage.signOut();
             await loginPage.login("qtao");
             await caseConsolePage.searchAndOpenCase(caseId);
@@ -167,7 +169,9 @@ describe("Create Case", () => {
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-2530",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qkatawazi');
@@ -189,7 +193,9 @@ describe("Create Case", () => {
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-2530",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qkatawazi');
@@ -203,7 +209,7 @@ describe("Create Case", () => {
         await caseConsolePage.searchAndOpenCase(caseId1);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
-    },450 * 1000);
+    }, 450 * 1000);
 
     //ankagraw
     it('[DRDMV-16081]: Verify allow case reopen tag in case template', async () => {
@@ -236,7 +242,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setCaseSummary(caseTemplateSummary2);
             await createCaseTemplate.setCaseStatusValue("Assigned");
             await createCaseTemplate.clickOnChangeAssignmentButton();
-            await changAssignmentOldPage.setAssignee('Petramco', 'Compensation and Benefits', 'Qianru Tao')
+            await changAssignmentOldPage.setAssignee('Petramco', 'United States Support','US Support 3', 'Qianru Tao')
             await createCaseTemplate.setAllowCaseReopenValue('No');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
@@ -499,7 +505,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    },450 * 1000);
+    }, 450 * 1000);
 
     //ankagraw
     it('[DRDMV-7027]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
@@ -622,7 +628,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    },350 * 1000);
+    }, 350 * 1000);
 
     //ankagraw
     it('[DRDMV-12061]: [ Task ] - Verify create case with Global task template having assignment', async () => {
@@ -784,7 +790,7 @@ describe("Create Case", () => {
     it('[DRDMV-5479,DRDMV-1192]: Verify case assignment on Create Case', async () => {
         try {
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qfeng');
             await navigationPage.gotoCreateCase();
             expect(await createCasePage.isAssigneToMeEnabled()).toBeFalsy();
             expect(createCasePage.isChangeAssignmentButtonEnabled()).toBeFalsy();
@@ -794,29 +800,31 @@ describe("Create Case", () => {
             await createCasePage.clickChangeAssignmentButton();
             expect(await changeAssignmentPage.isAssignToMeCheckBoxSelected()).toBeFalsy();
             expect(await changeAssignmentPage.getCompanyDefaultValue()).toBe('Petramco');
-            await changeAssignmentPage.selectSupportGroup('Compensation and Benefits');
+            await changeAssignmentPage.selectBusinessUnit('United States Support')
+            await changeAssignmentPage.selectSupportGroup('US Support 3');
             await changeAssignmentPage.selectAssignee('Qadim Katawazi');
             await changeAssignmentPage.clickOnAssignButton();
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentPage.clickOnAssignToMeCheckBox();
-            expect(await changeAssignmentPage.getAssigneeName()).toBe('Qianru Tao');
+            expect(await changeAssignmentPage.getAssigneeName()).toBe('Qiao Feng');
             await changeAssignmentPage.clickOnAssignButton();
             await createCasePage.clickChangeAssignmentButton();
-            await changeAssignmentPage.selectSupportGroup('Compensation and Benefits');
-            await changeAssignmentPage.selectAssigneeAsSupportGroup('Compensation and Benefits');
+            await changeAssignmentPage.selectBusinessUnit('United States Support')
+            await changeAssignmentPage.selectSupportGroup('US Support 3');
+            await changeAssignmentPage.selectAssigneeAsSupportGroup('US Support 3');
             await changeAssignmentPage.clickOnAssignButton();
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePage.getAssignedGroupText()).toBe('Compensation and Benefits');
-            expect(await viewCasePage.getAssigneeText()).toBe('Qianru Tao');
+            expect(await viewCasePage.getAssigneeText()).toBe('Qiao Feng');
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    },350 * 1000);
+    }, 350 * 1000);
 
     //ankagraw
     it('[DRDMV-11818]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
@@ -853,6 +861,7 @@ describe("Create Case", () => {
         await addReadAccess.selectCompany('Global');
         await addReadAccess.selectFlowset(flowsetName);
         await addReadAccess.selectSupportCompany('Petramco');
+        await addReadAccess.selectBusinessUnit('Australia Support');
         await addReadAccess.selectSupportGroup('AU Support 2');
         await addReadAccess.clickOnSave();
         try {
@@ -902,7 +911,7 @@ describe("Create Case", () => {
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clearCaseSummary();
             await editCasePage.clickSaveCase();
-            expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy(); 
+            expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
         } catch (error) {
             throw error;
         } finally {
@@ -917,10 +926,11 @@ describe("Create Case", () => {
 
             var caseWithClosedStatus = {
                 "Status": "7000",
-                "Company": "Petramco",
+                "Assigned Company": "Petramco",
                 "Description": "This case was created by java integration tests",
                 "Requester": "qkatawazi",
                 "Summary": "create case is in Closed Status" + randomStr,
+                "Business Unit": "HR Support",
                 "Support Group": "Compensation and Benefits",
                 "Assignee": "Elizabeth"
             }
@@ -968,7 +978,7 @@ describe("Create Case", () => {
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickChangeAssignmentButton();
-            await changeAssignmentPage.setAssignee(petramcoStr, 'Australia Support',aUsupportStr, kasiaOstlunsStr);
+            await changeAssignmentPage.setAssignee(petramcoStr, 'Australia Support', aUsupportStr, kasiaOstlunsStr);
             await editCasePage.clickSaveCase();
             expect(await activityPo.isTextPresentInActivityLog("Kasia Ostlun")).toBeTruthy("Text is not present in activiy tab1");
             expect(await activityPo.isTextPresentInActivityLog("changed the case assignment")).toBeTruthy("Text is not present in activiy tab2");

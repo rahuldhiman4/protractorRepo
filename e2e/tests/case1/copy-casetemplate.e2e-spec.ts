@@ -50,7 +50,7 @@ describe('Copy Case Template', () => {
         expect(await copyCaseTemplate.getValueOfFlowset()).toBe(caseTemplateAllFields.flowset);
         expect(await copyCaseTemplate.getValueOfCaseCompany()).toBe(caseTemplateAllFields.company);
         expect(await copyCaseTemplate.getValueOfOwnerCompany()).toBe(caseTemplateAllFields.ownerCompany);
-        expect(await copyCaseTemplate.getValueOfOwnerGroup()).toContain('Compensation and Benefits');
+        expect(await copyCaseTemplate.getValueOfOwnerGroup()).toContain('US Support 3');
         expect(await copyCaseTemplate.getValueOfAssignementMethod()).toBe(caseTemplateAllFields.assignmentMethod);
         expect(await copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(caseTemplateAllFields.taskFailureConfiguration);
         expect(await copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
