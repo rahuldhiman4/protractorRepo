@@ -172,6 +172,7 @@
         "Description": "Simple test case desc",
         "Requester": "qfeng",
         "Summary": "Simple test case summary",
+        "Assigned Company": "Petramco",
         "Business Unit": "United States Support",
         "Support Group": "US Support 3"
     },
