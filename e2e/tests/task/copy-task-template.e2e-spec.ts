@@ -21,7 +21,7 @@ import utilityGrid from '../../utils/utility.grid';
 describe('Copy Task Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('qkatawazi');
+        await loginPage.login('fritz');
     });
 
     afterAll(async () => {
@@ -89,7 +89,7 @@ describe('Copy Task Template', () => {
             throw e;
         } finally {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('fritz');
         }
     }, 480 * 1000);
 
@@ -136,7 +136,7 @@ describe('Copy Task Template', () => {
             throw e;
         } finally {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('fritz');
         }
     }, 320 * 1000);
 
@@ -192,7 +192,7 @@ describe('Copy Task Template', () => {
 
             //Login through only Petramco User
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(newAutomationTaskTemplate);
@@ -210,7 +210,7 @@ describe('Copy Task Template', () => {
             throw e;
         } finally {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('fritz');
         }
     }, 550 * 1000);
 
@@ -269,7 +269,7 @@ describe('Copy Task Template', () => {
             throw e;
         } finally {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('fritz');
         }
     }, 410 * 1000);
 
@@ -302,7 +302,7 @@ describe('Copy Task Template', () => {
             await utilCommon.waitUntilPopUpDisappear();
             await expect(await viewTaskTemplate.getTemplateStatus()).toBe("Draft");
             await expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
-            await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
+            await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Facilities");
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(newManualTaskTemplate);
@@ -311,7 +311,7 @@ describe('Copy Task Template', () => {
             throw e;
         } finally {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('fritz');
         }
     });
 
@@ -363,7 +363,7 @@ describe('Copy Task Template', () => {
             throw e;
         } finally {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('fritz');
         }
     }, 290 * 1000);
 
@@ -408,7 +408,7 @@ describe('Copy Task Template', () => {
             //Create a Case
 
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('franz');
 
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -433,7 +433,7 @@ describe('Copy Task Template', () => {
             throw e;
         } finally {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('fritz');
         }
     }, 420 * 1000);
 
@@ -472,7 +472,7 @@ describe('Copy Task Template', () => {
             throw e;
         } finally {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('fritz');
         }
     }, 260 * 1000);
 
@@ -515,7 +515,7 @@ describe('Copy Task Template', () => {
             throw e;
         } finally {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('fritz');
         }
     }, 440 * 1000);
 
@@ -557,12 +557,12 @@ describe('Copy Task Template', () => {
             await expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
             await expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
             await expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
-            await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
+            await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Facilities");
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('fritz');
         }
     });//, 240 * 1000);
 
@@ -600,12 +600,13 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.clickSaveCopytemplate();
             await utilCommon.waitUntilPopUpDisappear();
             await expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
-            await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Staffing");
+            expect(await viewTaskTemplate.getBuisnessunitValue()).toBe('HR Support');
+            await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Workforce Administration");
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('fritz');
         }
     }, 340 * 1000);
 
@@ -647,12 +648,13 @@ describe('Copy Task Template', () => {
             await expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
             await expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
             await expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
-            await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Compensation and Benefits");
+            expect(await viewTaskTemplate.getBuisnessunitValue()).toBe('Facilities Support');
+            await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Facilities");
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('fritz');
         }
     }, 260 * 1000);
 
@@ -701,7 +703,7 @@ describe('Copy Task Template', () => {
             throw e;
         } finally {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('fritz');
         }
     });//, 210 * 1000);
 
@@ -750,7 +752,7 @@ describe('Copy Task Template', () => {
             throw e;
         } finally {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('fritz');
         }
     }, 260 * 1000);
 });
