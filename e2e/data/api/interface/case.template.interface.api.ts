@@ -4,6 +4,7 @@ export interface ICaseTemplate {
     templateStatus: string;
     company?: string;
     ownerCompany?: string;
+    ownerBU?: string;
     ownerGroup?: string;
     flowset?: string;
     categoryTier1?: string;

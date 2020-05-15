@@ -181,6 +181,7 @@ class CreateCaseTemplate {
         await this.setTemplateName(caseTemplate.templateName);
         await this.setCaseSummary(caseTemplate.templateSummary);
         await this.setCompanyName(caseTemplate.company);
+        await this.setBusinessUnitDropdownValue(caseTemplate.ownerBusinessUnit);
         await this.setOwnerGroupDropdownValue(caseTemplate.ownerGroup);
         await this.setCaseDescription(caseTemplate.templateDescription);
         await this.setCategoryTier1(caseTemplate.categoryTier1);
@@ -189,6 +190,7 @@ class CreateCaseTemplate {
         await this.isResolutionCodeRequired(true);
         await this.isResolutionDescriptionRequired(true);
         await this.clickOnChangeAssignmentButton();
+        await changeAssignemetOldBlade.selectBusinessUnit(caseTemplate.businessUnit);
         await changeAssignemetOldBlade.selectSupportGroup(caseTemplate.supportGroup);
         await changeAssignemetOldBlade.selectAssignee(caseTemplate.assignee);
         await changeAssignemetOldBlade.clickOnAssignButton();
@@ -205,6 +207,7 @@ class CreateCaseTemplate {
         await this.setCaseDescription(caseTemplate.templateDescription);
         await this.setFlowsetValue(caseTemplate.flowset);
         await this.setCaseStatusValue(caseTemplate.caseStatus);
+        await this.setBusinessUnitDropdownValue(caseTemplate.ownerBusinessUnit);
         await this.setOwnerGroupDropdownValue(caseTemplate.ownerGroup);
         await this.setPriorityValue(caseTemplate.casePriority);
         await this.setCategoryTier1(caseTemplate.categoryTier1);
@@ -219,6 +222,7 @@ class CreateCaseTemplate {
         await this.isResolutionCodeRequired(true);
         await this.isResolutionDescriptionRequired(true);
         await this.clickOnChangeAssignmentButton();
+        await changeAssignemetOldBlade.selectBusinessUnit(caseTemplate.businessUnit);
         await changeAssignemetOldBlade.selectSupportGroup(caseTemplate.supportGroup);
         await changeAssignemetOldBlade.selectAssignee(caseTemplate.assignee);
         await changeAssignemetOldBlade.clickOnAssignButton();

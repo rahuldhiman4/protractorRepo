@@ -750,7 +750,7 @@ describe('Case Template', () => {
             await utilGrid.searchAndOpenHyperlink(caseTemplateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             await editCaseTemplate.clickOnChangeAssignmentButton();
-            await changAssignmentOldPage.setAssignee('Petramco', 'Compensation and Benefits', 'Qianru Tao');
+            await changAssignmentOldPage.setAssignee('Petramco','United States Support', 'US Support 3', 'Qiao Feng');
             let statuses: string[] = ["New", "Assigned", "In Progress", "Resolved", "Closed"];
             expect(await editCaseTemplate.allStatusOptionsPresent(statuses)).toBeTruthy();
             await editCaseTemplate.clickOnEditCaseTemplateMetadata();
@@ -766,7 +766,7 @@ describe('Case Template', () => {
             expect(await viewCaseTemplate.getCategoryTier3()).toContain("Card Issuance");
             expect(await viewCaseTemplate.getCaseCompanyValue()).toContain("Petramco");
             expect(await viewCaseTemplate.getTemplateStatusValue()).toContain("Draft");
-            expect(await viewCaseTemplate.getAssigneeText()).toContain('Qianru Tao');
+            expect(await viewCaseTemplate.getAssigneeText()).toContain('Qiao Feng');
             expect(await viewCaseTemplate.getOwnerGroupValue()).toContain('Compensation and Benefits');
         } catch (e) {
             throw e;
