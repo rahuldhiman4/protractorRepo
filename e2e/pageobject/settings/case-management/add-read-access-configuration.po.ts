@@ -10,6 +10,7 @@ class AddReadAccessConfigurationPage {
         supportCompanyGuid: '21238f34-a5d5-4ec0-906e-1fe2243a057d',
         supportGroupGuid: '330fdd5d-03d9-4fbd-bbd1-3b4ac54268be',
         saveButton: '[rx-view-component-id="61ac81f7-e04f-496b-b9ed-65b3163cae6d"] button',
+        businessUnitGuid: '69237f47-a247-4f76-bdc6-bd0fac83d697'
     }
 
     async setReadAccessConfigurationName(accessmapping:string): Promise<void> {
@@ -37,6 +38,10 @@ class AddReadAccessConfigurationPage {
 
      async selectSupportGroup(supportGroup:string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.supportGroupGuid,supportGroup);
+     }
+
+     async selectBusinessUnit(bu:string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.businessUnitGuid,bu);
      }
 
 }
