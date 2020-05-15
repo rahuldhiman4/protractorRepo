@@ -67,7 +67,9 @@ describe('Email', () => {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
@@ -124,7 +126,9 @@ describe('Email', () => {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
@@ -216,7 +220,9 @@ describe('Email', () => {
                 "Requester": "qtao",
                 "Company": "Petramco",
                 "Summary": "Create case for me postman1",
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "Qadim Katawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
@@ -298,7 +304,9 @@ describe('Email', () => {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
@@ -343,7 +351,9 @@ describe('Email', () => {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
@@ -418,7 +428,9 @@ describe('Email', () => {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for Email Test",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
@@ -485,7 +497,9 @@ describe('Email', () => {
             "Requester": "qdu",
             "Company": "Petramco",
             "Summary": "Create case for me postman19555",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
@@ -547,7 +561,7 @@ describe('Email', () => {
         await emailTemplateBladePo.clickOnApplyButton();
         expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
         await emailPo.clickOnSendButton();
-    },330 * 1000);
+    }, 330 * 1000);
 
     it('[DRDMV-19552]: Verify task acknowledgement template are listed in Email Acknowledgement template and In Email Configuration', async () => {
         await navigationPage.gotoSettingsPage();
@@ -588,7 +602,9 @@ describe('Email', () => {
                 "Requester": "qtao",
                 "Company": "Petramco",
                 "Summary": "Create case for me postman1",
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "Qadim Katawazi"
             }
             await apiHelper.apiLogin('qkatawazi');

@@ -988,6 +988,8 @@ describe('Create Case Task', () => {
             "Description": "This case was created by java integration tests",
             "Requester": "qkatawazi",
             "Summary": "create case is inProgress Status" + randomStr,
+            "Assigned Company": "Petramco",
+            "Business Unit": "HR Support",
             "Support Group": "Compensation and Benefits",
             "Assignee": "Elizabeth"
         }
@@ -998,6 +1000,8 @@ describe('Create Case Task', () => {
             "Description": "This case was created by java integration tests",
             "Requester": "qkatawazi",
             "Summary": "create case is in Pending Status" + randomStr,
+            "Assigned Company": "Petramco",
+            "Business Unit": "HR Support",
             "Support Group": "Compensation and Benefits",
             "Assignee": "Elizabeth"
         }
@@ -1008,6 +1012,8 @@ describe('Create Case Task', () => {
             "Description": "This case was created by java integration tests",
             "Requester": "qkatawazi",
             "Summary": "create case is in Resolved Status" + randomStr,
+            "Assigned Company": "Petramco",
+            "Business Unit": "HR Support",
             "Support Group": "Compensation and Benefits",
             "Assignee": "Elizabeth"
         }
@@ -1018,6 +1024,8 @@ describe('Create Case Task', () => {
             "Description": "This case was created by java integration tests",
             "Requester": "qkatawazi",
             "Summary": "create case is in Closed Status" + randomStr,
+            "Assigned Company": "Petramco",
+            "Business Unit": "HR Support",
             "Support Group": "Compensation and Benefits",
             "Assignee": "Elizabeth"
         }
@@ -1028,6 +1036,8 @@ describe('Create Case Task', () => {
             "Description": "This case was created by java integration tests",
             "Requester": "qkatawazi",
             "Summary": "create case is in Canceled Status" + randomStr,
+            "Assigned Company": "Petramco",
+            "Business Unit": "HR Support",
             "Support Group": "Compensation and Benefits",
             "Assignee": "Elizabeth"
         }

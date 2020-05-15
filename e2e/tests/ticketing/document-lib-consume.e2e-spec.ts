@@ -77,7 +77,9 @@ describe('Document Library Consume UI', () => {
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qkatawazi');
@@ -144,7 +146,9 @@ describe('Document Library Consume UI', () => {
             {
                 "Requester": "qtao",
                 "Summary": "Test case for DRDMV-8377RandVal" + summary,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
@@ -1057,7 +1061,9 @@ describe('Document Library Consume UI', () => {
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin(loginId);

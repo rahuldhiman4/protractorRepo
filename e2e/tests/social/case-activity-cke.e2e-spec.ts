@@ -74,7 +74,9 @@ describe('Case Activity CKE', () => {
             let caseData = {
                 "Requester": "qtao",
                 "Summary": "DRDMV-21617_TC",
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 1",
                 "Assignee": "qdu"
             }
 
