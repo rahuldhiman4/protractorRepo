@@ -7,6 +7,7 @@ export interface ITaskTemplate {
     processBundle?: string;
     processName?: string;
     assignedCompany?: string;
+    businessUnit?:string;
     supportGroup?:string;
     assignee?:string;
     ownerGroup?:string;

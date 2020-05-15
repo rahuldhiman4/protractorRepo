@@ -10,6 +10,7 @@ export interface ICaseTemplate {
     categoryTier1?: string;
     categoryTier2?: string;
     categoryTier3?: string;
+    businessUnit?: string;
     supportGroup?: string;
     assignee?: string;
     description?: string;

@@ -404,6 +404,7 @@ describe('Create Task Template', () => {
             "templateStatus": "Active",
             "assignee": "Fritz",
             "company": "Petramco",
+            "businessUnit": "Facilities Support",
             "supportGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
@@ -416,6 +417,7 @@ describe('Create Task Template', () => {
         await createCasePage.setSummary('Summary DRDMV-5326' + randomStr);
         await createCasePage.clickChangeAssignmentButton();
         await changeAssignmentBladePo.selectCompany('Petramco');
+        await changeAssignmentBladePo.selectBusinessUnit('HR Support');
         await changeAssignmentBladePo.selectSupportGroup('Employee Relations');
         await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Employee Relations');
         await changeAssignmentBladePo.clickOnAssignButton();
@@ -448,6 +450,7 @@ describe('Create Task Template', () => {
         await viewTask.clickOnEditTask();
         await editTaskPo.clickOnChangeAssignementButton();
         await changeAssignmentBladePo.selectCompany('Petramco');
+        await changeAssignmentBladePo.selectBusinessUnit('HR Support');
         await changeAssignmentBladePo.selectSupportGroup('Risk Management');
         await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Risk Management');
         await changeAssignmentBladePo.clickOnAssignButton();
@@ -476,6 +479,7 @@ describe('Create Task Template', () => {
         await viewCasePage.clickEditCaseButton();
         await editCasePo.clickChangeAssignmentButton();
         await changeAssignmentBladePo.selectCompany('Petramco');
+        await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
         await changeAssignmentBladePo.selectSupportGroup('Facilities');
         await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
         await changeAssignmentBladePo.clickOnAssignButton();
