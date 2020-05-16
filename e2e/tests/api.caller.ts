@@ -49,9 +49,9 @@ describe('Login and create case from API', () => {
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(templateData2);
         console.log("active case Template is created===", newCaseTemplate.id);
-        // console.log("active case Template is created===", newCaseTemplate.displayId);
-        // let caseTemplateStatusUpdate = await apiHelper.updateCaseTemplateStatus(newCaseTemplate.id, 'Inactive');
-        // console.log("Case template status update==>", caseTemplateStatusUpdate);
+        console.log("active case Template is created===", newCaseTemplate.displayId);
+        let caseTemplateStatusUpdate = await apiHelper.updateCaseTemplateStatus(newCaseTemplate.id, 'Inactive');
+        console.log("Case template status update==>", caseTemplateStatusUpdate);
     });
 
     it('create manual task template', async () => {
