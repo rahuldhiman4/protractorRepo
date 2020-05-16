@@ -834,7 +834,7 @@ describe('Dynamic data', () => {
             "templateName": `${externalTask}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
-            "taskCompany": "- Global -",
+            "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
             "ownerBusinessUnit": "Facilities Support",
             "ownerGroup": "Facilities"
