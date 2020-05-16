@@ -356,6 +356,10 @@ describe('Create Task Template', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `Case Process 1 ${randomStr}`,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -403,9 +407,10 @@ describe('Create Task Template', () => {
             "templateSummary": `${taskTemplateSummary}`,
             "templateStatus": "Active",
             "assignee": "Fritz",
-            "company": "Petramco",
-            "businessUnit": "Facilities Support",
-            "supportGroup": "Facilities"
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(taskTemplateDataSet);

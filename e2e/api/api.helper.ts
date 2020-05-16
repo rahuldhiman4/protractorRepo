@@ -377,8 +377,10 @@ class ApiHelper {
         templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
-        templateData.fieldInstances[301566300].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
-        templateData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[1000000001].value;
+        templateData.fieldInstances[301566300].value = data.ownerCompany ? await apiCoreUtil.getOrganizationGuid(data.ownerCompany) : templateData.fieldInstances[301566300].value;
+        templateData.fieldInstances[1000000001].value = data.taskCompany ? await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
+        templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
+        templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
         if (data.assignee) {
             let assignee = await coreApi.getPersonGuid(data.assignee);
             let caseTemplateDataAssignee = {
@@ -388,7 +390,7 @@ class ApiHelper {
             templateData.fieldInstances["450000152"] = caseTemplateDataAssignee;
         }
         if (data.supportGroup) {
-            let assignedCompanyGuid = await coreApi.getOrganizationGuid(data.company);
+            let assignedCompanyGuid = await coreApi.getOrganizationGuid(data.ownerCompany);
             let taskTemplateDataassignedCompany = {
                 "id": 450000153,
                 "value": `${assignedCompanyGuid}`
@@ -428,8 +430,11 @@ class ApiHelper {
         templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
-        templateData.fieldInstances[301566300].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
-        templateData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[1000000001].value;
+        templateData.fieldInstances[301566300].value = data.ownerCompany ? await apiCoreUtil.getOrganizationGuid(data.ownerCompany) : templateData.fieldInstances[301566300].value;
+        templateData.fieldInstances[1000000001].value = data.taskCompany ? await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
+        templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
+        templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
+
         if (data.assignee) {
             let assignee = await coreApi.getPersonGuid(data.assignee);
             let caseTemplateDataAssignee = {
@@ -440,7 +445,7 @@ class ApiHelper {
         }
 
         if (data.supportGroup) {
-            let assignedCompanyGuid = await coreApi.getOrganizationGuid(data.company);
+            let assignedCompanyGuid = await coreApi.getOrganizationGuid(data.ownerCompany);
             let taskTemplateDataassignedCompany = {
                 "id": 450000153,
                 "value": `${assignedCompanyGuid}`
@@ -484,6 +489,10 @@ class ApiHelper {
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[450000154].value = data.processBundle;
         templateData.fieldInstances[450000141].value = data.processName;
+        templateData.fieldInstances[301566300].value = data.ownerCompany ? await apiCoreUtil.getOrganizationGuid(data.ownerCompany) : templateData.fieldInstances[301566300].value;
+        templateData.fieldInstances[1000000001].value = data.taskCompany ? await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
+        templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
+        templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
         if (data.priority) {
             let priority = constants.CasePriority[data.priority];
             let taskTemplateDataPriority = {
@@ -492,11 +501,6 @@ class ApiHelper {
             }
             templateData.fieldInstances["1000000164"] = taskTemplateDataPriority;
         }
-
-        data.company ? templateData.fieldInstances[301566300].value = await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
-        data.ownerGroup ? templateData.fieldInstances[300287900].value = await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
-        data.taskCompany ? templateData.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
-        //data.company ? templateData.fieldInstances[301566300].value = data.templateSummary;
 
         let newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
 
@@ -515,7 +519,7 @@ class ApiHelper {
         processData.targetTemplateId = taskTemplateDetails.data.id;
         processData.targetTemplateName = data.templateName;
         processData.targetProcess = data.processBundle + ":" + data.processName;
-        data.company ? processData.targetProcessTag = await apiCoreUtil.getOrganizationGuid(data.company) : processData.targetProcessTag;
+        data.ownerCompany ? processData.targetProcessTag = await apiCoreUtil.getOrganizationGuid(data.ownerCompany) : processData.targetProcessTag;
         let newAutoTemplateProcess: AxiosResponse = await coreApi.createProcessForAutoTaskTemplate(processData);
         console.log('Create Process for Automated Task Template API Status =============>', newAutoTemplateProcess.status);
 

@@ -112,6 +112,10 @@ describe('Case Data Store', () => {
                 "templateStatus": "Draft",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(templateData4);
@@ -171,6 +175,10 @@ describe('Case Data Store', () => {
             "templateName": `manualTaskTemplate1 ${randomStr}`,
             "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
@@ -237,6 +245,10 @@ describe('Case Data Store', () => {
             "templateName": 'manualTaskTemplate1' + randomStr,
             "templateSummary": 'manualTaskTemplateSummary1' + randomStr,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
@@ -293,6 +305,10 @@ describe('Case Data Store', () => {
             "templateName": `manualTaskTemplate ${randomStr}`,
             "templateSummary": `manualTaskTemplateSummary ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
@@ -398,6 +414,10 @@ describe('Case Data Store', () => {
             "templateName": `manualTaskTemplate1 ${randomStr}`,
             "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
@@ -568,6 +588,10 @@ describe('Case Data Store', () => {
             "templateName": `manualTaskTemplate1 ${randomStr}`,
             "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();

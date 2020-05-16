@@ -218,6 +218,10 @@ describe("Attachment", () => {
             "templateName": "manualTaskTemplateDraft" + randomStr,
             "templateSummary": "manualTaskTemplateDraft" + randomStr,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
@@ -318,6 +322,10 @@ describe("Attachment", () => {
                 "templateName": `manualTaskTemplateDraft ${taskRandString[i]}`,
                 "templateSummary": `manualTaskTemplateDraft ${taskRandString[i]}`,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);

@@ -242,7 +242,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setCaseSummary(caseTemplateSummary2);
             await createCaseTemplate.setCaseStatusValue("Assigned");
             await createCaseTemplate.clickOnChangeAssignmentButton();
-            await changAssignmentOldPage.setAssignee('Petramco', 'United States Support','US Support 3', 'Qianru Tao')
+            await changAssignmentOldPage.setAssignee('Petramco', 'United States Support', 'US Support 3', 'Qianru Tao')
             await createCaseTemplate.setAllowCaseReopenValue('No');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
@@ -556,6 +556,10 @@ describe("Create Case", () => {
             "templateName": `manualTaskTemplateActive ${randomStr}`,
             "templateSummary": `manualTaskTemplateActive ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
 

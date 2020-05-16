@@ -222,7 +222,10 @@ describe('Case Activity', () => {
                 "templateName": "DRDMV-16773_task template" + summary,
                 "templateSummary": "DRDMV-16773_Manual_task template summary" + summary,
                 "templateStatus": "Active",
-                "company": '- Global -'
+                "taskCompany": '- Global -',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTemplateData);
@@ -358,7 +361,10 @@ describe('Case Activity', () => {
             "templateName": "DRDMV-21617_task template" + summary,
             "templateSummary": "DRDMV-21617_Manual_task template summary" + summary,
             "templateStatus": "Active",
-            "company": '- Global -'
+            "taskCompany": '- Global -',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createManualTaskTemplate(manualTemplateData);
@@ -469,7 +475,10 @@ describe('Case Activity', () => {
             "templateName": "DRDMV-21617_task template" + randomString,
             "templateSummary": "DRDMV-21617_Manual_task template summary" + randomString,
             "templateStatus": "Active",
-            "company": '- Global -'
+            "taskCompany": '- Global -',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createManualTaskTemplate(manualTemplateData);
@@ -568,6 +577,10 @@ describe('Case Activity', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": "Case Process ",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         autoTemplateData.templateName = autoTemplateData.templateName + randomString;
@@ -669,6 +682,10 @@ describe('Case Activity', () => {
             "templateName": "external task template name ",
             "templateSummary": "external task template summary ",
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         };
         externalTemplateData.templateName = externalTemplateData.templateName + randomStr;
         externalTemplateData.templateSummary = externalTemplateData.templateSummary + randomStr;
@@ -801,7 +818,10 @@ describe('Case Activity', () => {
                 "templateName": "DRDMV-21617_task template" + summary,
                 "templateSummary": "DRDMV-21617_Manual_task template summary" + summary,
                 "templateStatus": "Active",
-                "company": '- Global -'
+                "taskCompany": '- Global -',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTemplateData);
@@ -880,6 +900,10 @@ describe('Case Activity', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": "Case Process ",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         autoTemplateData.templateName = autoTemplateData.templateName + randomString;
@@ -979,6 +1003,10 @@ describe('Case Activity', () => {
                 "templateName": "DRDMV-16589_tempname_" + randomString,
                 "templateSummary": "DRDMV-16589_tempSummary_" + randomString,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);

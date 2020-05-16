@@ -433,6 +433,10 @@ describe('Case Status Change', () => {
                 "templateName": manualTask,
                 "templateSummary": manualSummary,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCase1 = await apiHelper.createCase(caseData1);

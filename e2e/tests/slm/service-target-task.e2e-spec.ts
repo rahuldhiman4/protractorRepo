@@ -122,6 +122,10 @@ describe('Service Target Tests for Tasks', () => {
                 "templateName": `manualTaskTemplateActive ${randomStr}`,
                 "templateSummary": `manualTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             let templateData1 = {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
@@ -129,6 +133,10 @@ describe('Service Target Tests for Tasks', () => {
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
 
             await apiHelper.apiLogin('qkatawazi');
@@ -220,6 +228,10 @@ describe('Service Target Tests for Tasks', () => {
                 "templateName": `manualTaskTemplateActive ${randomStr}`,
                 "templateSummary": `manualTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             let templateData1 = {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
@@ -227,6 +239,10 @@ describe('Service Target Tests for Tasks', () => {
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
 
             await apiHelper.apiLogin('qkatawazi');
