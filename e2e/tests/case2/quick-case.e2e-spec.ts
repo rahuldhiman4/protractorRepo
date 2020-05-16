@@ -278,7 +278,7 @@ describe("Quick Case", () => {
             "caseStatus": "InProgress",
             "templateStatus": "Active",
             "company": "Petramco",
-            "businessUnit": "Facilities Support", 
+            "businessUnit": "Facilities Support",
             "supportGroup": "Facilities",
             "assignee": "Fritz",
             "ownerBU": 'Facilities Support',
@@ -290,7 +290,7 @@ describe("Quick Case", () => {
             "caseStatus": "Resolved",
             "templateStatus": "Active",
             "company": "Petramco",
-            "businessUnit": "Facilities Support", 
+            "businessUnit": "Facilities Support",
             "supportGroup": "Facilities",
             "assignee": "Fritz",
             "ownerBU": "Facilities Support",
@@ -354,7 +354,7 @@ describe("Quick Case", () => {
             "templateStatus": "Draft",
             "description": caseTempalteDescription,
             "company": "Petramco",
-            "businessUnit": "Facilities Support", 
+            "businessUnit": "Facilities Support",
             "supportGroup": "Facilities",
             "assignee": "Fritz",
             "ownerBU": "Facilities Support",
@@ -366,7 +366,7 @@ describe("Quick Case", () => {
             "caseStatus": "InProgress",
             "templateStatus": "Active",
             "company": "Psilon",
-            "businessUnit": "Psilon Support Org1", 
+            "businessUnit": "Psilon Support Org1",
             "supportGroup": "Psilon Support Group1",
             "assignee": "gderuno",
         }
@@ -422,6 +422,10 @@ describe("Quick Case", () => {
             "categoryTier1": "Purchasing Card",
             "categoryTier2": "Policies",
             "categoryTier3": "Card Issuance",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let CaseTemplateData = {
             "templateName": `${caseTemplateName}`,
@@ -430,7 +434,7 @@ describe("Quick Case", () => {
             "templateStatus": "Active",
             "assignee": "Fritz",
             "company": "Petramco",
-            "businessUnit": "Facilities Support", 
+            "businessUnit": "Facilities Support",
             "supportGroup": "Facilities",
             "ownerBU": "Facilities Support",
             "ownerGroup": "Facilities",
@@ -689,7 +693,7 @@ describe("Quick Case", () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "businessUnit": "Facilities Support", 
+                "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
             }
@@ -704,7 +708,7 @@ describe("Quick Case", () => {
                 "templateStatus": "Draft",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "businessUnit": "Facilities Support", 
+                "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
             }
@@ -763,6 +767,10 @@ describe("Quick Case", () => {
             "templateName": `manualTaskTemplateDraft ${randomStr}`,
             "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let CaseTemplateData = {
             "templateName": `${caseTemplateName}`,
@@ -770,7 +778,7 @@ describe("Quick Case", () => {
             "caseStatus": "InProgress",
             "templateStatus": "Active",
             "company": "Petramco",
-            "businessUnit": "Facilities Support", 
+            "businessUnit": "Facilities Support",
             "supportGroup": "Facilities",
             "assignee": "Fritz",
             "casePriority": "Low",

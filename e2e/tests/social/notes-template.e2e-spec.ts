@@ -401,6 +401,10 @@ describe('Notes template', () => {
                 "templateName": `${taskTemplateName}`,
                 "templateSummary": `${manualTaskSummary}`,
                 "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             };
             await apiHelper.apiLogin('fritz');
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);

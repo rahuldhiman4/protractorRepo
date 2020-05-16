@@ -43,7 +43,10 @@ describe('Case Activity CKE', () => {
                 "templateName": "DRDMV-21617_task template" + summary,
                 "templateSummary": "DRDMV-21617_Manual_task template summary" + summary,
                 "templateStatus": "Active",
-                "company": '- Global -'
+                "taskCompany": '- Global -',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTemplateData);
@@ -56,6 +59,10 @@ describe('Case Activity CKE', () => {
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process ${summary}`,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
 
             await apiHelper.createAutomatedTaskTemplate(autoTemplateData);
@@ -66,6 +73,10 @@ describe('Case Activity CKE', () => {
                 "templateName": "DRDMV-21617 external task template name" + summary,
                 "templateSummary": "DRDMV-21617 external task template summary" + summary,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             };
 
             await apiHelper.createExternalTaskTemplate(externalTemplateData);

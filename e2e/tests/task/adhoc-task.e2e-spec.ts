@@ -382,6 +382,10 @@ describe('Create Adhoc task', () => {
             "templateName": `manualTaskTemplate1 ${randomStr}`,
             "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         await apiHelper.apiLogin('qkatawazi');

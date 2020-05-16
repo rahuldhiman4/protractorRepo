@@ -219,8 +219,10 @@ describe('Document Library Consume UI', () => {
                 "templateSummary": `${taskTemplateSummaryYesValue}`,
                 "templateStatus": "Active",
                 "assignee": loginId,
-                "company": "Petramco",
-                "supportGroup": "Compensation and Benefits"
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
@@ -1122,8 +1124,10 @@ describe('Document Library Consume UI', () => {
                 "templateSummary": `${taskTemplateSummaryYesValue}`,
                 "templateStatus": "Active",
                 "assignee": loginId,
-                "company": "Petramco",
-                "supportGroup": "Compensation and Benefits"
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);

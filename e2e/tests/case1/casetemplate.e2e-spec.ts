@@ -278,13 +278,13 @@ describe('Case Template', () => {
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support", 
+                "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
                 "ownerBU": 'Facilities Support',
                 "ownerGroup": "Facilities"
             }
-            
+
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
             console.log("active case Template is created===", newCaseTemplate.id);
@@ -329,7 +329,7 @@ describe('Case Template', () => {
             "resolveCaseonLastTaskCompletion": "1",
             "templateStatus": "Draft",
             "company": "Petramco",
-            "businessUnit": "Facilities Support", 
+            "businessUnit": "Facilities Support",
             "supportGroup": "Facilities",
             "assignee": "Fritz",
             "ownerBU": 'Facilities Support',
@@ -370,8 +370,10 @@ describe('Case Template', () => {
             "templateSummary": `${taskTemplateSummaryYesValue}`,
             "templateStatus": "Active",
             "assignee": "Fritz",
-            "company": "Petramco",
-            "supportGroup": "Facilities"
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
         await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
@@ -393,9 +395,10 @@ describe('Case Template', () => {
             "templateName": `${manualTask}`,
             "templateSummary": `${ManualTaskTempSummary}`,
             "templateStatus": "Active",
-            "company": "Petramco",
-            "assignee": "Fritz",
-            "supportGroup": "Facilities"
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let manualTaskTemplateOne = await apiHelper.createManualTaskTemplate(taskTemplateData);
         await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplateOne.displayId, manualTaskTemplateOne.displayId);
@@ -485,20 +488,20 @@ describe('Case Template', () => {
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseTemplateName = 'caseTemplateName' + randomStr;
             let casTemplateSummary = 'CaseSummaryName' + randomStr;
-            
+
             let templateData = {
                 "templateName": caseTemplateName,
                 "templateSummary": caseTemplateName,
                 "resolveCaseonLastTaskCompletion": "1",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support", 
+                "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
                 "ownerBU": 'Facilities Support',
                 "ownerGroup": "Facilities",
             }
-            
+
             await apiHelper.apiLogin('fritz');
             await navigationPage.gotoCreateCase();
             await apiHelper.createCaseTemplate(templateData);
@@ -589,7 +592,7 @@ describe('Case Template', () => {
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
             }
-            
+
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
 
@@ -647,14 +650,14 @@ describe('Case Template', () => {
         try {
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseTemplateName = 'caseTemplateName' + randomStr;
-        
+
             let casetemplateData = {
                 "templateName": caseTemplateName,
                 "templateSummary": caseTemplateName,
                 "resolveCaseonLastTaskCompletion": "1",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support", 
+                "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
                 "ownerBU": 'Facilities Support',
@@ -701,7 +704,7 @@ describe('Case Template', () => {
                 "resolveCaseonLastTaskCompletion": "1",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support", 
+                "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
                 "ownerBU": 'Facilities Support',
@@ -713,7 +716,7 @@ describe('Case Template', () => {
                 "caseStatus": "New",
                 "description": `${caseTemplateSummary}`,
             }
-            
+
 
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
@@ -932,13 +935,13 @@ describe('Case Template', () => {
                 "templateName": taskTemplateName,
                 "templateSummary": taskTemplateName,
                 "templateStatus": "Active",
-                "ownerCompany": "Petramco",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
                 "buisnessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
-                "company": "Petramco",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('fritz');
             let newCaseTemplate1 = await apiHelper.createCaseTemplate(casetemplatePetramco1);

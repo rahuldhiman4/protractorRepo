@@ -217,9 +217,11 @@ describe("Case Preview", () => {
         }
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "apavlik",
             "Summary": `${caseTemplateName}`,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi",
             "Status": "3000",
         }
