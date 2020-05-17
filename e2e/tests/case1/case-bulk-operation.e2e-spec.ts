@@ -103,10 +103,10 @@ describe('Case Bulk Operation', () => {
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, unitedStateSupportStr, usSupportGroup3Str, "Qadim Katawazi");
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
-        await utilityCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[2]);
         await caseConsolePage.clickOnChangeAssignmentButton();
-        await changeAssignment.setAssignee(petramcoStr, unitedStateSupportStr,usSupportGroup3Str, "Qiao Feng");
+        await changeAssignment.setAssignee(petramcoStr, unitedStateSupportStr, usSupportGroup3Str, "Qiao Feng");
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
         try {
             await navigationPage.signOut();
@@ -202,7 +202,7 @@ describe('Case Bulk Operation', () => {
         }
 
         await caseConsolePage.clickOnChangeAssignmentButton();
-        await changeAssignment.setAssignee(petramcoStr,"Facilities Support", "Facilities", "Franz Schwarz");
+        await changeAssignment.setAssignee(petramcoStr, "Facilities Support", "Facilities", "Franz Schwarz");
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.searchAndOpenHyperlink(caseId[i]);
@@ -214,7 +214,7 @@ describe('Case Bulk Operation', () => {
             expect(await activityPo.isTextPresentInActivityLog("Facilities")).toBeTruthy("Text is not present in activiy tab6");
             await navigationPage.gotoCaseConsole();
         }
-    }, 320 * 1000 );
+    }, 390 * 1000);
 
     it('[DRDMV-15981]: Verify that Agent is able to change the Assignee if status is Assigned or In Progress or Resolved', async () => {
         await apiHelper.apiLogin(qfengStr);
@@ -306,7 +306,7 @@ describe('Case Bulk Operation', () => {
             }
 
             await caseConsolePage.clickOnChangeAssignmentButton();
-            await changeAssignmentBladePo.setAssignee(petramcoStr,'United States Support', "US Support 3", 'Qadim Katawazi');
+            await changeAssignmentBladePo.setAssignee(petramcoStr, 'United States Support', "US Support 3", 'Qadim Katawazi');
             expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
 
             for (let i: number = 0; i < 3; i++) {
@@ -326,7 +326,7 @@ describe('Case Bulk Operation', () => {
             await navigationPage.signOut();
             await loginPage.login(qfengStr);
         }
-    }, 300 * 1000);
+    }, 350 * 1000);
 
     it('[DRDMV-16107]: Verify if Agent Bulk Assign the cases with at least one closed status then Agent should get the error', async () => {
         await apiHelper.apiLogin(qfengStr);
