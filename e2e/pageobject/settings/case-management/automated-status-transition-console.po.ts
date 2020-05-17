@@ -11,16 +11,13 @@ class AutomatedStatusTransitionConfigConsolePage {
         guid: 'c17656af-35ac-46b3-9a84-ed1660799274'
     }
 
-    async isAddAutomatedStatusTransitionBtnEnabled(): Promise<boolean> {
-        let buttonElement = await $(this.selectors.addAutomatedTransitionButton);
-//        await browser.wait(this.EC.visibilityOf(buttonElement));
-//        browser.sleep(1000);
-        return await buttonElement.isEnabled();
+    async isAddAutomatedStatusTransitionBtnPresent(): Promise<boolean> {
+        return await $(this.selectors.addAutomatedTransitionButton).isPresent();
     }
 
-    async isDeleteAutomatedStatusTransitionBtnEnabled(): Promise<boolean> {
+    async isDeleteAutomatedStatusTransitionBtnPresent(): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
-        return await $(this.selectors.deleteButton).isEnabled();
+        return await $(this.selectors.deleteButton).isPresent();
     }
 
     async clickAddAutomatedStatusTransitionBtn(): Promise<void> {

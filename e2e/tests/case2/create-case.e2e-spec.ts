@@ -88,7 +88,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });//, 200 * 1000);
+    }, 300 * 1000);
 
     //kgaikwad
     it('[DRDMV-17653]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {

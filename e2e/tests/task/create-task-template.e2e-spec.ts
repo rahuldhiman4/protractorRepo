@@ -304,7 +304,6 @@ describe('Create Task Template', () => {
         }
     });//, 220 * 1000);
 
-
     it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Verify Company, Business Unit, Department and Support Group selection hierarchy in Change Owner.', async () => {
         const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
         const departmentDataFile = require('../../data/ui/foundation/department.ui.json');

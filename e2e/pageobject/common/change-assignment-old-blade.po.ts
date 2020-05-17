@@ -132,7 +132,9 @@ class ChangeAssignmentOldBlade {
                                         if (dropDownLabelText === 'Business Unit') {
                                                 await dropDown[i].$('.d-icon-angle_down').click();
                                                 await dropDown[i].$('input').sendKeys(businessUnit);
-                                                await element(by.cssContainingText("li[ng-repeat*='option']", businessUnit)).click();
+                                                await browser.wait(this.EC.elementToBeClickable(await element(by.cssContainingText("li[ng-repeat*='option']", businessUnit))), 5000).then(async function () {
+                                                        await element(by.cssContainingText("li[ng-repeat*='option']", businessUnit)).click();
+                                                });
                                         }
                                 }
                         });

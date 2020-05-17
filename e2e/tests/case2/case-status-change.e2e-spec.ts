@@ -731,7 +731,7 @@ describe('Case Status Change', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 600 * 1000);
+    }, 680 * 1000);
 
     //apdeshmu
     it('[DRDMV-1200]: [Case Status] Case status change from Pending', async () => {
@@ -848,7 +848,7 @@ describe('Case Status Change', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 500 * 1000);
+    }, 540 * 1000);
 
     //apdeshmu
     it('[DRDMV-4680]: [Status Blade] Case Status Blade view', async () => {

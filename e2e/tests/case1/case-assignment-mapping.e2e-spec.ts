@@ -437,7 +437,7 @@ describe("Create Case Assignment Mapping", () => {
         await expect(viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
         await expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
         await utilCommon.switchToDefaultWindowClosingOtherTabs();
-    }, 430 * 1000);
+    }, 500 * 1000);
 
     it('[DRDMV-12080]: Verify Company and Support Group selection hierarchy.', async () => {
         const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
