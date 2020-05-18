@@ -117,9 +117,6 @@ describe("Create Case", () => {
             await apiHelper.apiLogin('qkatawazi');
             let newCase1 = await apiHelper.createCase(caseData);
             let caseId: string = newCase1.displayId;
-            console.log(caseId);
-            await navigationPage.signOut();
-            await loginPage.login("qtao");
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await $(viewCasePage.selectors.resolutionCodeText).isDisplayed()).toBeTruthy('Missing Resolution Text');
             expect(await $(viewCasePage.selectors.resolutionDescriptionText).isDisplayed()).toBeTruthy('Missing Resolution Description Text');
@@ -242,10 +239,11 @@ describe("Create Case", () => {
             await createCaseTemplate.setCaseSummary(caseTemplateSummary2);
             await createCaseTemplate.setCaseStatusValue("Assigned");
             await createCaseTemplate.clickOnChangeAssignmentButton();
-            await changAssignmentOldPage.setAssignee('Petramco', 'United States Support', 'US Support 3', 'Qianru Tao')
+            await changAssignmentOldPage.setAssignee('Petramco', 'United States Support', 'US Support 3', 'Adam Pavlik')
             await createCaseTemplate.setAllowCaseReopenValue('No');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
+            await utilCommon.waitUntilPopUpDisappear();
 
             //create case
             await navigationPage.signOut();
@@ -256,7 +254,6 @@ describe("Create Case", () => {
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate1);
             await createCasePage.clickAssignToMeButton();
-
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -811,7 +808,7 @@ describe("Create Case", () => {
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentPage.clickOnAssignToMeCheckBox();
             expect(await changeAssignmentPage.getAssigneeName()).toBe('Qiao Feng');
-            await changeAssignmentPage.clickOnAssignButton();
+            await changeAssignmentPage.clickOnCancelButton();
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentPage.selectBusinessUnit('United States Support')
             await changeAssignmentPage.selectSupportGroup('US Support 3');
@@ -820,7 +817,7 @@ describe("Create Case", () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePage.getAssignedGroupText()).toBe('Compensation and Benefits');
+            expect(await viewCasePage.getAssignedGroupText()).toBe('US Support 3');
             expect(await viewCasePage.getAssigneeText()).toBe('Qiao Feng');
         } catch (e) {
             throw e;
@@ -881,7 +878,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 400 * 1000);
+    }, 550 * 1000);
 
     //ankagraw
     it('[DRDMV-1614]: [Case] Fields validation for case in New status ', async () => {
@@ -962,10 +959,22 @@ describe("Create Case", () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let filePath = '../../data/ui/attachment/bwfPdf.pdf';
+        let caseTemplateName = "CaseTemplate" + randomStr;
         let petramcoStr = "Petramco";
         let aUsupportStr = "AU Support 1";
         let kasiaOstlunsStr = "Kasia Ostlun";
-
+        let CaseTemplateData = {
+            "templateName": caseTemplateName,
+            "templateSummary": caseTemplateName,
+            "templateStatus": "Active",
+            "company": "Petramco",
+            "categoryTier1": "Purchasing Card",
+            "categoryTier2": "Policies",
+            "categoryTier3": "Card Issuance",
+            "priority": "Low",
+        }
+        await apiHelper.apiLogin('qtao');
+        await apiHelper.createCaseTemplate(CaseTemplateData);     
         try {
             await navigationPage.signOut();
             await loginPage.login("qtao");
@@ -973,7 +982,7 @@ describe("Create Case", () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickSelectCaseTemplateButton();
-            await selectCaseTemplateBlade.selectCaseTemplate('Change My Legal Name');
+            await selectCaseTemplateBlade.selectCaseTemplate(caseTemplateName);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
