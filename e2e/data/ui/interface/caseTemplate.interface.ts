@@ -5,12 +5,13 @@ export interface ICaseTemplate {
     company: string;
     templateStatus: string;
     ownerCompany: string;
-    ownerBusinessUnit;
+    ownerBusinessUnit:string;
     ownerGroup: string;
     flowset: string;
     categoryTier1: string;
     categoryTier2: string;
     categoryTier3: string;
+    businessUnit:string;
     supportGroup: string;
     assignee: string;
     resolutionCode: boolean;

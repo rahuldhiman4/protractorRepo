@@ -636,6 +636,7 @@ describe('Knowledge Article', () => {
         expect(await changeAssignmentBladePo.isSearchInputBoxPresent()).toBeTruthy("Search Box not present");
         expect(await changeAssignmentBladePo.isAssignToMeCheckBoxSelected()).toBeFalsy("AssignToMe checkbox shouldbe unchecked");
         await changeAssignmentBladePo.selectCompany('Petramco');
+        await changeAssignmentBladePo.selectBusinessUnit('HR Support');
         await changeAssignmentBladePo.selectSupportGroup('Compensation and Benefits');
         await changeAssignmentBladePo.selectAssignee('Peter Kahn');
         await changeAssignmentBladePo.clickOnAssignButton();

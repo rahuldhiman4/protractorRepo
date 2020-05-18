@@ -11,12 +11,13 @@ class StatusBladKnowledgeArticle {
         saveButtonOnReviewer: '[rx-view-component-id="e45ca390-e752-4bd5-97c7-69618d609d59"] button',
     }
 
-    async setKnowledgeStatusWithReviewerDetails(knowledgeStatus:string, company: string, reviewerSupportGroup: string, reviewer: string): Promise<void> {
+    async setKnowledgeStatusWithReviewerDetails(knowledgeStatus:string, company: string, reviewerBusinessUnit: string, reviewerSupportGroup: string, reviewer: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
         await utilCommon.selectDropDownWithName('Status', knowledgeStatus);
         await $(this.selectors.changeReviwerButton).click();
         await changeAssignmentBladePo.selectCompany(company)
+        await changeAssignmentBladePo.selectBusinessUnit(reviewerBusinessUnit);
         await changeAssignmentBladePo.selectSupportGroup(reviewerSupportGroup);
         await changeAssignmentBladePo.selectAssignee(reviewer);
         await changeAssignmentBladePo.clickOnAssignButton();

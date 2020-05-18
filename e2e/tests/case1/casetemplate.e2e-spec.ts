@@ -199,7 +199,7 @@ describe('Case Template', () => {
         await editCaseTemplate.clickSaveCaseTemplate();
     });//, 150 * 1000);
 
-    //ptidke
+    //ptidke 
     it('[DRDMV-1231]: [Edit Case Template] Template metadata edit', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
@@ -210,8 +210,8 @@ describe('Case Template', () => {
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         await utilGrid.searchAndOpenHyperlink(caseTemplateName);
         await editCaseTemplate.clickOnEditCaseTemplateMetadata();
-        await createCaseTemplate.setBusinessUnitDropdownValue(caseTemplateRequiredFields.ownerBusinessUnit);
-        await editCaseTemplate.changeOwnerGroupDropdownValue(caseTemplateRequiredFields.supportGroup);
+        await editCaseTemplate.changeBusinessUnitDropdownValue(caseTemplateRequiredFields.ownerBusinessUnit);
+        await editCaseTemplate.changeOwnerGroupDropdownValue(caseTemplateRequiredFields.ownerGroup);
         await editCaseTemplate.changeTemplateStatusDropdownValue('Draft');
         await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
         await editCaseTemplate.clickEditCaseTemplate();
@@ -227,12 +227,12 @@ describe('Case Template', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         await utilGrid.searchAndOpenHyperlink(caseTemplateName);
-        await expect(await viewCaseTemplate.getOwnerGroupValue()).toContain(caseTemplateRequiredFields.supportGroup);
+        await expect(await viewCaseTemplate.getOwnerGroupValue()).toContain(caseTemplateRequiredFields.ownerGroup);
         await expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Petramco');
         await expect(await viewCaseTemplate.getTemplateStatusValue()).toContain(caseTemplateRequiredFields.templateStatus);
     }, 450 * 1000);
 
-    //ptidke
+    //ptidke 
     it('[DRDMV-1229]: [Case Template Console] Search by Summary and Display ID on the Case Template Console', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
@@ -243,6 +243,9 @@ describe('Case Template', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${casTemplateSummary}`,
             "templateStatus": "Active",
+            "ownerCompany": "Petramco",
+            "ownerBU": "Facilities Support",
+            "ownerGroup": "Facilities",
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
@@ -270,14 +273,18 @@ describe('Case Template', () => {
             let caseTemplateName = 'QucikCaseTemplate' + randomStr;
             let casTemplateSummary = 'QucikCaseTemplateSummaryName' + randomStr;
             let templateData = {
-                "templateName": `${caseTemplateName}`,
-                "templateSummary": `${casTemplateSummary}`,
+                "templateName": caseTemplateName,
+                "templateSummary": caseTemplateName,
+                "caseStatus": "InProgress",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "resolveCaseonLastTaskCompletion": "1",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
                 "assignee": "Fritz",
-                "supportGroup": "Facilities"
+                "ownerBU": 'Facilities Support',
+                "ownerGroup": "Facilities"
             }
+
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
             console.log("active case Template is created===", newCaseTemplate.id);
@@ -315,14 +322,17 @@ describe('Case Template', () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = 'caseTemplateName' + randomStr;
         let casTemplateSummary = 'CaseSummaryName' + randomStr;
+
         let templateData = {
-            "templateName": `${caseTemplateName}`,
-            "templateSummary": `${casTemplateSummary}`,
-            "templateStatus": "Draft",
+            "templateName": caseTemplateName,
+            "templateSummary": caseTemplateName,
             "resolveCaseonLastTaskCompletion": "1",
-            "assignee": "Fritz",
+            "templateStatus": "Draft",
             "company": "Petramco",
+            "businessUnit": "Facilities Support",
             "supportGroup": "Facilities",
+            "assignee": "Fritz",
+            "ownerBU": 'Facilities Support',
             "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
@@ -349,7 +359,7 @@ describe('Case Template', () => {
             "resolveCaseonLastTaskCompletion": "1",
             "assignee": "Fritz",
             "supportGroup": "Facilities",
-            "caseStatus": "Assigned"
+            "caseStatus": "Assigned",
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
@@ -360,8 +370,10 @@ describe('Case Template', () => {
             "templateSummary": `${taskTemplateSummaryYesValue}`,
             "templateStatus": "Active",
             "assignee": "Fritz",
-            "company": "Petramco",
-            "supportGroup": "Facilities"
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
         await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
@@ -383,9 +395,10 @@ describe('Case Template', () => {
             "templateName": `${manualTask}`,
             "templateSummary": `${ManualTaskTempSummary}`,
             "templateStatus": "Active",
-            "company": "Petramco",
-            "assignee": "Fritz",
-            "supportGroup": "Facilities"
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let manualTaskTemplateOne = await apiHelper.createManualTaskTemplate(taskTemplateData);
         await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplateOne.displayId, manualTaskTemplateOne.displayId);
@@ -475,15 +488,20 @@ describe('Case Template', () => {
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseTemplateName = 'caseTemplateName' + randomStr;
             let casTemplateSummary = 'CaseSummaryName' + randomStr;
+
             let templateData = {
-                "templateName": `${caseTemplateName}`,
-                "templateSummary": `${casTemplateSummary}`,
+                "templateName": caseTemplateName,
+                "templateSummary": caseTemplateName,
+                "resolveCaseonLastTaskCompletion": "1",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "resolveCaseonLastTaskCompletion": "1",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
                 "assignee": "Fritz",
-                "supportGroup": "Facilities"
+                "ownerBU": 'Facilities Support',
+                "ownerGroup": "Facilities",
             }
+
             await apiHelper.apiLogin('fritz');
             await navigationPage.gotoCreateCase();
             await apiHelper.createCaseTemplate(templateData);
@@ -555,18 +573,24 @@ describe('Case Template', () => {
         try {
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseTemplateNamePetramco = 'caseTemplateName' + randomStr;
+            console.log(caseTemplateNamePetramco);
+
             let casetemplatePetramco = {
                 "templateName": `${caseTemplateNamePetramco}`,
                 "templateSummary": `${caseTemplateNamePetramco}`,
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
-                "supportGroup": "Facilities",
                 "categoryTier1": "Purchasing Card",
                 "categoryTier2": "Policies",
                 "categoryTier3": "Card Issuance",
                 "casePriority": "Low",
+                "ownerCompany": "Petramco",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "buisnessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
             }
 
             await apiHelper.apiLogin('fritz');
@@ -626,14 +650,18 @@ describe('Case Template', () => {
         try {
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseTemplateName = 'caseTemplateName' + randomStr;
+
             let casetemplateData = {
-                "templateName": `${caseTemplateName}`,
-                "templateSummary": `${caseTemplateName}`,
+                "templateName": caseTemplateName,
+                "templateSummary": caseTemplateName,
+                "resolveCaseonLastTaskCompletion": "1",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "resolveCaseonLastTaskCompletion": "1",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
                 "assignee": "Fritz",
-                "supportGroup": "Facilities"
+                "ownerBU": 'Facilities Support',
+                "ownerGroup": "Facilities",
             }
 
             await apiHelper.apiLogin('fritz');
@@ -671,13 +699,16 @@ describe('Case Template', () => {
             let caseTemplateName = 'caseTemplateName' + randomStr;
             let caseTemplateSummary = 'CaseSummaryName' + randomStr;
             let casetemplatePetramco = {
-                "templateName": `${caseTemplateName}`,
-                "templateSummary": `${caseTemplateSummary}`,
+                "templateName": caseTemplateName,
+                "templateSummary": caseTemplateName,
+                "resolveCaseonLastTaskCompletion": "1",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
+                "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "ownerBU": 'Facilities Support',
+                "ownerGroup": "Facilities",
                 "categoryTier1": "Purchasing Card",
                 "categoryTier2": "Policies",
                 "categoryTier3": "Card Issuance",
@@ -685,6 +716,7 @@ describe('Case Template', () => {
                 "caseStatus": "New",
                 "description": `${caseTemplateSummary}`,
             }
+
 
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
@@ -733,8 +765,12 @@ describe('Case Template', () => {
                 "templateStatus": "Draft",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
+                "ownerCompany": "Petramco",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "buisnessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
+                "assignee": "Fritz",
                 "categoryTier1": "Purchasing Card",
                 "categoryTier2": "Policies",
                 "categoryTier3": "Card Issuance",
@@ -750,7 +786,7 @@ describe('Case Template', () => {
             await utilGrid.searchAndOpenHyperlink(caseTemplateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             await editCaseTemplate.clickOnChangeAssignmentButton();
-            await changAssignmentOldPage.setAssignee('Petramco', 'Compensation and Benefits', 'Qianru Tao');
+            await changAssignmentOldPage.setAssignee('Petramco', 'United States Support', 'US Support 3', 'Qiao Feng');
             let statuses: string[] = ["New", "Assigned", "In Progress", "Resolved", "Closed"];
             expect(await editCaseTemplate.allStatusOptionsPresent(statuses)).toBeTruthy();
             await editCaseTemplate.clickOnEditCaseTemplateMetadata();
@@ -766,7 +802,7 @@ describe('Case Template', () => {
             expect(await viewCaseTemplate.getCategoryTier3()).toContain("Card Issuance");
             expect(await viewCaseTemplate.getCaseCompanyValue()).toContain("Petramco");
             expect(await viewCaseTemplate.getTemplateStatusValue()).toContain("Draft");
-            expect(await viewCaseTemplate.getAssigneeText()).toContain('Qianru Tao');
+            expect(await viewCaseTemplate.getAssigneeText()).toContain('Qiao Feng');
             expect(await viewCaseTemplate.getOwnerGroupValue()).toContain('Compensation and Benefits');
         } catch (e) {
             throw e;
@@ -788,8 +824,12 @@ describe('Case Template', () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
+                "ownerCompany": "Petramco",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "buisnessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
+                "assignee": "Fritz",
                 "categoryTier1": "Purchasing Card",
                 "categoryTier2": "Policies",
                 "categoryTier3": "Card Issuance",
@@ -802,8 +842,12 @@ describe('Case Template', () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
+                "ownerCompany": "Petramco",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "buisnessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
+                "assignee": "Fritz",
                 "categoryTier1": "Purchasing Card",
                 "categoryTier2": "Policies",
                 "categoryTier3": "Card Issuance",
@@ -836,7 +880,7 @@ describe('Case Template', () => {
             expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseTemplateName)).toBeTruthy('TemplateText is not available');
             expect(await activityTabPo.isTextPresentInActivityLog('applied the template')).toBeTruthy();
             await navigationPage.gotoPersonProfile();
-            expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseTemplateName)).toBeTruthy("Template is not avilable on profile");     
+            expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseTemplateName)).toBeTruthy("Template is not avilable on profile");
         } catch (e) {
             throw e;
         } finally {
@@ -857,8 +901,12 @@ describe('Case Template', () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
+                "ownerCompany": "Petramco",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "buisnessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
+                "assignee": "Fritz",
                 "categoryTier1": "Purchasing Card",
                 "categoryTier2": "Policies",
                 "categoryTier3": "Card Issuance",
@@ -871,8 +919,12 @@ describe('Case Template', () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
+                "ownerCompany": "Petramco",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "buisnessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
+                "assignee": "Fritz",
                 "categoryTier1": "Purchasing Card",
                 "categoryTier2": "Policies",
                 "categoryTier3": "Card Issuance",
@@ -883,9 +935,13 @@ describe('Case Template', () => {
                 "templateName": taskTemplateName,
                 "templateSummary": taskTemplateName,
                 "templateStatus": "Active",
+                "buisnessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
                 "assignee": "Fritz",
-                "company": "Petramco",
-                "supportGroup": "Facilities"
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('fritz');
             let newCaseTemplate1 = await apiHelper.createCaseTemplate(casetemplatePetramco1);
@@ -937,8 +993,12 @@ describe('Case Template', () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
+                "ownerCompany": "Petramco",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "buisnessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
+                "assignee": "Fritz",
                 "categoryTier1": "Purchasing Card",
                 "categoryTier2": "Policies",
                 "categoryTier3": "Card Issuance",
@@ -978,15 +1038,19 @@ describe('Case Template', () => {
     it('[DRDMV-9129]:[Negative Testing] - Verify permission for Case Agent from a different support group to edit case template.', async () => {
         try {
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let caseTemplateName = 'caseTemplateName' + randomStr;            
+            let caseTemplateName = 'caseTemplateName' + randomStr;
             let casetemplatePetramco = {
                 "templateName": caseTemplateName,
                 "templateSummary": caseTemplateName,
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
+                "ownerCompany": "Petramco",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "buisnessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
+                "assignee": "Fritz",
                 "categoryTier1": "Purchasing Card",
                 "categoryTier2": "Policies",
                 "categoryTier3": "Card Issuance",
@@ -995,7 +1059,7 @@ describe('Case Template', () => {
             }
             await apiHelper.apiLogin('frieda');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
-           
+
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoCreateCase();
@@ -1020,7 +1084,7 @@ describe('Case Template', () => {
             await utilityGrid.clearFilter();
             await caseConsolePo.searchCase(caseTemplateName);
             expect(await caseConsolePo.isCaseSummaryPresent(caseTemplateName)).toBeFalsy("Case is present for diffrent company");
-       
+
         } catch (e) {
             throw e;
         } finally {
@@ -1032,15 +1096,19 @@ describe('Case Template', () => {
     it('[DRDMV-9130]:[Negative Testing] - Verify permission for Case Manager from a different support group to edit case template.', async () => {
         try {
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let caseTemplateName = 'caseTemplateName' + randomStr;            
+            let caseTemplateName = 'caseTemplateName' + randomStr;
             let casetemplatePetramco = {
                 "templateName": caseTemplateName,
                 "templateSummary": caseTemplateName,
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
+                "ownerCompany": "Petramco",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "buisnessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
+                "assignee": "Fritz",
                 "categoryTier1": "Purchasing Card",
                 "categoryTier2": "Policies",
                 "categoryTier3": "Card Issuance",
@@ -1075,12 +1143,12 @@ describe('Case Template', () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await caseConsolePo.searchCase(caseTemplateName);
-            expect(await caseConsolePo.isCaseSummaryPresent(caseTemplateName)).toBeFalsy("Case is present for diffrent company");  
+            expect(await caseConsolePo.isCaseSummaryPresent(caseTemplateName)).toBeFalsy("Case is present for diffrent company");
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 300 * 1000);   
+    }, 300 * 1000);
 })

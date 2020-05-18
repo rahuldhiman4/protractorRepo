@@ -400,7 +400,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary1,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "3000",
             }
@@ -409,7 +411,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary2,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "3000",
             }
@@ -418,7 +422,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary3,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "3000",
             }
@@ -427,6 +433,10 @@ describe('Case Status Change', () => {
                 "templateName": manualTask,
                 "templateSummary": manualSummary,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCase1 = await apiHelper.createCase(caseData1);
@@ -490,7 +500,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary1,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "Resolved",
             }
@@ -498,7 +510,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary2,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "Resolved",
             }
@@ -506,7 +520,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary3,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "Resolved",
             }
@@ -514,7 +530,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary4,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "Resolved",
             }
@@ -580,7 +598,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary1,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "New",
             }
@@ -588,7 +608,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary2,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "Assigned",
             }
@@ -596,7 +618,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary3,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "In Progress",
             }
@@ -604,7 +628,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary4,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "Pending",
             }
@@ -705,7 +731,7 @@ describe('Case Status Change', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 600 * 1000);
+    }, 680 * 1000);
 
     //apdeshmu
     it('[DRDMV-1200]: [Case Status] Case status change from Pending', async () => {
@@ -720,7 +746,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary1,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "Pending",
             }
@@ -728,7 +756,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary2,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "Pending",
             }
@@ -736,7 +766,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary3,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "Pending",
             }
@@ -744,7 +776,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary4,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "Pending",
             }
@@ -752,7 +786,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary5,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "Pending",
             }
@@ -767,7 +803,7 @@ describe('Case Status Change', () => {
             let caseId4: string = newCase4.displayId;
             let newCase5 = await apiHelper.createCase(caseData5);
             let caseId5: string = newCase5.displayId;
-            let statusOptions: string[] = ["Pending","Assigned", "In Progress", "Resolved", "Canceled", "Closed"];
+            let statusOptions: string[] = ["Pending", "Assigned", "In Progress", "Resolved", "Canceled", "Closed"];
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
@@ -812,7 +848,7 @@ describe('Case Status Change', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 500 * 1000);
+    }, 540 * 1000);
 
     //apdeshmu
     it('[DRDMV-4680]: [Status Blade] Case Status Blade view', async () => {
@@ -824,7 +860,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary1,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "Pending",
             }
@@ -832,7 +870,9 @@ describe('Case Status Change', () => {
             {
                 "Requester": "qtao",
                 "Summary": summary2,
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "New",
             }
@@ -841,7 +881,7 @@ describe('Case Status Change', () => {
             let caseId1: string = newCase1.displayId;
             let newCase2 = await apiHelper.createCase(caseData2);
             let caseId2: string = newCase2.displayId;
-            
+
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();

@@ -130,7 +130,6 @@ describe("Quick Case", () => {
         await quickCase.selectRequesterName('Person1 Person1');
         await quickCase.setCaseSummary('caseSummary');
         await quickCase.createCaseButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Success message not validated');
         await quickCase.gotoCaseButton();
         expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
     });
@@ -244,7 +243,7 @@ describe("Quick Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 700 * 1000);
+    }, 950 * 1000);
 
     //apdeshmu
     it('[DRDMV-786]:[Quick Case] Case creation with all case statuses in template', async () => {
@@ -277,9 +276,11 @@ describe("Quick Case", () => {
             "templateSummary": caseTemplateName3,
             "caseStatus": "InProgress",
             "templateStatus": "Active",
-            "assignee": "Fritz",
             "company": "Petramco",
+            "businessUnit": "Facilities Support",
             "supportGroup": "Facilities",
+            "assignee": "Fritz",
+            "ownerBU": 'Facilities Support',
             "ownerGroup": "Facilities"
         }
         let templateData4 = {
@@ -287,9 +288,11 @@ describe("Quick Case", () => {
             "templateSummary": caseTemplateName4,
             "caseStatus": "Resolved",
             "templateStatus": "Active",
-            "assignee": "Fritz",
             "company": "Petramco",
+            "businessUnit": "Facilities Support",
             "supportGroup": "Facilities",
+            "assignee": "Fritz",
+            "ownerBU": "Facilities Support",
             "ownerGroup": "Facilities"
         }
         try {
@@ -349,9 +352,11 @@ describe("Quick Case", () => {
             "caseStatus": "InProgress",
             "templateStatus": "Draft",
             "description": caseTempalteDescription,
-            "assignee": "Fritz",
             "company": "Petramco",
+            "businessUnit": "Facilities Support",
             "supportGroup": "Facilities",
+            "assignee": "Fritz",
+            "ownerBU": "Facilities Support",
             "ownerGroup": "Facilities"
         }
         let CaseTemplateDataWithDifferentOrganization = {
@@ -359,10 +364,10 @@ describe("Quick Case", () => {
             "templateSummary": `${randomStr}`,
             "caseStatus": "InProgress",
             "templateStatus": "Active",
-            "assignee": "gderuno",
             "company": "Psilon",
+            "businessUnit": "Psilon Support Org1",
             "supportGroup": "Psilon Support Group1",
-            "ownerGroup": "Psilon Support Group1"
+            "assignee": "gderuno",
         }
         try {
             await apiHelper.apiLogin('qkatawazi');
@@ -416,6 +421,10 @@ describe("Quick Case", () => {
             "categoryTier1": "Purchasing Card",
             "categoryTier2": "Policies",
             "categoryTier3": "Card Issuance",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let CaseTemplateData = {
             "templateName": `${caseTemplateName}`,
@@ -424,7 +433,9 @@ describe("Quick Case", () => {
             "templateStatus": "Active",
             "assignee": "Fritz",
             "company": "Petramco",
+            "businessUnit": "Facilities Support",
             "supportGroup": "Facilities",
+            "ownerBU": "Facilities Support",
             "ownerGroup": "Facilities",
             "supportCompany": "Petramco",
             "categoryTier1": "Purchasing Card",
@@ -436,8 +447,10 @@ describe("Quick Case", () => {
         {
             "Requester": "qtao",
             "Summary": caseTemplateName,
-            "Support Group": "Compensation and Benefits",
-            "Assignee": "qkatawazi",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
         }
         let assignmentData =
         {
@@ -679,8 +692,9 @@ describe("Quick Case", () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
+                "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
+                "assignee": "Fritz",
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(templateData);
@@ -693,8 +707,9 @@ describe("Quick Case", () => {
                 "templateStatus": "Draft",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
+                "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
+                "assignee": "Fritz",
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(templateDataDraft);
@@ -751,16 +766,20 @@ describe("Quick Case", () => {
             "templateName": `manualTaskTemplateDraft ${randomStr}`,
             "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let CaseTemplateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${casTemplateSummary}`,
             "caseStatus": "InProgress",
             "templateStatus": "Active",
-            "assignee": "Fritz",
             "company": "Petramco",
+            "businessUnit": "Facilities Support",
             "supportGroup": "Facilities",
-            "ownerGroup": "Facilities",
+            "assignee": "Fritz",
             "casePriority": "Low",
         }
 
@@ -803,7 +822,6 @@ describe("Quick Case", () => {
         expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
         await previewKnowledgePo.clickOnBackButton();
         await quickCase.createCaseButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Success message not validated');
         expect(await previewCasePo.isRequesterNameDisplayed('Adam Pavlik')).toBeTruthy();
         expect(await previewCasePo.isCaseSummaryDisplayed(casTemplateSummary)).toBeTruthy();
         expect(await previewCasePo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();

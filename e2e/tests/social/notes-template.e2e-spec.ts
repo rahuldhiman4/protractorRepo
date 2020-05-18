@@ -401,6 +401,10 @@ describe('Notes template', () => {
                 "templateName": `${taskTemplateName}`,
                 "templateSummary": `${manualTaskSummary}`,
                 "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             };
             await apiHelper.apiLogin('fritz');
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
@@ -417,7 +421,9 @@ describe('Notes template', () => {
                 "Requester": "qtao",
                 "Company": "Petramco",
                 "Summary": "Create case for me postman1",
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "Qadim Katawazi"
             };
             await apiHelper.apiLogin('fritz');

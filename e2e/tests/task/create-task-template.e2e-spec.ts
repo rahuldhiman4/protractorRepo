@@ -304,7 +304,6 @@ describe('Create Task Template', () => {
         }
     });//, 220 * 1000);
 
-
     it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Verify Company, Business Unit, Department and Support Group selection hierarchy in Change Owner.', async () => {
         const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
         const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
@@ -356,6 +355,10 @@ describe('Create Task Template', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `Case Process 1 ${randomStr}`,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -403,8 +406,10 @@ describe('Create Task Template', () => {
             "templateSummary": `${taskTemplateSummary}`,
             "templateStatus": "Active",
             "assignee": "Fritz",
-            "company": "Petramco",
-            "supportGroup": "Facilities"
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
@@ -416,6 +421,7 @@ describe('Create Task Template', () => {
         await createCasePage.setSummary('Summary DRDMV-5326' + randomStr);
         await createCasePage.clickChangeAssignmentButton();
         await changeAssignmentBladePo.selectCompany('Petramco');
+        await changeAssignmentBladePo.selectBusinessUnit('HR Support');
         await changeAssignmentBladePo.selectSupportGroup('Employee Relations');
         await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Employee Relations');
         await changeAssignmentBladePo.clickOnAssignButton();
@@ -430,6 +436,7 @@ describe('Create Task Template', () => {
         await caseAccessTabPo.selectAgentWithWriteAccess('Qiwei Liu');
         await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
         await caseAccessTabPo.selectCompany('Petramco','Select Company');
+        await caseAccessTabPo.selectBusinessUnit('HR Support', 'Select Business Unit')
         await caseAccessTabPo.selectSupportGroup('Staffing','Select Support Group');
         await viewCasePage.clickOnTab('Tasks');
         await viewCasePage.clickAddTaskButton();
@@ -448,6 +455,7 @@ describe('Create Task Template', () => {
         await viewTask.clickOnEditTask();
         await editTaskPo.clickOnChangeAssignementButton();
         await changeAssignmentBladePo.selectCompany('Petramco');
+        await changeAssignmentBladePo.selectBusinessUnit('HR Support');
         await changeAssignmentBladePo.selectSupportGroup('Risk Management');
         await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Risk Management');
         await changeAssignmentBladePo.clickOnAssignButton();
@@ -476,6 +484,7 @@ describe('Create Task Template', () => {
         await viewCasePage.clickEditCaseButton();
         await editCasePo.clickChangeAssignmentButton();
         await changeAssignmentBladePo.selectCompany('Petramco');
+        await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
         await changeAssignmentBladePo.selectSupportGroup('Facilities');
         await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
         await changeAssignmentBladePo.clickOnAssignButton();

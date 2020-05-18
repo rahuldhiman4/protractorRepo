@@ -364,7 +364,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
-            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'AU Support 3', 'Kane Williamson')
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson')
             expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
             await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilityGrid.clearFilter();
@@ -410,7 +410,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
-            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Compensation and Benefits', 'Peter Kahn')
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'HR Support', 'Compensation and Benefits', 'Peter Kahn')
             expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
             await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilityGrid.clearFilter();
@@ -691,13 +691,14 @@ describe('Knowledge Article', () => {
             await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Compensation and Benefits', 'Peter Kahn');
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'HR Support', 'Compensation and Benefits', 'Peter Kahn');
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePage.getKnowledgeReviewHeader()).toContain('Knowledge Review');
             expect(await editKnowledgePage.isReviewerFieldDisabledInEdit()).toBeTruthy('Reviwer field is enabled');
             expect(await editKnowledgePage.isReviewerGroupFieldDisabledInEdit()).toBeTruthy('Reviwer Group field is enabled');
             await editKnowledgePage.clickChangeReviewerBtn();
             await changeAssignmentBlade.selectCompany('Petramco');
+            await changeAssignmentBlade.selectBusinessUnit('Australia Support');
             await changeAssignmentBlade.selectSupportGroup('AU Support 3');
             await changeAssignmentBlade.selectAssignee('Kane Williamson');
             await changeAssignmentBlade.clickOnAssignButton();

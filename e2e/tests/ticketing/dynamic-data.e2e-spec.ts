@@ -79,6 +79,10 @@ describe('Dynamic data', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'DYNAMIC_DATA_FOR_TASK_TEMPLATE');
@@ -88,7 +92,10 @@ describe('Dynamic data', () => {
             "templateName": `${globalTaskTemplateName}`,
             "templateSummary": `${globalmanualTaskSummary}`,
             "templateStatus": "Active",
-            "company": "- Global -"
+            "taskCompany": '- Global -',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         let globalTasktemplate = await apiHelper.createManualTaskTemplate(gloabalTaskData);
@@ -185,6 +192,10 @@ describe('Dynamic data', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_WITH_CONFIDENTIAL');
@@ -441,6 +452,10 @@ describe('Dynamic data', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
@@ -546,6 +561,10 @@ describe('Dynamic data', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
@@ -593,6 +612,10 @@ describe('Dynamic data', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_LONG__DYNAMIC_FIELDS');
@@ -604,6 +627,10 @@ describe('Dynamic data', () => {
             "templateName": `${externalTask}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTemplateData);
@@ -619,6 +646,10 @@ describe('Dynamic data', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `${processName}`,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automationTemplateData);
@@ -788,6 +819,10 @@ describe('Dynamic data', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
@@ -799,6 +834,10 @@ describe('Dynamic data', () => {
             "templateName": `${externalTask}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTemplateData);
@@ -813,6 +852,10 @@ describe('Dynamic data', () => {
             "templateStatus": "Active",
             "processBundle": "ccom.bmc.dsm.case-lib",
             "processName": "Case Managment 1",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automationTemplateData);

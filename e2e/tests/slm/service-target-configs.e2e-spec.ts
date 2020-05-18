@@ -131,6 +131,8 @@ describe('Service Target Tests', () => {
     //skhobrag
     it('[DRDMV-2360]:SLM - Service Target - Create/Edit with min/max information', async () => {
         //when SVT created with only mandatory details
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
         await serviceTargetConfig.createServiceTargetConfig('SVT with mandatory fields', 'Petramco', 'Case Management');
         await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
         await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
@@ -170,7 +172,7 @@ describe('Service Target Tests', () => {
         await serviceTargetConfig.clickOnSaveSVTButton();
         await browser.sleep(2000);
         expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-    }, 300 * 1000);
+    }, 450 * 1000);
 
     //skhobrag
     it('[DRDMV-5038]:"Terms and Condition" qualification is added on Service Target - Create View', async () => {

@@ -252,6 +252,7 @@ class SlmExpressionBuilder {
                 break;
             case "ASSOCIATION":
                 //                await browser.wait(this.EC.elementToBeClickable(clickOnOptionFieldDropDown));
+                await browser.sleep(2000);
                 await clickOnOptionFieldDropDown.click();
                 option = await element(by.cssContainingText(selectFieldOptionFromDropDown, fieldOptionValue));
                 //                await browser.wait(this.EC.elementToBeClickable(option));

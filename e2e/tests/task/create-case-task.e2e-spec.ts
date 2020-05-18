@@ -47,6 +47,10 @@ describe('Create Case Task', () => {
             "templateName": `manualTaskTemplateDraft ${randomStr}`,
             "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         let autoTaskTemplateData = {
@@ -55,6 +59,10 @@ describe('Create Case Task', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `Case Process 1 ${randomStr}`,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
@@ -205,16 +213,28 @@ describe('Create Case Task', () => {
             "templateName": `manualTaskTemplateActive ${randomStr}`,
             "templateSummary": `manualTaskTemplateActive ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let templateData1 = {
             "templateName": `manualTaskTemplateInActive ${randomStr}`,
             "templateSummary": `manualTaskTemplateInActive ${randomStr}`,
             "templateStatus": "Inactive",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let templateData2 = {
             "templateName": `manualTaskTemplateDraft ${randomStr}`,
             "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
             "templateStatus": "Draft",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         let templateData4 = {
@@ -223,6 +243,10 @@ describe('Create Case Task', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `Case Process 1 ${randomStr}`,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         let templateData5 = {
@@ -231,6 +255,10 @@ describe('Create Case Task', () => {
             "templateStatus": "Inactive",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `Case Process 2 ${randomStr}`,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         let templateData6 = {
@@ -239,6 +267,10 @@ describe('Create Case Task', () => {
             "templateStatus": "Draft",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `Case Process 3 ${randomStr}`,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -506,6 +538,10 @@ describe('Create Case Task', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": processName,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         //Automation Task template
         await apiHelper.apiLogin('qkatawazi');
@@ -556,6 +592,10 @@ describe('Create Case Task', () => {
             "templateName": `manualTaskTemplateActive ${randomStr}`,
             "templateSummary": `manualTaskTemplateActive ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let templateData2 = {
             "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
@@ -563,6 +603,10 @@ describe('Create Case Task', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `Case Process 1 ${randomStr}`,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -621,6 +665,10 @@ describe('Create Case Task', () => {
             "templateName": `manualTaskTemplateActive ${randomStr}`,
             "templateSummary": `manualTaskTemplateActive ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let templateData2 = {
             "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
@@ -628,6 +676,10 @@ describe('Create Case Task', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `Case Process 1 ${randomStr}`,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -708,11 +760,19 @@ describe('Create Case Task', () => {
             "templateName": `manualTaskTemplateDraft1 ${randomStr}`,
             "templateSummary": `manualTaskTemplateDraft1 ${randomStr}`,
             "templateStatus": "Draft",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let templateDataActive = {
             "templateName": `manualTaskTemplateActive ${randomStr}`,
             "templateSummary": `manualTaskTemplateActive ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -764,6 +824,10 @@ describe('Create Case Task', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `Case Process 1 ${randomStr}`,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         await apiHelper.apiLogin('fritz');
@@ -819,6 +883,10 @@ describe('Create Case Task', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `Case Process 1 ${randomStr}`,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -854,6 +922,10 @@ describe('Create Case Task', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": 'case_Management_Process' + randomStr,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         let templateData1 = {
@@ -862,6 +934,10 @@ describe('Create Case Task', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": 'case_Management_Process123' + randomStr,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -907,18 +983,30 @@ describe('Create Case Task', () => {
             "templateName": `manualTaskTemplate1 ${randomStr}`,
             "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         let templateData2 = {
             "templateName": `manualTaskTemplate2 ${randomStr}`,
             "templateSummary": `manualTaskTemplateSummary2 ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         let templateData3 = {
             "templateName": `manualTaskTemplate3 ${randomStr}`,
             "templateSummary": `manualTaskTemplateSummary3 ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createManualTaskTemplate(templateData1);
@@ -979,6 +1067,10 @@ describe('Create Case Task', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": 'case_Management_Process' + randomStr,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createAutomatedTaskTemplate(templateData);
@@ -988,6 +1080,8 @@ describe('Create Case Task', () => {
             "Description": "This case was created by java integration tests",
             "Requester": "qkatawazi",
             "Summary": "create case is inProgress Status" + randomStr,
+            "Assigned Company": "Petramco",
+            "Business Unit": "HR Support",
             "Support Group": "Compensation and Benefits",
             "Assignee": "Elizabeth"
         }
@@ -998,6 +1092,8 @@ describe('Create Case Task', () => {
             "Description": "This case was created by java integration tests",
             "Requester": "qkatawazi",
             "Summary": "create case is in Pending Status" + randomStr,
+            "Assigned Company": "Petramco",
+            "Business Unit": "HR Support",
             "Support Group": "Compensation and Benefits",
             "Assignee": "Elizabeth"
         }
@@ -1008,6 +1104,8 @@ describe('Create Case Task', () => {
             "Description": "This case was created by java integration tests",
             "Requester": "qkatawazi",
             "Summary": "create case is in Resolved Status" + randomStr,
+            "Assigned Company": "Petramco",
+            "Business Unit": "HR Support",
             "Support Group": "Compensation and Benefits",
             "Assignee": "Elizabeth"
         }
@@ -1018,6 +1116,8 @@ describe('Create Case Task', () => {
             "Description": "This case was created by java integration tests",
             "Requester": "qkatawazi",
             "Summary": "create case is in Closed Status" + randomStr,
+            "Assigned Company": "Petramco",
+            "Business Unit": "HR Support",
             "Support Group": "Compensation and Benefits",
             "Assignee": "Elizabeth"
         }
@@ -1028,6 +1128,8 @@ describe('Create Case Task', () => {
             "Description": "This case was created by java integration tests",
             "Requester": "qkatawazi",
             "Summary": "create case is in Canceled Status" + randomStr,
+            "Assigned Company": "Petramco",
+            "Business Unit": "HR Support",
             "Support Group": "Compensation and Benefits",
             "Assignee": "Elizabeth"
         }

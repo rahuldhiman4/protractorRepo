@@ -104,22 +104,22 @@ describe("Case Preview", () => {
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary(caseSummary);
         await createCasePo.clickSelectCaseTemplateButton();
-        await selectCasetemplateBladePo.selectCaseTemplate('Change My Legal Name');
+        await selectCasetemplateBladePo.selectCaseTemplate('Paid Time Off Request');
         await createCasePo.clickSaveCaseButton();
         expect(await casePreviewPo.isCaseSummaryDisplayed(caseSummary)).toBeTruthy('Summary is missing');
         expect(await casePreviewPo.isCaseIdDisplayed()).toBeTruthy('Case ID is missing');
-        expect(await casePreviewPo.isPriorityDisplayed('Medium')).toBeTruthy('Priority is missing');
+        expect(await casePreviewPo.isPriorityDisplayed('High')).toBeTruthy('Priority is missing');
         expect(await casePreviewPo.isCaseStatusDisplayed('Assigned')).toBeTruthy('Case Status is missing');
         expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('Requester name is missing');
         expect(await casePreviewPo.isRequesterPhoneDisplayed('+15123431923')).toBeTruthy('Requester phone number is missing');
         expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('Requester email id is missing');
-        expect(await casePreviewPo.isCaseTemplateDisplayed('Change My Legal Name')).toBeTruthy('Case Template is missing');
-        expect(await casePreviewPo.isDescriptionDisplayed('The employee has changed their name and needs our records updated.')).toBeTruthy('Description is missing');
-        expect(await casePreviewPo.isCategoryTier1Displayed('Workforce Administration')).toBeTruthy('CategoryTier1 is missing');
-        expect(await casePreviewPo.isCategoryTier2Displayed('HR Operations')).toBeTruthy('CategoryTier2 is missing');
-        expect(await casePreviewPo.isCategoryTier3Displayed('Adjustments')).toBeTruthy('CategoryTier3 is missing');
-        expect(await casePreviewPo.isAssigneeDisplayed('Al Allbrook')).toBeTruthy('Assignee name is missing');
-        expect(await casePreviewPo.isAssignedGroupDisplayed('Workforce Administration')).toBeTruthy('Assigned group name is missing');
+        expect(await casePreviewPo.isCaseTemplateDisplayed('Paid Time Off Request')).toBeTruthy('Case Template is missing');
+        expect(await casePreviewPo.isDescriptionDisplayed('Register the time off in the HCM system and verify they have enough PTO remaining.')).toBeTruthy('Description is missing');
+        expect(await casePreviewPo.isCategoryTier1Displayed('Total Rewards')).toBeTruthy('CategoryTier1 is missing');
+        expect(await casePreviewPo.isCategoryTier2Displayed('Leave')).toBeTruthy('CategoryTier2 is missing');
+        expect(await casePreviewPo.isCategoryTier3Displayed('PTO')).toBeTruthy('CategoryTier3 is missing');
+        expect(await casePreviewPo.isAssigneeDisplayed('Peter Kahn')).toBeTruthy('Assignee name is missing');
+        expect(await casePreviewPo.isAssignedGroupDisplayed('Compensation and Benefits')).toBeTruthy('Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
@@ -133,10 +133,10 @@ describe("Case Preview", () => {
         await quickCasePo.selectRequesterName('qkatawazi');
         await quickCasePo.setCaseSummary(caseSummary);
         await quickCasePo.saveCase();
-        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Case save message not matched'); 
+        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully', 1)).toBeTruthy('Case save message not matched'); 
         await casePreviewPo.clickOncreateNewCaseButton();
         expect(await quickCasePo.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
-    }, 380 * 1000);
+    });
 
     //kgaikwad
     it('[DRDMV-13680]: UI Validation for Fields on Case Preview Page', async () => {
@@ -217,9 +217,11 @@ describe("Case Preview", () => {
         }
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "apavlik",
             "Summary": `${caseTemplateName}`,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi",
             "Status": "3000",
         }

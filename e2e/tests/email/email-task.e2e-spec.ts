@@ -39,6 +39,10 @@ describe('Email', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(templateData);
@@ -49,6 +53,10 @@ describe('Email', () => {
             "templateName": `${externalTaskTemplateName}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.createExternalTaskTemplate(externaltemplateData);
 
@@ -60,6 +68,10 @@ describe('Email', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": "Auto Process",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
 
@@ -67,7 +79,9 @@ describe('Email', () => {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
@@ -108,6 +122,10 @@ describe('Email', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(templateData);
@@ -118,13 +136,19 @@ describe('Email', () => {
             "templateName": `${externalTaskTemplateName}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.createExternalTaskTemplate(externaltemplateData);
         var caseData = {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
@@ -200,6 +224,10 @@ describe('Email', () => {
                 "templateName": `${taskTemplateName}`,
                 "templateSummary": `${manualTaskSummary}`,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createManualTaskTemplate(templateData);
@@ -210,13 +238,19 @@ describe('Email', () => {
                 "templateName": `${externalTaskTemplateName}`,
                 "templateSummary": `${externalTaskSummary}`,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"    
             }
             await apiHelper.createExternalTaskTemplate(externaltemplateData);
             var caseData = {
                 "Requester": "qtao",
                 "Company": "Petramco",
                 "Summary": "Create case for me postman1",
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "Qadim Katawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
@@ -231,6 +265,7 @@ describe('Email', () => {
             await browser.sleep(2000);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentBladePo.selectSupportGroup('Facilities');
             await changeAssignmentBladePo.selectAssignee('Fritz Schulz');
             await changeAssignmentBladePo.clickOnAssignButton();
@@ -247,6 +282,7 @@ describe('Email', () => {
             await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentBladePo.selectSupportGroup('Facilities');
             await changeAssignmentBladePo.selectAssignee('Fritz Schulz');
             await changeAssignmentBladePo.clickOnAssignButton();
@@ -289,6 +325,10 @@ describe('Email', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(templateData);
@@ -296,7 +336,9 @@ describe('Email', () => {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
@@ -326,6 +368,10 @@ describe('Email', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(templateData);
@@ -335,13 +381,19 @@ describe('Email', () => {
             "templateName": `${externalTaskTemplateName}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.createExternalTaskTemplate(externaltemplateData);
         var caseData = {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
@@ -416,7 +468,9 @@ describe('Email', () => {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for Email Test",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
@@ -468,6 +522,10 @@ describe('Email', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(templateData);
@@ -477,13 +535,19 @@ describe('Email', () => {
             "templateName": `${externalTaskTemplateName}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.createExternalTaskTemplate(externaltemplateData);
         var caseData = {
             "Requester": "qdu",
             "Company": "Petramco",
             "Summary": "Create case for me postman19555",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
@@ -498,6 +562,7 @@ describe('Email', () => {
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         await viewTaskPo.clickOnEditTask();
         await editTask.clickOnChangeAssignementButton();
+        await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
         await changeAssignmentBladePo.selectSupportGroup('Facilities');
         await changeAssignmentBladePo.selectAssignee('Fritz Schulz');
         await changeAssignmentBladePo.clickOnAssignButton();
@@ -523,6 +588,7 @@ describe('Email', () => {
         await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
         await viewTaskPo.clickOnEditTask();
         await editTask.clickOnChangeAssignementButton();
+        await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
         await changeAssignmentBladePo.selectSupportGroup('Facilities');
         await changeAssignmentBladePo.selectAssignee('Fritz Schulz');
         await changeAssignmentBladePo.clickOnAssignButton();
@@ -543,7 +609,7 @@ describe('Email', () => {
         await emailTemplateBladePo.clickOnApplyButton();
         expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
         await emailPo.clickOnSendButton();
-    },330 * 1000);
+    }, 330 * 1000);
 
     it('[DRDMV-19552]: Verify task acknowledgement template are listed in Email Acknowledgement template and In Email Configuration', async () => {
         await navigationPage.gotoSettingsPage();
@@ -569,6 +635,10 @@ describe('Email', () => {
                 "templateName": `${taskTemplateName}`,
                 "templateSummary": `${manualTaskSummary}`,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createManualTaskTemplate(templateData);
@@ -578,13 +648,19 @@ describe('Email', () => {
                 "templateName": `${externalTaskTemplateName}`,
                 "templateSummary": `${externalTaskSummary}`,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.createExternalTaskTemplate(externaltemplateData);
             var caseData = {
                 "Requester": "qtao",
                 "Company": "Petramco",
                 "Summary": "Create case for me postman1",
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "Qadim Katawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
@@ -599,6 +675,7 @@ describe('Email', () => {
             await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentBladePo.selectSupportGroup('Facilities');
             await changeAssignmentBladePo.selectAssignee('Fritz Schulz');
             await changeAssignmentBladePo.clickOnAssignButton();
@@ -610,6 +687,7 @@ describe('Email', () => {
             await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectBusinessUnit('HR Support');
             await changeAssignmentBladePo.selectSupportGroup('Compensation and Benefits');
             await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();

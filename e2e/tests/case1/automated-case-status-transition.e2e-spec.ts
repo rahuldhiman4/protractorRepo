@@ -103,9 +103,9 @@ describe('Automated Case Status Transition', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
 
-            expect(await automatedStatusTransitionConsole.isAddAutomatedStatusTransitionBtnEnabled()).toBeFalsy();
+            expect(await automatedStatusTransitionConsole.isAddAutomatedStatusTransitionBtnPresent()).toBeFalsy();
             await utilGrid.searchAndSelectGridRecord(configName1);
-            expect(await automatedStatusTransitionConsole.isDeleteAutomatedStatusTransitionBtnEnabled()).toBeFalsy();
+            expect(await automatedStatusTransitionConsole.isDeleteAutomatedStatusTransitionBtnPresent()).toBeFalsy();
             await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await automatedStatusTransitionConsole.openAutomatedTransitionConfig(configName1);
@@ -230,7 +230,7 @@ describe('Automated Case Status Transition', () => {
         await navigationPage.gotoCaseConsole();
         await utilityCommon.refresh();
         await notificationPo.clickOnNotificationIcon();
-        expect(await notificationPo.isAlertPresent('Petramco Administrator changed the status of ' + caseId + ' to Closed')).toBeTruthy('Alert message is not present');
+        expect(await notificationPo.isAlertPresent('tadmin Tenant Administrator changed the status of ' + caseId + ' to Closed')).toBeTruthy('Alert message is not present');
     });
 
     //ankagraw

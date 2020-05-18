@@ -129,7 +129,9 @@ describe("Attachment", () => {
         var caseData = {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-11713",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qkatawazi');
@@ -158,7 +160,9 @@ describe("Attachment", () => {
         {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qkatawazi');
@@ -199,7 +203,9 @@ describe("Attachment", () => {
         {
             "Requester": "qtao",
             "Summary": caseSummary,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -209,9 +215,13 @@ describe("Attachment", () => {
         // Create Task Template
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTaskTemplateData = {
-            "templateName": `manualTaskTemplateDraft ${randomStr}`,
-            "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
+            "templateName": "manualTaskTemplateDraft" + randomStr,
+            "templateSummary": "manualTaskTemplateDraft" + randomStr,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
@@ -233,8 +243,8 @@ describe("Attachment", () => {
 
         // //Add Manual task and Automation Task in Case
         await viewCasePo.clickAddTaskButton();
-        await manageTask.addTaskFromTaskTemplate(`manualTaskTemplateDraft ${randomStr}`);
-        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateDraft ${randomStr}`);
+        await manageTask.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
+        await manageTask.clickTaskLinkOnManageTask(manualTaskTemplateData.templateName);
         await activityTabPo.addActivityNote(addNotes);
         await activityTabPo.addAttachment([wordFilePath]);
         await activityTabPo.clickOnPostButton();
@@ -293,7 +303,9 @@ describe("Attachment", () => {
         {
             "Requester": "qtao",
             "Summary": caseSummary,
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
@@ -310,6 +322,10 @@ describe("Attachment", () => {
                 "templateName": `manualTaskTemplateDraft ${taskRandString[i]}`,
                 "templateSummary": `manualTaskTemplateDraft ${taskRandString[i]}`,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
