@@ -42,6 +42,7 @@ import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING } from '../data/api/shared-
 import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
 import { CASE_APPROVAL_FLOW } from '../data/api/approval/case.approval.flow.api';
 import { CASE_APPROVAL_MAPPING } from '../data/api/approval/case.approval.mapping.api';
+import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -873,8 +874,7 @@ class ApiHelper {
     }
 
     async createKnowledgeArticle(data: IKnowledgeArticles, attachment?: string): Promise<IIDs> {
-        let knowledgeArticleFile = await require('../data/api/knowledge/knowledge.article.api.json');
-        let knowledgeArticleData = await knowledgeArticleFile.KnowledgeArticleData;
+        let knowledgeArticleData = KNOWLEDGE_ARTICLE_PAYLOAD;
         let knowledgeArticleResponse: AxiosResponse;
 
         if (attachment) {
@@ -1060,7 +1060,7 @@ class ApiHelper {
                 }
                 knowledgeArticleData.fieldInstances["302300513"] = assigneeData;
             }
-            
+
             knowledgeArticleResponse = await coreApi.createRecordInstance(knowledgeArticleData);
             console.log('Create Knowledge Article API Status =============>', knowledgeArticleResponse.status);
         }
@@ -1074,8 +1074,7 @@ class ApiHelper {
     }
 
     async updateKnowledgeArticleStatus(articleGuid: string, articleStatus: string, reviewer?: string, reviewerGroup?: string, reviewerOrg?: string): Promise<boolean> {
-        let knowledgeArticleFile = await require('../data/api/knowledge/knowledge.article.api.json');
-        let knowledgeArticleData = await knowledgeArticleFile.UpdateKnowledgeArticleData;
+        let knowledgeArticleData = UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD;
         knowledgeArticleData.id = articleGuid;
         knowledgeArticleData.fieldInstances[302300500].value = constants.Knowledge[articleStatus];
         knowledgeArticleData.fieldInstances[536870913].value = await coreApi.getStatusGuid('com.bmc.dsm.knowledge', constants.Knowledge[articleStatus], articleStatus);
