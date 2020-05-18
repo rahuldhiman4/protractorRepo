@@ -39,9 +39,8 @@
         "Requester": "Elizabeth",
         "Priority": "4000",
         "Summary": "Testing case creation with maximal input data",
-        "Business Unit": "United States Support",
-        "Support Group": "US Support 3",
-        "Assignee": "qkatawazi"
+        "Business Unit": "HR Support",
+        "Support Group": "Compensation and Benefits"
     },
     "DRDMV-14088": {
         "Status": "2000",

@@ -78,12 +78,12 @@ class AcknowledgmentTemplateConsolePage {
         await utilGrid.clearFilter();
     }
 
-    async isAddAcknowledgeTemplateButtonEnabled(): Promise<boolean>{
-        return await $(this.selectors.addAckTemplates).isEnabled();
+    async isAddAcknowledgeTemplateButtonDisplayed(): Promise<boolean>{
+        return await $(this.selectors.addAckTemplates).isPresent();
     }
 
-    async isDeleteAcknowledgementTemplateButtonEnabled(): Promise<boolean>{
-        return await $(this.selectors.delete).isEnabled();
+    async isDeleteAcknowledgementTemplateButtonDisplayed(): Promise<boolean>{
+        return await $(this.selectors.delete).isPresent();
     }
 }
 

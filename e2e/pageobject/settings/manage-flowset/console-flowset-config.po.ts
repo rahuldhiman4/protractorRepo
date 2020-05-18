@@ -13,9 +13,9 @@ class ConsoleFlowset {
         refreshBtn: '.rx-record-grid-toolbar__refresh',
     }
 
-    async isAddFlowsetButtonDisabled(): Promise<boolean> {
+    async isAddFlowsetButtonDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.addFlowsetButton)));
-        return await $(this.selectors.addFlowsetButton).getAttribute("disabled") == "true";
+        return await $(this.selectors.addFlowsetButton).isPresent();
     }
 
     async clickOnAddFlowset(): Promise<void> {

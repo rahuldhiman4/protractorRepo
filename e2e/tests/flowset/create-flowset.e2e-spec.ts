@@ -31,7 +31,7 @@ describe('Create Flowset', () => {
         let drpDownStatus: string[] = ['Draft', 'Active', 'Inactive'];
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
-        await expect(consoleFlowset.isAddFlowsetButtonDisabled()).toBeFalsy("Add flowset is disabled");
+        await expect(consoleFlowset.isAddFlowsetButtonDisplayed()).toBeTruthy("Add flowset is disabled");
         await consoleFlowset.clickOnAddFlowset();
 
         //verify the Titles

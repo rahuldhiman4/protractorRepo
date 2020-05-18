@@ -63,14 +63,14 @@ class ConsoleNotesTemplate {
         return (a == b == c == d == true);
     }
 
-    async isAddNotesTemplateBtnDisabled(): Promise<boolean> {
+    async isAddNotesTemplateBtnDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.notesTemplate)));
-        return await $(this.selectors.notesTemplate).getAttribute("disabled") == "true";
+        return await $(this.selectors.notesTemplate).isPresent();
     }
 
-    async isDeleteNotesTemplateBtnDisabled(): Promise<boolean> {
+    async isDeleteNotesTemplateBtnDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
-        return await $(this.selectors.deleteButton).getAttribute("disabled") == "true";
+        return await $(this.selectors.deleteButton).isPresent();
     }
     
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {

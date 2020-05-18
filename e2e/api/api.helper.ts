@@ -42,6 +42,8 @@ import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING } from '../data/api/shared-
 import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
 import { CASE_APPROVAL_FLOW } from '../data/api/approval/case.approval.flow.api';
 import { CASE_APPROVAL_MAPPING } from '../data/api/approval/case.approval.mapping.api';
+import { BUSINESS_TIME_SHARED_ENTITY } from '../data/api/slm/business.time.shared.entity.api';
+import { BUSINESS_TIME_SEGMENT } from '../data/api/slm/business.time.segment.api';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -1721,7 +1723,6 @@ class ApiHelper {
         if (assignee) {
             APPROVAL_ACTION.commands[0]["assignToApprovers"] = assignee;
         }
-
         await browser.sleep(20000);
         let response = await axios.post(
             commandUri,
@@ -1798,6 +1799,27 @@ class ApiHelper {
         let response = await coreApi.createRecordInstance(CASE_APPROVAL_MAPPING);
         console.log('Case Approval Mapping API Status =============>', response.status);
         return response.status == 204;
+    }
+
+    async createBusinessTimeSharedEntity(name: string, status?: number): Promise<boolean>{
+        if(status) BUSINESS_TIME_SHARED_ENTITY.fieldInstances[7].value = status;
+        BUSINESS_TIME_SHARED_ENTITY.fieldInstances[8].value = name;
+        let response = await coreApi.createRecordInstance(BUSINESS_TIME_SHARED_ENTITY);
+        console.log('Create Business Shared Entity API Status =============>', response.status);
+        return response.status == 204;
+    }
+
+    async createBusinessTimeSegment(name: string): Promise<IIDs>{
+        BUSINESS_TIME_SEGMENT.fieldInstances[8].value = name;
+        let response = await coreApi.createRecordInstance(BUSINESS_TIME_SHARED_ENTITY);
+        console.log('Create Business Time Segment API Status =============>', response.status);
+        const businessTimeSegment = await axios.get(
+            response.headers.location
+        );
+        return {
+            id: businessTimeSegment.data.id,
+            displayId: businessTimeSegment.data.displayId
+        };
     }
 
 }
