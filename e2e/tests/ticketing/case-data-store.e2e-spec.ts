@@ -161,7 +161,7 @@ describe('Case Data Store', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 290 * 1000);
+    }, 380 * 1000);
 
     //ptidke
     it('[DRDMV-13115]:[Dynamic Data] - Update Dynamic fields in Existing Case Template by replacing old fields with new Fields', async () => {
@@ -229,11 +229,9 @@ describe('Case Data Store', () => {
         let templateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${casTemplateSummary}`,
-            "templateStatus": "Draft",
-            "resolveCaseonLastTaskCompletion": "1",
-            "assignee": "Fritz",
+            "templateStatus": "Active",
             "company": "Petramco",
-            "supportGroup": "Facilities",
+            "ownerBU": "Facilities Support",
             "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('tadmin');
@@ -252,10 +250,6 @@ describe('Case Data Store', () => {
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field2OutSideGroup)).toBeTruthy();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field3OutSideGroup)).toBeTruthy();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field4OutSideGroup)).toBeTruthy();
-        //active template 
-        await viewCasetemplatePo.clickEditTemplateMetaData();
-        await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
-        await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qtao');
         await createCasePo.setSummary('Summary');
@@ -425,6 +419,12 @@ describe('Case Data Store', () => {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${caseTemaplateSummary}`,
                 "templateStatus": "Active",
+                "assignee": "Fritz",
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "ownerBU": "Facilities Support",
+                "supportGroup": "Facilities",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('fritz');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
@@ -487,6 +487,12 @@ describe('Case Data Store', () => {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${caseTemaplateSummary}`,
                 "templateStatus": "Active",
+                "assignee": "Fritz",
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "ownerBU": "Facilities Support",
+                "supportGroup": "Facilities",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('fritz');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
@@ -625,7 +631,6 @@ describe('Case Data Store', () => {
             "ownerBusinessUnit": "Facilities Support",
             "ownerGroup": "Facilities"
         }
-        console.log(`Automate13610${randomStr}`);
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createAutomatedTaskTemplate(templateData);
         await navigationPage.gotoSettingsPage();
@@ -706,7 +711,7 @@ describe('Case Data Store', () => {
         expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskListOfDataNameDesc')).toBeTruthy();
         expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterConfidentialDesc')).toBeTruthy();
     });
- //ptidke
+    //ptidke
     it('[DRDMV-13154]: [Dynamic Data] [UI] - Dynamic Fields display on Task Edit view UI', async () => {
         try {
             await navigationPage.signOut();
@@ -791,15 +796,14 @@ describe('Case Data Store', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${casTemplateSummary}`,
             "templateStatus": "Draft",
-            "resolveCaseonLastTaskCompletion": "1",
-            "assignee": "Fritz",
             "company": "Petramco",
-            "supportGroup": "Facilities",
+            "ownerBU": "Facilities Support",
             "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let casetemplateddetails = await apiHelper.createCaseTemplate(caseTemplateData);
         await apiHelper.createDynamicDataOnTemplate(casetemplateddetails.id, 'CASE_TEMPLATE_REQUESTER_DYNAMIC_FIELDS');
+        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         await utilGrid.searchAndOpenHyperlink(caseTemplateName)
@@ -826,9 +830,10 @@ describe('Case Data Store', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${casTemplateSummary}`,
             "templateStatus": "Draft",
-            "resolveCaseonLastTaskCompletion": "1",
             "assignee": "Fritz",
             "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
             "supportGroup": "Facilities",
             "ownerGroup": "Facilities"
         }
@@ -919,6 +924,7 @@ describe('Case Data Store', () => {
         await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
         let arr: string[] = ['LibTextField', 'LibNumberField', 'LibDateField', 'LibBooleanField', 'LibDateTimeField', 'LibTimeField', 'LibattachmentField'];
         //navigate to case template
+        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         await utilGrid.searchAndOpenHyperlink(caseTemplateName)
@@ -931,8 +937,8 @@ describe('Case Data Store', () => {
         await dynamicFieldsPo.searchField('LibNumberField');
         expect(await dynamicFieldsPo.isDynamicFieldPresentInDynamicSection('LibNumberField')).toBeTruthy('field not present LibNumberField');
         await utilityCommon.refresh();
-    
-    });
+
+    }, 350 * 1000);
 
     it('[DRDMV-13112]: [Dynamic Data] [UI] - Dynamic Fields display on Case Template Edit view UI', async () => {
         await apiHelper.apiLogin('tadmin');
@@ -943,6 +949,12 @@ describe('Case Data Store', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
@@ -952,6 +964,12 @@ describe('Case Data Store', () => {
             "templateName": `${caseTemplateName2}`,
             "templateSummary": `${caseTemaplateSummary2}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         let newCaseTemplate2 = await apiHelper.createCaseTemplate(casetemplateData2);
@@ -962,6 +980,12 @@ describe('Case Data Store', () => {
             "templateName": `${caseTemplateName3}`,
             "templateSummary": `${caseTemaplateSummary3}`,
             "templateStatus": "Draft",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         let newCaseTemplate3 = await apiHelper.createCaseTemplate(casetemplateData3);
@@ -971,6 +995,12 @@ describe('Case Data Store', () => {
             "templateName": `${caseTemplateName4}`,
             "templateSummary": `${caseTemaplateSummary4}`,
             "templateStatus": "Inactive",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         let newCaseTemplate4 = await apiHelper.createCaseTemplate(casetemplateData4);
@@ -1036,5 +1066,5 @@ describe('Case Data Store', () => {
         expect(await editCasetemplatePo.isDynamicFieldDisplayed('newInactive' + randomStr)).toBeTruthy('field not present');
         expect(await editCasetemplatePo.isDynamicFieldDisplayed('newInactiveSys' + randomStr)).toBeTruthy('field not present');
         await editCasetemplatePo.clickOnCancelButton();
-    });
+    }, 350 * 1000);
 })

@@ -31,7 +31,7 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 
 
 
-describe('Case Data Store', () => {
+describe('Dynamic Hidden Data', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
