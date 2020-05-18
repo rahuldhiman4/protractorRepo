@@ -34,9 +34,9 @@ describe('Knowledge Article', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('peter');
-        // await foundationData('Petramco');
-        // await foundationData19501('Petramco');
-        // await foundationData19082('Petramco');
+        await foundationData('Petramco');
+        await foundationData19501('Petramco');
+        await foundationData19082('Petramco');
     });
 
     afterAll(async () => {
