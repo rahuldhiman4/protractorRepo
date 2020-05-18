@@ -247,5 +247,5 @@ describe('Acknowledgment Template', () => {
         await utilCommon.closePopUpMessage();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-    }, 520 * 1000);
+    }, 550 * 1000);
 })

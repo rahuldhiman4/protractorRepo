@@ -62,12 +62,14 @@ describe('Email', () => {
 
         let automatedTaskTemplateName = 'Automated task19011' + randomStr;
         let automatedTaskSummary = 'AutomatedSummary19011' + randomStr;
+        let automatedTaskProcess = 'Auto Proces' + randomStr;
+
         var automatedtemplateData = {
             "templateName": `${automatedTaskTemplateName}`,
             "templateSummary": `${automatedTaskSummary}`,
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
-            "processName": "Auto Process",
+            "processName": `${automatedTaskProcess}`,
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
             "ownerBusinessUnit": "Facilities Support",
@@ -112,8 +114,9 @@ describe('Email', () => {
         await viewTaskPo.clickEmailLink();
         await emailPo.clickOnDiscardButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-    });
+    },250*1000);
 
+    //Failed due to application issue...defect logged DRDMV-21883
     it('[DRDMV-19008]: Email icon and Requester email link should open compose email dialog in Task', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual task19008' + randomStr;
@@ -360,6 +363,7 @@ describe('Email', () => {
         await expect(activityTabPo.getActivityNotesText('Reply all')).toBeFalsy();
     });
 
+    //Failed due to application issue...defect logged DRDMV-21883
     it('[DRDMV-19556]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual  task' + randomStr;
@@ -463,6 +467,7 @@ describe('Email', () => {
         expect(await activityTabPo.getEmailBody()).toContain('this is third reply');
     });//, 200 * 1000);
 
+    //Failed due to application issue...defect logged DRDMV-21883
     it('[DRDMV-19557]: For Reply / Reply All earlier email context should be copied as part of email composition on Case', async () => {
         var caseData = {
             "Requester": "qtao",
@@ -505,6 +510,7 @@ describe('Email', () => {
         await emailPo.clickOnSendButton();
     });//, 200 * 1000);
 
+    //Failed due to application issue...defect logged DRDMV-21883    
     it('[DRDMV-19555]: In Case of Reply/Reply All  if we select new Email template then previous contents should not be erased.', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
@@ -687,8 +693,8 @@ describe('Email', () => {
             await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('HR Support');
-            await changeAssignmentBladePo.selectSupportGroup('Compensation and Benefits');
+            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
             await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
@@ -702,7 +708,8 @@ describe('Email', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(ManualtaskID);
             await viewTaskPo.clickOnRequesterEmail();
-            expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeFalsy();
+            await browser.sleep(2000);
+            expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeTruthy();
             await emailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         } catch (e) {
@@ -712,5 +719,5 @@ describe('Email', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         }
-    }, 380 * 1000);
+    }, 400 * 1000);
 })
