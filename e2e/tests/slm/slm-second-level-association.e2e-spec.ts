@@ -9,6 +9,7 @@ import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbu
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import apiHelper from '../../api/api.helper';
 
 let caseBAUser = 'qkatawazi';
 
@@ -20,6 +21,11 @@ describe('Service Target - Second Level Association Tests', () => {
 
     afterAll(async () => {
         await navigationPage.signOut();
+    });
+
+    beforeEach(async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteServiceTargets();
     });
 
     afterEach(async () => {
@@ -76,7 +82,7 @@ describe('Service Target - Second Level Association Tests', () => {
         console.log(selectedExpx);
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
-        await serviceTargetConfig.selectGoal("2");
+        await serviceTargetConfig.selectGoal("3");
         await serviceTargetConfig.selectMileStone();
         await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
@@ -90,13 +96,14 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        await browser.sleep(31000);
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-        await browser.sleep(100000);
+        await browser.sleep(120000);
         await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
-        // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
-        await browser.sleep(40000);
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
+        await browser.sleep(50000);
         await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
@@ -114,7 +121,7 @@ describe('Service Target - Second Level Association Tests', () => {
         expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"';
         expect(selectedExp).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
-        await serviceTargetConfig.selectGoal("2");
+        await serviceTargetConfig.selectGoal("3");
         await serviceTargetConfig.selectMileStone();
         await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
@@ -128,32 +135,34 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        await browser.sleep(31000);
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-        await browser.sleep(100000);
+        await browser.sleep(120000);
         await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
-        // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
-        await browser.sleep(40000);
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
+        await browser.sleep(50000);
         await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
 
-    }, 600 * 1000);
+    }, 750 * 1000);
 
+    //Application issue...
     it('[DRDMV-19660]:SVT created for Company associations and SVT get links to a Case', async () => {
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
+        await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'); expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
             .toEqual('Service Target - Administration - Business Workflows');
         await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
 
         //Verify second level association for Company
-        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Company', 'Abbreviation', "=", 'TEXT', "ptramco");
+        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Company', 'Type', "=", 'NAMED_LIST', "Operating Organization");
         let selectedExpx = await slmExpressionBuilder.getSelectedExpression();
-        var expectedSelectedExp = "'" + "Company > Abbreviation" + "'" + "=" + '"' + "ptramco" + '"'
+        var expectedSelectedExp = "'" + "Company > Type" + "'" + "=" + '"' + "Operating Organization" + '"'
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
-        await serviceTargetConfig.selectGoal("2");
+        await serviceTargetConfig.selectGoal("3");
         await serviceTargetConfig.selectMileStone();
         await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
@@ -167,18 +176,18 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        await browser.sleep(31000);
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-        await browser.sleep(100000);
+        await browser.sleep(130000);
         await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
-        // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
-        await browser.sleep(40000);
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
+        await browser.sleep(50000);
         await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
-
-    }, 600 * 1000);
+    }, 750 * 1000);
 
     it('[DRDMV-19662]:SVT created for Case Site associations and SVT get links to a Case', async () => {
         await navigationPage.gotoSettingsPage();
@@ -193,7 +202,7 @@ describe('Service Target - Second Level Association Tests', () => {
         console.log(selectedExpx);
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
-        await serviceTargetConfig.selectGoal("2");
+        await serviceTargetConfig.selectGoal("3");
         await serviceTargetConfig.selectMileStone();
         await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
@@ -207,17 +216,18 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        await browser.sleep(31000);
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-        await browser.sleep(100000);
+        await browser.sleep(130000);
         await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
-        // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
-        await browser.sleep(40000);
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
+        await browser.sleep(50000);
         await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
-    }, 600 * 1000);
+    }, 750 * 1000);
 
     it('[DRDMV-19663]:SVT created for Assigned Company associations and SVT get links to a Case', async () => {
         await navigationPage.gotoSettingsPage();
@@ -231,7 +241,7 @@ describe('Service Target - Second Level Association Tests', () => {
         var expectedSelectedExp = "'" + "Assigned Company > Abbreviation" + "'" + "=" + '"' + "ptramco" + '"'
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
-        await serviceTargetConfig.selectGoal("2");
+        await serviceTargetConfig.selectGoal("3");
         await serviceTargetConfig.selectMileStone();
         await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
@@ -245,18 +255,19 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        await browser.sleep(31000);
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-        await browser.sleep(100000);
+        await browser.sleep(130000);
         await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
-        // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
-        await browser.sleep(40000);
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
+        await browser.sleep(50000);
         await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
 
-    }, 600 * 1000);
+    }, 750 * 1000);
 
     it('[DRDMV-19664]:SVT created for Requester associations and SVT get links to a Case', async () => {
         await navigationPage.gotoSettingsPage();
@@ -270,7 +281,7 @@ describe('Service Target - Second Level Association Tests', () => {
         var expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco.com" + '"'
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
-        await serviceTargetConfig.selectGoal("2");
+        await serviceTargetConfig.selectGoal("3");
         await serviceTargetConfig.selectMileStone();
         await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
@@ -284,17 +295,18 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        await browser.sleep(31000);
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-        await browser.sleep(100000);
+        await browser.sleep(130000);
         await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
-        // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
-        await browser.sleep(40000);
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
+        await browser.sleep(50000);
         await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
-    }, 600 * 1000);
+    }, 750 * 1000);
 
     it('[DRDMV-19668]:Check SVT is attached to a Case and later Associations are updated', async () => {
         await navigationPage.gotoSettingsPage();
@@ -308,7 +320,7 @@ describe('Service Target - Second Level Association Tests', () => {
         var expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco.com" + '"'
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
-        await serviceTargetConfig.selectGoal("2");
+        await serviceTargetConfig.selectGoal("3");
         await serviceTargetConfig.selectMileStone();
         await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
@@ -322,17 +334,18 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        await browser.sleep(31000);
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-        await browser.sleep(100000);
+        await browser.sleep(130000);
         await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
-        // expect(await caseEditPage.getSlaBarColor()).toBe('rgba(255, 165, 0, 1)'); //orange
-        await browser.sleep(40000);
+        expect(await viewCasePo.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
+        await browser.sleep(50000);
         await utilityCommon.refresh();
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
-    }, 600 * 1000);
+    }, 750 * 1000);
 
 
 

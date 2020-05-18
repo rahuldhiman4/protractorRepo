@@ -132,7 +132,11 @@ class ServiceTargetConfig {
     }
 
     async isSaveButtonEnabled(): Promise<boolean> {
-        return await $(this.selectors.saveSVTButton).getAttribute("disabled") == 'true';
+        if (await $(this.selectors.saveSVTButton).getAttribute("disabled")) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     async isCloseButtonEnabled(): Promise<boolean> {
