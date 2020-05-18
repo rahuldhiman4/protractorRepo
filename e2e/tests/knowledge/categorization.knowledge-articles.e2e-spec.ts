@@ -87,8 +87,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2"
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
+            "assignee": "KMills"
         }
         // Create article in in progress status
         articleData.title = title + "_" + inProgressStatus;
@@ -166,8 +168,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
         await apiHelper.associatePersonToSupportGroup('dbomei', suppGrpData.orgName);
         await apiHelper.associateCategoryUnderDomainTag('Applications', domainTag);
     }
-
-
 
     it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
         let categoryTierFieldColumns: string[] = ["Category Tier 1", "Category Tier 2", "Category Tier 3"];

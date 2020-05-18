@@ -1417,9 +1417,10 @@ describe('Case Activity', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "KMills",
-                "assigneeSupportGroup": "GB Support 2",
-                "company": "Petramco"
+                "assignedCompany":"Petramco",
+                "assigneeBusinessUnit":"United Kingdom Support",
+                "assigneeSupportGroup":"GB Support 1",
+                "assignee": "KMills"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
