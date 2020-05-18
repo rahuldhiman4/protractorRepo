@@ -450,6 +450,9 @@ describe("Quick Case", () => {
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
             "Support Group": "US Support 3",
+            "categoryTier1": "Purchasing Card",
+            "categoryTier2": "Policies",
+            "categoryTier3": "Card Issuance",
             "Assignee": "qkatawazi"
         }
         let assignmentData =
@@ -545,7 +548,7 @@ describe("Quick Case", () => {
             "assignee": "kayo",
             "assigneeSupportGroup": "US Support 1",
             "company": "Petramco",
-            "categoryTier1": "Applications",
+            "categoryTier1": "Workforce Administration",
             "region": "Australia",
             "site": "Canberra",
         }
@@ -556,7 +559,7 @@ describe("Quick Case", () => {
             "assignee": "kayo",
             "assigneeSupportGroup": "US Support 1",
             "company": "Petramco",
-            "categoryTier1": "Applications",
+            "categoryTier1": "Workforce Administration",
             "region": "Australia",
             "site": "Canberra",
         }
@@ -567,7 +570,7 @@ describe("Quick Case", () => {
             "assignee": "kayo",
             "assigneeSupportGroup": "US Support 1",
             "company": "Petramco",
-            "categoryTier1": "Applications",
+            "categoryTier1": "Workforce Administration",
             "region": "Australia",
             "site": "Canberra",
         }
@@ -578,7 +581,7 @@ describe("Quick Case", () => {
             "assignee": "kayo",
             "assigneeSupportGroup": "US Support 1",
             "company": "Petramco",
-            "categoryTier1": "Applications",
+            "categoryTier1": "Workforce Administration",
             "region": "Australia",
             "site": "Canberra",
         }
@@ -589,7 +592,7 @@ describe("Quick Case", () => {
             "assignee": "kayo",
             "assigneeSupportGroup": "US Support 1",
             "company": "Petramco",
-            "categoryTier1": "Applications",
+            "categoryTier1": "Workforce Administration",
             "region": "Australia",
             "site": "Canberra",
         }
@@ -600,7 +603,7 @@ describe("Quick Case", () => {
             "assignee": "kayo",
             "assigneeSupportGroup": "US Support 1",
             "company": "Petramco",
-            "categoryTier1": "Applications",
+            "categoryTier1": "Workforce Administration",
             "region": "Australia",
             "site": "Canberra",
         }
@@ -633,7 +636,7 @@ describe("Quick Case", () => {
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
             await resources.selectAdvancedSearchFilterOption('ArticleStatus', 'In Progress');
             await resources.selectAdvancedSearchFilterOption('Knowledge Set', 'HR');
-            await resources.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Applications');
+            await resources.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Workforce Administration');
             await resources.selectAdvancedSearchFilterOption('Region', 'Australia');
             await resources.selectAdvancedSearchFilterOption('Site', 'Canberra');
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
@@ -728,6 +731,7 @@ describe("Quick Case", () => {
             await quickCase.selectRequesterName('adam');
             expect(await quickCase.selectCaseTemplate(caseTemplateName)).toBeTruthy('template is present1');
             await quickCase.selectRequesterName('adam');
+            await quickCase.selectRoleValue('Related to');
             expect(await quickCase.selectCaseTemplate(caseTemplateDraft)).toBeFalsy('template is present2');
             await quickCase.selectRequesterName('fritz');
             expect(await quickCase.selectCaseTemplate(caseTemplatePsilon)).toBeFalsy('template is present3');
@@ -737,10 +741,6 @@ describe("Quick Case", () => {
             await quickCase.createCaseButton();
             await quickCase.gotoCaseButton();
             expect(await viewCasePo.getCaseTemplateText()).toBe(caseTemplateName);
-            await navigationPage.gotoQuickCase();
-            await quickCase.selectRequesterName('adam');
-            await quickCase.selectRoleValue('Related to');
-            expect(await quickCase.selectCaseTemplate(caseTemplateDraft)).toBeFalsy('template is present4');
         } catch (e) {
             throw e;
         }
@@ -748,7 +748,7 @@ describe("Quick Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 700 * 1000);
+    }, 750 * 1000);
 
     //ankagraw
     it('[DRDMV-796]: [Quick Case] Resources preview', async () => {
@@ -958,7 +958,7 @@ describe("Quick Case", () => {
     it('[DRDMV-18972]: Populating fields in Quick Case if only Required parameter is specified', async () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18972';
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=PET000000000484&desc=&contact=');
+        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=PET00000104&desc=&contact=');
         expect(await quickCase.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester1);
         expect(await quickCase.isCreateButtonDisabled()).toBeTruthy;
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu@petramco.com&desc=&contact=');
@@ -976,7 +976,7 @@ describe("Quick Case", () => {
     it('[DRDMV-18973]: Populating fields in Quick Case when all parameters are specified', async () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18973';
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu@petramco.com&desc=Change my Last Name&contact=PET000000000484');
+        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu@petramco.com&desc=Change my Last Name&contact=PET00000104');
         await browser.sleep(1000);
         expect(await quickCase.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
         expect(await quickCase.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);

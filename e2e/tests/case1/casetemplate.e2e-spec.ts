@@ -284,7 +284,6 @@ describe('Case Template', () => {
                 "ownerBU": 'Facilities Support',
                 "ownerGroup": "Facilities"
             }
-
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
             console.log("active case Template is created===", newCaseTemplate.id);
@@ -488,7 +487,6 @@ describe('Case Template', () => {
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseTemplateName = 'caseTemplateName' + randomStr;
             let casTemplateSummary = 'CaseSummaryName' + randomStr;
-
             let templateData = {
                 "templateName": caseTemplateName,
                 "templateSummary": caseTemplateName,
@@ -501,7 +499,6 @@ describe('Case Template', () => {
                 "ownerBU": 'Facilities Support',
                 "ownerGroup": "Facilities",
             }
-
             await apiHelper.apiLogin('fritz');
             await navigationPage.gotoCreateCase();
             await apiHelper.createCaseTemplate(templateData);
@@ -592,7 +589,7 @@ describe('Case Template', () => {
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
             }
-
+            
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
 
@@ -650,7 +647,6 @@ describe('Case Template', () => {
         try {
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseTemplateName = 'caseTemplateName' + randomStr;
-
             let casetemplateData = {
                 "templateName": caseTemplateName,
                 "templateSummary": caseTemplateName,
@@ -716,6 +712,7 @@ describe('Case Template', () => {
                 "caseStatus": "New",
                 "description": `${caseTemplateSummary}`,
             }
+            
 
 
             await apiHelper.apiLogin('fritz');
