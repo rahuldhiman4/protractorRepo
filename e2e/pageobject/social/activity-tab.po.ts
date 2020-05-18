@@ -71,7 +71,7 @@ class ActivityTabPage {
         bulletIcon: '.cke_button__bulletedlist_icon',
         addNotePublicCheckBoxToolTip: '.d-icon-question_circle_o',
         maximizeMinimizeicon: '.cke_button__maximize_icon',
-        maximizeMinimizeWindow: '.cke_button__maximize_label',
+        maximizeMinimizeWindow: '.cke_button__maximize',
         boldTextCkEditorTextArea: '.cke_enable_context_menu strong',
         italicTextCkEditorTextArea: '.cke_enable_context_menu em',
         underlineTextCkEditorTextArea: '.cke_enable_context_menu u',
@@ -795,12 +795,9 @@ class ActivityTabPage {
     }
 
     async isColorTextDisplayedInCkEditorTextArea(colorCode: string, bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, colorCode)).isPresent().then(async (link) => {
+        return await $(`.cke_enable_context_menu span[style="${colorCode}"]`).isPresent().then(async (link) => {
             if (link) {
-                let colorcodeAttribute = await $(this.selectors.italicTextCkEditorTextArea).getAttribute('style') == colorCode ? true : false;
-                if (colorcodeAttribute == true) {
-                    return element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isDisplayed();
-                }
+                return element(by.cssContainingText(this.selectors.colorTextCkEditorTextArea, bodyText)).isDisplayed();
             } else return false;
         });
     }
@@ -813,10 +810,10 @@ class ActivityTabPage {
         });
     }
 
-    async isTextRightAlignInCkEditorTextArea(allignment: string, bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, allignment)).isPresent().then(async (link) => {
+    async isTextRightAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
+        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
             if (link) {
-                let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == allignment ? true : false;
+                let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == 'text-align: right;' ? true : false;
                 if (colorcodeAttribute == true) {
                     return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
                 }
@@ -824,10 +821,10 @@ class ActivityTabPage {
         });
     }
 
-    async isTextCenterAlignInCkEditorTextArea(allignment: string, bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, allignment)).isPresent().then(async (link) => {
+    async isTextCenterAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
+        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
             if (link) {
-                let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == allignment ? true : false;
+                let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == 'text-align: center;' ? true : false;
                 if (colorcodeAttribute == true) {
                     return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
                 }
@@ -860,7 +857,7 @@ class ActivityTabPage {
     }
 
     async getTextCkEditorMinimizeOrMiximize(): Promise<string> {
-        return await $(this.selectors.alignmentTextCkEditorTextArea).getText();
+        return await $(this.selectors.maximizeMinimizeWindow).getAttribute('title');
     }
 }
 

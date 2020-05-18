@@ -12,11 +12,10 @@ import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po'
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import { default as activityTabPage } from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
-import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
-describe('Case Activity', () => {
+describe('Case Activity CKE', () => {
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -44,7 +43,7 @@ describe('Case Activity', () => {
                 "templateName": "DRDMV-21617_task template" + summary,
                 "templateSummary": "DRDMV-21617_Manual_task template summary" + summary,
                 "templateStatus": "Active",
-                "company": '- Global -'
+                "company": '- Global -',
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTemplateData);
@@ -75,8 +74,10 @@ describe('Case Activity', () => {
             let caseData = {
                 "Requester": "qtao",
                 "Summary": "DRDMV-21617_TC",
-                "Support Group": "Compensation and Benefits",
-                "Assignee": "qdu"
+                "Assigned Company": "Petramco",
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 1",
+                "Assignee": "qdu",
             }
 
             let newCase = await apiHelper.createCase(caseData);
@@ -91,7 +92,8 @@ describe('Case Activity', () => {
 
             await activityTabPage.addActivityNote(addNoteBodyText);
             expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
-            //bold
+            await activityTabPage.clearActivityNote();
+            // bold
             await activityTabPage.clickOnBoldIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
             expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not get Bold In Ck Editor');
@@ -117,19 +119,19 @@ describe('Case Activity', () => {
             //Right Align
             await activityTabPage.clickOnRightAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea('text-align: right;', addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
+            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
             await activityTabPage.clickOnRightAlignIcon();
             await activityTabPage.clearActivityNote();
             //Center Align
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea('text-align: center;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.clearActivityNote();
             //set color
             await activityTabPage.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Color is not set In Ck Editor');
             await activityTabPage.clearActivityNote();
             //checking number list
             await activityTabPage.setInsertRemoveNumberList('PlusOne');
@@ -157,7 +159,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
             await activityTabPage.clickActivityNoteTextBox();
-            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
 
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -196,13 +198,13 @@ describe('Case Activity', () => {
             //Right Align
             await activityTabPage.clickOnRightAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea('text-align: right;', addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
+            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
             await activityTabPage.clickOnRightAlignIcon();
             await activityTabPage.clearActivityNote();
             //Center Align
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea('text-align: center;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.clearActivityNote();
             //set color
@@ -236,7 +238,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
             await activityTabPage.clickActivityNoteTextBox();
-            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto Manual Task
@@ -272,13 +274,13 @@ describe('Case Activity', () => {
             //Right Align
             await activityTabPage.clickOnRightAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea('text-align: right;', addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
+            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
             await activityTabPage.clickOnRightAlignIcon();
             await activityTabPage.clearActivityNote();
             //Center Align
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea('text-align: center;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.clearActivityNote();
             //set color
@@ -312,7 +314,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
             await activityTabPage.clickActivityNoteTextBox();
-            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto Automated Task
@@ -346,13 +348,13 @@ describe('Case Activity', () => {
             //Right Align
             await activityTabPage.clickOnRightAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea('text-align: right;', addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
+            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
             await activityTabPage.clickOnRightAlignIcon();
             await activityTabPage.clearActivityNote();
             //Center Align
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea('text-align: center;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.clearActivityNote();
             //set color
@@ -386,7 +388,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
             await activityTabPage.clickActivityNoteTextBox();
-            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto External Task
@@ -420,13 +422,13 @@ describe('Case Activity', () => {
             //Right Align
             await activityTabPage.clickOnRightAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea('text-align: right;', addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
+            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
             await activityTabPage.clickOnRightAlignIcon();
             await activityTabPage.clearActivityNote();
             //Center Align
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea('text-align: center;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.clearActivityNote();
             //set color
@@ -460,7 +462,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
             await activityTabPage.clickActivityNoteTextBox();
-            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto Adhoc Task
@@ -501,13 +503,13 @@ describe('Case Activity', () => {
             //Right Align
             await activityTabPage.clickOnRightAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea('text-align: right;', addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
+            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
             await activityTabPage.clickOnRightAlignIcon();
             await activityTabPage.clearActivityNote();
             //Center Align
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea('text-align: center;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.clearActivityNote();
             //set color
@@ -541,7 +543,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
             await activityTabPage.clickActivityNoteTextBox();
-            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create knowledge Article task template
@@ -590,13 +592,13 @@ describe('Case Activity', () => {
             //Right Align
             await activityTabPage.clickOnRightAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea('text-align: right;', addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
+            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not right Align In Ck Editor');
             await activityTabPage.clickOnRightAlignIcon();
             await activityTabPage.clearActivityNote();
             //Center Align
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea('text-align: center;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.clearActivityNote();
             //set color
@@ -630,7 +632,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
             await activityTabPage.clickActivityNoteTextBox();
-            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
         } catch (e) {
             throw e;
         } finally {
