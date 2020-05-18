@@ -10,6 +10,7 @@ class EditTaskTemplate {
         ownerCompany: 'fa0f139c-5998-4544-9a3e-6dcac497611c',
         templateStatus: '279fd957-576d-4428-b503-a1330cbd9498',
         ownerGroup: '908e526e-917a-4360-94e9-768362f6a573',
+        businessGuid: '064e7a40-b086-48ec-b8f9-9d23c8c56038',
         taskTypeValue: '[rx-view-component-id="cee6d303-5db9-4b3a-98e1-3096ffebf363"] .ui-select-container',
         cancelButton: '[rx-view-component-id="7c66f7cb-612d-4ef5-b3f5-79f6d96b0083"] button',
         saveButton: '[rx-view-component-id="6649c51c-e27e-4026-ab4a-de5f40216ea9"] button',
@@ -75,6 +76,10 @@ class EditTaskTemplate {
 
     async selectOwnerGroup(group: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.ownerGroup, group);
+    }
+
+    async selectBusinessUnit(business: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.businessGuid, business);
     }
 
     async clickOnSaveButton() {
