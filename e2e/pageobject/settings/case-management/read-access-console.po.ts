@@ -8,14 +8,14 @@ class ReadAccessConsolePage {
         deleteButton: '[rx-view-component-id="0ff26fc0-a352-46dd-91e9-dffda0f97ef5"] button'
     }
 
-    async isAddButtonDisabled(): Promise<boolean> {
+    async isAddButtonDisplayed(): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.addReadAccessBtn)));
-        return await $(this.selectors.addReadAccessBtn).getAttribute("disabled") == "true";
+        return await $(this.selectors.addReadAccessBtn).isPresent();
     }
 
-    async isDeleteButtonDisabled(): Promise<boolean> {
+    async isDeleteButtonDisplayed(): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
-        return await $(this.selectors.deleteButton).getAttribute("disabled") == "true";
+        return await $(this.selectors.deleteButton).isPresent();
     }
 
     async clickOnReadAccessConfiguration(): Promise<void> {

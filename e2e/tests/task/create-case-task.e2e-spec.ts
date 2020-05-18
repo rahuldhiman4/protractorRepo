@@ -191,7 +191,7 @@ describe('Create Case Task', () => {
             await manageTask.clickTaskLinkOnManageTask(autmationTaskSummaryWithRequiredData);
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.bwfa:Get Request Status Data1 ${randomStr}`);
-            expect(await viewTask.getDescriptionValue()).toBe('  ', "getDescriptionValue");
+            expect(await viewTask.getDescriptionValue()).toBe(' - ', "getDescriptionValue");
             expect(await viewTask.getLabelValue()).toBe('-', "getLabelValue");
             expect(await viewTask.getCategoryTier1Value()).toBe('-', "getCategoryTier1Value");
             expect(await viewTask.getCategoryTier2Value()).toBe('-', "getCategoryTier2Value");
@@ -489,6 +489,7 @@ describe('Create Case Task', () => {
         await taskTemplate.setTaskSummary(TaskSummary);
         await taskTemplate.selectTemplateStatus('Active');
         await taskTemplate.selectCompanyByName('Petramco');
+        await taskTemplate.selectBuisnessUnit('Facilities Support');
         await taskTemplate.selectOwnerGroup('Facilities');
         await taskTemplate.clickOnSaveTaskTemplate();
         await utilCommon.closePopUpMessage();
@@ -505,6 +506,7 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnSaveMetadata();
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectOwnerCompany('Psilon');
+            await editTaskTemplate.selectBusinessUnit('Psilon Support Org2');
             await editTaskTemplate.selectOwnerGroup('Psilon Support Group2');
             await editTaskTemplate.clickOnSaveMetadata();
             //await navigationPage.gotoSettingsPage();
@@ -583,7 +585,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 260 * 1000);
+    }, 300 * 1000);
 
     //ankagraw
     it('[DRDMV-7121]: [Automatic Task] - Task Template Console: Verify Task Type column, filter ', async () => {

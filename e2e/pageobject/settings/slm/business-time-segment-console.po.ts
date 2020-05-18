@@ -7,9 +7,9 @@ class BusinessSegmentConsolePage {
         addBusinessSegment: '[rx-view-component-id="cbfb8468-4d75-4ba4-8c50-2d7f97cf2ec4"] button'
     }
 
-    async isAddBusinessSegmentBtnDisabled(): Promise<boolean> {
+    async isAddBusinessSegmentBtnDisplayed(): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.addBusinessSegment)));
-        return await $(this.selectors.addBusinessSegment).getAttribute("disabled") == "true";
+        return await $(this.selectors.addBusinessSegment).isPresent();
     }
 
 }

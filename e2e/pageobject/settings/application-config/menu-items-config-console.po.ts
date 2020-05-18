@@ -49,9 +49,9 @@ class MenuItemsConsolePage {
 
 
 
-    async isAddButtonDisabled(): Promise<boolean> {
+    async isAddButtonDisplayed(): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.addMenuOptionBtn)));
-        return await $(this.selectors.addMenuOptionBtn).getAttribute("disabled") == "true";
+        return await $(this.selectors.addMenuOptionBtn).isPresent();
     }
 
 }
