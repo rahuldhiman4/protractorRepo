@@ -881,14 +881,72 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
             knowledgeArticleData.fieldInstances[302300502].value = data.title;
             knowledgeArticleData.fieldInstances[302312187].value = data.templateId;
+            knowledgeArticleData.fieldInstances[1000000001].value = data.company ? await coreApi.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[1000000001].value;
             knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
-            knowledgeArticleData.fieldInstances[1000000063].value = data.categoryTier1 ? await apiCoreUtil.getCategoryGuid(data.categoryTier1) : knowledgeArticleData.fieldInstances[1000000063].value;
-            knowledgeArticleData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : knowledgeArticleData.fieldInstances[1000000064].value;
-            knowledgeArticleData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : knowledgeArticleData.fieldInstances[1000000065].value;
-            knowledgeArticleData.fieldInstances[200000007].value = data.region ? await apiCoreUtil.getRegionGuid(data.region) : knowledgeArticleData.fieldInstances[200000007].value;
-            knowledgeArticleData.fieldInstances[260000001].value = data.site ? await apiCoreUtil.getSiteGuid(data.site) : knowledgeArticleData.fieldInstances[260000001].value;
-            knowledgeArticleData.fieldInstances[450000157].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[450000157].value;
             knowledgeArticleData.fieldInstances[302311201].value = data.articleDesc ? data.articleDesc : knowledgeArticleData.fieldInstances[302311201].value;
+
+            if (data.assignedCompany) {
+                let companyGuid = await coreApi.getOrganizationGuid(data.assignedCompany);
+                let assignedCompanyData = {
+                    "id": 450000157,
+                    "value": `${companyGuid}`
+                }
+                knowledgeArticleData.fieldInstances["450000157"] = assignedCompanyData;
+            }
+
+            if (data.site) {
+                let siteGuid = await coreApi.getSiteGuid(data.site);
+                let siteData = {
+                    "id": 260000001,
+                    "value": `${siteGuid}`
+                }
+                knowledgeArticleData.fieldInstances["260000001"] = siteData;
+            }
+
+            if (data.region) {
+                let regionGuid = await coreApi.getRegionGuid(data.region);
+                let regionData = {
+                    "id": 200000007,
+                    "value": `${regionGuid}`
+                }
+                knowledgeArticleData.fieldInstances["200000007"] = regionData;
+            }
+
+            if (data.categoryTier1) {
+                let categGuid = await coreApi.getCategoryGuid(data.categoryTier1);
+                let categData = {
+                    "id": 1000000063,
+                    "value": `${categGuid}`
+                }
+                knowledgeArticleData.fieldInstances["1000000063"] = categData;
+            }
+
+            if (data.categoryTier2) {
+                let categGuid = await coreApi.getCategoryGuid(data.categoryTier2);
+                let categData = {
+                    "id": 1000000064,
+                    "value": `${categGuid}`
+                }
+                knowledgeArticleData.fieldInstances["1000000064"] = categData;
+            }
+
+            if (data.categoryTier3) {
+                let categGuid = await coreApi.getCategoryGuid(data.categoryTier3);
+                let categData = {
+                    "id": 1000000065,
+                    "value": `${categGuid}`
+                }
+                knowledgeArticleData.fieldInstances["1000000065"] = categData;
+            }
+
+            if (data.assigneeBusinessUnit) {
+                let businessUnitGuid = await coreApi.getBusinessUnitGuid(data.assigneeBusinessUnit);
+                let businessUnitData = {
+                    "id": 450000381,
+                    "value": `${businessUnitGuid}`
+                }
+                knowledgeArticleData.fieldInstances["450000381"] = businessUnitData;
+            }
 
             if (data.assigneeSupportGroup) {
                 let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.assigneeSupportGroup);
@@ -897,15 +955,17 @@ class ApiHelper {
                     "value": `${assigneeSupportGroup}`
                 }
                 knowledgeArticleData.fieldInstances["302300512"] = assineeSupportGroupData;
-                if (data.assignee) {
-                    let assigneeGuid = await coreApi.getPersonGuid(data.assignee);
-                    let assigneeData = {
-                        "id": 302300513,
-                        "value": `${assigneeGuid}`
-                    }
-                    knowledgeArticleData.fieldInstances["302300513"] = assigneeData;
-                }
             }
+
+            if (data.assignee) {
+                let assigneeGuid = await coreApi.getPersonGuid(data.assignee);
+                let assigneeData = {
+                    "id": 302300513,
+                    "value": `${assigneeGuid}`
+                }
+                knowledgeArticleData.fieldInstances["302300513"] = assigneeData;
+            }
+
             let articleData = {
                 recordInstance: knowledgeArticleData,
                 302302781: attachment
@@ -916,14 +976,72 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
             knowledgeArticleData.fieldInstances[302300502].value = data.title;
             knowledgeArticleData.fieldInstances[302312187].value = data.templateId;
+            knowledgeArticleData.fieldInstances[1000000001].value = data.company ? await coreApi.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[1000000001].value;
             knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
-            knowledgeArticleData.fieldInstances[1000000063].value = data.categoryTier1 ? await apiCoreUtil.getCategoryGuid(data.categoryTier1) : knowledgeArticleData.fieldInstances[1000000063].value;
-            knowledgeArticleData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : knowledgeArticleData.fieldInstances[1000000064].value;
-            knowledgeArticleData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : knowledgeArticleData.fieldInstances[1000000065].value;
-            knowledgeArticleData.fieldInstances[200000007].value = data.region ? await apiCoreUtil.getRegionGuid(data.region) : knowledgeArticleData.fieldInstances[200000007].value;
-            knowledgeArticleData.fieldInstances[260000001].value = data.site ? await apiCoreUtil.getSiteGuid(data.site) : knowledgeArticleData.fieldInstances[260000001].value;
-            knowledgeArticleData.fieldInstances[450000157].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[450000157].value;
             knowledgeArticleData.fieldInstances[302311201].value = data.articleDesc ? data.articleDesc : knowledgeArticleData.fieldInstances[302311201].value;
+
+            if (data.assignedCompany) {
+                let companyGuid = await coreApi.getOrganizationGuid(data.assignedCompany);
+                let assignedCompanyData = {
+                    "id": 450000157,
+                    "value": `${companyGuid}`
+                }
+                knowledgeArticleData.fieldInstances["450000157"] = assignedCompanyData;
+            }
+
+            if (data.site) {
+                let siteGuid = await coreApi.getSiteGuid(data.site);
+                let siteData = {
+                    "id": 260000001,
+                    "value": `${siteGuid}`
+                }
+                knowledgeArticleData.fieldInstances["260000001"] = siteData;
+            }
+
+            if (data.region) {
+                let regionGuid = await coreApi.getRegionGuid(data.region);
+                let regionData = {
+                    "id": 200000007,
+                    "value": `${regionGuid}`
+                }
+                knowledgeArticleData.fieldInstances["200000007"] = regionData;
+            }
+
+            if (data.categoryTier1) {
+                let categGuid = await coreApi.getCategoryGuid(data.categoryTier1);
+                let categData = {
+                    "id": 1000000063,
+                    "value": `${categGuid}`
+                }
+                knowledgeArticleData.fieldInstances["1000000063"] = categData;
+            }
+
+            if (data.categoryTier2) {
+                let categGuid = await coreApi.getCategoryGuid(data.categoryTier2);
+                let categData = {
+                    "id": 1000000064,
+                    "value": `${categGuid}`
+                }
+                knowledgeArticleData.fieldInstances["1000000064"] = categData;
+            }
+
+            if (data.categoryTier3) {
+                let categGuid = await coreApi.getCategoryGuid(data.categoryTier3);
+                let categData = {
+                    "id": 1000000065,
+                    "value": `${categGuid}`
+                }
+                knowledgeArticleData.fieldInstances["1000000065"] = categData;
+            }
+
+            if (data.assigneeBusinessUnit) {
+                let businessUnitGuid = await coreApi.getBusinessUnitGuid(data.assigneeBusinessUnit);
+                let businessUnitData = {
+                    "id": 450000381,
+                    "value": `${businessUnitGuid}`
+                }
+                knowledgeArticleData.fieldInstances["450000381"] = businessUnitData;
+            }
 
             if (data.assigneeSupportGroup) {
                 let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.assigneeSupportGroup);
@@ -933,6 +1051,7 @@ class ApiHelper {
                 }
                 knowledgeArticleData.fieldInstances["302300512"] = assineeSupportGroupData;
             }
+
             if (data.assignee) {
                 let assigneeGuid = await coreApi.getPersonGuid(data.assignee);
                 let assigneeData = {
@@ -941,6 +1060,7 @@ class ApiHelper {
                 }
                 knowledgeArticleData.fieldInstances["302300513"] = assigneeData;
             }
+            
             knowledgeArticleResponse = await coreApi.createRecordInstance(knowledgeArticleData);
             console.log('Create Knowledge Article API Status =============>', knowledgeArticleResponse.status);
         }

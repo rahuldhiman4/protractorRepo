@@ -50,9 +50,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "KMills",
-                "assigneeSupportGroup": "AU Support 3",
-                "company": "Petramco"
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
+                "assignee": "KMills"
             }
             let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeDisplayID = knowledgeArticleData.displayId;
@@ -196,9 +197,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "kayo",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
                 "assigneeSupportGroup": "US Support 1",
-                "company": "Petramco"
+                "assignee": "kayo"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             let displayID = KADetails.displayId;
@@ -226,9 +228,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile1}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "kkohri",
-                "assigneeSupportGroup": "GB Support 1",
-                "company": "Petramco"
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "kkohri"
             }
             let kkohriId = await apiHelper.createKnowledgeArticle(articleData1);
             await utilityGrid.clearFilter();
@@ -250,9 +253,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile2}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "KMills",
-                "assigneeSupportGroup": "GB Support 2",
-                "company": "Petramco"
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
+                "assignee": "KMills"
             }
             let kmillsId = await apiHelper.createKnowledgeArticle(articleData2);
             console.log(kmillsId);
@@ -275,9 +279,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile3}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "KWilliamson",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "Australia Support",
                 "assigneeSupportGroup": "AU Support 3",
-                "company": "Petramco"
+                "assignee": "KWilliamson"
             }
             let kWilliamsonId = await apiHelper.createKnowledgeArticle(articleData3);
             await utilityGrid.clearFilter();
@@ -334,9 +339,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "kayo",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
                 "assigneeSupportGroup": "US Support 1",
-                "company": "Petramco"
+                "assignee": "kayo"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             await navigationPage.signOut();
@@ -361,9 +367,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile1}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "kkohri",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
                 "assigneeSupportGroup": "US Support 1",
-                "company": "Petramco"
+                "assignee": "kkohri"
             }
             let kkohriId = await apiHelper.createKnowledgeArticle(articleData1);
             await utilityGrid.clearFilter();
@@ -383,9 +390,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile2}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "KMills",
-                "assigneeSupportGroup": "GB Support 2",
-                "company": "Petramco"
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
+                "assignee": "KMills"
             }
             let kmillsId = await apiHelper.createKnowledgeArticle(articleData2);
             await utilityGrid.clearFilter();
@@ -405,9 +413,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile3}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "KWilliamson",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "Australia Support",
                 "assigneeSupportGroup": "AU Support 3",
-                "company": "Petramco"
+                "assignee": "KWilliamson"
             }
             let kWilliamsonId = await apiHelper.createKnowledgeArticle(articleData3);
             await utilityGrid.clearFilter();
@@ -435,9 +444,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "kayo",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
                 "assigneeSupportGroup": "US Support 1",
-                "company": "Petramco"
+                "assignee": "kayo"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             await navigationPage.signOut();
@@ -450,7 +460,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(KADetails.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged'); 
+            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             await navigationPage.signOut();
             //login with contributor
             await loginPage.login(knowledgeContributorUser);
@@ -463,9 +473,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile1}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "kkohri",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
                 "assigneeSupportGroup": "US Support 1",
-                "company": "Petramco"
+                "assignee": "kkohri"
             }
             let kkohriId = await apiHelper.createKnowledgeArticle(articleData1);
             await utilityGrid.clearFilter();
@@ -473,7 +484,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(kkohriId.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged'); 
+            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
@@ -486,9 +497,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile2}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "kmills",
-                "assigneeSupportGroup": "US Support 1",
-                "company": "Petramco"
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
+                "assignee": "KMills"
             }
             let kmillsId = await apiHelper.createKnowledgeArticle(articleData2);
             await utilityGrid.clearFilter();
@@ -496,7 +508,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(kmillsId.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged'); 
+            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgeCoachUser);
@@ -509,9 +521,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile3}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "kWilliamson",
-                "assigneeSupportGroup": "US Support 1",
-                "company": "Petramco"
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "Australia Support",
+                "assigneeSupportGroup": "AU Support 3",
+                "assignee": "KWilliamson"
             }
             let kWilliamsonId = await apiHelper.createKnowledgeArticle(articleData3);
             await utilityGrid.clearFilter();
@@ -519,7 +532,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(kWilliamsonId.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
-            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged'); 
+            expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
         }
         catch (e) {
             throw e;
@@ -591,8 +604,10 @@ describe('Knowledge Article', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2"
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
+            "assignee": "KMills"
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.gotoKnowledgeConsole();
@@ -622,8 +637,10 @@ describe('Knowledge Article', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2"
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
+            "assignee": "KMills"
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.gotoKnowledgeConsole();
@@ -680,8 +697,10 @@ describe('Knowledge Article', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2"
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
+            "assignee": "KMills"
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.gotoKnowledgeConsole();
@@ -711,8 +730,10 @@ describe('Knowledge Article', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2"
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
+            "assignee": "KMills"
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.gotoKnowledgeConsole();
@@ -771,8 +792,10 @@ describe('Knowledge Article', () => {
                 "categoryTier3": "Incident",
                 "region": "Australia",
                 "site": "Canberra",
-                "assignee": "KMills",
-                "assigneeSupportGroup": "GB Support 2"
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
+                "assignee": "KMills"
             }
             let articleDataSecond = {
                 "knowledgeSet": "HR",
@@ -783,8 +806,10 @@ describe('Knowledge Article', () => {
                 "categoryTier3": "Incident",
                 "region": "Australia",
                 "site": "Canberra",
-                "assignee": "KMills",
-                "assigneeSupportGroup": "GB Support 2"
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
+                "assignee": "KMills"
             }
 
             let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleDataFirst);
@@ -855,9 +880,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "kayo",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
                 "assigneeSupportGroup": "US Support 1",
-                "company": "Petramco"
+                "assignee": "kayo"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             await navigationPage.signOut();

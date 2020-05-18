@@ -34,9 +34,9 @@ describe('Knowledge Article', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('peter');
-        await foundationData('Petramco');
-        await foundationData19501('Petramco');
-        await foundationData19082('Petramco');
+        // await foundationData('Petramco');
+        // await foundationData19501('Petramco');
+        // await foundationData19082('Petramco');
     });
 
     afterAll(async () => {
@@ -346,9 +346,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany":"Petramco",
+                "assigneeBusinessUnit":"Australia Support",
+                "assigneeSupportGroup":"AU Support 3",
                 "assignee": "KWilliamson",
-                "assigneeSupportGroup": "AU Support 3",
-                "company": "Petramco"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             await navigationPage.signOut();
@@ -395,9 +396,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitileCoach}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "peter",
+                "assignedCompany":"Petramco",
+                "assigneeBusinessUnit":"HR Support",
                 "assigneeSupportGroup": "Compensation and Benefits",
-                "company": "Petramco"
+                "assignee": "peter"
             }
             let KACoachDetails = await apiHelper.createKnowledgeArticle(articleDataCoach);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
@@ -450,9 +452,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "kayo",
-                "assigneeSupportGroup": "US Support 1",
-                "company": "Petramco"
+                "assignedCompany":"Petramco",
+                "assigneeBusinessUnit":"United Kingdom Support",
+                "assigneeSupportGroup":"US Support 1",
+                "assignee": "kayo"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             let displayID = KADetails.displayId;
@@ -575,9 +578,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "kmills",
-                "assigneeSupportGroup": "GB Support 2",
-                "company": "Petramco"
+                "assignedCompany":"Petramco",
+                "assigneeBusinessUnit":"United Kingdom Support",
+                "assigneeSupportGroup":"GB Support 1",
+                "assignee": "KMills"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
@@ -627,9 +631,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "kmills",
-                "assigneeSupportGroup": "GB Support 2",
-                "company": "Petramco"
+                "assignedCompany":"Petramco",
+                "assigneeBusinessUnit":"United Kingdom Support",
+                "assigneeSupportGroup":"GB Support 1",
+                "assignee": "KMills"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
@@ -679,9 +684,10 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "kmills",
-                "assigneeSupportGroup": "GB Support 2",
-                "company": "Petramco"
+                "assignedCompany":"Petramco",
+                "assigneeBusinessUnit":"United Kingdom Support",
+                "assigneeSupportGroup":"GB Support 1",
+                "assignee": "KMills"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "Draft")).toBeTruthy("Article with Draft status not updated.");

@@ -471,14 +471,15 @@ describe("Quick Case", () => {
             "knowledgeSet": "HR",
             "title": caseTemplateName,
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "assignee": "KWilliamson",
             "categoryTier1": "Applications",
             "categoryTier2": "Help Desk",
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "Australia Support",
             "assigneeSupportGroup": "AU Support 3",
-            "company": "Petramco",
+            "assignee": "KWilliamson"
         }
 
         await apiHelper.apiLogin('fritz');
@@ -545,67 +546,73 @@ describe("Quick Case", () => {
             "knowledgeSet": "HR",
             "title": `${knowledgeTitile}`,
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "assignee": "kayo",
-            "assigneeSupportGroup": "US Support 1",
-            "company": "Petramco",
             "categoryTier1": "Workforce Administration",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United States Support",
+            "assigneeSupportGroup": "US Support 1",
+            "assignee": "kayo"
         }
         let articleData2 = {
             "knowledgeSet": "HR",
             "title": `${knowledgeTitile}`,
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "assignee": "kayo",
-            "assigneeSupportGroup": "US Support 1",
-            "company": "Petramco",
             "categoryTier1": "Workforce Administration",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United States Support",
+            "assigneeSupportGroup": "US Support 1",
+            "assignee": "kayo"
         }
         let articleData3 = {
             "knowledgeSet": "HR",
             "title": `${knowledgeTitile}`,
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "assignee": "kayo",
-            "assigneeSupportGroup": "US Support 1",
-            "company": "Petramco",
             "categoryTier1": "Workforce Administration",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United States Support",
+            "assigneeSupportGroup": "US Support 1",
+            "assignee": "kayo"
         }
         let articleData4 = {
             "knowledgeSet": "HR",
             "title": `${knowledgeTitile}`,
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "assignee": "kayo",
-            "assigneeSupportGroup": "US Support 1",
-            "company": "Petramco",
             "categoryTier1": "Workforce Administration",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United States Support",
+            "assigneeSupportGroup": "US Support 1",
+            "assignee": "kayo"
         }
         let articleData5 = {
             "knowledgeSet": "HR",
             "title": `${knowledgeTitile}`,
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "assignee": "kayo",
-            "assigneeSupportGroup": "US Support 1",
-            "company": "Petramco",
             "categoryTier1": "Workforce Administration",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United States Support",
+            "assigneeSupportGroup": "US Support 1",
+            "assignee": "kayo"
         }
         let articleData6 = {
             "knowledgeSet": "HR",
             "title": `${knowledgeTitile}`,
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "assignee": "kayo",
-            "assigneeSupportGroup": "US Support 1",
-            "company": "Petramco",
             "categoryTier1": "Workforce Administration",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United States Support",
+            "assigneeSupportGroup": "US Support 1",
+            "assignee": "kayo"
         }
 
         await apiHelper.createKnowledgeArticle(articleData1);
@@ -787,9 +794,10 @@ describe("Quick Case", () => {
             "knowledgeSet": "HR",
             "title": `${caseTemplateName}`,
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "assignee": "KWilliamson",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "Australia Support",
             "assigneeSupportGroup": "AU Support 3",
-            "company": "Petramco"
+            "assignee": "KWilliamson"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -884,8 +892,10 @@ describe("Quick Case", () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2"
+            "assignedCompany":"Petramco",
+            "assigneeBusinessUnit":"United Kingdom Support",
+            "assigneeSupportGroup":"GB Support 1",
+            "assignee": "KMills"
         };
 
         await apiHelper.apiLogin('kmills');
