@@ -197,8 +197,7 @@ class ApiHelper {
     }
 
     async createCaseTemplate(data: ICaseTemplate): Promise<IIDs> {
-        let templateDataFile = CASE_TEMPLATE_PAYLOAD;
-        let templateData = await templateDataFile.CaseTemplateData;
+        let templateData = CASE_TEMPLATE_PAYLOAD;
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[7].value = constants.CaseTemplate[data.templateStatus];
@@ -208,8 +207,8 @@ class ApiHelper {
         templateData.fieldInstances[300287900].value = data.ownerGroup ? await coreApi.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[1000000063].value = data.categoryTier1 ? await coreApi.getCategoryGuid(data.categoryTier1) : templateData.fieldInstances[1000000063].value;
         templateData.fieldInstances[1000000064].value = data.categoryTier2 ? await coreApi.getCategoryGuid(data.categoryTier2) : templateData.fieldInstances[1000000064].value;
-        templateData.fieldInstances[1000000065].value = data.categoryTier3 ? await coreApi.getCategoryGuid(data.categoryTier2) : templateData.fieldInstances[1000000065].value;
-        templateData.fieldInstances[450000061].value = data.description ? await coreApi.getCategoryGuid(data.categoryTier2) : templateData.fieldInstances[450000061].value;
+        templateData.fieldInstances[1000000065].value = data.categoryTier3 ? await coreApi.getCategoryGuid(data.categoryTier3) : templateData.fieldInstances[1000000065].value;
+        templateData.fieldInstances[450000061].value = data.description ? data.description : templateData.fieldInstances[450000061].value;
 
         if (data.caseStatus) {
             let statusValue = constants.CaseStatus[data.caseStatus];
