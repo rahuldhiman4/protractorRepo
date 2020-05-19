@@ -350,7 +350,7 @@ describe("Compose Email", () => {
         emailTemplateData['emailTemplateForSalary'].TemplateName = emailTemplate2;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateForSalary']);
         let caseData = {
-            "Requester": "qtao",
+            "Requester": "qdu",
             "Summary": "Test case for DRDMV-10395 RandVal" + randomString,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
@@ -391,7 +391,7 @@ describe("Compose Email", () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "qdu",
             "Summary": "Test case for DRDMV-8392 RandVal" + randomString,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
@@ -516,7 +516,7 @@ describe("Compose Email", () => {
             await navigationPage.gotoCaseConsole();
             let caseData =
             {
-                "Requester": "qtao",
+                "Requester": "qdu",
                 "Summary": "Test case for DRDMV-20369 RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
@@ -679,7 +679,7 @@ describe("Compose Email", () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "qdu",
             "Summary": "Test case for DRDMV-9033 RandVal" + randomString,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
@@ -703,7 +703,7 @@ describe("Compose Email", () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "qdu",
             "Summary": "Test case for DRDMV-9028 RandVal" + randomString,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
@@ -734,7 +734,7 @@ describe("Compose Email", () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "qdu",
             "Summary": "Test case for DRDMV-9028 RandVal" + randomString,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
@@ -762,11 +762,11 @@ describe("Compose Email", () => {
 
     it('[DRDMV-20365,DRDMV-20366]: Verify Able to insert table,hyperlink, images (All images) and Copy paste images in compose email and its send successfully', async () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoCaseConsole();
         try {
-            await navigationPage.gotoCaseConsole();
             let caseData =
             {
-                "Requester": "qtao",
+                "Requester": "qdu",
                 "Summary": "Test case for DRDMV-20365 RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
@@ -775,6 +775,9 @@ describe("Compose Email", () => {
             }
             await apiHelper.apiLogin('fritz');
             let newCase = await apiHelper.createCase(caseData);
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
