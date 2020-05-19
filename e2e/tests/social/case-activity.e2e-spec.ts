@@ -128,6 +128,7 @@ describe('Case Activity', () => {
     });//, 150 * 1000);
 
     //kgaikwad
+    // Jpass
     it('[DRDMV-18141]: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
         let caseBodyText = `CaseBody${randomStr}`;
         // 2nd Step :Open Case from pre condition and inspect its activities
@@ -277,6 +278,7 @@ describe('Case Activity', () => {
     }, 600 * 1000);
 
     //kgaikwad
+    // Jpass
     it('[DRDMV-16733]: Case Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotoCreateCase();
@@ -467,6 +469,7 @@ describe('Case Activity', () => {
     });//, 160 * 1000);
 
     //kgaikwad
+    // Jpass
     it('[DRDMV-16759]: Task Activity Filter UI validation', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -783,7 +786,7 @@ describe('Case Activity', () => {
     }, 420 * 1000);
 
     //kgaikwad
-    // Ok
+    // Jpass
     it('[DRDMV-18048]: While adding a note on Case one or more agent can be tagged in Comment', async () => {
         await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -891,6 +894,7 @@ describe('Case Activity', () => {
     }, 300 * 1000);
 
     // ptidke
+    // Jpass
     it('[DRDMV-7152]: [Automatic Task] - Automatic Task: Social: Manual Comments', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         // Create automated task template
@@ -1169,6 +1173,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
+    // Jpass
     it('[DRDMV-16730]:Show More/Less option in Case Activity Tab with Attachments', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues1 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

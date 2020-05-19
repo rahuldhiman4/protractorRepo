@@ -79,14 +79,15 @@ class CreateKnowledgePage {
     }
 
     async clickOnTemplate(templateName: string): Promise<void> {
-        let templateLocator = await $$('.col-md');
-        for (let i = 0; i < templateLocator.length; i++) {
-            if (await templateLocator[i].$('.template-name').getText() == templateName) 
-            {
-                await templateLocator[i].$('.section-title').click();
-                break;
-            }
-        }
+        // let templateLocator = await $$('.col-md');
+        // for (let i = 0; i < templateLocator.length; i++) {
+        //     if (await templateLocator[i].$('.template-name').getText() == templateName) 
+        //     {
+        //         await templateLocator[i].$('.section-title').click();
+        //         break;
+        //     }
+        // }
+        await element(by.cssContainingText('[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .section-title', templateName)).click();
     }
 
     async   clickOnUseSelectedTemplateButton(): Promise<void> {
