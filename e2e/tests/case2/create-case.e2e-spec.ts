@@ -229,6 +229,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setAllowCaseReopenValue('Yes');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
+            await utilCommon.waitUntilPopUpDisappear();
 
             //case template without reopen case
             await navigationPage.gotoSettingsPage();
@@ -1018,7 +1019,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 350 * 1000);
+    }, 650 * 1000);
 
     //Bug -DRDMV-21676
     it('[DRDMV-11700]: Verify  sort on all attachments grid', async () => {
