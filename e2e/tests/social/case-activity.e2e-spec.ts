@@ -46,7 +46,6 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    // pass
     it('[DRDMV-16767]: KA Activity Filter UI validation', async () => {
         try {
             // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
@@ -130,7 +129,6 @@ describe('Case Activity', () => {
     });//, 150 * 1000);
 
     //kgaikwad
-    // Jpass
     it('[DRDMV-18141]: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
         let caseBodyText = `CaseBody${randomStr}`;
         // 2nd Step :Open Case from pre condition and inspect its activities
@@ -148,7 +146,6 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    // Pass
     it('[DRDMV-16768]: From KA Activity Filters > Person search behavior in Author field', async () => {
         try {
             // 1st step: Logged in successfully and Task profile gets opened
@@ -218,7 +215,6 @@ describe('Case Activity', () => {
     }, 350 * 1000);
 
     //kgaikwad
-    // Pass
     it('[DRDMV-16773]: [-ve] - Person details displayed in Activity who have long name', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -284,7 +280,6 @@ describe('Case Activity', () => {
     }, 600 * 1000);
 
     //kgaikwad
-    // Jpass
     it('[DRDMV-16733]: Case Activity Filter UI validation', async () => {
         // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
         await navigationPage.gotoCreateCase();
@@ -434,7 +429,6 @@ describe('Case Activity', () => {
     }, 270 * 1000);
 
     //kgaikwad
-    // pass
     it('[DRDMV-16734]: From Case Activity Filters > Person search behavior in Author field', async () => {
         // 1st step: Login to BWF with Case agent and open case from pre condition
         await navigationPage.gotoCreateCase();
@@ -476,7 +470,6 @@ describe('Case Activity', () => {
     });//, 160 * 1000);
 
     //kgaikwad
-    // Jpass
     it('[DRDMV-16759]: Task Activity Filter UI validation', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -793,7 +786,6 @@ describe('Case Activity', () => {
     }, 420 * 1000);
 
     //kgaikwad
-    // Jpass
     it('[DRDMV-18048]: While adding a note on Case one or more agent can be tagged in Comment', async () => {
         await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -816,7 +808,6 @@ describe('Case Activity', () => {
     }, 300 * 1000);
 
     //kgaikwad
-    // Pass
     it('[DRDMV-16754]: Drill Down to different screens from Activities', async () => {
         try {
             let caseBodyText = "This is unique caseActivity text " + Math.floor(Math.random() * 1000000);
@@ -903,7 +894,6 @@ describe('Case Activity', () => {
     }, 300 * 1000);
 
     // ptidke
-    // Jpass
     it('[DRDMV-7152]: [Automatic Task] - Automatic Task: Social: Manual Comments', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         // Create automated task template
@@ -973,7 +963,6 @@ describe('Case Activity', () => {
     }, 270 * 1000);
 
     //kgaikwad
-    // Pass
     it('[DRDMV-16582]: Check case view count log is displayed on the activity feed of case along with name of user and time', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1008,7 +997,6 @@ describe('Case Activity', () => {
     }, 270 * 1000);
 
     //kgaikwad
-    // Defect
     it('[DRDMV-16589]: Check case view count is not increased by opening same case by different places', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1091,7 +1079,6 @@ describe('Case Activity', () => {
     }, 600 * 1000);
 
     //kgaikwad
-    // Defect id- DRDMV-21670
     it('[DRDMV-16591]: Check case count is changed with different permission of user read/write/no access to the case', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1153,7 +1140,6 @@ describe('Case Activity', () => {
     }, 700 * 1000);
 
     //kgaikwad
-    // Pass
     it('[DRDMV-18052]: Alert Notification should be send to tagged persons other than Assignee and Requester', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1189,7 +1175,6 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    // Jpass
     it('[DRDMV-16730]:Show More/Less option in Case Activity Tab with Attachments', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues1 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1301,7 +1286,6 @@ describe('Case Activity', () => {
     }, 270 * 1000);
 
     //kgaikwad
-    // Pass
     it('[DRDMV-16765]:Validate Show More/Less option in KA Activity Tab', async () => {
         try {
             let randomValues1 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
