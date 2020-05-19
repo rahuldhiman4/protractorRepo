@@ -150,7 +150,7 @@ describe('Edit Case', () => {
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickOnAssignToMe();
         await editCasePage.clickSaveCase();
-        expect(await activityTabPo.getAllTaskActivity('Facilities')).toBe('Facilities');
+        expect(await activityTabPo.isTextPresentInActivityLog('Facilities')).toBeTruthy();
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickChangeAssignmentButton();
         await changeAssignmentPage.selectBusinessUnit('Facilities Support');

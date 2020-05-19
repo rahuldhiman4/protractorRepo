@@ -2,6 +2,7 @@ export interface IKnowledgeArticles{
     knowledgeSet:string;
     title:string;
     templateId:string;
+    company?:string;
     keyword?:string;
     categoryTier1?:string;
     categoryTier2?:string;
@@ -10,8 +11,9 @@ export interface IKnowledgeArticles{
     site?:string;
     articleId?:string;
     status?:string;
-    assignee?:string;
-    company?:string;
+    assignedCompany?:string;
+    assigneeBusinessUnit?:string;
     assigneeSupportGroup?:string;
+    assignee?:string;
     articleDesc?:string;
 }

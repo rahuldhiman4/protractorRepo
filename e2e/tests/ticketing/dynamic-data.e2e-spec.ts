@@ -30,6 +30,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Dynamic data', () => {
     const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -58,6 +59,12 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
@@ -182,6 +189,12 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
@@ -252,7 +265,7 @@ describe('Dynamic data', () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteEmailOrNotificationTemplate("Notification" + randomStr);
         await createNotificationTemplatePo.selectModuleName('Cases');
-        await createNotificationTemplatePo.selectEvent('Case Reassignment');
+        await createNotificationTemplatePo.selectEvent('Approve');
         await createNotificationTemplatePo.setTemplateName("NotificationNew" + randomStr);
         await createNotificationTemplatePo.setDescription("NotificationNew Description " + randomStr);
         await createNotificationTemplatePo.clickOnInsertFieldOfAlert();
@@ -400,6 +413,12 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
@@ -510,6 +529,12 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
@@ -666,7 +691,7 @@ describe('Dynamic data', () => {
         await manageTaskBladePo.addTaskFromTaskTemplate(automatedTask);
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTask);
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilityCommon.waitUntilPopUpDisappear();
         await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
         //verify dynamic field
         expect(await viewTaskPo.getDynamicFieldName(dynamicfield1)).toContain(dynamicfield1);
@@ -704,11 +729,10 @@ describe('Dynamic data', () => {
         //verify input field values are peresent are not 
         expect(await viewTaskPo.getDynamicFieldValue('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('200');
         expect(await viewTaskPo.getDynamicFieldValue('theSecondExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
-        await viewTaskPo.clickOnViewCase();
-        await viewCasePo.clickAddTaskButton();
-
-        await manageTaskBladePo.clickTaskLinkOnManageTask(automatedTaskSummary);
-
+        await navigationPage.gotoCaseConsole();
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(caseId);
+        await viewCasePo.clickOnTaskLink(automatedTaskSummary);
         expect(await viewTaskPo.getDynamicFieldName('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered');
         expect(await viewTaskPo.getDynamicFieldName('theSecondautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theSecondautomatedDynamicFieldsIsgettingMouseOveredMouseOvered');
         expect(await viewTaskPo.getDynamicFieldName('theThirdDynamicautomatedFieldsIsgettingMouseOveredMouseOvered')).toContain('theThirdDynamicautomatedFieldsIsgettingMouseOveredMouseOvered');
@@ -732,6 +756,12 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
@@ -774,6 +804,12 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
@@ -964,14 +1000,16 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${casTemplateSummary}`,
             "templateStatus": "Draft",
-            "resolveCaseonLastTaskCompletion": "1",
             "assignee": "Fritz",
             "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
             "supportGroup": "Facilities",
             "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createCaseTemplate(templateData);
+        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         await utilGrid.searchAndOpenHyperlink(caseTemplateName);
@@ -986,7 +1024,8 @@ describe('Dynamic data', () => {
         await dynamicFieldsPo.setFieldName('news' + randomStr);
         await dynamicFieldsPo.setDescriptionName('newDescri' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy("Wrong pop up message");
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy("Wrong pop up message");
+        await utilCommon.waitUntilPopUpDisappear();
         await dynamicFieldsPo.setFieldName('newName' + randomStr);
         await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
@@ -998,6 +1037,7 @@ describe('Dynamic data', () => {
         await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
         expect(await utilCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy('Wrong pop up message');
+        await utilCommon.waitUntilPopUpDisappear();
         await dynamicFieldsPo.setFieldName('newNameUpdate' + randomStr);
         await dynamicFieldsPo.setDescriptionName('NewUpdatedDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
@@ -1061,12 +1101,19 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
         await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
+        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester('qkatawazi');
+        await createCasePo.selectRequester('qdu');
         await createCasePo.setSummary('new cases');
         await createCasePo.clickSelectCaseTemplateButton();
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);

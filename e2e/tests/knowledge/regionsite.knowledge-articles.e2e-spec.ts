@@ -84,8 +84,10 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2"
+            "assignedCompany":"Petramco",
+            "assigneeBusinessUnit":"United Kingdom Support",
+            "assigneeSupportGroup":"GB Support 1",
+            "assignee": "KMills"
         }
         // Create article in in progress status
         articleData.title = title + "_" + inProgressStatus;

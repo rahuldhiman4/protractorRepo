@@ -16,6 +16,8 @@ class ManageTaskBlade {
         closeButton: '[rx-view-component-id="8e7b2768-299d-468a-bd46-4827677e8eff"] button',
         columnHeaders: '.c-header-container .c-header-name',
         taskTemplateGuid: '0f3712cc-95da-49c3-b2b0-6b7409c8349b',
+        templatesLink: '[rx-view-component-id="8334a05d-06ba-4d9b-8c35-e40e90637e85"] .task-summary-wrapper a',
+
     }
 
     async clickAddTaskFromTemplateButton(): Promise<void> {
@@ -77,7 +79,7 @@ class ManageTaskBlade {
         // await browser.wait(this.EC.elementToBeClickable(element(by.linkText(taskSummary))), 3000);
         // await element(by.partialLinkText(taskSummary)).click();
         //        await utilCommon.waitUntilSpinnerToHide();
-        await element(by.cssContainingText('.task .task-summary-wrapper a', taskSummary)).click();
+        await element(by.cssContainingText('[rx-view-component-id="8334a05d-06ba-4d9b-8c35-e40e90637e85"] .task-summary-wrapper a', taskSummary)).click();
     }
 
     async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {
