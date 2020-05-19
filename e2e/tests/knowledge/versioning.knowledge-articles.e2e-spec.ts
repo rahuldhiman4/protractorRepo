@@ -164,9 +164,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany":"Petramco",
+            "assigneeBusinessUnit":"United Kingdom Support",
+            "assigneeSupportGroup":"GB Support 1",
             "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2",
-            "company": "Petramco",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
         let articleHelpFulCounterData = {
@@ -232,7 +233,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -263,7 +264,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -312,9 +313,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
                 "categoryTier3": "Incident",
                 "region": "Australia",
                 "site": "Canberra",
+                "assignedCompany":"Petramco",
+                "assigneeBusinessUnit":"United Kingdom Support",
+                "assigneeSupportGroup":"GB Support 1",
                 "assignee": "KMills",
-                "assigneeSupportGroup": "GB Support 2",
-                "company": "Petramco",
                 "articleDesc": `${knowledgeTitleStr} Desc`
             }
 
@@ -597,9 +599,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany":"Petramco",
+            "assigneeBusinessUnit":"United Kingdom Support",
+            "assigneeSupportGroup":"GB Support 1",
             "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2",
-            "company": "Petramco",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
         let articleHelpFulCounterData = {
@@ -671,7 +674,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -708,7 +711,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -740,7 +743,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -789,9 +792,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany":"Petramco",
+            "assigneeBusinessUnit":"United Kingdom Support",
+            "assigneeSupportGroup":"GB Support 1",
             "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2",
-            "company": "Petramco",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
         let articleHelpFulCounterData = {
@@ -895,9 +899,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany":"Petramco",
+            "assigneeBusinessUnit":"United Kingdom Support",
+            "assigneeSupportGroup":"GB Support 1",
             "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2",
-            "company": "Petramco",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
         let articleHelpFulCounterData = {
@@ -1026,9 +1031,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany":"Petramco",
+            "assigneeBusinessUnit":"United Kingdom Support",
+            "assigneeSupportGroup":"GB Support 1",
             "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2",
-            "company": "Petramco",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
         let articleHelpFulCounterData = {
@@ -1147,9 +1153,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany":"Petramco",
+            "assigneeBusinessUnit":"United Kingdom Support",
+            "assigneeSupportGroup":"GB Support 1",
             "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2",
-            "company": "Petramco",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
         let articleHelpFulCounterData = {
@@ -1221,7 +1228,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -1267,7 +1274,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilityCommon.refresh();
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -1314,7 +1321,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle + "_for Version 3");
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc + "_for Version 3");
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -1370,9 +1377,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany":"Petramco",
+            "assigneeBusinessUnit":"United Kingdom Support",
+            "assigneeSupportGroup":"GB Support 1",
             "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2",
-            "company": "Petramco",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
         let articleHelpFulCounterData = {

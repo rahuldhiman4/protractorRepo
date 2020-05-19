@@ -48,6 +48,7 @@ class SelectCaseTemplateBlade {
 
     async selectCaseTemplate(templateName: string): Promise<void> {
         await this.clickOnAllTemplateTab();
+        await utilityGrid.clearFilter(); 
         await utilityGrid.searchAndSelectGridRecord(templateName);
         await this.clickOnApplyButton();
         //        await browser.wait(this.EC.invisibilityOf($('.modal-content')));

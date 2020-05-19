@@ -123,7 +123,7 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.clickEditStatus("Canceled");
         expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
         await statusConfigPo.clickOnBackButton();
-    }, 310 * 1000);
+    }, 340 * 1000);
 
     //asahitya
     it('[DRDMV-13615]:Verify UI for case status configuration', async () => {
@@ -372,7 +372,7 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await statusConfigPo.clickOnBackButton();
-    }, 320 * 1000);
+    }, 360 * 1000);
 
     it('[DRDMV-13625]:Verify Custom status operations for Task', async () => {
         await navigationPage.gotoSettingsPage();

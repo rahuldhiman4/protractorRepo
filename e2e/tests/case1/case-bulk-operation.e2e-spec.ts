@@ -24,7 +24,7 @@ describe('Case Bulk Operation', () => {
         await loginPage.login(qfengStr);
         await utilityGrid.clearFilter();
         await apiHelper.apiLogin("tadmin");
-        await apiHelper.setDefaultNotificationForUser("qkatawazi", "Alert");
+        await apiHelper.setDefaultNotificationForUser("qtao", "Alert");
         //Create Foundation data
         const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
         const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
@@ -101,7 +101,7 @@ describe('Case Bulk Operation', () => {
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[1]);
         await caseConsolePage.clickOnChangeAssignmentButton();
-        await changeAssignment.setAssignee(petramcoStr, unitedStateSupportStr, usSupportGroup3Str, "Qadim Katawazi");
+        await changeAssignment.setAssignee(petramcoStr, unitedStateSupportStr, 'US Support 1', "Qianru Tao");
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
         await utilityCommon.closePopUpMessage();
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[2]);
@@ -110,7 +110,7 @@ describe('Case Bulk Operation', () => {
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
         try {
             await navigationPage.signOut();
-            await loginPage.login("qkatawazi");
+            await loginPage.login("qtao");
             await notificationPo.clickOnNotificationIcon();
             expect(await notificationPo.isAlertPresent(caseId[0] + "caseId[0] has been assigned to you1.")).toBeTruthy("");
             expect(await notificationPo.isAlertPresent(caseId[1] + "caseId[1] has been assigned to you2.")).toBeTruthy("");

@@ -218,6 +218,7 @@ describe("Compose Email", () => {
     });
 
     //kgaikwad
+    //Failed due to application issue...defect logged DRDMV-21883
     it('[DRDMV-10394,DRDMV-10397]: Apply Email Template', async () => {
         await navigationPage.gotoCaseConsole();
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -298,7 +299,6 @@ describe("Compose Email", () => {
 
     //ptidke
     it('[DRDMV-10398,DRDMV-10396,DRDMV-10402]:Email Template List Update in case compose email', async () => {
-        await navigationPage.gotoCaseConsole();
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
         let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomString;
@@ -306,7 +306,7 @@ describe("Compose Email", () => {
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "qdu",
             "Summary": "Test case for DRDMV-10398 RandVal" + randomString,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
@@ -316,6 +316,7 @@ describe("Compose Email", () => {
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
         let caseId: string = newCase.displayId;
+        await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
@@ -328,7 +329,7 @@ describe("Compose Email", () => {
         expect(await composeMail.getSubject()).toContain(caseId);
         expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
         expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplateName);
-        await apiHelper.apiLogin('tadmin');
+        await apiHelper.apiLogin('tadmin');        
         await apiHelper.deleteEmailOrNotificationTemplate(emailTemplateName);
         await composeMail.clickOnSelectEmailTemplateLink();
         await utilityGrid.searchRecord(emailTemplateName);

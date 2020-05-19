@@ -35,7 +35,7 @@ describe('Create Task Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        await foundationData12111("Petramco");
+       await foundationData12111("Petramco");
     });
 
     afterAll(async () => {
@@ -278,6 +278,7 @@ describe('Create Task Template', () => {
             await taskTemplate.setTaskSummary(manualTaskSummary);
             await taskTemplate.setTaskDescription('Description in manual task');
             await taskTemplate.selectCompanyByName('Petramco');
+            await taskTemplate.selectBuisnessUnit("Facilities Support");
             await taskTemplate.selectOwnerGroup("Facilities")
             await taskTemplate.clickOnSaveTaskTemplate();
             //await utilCommon.waitUntilPopUpDisappear();
@@ -351,7 +352,7 @@ describe('Create Task Template', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         var templateData4 = {
             "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
-            "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+            "templateSummary": `SummaryAutomatedTaskTemplate ${randomStr}`,
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `Case Process 1 ${randomStr}`,
@@ -399,6 +400,7 @@ describe('Create Task Template', () => {
     it('[DRDMV-5326]: [Permission] [Task Template] Access to Activity Feed records of the Task created using template', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
+        try{
         let taskTemplateName = 'taskTemplateWithYesResolve' + randomStr;
         let taskTemplateSummary = 'taskSummaryYesResolved' + randomStr;
         let taskTemplateDataSet = {
@@ -439,7 +441,7 @@ describe('Create Task Template', () => {
         await caseAccessTabPo.selectBusinessUnit('HR Support', 'Select Business Unit')
         await caseAccessTabPo.selectSupportGroup('Staffing','Select Support Group');
         await viewCasePage.clickOnTab('Tasks');
-        await viewCasePage.clickAddTaskButton();
+        await viewCasePage.clickAddTaskButton();    
         
         //Add Automation Task templates in Case
         await manageTask.addTaskFromTaskTemplate(taskTemplateSummary);
@@ -496,6 +498,12 @@ describe('Create Task Template', () => {
         await utilityGrid.searchAndOpenHyperlink(taskTemplateSummary);
         await expect(activityTabPo.getTaskActivity('attachment')).toContain('attachment');
         await expect(activityTabPo.getTaskActivity('abcde')).toContain('abcde');
+    } catch (error) {
+        throw error;
+    } finally {
+        await navigationPage.signOut();
+        await loginPage.login("qkatawazi");
+    }
     }, 550 * 1000);
 
     //ankagraw
