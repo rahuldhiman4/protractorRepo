@@ -274,7 +274,6 @@ describe('Document Library Consume UI', () => {
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
             await createCasePo.clickSaveCaseButton();
-            await browser.sleep(20000);
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickOnTaskLink(taskTemplateSummaryYesValue);
             await viewTaskPo.clickOnEditTask();
@@ -321,12 +320,6 @@ describe('Document Library Consume UI', () => {
     //kgaikwad
     it('[DRDMV-13507]: Compose Email - Case agent attaches published document from document library where case agent is author of the document', async () => {
         try {
-            // let publishDocLibData1 = {
-            //     docLibTitle: 'drdmv13507_publish_document3',
-            //     company: 'Petramco',
-            //     ownerGroup: 'Staffing',
-            // }
-
             let publishDocLibData1 = {
                 "docLibTitle": "drdmv13524_publish_document3",
                 "company": "Petramco",
@@ -342,15 +335,6 @@ describe('Document Library Consume UI', () => {
             let publish: string[] = ['drdmv13507_publish_document1', 'drdmv13507_publish_document2', 'drdmv13507_publish_document5'];
             let files1: string[] = [filePath1, filePath2, filePath5];
             for (let i = 0; i < publish.length; i++) {
-                // let publishDocLibData1 = {
-                //     "docLibTitle": publish[i],
-                //     company: 'Petramco',
-                //     "Business Unit": "Facilities Support",
-                //     ownerGroup: 'Facilities',
-                //     "shareExternally": "true",
-                // }
-
-         
                 let publishDocLibData1 = {
                     "docLibTitle": publish[i],
                     "company": "Petramco",
@@ -366,12 +350,6 @@ describe('Document Library Consume UI', () => {
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
             }
-            // let draftDocLibData = {
-            //     docLibTitle: 'drdmv13507_draft_document',
-            //     company: 'Petramco',
-            //     ownerGroup: 'Staffing',
-            //     shareExternally: true
-            // }
 
             let draftDocLibData = {
                 docLibTitle: 'drdmv13507_draft_document',
@@ -398,11 +376,11 @@ describe('Document Library Consume UI', () => {
             await composeMailPo.clickOnAttachmentLink();
 
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
-            // await attachDocumentBladePo.searchRecord(publishDocLibData1.docLibTitle);
-            // expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData1.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13507_publish_document1 doc is displayed');
+            await attachDocumentBladePo.searchRecord(publishDocLibData1.docLibTitle);
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData1.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13507_publish_document1 doc is displayed');
 
-            // await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
-            // expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: publishDocLib3 doc is displayed');
+            await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: publishDocLib3 doc is displayed');
 
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument();
