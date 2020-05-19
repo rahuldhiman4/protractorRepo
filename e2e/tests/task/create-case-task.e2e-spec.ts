@@ -203,7 +203,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 500 * 1000);
+    }, 550 * 1000);
 
     //ankagraw
     it('[DRDMV-7124]: [Automatic Task] - Task Template UI in Edit mode: New fields validations ', async () => {
@@ -343,7 +343,7 @@ describe('Create Case Task', () => {
         await expect(editTaskTemplate.getTaskTypeValue()).toBe('Automated');
         await expect(editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
         await expect(editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
-    }, 350 * 1000);
+    }, 380 * 1000);
 
     //ankagraw
     it('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: [ Task ] - Verify Associated menu for Task will show global configuration values as well	 ', async () => {
@@ -827,6 +827,7 @@ describe('Create Case Task', () => {
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `Case Process 1 ${randomStr}`,
             "taskCompany": "Petramco",
+            "assignee": "Fritz",
             "ownerCompany": "Petramco",
             "ownerBusinessUnit": "Facilities Support",
             "ownerGroup": "Facilities"
@@ -843,20 +844,24 @@ describe('Create Case Task', () => {
             "caseStatus": "InProgress",
             "templateStatus": "Active",
             "assignee": "Fritz",
-            "company": "Petramco",
-            "supportGroup": "Facilities",
-            "ownerGroup": "Facilities"
+            "ownerCompany": "Petramco",
+            "ownerBU": "Facilities Support",
+            "ownerGroup": "Facilities",
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(CaseTemplateData);
         console.log("active case Template is created===", newCaseTemplate.id);
         console.log("active case Template is created===", newCaseTemplate.displayId);
         await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automationTaskTemplate.displayId);
+       try{
+        await navigationPage.signOut();
+        await loginPage.login('fritz');   
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('fritz');
         await createCasePage.setSummary('SummaryAnkush');
         await createCasePage.clickSelectCaseTemplateButton();
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
+        await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await utilityCommon.closePopUpMessage();
@@ -872,7 +877,12 @@ describe('Create Case Task', () => {
         await utilityCommon.closePopUpMessage();
         await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Completed");
-
+    } catch (e) {
+        throw e;
+    } finally {
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
+    }
     });//, 190 * 1000);
 
     //ankagraw
@@ -1058,7 +1068,7 @@ describe('Create Case Task', () => {
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary3 ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
-    }, 300 * 1000);
+    }, 340 * 1000);
 
     it('[DRDMV-7143,DRDMV-7144]: [Automatic Task] - Task Activation behaviour immediately after creation when Task is at seq 1', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1083,9 +1093,9 @@ describe('Create Case Task', () => {
             "Requester": "qkatawazi",
             "Summary": "create case is inProgress Status" + randomStr,
             "Assigned Company": "Petramco",
-            "Business Unit": "HR Support",
-            "Support Group": "Compensation and Benefits",
-            "Assignee": "Elizabeth"
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
         }
 
         var caseWithPendingStatus = {
@@ -1095,9 +1105,9 @@ describe('Create Case Task', () => {
             "Requester": "qkatawazi",
             "Summary": "create case is in Pending Status" + randomStr,
             "Assigned Company": "Petramco",
-            "Business Unit": "HR Support",
-            "Support Group": "Compensation and Benefits",
-            "Assignee": "Elizabeth"
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
         }
 
         var caseWithResolvedStatus = {
@@ -1107,9 +1117,9 @@ describe('Create Case Task', () => {
             "Requester": "qkatawazi",
             "Summary": "create case is in Resolved Status" + randomStr,
             "Assigned Company": "Petramco",
-            "Business Unit": "HR Support",
-            "Support Group": "Compensation and Benefits",
-            "Assignee": "Elizabeth"
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
         }
 
         var caseWithClosedStatus = {
@@ -1119,9 +1129,9 @@ describe('Create Case Task', () => {
             "Requester": "qkatawazi",
             "Summary": "create case is in Closed Status" + randomStr,
             "Assigned Company": "Petramco",
-            "Business Unit": "HR Support",
-            "Support Group": "Compensation and Benefits",
-            "Assignee": "Elizabeth"
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
         }
 
         var caseWithCanceledStatus = {
@@ -1131,9 +1141,9 @@ describe('Create Case Task', () => {
             "Requester": "qkatawazi",
             "Summary": "create case is in Canceled Status" + randomStr,
             "Assigned Company": "Petramco",
-            "Business Unit": "HR Support",
-            "Support Group": "Compensation and Benefits",
-            "Assignee": "Elizabeth"
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
         var inProgressCase = await apiHelper.createCase(caseWithInprogressStatus);
@@ -1142,7 +1152,7 @@ describe('Create Case Task', () => {
         var closedCase = await apiHelper.createCase(caseWithClosedStatus);
         var CanceledCase = await apiHelper.createCase(caseWithCanceledStatus);
 
-        var inProgress: string = inProgressCase.displayId;
+         var inProgress: string = inProgressCase.displayId;
         var pending: string = PendingCase.displayId;
         var resolved: string = resolvedCase.displayId;
         var closed: string = closedCase.displayId;

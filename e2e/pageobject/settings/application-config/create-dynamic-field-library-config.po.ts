@@ -1,4 +1,4 @@
-import { $,$$, protractor, ProtractorExpectedConditions } from "protractor";
+import { $,$$,by,element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../../utils/util.grid';
 import utilCommon from '../../../utils/util.common';
 
@@ -6,7 +6,7 @@ class CreateDynamicFieldLibrary {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        title: '[class="d-textfield__label d-textfield__item"]',
+        title: '.rx-search-option-container .d-textfield__item',
         cancelButton: '[rx-view-component-id="39134e3e-3a8c-40cd-8a20-b4c90ca7fce9"] button',
         fieldName:'[rx-view-component-id="3f126998-430d-4d80-9061-e6bb90ddcef5"] .d-textfield__input',
         localizeButton:'[rx-view-component-id="827cea0b-82d6-4741-8051-1cc52b83b770"] button',
@@ -39,19 +39,12 @@ class CreateDynamicFieldLibrary {
         await utilCommon.selectDropDown(this.selectors.status,value)
     }
     
-    async verifyTitle(value: string): Promise<boolean> {
-        let dynamicFields: number = await $$(this.selectors.title).count();
-        for (let i = 0; i < dynamicFields; i++) {
-            let field = await (await $$(this.selectors.title).get(i).getText()).trim();
-            if (value == field) {
-                return true;
-            }
-        }
-        return false;
+    async isHiddenFieldPresent(value: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.title,value)).isPresent();    
     }
 
     async cancelButton(): Promise<void> {
-        await $(this.selectors.title).click();
+        await $(this.selectors.cancelButton).click();
     }
 }
 

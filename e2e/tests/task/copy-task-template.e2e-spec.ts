@@ -435,7 +435,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
         }
-    }, 420 * 1000);
+    }, 480 * 1000);
 
     it('[DRDMV-13737]: [Negative] Try to copy Automated template with same process Name and different field data', async () => {
         try {
@@ -705,7 +705,7 @@ describe('Copy Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
         }
-    });//, 210 * 1000);
+    }, 300 * 1000);
 
     it('[DRDMV-14220]: Verify Warning message when Dynamic fields are added to a Automated Task template', async () => {
         try {
