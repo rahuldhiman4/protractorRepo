@@ -30,13 +30,13 @@ describe('Person Profile test', () => {
     });
 
     //asahitya
-    it('[DRDMV-14086]: Verify Profile picture of Managar-Logged in user on My Profile page', async () => {
-        expect(await personProfile.isPersonManagerImageDisplayed()).toBeTruthy("Person Manager image is not displayed");
+    it('[DRDMV-17018]: Check agent can not add notes to own Person profile in agent work history tab', async () => {
+        expect(await personProfile.isActivityNotesDisplayed()).toBeFalsy("Activity Notes are available");
     });
 
     //asahitya
-    it('[DRDMV-17018]: Check agent can not add notes to own Person profile in agent work history tab', async () => {
-        expect(await personProfile.isActivityNotesDisplayed()).toBeFalsy("Activity Notes are available");
+    it('[DRDMV-14086]: Verify Profile picture of Managar-Logged in user on My Profile page', async () => {
+        expect(await personProfile.isPersonManagerImageDisplayed()).toBeTruthy("Person Manager image is not displayed");
     });
 
     //asahitya
@@ -107,7 +107,7 @@ describe('Person Profile test', () => {
             await navigationPage.signOut();
             await loginPage.login("qdu");
             await navigationPage.gotoPersonProfile();
-            expect(await activityTabPage.isTextPresentInActivityLog("DRDMV-17019")).toBeFalsy("Notes are avaialble on Hannah's Profile");
+            expect(await activityTabPage.isTextPresentInNote("DRDMV-17019")).toBeFalsy("Notes are avaialble on Hannah's Profile");
         }
         catch (e) {
             throw e;
