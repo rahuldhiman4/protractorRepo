@@ -13,7 +13,7 @@ import composeMail from '../../pageobject/email/compose-mail.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTaskPo from '../../pageobject/task/edit-task.po';
-import { default as manageTask } from "../../pageobject/task/manage-task-blade.po";
+import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
@@ -49,13 +49,13 @@ describe("Attachment", () => {
         await viewCasePo.clickAttachmentsLink();
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('bwfJpg');
-        await expect(await attachmentBladePo.getTextOfColumnHeader('Attachments ')).toBe('Attachments', 'Attachment column header is missing');
+        expect(await attachmentBladePo.getTextOfColumnHeader('Attachments ')).toBe('Attachments', 'Attachment column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Media type ')).toBe('Media type', 'Media type  column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
-        await expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfJpg', 'Attachment file name is missing');
-        await expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Case', 'Attach to column value is missing');
-        await expect(await attachmentBladePo.getRecordValue('Media type')).toBe('image/jpeg', 'Media type column value is missing');
+        expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfJpg', 'Attachment file name is missing');
+        expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Case', 'Attach to column value is missing');
+        expect(await attachmentBladePo.getRecordValue('Media type')).toBe('image/jpeg', 'Media type column value is missing');
 
         let year: string;
         let month: string;
@@ -116,7 +116,7 @@ describe("Attachment", () => {
 
         expect(await attachmentBladePo.isDownloadButtonDisplayed()).toBeTruthy('Download button is missing');
         expect(await attachmentBladePo.isCloseButtonDisplayed()).toBeTruthy('Close button is missing');
-        await expect(await attachmentBladePo.getTextOfColumnHeader('Attachments ')).toBe('Attachments', 'Attachment column header is missing');
+        expect(await attachmentBladePo.getTextOfColumnHeader('Attachments ')).toBe('Attachments', 'Attachment column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Media type ')).toBe('Media type', 'Media type  column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
@@ -126,17 +126,17 @@ describe("Attachment", () => {
     it('[DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        var caseData = {
-            "Requester": "qtao",
+        let caseData = {
+            "Requester": "araisin",
             "Summary": "Test case for DRDMV-11713",
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
-            "Support Group": "US Support 3",
-            "Assignee": "qkatawazi"
+            "Support Group": "US Support 1",
+            "Assignee": "qtao"
         }
         await apiHelper.apiLogin('qkatawazi');
-        var newCase = await apiHelper.createCase(caseData);
-        var caseId: string = newCase.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
         expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
         await viewCasePo.clickOnEmailLink();
@@ -146,7 +146,7 @@ describe("Attachment", () => {
         await viewCasePo.clickAttachmentsLink();
         expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('demo');
-        await expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('demo', 'demo txt file name is missing');
+        expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('demo', 'demo txt file name is missing');
         await attachmentBladePo.clickOnDownloadButton();
         expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
     });
@@ -156,18 +156,17 @@ describe("Attachment", () => {
         let filePath = '../../data/ui/attachment/bwfPdf.pdf';
         let caseBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        var caseData =
-        {
-            "Requester": "qtao",
+        let caseData = {
+            "Requester": "araisin",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
-            "Support Group": "US Support 3",
-            "Assignee": "qkatawazi"
+            "Support Group": "US Support 1",
+            "Assignee": "qtao"
         }
         await apiHelper.apiLogin('qkatawazi');
-        var newCase = await apiHelper.createCase(caseData);
-        var caseId: string = newCase.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
         await activityTabPo.addActivityNote(caseBodyText);
         await activityTabPo.addAttachment([filePath]);
@@ -199,9 +198,8 @@ describe("Attachment", () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let addNotes = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
-        var caseData =
-        {
-            "Requester": "qtao",
+        let caseData = {
+            "Requester": "araisin",
             "Summary": caseSummary,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
@@ -209,8 +207,8 @@ describe("Attachment", () => {
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
-        var newCase = await apiHelper.createCase(caseData);
-        var caseId: string = newCase.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
 
         // Create Task Template
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -228,14 +226,14 @@ describe("Attachment", () => {
 
         await caseConsole.searchAndOpenCase(caseId);
         await viewCasePo.clickAddTaskButton();
-        await manageTask.clickAddAdhocTaskButton();
+        await manageTaskPo.clickAddAdhocTaskButton();
         await adhoctaskTemplate.setSummary(adhocTaskSummary);
         await adhoctaskTemplate.addAttachment([xlsxFilePath]);
         await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await manageTask.clickOnCloseButton();
+        await manageTaskPo.clickOnCloseButton();
         await viewCasePo.clickAttachmentsLink();
-        await expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfXlsx', 'Attachment file name is missing');
-        await expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Task', 'Attach to column value is missing');
+        expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfXlsx', 'Attachment file name is missing');
+        expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Task', 'Attach to column value is missing');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('bwfXlsx');
         await attachmentBladePo.clickOnDownloadButton();
@@ -243,25 +241,25 @@ describe("Attachment", () => {
 
         // //Add Manual task and Automation Task in Case
         await viewCasePo.clickAddTaskButton();
-        await manageTask.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
-        await manageTask.clickTaskLinkOnManageTask(manualTaskTemplateData.templateName);
+        await manageTaskPo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
+        await manageTaskPo.clickTaskLinkOnManageTask(manualTaskTemplateData.templateName);
         await activityTabPo.addActivityNote(addNotes);
         await activityTabPo.addAttachment([wordFilePath]);
         await activityTabPo.clickOnPostButton();
-        await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
+        expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAttachmentsLink();
         await attachmentBladePo.searchRecord('bwfWord1');
-        await expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfWord1', 'Attachment file name is missing');
-        await expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Social', 'Attach to column value is missing');
+        expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfWord1', 'Attachment file name is missing');
+        expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Social', 'Attach to column value is missing');
         expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('bwfWord1');
         await attachmentBladePo.clickOnDownloadButton();
-        await expect(await utilityCommon.isFileDownloaded('bwfWord1.rtf')).toBeTruthy('File is not downloaded.');
+        expect(await utilityCommon.isFileDownloaded('bwfWord1.rtf')).toBeTruthy('File is not downloaded.');
         expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.clickOnCloseButton();
         await navigationPage.gotoPersonProfile();
-        await expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
+        expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
     });
 
     //kgaikwad
@@ -281,12 +279,12 @@ describe("Attachment", () => {
         for (j = 0; j < fileName2.length; j++) {
             await attachmentBladePo.searchRecord(`${fileName2[j]}`);
             await attachmentBladePo.searchAndSelectCheckBox(`${fileName2[j]}`);
-            await expect(await attachmentBladePo.getRecordValue('Attachments')).toBe(`${fileName2[j]}`, 'Attachment file name is missing');
+            expect(await attachmentBladePo.getRecordValue('Attachments')).toBe(`${fileName2[j]}`, 'Attachment file name is missing');
             await attachmentBladePo.clickOnDownloadButton();
-            await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
+            expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
             await attachmentBladePo.searchAndSelectCheckBox(`${fileName2[j]}`);
-            await expect(await utilCommon.isFileDownloaded(`${fileName1[j]}`)).toBeTruthy(`${fileName1[j]} File is not downloaded.`);
-            await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
+            expect(await utilCommon.isFileDownloaded(`${fileName1[j]}`)).toBeTruthy(`${fileName1[j]} File is not downloaded.`);
+            expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
         }
     }, 900 * 1000);
 
@@ -299,9 +297,8 @@ describe("Attachment", () => {
         let taskId: string[] = [];
 
         // Create case API
-        var caseData =
-        {
-            "Requester": "qtao",
+        let caseData = {
+            "Requester": "araisin",
             "Summary": caseSummary,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
@@ -309,8 +306,8 @@ describe("Attachment", () => {
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qtao');
-        var newCase = await apiHelper.createCase(caseData);
-        var caseId: string = newCase.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let caseId: string = newCase.displayId;
         await caseConsole.searchAndOpenCase(caseId);
         //Create Task API
 
@@ -331,8 +328,8 @@ describe("Attachment", () => {
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
             //Add Task into Blade
             await viewCasePo.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(`manualTaskTemplateDraft ${taskRandString[i]}`);
-            await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateDraft ${taskRandString[i]}`);
+            await manageTaskPo.addTaskFromTaskTemplate(`manualTaskTemplateDraft ${taskRandString[i]}`);
+            await manageTaskPo.clickTaskLinkOnManageTask(`manualTaskTemplateDraft ${taskRandString[i]}`);
 
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.addAttachment([`../../data/ui/attachment/${fileName[i]}`]);
@@ -350,16 +347,16 @@ describe("Attachment", () => {
         for (let j: number = 0; j < taskRandString.length; j++) {
 
             await attachmentBladePo.clickOnFileName(fileName2[j]);
-            await expect(await attachmentInformationBladePo.getValuesOfInformation(taskId[j])).toContain(taskId[j]);
+            expect(await attachmentInformationBladePo.getValuesOfInformation(taskId[j])).toContain(taskId[j]);
             await attachmentInformationBladePo.clickOnCloseButton();
         }
         await attachmentBladePo.clickOnRefreshButton();
-        await expect(await attachmentBladePo.getAttachmentToolTipText('bwfJpg')).toBeTruthy('ToolTip is missing of attachment');
+        expect(await attachmentBladePo.getAttachmentToolTipText('bwfJpg')).toBeTruthy('ToolTip is missing of attachment');
         await attachmentBladePo.clickOnAllCheckboxButton();
         await attachmentBladePo.clickOnRefreshButton();
-        await expect(await attachmentBladePo.isCheckBoxSelected('bwfJpg')).toBeFalsy('bwfJpg CheckBox is selected');
-        await expect(await attachmentBladePo.isCheckBoxSelected('bwfXlsx')).toBeFalsy('bwfXlsx CheckBox is selected');
-        await expect(await attachmentBladePo.isCheckBoxSelected('bwfXml')).toBeFalsy('bwfXml CheckBox is selected');
+        expect(await attachmentBladePo.isCheckBoxSelected('bwfJpg')).toBeFalsy('bwfJpg CheckBox is selected');
+        expect(await attachmentBladePo.isCheckBoxSelected('bwfXlsx')).toBeFalsy('bwfXlsx CheckBox is selected');
+        expect(await attachmentBladePo.isCheckBoxSelected('bwfXml')).toBeFalsy('bwfXml CheckBox is selected');
         await attachmentBladePo.clickOnCloseButton();
     }, 450 * 1000);
 
@@ -377,10 +374,10 @@ describe("Attachment", () => {
         await activityTabPo.clickOnPostButton();
         // await utilityCommon.waitUntilSpinnerToHide();
         await viewCasePo.clickAttachmentsLink();
-        await expect(await attachmentBladePo.getAttachmentNameCount('articleStatus')).toEqual(9);
-        await expect(await attachmentBladePo.getAttachmentSize()).toBe('1 - 50 of 60');
+        expect(await attachmentBladePo.getAttachmentNameCount('articleStatus')).toEqual(9);
+        expect(await attachmentBladePo.getAttachmentSize()).toBe('1 - 50 of 60');
         await attachmentBladePo.clickOnPaginationNextButton();
-        await expect(await attachmentBladePo.getAttachmentSize()).toBe('51 - 60 of 60');
+        expect(await attachmentBladePo.getAttachmentSize()).toBe('51 - 60 of 60');
         await attachmentBladePo.clickOnPaginationPreviousButton();
         await attachmentBladePo.clickOnCloseButton();
     });
@@ -396,18 +393,18 @@ describe("Attachment", () => {
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
         await attachmentBladePo.searchRecord('bwfJpg');
-        await expect(await attachmentBladePo.isAttachmentPresent('bwfJpg')).toBeTruthy('bwfJpg Attachment is missing on grid');
+        expect(await attachmentBladePo.isAttachmentPresent('bwfJpg')).toBeTruthy('bwfJpg Attachment is missing on grid');
         await attachmentBladePo.searchRecord('articleStatus');
-        await expect(await attachmentBladePo.isAttachmentPresent('articleStatus')).toBeTruthy('articleStatus.png Attachment is missing on grid');
+        expect(await attachmentBladePo.isAttachmentPresent('articleStatus')).toBeTruthy('articleStatus.png Attachment is missing on grid');
         await attachmentBladePo.clickOnCloseButton();
         await viewCasePo.clickEditCaseButton();
-        await expect(editCasePo.isPriorityRequiredText()).toBeTruthy("Priority not present")
+        expect(editCasePo.isPriorityRequiredText()).toBeTruthy("Priority not present")
         await editCasePo.removeAttachment();
         await editCasePo.removeAttachment();
         await editCasePo.clickSaveCase();
         await viewCasePo.clickAttachmentsLink();
-        await expect(await attachmentBladePo.isAttachmentPresent('bwfJpg')).toBeFalsy('bwfJpg Attachment displayed on grid');
-        await expect(await attachmentBladePo.isAttachmentPresent('bwfXlsx')).toBeFalsy('bwfXlsx Attachment displayed on grid');
+        expect(await attachmentBladePo.isAttachmentPresent('bwfJpg')).toBeFalsy('bwfJpg Attachment displayed on grid');
+        expect(await attachmentBladePo.isAttachmentPresent('bwfXlsx')).toBeFalsy('bwfXlsx Attachment displayed on grid');
         await attachmentBladePo.clickOnCloseButton();
     }, 600 * 1000);
 
@@ -423,16 +420,15 @@ describe("Attachment", () => {
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
         await attachmentBladePo.clickOnAllCheckboxButton();
-        await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[0]}`)).toBeTruthy('File is delete sucessfully');
-        await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[1]}`)).toBeTruthy('File is delete sucessfully');
+        expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[0]}`)).toBeTruthy('File is delete sucessfully');
+        expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[1]}`)).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.clickOnDownloadButton();
-        await utilityCommon.acceptOrRejectBrowserPopup(true);
-        // Failling here because of mulitple download pop is not get handlled.
+        await browser.sleep(3000); // hard wait to download all files
         let fileName2: string[] = ['articleStatus', 'bwfJpg'];
         let j: number;
         for (j = 0; j < fileName2.length; j++) {
-            await expect(await utilCommon.isFileDownloaded(`${fileName1[j]}`)).toBeTruthy('File is not downloaded.');
-            await expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
+            expect(await utilCommon.isFileDownloaded(`${fileName1[j]}`)).toBeTruthy('File is not downloaded.');
+            expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
         }
     });
 
@@ -442,25 +438,43 @@ describe("Attachment", () => {
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
-        let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf'];
-        await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf']);
+        let fileName1: string[] = ['bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf'];
+        let filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
+        await createCasePo.addDescriptionAttachment(filesToUpload1);
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        await activityTabPo.addActivityNote("Total 20 Files");
+        await activityTabPo.addAttachment(filesToUpload1);
+        await activityTabPo.clickOnPostButton();
+        await activityTabPo.addActivityNote("Total 30 Files");
+        await activityTabPo.addAttachment(filesToUpload1);
+        await activityTabPo.clickOnPostButton();
+        await activityTabPo.addActivityNote("Total 40 Files");
+        await activityTabPo.addAttachment(filesToUpload1);
+        await activityTabPo.clickOnPostButton();
+        await activityTabPo.addActivityNote("Total 50 Files");
+        await activityTabPo.addAttachment(filesToUpload1);
+        await activityTabPo.clickOnPostButton();
+        let fileName2: string[] = ['articleStatus.png', 'bwfJpg.jpg'];
+        let filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
+        await activityTabPo.addActivityNote("Total 52 Files");
+        await activityTabPo.addAttachment(filesToUpload2);
+        await activityTabPo.clickOnPostButton();
         await viewCasePo.clickAttachmentsLink();
         await attachmentBladePo.clickOnAllCheckboxButton();
-        await expect(await attachmentBladePo.getCountOfSelectedCheckBox()).toBe('10/10 files selected', 'selected checkbox count is missing for page1');
-        await attachmentBladePo.clickOnColumnHeader('Attachments');
+        expect(await attachmentBladePo.getCountOfSelectedCheckBox()).toBe('50/50 files selected', 'selected checkbox count is missing for page1');
         await attachmentBladePo.clickOnPaginationNextButton();
-        await attachmentBladePo.clickOnAllCheckboxButton();
-        await expect(await attachmentBladePo.getCountOfSelectedCheckBox()).toBe('2/2 files selected', 'selected checkbox count is missing for page2');
-        await expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg1.jpg')).toBeTruthy('File is delete sucessfully');
-        await expect(await utilCommon.deleteAlreadyDownloadedFile('articleStatus.png')).toBeTruthy('File is delete sucessfully');
+        expect(await attachmentBladePo.getCountOfSelectedCheckBox()).toBe('50/2 files selected', 'selected checkbox count is missing for page2');
+        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg1.jpg')).toBeTruthy('File is delete sucessfully');
+        expect(await utilCommon.deleteAlreadyDownloadedFile('articleStatus.png')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.clickOnDownloadButton();
-        // Failling here because of mulitple download pop is not get handlled.
-        await expect(await utilCommon.isFileDownloaded('bwfJpg1.jpg')).toBeTruthy('bwfJpg1.jpg File is not downloaded.');
-        await expect(await utilCommon.isFileDownloaded('articleStatus.png')).toBeTruthy('articleStatus.png File is not downloaded.');
+        await browser.sleep(5000); // hard wait to download 52 all files
+        // File from first page is downloaded
+        expect(await utilCommon.isFileDownloaded('bwfJpg1.jpg')).toBeTruthy('bwfJpg1.jpg File is not downloaded.');
+        // File from last page is not downloaded
+        expect(await utilCommon.isFileDownloaded('articleStatus.png')).toBeFalsy('articleStatus.png File is downloaded.');
         await attachmentBladePo.clickOnPaginationPreviousButton();
-        await expect(await attachmentBladePo.isCheckBoxSelected('bwfPdf')).toBeFalsy('bwfPdf CheckBox is selected');
-        await expect(await attachmentBladePo.isCheckBoxSelected('bwfJson5')).toBeFalsy('bwfJson5 CheckBox is selected');
-    });
+        expect(await attachmentBladePo.isCheckBoxSelected('bwfPdf')).toBeFalsy('bwfPdf CheckBox is selected');
+        expect(await attachmentBladePo.isCheckBoxSelected('bwfJson5')).toBeFalsy('bwfJson5 CheckBox is selected');
+    }, 300 * 1000);
 });

@@ -388,6 +388,7 @@ class ActivityTabPage {
 
     async clickActivityNoteTextBox(): Promise<void> {
         await $(this.selectors.addNoteBox).click();
+        await browser.sleep(1500);
     }
 
     async addActivityNote(addNoteText: string): Promise<void> {
