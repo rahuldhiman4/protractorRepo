@@ -15,6 +15,7 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
+import viewTaskPo from '../../pageobject/task/view-task.po';
 describe('Case Activity CKE', () => {
 
     beforeAll(async () => {
@@ -69,7 +70,7 @@ describe('Case Activity CKE', () => {
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // For External
-            let externalTemplateData: ITaskTemplate = {
+            let externalTemplateData = {
                 "templateName": "DRDMV-21617 external task template name" + summary,
                 "templateSummary": "DRDMV-21617 external task template summary" + summary,
                 "templateStatus": "Active",
@@ -77,7 +78,7 @@ describe('Case Activity CKE', () => {
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities"
-            };
+            }
 
             await apiHelper.createExternalTaskTemplate(externalTemplateData);
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -245,8 +246,6 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickMaximizeMinimizeIcon();
             expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await activityTabPage.clickMaximizeMinimizeIcon();
-            await activityTabPage.clickPublicCheckbox();
-            expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
             await activityTabPage.clickActivityNoteTextBox();
             expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
@@ -326,10 +325,11 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickOnCancelButton();
             await activityTabPage.clickActivityNoteTextBox();
             expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
-
+            await viewTaskPo.clickOnViewCase();
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto Automated Task
             await viewCasePo.clickAddTaskButton();
+            
             await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
             await activityTabPage.addActivityNote(addNoteBodyText);
             expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
@@ -400,7 +400,7 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickOnCancelButton();
             await activityTabPage.clickActivityNoteTextBox();
             expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
-
+            await viewTaskPo.clickOnViewCase();
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto External Task
             await viewCasePo.clickAddTaskButton();
@@ -474,6 +474,7 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickOnCancelButton();
             await activityTabPage.clickActivityNoteTextBox();
             expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
+            await viewTaskPo.clickOnViewCase();
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto Adhoc Task
@@ -650,5 +651,5 @@ describe('Case Activity CKE', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 900 * 1000);
+    }, 2000 * 1000);
 })
