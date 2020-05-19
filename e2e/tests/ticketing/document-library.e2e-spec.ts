@@ -17,6 +17,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import utilGrid from '../../utils/util.grid';
 
 describe('Document Library', () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
@@ -61,6 +62,7 @@ describe('Document Library', () => {
     it('[DRDMV-13039,DRDMV-13073]: Verify document can be Deleted And Verify OOB document manager role is added to BA', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
         await utilCommon.waitUntilSpinnerToHide();
@@ -68,7 +70,8 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
-        await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+        await createDocumentLibraryPo.selectBusinessUnit('United States Support');
+        await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
@@ -80,6 +83,7 @@ describe('Document Library', () => {
         await editDocumentLibraryPo.selectStatus('Draft');
         await editDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
+        await utilGrid.clearFilter();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeTruthy('Delete buttton is not enabled');
         await editDocumentLibraryPo.clickOnDeleteButton();
@@ -101,6 +105,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
@@ -143,6 +148,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
@@ -199,6 +205,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
@@ -259,6 +266,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
         // await utilCommon.waitUntilPopUpDisappear();
@@ -278,14 +286,16 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
-        await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+        await createDocumentLibraryPo.selectBusinessUnit('United States Support');
+        await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
 
-        await editDocumentLibraryPo.clickOnSupportGroupAccessButton()
-        await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Employee Relations');
+        await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
+        await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('Australia Support');
+        await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('AU Support 3');
         await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
         await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
         await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Petramco');
@@ -321,8 +331,8 @@ describe('Document Library', () => {
             expect(await editDocumentLibraryPo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
 
             await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
-            await editDocumentLibraryPo.closeGroupAccessTag('Employee Relations');
-            expect(await editDocumentLibraryPo.isRemoveGroupAccessWarningMessageDisplayed('Are you sure you want to remove access to "Employee Relations"?')).toBeTruthy('Remove Group List Warning Message Missing');
+            await editDocumentLibraryPo.closeGroupAccessTag('AU Support 3');
+            expect(await editDocumentLibraryPo.isRemoveGroupAccessWarningMessageDisplayed('Are you sure you want to remove access to "AU Support 3"?')).toBeTruthy('Remove Group List Warning Message Missing');
             await editDocumentLibraryPo.clickOnRemoveGroupWarningMsgYesButton();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
 
@@ -335,13 +345,14 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('ESM');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Business Unit');
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
-
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectAddSupportDepartmentDropDownOfReadAccess('Engineering');
+            await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('Engineering');
+            await editDocumentLibraryPo.selectAddSupportDepartmentDropDownOfReadAccess('Development');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Department');
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Accounts Payable (AP)');
+            await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('HR Support');
+            await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Employee Relations');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await editDocumentLibraryPo.clickOnCancelButton();
@@ -353,7 +364,7 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 450 * 1000);
+    }, 480 * 1000);
 
     //kgaikwad
     it('[DRDMV-13072]: Verify error should be thrown when write access SG is added in read access', async () => {
@@ -366,6 +377,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
@@ -397,6 +409,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
@@ -422,6 +435,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
@@ -455,6 +469,7 @@ describe('Document Library', () => {
         let draftDocLibData = {
             docLibTitle: 'drdmv13088_draft_document',
             company: 'Petramco',
+            businessUnit:'HR Support',
             ownerGroup: 'Compensation and Benefits',
         }
         await apiHelper.apiLogin('tadmin');
@@ -484,6 +499,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.addAttachment(filePath);
         expect(await utilCommon.isPopUpMessagePresent('The file 50MB.zip is too large and cannot be added. File size limit is: 20 MB')).toBeTruthy('Info msg not present');
@@ -502,6 +518,7 @@ describe('Document Library', () => {
         for (let i: number = 0; i < fileName1.length; i++) {
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectBusinessUnit('HR Support');
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.addAttachment(`../../../data/ui/attachment/${fileName1[i]}`);
             await createDocumentLibraryPo.clickOnSaveButton();
@@ -511,6 +528,7 @@ describe('Document Library', () => {
         }
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.clickOnSaveButton();
@@ -527,6 +545,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.addAttachment(filePath);
         expect(await createDocumentLibraryPo.isAttachmentButtonEnabled()).toBeFalsy('Attachment button is enabled');
@@ -543,9 +562,11 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+            await createDocumentLibraryPo.selectBusinessUnit('United States Support');
+            await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
             await createDocumentLibraryPo.clickOnSaveButton();
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await editDocumentLibraryPo.selectBusinessUnit('Facilities Support');
             await editDocumentLibraryPo.selectOwnerGroup('Facilities');
             await editDocumentLibraryPo.clickOnSaveButton();
             //This validation is alredy covered at DRDMV-13088 hence commented
@@ -556,8 +577,9 @@ describe('Document Library', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await editDocumentLibraryPo.selectBusinessUnit('Australia Support');
             //await editDocumentLibraryPo.selectStatus('Published');
-            await editDocumentLibraryPo.selectOwnerGroup('Employee Relations');
+            await editDocumentLibraryPo.selectOwnerGroup('AU Support 3');
             await editDocumentLibraryPo.clickOnSaveButton();
             await editDocumentLibraryPo.clickOnCancelButton();
             await navigationPage.signOut();
@@ -611,6 +633,7 @@ describe('Document Library', () => {
         expect(await createDocumentLibraryPo.isDeleteButtonDisplayed()).toBeFalsy("delete button is Displayed");
 
         await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup("Compensation and Benefits");
         await createDocumentLibraryPo.selectCategoryTier1("Applications");
         await createDocumentLibraryPo.selectCategoryTier2('Social');
@@ -631,6 +654,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.waitUntilPopUpDisappear();
