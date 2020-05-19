@@ -56,6 +56,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16767');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
+            await utilityCommon.waitUntilPopUpDisappear();
             await previewKnowledgePo.clickOnViewArticleLink();
             await utilityCommon.switchToNewTab(1);
             await utilityCommon.refresh();
@@ -155,6 +156,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16768');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
+            await utilityCommon.waitUntilPopUpDisappear();
             await previewKnowledgePo.clickOnViewArticleLink();
             await utilityCommon.switchToNewTab(1);
             await utilityCommon.refresh();
@@ -174,7 +176,7 @@ describe('Case Activity', () => {
             await activityTabPage.removeAuthorFromFilter();
             await activityTabPage.addAuthorOnFilter('Hannah Haas');
             await activityTabPage.removeAuthorFromFilter();
-            await activityTabPage.addAuthorOnFilter('Qiwei Liu');
+            await activityTabPage.addAuthorOnFilter('Quigley Heroux');
             await activityTabPage.removeAuthorFromFilter();
             await activityTabPage.addAuthorOnFilter('Samuel Badree');
             await activityTabPage.removeAuthorFromFilter();
@@ -241,17 +243,17 @@ describe('Case Activity', () => {
             await previewCasePo.clickGoToCaseButton();
 
             await activityTabPage.addActivityNote(caseBodyText);
-            await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
+            await activityTabPage.addPersonInActivityNote('Jacqueline Featherstonehaugh');
             await activityTabPage.clickOnPostButton();
-            expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText, 'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
+            expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText, 'Jacqueline Featherstonehaugh')).toBeTruthy('PersonName is not displayed correctly');
             // 2nd Step: Open Task from pre condition and inspect its activities
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateName);
             await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
             await activityTabPage.addActivityNote(taskBodyText);
-            await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
+            await activityTabPage.addPersonInActivityNote('Jacqueline Featherstonehaugh');
             await activityTabPage.clickOnPostButton();
-            expect(await activityTabPage.isHyperlinkOfActivityDisplay(taskBodyText, 'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
+            expect(await activityTabPage.isHyperlinkOfActivityDisplay(taskBodyText, 'Jacqueline Featherstonehaugh')).toBeTruthy('PersonName is not displayed correctly');
             // 3rd Step: Open KA from pre condition and inspect its activities
             await navigationPage.gotoCreateKnowledge();
             await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge page title is missing';
@@ -260,15 +262,16 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16773');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
+            await utilityCommon.waitUntilPopUpDisappear();
             await previewKnowledgePo.clickOnViewArticleLink();
             await utilCommon.switchToNewWidnow(1);
             await utilityCommon.refresh();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(knowledgeBodyText);
-            await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
+            await activityTabPage.addPersonInActivityNote('Jacqueline Featherstonehaugh');
             await activityTabPage.clickOnPostButton();
-            expect(await activityTabPage.isHyperlinkOfActivityDisplay(knowledgeBodyText, 'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
+            expect(await activityTabPage.isHyperlinkOfActivityDisplay(knowledgeBodyText, 'Jacqueline Featherstonehaugh')).toBeTruthy('PersonName is not displayed correctly');
         } catch (e) {
             throw e;
         } finally {
@@ -392,7 +395,7 @@ describe('Case Activity', () => {
         await activityTabPage.removeAuthorFromFilter();
         await activityTabPage.addAuthorOnFilter('Hannah Haas');
         await activityTabPage.removeAuthorFromFilter();
-        await activityTabPage.addAuthorOnFilter('Qiwei Liu');
+        await activityTabPage.addAuthorOnFilter('Quigley Heroux');
         await activityTabPage.removeAuthorFromFilter();
         await activityTabPage.addAuthorOnFilter('Samuel Badree');
         await activityTabPage.removeAuthorFromFilter();
@@ -440,7 +443,7 @@ describe('Case Activity', () => {
         await activityTabPage.removeAuthorFromFilter();
         // 3rd In Author field search for User using *First Name*, *Last Name*, *Email*, *Login ID*, and *Person ID*
         await activityTabPage.addAuthorOnFilter('Angelina');//FirstName
-        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.clearAuthorSearchBoxOnFilter();
         await activityTabPage.addAuthorOnFilter('Steyn');//LastName
         await activityTabPage.removeAuthorFromFilter();
         await activityTabPage.addAuthorOnFilter('aborder@petramco.com');//Email        
@@ -783,7 +786,6 @@ describe('Case Activity', () => {
     }, 420 * 1000);
 
     //kgaikwad
-    // Ok
     it('[DRDMV-18048]: While adding a note on Case one or more agent can be tagged in Comment', async () => {
         await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -873,6 +875,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('Knowledge Article for DRDMV-16754');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
+            await utilityCommon.waitUntilPopUpDisappear();
             await previewKnowledgePo.clickOnViewArticleLink();
 
             // View Knowledege Page
@@ -978,11 +981,11 @@ describe('Case Activity', () => {
             await caseConsolePo.searchAndOpenCase(caseId);
             await activityTabPage.clickOnRefreshButton();
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi  viewed the case. ')).toEqual(1);
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
             await navigationPage.gotoPersonProfile();
             await expect(await personProfilePo.getCaseViewCount(' Viewed the  ' + caseId)).toEqual(1);
         } catch (e) {
@@ -1025,7 +1028,8 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
-            // Open Task
+            // // Open Task
+            expect(await viewCasePo.getCaseID()).toBe(caseId,'CaseId is missing in qfreng user');
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
             await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskTemplateData.templateSummary);
@@ -1139,6 +1143,8 @@ describe('Case Activity', () => {
     it('[DRDMV-18052]: Alert Notification should be send to tagged persons other than Assignee and Requester', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            await navigationPage.signOut();
+            await loginPage.login('qfeng');
             // Create Case
             let caseData = {
                 "Requester": "apavlik",
@@ -1146,20 +1152,20 @@ describe('Case Activity', () => {
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "Assignee": "qfeng"
+                "Assignee": "qkatawazi"
             }
 
-            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.apiLogin('qfeng');
             let newCase = await apiHelper.createCase(caseData);
             let caseId: string = newCase.displayId;
             await caseConsolePo.searchAndOpenCase(caseId);
             await activityTabPage.addActivityNote('From DRDMV-18052 ');
-            await activityTabPage.addPersonInActivityNote('fritz');
+            await activityTabPage.addPersonInActivityNote('qkatawazi');
             await activityTabPage.clickOnPostButton();
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
             await notificationPo.clickOnNotificationIcon();
-            await expect(await notificationPo.isAlertPresent('Qadim Katawazi mentioned you on ' + caseId)).toBeTruthy('Alert message is not present');
+            await expect(await notificationPo.isAlertPresent('Qiao Feng added a note to ' + caseId)).toBeTruthy('Alert message is not present');
         } catch (e) {
             throw e;
         } finally {
@@ -1309,7 +1315,9 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test_KA_for_DRDMV-16765');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
+            await utilityCommon.waitUntilPopUpDisappear();
             await previewKnowledgePo.clickOnViewArticleLink();
+            await utilityCommon.waitUntilPopUpDisappear();
             await utilityCommon.switchToNewTab(1);
             await utilityCommon.refresh();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
@@ -1428,7 +1436,6 @@ describe('Case Activity', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
-
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(flag);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
