@@ -46,7 +46,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    it('[DRDMV-16767]: KA Activity Filter UI validation', async () => {
+    fit('[DRDMV-16767]: KA Activity Filter UI validation', async () => {
         try {
             // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
             await navigationPage.gotoCreateKnowledge();

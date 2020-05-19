@@ -5,7 +5,6 @@ class CreateKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         createKnowledgeHeader: '[rx-view-component-id="cebb7cbd-0e7b-48a2-9944-c11d3ba255d0"] p',
-        clickOnReferenceTemplate: '[rx-view-component-id="6e402c66-fcdc-464b-b6e7-7e963d9c3a17"] .sectionsName',
         knowledgeTitleEditBox: '[rx-view-component-id="291bf2bb-1eac-404e-94ba-762a50da5ac9"] input',
         saveKnowlegeButton: '[rx-view-component-id="2fdb0ffb-560d-46b4-b7af-379d90bcb0a8"] button',
         knowledgeSet: '80a2cd78-e9a5-4997-b7bb-6fadf918bd3e',
@@ -15,6 +14,7 @@ class CreateKnowledgePage {
         authorRequiredText: '[rx-view-component-id="0a50ea72-5fe9-4488-9547-de0a7eb38dee"] .adapt-select',
         attachmentField: '[rx-view-component-id="bf6900ad-d67a-4705-b907-3caa50b640c7"] .d-icon-paperclip',
         templateHeading: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .template-name',
+        templateSection: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .template-sections',
         regionGuid: '17b172fd-28d5-4553-bd22-b59695953287',
         siteGuid: 'ba9870e4-81f4-45ea-b034-9aff10bc3ab7',
         categoryTier1Guid: 'b51fcb01-f3d1-4da2-a42d-ffc5873a21b3',
@@ -22,7 +22,6 @@ class CreateKnowledgePage {
         categoryTier3Guid: '2774b518-00ab-4e02-bb23-95bdb0285840',
         categoryTier4Guid: 'd0bd4f0d-a53e-4c67-8419-016a926a7651',
         reference: '.cke_editable p',
-        templateName: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .template-name',
         discardButton: '[rx-view-component-id="0b2d73c8-de57-460b-909c-17e2ae50ea5b"] button',
         knowledgeSetValue: '[rx-view-component-id="80a2cd78-e9a5-4997-b7bb-6fadf918bd3e"] button',
         knowledgeTemplateStyle: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .create-ka-template__style-label',
@@ -48,7 +47,7 @@ class CreateKnowledgePage {
 
     async isTemplatePresent(value: string): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createKAHeading)));
-        return await element(by.cssContainingText(this.selectors.templateName, value)).isPresent();
+        return await element(by.cssContainingText(this.selectors.templateHeading, value)).isPresent();
     }
 
     async clickOnDiscardButton(): Promise<void> {
@@ -79,15 +78,13 @@ class CreateKnowledgePage {
     }
 
     async clickOnTemplate(templateName: string): Promise<void> {
-        // let templateLocator = await $$('.col-md');
-        // for (let i = 0; i < templateLocator.length; i++) {
-        //     if (await templateLocator[i].$('.template-name').getText() == templateName) 
-        //     {
-        //         await templateLocator[i].$('.section-title').click();
-        //         break;
-        //     }
-        // }
-        await element(by.cssContainingText('[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .section-title', templateName)).click();
+        let templateLocator = await $$(this.selectors.templateHeading);
+        for (let i = 0; i < templateLocator.length; i++) {
+            if (await templateLocator[i].getText() == templateName) {
+                await $$(this.selectors.templateSection).get(i).click();
+                break;
+            }
+        }
     }
 
     async   clickOnUseSelectedTemplateButton(): Promise<void> {
