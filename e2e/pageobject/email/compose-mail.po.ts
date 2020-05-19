@@ -303,7 +303,7 @@ class ComposeMail {
             await $$(this.selectors.toCcInput).get(1).sendKeys(emailIdForToOrCc);
         }
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.popupEmail)), 4000);
-        await $(this.selectors.popupEmail).click();
+        await $$(this.selectors.popupEmail).first().click();
     }
 
     async getSubjectInputValue(): Promise<string> {

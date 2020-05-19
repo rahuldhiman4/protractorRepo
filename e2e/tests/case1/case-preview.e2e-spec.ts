@@ -12,12 +12,31 @@ import utilityCommon from '../../utils/utility.common';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import resources from '../../pageobject/common/resources-tab.po';
 
+let caseTemplateName = "Case Preview Sample " + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+
 describe("Case Preview", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qtao");
+        let templateData = {
+            "templateName": caseTemplateName,
+            "templateSummary": 'My legal name has changed and I need it updated.',
+            "categoryTier1": "Workforce Administration",
+            "categoryTier2": "HR Operations",
+            "categoryTier3": "Adjustments",
+            "casePriority": "Medium",
+            "templateStatus": "Active",
+            "company": "Petramco",
+            "businessUnit": "HR Support", 
+            "supportGroup": "Workforce Administration",
+            "assignee": "aallbrook",
+            "ownerBU": "Facilities Support",
+            "ownerGroup": "Facilities"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createCaseTemplate(templateData);
     });
 
     afterEach(async () => {
@@ -48,7 +67,7 @@ describe("Case Preview", () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName('qkatawazi');
-        await quickCasePo.selectCaseTemplate('Change My Legal Name');
+        await quickCasePo.selectCaseTemplate(caseTemplateName);
         await quickCasePo.setCaseSummary(caseSummary);
         await quickCasePo.saveCase();
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');
@@ -59,8 +78,8 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('Requester name is missing');
         expect(await casePreviewPo.isRequesterPhoneDisplayed('+15123431923')).toBeTruthy('Requester phone number is missing');
         expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('Requester email id is missing');
-        expect(await casePreviewPo.isCaseTemplateDisplayed('Change My Legal Name')).toBeTruthy('Case Template is missing');
-        expect(await casePreviewPo.isDescriptionDisplayed('Qadim Katawazi Change My Legal Name ' + caseSummary)).toBeTruthy('Description is missing');
+        expect(await casePreviewPo.isCaseTemplateDisplayed(caseTemplateName)).toBeTruthy('Case Template is missing');
+        expect(await casePreviewPo.isDescriptionDisplayed('Qadim Katawazi '+ caseTemplateName + ' ' + caseSummary)).toBeTruthy('Description is missing');
         expect(await casePreviewPo.isCategoryTier1Displayed('Workforce Administration')).toBeTruthy('CategoryTier1 is missing');
         expect(await casePreviewPo.isCategoryTier2Displayed('HR Operations')).toBeTruthy('CategoryTier2 is missing');
         expect(await casePreviewPo.isCategoryTier3Displayed('Adjustments')).toBeTruthy('CategoryTier3 is missing');
@@ -133,7 +152,6 @@ describe("Case Preview", () => {
         await quickCasePo.selectRequesterName('qkatawazi');
         await quickCasePo.setCaseSummary(caseSummary);
         await quickCasePo.saveCase();
-        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully', 1)).toBeTruthy('Case save message not matched'); 
         await casePreviewPo.clickOncreateNewCaseButton();
         expect(await quickCasePo.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
     });
@@ -142,7 +160,6 @@ describe("Case Preview", () => {
     it('[DRDMV-13680]: UI Validation for Fields on Case Preview Page', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let filePath = '../../../data/ui/attachment/demo.txt';
         let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let label = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
@@ -157,7 +174,7 @@ describe("Case Preview", () => {
         await createCasePo.setContactName('qtao');
         await createCasePo.setDescription(description);
         await createCasePo.clickSelectCaseTemplateButton();
-        await selectCasetemplateBladePo.selectCaseTemplate('Change My Legal Name');
+        await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
         await createCasePo.clickAssignToMeButton();
         await createCasePo.clickSaveCaseButton();
 
@@ -167,17 +184,17 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCaseStatusDisplayed('Assigned')).toBeTruthy('Case Status is missing');
         expect(await casePreviewPo.isRequesterNameDisplayed('Elizabeth Peters')).toBeTruthy('Requester name is missing');
         expect(await casePreviewPo.isRequesterPhoneDisplayed('+19255553456')).toBeTruthy('Requester phone number is missing');
-        expect(await casePreviewPo.isRequesterEmailIdDisplayed('elizabeth.peters@petramco.com')).toBeTruthy('Requester email id is missing');
+        expect(await casePreviewPo.isRequesterEmailIdDisplayed('elizabeth@bwflabs.localdomain')).toBeTruthy('Requester email id is missing');
         expect(await casePreviewPo.isSourceDisplayed('Agent')).toBeTruthy('Agent is missing');
         expect(await casePreviewPo.isLabelDisplayed(label)).toBeTruthy('label is missing');
         expect(await casePreviewPo.isCaseSiteDisplayed('Rochester')).toBeTruthy('Case site is missing');
-        expect(await casePreviewPo.isCaseTemplateDisplayed('Change My Legal Name')).toBeTruthy('Case Template is missing');
+        expect(await casePreviewPo.isCaseTemplateDisplayed(caseTemplateName)).toBeTruthy('Case Template is missing');
         expect(await casePreviewPo.isDescriptionDisplayed(description)).toBeTruthy('Description is missing');
         expect(await casePreviewPo.isCategoryTier1Displayed('Workforce Administration')).toBeTruthy('CategoryTier1 is missing');
         expect(await casePreviewPo.isCategoryTier2Displayed('HR Operations')).toBeTruthy('CategoryTier2 is missing');
         expect(await casePreviewPo.isCategoryTier3Displayed('Adjustments')).toBeTruthy('CategoryTier3 is missing');
         expect(await casePreviewPo.isAssigneeDisplayed('Qianru Tao')).toBeTruthy('Assignee name is missing');
-        expect(await casePreviewPo.isAssignedGroupDisplayed('Compensation and Benefits')).toBeTruthy('Assigned group name is missing');
+        expect(await casePreviewPo.isAssignedGroupDisplayed('US Support 1')).toBeTruthy('Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
@@ -190,7 +207,6 @@ describe("Case Preview", () => {
         let applyBtn = "Apply";
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = randomStr + 'caseTemplateName';
-        let assignmentMappingName = "DRDMV-13644" + randomStr;
         let templateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemplateName}`,
@@ -200,8 +216,9 @@ describe("Case Preview", () => {
             "categoryTier2": "Policies",
             "categoryTier3": "Card Issuance",
             "casePriority": "Low",
-            "assignee": "Fritz",
-            "supportGroup": "Facilities",
+            "businessUnit": "United States Support", 
+            "assignee": "qtao",
+            "supportGroup": "US Support 1",
             "caseStatus": "Assigned"
         }
         let articleData1 = {
@@ -222,8 +239,8 @@ describe("Case Preview", () => {
             "Summary": `${caseTemplateName}`,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
-            "Support Group": "US Support 3",
-            "Assignee": "qkatawazi",
+            "Support Group": "US Support 1",
+            "Assignee": "qtao",
             "Status": "3000",
         }
         await apiHelper.apiLogin('qtao');
@@ -256,8 +273,8 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCategoryTier1Displayed('Purchasing Card')).toBeTruthy('failureMsg: CategoryTier1 is missing');
         expect(await casePreviewPo.isCategoryTier2Displayed('Policies')).toBeTruthy('failureMsg: CategoryTier2 is missing');
         expect(await casePreviewPo.isCategoryTier3Displayed('Card Issuance')).toBeTruthy('failureMsg: CategoryTier3 is missing');
-        expect(await casePreviewPo.isAssigneeDisplayed('Fritz Schulz')).toBeTruthy('failureMsg: Assignee name is missing');
-        expect(await casePreviewPo.isAssignedGroupDisplayed('Facilities')).toBeTruthy('failureMsg: Assigned group name is missing');
+        expect(await casePreviewPo.isAssigneeDisplayed('Qianru Tao')).toBeTruthy('failureMsg: Assignee name is missing');
+        expect(await casePreviewPo.isAssignedGroupDisplayed('US Support 1')).toBeTruthy('failureMsg: Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('failureMsg: Assigned company name is missing');
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('failureMsg: View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('failureMsg: Create New Case button is missing');

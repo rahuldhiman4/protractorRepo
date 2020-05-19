@@ -142,18 +142,25 @@ class ChangeAssignmentOldBlade {
         }
 
         async selectDepartment(department: string): Promise<void> {
-                const departmentDropdown = await $$(this.selectors.assignmentDropDownList).get(2);
-                //        await browser.wait(this.EC.elementToBeClickable(departmentDropdown.$('button')));
-                await departmentDropdown.$('button').click();
-                //        await browser.wait(this.EC.visibilityOf(departmentDropdown.$('input')));
-                await departmentDropdown.$('input').sendKeys(department);
-                //        await browser.wait(this.EC.or(async () => {
-                //            let count = await departmentDropdown.$$(this.selectors.selectOptions).count();
-                //            return count >= 1;
-                //        }));
-                let option = await element(by.cssContainingText(this.selectors.selectOptions, department));
-                //        await browser.wait(this.EC.elementToBeClickable(option));
-                await option.click();
+                await browser.wait(this.EC.or(async () => {
+                        let count = await $$('.rx-assignment-select').count();
+                        return count >= 1;
+                }), 3000);
+                const dropDown: ElementFinder[] = await $$('.rx-assignment-select');
+                for (let i: number = 0; i < dropDown.length; i++) {
+                        await dropDown[i].$('.rx-assignment-select-label').isPresent().then(async (result) => {
+                                if (result) {
+                                        let dropDownLabelText: string = await dropDown[i].$('.rx-assignment-select-label').getText();
+                                        if (dropDownLabelText === 'Department') {
+                                                await dropDown[i].$('.d-icon-angle_down').click();
+                                                await dropDown[i].$('input').sendKeys(department);
+                                                await browser.wait(this.EC.elementToBeClickable(await element(by.cssContainingText("li[ng-repeat*='option']", department))), 5000).then(async function () {
+                                                        await element(by.cssContainingText("li[ng-repeat*='option']", department)).click();
+                                                });
+                                        }
+                                }
+                        });
+                }
         }
 
         async selectSupportGroup(supportGroup: string): Promise<void> {

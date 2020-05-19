@@ -214,7 +214,7 @@ describe('Case Bulk Operation', () => {
             expect(await activityPo.isTextPresentInActivityLog("Facilities")).toBeTruthy("Text is not present in activiy tab6");
             await navigationPage.gotoCaseConsole();
         }
-    }, 390 * 1000);
+    }, 440 * 1000);
 
     it('[DRDMV-15981]: Verify that Agent is able to change the Assignee if status is Assigned or In Progress or Resolved', async () => {
         await apiHelper.apiLogin(qfengStr);

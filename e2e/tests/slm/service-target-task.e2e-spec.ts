@@ -90,7 +90,7 @@ describe('Service Target Tests for Tasks', () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             // await utilityCommon.refresh();
-            await manageTask.clickTaskLinkOnManageTask(summary);
+            await viewCasePage.clickOnTaskLink(summary);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
@@ -188,7 +188,7 @@ describe('Service Target Tests for Tasks', () => {
             await browser.sleep(32000);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
-            await manageTask.clickTaskLinkOnManageTask(manualTaskTemp);
+            await viewCasePage.clickOnTaskLink(manualTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
@@ -202,7 +202,7 @@ describe('Service Target Tests for Tasks', () => {
             await viewTask.clickOnSaveStatus();
             await viewTask.clickOnViewCase();
             await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLinkOnManageTask(automatedTaskTemp);
+            await viewCasePage.clickOnTaskLink(automatedTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(false);
         }
         catch (error) {
@@ -292,7 +292,7 @@ describe('Service Target Tests for Tasks', () => {
 
             //Update the case status to In Progress
             await browser.sleep(32000);
-            await manageTask.clickTaskLinkOnManageTask(automatedTaskTemp);
+            await viewCasePage.clickOnTaskLink(automatedTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
@@ -304,7 +304,7 @@ describe('Service Target Tests for Tasks', () => {
             await viewTask.getTaskTypeValue();
             await viewTask.clickOnViewCase();
             await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLinkOnManageTask(manualTaskTemp);
+            await viewCasePage.clickOnTaskLink(manualTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(false);
         }
         catch (error) {

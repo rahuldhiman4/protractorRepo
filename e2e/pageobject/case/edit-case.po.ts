@@ -87,7 +87,8 @@ class CaseEditPage {
     }
 
     async clickSaveCase(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
+        let saveButton=this.selectors.saveCaseButton+'[disabled="disabled"]';
+        await browser.wait(this.EC.invisibilityOf($(saveButton)),3000);
         await $(this.selectors.saveCaseButton).click();
     }
 
@@ -105,7 +106,7 @@ class CaseEditPage {
     async clearCaseSummary(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summary)));
         await $(this.selectors.summary).clear();
-        await $(this.selectors.summary).sendKeys('m'+Key.BACK_SPACE);
+        await $(this.selectors.summary).sendKeys('m' + Key.BACK_SPACE);
     }
 
     async updateCaseSummary(summary: string): Promise<void> {
@@ -292,7 +293,7 @@ class CaseEditPage {
 
     async isResourcePresent(): Promise<boolean> {
         // Resources tab is linked text, hence this type of validation
-        return await element(by.cssContainingText(this.selectors.tabText,'Resources'));    
+        return await element(by.cssContainingText(this.selectors.tabText, 'Resources'));
     }
 
     async getAssignedCompanyReadable(): Promise<string> {
@@ -422,11 +423,11 @@ class CaseEditPage {
     }
 
     async setDateTimeDynamicFieldValue(value: string): Promise<void> {
-        await utilityCommon.setDateField('376ec3d3-9381-4613-bb06-1e8dbbaf6b18',value);
+        await utilityCommon.setDateField('376ec3d3-9381-4613-bb06-1e8dbbaf6b18', value);
     }
- 
-     async selectValueFromList(fieldName: string, value: string): Promise<void> {
-        await utilityCommon.selectDropDown('376ec3d3-9381-4613-bb06-1e8dbbaf6b18',value); 
+
+    async selectValueFromList(fieldName: string, value: string): Promise<void> {
+        await utilityCommon.selectDropDown('376ec3d3-9381-4613-bb06-1e8dbbaf6b18', value);
     }
 
     async setTimeInDynamicField(value: string): Promise<void> {

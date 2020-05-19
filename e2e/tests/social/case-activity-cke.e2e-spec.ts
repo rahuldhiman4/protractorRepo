@@ -329,7 +329,6 @@ describe('Case Activity CKE', () => {
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto Automated Task
             await viewCasePo.clickAddTaskButton();
-            
             await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
             await activityTabPage.addActivityNote(addNoteBodyText);
             expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
@@ -563,7 +562,7 @@ describe('Case Activity CKE', () => {
             expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge Article title is missing';
             await createKnowlegePo.clickOnTemplate('Reference');
             await createKnowlegePo.clickOnUseSelectedTemplateButton();
-            await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16767');
+            await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-21617');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();

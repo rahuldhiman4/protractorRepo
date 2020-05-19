@@ -938,7 +938,7 @@ describe('Case Data Store', () => {
         expect(await dynamicFieldsPo.isDynamicFieldPresentInDynamicSection('LibNumberField')).toBeTruthy('field not present LibNumberField');
         await utilityCommon.refresh();
 
-    }, 350 * 1000);
+    }, 450 * 1000);
 
     it('[DRDMV-13112]: [Dynamic Data] [UI] - Dynamic Fields display on Case Template Edit view UI', async () => {
         await apiHelper.apiLogin('tadmin');
@@ -1066,5 +1066,5 @@ describe('Case Data Store', () => {
         expect(await editCasetemplatePo.isDynamicFieldDisplayed('newInactive' + randomStr)).toBeTruthy('field not present');
         expect(await editCasetemplatePo.isDynamicFieldDisplayed('newInactiveSys' + randomStr)).toBeTruthy('field not present');
         await editCasetemplatePo.clickOnCancelButton();
-    }, 350 * 1000);
+    }, 450 * 1000);
 })

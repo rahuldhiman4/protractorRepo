@@ -163,11 +163,11 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(31000);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-            await browser.sleep(130000);
+            await browser.sleep(110000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
-            await browser.sleep(50000);
+            await browser.sleep(60000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
@@ -293,7 +293,7 @@ describe('Service Target Tests for Cases', () => {
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
-            await serviceTargetConfig.selectGoal("3");
+            await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMileStone();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
@@ -332,7 +332,7 @@ describe('Service Target Tests for Cases', () => {
             // browser.sleep(9000);
 
             //Observe the warning bar on SLA
-            await browser.sleep(100000);
+            await browser.sleep(160000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
 
@@ -345,7 +345,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
 
             //Wait until SLA progress missed goal
-            browser.sleep(40000);
+            browser.sleep(50000);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await browser.sleep(2000);
@@ -376,7 +376,7 @@ describe('Service Target Tests for Cases', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 580 * 1000);
+    }, 620 * 1000);
 
     //skhobrag
     it('[DRDMV-2022]:Verify SLA Progress Bar timeline properties', async () => {
@@ -546,7 +546,7 @@ describe('Service Target Tests for Cases', () => {
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "High" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
-            await serviceTargetConfig.selectGoal("4");
+            await serviceTargetConfig.selectGoal("5");
             await serviceTargetConfig.selectMileStone();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
@@ -593,7 +593,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await serviceTargetInfoPage.isServiceTargetInformationInProcessIconDisplayed()).toBeTruthy('SVT In Process Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('InProcess');
             await serviceTargetInfoPage.clickOnCloseButton();
-            await browser.sleep(160000);
+            await browser.sleep(200000);
             await utilityCommon.refresh();
             await expect(slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SLA Warning bar is not displayed');
             await updateStatusBladePo.changeCaseStatus('Pending');
@@ -610,7 +610,7 @@ describe('Service Target Tests for Cases', () => {
             await updateStatusBladePo.changeCaseStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
-            await browser.sleep(40000);
+            await browser.sleep(50000);
             await utilityCommon.refresh();
             await expect(slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBeTruthy('SLA Missed Goal bar is not displayed');
             await updateStatusBladePo.changeCaseStatus('Pending');
@@ -633,7 +633,7 @@ describe('Service Target Tests for Cases', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 600 * 1000);
+    }, 700 * 1000);
 
     //skhobrag
     it('[DRDMV-8368]:Verify SLA Progress Bar change in color when multiple SVT attached and one SVT is missed', async () => {
@@ -858,6 +858,7 @@ describe('Service Target Tests for Cases', () => {
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
+            await utilityCommon.refresh();
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Pending Icon on SVT Info Blade is not displayed.');
@@ -866,13 +867,14 @@ describe('Service Target Tests for Cases', () => {
             await updateStatusBladePo.changeCaseStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
-            await browser.sleep(210000);
+            await browser.sleep(200000);
             await utilityCommon.refresh();
             await expect(slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SLA Warning bar is not displayed');
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
+            await utilityCommon.refresh();
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Warning Pending Icon on SVT Info Blade is not displayed.');
@@ -881,7 +883,7 @@ describe('Service Target Tests for Cases', () => {
             await updateStatusBladePo.changeCaseStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
-            await browser.sleep(40000);
+            await browser.sleep(50000);
             await utilityCommon.refresh();
             await expect(slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBeTruthy('SLA Missed Goal bar is not displayed');
             await updateStatusBladePo.changeCaseStatus('Pending');

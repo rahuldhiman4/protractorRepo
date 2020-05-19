@@ -552,7 +552,11 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first()), 3000);
+        await browser.wait(this.EC.visibilityOf($$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first()), 3000)
+            .catch(async () => {
+                console.log('Notes is not present');
+                return false;
+            });
         let activityText = await $$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first();
         let value = await activityText.getText();
         return value.includes(bodyText) ? true : false;

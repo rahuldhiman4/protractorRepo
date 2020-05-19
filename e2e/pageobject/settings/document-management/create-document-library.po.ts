@@ -165,6 +165,9 @@ class DocumentLibraryPage {
         await utilCommon.selectDropDown(this.selectors.companyFieldGuid, companyName);
     }
 
+    async selectBusinessUnit(buisnessUnit:string):Promise<void>{
+        await utilCommon.selectDropDown(this.selectors.buisnessUnit, buisnessUnit);
+    }
     async selectOwnerGroup(ownerGroupName: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.ownerGroupFieldGuid, ownerGroupName);
     }

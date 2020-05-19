@@ -99,7 +99,7 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });//, 230 * 1000);
+    }, 280 * 1000);
 
     //ankagraw
     it('[DRDMV-13169]: [Dynamic Data] [UI] - Automated Task UI on Edit view', async () => {
@@ -156,12 +156,12 @@ describe('Dynamic Hidden Data', () => {
 
     //ankagraw
     it('[DRDMV-21405,DRDMV-21406]: Verify hidden radio button should not present in dynamic field library', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
         await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
-        expect(await createDynamicFieldLibraryConfigPo.verifyTitle("Hidden")).toBeFalsy();
+        expect(await createDynamicFieldLibraryConfigPo.isHiddenFieldPresent("Hidden")).toBeFalsy();
         await createDynamicFieldLibraryConfigPo.cancelButton();
+        await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
         await dynamicGroupLibraryConfigConsolePo.clickAddDynamicGroupButton();
         await createDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
@@ -203,7 +203,7 @@ describe('Dynamic Hidden Data', () => {
         await updateStatusBladePo.changeCaseStatus("Resolved");
         await updateStatusBladePo.setStatusReason('Auto Resolved');
         await updateStatusBladePo.clickSaveStatus();
-        expect(await utilityCommon.isPopUpMessagePresent("Required fields not entered hidden")).toBeTruthy();
+        expect(await utilityCommon.isPopUpMessagePresent("Required fields not entered")).toBeTruthy();
         await updateStatusBladePo.clickCancelButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         let casTemplateSummary = 'CaseSummaryName' + randomStr;
@@ -232,11 +232,11 @@ describe('Dynamic Hidden Data', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
-        expect(await viewCasePage.isDynamicFieldDisplayed('Field1OutsideDRDMV21451')).toBeFalsy();
+        expect(await viewCasePage.isDynamicFieldDisplayed('Field1OutsideDRDMV21451')).toBeFalsy('Field1OutsideDRDMV21451 displayed');
         await updateStatusBladePo.changeCaseStatus("Resolved");
         await updateStatusBladePo.setStatusReason('Auto Resolved');
         await updateStatusBladePo.clickSaveStatus();
-        expect(await utilityCommon.isPopUpMessagePresent("Required fields not entered hidden")).toBeTruthy();
+        expect(await utilityCommon.isPopUpMessagePresent("Required fields not entered")).toBeTruthy();
     }, 280 * 1000);
 
     it('[DRDMV-21452]: Verify the behaviour when add confidential dynamic field and hidden dynamic field', async () => {
@@ -365,8 +365,8 @@ describe('Dynamic Hidden Data', () => {
             "templateStatus": "Active",
             "assignee": "qkatawazi",
             "company": "Petramco",
-            "supportGroup": "Compensation and Benefits",
-            "ownerGroup": "Compensation and Benefits"
+            "supportGroup": "US Support 3",
+            "ownerGroup": "US Support 3"
         }
 
         await apiHelper.apiLogin('fritz');
@@ -475,10 +475,10 @@ describe('Dynamic Hidden Data', () => {
             "templateSummary": casTemplateSummary,
             "caseStatus": "InProgress",
             "templateStatus": "Active",
-            "assignee": "Fritz",
+            "assignee": "qkatawazi",
             "company": "Petramco",
-            "supportGroup": "Facilities",
-            "ownerGroup": "Facilities"
+            "supportGroup": "US Support 3",
+            "ownerGroup": "US Support 3"
         }
 
         await apiHelper.apiLogin('fritz');
@@ -493,7 +493,7 @@ describe('Dynamic Hidden Data', () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         let CaseId = await viewCasePage.getCaseID();
-        expect(await viewCasePage.isDynamicFieldDisplayed('FieldGroup1')).toBeFalsy();
+        expect(await viewCasePage.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeFalsy();
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');

@@ -63,7 +63,8 @@ describe('Document Library Consume UI', () => {
         let publishDocData = {
             docLibTitle: 'drdmv13539_document',
             company: 'Petramco',
-            ownerGroup: 'Compensation and Benefits',
+            businessUnit:'United States Support',
+            ownerGroup: 'US Support 3',
         }
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDocumentLibrary(publishDocData.docLibTitle);
@@ -521,6 +522,7 @@ describe('Document Library Consume UI', () => {
                 let publishDocLibData1 = {
                     docLibTitle: publish[i],
                     company: 'Petramco',
+                    businessUnit:'HR Support',
                     ownerGroup: 'Staffing',
                 }
                 await apiHelper.apiLogin('tadmin');
@@ -535,6 +537,7 @@ describe('Document Library Consume UI', () => {
             let publishDocLibData2 = {
                 docLibTitle: 'drdmv13480_publish_document3',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Staffing',
             }
             await apiHelper.apiLogin('tadmin');
@@ -545,6 +548,7 @@ describe('Document Library Consume UI', () => {
             let draftDocLibData = {
                 docLibTitle: 'drdmv13480_draft_document',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Compensation and Benefits',
             }
             await apiHelper.apiLogin('tadmin');
@@ -613,6 +617,7 @@ describe('Document Library Consume UI', () => {
                 let publishDocLibData1 = {
                     docLibTitle: publish[i],
                     company: 'Petramco',
+                    businessUnit:'HR Support',
                     ownerGroup: 'Staffing',
                 }
                 await apiHelper.apiLogin('tadmin');
@@ -628,6 +633,7 @@ describe('Document Library Consume UI', () => {
             let publishDocLibData2 = {
                 docLibTitle: 'drdmv13479_publish_document3',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Staffing',
             }
             await apiHelper.apiLogin('tadmin');
@@ -639,6 +645,7 @@ describe('Document Library Consume UI', () => {
             let draftDocLibData = {
                 docLibTitle: 'drdmv13479_draft_document',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Compensation and Benefits',
             }
             await apiHelper.apiLogin('tadmin');
@@ -706,6 +713,7 @@ describe('Document Library Consume UI', () => {
                 let publishDocLibData1 = {
                     docLibTitle: publish[i],
                     company: 'Petramco',
+                    businessUnit:'HR Support',
                     ownerGroup: 'Compensation and Benefits',
                 }
                 await apiHelper.apiLogin('tadmin');
@@ -718,6 +726,7 @@ describe('Document Library Consume UI', () => {
             let publishDocLibData2 = {
                 docLibTitle: 'drdmv13463_publish_document3',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Staffing',
             }
             await apiHelper.apiLogin('tadmin');
@@ -728,6 +737,7 @@ describe('Document Library Consume UI', () => {
             let draftDocLibData = {
                 docLibTitle: 'drdmv13463_draft_document',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Compensation and Benefits',
             }
             await apiHelper.apiLogin('tadmin');
@@ -790,6 +800,7 @@ describe('Document Library Consume UI', () => {
             let publishDocLibData1 = {
                 docLibTitle: 'drdmv13506_publish_document3',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Staffing',
             }
             await apiHelper.apiLogin('tadmin');
@@ -804,6 +815,7 @@ describe('Document Library Consume UI', () => {
                 let publishDocLibData2 = {
                     docLibTitle: publish[i],
                     company: 'Petramco',
+                    businessUnit:'HR Support',
                     ownerGroup: 'Staffing',
                     shareExternally: true
                 }
@@ -817,6 +829,7 @@ describe('Document Library Consume UI', () => {
             let draftDocLibData = {
                 docLibTitle: 'drdmv13506_draft_document',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Compensation and Benefits',
                 shareExternally: true
             }
@@ -889,7 +902,8 @@ describe('Document Library Consume UI', () => {
                 let publishDocLibData1 = {
                     docLibTitle: publish[i],
                     company: 'Petramco',
-                    ownerGroup: 'Staffing',
+                    businessUnit:'HR Support',
+                   ownerGroup: 'Staffing',
                 }
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
@@ -903,6 +917,7 @@ describe('Document Library Consume UI', () => {
             let publishDocLibData2 = {
                 docLibTitle: 'drdmv13481_publish_document3',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Staffing',
             }
             await apiHelper.apiLogin('tadmin');
@@ -914,6 +929,7 @@ describe('Document Library Consume UI', () => {
             let draftDocLibData = {
                 docLibTitle: 'drdmv13481_draft_document',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Compensation and Benefits',
             }
             await apiHelper.apiLogin('tadmin');
@@ -981,6 +997,7 @@ describe('Document Library Consume UI', () => {
                 let publishDocLibData1 = {
                     docLibTitle: publish[i],
                     company: 'Petramco',
+                    businessUnit:'HR Support',
                     ownerGroup: 'Compensation and Benefits',
                 }
                 await apiHelper.apiLogin('tadmin');
@@ -993,6 +1010,7 @@ describe('Document Library Consume UI', () => {
             let publishDocLibData2 = {
                 docLibTitle: 'drdmv13458_publish_document3',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Staffing',
             }
             await apiHelper.apiLogin('tadmin');
@@ -1004,6 +1022,7 @@ describe('Document Library Consume UI', () => {
             let draftDocLibData = {
                 docLibTitle: 'drdmv13458_draft_document',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Compensation and Benefits',
             }
             await apiHelper.apiLogin('tadmin');
@@ -1065,6 +1084,7 @@ describe('Document Library Consume UI', () => {
         let publishDocLibData1 = {
             docLibTitle: 'drdmv13537_publish_document',
             company: 'Petramco',
+            businessUnit:'HR Support',
             ownerGroup: 'Compensation and Benefits',
         }
         await apiHelper.apiLogin('tadmin');
@@ -1119,6 +1139,7 @@ describe('Document Library Consume UI', () => {
             let publishDocLibData1 = {
                 docLibTitle: 'drdmv13517_publish_document3',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Staffing',
             }
             await apiHelper.apiLogin('tadmin');
@@ -1163,6 +1184,7 @@ describe('Document Library Consume UI', () => {
                 let publishDocLibData2 = {
                     docLibTitle: publish[i],
                     company: 'Petramco',
+                    businessUnit:'HR Support',
                     ownerGroup: 'Staffing',
                 }
                 await apiHelper.apiLogin('tadmin');
@@ -1176,6 +1198,7 @@ describe('Document Library Consume UI', () => {
             let draftDocLibData = {
                 docLibTitle: 'drdmv13517_draft_document',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Compensation and Benefits',
             }
             await apiHelper.apiLogin('tadmin');
@@ -1261,6 +1284,7 @@ describe('Document Library Consume UI', () => {
             let publishDocLibData1 = {
                 docLibTitle: 'drdmv13508_publish_document3',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Staffing',
             }
             await apiHelper.apiLogin('tadmin');
@@ -1275,6 +1299,7 @@ describe('Document Library Consume UI', () => {
                 let publishDocLibData2 = {
                     docLibTitle: publish[i],
                     company: 'Petramco',
+                    businessUnit:'HR Support',
                     ownerGroup: 'Staffing',
                     shareExternally: true
                 }
@@ -1288,6 +1313,7 @@ describe('Document Library Consume UI', () => {
             let draftDocLibData = {
                 docLibTitle: 'drdmv13508_draft_document',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Compensation and Benefits',
                 shareExternally: true
             }
@@ -1357,6 +1383,7 @@ describe('Document Library Consume UI', () => {
             let publishDocLibData1 = {
                 docLibTitle: publish[i],
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Compensation and Benefits',
             }
             await apiHelper.apiLogin('tadmin');
@@ -1436,6 +1463,7 @@ describe('Document Library Consume UI', () => {
                 let publishDocLibData1 = {
                     docLibTitle: publish[i],
                     company: 'Petramco',
+                    businessUnit:'HR Support',
                     ownerGroup: 'Compensation and Benefits',
                 }
                 await apiHelper.apiLogin('tadmin');
@@ -1532,6 +1560,7 @@ describe('Document Library Consume UI', () => {
             let publishDocLibData1 = {
                 docLibTitle: 'drdmv13528_publish_document1',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Compensation and Benefits',
             }
             await apiHelper.apiLogin('tadmin');
@@ -1544,6 +1573,7 @@ describe('Document Library Consume UI', () => {
             let publishDocLibData2 = {
                 docLibTitle: 'drdmv13528_publish_document2',
                 company: 'Petramco',
+                businessUnit:'HR Support',
                 ownerGroup: 'Compensation and Benefits',
             }
             await apiHelper.apiLogin('tadmin');

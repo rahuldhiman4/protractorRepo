@@ -455,6 +455,7 @@ describe("Create Case Assignment Mapping", () => {
         await createCasePage.selectCategoryTier2("Repair");
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
+        await utilityCommon.refresh();
         await viewCasePo.clickOnTab('Case Access');
         await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
         await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
