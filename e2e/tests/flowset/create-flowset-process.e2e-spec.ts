@@ -70,7 +70,7 @@ describe('Create Process in Flowset', () => {
         await createFlowsetProcessLibrary.selectStatus("Active");
         await createFlowsetProcessLibrary.clickSaveButton();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-        await expect(consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid("Alias" + randomStr)).toBeTruthy("Alias" + randomStr + "name is not present");
+        expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid("Alias" + randomStr)).toBeTruthy("Alias" + randomStr + "name is not present");
     });
 
     it('[DRDMV-1269,DRDMV-1295]: [Flowsets] Search Register Process on Console', async () => {
@@ -139,7 +139,8 @@ describe('Create Process in Flowset', () => {
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-            await expect(consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(`Process${randomStr}`)).toBeTruthy(`Process${randomStr}` + "Name is not present");
+            expect(await consoleFlowsetProcessLibrary.isRegisterProcessDisplayed()).toBeFalsy("Register Process Link button displayed for case manager.");
+            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(`Process${randomStr}`)).toBeTruthy(`Process${randomStr}` + "Name is not present");
 
             //login with same company CBA 
             await navigationPage.signOut();

@@ -435,7 +435,7 @@ describe('Create Case Task', () => {
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
             await taskTemplate.setTemplateName(TaskTemplate);
             await taskTemplate.setTaskSummary(TaskSummary);
-            await taskTemplate.selectCompanyByName('Petramco');
+            await taskTemplate.selectCompanyByName('Psilon');
             await taskTemplate.selectOwnerCompany('Psilon');
             await taskTemplate.clickOnSaveTaskTemplate();
             await expect(viewTaskTemplate.getTaskTypeValue()).toBe('Manual');
