@@ -18,6 +18,7 @@ import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import notesTemplateUsage from '../../pageobject/social/note-template-usage.po';
 import { default as updateStatusBlade, default as updateStatusBladePo } from '../../pageobject/common/update.status.blade.po';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Activity CKE', () => {
 
@@ -40,7 +41,7 @@ describe('Case Activity CKE', () => {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let addNoteBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let adhocTaskSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
+            let knowledgeArticle= [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create manual task template
             let manualTemplateData = {
@@ -84,6 +85,24 @@ describe('Case Activity CKE', () => {
             }
 
             await apiHelper.createExternalTaskTemplate(externalTemplateData);
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Create knowledge Article task template
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeArticle}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "Canada Support",
+                "assigneeSupportGroup": "CA Support 1",
+                "assignee": "qdu"
+            }
+    
+            await apiHelper.apiLogin('qkatawazi');
+            let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+            let knowledgeArticleGUID = knowledgeArticleData.id;
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('Status Not Set');    
+
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create Case
             let caseData = {
@@ -561,22 +580,11 @@ describe('Case Activity CKE', () => {
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create knowledge Article task template
-            await navigationPage.gotoCreateKnowledge();
-            expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge Article title is missing';
-            await createKnowlegePo.clickOnTemplate('Reference');
-            await createKnowlegePo.clickOnUseSelectedTemplateButton();
-            await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-21617');
-            await createKnowlegePo.selectKnowledgeSet('HR');
-            await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
-            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('KA Edit link is missing')
-            await editKnowledgePo.setKnowledgeStatus('Draft');
-            await editKnowledgePo.setKnowledgeStatusWithoutSave('Publish Approval');
-            await editKnowledgePo.clickAssignToMeReviewerBlade();
-            await editKnowledgePo.clickSaveStatusBtn();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
 
+            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('KA Edit link is missing')
             await viewKnowledgeArticlePo.clickOnActivityTab();
             await activityTabPage.addActivityNote(addNoteBodyText);
             expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
@@ -642,22 +650,17 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickMaximizeMinimizeIcon();
             expect(await activityTabPage.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await activityTabPage.clickMaximizeMinimizeIcon();
-            await activityTabPage.clickPublicCheckbox();
-            expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
             await activityTabPage.clickOnCancelButton();
             await activityTabPage.clickActivityNoteTextBox();
             expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
+
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 2500 * 1000);
-
-
-
-
+    }, 2000 * 1000);
 
     //kgaikwad
     it('[DRDMV-21619]:Verify the Comments posted in activity without notes template', async () => {
@@ -665,6 +668,7 @@ describe('Case Activity CKE', () => {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let addNoteBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let adhocTaskSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let knowledgeArticle= [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let url = 'http://www.google.com ';
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create manual task template
@@ -707,8 +711,26 @@ describe('Case Activity CKE', () => {
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities"
             }
-
             await apiHelper.createExternalTaskTemplate(externalTemplateData);
+           
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Create knowledge Article task template
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeArticle}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "Canada Support",
+                "assigneeSupportGroup": "CA Support 1",
+                "assignee": "qdu"
+            }
+    
+            await apiHelper.apiLogin('qkatawazi');
+            let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+            let knowledgeArticleGUID = knowledgeArticleData.id;
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('Status Not Set');    
+
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create Case
             let caseData = {
@@ -1261,15 +1283,9 @@ describe('Case Activity CKE', () => {
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create knowledge Article task template
-            await navigationPage.gotoCreateKnowledge();
-            expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge Article title is missing';
-            await createKnowlegePo.clickOnTemplate('Reference');
-            await createKnowlegePo.clickOnUseSelectedTemplateButton();
-            await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-21617');
-            await createKnowlegePo.selectKnowledgeSet('HR');
-            await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
+            await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('KA Edit link is missing')
 
             await viewKnowledgeArticlePo.clickOnActivityTab();
@@ -1360,15 +1376,7 @@ describe('Case Activity CKE', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 2500 * 1000);
-
-
-
-
-
-
-
-
+    }, 2000 * 1000);
 
     //kgaikwad
     it('[DRDMV-21620]:Verify the Comments posted in activity with notes template.', async () => {
@@ -1376,6 +1384,7 @@ describe('Case Activity CKE', () => {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let addNoteBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let adhocTaskSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let knowledgeArticle= [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let randomStr1 = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let randomStr =' http://www.google.com '+ [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let url='http://www.google.com'
@@ -1419,7 +1428,23 @@ describe('Case Activity CKE', () => {
                 "ownerGroup": "Facilities"
             }
             await apiHelper.createExternalTaskTemplate(externalTemplateData);
-
+ // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Create knowledge Article task template
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeArticle}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "Canada Support",
+                "assigneeSupportGroup": "CA Support 1",
+                "assignee": "qdu"
+            }
+    
+            await apiHelper.apiLogin('qkatawazi');
+            let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+            let knowledgeArticleGUID = knowledgeArticleData.id;
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('Status Not Set');    
             // Create Case Notes Template
             await apiHelper.apiLogin('qkatawazi');
             let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
@@ -1558,17 +1583,9 @@ describe('Case Activity CKE', () => {
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create knowledge Article task template
-            await navigationPage.gotoCreateKnowledge();
-            expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge Article title is missing';
-            await createKnowlegePo.clickOnTemplate('Reference');
-            await createKnowlegePo.clickOnUseSelectedTemplateButton();
-            await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-21617');
-            await createKnowlegePo.selectKnowledgeSet('HR');
-            await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await utilityCommon.waitUntilPopUpDisappear();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
-            await utilityCommon.refresh();
+            await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('KA Edit link is missing')
             await viewKnowledgeArticlePo.clickOnActivityTab();
 
@@ -1584,6 +1601,6 @@ describe('Case Activity CKE', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 2500 * 1000);
+    }, 2000 * 1000);
 
 })
