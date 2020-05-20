@@ -531,7 +531,7 @@ describe('Create Adhoc task', () => {
             await navigationPage.signOut();
             await loginPage.login("qtao");
         }
-    }, 380 * 1000);
+    }, 430 * 1000);
 
     it('[DRDMV-3828]: [Task Workspace] Task Workspace verification', async () => {
         await navigationPage.gotoTaskConsole();

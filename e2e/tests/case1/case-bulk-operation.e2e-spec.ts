@@ -108,13 +108,14 @@ describe('Case Bulk Operation', () => {
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, unitedStateSupportStr, usSupportGroup3Str, "Qiao Feng");
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
+        await utilityCommon.closePopUpMessage();
         try {
             await navigationPage.signOut();
             await loginPage.login("qtao");
             await notificationPo.clickOnNotificationIcon();
-            expect(await notificationPo.isAlertPresent(caseId[0] + "caseId[0] has been assigned to you1.")).toBeTruthy("");
-            expect(await notificationPo.isAlertPresent(caseId[1] + "caseId[1] has been assigned to you2.")).toBeTruthy("");
-            expect(await notificationPo.isAlertPresent(caseId[2] + "caseId[2] has been assigned to you3.")).toBeFalsy("");
+            expect(await notificationPo.isAlertPresent(caseId[0] + " has been assigned to you.")).toBeTruthy();
+            expect(await notificationPo.isAlertPresent(caseId[1] + " has been assigned to you.")).toBeTruthy();
+            expect(await notificationPo.isAlertPresent(caseId[2] + " has been assigned to you.")).toBeFalsy();
             await notificationPo.clickOnNotificationIcon();
         }
         catch (ex) {
