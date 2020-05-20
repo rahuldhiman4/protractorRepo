@@ -600,7 +600,7 @@ describe('Case Status Change', () => {
                 "Summary": summary1,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 1",
                 "Assignee": "qkatawazi",
                 "Status": "New",
             }
@@ -610,7 +610,7 @@ describe('Case Status Change', () => {
                 "Summary": summary2,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 1",
                 "Assignee": "qkatawazi",
                 "Status": "Assigned",
             }
@@ -620,7 +620,7 @@ describe('Case Status Change', () => {
                 "Summary": summary3,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 1",
                 "Assignee": "qkatawazi",
                 "Status": "In Progress",
             }
@@ -630,20 +630,23 @@ describe('Case Status Change', () => {
                 "Summary": summary4,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 1",
                 "Assignee": "qkatawazi",
                 "Status": "Pending",
             }
             let templateData1 = {
                 "templateName": caseTemplateName1,
                 "templateSummary": caseTemplateName1,
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 1",
                 "categoryTier1": "Purchasing Card",
                 "categoryTier2": "Policies",
                 "categoryTier3": "Card Issuance",
                 "casePriority": "Low",
-                "templateStatus": "Active",
-                "company": "Petramco",
-                "caseStatus": "New"
+                "caseStatus": "New",
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCase1 = await apiHelper.createCase(caseData1);
@@ -669,7 +672,6 @@ describe('Case Status Change', () => {
             await editCasePage.updateCaseSummary(summary1);
             await expect(editCasePage.isSaveCaseEnable()).toBeFalsy("Save button Visible");
             await editCasePage.clickOnCancelCaseButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickEditCaseButton();

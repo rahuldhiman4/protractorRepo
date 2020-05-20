@@ -235,7 +235,7 @@ describe("Create Case Assignment Mapping", () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         expect(await viewCasePage.getAssignedGroupText()).toBe("AU Support 2");
-    }, 290 * 1000);
+    }, 330 * 1000);
 
     //radhiman
     it('[DRDMV-12033]: [Assignment Mapping] Verify Global assignment mapping applied to case if assignment qualification matches', async () => {
