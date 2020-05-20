@@ -100,10 +100,13 @@ class ViewKnowledgePage {
         await $(this.selectors.editLinkOnKA).click();
     }
 
-    async isEditLinkDisplayedOnKA(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLinkOnKA)));
-        return await $(this.selectors.editLinkOnKA).isDisplayed();
-    }
+        async isEditLinkDisplayedOnKA(): Promise<boolean> {
+            return await $(this.selectors.editLinkOnKA).isPresent().then(async (link) => {
+                if (link) {
+                   return  await $(this.selectors.editLinkOnKA).isDisplayed();
+                } else return false;
+            });
+        }
 
 
 

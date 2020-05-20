@@ -4,5 +4,26 @@
         "company": "Petramco",
         "templateStatus": 1,
         "body": "this is template description"
+    },
+
+    "notesTemplateForTask": {
+        "templateName": "TaskTemplateName",
+        "company": "Petramco",
+        "templateStatus": 1,
+        "body": "this is task template description"
+    },
+
+    "notesTemplateForPeople": {
+        "templateName": "PeopleTemplateName",
+        "company": "Petramco",
+        "templateStatus": 1,
+        "body": "this is people template description"
+    },
+
+    "notesTemplateForKnowledgeArticle": {
+        "templateName": "KnowledgeTemplateName",
+        "company": "Petramco",
+        "templateStatus": 1,
+        "body": "this is knowledge article template description"
     }
 }
