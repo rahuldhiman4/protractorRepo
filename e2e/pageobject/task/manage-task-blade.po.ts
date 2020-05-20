@@ -23,6 +23,7 @@ class ManageTaskBlade {
     async clickAddTaskFromTemplateButton(): Promise<void> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.closeButton)));
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskFromTemplateButton)));
+        await $(this.selectors.addTaskFromTemplateButton).isPresent();
         await $(this.selectors.addTaskFromTemplateButton).click();
     }
 
