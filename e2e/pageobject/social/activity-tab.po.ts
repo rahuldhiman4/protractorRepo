@@ -564,7 +564,7 @@ class ActivityTabPage {
     }
 
     async getCaseViewCount(TitleText: string): Promise<number> {
-        return await element.all(by.cssContainingText(this.selectors.logTitle, TitleText)).count();
+        return await (await element.all(by.cssContainingText(this.selectors.logTitle, TitleText))).length;
     }
 
     async clickOnHyperlinkFromActivity(activityNumber: number, linkText: string): Promise<void> {
