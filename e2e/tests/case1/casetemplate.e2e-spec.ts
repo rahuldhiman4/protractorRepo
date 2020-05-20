@@ -298,15 +298,13 @@ describe('Case Template', () => {
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await utilityCommon.closePopUpMessage();
-            await expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy();
+            expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('fritz');
             await quickCasePo.selectCaseTemplate(caseTemplateName);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
-            await utilityCommon.closePopUpMessage();
-            await expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy();
+            expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy();
         } catch (e) {
             throw e;
         }
