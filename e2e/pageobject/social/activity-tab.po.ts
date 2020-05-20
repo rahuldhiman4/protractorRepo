@@ -388,6 +388,7 @@ class ActivityTabPage {
 
     async clickActivityNoteTextBox(): Promise<void> {
         await $(this.selectors.addNoteBox).click();
+        await browser.sleep(1500);
     }
 
     async addActivityNote(addNoteText: string): Promise<void> {
@@ -552,14 +553,18 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first()), 3000);
+        await browser.wait(this.EC.visibilityOf($$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first()), 3000)
+            .catch(async () => {
+                console.log('Notes is not present');
+                return false;
+            });
         let activityText = await $$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first();
         let value = await activityText.getText();
         return value.includes(bodyText) ? true : false;
     }
 
     async getCaseViewCount(TitleText: string): Promise<number> {
-        return await element.all(by.cssContainingText(this.selectors.logTitle, TitleText)).count();
+        return await (await element.all(by.cssContainingText(this.selectors.logTitle, TitleText))).length;
     }
 
     async clickOnHyperlinkFromActivity(activityNumber: number, linkText: string): Promise<void> {

@@ -30,6 +30,7 @@ class EditDocumentLibraryPage {
         regionGuid: '836aa6d7-1d77-46b4-b270-50d7d25424ba',
         site: '[rx-view-component-id="b22d4dc1-83b5-4b06-a2c0-10e3865fb46e"] .ui-select-toggle',
         siteGuid: '6b73d5aa-fdeb-4d10-aa35-14e842e35a95',
+        businessUnitGuid:'43f01d2a-f8cc-450d-9209-5ac53426f3bb',
         tabs: '.rx-tab',
         supportGroupAccessButton: '.rx-case-access-block .ac-manage-support',
         addCompany: '.flex-item .ac-company-field .dropdown-toggle',
@@ -71,7 +72,9 @@ class EditDocumentLibraryPage {
     async setShareExternallyToggleButton(value: boolean): Promise<void> {
         await utilCommon.selectToggleButton(this.selectors.shareExternallyToggleButtonGuid, value);
     }
-
+    async selectBusinessUnit(bussinessUnit:string):Promise<void>{
+        await utilCommon.selectDropDown(this.selectors.businessUnitGuid,bussinessUnit)
+    }
     async selectOwnerGroup(ownerGroup: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.ownerGroupGuid, ownerGroup);
     }

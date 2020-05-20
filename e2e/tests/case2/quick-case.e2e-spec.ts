@@ -157,6 +157,7 @@ describe("Quick Case", () => {
         expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Another person contacting on behalf of the requester');
         await quickCase.setCaseSummary('address');
         await quickCase.saveCase();
+        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Case save message not matched');
         expect(await previewCasePo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy();
         expect(await previewCasePo.isContactNameDisplayed('Al Allbrook')).toBeTruthy();
     }, 200 * 1000);

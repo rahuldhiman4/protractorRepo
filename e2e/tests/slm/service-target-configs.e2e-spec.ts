@@ -176,6 +176,8 @@ describe('Service Target Tests', () => {
 
     //skhobrag
     it('[DRDMV-5038]:"Terms and Condition" qualification is added on Service Target - Create View', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
         await serviceTargetConfig.clickCreateSVTButton();
         expect(await serviceTargetBladePo.isTermsAndConditionsFieldMandatory()).toBeTruthy('Terms and Conditions field is optional.');
         await serviceTargetConfig.enterSVTTitle('SVT from Protractor');
@@ -186,7 +188,7 @@ describe('Service Target Tests', () => {
         await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
-        expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeTruthy('Save button is enabled when mandatory fields are left empty.');
+        expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save button is enabled when mandatory fields are left empty.');
         await serviceTargetConfig.clickBuildExpressionLink();
         await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
         await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
@@ -196,10 +198,11 @@ describe('Service Target Tests', () => {
         await SlmExpressionBuilder.clickOnSaveExpressionButton();
     }, 300 * 1000);
 
-
     //skhobrag
     it('[DRDMV-5039]:"Terms and Condition" qualification is added on Service Target - Edit View', async () => {
         try {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');    
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
@@ -215,14 +218,14 @@ describe('Service Target Tests', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             await utilGrid.searchAndOpenHyperlink('SVT from Protractor');
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Edit Service Target Configuration blade is not displayed.');
-            expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeTruthy('Save button is enabled when mandatory fields are left empty. 1');
+            expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save button is enabled when mandatory fields are left empty. 1');
             expect(await serviceTargetBladePo.isTermsAndConditionsFieldMandatory()).toBeTruthy('Terms and Conditions field is optional.');
             await serviceTargetConfig.clickBuildExpressionLink();
             await SlmExpressionBuilder.clearSelectedExpression();
             await browser.sleep(1000);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await browser.sleep(1000);
-            expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save button is enabled when mandatory fields are left empty. 2');
+            expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeTruthy('Save button is enabled when mandatory fields are left empty. 2');
             await serviceTargetConfig.clickBuildExpressionLink();
             await SlmExpressionBuilder.clearSelectedExpression();
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
@@ -240,6 +243,8 @@ describe('Service Target Tests', () => {
     //skhobrag
     it('[DRDMV-2363]:SLM - Service Target - Measurement Build Expression', async () => {
         //when SVT created with both mandatory and optional details
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
         await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Case Management');
         await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
         await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');

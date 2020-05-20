@@ -448,6 +448,7 @@ describe('Case Template', () => {
         await expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
     }, 300 * 1000);
 
+
     //ptidke
     it('[DRDMV-19734]:[RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case Template view Look & Feel after adding new configuration field', async () => {
         try {
@@ -670,7 +671,6 @@ describe('Case Template', () => {
             await createCasePo.setSummary(caseTemplateName);
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
-            await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateName);
@@ -682,7 +682,7 @@ describe('Case Template', () => {
             await createCasePo.clickSelectCaseTemplateButton();
             expect(await createCasePo.isTemplateNamePresent(caseTemplateName)).toBeFalsy();
             await selectCasetemplateBladePo.clickOnCancelButton();
-            await utilityCommon.refresh()
+            await utilityCommon.refresh();
         } catch (e) {
             throw e;
         } finally {

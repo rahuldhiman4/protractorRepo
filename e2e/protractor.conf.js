@@ -17,6 +17,9 @@ exports.config = {
     browserName: "chrome",
     chromeOptions: {
       prefs: {
+        profile: {
+          default_content_setting_values: { automatic_downloads: 1 }
+        },
         download: {
           prompt_for_download: false,
           directory_upgrade: true,
@@ -47,7 +50,7 @@ exports.config = {
   jasmineNodeOpts: {
     showColors: true,
     defaultTimeoutInterval: 240 * 1000,
-    print: function () {},
+    print: function () { },
   },
 
   async onPrepare() {

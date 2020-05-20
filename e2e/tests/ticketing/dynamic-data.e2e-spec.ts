@@ -177,7 +177,7 @@ describe('Dynamic data', () => {
         await addFieldsPopPo.clickOnOkButtonOfEditor();
         await createDocumentTemplatePo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-    }, 980 * 1000);
+    }, 1100 * 1000);
 
     it('[DRDMV-19270]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
         await apiHelper.apiLogin('tadmin');
@@ -402,7 +402,7 @@ describe('Dynamic data', () => {
         expect(await createNotestemplatePo.isDynamicFieldDisplayedInBody('Additional Site Details')).toBeTruthy();
         await createNotestemplatePo.clickOnSaveButton();
         expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-    }, 750 * 1000);
+    },850 * 1000);
 
     it('[DRDMV-13567]: [Dynamic Data] [Attachment] - Case UI when it has Dynamic Fields including Attachment', async () => {
         await apiHelper.apiLogin('tadmin');

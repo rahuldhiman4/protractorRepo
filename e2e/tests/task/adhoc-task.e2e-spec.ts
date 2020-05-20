@@ -170,69 +170,75 @@ describe('Create Adhoc task', () => {
     });
 
     it('[DRDMV-1500]: [Permissions] Navigating to case from the task', async () => {
+        try {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
 
-        await navigationPage.signOut();
-        await loginPage.login('qkatawazi');
+            //Automation Task template
+            let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
+            let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
+            //Manual task Template
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
+                .toEqual('Task Templates - Business Workflows');
+            await selectTaskTemplate.clickOnManualTaskTemplateButton();
+            await taskTemplate.setTemplateName(manualTaskTemplate);
+            await taskTemplate.setTaskSummary(manualTaskSummary);
+            await taskTemplate.setTaskDescription('Description in manual task');
+            await taskTemplate.selectCompanyByName('Petramco');
+            await taskTemplate.clickOnAssignment();
+            await changeAssignmentOldBlade.selectCompany('Petramco');
+            await changeAssignmentOldBlade.selectBusinessUnit('HR Support');
+            await changeAssignmentOldBlade.selectSupportGroup('Workforce Administration');
+            await changeAssignmentOldBlade.selectAssignee('Elizabeth Peters');
+            await changeAssignmentOldBlade.clickOnAssignButton();
+            await taskTemplate.selectTemplateStatus('Active');
+            await taskTemplate.selectBuisnessUnit('HR Support');
+            await taskTemplate.selectOwnerGroup('Workforce Administration');
+            await taskTemplate.clickOnSaveTaskTemplate();
+            await utilCommon.waitUntilPopUpDisappear();
 
-        //Automation Task template
-        let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
-        let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
-        //Manual task Template
-        await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
-        await selectTaskTemplate.clickOnManualTaskTemplateButton();
-        await taskTemplate.setTemplateName(manualTaskTemplate);
-        await taskTemplate.setTaskSummary(manualTaskSummary);
-        await taskTemplate.setTaskDescription('Description in manual task');
-        await taskTemplate.selectCompanyByName('Petramco');
-        await taskTemplate.clickOnAssignment();
-        await changeAssignmentOldBlade.selectCompany('Petramco');
-        await changeAssignmentBladePo.selectBusinessUnit('HR Support');
-        await changeAssignmentOldBlade.selectSupportGroup('Workforce Administration');
-        await changeAssignmentOldBlade.selectAssignee('elizabeth');
-        await changeAssignmentOldBlade.clickOnAssignButton();
-        await taskTemplate.selectTemplateStatus('Active');
-        await taskTemplate.selectBuisnessUnit('HR Support');
-        await taskTemplate.selectOwnerGroup('Workforce Administration');
-        await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary('Summary ' + manualTaskSummary);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            let newCaseID: string = await viewCasePage.getCaseID();
+            await viewCasePage.clickAddTaskButton();
 
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + manualTaskSummary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        let newCaseID: string = await viewCasePage.getCaseID();
-        await viewCasePage.clickAddTaskButton();
+            //Add Manual task and Automation Task in Case
+            await manageTask.addTaskFromTaskTemplate(manualTaskTemplate);
+            await manageTask.clickOnCloseButton();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus('In Progress');
 
-        //Add Manual task and Automation Task in Case
-        await manageTask.addTaskFromTaskTemplate(manualTaskTemplate);
-        await manageTask.clickOnCloseButton();
-        await updateStatusBladePo.changeCaseStatus('In Progress');
-        await updateStatusBladePo.clickSaveStatus('In Progress');
+            //different user
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
+            await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe("", " Case Id Displayed in Task console");
+            await utilityGrid.searchAndOpenHyperlink(manualTaskSummary);
+            expect(await viewTask.isCaseViewLinkDisplayed()).toBeFalsy('Case View Link is displayed');
 
-        //different user
-        await navigationPage.signOut();
-        await loginPage.login('qliu');
-        await navigationPage.gotoTaskConsole();
-        await utilityGrid.clearFilter();
-        await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
-        expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe("", " Case Id Displayed in Task console");
-        await utilityGrid.searchAndOpenHyperlink(manualTaskSummary);
-        expect(await viewTask.isCaseViewLinkDisplayed()).toBeFalsy('Case View Link is displayed');
-
-        await navigationPage.signOut();
-        await loginPage.login('qkatawazi');
-        await navigationPage.gotoTaskConsole();
-        await utilityGrid.clearFilter();
-        await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
-        expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCaseID, " Case Id NOT displayed in Task console");
-        await utilityGrid.searchAndOpenHyperlink(manualTaskSummary);
-        expect(await viewTask.isCaseViewLinkDisplayed()).toBeTruthy('Case View Link is not displayed');
-        await navigationPage.signOut();
-        await loginPage.login('qtao');
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
+            await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCaseID, " Case Id NOT displayed in Task console");
+            await utilityGrid.searchAndOpenHyperlink(manualTaskSummary);
+            expect(await viewTask.isCaseViewLinkDisplayed()).toBeTruthy('Case View Link is not displayed');
+        }
+        catch (ex) {
+            throw ex;
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+        }
     }, 570 * 1000);
 
     it('[DRDMV-12249,DRDMV-12244]: Verify task creation with attachments & Verify attachment grid from case', async () => {
@@ -525,7 +531,7 @@ describe('Create Adhoc task', () => {
             await navigationPage.signOut();
             await loginPage.login("qtao");
         }
-    }, 280 * 1000);
+    }, 430 * 1000);
 
     it('[DRDMV-3828]: [Task Workspace] Task Workspace verification', async () => {
         await navigationPage.gotoTaskConsole();

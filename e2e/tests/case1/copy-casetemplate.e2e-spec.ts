@@ -12,11 +12,20 @@ import utilityCommon from '../../utils/utility.common';
 
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
+let userData = undefined;
 
 describe('Copy Case Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
+        await apiHelper.apiLogin('tadmin');
+            userData = {
+                "firstName": "Petramco",
+                "lastName": "withoutSG",
+                "userId": "DRDMV-13550",
+            }
+            await apiHelper.createNewUser(userData);
+            await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
     });
 
     afterAll(async () => {
@@ -125,14 +134,6 @@ describe('Copy Case Template', () => {
             let caseTemplateName: string = caseTemplateRequiredFields.templateName + Math.floor(Math.random() * 100000);
             caseTemplateRequiredFields.templateName = caseTemplateName;
             await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplateRequiredFields);
-            await apiHelper.apiLogin('tadmin');
-            let userData = {
-                "firstName": "Petramco",
-                "lastName": "withoutSG",
-                "userId": "DRDMV-13550",
-            }
-            await apiHelper.createNewUser(userData);
-            await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
             await navigationPage.signOut();
             await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();

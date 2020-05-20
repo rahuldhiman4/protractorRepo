@@ -94,18 +94,6 @@ describe("Create Case", () => {
     it('[DRDMV-17653]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {
         try {
             let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
-            await createMenuItems.clickOnMenuOptionLink();
-            await createMenuItems.selectMenuNameDropDown('Resolution Code');
-            await createMenuItems.clickOnLocalizeLink();
-            //await utilCommon.waitUntilSpinnerToHide();
-            await localizeValuePopPo.setLocalizeValue(randVal);
-            await localizeValuePopPo.clickOnSaveButton();
-            await createMenuItems.clickOnSaveButton();
-            //await utilCommon.waitUntilPopUpDisappear();
-            await utilGrid.searchRecord(randVal);
-            await navigationPage.gotoCaseConsole();
             let caseData = {
                 "Requester": "Fritz",
                 "Summary": "Test case for DRDMV-2530",
@@ -117,6 +105,19 @@ describe("Create Case", () => {
             await apiHelper.apiLogin('qkatawazi');
             let newCase1 = await apiHelper.createCase(caseData);
             let caseId: string = newCase1.displayId;
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+            await createMenuItems.clickOnMenuOptionLink();
+            await createMenuItems.selectMenuNameDropDown('Resolution Code');
+            await createMenuItems.clickOnLocalizeLink();
+            await localizeValuePopPo.setLocalizeValue(randVal);
+            await localizeValuePopPo.clickOnSaveButton();
+            await createMenuItems.clickOnSaveButton();
+            await utilGrid.searchRecord(randVal);
+
+            await navigationPage.gotoCaseConsole();      
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await $(viewCasePage.selectors.resolutionCodeText).isDisplayed()).toBeTruthy('Missing Resolution Text');
             expect(await $(viewCasePage.selectors.resolutionDescriptionText).isDisplayed()).toBeTruthy('Missing Resolution Description Text');
@@ -131,13 +132,11 @@ describe("Create Case", () => {
             await viewCasePage.selectResolutionCodeDropDown(randVal);
             expect(await updateStatusBladePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
             await updateStatusBladePo.clickSaveStatus();
-            //await utilCommon.waitUntilPopUpDisappear();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
             await updateStatusBladePo.changeCaseStatus('Closed');
             await viewCasePage.selectResolutionCodeDropDown(randVal);
             expect(await updateStatusBladePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
             await updateStatusBladePo.clickSaveStatus();
-            //await utilCommon.waitUntilPopUpDisappear();
             expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
         } catch (error) {
             throw error;
@@ -149,7 +148,33 @@ describe("Create Case", () => {
 
     //kgaikwad
     it('[DRDMV-18031]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
-        let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');      
+        let caseData1 =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-2530",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
+        }
+        let caseData2 =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-2530",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
+        }        
+        await apiHelper.apiLogin("qkatawazi");
+        let newCase1 = await apiHelper.createCase(caseData1);      
+        let caseId1: string = newCase1.displayId;
+        let newCase2 = await apiHelper.createCase(caseData2);
+        let caseId2: string = newCase2.displayId;
+
+        await navigationPage.signOut();
+        await loginPage.login("qkatawazi");
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
         await createMenuItems.clickOnMenuOptionLink();
@@ -160,44 +185,22 @@ describe("Create Case", () => {
         await createMenuItems.selectStatusDropDown('Active');
         await createMenuItems.selectAvailableOnUiToggleButton(true);
         await createMenuItems.clickOnSaveButton();
-
+        
         await navigationPage.gotoCaseConsole();
-        let caseData1 =
-        {
-            "Requester": "qtao",
-            "Summary": "Test case for DRDMV-2530",
-            "Assigned Company": "Petramco",
-            "Business Unit": "United States Support",
-            "Support Group": "US Support 3",
-            "Assignee": "qkatawazi"
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        let newCase1 = await apiHelper.createCase(caseData1);
-        let caseId1: string = newCase1.displayId;
         await caseConsolePage.searchAndOpenCase(caseId1);
         await viewCasePage.clickEditCaseButton();
         await editCasePage.updateResolutionCode(randVal);
         await editCasePage.clickSaveCase();
+        await utilityCommon.waitUntilPopUpDisappear();
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
         await menuItemConsole.searchAndEditMenuOption(randVal);
         await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(false);
         await editMenuItemsConfigPo.clickOnSaveButton();
+        await utilCommon.waitUntilPopUpDisappear();
 
-        await navigationPage.gotoCaseConsole();
-        let caseData2 =
-        {
-            "Requester": "qtao",
-            "Summary": "Test case for DRDMV-2530",
-            "Assigned Company": "Petramco",
-            "Business Unit": "United States Support",
-            "Support Group": "US Support 3",
-            "Assignee": "qkatawazi"
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        let newCase2 = await apiHelper.createCase(caseData2);
-        let caseId2: string = newCase2.displayId;
+        await navigationPage.gotoCaseConsole();    
         await caseConsolePage.searchAndOpenCase(caseId2);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
@@ -1021,7 +1024,6 @@ describe("Create Case", () => {
         }
     }, 650 * 1000);
 
-    //Bug -DRDMV-21676
     it('[DRDMV-11700]: Verify  sort on all attachments grid', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1054,8 +1056,6 @@ describe("Create Case", () => {
 
         expect(await utilityGrid.isGridColumnSorted('Attachments', 'desc')).toBeTruthy("Attachment Not Sorted Desecnding");
         expect(await utilityGrid.isGridColumnSorted('Attachments', 'asc')).toBeTruthy("Attachment Not Sorted Asecnding");
-        expect(await utilityGrid.isGridColumnSorted('Attached to', 'desc')).toBeTruthy("Attached to Not Sorted Desecnding");
-        expect(await utilityGrid.isGridColumnSorted('Attached to', 'asc')).toBeTruthy("Attached to Not Sorted Asecnding");
         expect(await utilityGrid.isGridColumnSorted('Media type', 'desc')).toBeTruthy("Media type Not Sorted Desecnding");
         expect(await utilityGrid.isGridColumnSorted('Media type', 'asc')).toBeTruthy("Media type Not Sorted Asecnding");
         expect(await utilityGrid.isGridColumnSorted('Created date', 'desc')).toBeTruthy("Created date Not Sorted Desecnding");
