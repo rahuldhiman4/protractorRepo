@@ -114,7 +114,7 @@ describe('Email', () => {
         await viewTaskPo.clickEmailLink();
         await emailPo.clickOnDiscardButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-    },250*1000);
+    }, 250 * 1000);
 
     //Failed due to application issue...defect logged DRDMV-21883
     it('[DRDMV-19008]: Email icon and Requester email link should open compose email dialog in Task', async () => {
@@ -244,7 +244,7 @@ describe('Email', () => {
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"    
+                "ownerGroup": "Facilities"
             }
             await apiHelper.createExternalTaskTemplate(externaltemplateData);
             var caseData = {
@@ -465,7 +465,7 @@ describe('Email', () => {
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
         expect(await activityTabPo.getEmailBody()).toContain('this is third reply');
-    });//, 200 * 1000);
+    }, 300 * 1000);//, 200 * 1000);
 
     //Failed due to application issue...defect logged DRDMV-21883
     it('[DRDMV-19557]: For Reply / Reply All earlier email context should be copied as part of email composition on Case', async () => {
