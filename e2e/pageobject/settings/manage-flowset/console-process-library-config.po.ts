@@ -32,6 +32,12 @@ class ConsoleProcessLibrary {
         return await $(this.selectors.addRegisterProcessButton).isEnabled();
     }
 
+    async isRegisterProcessDisplayed(): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addRegisterProcessButton)));
+        return await $(this.selectors.addRegisterProcessButton).isPresent();
+    }
+
+
     async searchAndSelectFlowset(flowset: string): Promise<void> {
         await utilGrid.searchAndOpenHyperlink(flowset);
     }

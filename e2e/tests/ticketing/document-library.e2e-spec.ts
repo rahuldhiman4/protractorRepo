@@ -377,8 +377,8 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
-        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
-        await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+        await createDocumentLibraryPo.selectBusinessUnit('United States Support');
+        await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
         await createDocumentLibraryPo.clickOnSaveButton();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal, 'Title is missing');
@@ -387,9 +387,8 @@ describe('Document Library', () => {
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
         await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
         await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Petramco');
-        await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Company');
-        await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-        await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Compensation and Benefits');
+        await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('United States Support');
+        await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('US Support 3');
         await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
         expect(await editDocumentLibraryPo.sameSupportGroupErrorMessageDisplayed(' The group already exists in the access list. To modify the access permissions, remove the group from the access list and add it again.')).toBeTruthy();
     });

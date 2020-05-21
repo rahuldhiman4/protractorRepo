@@ -1093,6 +1093,8 @@ describe('Case Activity', () => {
                 "Support Group": "US Support 3",
                 "Assignee": "qfeng"
             }
+
+            //Create a case with qfeng as Write Permission, qtao has no permission and Fabian as Read Permission
             await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
             let caseId: string = newCase.displayId;
@@ -1104,32 +1106,32 @@ describe('Case Activity', () => {
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('Fabian');
             await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Fabian Krause')).toBeTruthy('Failuer:Fabian Krause Agent Name is missing');
-            // Write Access Agent
-            await caseAccessTabPo.selectAgentWithWriteAccess('qyuan');
-            await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Qing Yuan')).toBeTruthy('Failuer: Qing Yuan Agent Name is missing');
-            getUrl = await browser.getCurrentUrl();
 
-            // Login with Read User
+            //Login with Read Permission User
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials('Fabian@petramco.com', passwd);
+            await loginPage.login('fabian');
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with Fabian User');
-            // Login with Write User and check read user count
+
+            //Login with Write User and check read user count
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials('qyuan@petramco.com', passwd);
+            await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with qyuan User');
             await expect(await activityTabPage.getCaseViewCount('Fabian Krause  viewed the case. ')).toEqual(1);
-            // Login with Read user and check write user count
+
+            //Login with Read user and check write user count
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials('Fabian@petramco.com', passwd);
+            await loginPage.login('fabian');
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with qyuan User');
-            await expect(await activityTabPage.getCaseViewCount('Qing Yuan  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
+            let url: string = await browser.getCurrentUrl();
+
             // Login with No Access user
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials('qannis@petramco.com', passwd);
-            await browser.get(getUrl);
+            await loginPage.login('qtao');
+            await browser.get(url);
             await expect(await utilityCommon.getAllPopupMsg()).toContain('ERROR (302): Record Instance does not exist in the database. com.bmc.dsm.case-lib:Case:');
         } catch (e) {
             throw e;
