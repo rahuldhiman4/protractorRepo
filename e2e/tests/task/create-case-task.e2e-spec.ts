@@ -343,7 +343,7 @@ describe('Create Case Task', () => {
         await expect(editTaskTemplate.getTaskTypeValue()).toBe('Automated');
         await expect(editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
         await expect(editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
-    }, 380 * 1000);
+    }, 430 * 1000);
 
     //ankagraw
     it('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: [ Task ] - Verify Associated menu for Task will show global configuration values as well	 ', async () => {
@@ -462,7 +462,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 330 * 1000);
+    }, 380 * 1000);
 
     //ankagraw
     it('[DRDMV-12582]: Task Template access when owner group from different company is applied', async () => {
@@ -752,7 +752,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    });//, 180 * 1000);
+    }, 280 * 1000);
 
     //ankagraw
     it('[DRDMV-3795]: [Task Template] Task Template Status changes', async () => {
@@ -814,7 +814,7 @@ describe('Create Case Task', () => {
         await editTaskTemplate.clickOnSaveMetadata();
         await utilCommon.closePopUpMessage();
         await expect(viewTaskTemplate.getTemplateStatus()).toBe('Draft');
-    });//, 150 * 1000);
+    }, 290 * 1000);
 
     //ankagraw
     it('[DRDMV-7254]: Automated Task] - Automated Task Activation behavior when Case is created in In Progress status via Case template having Task templates in it', async () => {
