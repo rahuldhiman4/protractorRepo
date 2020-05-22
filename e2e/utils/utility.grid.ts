@@ -70,8 +70,12 @@ export class GridOperations {
             clearBtn = gridGuid + clearBtn;
             refreshIcon = gridGuid + refreshIcon;
         }
+        let pageTitle = await browser.getTitle();
         await $(appliedPresetFilter).isPresent().then(async (result) => {
             if (result) {
+                if(pageTitle == 'Cases - Business Workflows' || 'Tasks - Business Workflows'){
+                    await this.addFilter('Assigned Group', 'abc', 'textbox');
+                }
                 await $(filterPresetBtn).click();
                 await $$(clearBtn).first().click();
                 await $(refreshIcon).click();
