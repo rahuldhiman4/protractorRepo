@@ -580,7 +580,7 @@ describe('Document Library', () => {
             //await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.selectOwnerGroup('AU Support 3');
             await editDocumentLibraryPo.clickOnSaveButton();
-            await editDocumentLibraryPo.clickOnCancelButton();
+            // await editDocumentLibraryPo.clickOnCancelButton();
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.gotoSettingsPage();
@@ -591,12 +591,13 @@ describe('Document Library', () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
             await navigationPage.signOut();
             await loginPage.login('fritz');
+            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
             expect(await documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeFalsy("Document is listed");
             await navigationPage.signOut();
-
             await loginPage.login('qkatawazi');
+            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
             expect(await documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeTruthy("Document not visible");

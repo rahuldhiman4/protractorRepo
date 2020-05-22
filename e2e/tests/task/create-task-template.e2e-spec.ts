@@ -35,7 +35,7 @@ describe('Create Task Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-       await foundationData12111("Petramco");
+        await foundationData12111("Petramco");
     });
 
     afterAll(async () => {
@@ -366,37 +366,45 @@ describe('Create Task Template', () => {
         await apiHelper.createAutomatedTaskTemplate(templateData4);
 
         //Create a Case
-        await navigationPage.signOut();
-        await loginPage.login('qtao');
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + randomStr);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await viewCasePage.clickAddTaskButton();
+        try {
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary('Summary ' + randomStr);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePage.clickAddTaskButton();
 
-        //Add Automation Task templates in Case
-        await manageTask.addTaskFromTaskTemplate(templateData4.templateSummary);
-        await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
-        await expect(viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed")
-        await viewTask.clickOnViewCase();
-        await updateStatusBladePo.changeCaseStatus('In Progress');
-        await updateStatusBladePo.clickSaveStatus();
-        await utilityCommon.waitUntilPopUpDisappear();
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
-        expect(await viewTask.getTaskStatusValue()).toContain('Completed');
-        await expect(activityTabPo.getAllTaskActivity('Completed')).toContain('Completed');
-        await expect(activityTabPo.getTaskActivity('Assigned')).toContain('Assigned');
-        await expect(activityTabPo.getTaskActivity('In Progress')).toContain('In Progress');
-        await viewTask.clickOnViewCase();
-        await updateStatusBladePo.changeCaseStatus('Resolved');
-        await updateStatusBladePo.setStatusReason('Auto Resolved');
-        await updateStatusBladePo.clickSaveStatus();
-        await utilityCommon.waitUntilPopUpDisappear();
+            //Add Automation Task templates in Case
+            await manageTask.addTaskFromTaskTemplate(templateData4.templateSummary);
+            await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
+            await expect(viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed")
+            await viewTask.clickOnViewCase();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.waitUntilPopUpDisappear();
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
+            expect(await viewTask.getTaskStatusValue()).toContain('Completed');
+            await expect(activityTabPo.getAllTaskActivity('Completed')).toContain('Completed');
+            await expect(activityTabPo.getTaskActivity('Assigned')).toContain('Assigned');
+            await expect(activityTabPo.getTaskActivity('In Progress')).toContain('In Progress');
+            await viewTask.clickOnViewCase();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.waitUntilPopUpDisappear();
+            await expect(viewTaskTemplate.isEditButtonPresent()).toBeTruthy();
+        } catch (error) {
+            throw error;
+        } finally {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        }
     }, 350 * 1000);
-  
+
     //ankagraw
     it('[DRDMV-3768]: [Task Template Console] Filter menu verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -416,10 +424,10 @@ describe('Create Task Template', () => {
         month[9] = "October";
         month[10] = "November";
         month[11] = "December";
-        let dateFormateValue:string = month[createdDate.getMonth()];
-        let dateFormateNew:string = dateFormateValue.substring(0,3);
-        let dateFormate:string = dateFormateNew + " " + createdDate.getDate() + ", " + createdDate.getFullYear() + " " + createdDate.toLocaleTimeString();
-        
+        let dateFormateValue: string = month[createdDate.getMonth()];
+        let dateFormateNew: string = dateFormateValue.substring(0, 3);
+        let dateFormate: string = dateFormateNew + " " + createdDate.getDate() + ", " + createdDate.getFullYear() + " " + createdDate.toLocaleTimeString();
+
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
             .toEqual('Task Templates - Business Workflows');
@@ -443,12 +451,12 @@ describe('Create Task Template', () => {
         await editTaskTemplate.clickOnEditMetadataLink();
         await editTaskTemplate.selectTemplateStatus('Inactive');
         await editTaskTemplate.clickOnSaveMetadata();
-     
+
         let modifiedDate = new Date();
-        let monthValue:string = month[modifiedDate.getMonth()];
-        let modifiedMonthValue = monthValue.substring(0,3);
+        let monthValue: string = month[modifiedDate.getMonth()];
+        let modifiedMonthValue = monthValue.substring(0, 3);
         let modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + modifiedDate.toLocaleTimeString();
-        
+
         let addColoumn: string[] = ['Display ID'];
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
@@ -478,5 +486,5 @@ describe('Create Task Template', () => {
         await utilGrid.addFilter("Display ID", taskTemplateId, 'text');
         expect(await utilGrid.isGridRecordPresent(taskTemplateId)).toBeTruthy(taskTemplateId + '  not present');
         await utilGrid.clearFilter();
-    }, 300 * 1000);	
+    }, 300 * 1000);
 });

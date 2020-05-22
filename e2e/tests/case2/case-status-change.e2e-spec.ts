@@ -158,11 +158,11 @@ describe('Case Status Change', () => {
         expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Description not present');
         await editCasePage.clearCaseSummary();
         await editCasePage.clickSaveCase();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
+        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
         await utilityCommon.closePopUpMessage();
         await editCasePage.updateCaseSummary('Pending AC');
         await editCasePage.clickSaveCase();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
+        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
     });//, 180 * 1000);
 
     //kgaikwad

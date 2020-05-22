@@ -422,6 +422,7 @@ describe("Compose Email", () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('fritz');
+            await apiHelper.apiLogin('tadmin');
             let recDeleted = await apiHelper.deleteDynamicFieldAndGroup();
             console.log("Record deleted...", recDeleted);
             let caseTemplateName = 'caseTempRDMV-20369lp3ir' + randomString;
@@ -648,6 +649,7 @@ describe("Compose Email", () => {
             await browser.sleep(8000);
             let body = await apiHelper.getHTMLBodyOfEmail(subject);
             //color span
+            console.log('body:', body);
             await expect(body.includes('<td><span style="color:#3498db;">SettingColor</span></td>')).toBeTruthy('Color is not available');
             //table width size attaribute
             await expect(body.includes('<table border="1" cellspacing="1" cellpadding="1">')).toBeTruthy('Table properties not displayed');
@@ -717,9 +719,9 @@ describe("Compose Email", () => {
         await viewCasePo.clickOnEmailLink();
         await composeMail.addAttachment(['../../data/ui/attachment/demo.txt']);
         expect(await composeMail.getFileDisplayedFileName()).toContain('demo.txt');
-        await composeMail.setToOrCCInputTetxbox('To', 'franz.schwarz@petramco.com');
+        await composeMail.setToOrCCInputTetxbox('To', 'franz@bwflabs.localdomain');
         expect(await composeMail.getToEmailPerson()).toContain('Franz Schwarz');
-        await composeMail.setToOrCCInputTetxbox('Cc', 'franz.schwarz@petramco.com');
+        await composeMail.setToOrCCInputTetxbox('Cc', 'franz@bwflabs.localdomain');
         expect(await composeMail.getToEmailPerson()).toContain('Franz Schwarz');
         await composeMail.setEmailBody('This is email body');
         await composeMail.clickOnSendButton();
@@ -906,12 +908,12 @@ describe("Compose Email", () => {
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-10388 RandVal" + randomString,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
-            "Support Group": "US Support 3",
-            "Assignee": "qkatawazi"
+            "Support Group": "US Support 1",
+            "Assignee": "qtao"
         }
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
@@ -984,12 +986,12 @@ describe("Compose Email", () => {
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
         let caseData =
         {
-            "Requester": "qtao",
+            "Requester": "qkatawazi",
             "Summary": "Test case for DRDMV-10387 RandVal" + randomString,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
-            "Support Group": "US Support 3",
-            "Assignee": "qkatawazi"
+            "Support Group": "US Support 1",
+            "Assignee": "qtao"
         }
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);

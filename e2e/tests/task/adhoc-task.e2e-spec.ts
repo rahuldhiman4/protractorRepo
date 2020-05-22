@@ -239,7 +239,7 @@ describe('Create Adhoc task', () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
         }
-    }, 570 * 1000);
+    }, 590 * 1000);
 
     it('[DRDMV-12249,DRDMV-12244]: Verify task creation with attachments & Verify attachment grid from case', async () => {
         let filePath = '../../data/ui/attachment/demo.txt';
@@ -531,7 +531,7 @@ describe('Create Adhoc task', () => {
             await navigationPage.signOut();
             await loginPage.login("qtao");
         }
-    }, 430 * 1000);
+    }, 470 * 1000);
 
     it('[DRDMV-3828]: [Task Workspace] Task Workspace verification', async () => {
         await navigationPage.gotoTaskConsole();

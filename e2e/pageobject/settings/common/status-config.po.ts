@@ -38,6 +38,7 @@ class StatusConfigPage {
         await $(this.selectors.newStatusInput).clear();
         await $(this.selectors.newStatusInput).sendKeys(newStatus);
         await $$(this.selectors.localizeMenuButtons).first().click();
+        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.statusAddModalBtns).first()),5000);
         await $$(this.selectors.statusAddModalBtns).first().click();
         await this.saveSetting();
     }

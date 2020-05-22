@@ -125,6 +125,7 @@ describe("Create Case", () => {
             await editCasePage.updateResolutionCode(randVal);
             await editCasePage.updateResolutionDescription(randVal);
             await editCasePage.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.getResolutionCodeValue()).toBe(randVal);
             expect(await viewCasePage.getResolutionDescription()).toBe(randVal);
             await updateStatusBladePo.changeCaseStatus('Resolved');
@@ -132,11 +133,13 @@ describe("Create Case", () => {
             await viewCasePage.selectResolutionCodeDropDown(randVal);
             expect(await updateStatusBladePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
             await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
             await updateStatusBladePo.changeCaseStatus('Closed');
             await viewCasePage.selectResolutionCodeDropDown(randVal);
             expect(await updateStatusBladePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
             await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
         } catch (error) {
             throw error;
@@ -191,14 +194,14 @@ describe("Create Case", () => {
         await viewCasePage.clickEditCaseButton();
         await editCasePage.updateResolutionCode(randVal);
         await editCasePage.clickSaveCase();
-        await utilityCommon.waitUntilPopUpDisappear();
+        await utilityCommon.closePopUpMessage();
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
         await menuItemConsole.searchAndEditMenuOption(randVal);
         await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(false);
         await editMenuItemsConfigPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
 
         await navigationPage.gotoCaseConsole();    
         await caseConsolePage.searchAndOpenCase(caseId2);

@@ -151,27 +151,6 @@ class ChangeAssignmentOldBlade {
                 await this.clickOnAssignButton();
         }
 
-        async setAssigneeGroup(group: string): Promise<void> {
-                await this.selectSupportGroup(group);
-                //        await browser.wait(this.EC.or(async () => {
-                //            let count = await $$(this.selectors.assignee).count();
-                //            return count >= 1;
-                //        }));
-                let name = "Assign to Support Group";
-                //        await browser.wait(this.EC.visibilityOf(option));
-                //        await browser.wait(this.EC.elementToBeClickable(option));
-                await element(by.cssContainingText(this.selectors.assignee, name)).click();
-                await this.clickOnAssignButton();
-        }
-
-        async selectAssigneeAsSupportGroup(name: string): Promise<void> {
-                //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchAsignee)));
-                //        await $(this.selectors.searchAsignee).sendKeys(name);
-                await element(by.cssContainingText(this.selectors.assignee, 'Assign to Support Group')).click();
-                //        await browser.wait(this.EC.visibilityOf(option));
-                //        await browser.wait(this.EC.elementToBeClickable(option));
-        }
-
         async selectDropdownWithName(dropDownName: string, option: string): Promise<void>{
                 await browser.wait(this.EC.or(async () => {
                         let count = await $$('.rx-assignment-select').count();
@@ -183,11 +162,13 @@ class ChangeAssignmentOldBlade {
                                 if (result) {
                                         let dropDownLabelText: string = await dropDown[i].$('.rx-assignment-select-label').getText();
                                         if (dropDownLabelText === dropDownName) {
-                                                await dropDown[i].$('.d-icon-angle_down').click();
-                                                await dropDown[i].$('input').sendKeys(option);
-                                                await browser.wait(this.EC.elementToBeClickable(await element(by.cssContainingText("li[ng-repeat*='option']", option))), 9000).then(async function () {
-                                                        await element(by.cssContainingText("li[ng-repeat*='option']", option)).click();
-                                                });
+                                                await dropDown[i].$('.d-icon-angle_down').click();
+                                                                        await dropDown[i].$('input').sendKeys(option);
+                                                                        await element(by.cssContainingText("li[ng-repeat*='option']", option)).isPresent().then(async () => {
+                                                                            await element(by.cssContainingText(".is-open li[ng-repeat*='option']", option)).isDisplayed().then(async () => {
+                                                                                await element(by.cssContainingText(".is-open li[ng-repeat*='option']", option)).click();
+                                                                            });
+                                                                        });
                                         }
                                 }
                         });
