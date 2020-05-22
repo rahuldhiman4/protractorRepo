@@ -73,7 +73,7 @@ class ApiHelper {
             "api/rx/authentication/loginrequest",
             { "userName": username, "password": password },
         )
-        console.log('Login API Status =============>', response.status);
+        console.log('Login API Status of ' + user +' =============>', response.status);
         axios.defaults.headers.common['Cookie'] = `AR-JWT=${response.data}`;
     }
 

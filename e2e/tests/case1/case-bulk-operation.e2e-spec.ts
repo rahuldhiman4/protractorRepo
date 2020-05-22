@@ -102,12 +102,10 @@ describe('Case Bulk Operation', () => {
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[1]);
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, unitedStateSupportStr, 'US Support 1', "Qianru Tao");
-        expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
         await utilityCommon.closePopUpMessage();
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[2]);
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignment.setAssignee(petramcoStr, unitedStateSupportStr, usSupportGroup3Str, "Qiao Feng");
-        expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
         await utilityCommon.closePopUpMessage();
         try {
             await navigationPage.signOut();

@@ -157,7 +157,6 @@ describe("Quick Case", () => {
         expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Another person contacting on behalf of the requester');
         await quickCase.setCaseSummary('address');
         await quickCase.saveCase();
-        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy('Case save message not matched');
         expect(await previewCasePo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy();
         expect(await previewCasePo.isContactNameDisplayed('Al Allbrook')).toBeTruthy();
     }, 200 * 1000);
@@ -259,7 +258,9 @@ describe("Quick Case", () => {
             "templateSummary": caseTemplateName1,
             "templateStatus": "Active",
             "company": "Petramco",
-            "caseStatus": "New"
+            "caseStatus": "New",
+            "businessUnit": "HR Support",
+            "supportGroup": "Workforce Administration",
         }
         let templateData2 = {
             "templateName": caseTemplateName2,
@@ -270,7 +271,12 @@ describe("Quick Case", () => {
             "casePriority": "Low",
             "templateStatus": "Active",
             "company": "Petramco",
-            "caseStatus": "Assigned"
+            "caseStatus": "Assigned",
+            "businessUnit": "Facilities Support",
+            "supportGroup": "Facilities",
+            "assignee": "Fritz",
+            "ownerBU": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let templateData3 = {
             "templateName": caseTemplateName3,
@@ -281,7 +287,7 @@ describe("Quick Case", () => {
             "businessUnit": "Facilities Support",
             "supportGroup": "Facilities",
             "assignee": "Fritz",
-            "ownerBU": 'Facilities Support',
+            "ownerBU": "Facilities Support",
             "ownerGroup": "Facilities"
         }
         let templateData4 = {
@@ -790,6 +796,18 @@ describe("Quick Case", () => {
             "assignee": "Fritz",
             "casePriority": "Low",
         }
+        let caseData =
+        {
+            "Requester": "qtao",
+            "Summary": caseTemplateName,
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "categoryTier1": "Purchasing Card",
+            "categoryTier2": "Policies",
+            "categoryTier3": "Card Issuance",
+            "Assignee": "qkatawazi"
+        }
 
         let articleData = {
             "knowledgeSet": "HR",
@@ -804,17 +822,18 @@ describe("Quick Case", () => {
         await apiHelper.apiLogin('qkatawazi');
         let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
         let newCaseTemplate = await apiHelper.createCaseTemplate(CaseTemplateData);
+        await apiHelper.createCase(caseData);
         await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         let knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'SMEReview', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy('Status Not Set');
-
+        
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
-        await quickCase.selectCaseTemplate(`${caseTemplateName}`);
-        await quickCase.clickArrowFirstRecommendedCase();
+        await quickCase.selectCaseTemplate(caseTemplateName);
+        await quickCase.clickArrowFirstRecommendedCaseTemplate();
         expect(await previewCaseTemplateCasesPo.getCaseSummary()).toBe(`${casTemplateSummary}`);
         expect(await previewCaseTemplateCasesPo.getCaseStatus()).toBe("In Progress");
         expect(await previewCaseTemplateCasesPo.getCaseCompanyValue()).toBe("Petramco");

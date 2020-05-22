@@ -34,6 +34,7 @@ class QuickCasePage {
         recommendedKnowledge: 'bwf-search-result-fields .bwf-search-fields__title-text',
         recommendedKnowledgeEmpty: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"] .bwf-search-result p',
         recommendedCaseGuid: '[rx-view-component-id="c0487804-1748-4995-99c9-69e6ad217c74"]',
+        recommendedCaseTemplateGuid: '[rx-view-component-id="b01aa3f3-0371-4b7e-a956-b1cf025927d6"]',
         recommendedKnowledgeGuid: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"]',
         dropdownSourceValue: '.dropdown-item span',
     }
@@ -141,18 +142,18 @@ class QuickCasePage {
     }
 
     async pinFirstRecommendedCase(): Promise<void> {
-        // await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
+        //await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
         await $$(this.selectors.pinFirstRecommendedCase).first().click();
     }
 
-    async clickArrowFirstRecommendedCase(): Promise<void> {
-        //await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.arrowFirstRecommendedCase))));
-        await element(by.css(this.selectors.arrowFirstRecommendedCase)).click();
+    async clickArrowFirstRecommendedCaseTemplate(): Promise<void> {
+        //await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.arrowFirstRecommendedCase))),3000);
+        await $(this.selectors.recommendedCaseTemplateGuid).$$('.flex-column bwf-search-result-fields div span').first().click();
     }
 
     async clickArrowFirstRecommendedKnowledge(): Promise<void> {
         // await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
-        await element(by.css(this.selectors.arrowFirstRecommendedKnowledge)).click();
+        await $(this.selectors.recommendedKnowledgeGuid).$$('.flex-column bwf-search-result-fields div span').first().click();
     }
 
     async saveCase(): Promise<void> {
