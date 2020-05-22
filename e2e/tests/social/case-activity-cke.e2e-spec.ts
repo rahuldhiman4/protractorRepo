@@ -476,7 +476,7 @@ describe('Case Activity CKE', () => {
         await activityTabPage.clickOnCancelButton();
         await activityTabPage.clickActivityNoteTextBox();
         expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
-    }, 11000 * 1000);
+    }, 1100 * 1000);
 
     //kgaikwad
     it('[DRDMV-21617,DRDMV-21618]:2_Verify the Availability and UI of new CK Editor', async () => {

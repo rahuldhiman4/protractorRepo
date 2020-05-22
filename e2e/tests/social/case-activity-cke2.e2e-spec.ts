@@ -37,7 +37,6 @@ describe('Case Activity CKE', () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let addNoteBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let adhocTaskSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let url = 'http://www.google.com ';
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // Create manual task template
         let manualTemplateData = {
@@ -170,11 +169,6 @@ describe('Case Activity CKE', () => {
         expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
         await activityTabPage.clickOnPostButton();
         expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
-        // Link added without link option of CK editor
-        await activityTabPage.addActivityNote(url);
-        expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea(url)).toBeTruthy('FailureMsg Link is missing in Ck Editor');
-        await activityTabPage.clickOnPostButton();
-        expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity(url, url, 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
         // Attach Image
         await activityTabPage.addActivityNote(addNoteBodyText);
         await activityTabPage.addAttachment(['../../data/ui/attachment/bwfPdf.pdf']);
@@ -256,11 +250,6 @@ describe('Case Activity CKE', () => {
         expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
         await activityTabPage.clickOnPostButton();
         expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
-        // Link added without link option of CK editor
-        await activityTabPage.addActivityNote(url);
-        expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea(url)).toBeTruthy('FailureMsg Link is missing in Ck Editor');
-        await activityTabPage.clickOnPostButton();
-        expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity(url, url, 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
         // Attach Image
         await activityTabPage.addActivityNote(addNoteBodyText);
         await activityTabPage.addAttachment(['../../data/ui/attachment/bwfPdf.pdf']);
@@ -343,11 +332,6 @@ describe('Case Activity CKE', () => {
         expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
         await activityTabPage.clickOnPostButton();
         expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
-        // Link added without link option of CK editor
-        await activityTabPage.addActivityNote(url);
-        expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea(url)).toBeTruthy('FailureMsg Link is missing in Ck Editor');
-        await activityTabPage.clickOnPostButton();
-        expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity(url, url, 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
         // Attach Image
         await activityTabPage.addActivityNote(addNoteBodyText);
         await activityTabPage.addAttachment(['../../data/ui/attachment/bwfPdf.pdf']);
@@ -429,11 +413,6 @@ describe('Case Activity CKE', () => {
         expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
         await activityTabPage.clickOnPostButton();
         expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
-        // Link added without link option of CK editor
-        await activityTabPage.addActivityNote(url);
-        expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea(url)).toBeTruthy('FailureMsg Link is missing in Ck Editor');
-        await activityTabPage.clickOnPostButton();
-        expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity(url, url, 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
         // Attach Image
         await activityTabPage.addActivityNote(addNoteBodyText);
         await activityTabPage.addAttachment(['../../data/ui/attachment/bwfPdf.pdf']);
@@ -523,17 +502,12 @@ describe('Case Activity CKE', () => {
         expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
         await activityTabPage.clickOnPostButton();
         expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
-        // Link added without link option of CK editor
-        await activityTabPage.addActivityNote(url);
-        expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea(url)).toBeTruthy('FailureMsg Link is missing in Ck Editor');
-        await activityTabPage.clickOnPostButton();
-        expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity(url, url, 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
         // Attach Image
         await activityTabPage.addActivityNote(addNoteBodyText);
         await activityTabPage.addAttachment(['../../data/ui/attachment/bwfPdf.pdf']);
         await activityTabPage.clickOnPostButton();
         expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg Image missing in activity tab');
-    }, 11000 * 1000);
+    }, 1100 * 1000);
 
     //kgaikwad
     it('[DRDMV-21619]:2_Verify the Comments posted in activity without notes template', async () => {
@@ -639,11 +613,6 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
-            // Link added without link option of CK editor
-            await activityTabPage.addActivityNote(url);
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea(url)).toBeTruthy('FailureMsg Link is missing in Ck Editor');
-            await activityTabPage.clickOnPostButton();
-            expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity(url, url, 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             // Attach Image
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.addAttachment(['../../data/ui/attachment/bwfPdf.pdf']);
@@ -727,11 +696,6 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
-            // Link added without link option of CK editor
-            await activityTabPage.addActivityNote(url);
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea(url)).toBeTruthy('FailureMsg Link is missing in Ck Editor');
-            await activityTabPage.clickOnPostButton();
-            expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity(url, url, 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             // Attach Image
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.addAttachment(['../../data/ui/attachment/bwfPdf.pdf']);
@@ -753,8 +717,7 @@ describe('Case Activity CKE', () => {
             let adhocTaskSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let knowledgeArticle = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let randomStr1 = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let randomStr = ' http://www.google.com ' + [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let url = 'http://www.google.com'
+            let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
             // Create manual task template
             let manualTemplateData = {
@@ -866,10 +829,8 @@ describe('Case Activity CKE', () => {
             // Verify Case Notes Template
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateCaseData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateCaseData.body)
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea(url)).toBeTruthy('FailureMsg Link missing in case Ck editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateCaseData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
-            expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity(url, url, 1)).toBeTruthy('FailureMsg Link missing in case activity');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Profile View CK Editor
@@ -880,10 +841,8 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplatePeopleData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplatePeopleData.body)
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea(url)).toBeTruthy('FailureMsg Link missing in case Ck editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplatePeopleData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
-            expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity(url, url, 1)).toBeTruthy('FailureMsg Link missing in case activity');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto Manual Task
@@ -897,10 +856,8 @@ describe('Case Activity CKE', () => {
             await viewTaskPo.clickOnSaveStatus();
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea(url)).toBeTruthy('FailureMsg Link missing in case Ck editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
-            expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity(url, url, 1)).toBeTruthy('FailureMsg Link missing in case activity');
             await viewTaskPo.clickOnViewCase();
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -909,10 +866,8 @@ describe('Case Activity CKE', () => {
             await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea(url)).toBeTruthy('FailureMsg Link missing in case Ck editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
-            expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity(url, url, 1)).toBeTruthy('FailureMsg Link missing in case activity');
             await viewTaskPo.clickOnViewCase();
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto External Task
@@ -920,10 +875,8 @@ describe('Case Activity CKE', () => {
             await manageTaskBladePo.clickTaskLinkOnManageTask(externalTemplateData.templateSummary);
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea(url)).toBeTruthy('FailureMsg Link missing in case Ck editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
-            expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity(url, url, 1)).toBeTruthy('FailureMsg Link missing in case activity');
             await viewTaskPo.clickOnViewCase();
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -940,10 +893,8 @@ describe('Case Activity CKE', () => {
 
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea(url)).toBeTruthy('FailureMsg Link missing in case Ck editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
-            expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity(url, url, 1)).toBeTruthy('FailureMsg Link missing in case activity');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create knowledge Article task template
@@ -955,16 +906,14 @@ describe('Case Activity CKE', () => {
 
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateKnowledgeData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateKnowledgeData.body)
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea(url)).toBeTruthy('FailureMsg Link missing in case Ck editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateKnowledgeData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
-            expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity(url, url, 1)).toBeTruthy('FailureMsg Link missing in case activity');
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 11000 * 1000);
+    }, 1100 * 1000);
 
 })
