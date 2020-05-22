@@ -76,7 +76,7 @@ describe('Create Flowset', () => {
         await editFlowset.clickSaveBtn();
         await consoleFlowset.searchAndSelectFlowset("edit Flowset" + randomStr);
         await expect(editFlowset.getStatusvalue()).toBe("Draft");
-    });
+    },290*1000);
 
     //ankagraw
     it('[DRDMV-6212]: [Flowsets] Search Flowsets on Console', async () => {
