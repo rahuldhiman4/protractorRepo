@@ -73,7 +73,7 @@ export class GridOperations {
         let pageTitle = await browser.getTitle();
         await $(appliedPresetFilter).isPresent().then(async (result) => {
             if (result) {
-                if(pageTitle == 'Cases - Business Workflows' || 'Tasks - Business Workflows'){
+                if(pageTitle == 'Cases - Business Workflows' || pageTitle  == 'Tasks - Business Workflows'){
                     await this.addFilter('Assigned Group', 'abc', 'textbox');
                 }
                 await $(filterPresetBtn).click();
