@@ -76,22 +76,37 @@ describe('Person Profile test', () => {
     //asahitya
     it('[DRDMV-14025]: Verify navigation to Managers Profile from My Profile->Assigned Manager', async () => {
         await personProfile.clickOnManagerLink();
-        expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
-        expect(await personProfile.getContactNumber()).toBe("+12135559393", "Phone number mismatch");
-        expect(await personProfile.getEmail()).toBe("hannah.haas@petramco.com", "Email mismatch");
-        expect(await personProfile.getSite()).toBe("Aichi\n4-6-23 Meieki, Nakamura-ku, Nagoya-shi, Nagoya-shi, Aichi, 450-0002, Japan ");
-        await personProfile.clickOnTab("Requested Cases");
-        await personProfile.clickOnTab("Assigned Cases");
-        await personProfile.clickOnTab("Support Groups");
-        await personProfile.clickOnTab("Related Cases");
-        await personProfile.clickOnTab("Related Persons");
+        try {
+            await utilityCommon.switchToNewTab(1);
+            expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
+            expect(await personProfile.getContactNumber()).toBe("+12135559393", "Phone number mismatch");
+            expect(await personProfile.getEmail()).toBe("hannah.haas@petramco.com", "Email mismatch");
+            expect(await personProfile.getSite()).toBe("Aichi\n4-6-23 Meieki, Nakamura-ku, Nagoya-shi, Nagoya-shi, Aichi, 450-0002, Japan ");
+            await personProfile.clickOnTab("Requested Cases");
+            await personProfile.clickOnTab("Assigned Cases");
+            await personProfile.clickOnTab("Support Groups");
+            await personProfile.clickOnTab("Related Cases");
+            await personProfile.clickOnTab("Related Persons");
+        }
+        catch (ex) { throw ex; }
+        finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        }
     });
 
     //asahitya
     it('[DRDMV-17020]: Check agent can view the notes of other agents Person profile in agent work history tab for which he is submitter of the note', async () => {
-        await activityTabPage.addActivityNote("DRDMV-17020");
-        await activityTabPage.clickOnPostButton();
-        expect(await activityTabPage.isTextPresentInActivityLog("DRDMV-17020")).toBeTruthy("Activity notes is missing");
+        await personProfile.clickOnManagerLink();
+        try {
+            await utilityCommon.switchToNewTab(1);
+            await activityTabPage.addActivityNote("DRDMV-17020");
+            await activityTabPage.clickOnPostButton();
+            expect(await activityTabPage.isTextPresentInActivityLog("DRDMV-17020")).toBeTruthy("Activity notes is missing");
+        }
+        catch (ex) { throw ex; }
+        finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        }
     });
 
     //asahitya
@@ -101,6 +116,7 @@ describe('Person Profile test', () => {
         await addRelatedPopupPage.addPerson('Qiang Du', 'Former Manager');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(2);
         await relatedTabPage.clickRelatedPersonName('Qiang Du');
+        await utilityCommon.switchToNewTab(1);
         await activityTabPage.addActivityNote("DRDMV-17019");
         await activityTabPage.clickOnPostButton();
         try {
