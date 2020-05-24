@@ -583,7 +583,6 @@ describe('Case Activity CKE', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await activityTabPage.clickOnRefreshButton();
-            browser.sleep(10000);
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
             await activityTabPage.addActivityNote(addNoteBodyText);
             expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
