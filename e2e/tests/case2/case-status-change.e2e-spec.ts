@@ -593,7 +593,7 @@ describe('Case Status Change', () => {
             let summary2: string = randomStr + "Summary 2";
             let summary3 = randomStr + "Summary 3";
             let summary4 = randomStr + "Summary 4";
-            let caseTemplateName1 = randomStr + "DRDMV1087Petramco4";
+            let caseTemplateName1 = randomStr + "Petramco";
             let caseData1 =
             {
                 "Requester": "qtao",
@@ -672,6 +672,7 @@ describe('Case Status Change', () => {
             await editCasePage.updateCaseSummary(summary1);
             await expect(editCasePage.isSaveCaseEnable()).toBeFalsy("Save button Visible");
             await editCasePage.clickOnCancelCaseButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickEditCaseButton();
@@ -707,6 +708,7 @@ describe('Case Status Change', () => {
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
+            await editCasePage.clickOnAssignToMe();
             await editCasePage.updateCaseSummary(summary3);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
@@ -720,6 +722,7 @@ describe('Case Status Change', () => {
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
+            await editCasePage.clickOnAssignToMe();
             await editCasePage.updateCaseSummary(summary4);
 
             await editCasePage.clickSaveCase();

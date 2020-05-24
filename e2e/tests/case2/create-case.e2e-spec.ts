@@ -193,6 +193,7 @@ describe("Create Case", () => {
         await caseConsolePage.searchAndOpenCase(caseId1);
         await viewCasePage.clickEditCaseButton();
         await editCasePage.updateResolutionCode(randVal);
+        await editCasePage.updateCaseSummary('Updated Summary');
         await editCasePage.clickSaveCase();
         await utilityCommon.closePopUpMessage();
 

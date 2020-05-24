@@ -17,7 +17,7 @@ class CasePreview {
         requesterEmailId: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"] .bwf-person-email button',
         requesterSite: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"] .person-site-text',
         caseTemplate: '[rx-view-component-id="ffb8da80-b878-4b11-8aec-3bd146aab6c0"] div[title]',
-        description: '[rx-view-component-id="c5be61e7-f05b-4e30-91d0-e67a32125ff9"] .bwf-description-textarea-read',
+        description: '[rx-view-component-id="c5be61e7-f05b-4e30-91d0-e67a32125ff9"] .collapse-block div div div',
         categoryTier1: '[rx-view-component-id="8668462b-3aac-4f43-8793-fc49aafbd5c6"] div[title]',
         categoryTier2: '[rx-view-component-id="1068f2e1-1d3a-48a4-a0ed-ef1a8631ddc1"] div[title]',
         categoryTier3: '[rx-view-component-id="1f32a2f6-ed6c-4b73-be36-c2990cb5a882"] div[title]',
@@ -100,7 +100,7 @@ class CasePreview {
     }
 
     async isDescriptionDisplayed(description: string): Promise<boolean> {
-        let descriptionText = await $(this.selectors.description).getText();
+        let descriptionText = await $$(this.selectors.description).first().getText();
         return descriptionText.includes(description);
     }
 

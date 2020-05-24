@@ -99,15 +99,22 @@ describe('Case And Employee Relationship', () => {
         await addRelatedPopupPage.addPerson('Brad Pitt', 'Inspector');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
         await relatedTabPage.clickRelatedPersonName('Brad Pitt');
-        await relatedTabPage.addRelatedPerson();
-        await addRelatedPopupPage.addPerson('Bobby Hill', 'Former Manager');
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(2);
-        expect(await relatedTabPage.getRelatedPersonCompanyName('Bobby Hill')).toBe('Petramco');
-        expect(await relatedTabPage.getRelatedPersonEmail('Bobby Hill')).toBe('bhill@bwflabs.localdomain');
-        expect(await relatedTabPage.getRelatedPersonPhoneNumber('Bobby Hill')).toBe('+556132296002');
-        expect(await relatedTabPage.getRelatedPersonRelationship('Bobby Hill')).toBe('Former Manager');
-        expect(await relatedTabPage.getRelatedPersonSite('Bobby Hill')).toBe('Brasília\nCorporate Financial Center\nSCN – Quadra 02- Bloco A 5º Andar Sala 53, Brasília, Distrito Federal, 70712-900, Brazil ');
-        expect(await relatedTabPage.isEmailLinkNotPresent('Bobby Hill')).toBeTruthy('Email should not be a clickable link');
+        try {
+            await utilityCommon.switchToNewTab(1);
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Bobby Hill', 'Former Manager');
+            await relatedTabPage.waitUntilNewRelatedPersonAdded(2);
+            expect(await relatedTabPage.getRelatedPersonCompanyName('Bobby Hill')).toBe('Petramco');
+            expect(await relatedTabPage.getRelatedPersonEmail('Bobby Hill')).toBe('bhill@bwflabs.localdomain');
+            expect(await relatedTabPage.getRelatedPersonPhoneNumber('Bobby Hill')).toBe('+556132296002');
+            expect(await relatedTabPage.getRelatedPersonRelationship('Bobby Hill')).toBe('Former Manager');
+            expect(await relatedTabPage.getRelatedPersonSite('Bobby Hill')).toBe('Brasília\nCorporate Financial Center\nSCN – Quadra 02- Bloco A 5º Andar Sala 53, Brasília, Distrito Federal, 70712-900, Brazil ');
+            expect(await relatedTabPage.isEmailLinkNotPresent('Bobby Hill')).toBeTruthy('Email should not be a clickable link');
+        }
+        catch (ex) { throw ex }
+        finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        }
     });//, 150 * 1000);
 
     //asahitya
@@ -124,13 +131,20 @@ describe('Case And Employee Relationship', () => {
         await addRelatedPopupPage.addPerson('Brad Pitt', 'Inspector');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
         await relatedTabPage.clickRelatedPersonName('Brad Pitt');
-        await personProfilePage.clickOnTab('Related Cases');
-        await relatedCasePage.waitUntilNewRelatedCaseAdded(1);
-        expect(await relatedCasePage.getRelatedCaseAssignee(caseId)).toBe('Qianru Tao');
-        expect(await relatedCasePage.getRelatedCaseModDate(caseId)).toContain('Modified')
-        expect(await relatedCasePage.getRelatedCasePriority(caseId)).toBe('Medium');
-        expect(await relatedCasePage.getRelatedCaseStatus(caseId)).toBe('Assigned');
-        expect(await relatedCasePage.getRelatedCaseRelation(caseId)).toBe('Inspector');
+        try {
+            await utilityCommon.switchToNewTab(1);
+            await personProfilePage.clickOnTab('Related Cases');
+            await relatedCasePage.waitUntilNewRelatedCaseAdded(1);
+            expect(await relatedCasePage.getRelatedCaseAssignee(caseId)).toBe('Qianru Tao');
+            expect(await relatedCasePage.getRelatedCaseModDate(caseId)).toContain('Modified')
+            expect(await relatedCasePage.getRelatedCasePriority(caseId)).toBe('Medium');
+            expect(await relatedCasePage.getRelatedCaseStatus(caseId)).toBe('Assigned');
+            expect(await relatedCasePage.getRelatedCaseRelation(caseId)).toBe('Inspector');
+        }
+        catch (ex) { throw ex }
+        finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        }
     });//, 150 * 1000);
 
     //asahitya
@@ -191,7 +205,7 @@ describe('Case And Employee Relationship', () => {
         await utilityGrid.searchAndOpenHyperlink(caseId2);
         await viewCasePo.clickOnTab('Related Cases');
         expect(await relatedCasePage.isCasePresent(caseId3)).toBeTruthy();
-    }, 380*1000);
+    }, 380 * 1000);
 
     //asahitya
     it('[DRDMV-16243]: Check details shown for Employees on Related People tab', async () => {
@@ -308,7 +322,7 @@ describe('Case And Employee Relationship', () => {
         //expect(await caseEditPage.getRelatedCasesTabText()).toBe("Related Cases");
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
-        await quickCase.setSummaryAndPinRecommandedCase(caseId2,randomStr);
+        await quickCase.setSummaryAndPinRecommandedCase(caseId2, randomStr);
         await quickCase.createCaseButton();
         await quickCase.gotoCaseButton();
         await viewCasePo.clickOnTab('Related Cases');
