@@ -14,7 +14,7 @@ class EditTaskTemplate {
         taskTypeValue: '[rx-view-component-id="cee6d303-5db9-4b3a-98e1-3096ffebf363"] .ui-select-container',
         cancelButton: '[rx-view-component-id="7c66f7cb-612d-4ef5-b3f5-79f6d96b0083"] button',
         saveButton: '[rx-view-component-id="6649c51c-e27e-4026-ab4a-de5f40216ea9"] button',
-        description: '[rx-view-component-id="d8841534-3cc3-464c-b05e-5200d668d859"] textarea',
+        descriptionGuid: 'd8841534-3cc3-464c-b05e-5200d668d859',
         summary: '[rx-view-component-id="e1aaa2da-51a0-41a0-a806-6a935fa27d94"] input',
         taskCategoryDrpDown1: 'cab2e62d-090e-4281-985d-2f021bb01a9f',
         taskCategoryDrpDown2: '27a4fb75-0d9c-417b-9638-698f371ec4ec',
@@ -104,9 +104,7 @@ class EditTaskTemplate {
     }
 
     async setDescription(input: string) {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.description)));
-        await $(this.selectors.description).clear();
-        await $(this.selectors.description).sendKeys(input);
+        await utilCommon.setCKEditor(input, this.selectors.descriptionGuid);
     }
 
     async setSummary(input: string) {

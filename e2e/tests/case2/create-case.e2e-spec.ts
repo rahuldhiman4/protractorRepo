@@ -120,7 +120,7 @@ describe("Create Case", () => {
             await navigationPage.gotoCaseConsole();      
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await $(viewCasePage.selectors.resolutionCodeText).isDisplayed()).toBeTruthy('Missing Resolution Text');
-            expect(await $(viewCasePage.selectors.resolutionDescriptionText).isDisplayed()).toBeTruthy('Missing Resolution Description Text');
+            expect(await $(viewCasePage.selectors.resolutionDescriptionLabel).isDisplayed()).toBeTruthy('Missing Resolution Description Text');
             await viewCasePage.clickEditCaseButton();
             await editCasePage.updateResolutionCode(randVal);
             await editCasePage.updateResolutionDescription(randVal);

@@ -9,7 +9,7 @@ class EditCaseTemplate {
         editcaseTemplate: '[rx-view-component-id="672c4706-9ce0-46be-9a3a-a639ded79b23"] .edit-link',
         editTemplateMetaData: '[rx-view-component-id="c9f48c1b-75e2-411c-929c-76bdce069a3d"] .edit-link',
         caseSummary: '[rx-view-component-id="e3cb1a92-1e94-477d-93fa-b63b29c1c129"] input',
-        caseDescription: '[rx-view-component-id="3b3506af-b9a2-47bd-88f7-032092bc1264"] textarea',
+        caseDescriptionGuid: '3b3506af-b9a2-47bd-88f7-032092bc1264',
         saveButton: '[rx-view-component-id="60fae5e7-7bf2-477f-9e60-8be66292e6b5"] button',
         cancelButton: '[rx-view-component-id="a68b0e71-032d-4ecf-9d12-e0cd49f4b652"] button',
         templateStatusReadOnly:'[rx-view-component-id="88cf66ca-8be6-46b2-93e0-52890187dffb"] .ui-select-match',
@@ -231,9 +231,7 @@ class EditCaseTemplate {
     }
 
     async changeCaseDescription(caseDescription: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseDescription)));
-        await $(this.selectors.caseDescription).clear();
-        await $(this.selectors.caseDescription).sendKeys(caseDescription);
+        await utilCommon.setCKEditor(caseDescription, this.selectors.caseDescriptionGuid);
     }
 
     async getValueOfAssignmentMethod(): Promise<string> {

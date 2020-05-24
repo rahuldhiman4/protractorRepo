@@ -14,7 +14,7 @@ class CaseEditPage {
         saveCaseButton: '[rx-view-component-id="518308c0-34ea-4e75-a3a8-b4b07fc91de9"] button',
         summary: '[rx-view-component-id="244ffab2-bf04-4769-a5ac-c2a1f430e393"] input',
         summaryGuid: '244ffab2-bf04-4769-a5ac-c2a1f430e393',
-        caseDescription: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] textarea',
+        descriptionGuid: '9d3ef0fc-c49f-425f-a9e1-52422ba87f4f',
         priorityGuid: 'add23d12-52e7-4c43-aa78-2aa0c6125bb5',
         priorityRequiredText: '[rx-view-component-id="add23d12-52e7-4c43-aa78-2aa0c6125bb5"] .btn-secondary',
         clearContactButton: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .d-icon-cross',
@@ -34,7 +34,7 @@ class CaseEditPage {
         targetDateHours: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] input[ng-model="hours"]',
         targetDateMinutes: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] input[ng-model="minutes"]',
         targetDateMeredian: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] button.d-timepicker__input',
-        resolutionDescription: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] textarea',
+        resolutionGuid: '923de542-50b0-482f-a370-3823d0c07645',
         attachLink: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] button',
         requesterPersonImage: 'img.person-profile-image',
         requesterText: '.person-main .text-field',
@@ -87,8 +87,8 @@ class CaseEditPage {
     }
 
     async clickSaveCase(): Promise<void> {
-        let saveButton=this.selectors.saveCaseButton+'[disabled="disabled"]';
-        await browser.wait(this.EC.invisibilityOf($(saveButton)),3000);
+        let saveButton = this.selectors.saveCaseButton + '[disabled="disabled"]';
+        await browser.wait(this.EC.invisibilityOf($(saveButton)), 3000);
         await $(this.selectors.saveCaseButton).click();
     }
 
@@ -180,16 +180,11 @@ class CaseEditPage {
     }
 
     async updateResolutionDescription(resolutionDescription: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.resolutionDescription)));
-        await $(this.selectors.resolutionDescription).clear();
-        await $(this.selectors.resolutionDescription).sendKeys(resolutionDescription);
+        await utilityCommon.updateCKEditor(resolutionDescription, this.selectors.resolutionGuid);
     }
 
-    async updateDescription(descriptionVal: string): Promise<void> {
-        var caseDescriptionSelector = await this.selectors.caseDescription;
-        //        await browser.wait(this.EC.elementToBeClickable($(caseDescriptionSelector)));
-        await $((caseDescriptionSelector)).clear;
-        await $((caseDescriptionSelector)).sendKeys(descriptionVal);
+    async updateDescription(description: string): Promise<void> {
+        await utilityCommon.updateCKEditor(description, this.selectors.descriptionGuid);
     }
 
     async clickOnAttachLink(): Promise<void> {
@@ -240,14 +235,6 @@ class CaseEditPage {
     async isClearSiteButtonClickable(): Promise<boolean> {
         try {
             return await $(this.selectors.clearSiteField).isEnabled();
-        } catch (error) {
-            return false;
-        }
-    }
-
-    async isDescriptionClickable(): Promise<boolean> {
-        try {
-            return await $(this.selectors.caseDescription).isEnabled();
         } catch (error) {
             return false;
         }
