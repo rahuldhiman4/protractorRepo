@@ -27,6 +27,8 @@ export class Utility {
         meridiemClock: '.a3t-clock--control-item',
         okDateTimePicker: '.btn-primary',
         clearDateTimePicker: '.btn-secondary',
+        ckEditor: 'bwf-rich-text-editor[style="display: block;"]',
+        ckEditorTextArea: '.cke_enable_context_menu',
     }
 
     async selectDropDown(guid: string, value: string): Promise<void> {
@@ -369,6 +371,39 @@ export class Utility {
 
     async clickOnApplicationWarningYesNoButton(buttonName: string): Promise<void> {
         await element(by.cssContainingText('.modal-footer adapt-button', buttonName)).click();
+    }
+
+    async setCKEditor(description: string, guid?: string): Promise<void> {
+        let ckEditorLocator = this.selectors.ckEditor;
+        let ckEditorTextAreaLocator = this.selectors.ckEditorTextArea;
+        if (guid) {
+            ckEditorLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditor}`;
+            ckEditorTextAreaLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditorTextArea}`;
+        }
+        await $(ckEditorLocator).isPresent().then(async (result) => {
+            if (result) {
+                await browser.wait(this.EC.elementToBeClickable($(ckEditorTextAreaLocator)), 3000).then(async () => {
+                    await $(ckEditorTextAreaLocator).clear();
+                    await $(ckEditorTextAreaLocator).sendKeys(description);
+                });
+            }
+        });
+    }
+
+    async updateCKEditor(description: string, guid?: string): Promise<void> {
+        let ckEditorLocator = this.selectors.ckEditor;
+        let ckEditorTextAreaLocator = this.selectors.ckEditorTextArea;
+        if (guid) {
+            ckEditorLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditor}`;
+            ckEditorTextAreaLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditorTextArea}`;
+        }
+        await $(ckEditorLocator).isPresent().then(async (result) => {
+            if (result) {
+                await browser.wait(this.EC.elementToBeClickable($(ckEditorTextAreaLocator)), 3000).then(async () => {
+                    await $(ckEditorTextAreaLocator).sendKeys(description);
+                });
+            }
+        });
     }
 }
 

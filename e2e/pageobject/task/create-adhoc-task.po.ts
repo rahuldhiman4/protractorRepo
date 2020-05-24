@@ -7,7 +7,7 @@ class CreateAdhocTaskTemplatePage {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        description: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] textarea',
+        descriptionGuid: '84ebb434-1cf8-4363-94d2-c77d9c9e2f68',
         taskSummary: '[rx-view-component-id="76b6b259-a085-4d9f-91ac-8c5cbb2bc725"] input',
         priority: 'fe14bbd7-3b72-4e88-b224-b58d3a0eb132',
         label: '156b3220-56a1-4349-b595-670961ff215c',
@@ -40,8 +40,7 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async setDescription(description: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.description)));
-        await $(this.selectors.description).sendKeys(description);
+        await utilityCommon.setCKEditor(description, this.selectors.descriptionGuid);
     }
 
     async setSummary(summary: string): Promise<void> {

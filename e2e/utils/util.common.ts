@@ -2,7 +2,6 @@ import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpec
 
 const fs = require('fs');
 
-
 export class Util {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -24,6 +23,8 @@ export class Util {
         warningMsgText: '.modal-content .modal-title-message, .modal-content .d-modal__title',
         warningMsgTextKnowledgeStyle: '.d-modal__content .d-modal__content-item',
         backArrow: '[class="d-button d-icon-left-undo d-button_link d-button_small"]',
+        ckEditor: 'bwf-rich-text-editor[style="display: block;"]',
+        ckEditorTextArea: '.cke_enable_context_menu',
     }
 
     async clickOnBackArrow(): Promise<void> {
@@ -121,7 +122,7 @@ export class Util {
     }
 
     async isErrorMsgPresent(): Promise<boolean> {
-            return await $(this.selectors.errorMsg).isDisplayed();
+        return await $(this.selectors.errorMsg).isDisplayed();
     }
 
     async isPopUpMessagePresent(expectedMsg: string, actualNumberOfPopups?: number): Promise<boolean> {
@@ -364,6 +365,39 @@ export class Util {
         }
         await browser.waitForAngularEnabled(true);
         return arr;
+    }
+
+    async setCKEditor(description: string, guid?: string): Promise<void> {
+        let ckEditorLocator = this.selectors.ckEditor;
+        let ckEditorTextAreaLocator = this.selectors.ckEditorTextArea;
+        if (guid) {
+            ckEditorLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditor}`;
+            ckEditorTextAreaLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditorTextArea}`;
+        }
+        await $(ckEditorLocator).isPresent().then(async (result) => {
+            if (result) {
+                await browser.wait(this.EC.elementToBeClickable($(ckEditorTextAreaLocator)), 3000).then(async () => {
+                    await $(ckEditorTextAreaLocator).clear();
+                    await $(ckEditorTextAreaLocator).sendKeys(description);
+                });
+            }
+        });
+    }
+
+    async updateCKEditor(description: string, guid?: string): Promise<void> {
+        let ckEditorLocator = this.selectors.ckEditor;
+        let ckEditorTextAreaLocator = this.selectors.ckEditorTextArea;
+        if (guid) {
+            ckEditorLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditor}`;
+            ckEditorTextAreaLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditorTextArea}`;
+        }
+        await $(ckEditorLocator).isPresent().then(async (result) => {
+            if (result) {
+                await browser.wait(this.EC.elementToBeClickable($(ckEditorTextAreaLocator)), 3000).then(async () => {
+                    await $(ckEditorTextAreaLocator).sendKeys(description);
+                });
+            }
+        });
     }
 }
 
