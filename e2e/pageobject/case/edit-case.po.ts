@@ -15,6 +15,7 @@ class CaseEditPage {
         summary: '[rx-view-component-id="244ffab2-bf04-4769-a5ac-c2a1f430e393"] input',
         summaryGuid: '244ffab2-bf04-4769-a5ac-c2a1f430e393',
         descriptionGuid: '9d3ef0fc-c49f-425f-a9e1-52422ba87f4f',
+        descriptionLabel: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] label',
         priorityGuid: 'add23d12-52e7-4c43-aa78-2aa0c6125bb5',
         priorityRequiredText: '[rx-view-component-id="add23d12-52e7-4c43-aa78-2aa0c6125bb5"] .btn-secondary',
         clearContactButton: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .d-icon-cross',
@@ -180,11 +181,11 @@ class CaseEditPage {
     }
 
     async updateResolutionDescription(resolutionDescription: string): Promise<void> {
-        await utilityCommon.updateCKEditor(resolutionDescription, this.selectors.resolutionGuid);
+        await utilityCommon.setCKEditor(resolutionDescription, this.selectors.resolutionGuid);
     }
 
     async updateDescription(description: string): Promise<void> {
-        await utilityCommon.updateCKEditor(description, this.selectors.descriptionGuid);
+        await utilityCommon.setCKEditor(description, this.selectors.descriptionGuid);
     }
 
     async clickOnAttachLink(): Promise<void> {
