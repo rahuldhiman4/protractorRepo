@@ -23,8 +23,6 @@ let applyBtn = "Apply";
 describe("Quick Case", () => {
     const requester = "The requester of the case";
     const contact = "Another person contacting on behalf of the requester";
-    let caseSummary771 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-    let caseDescription771 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let templateName797 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let templateSummary797 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let caseTemplateId797 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -32,7 +30,6 @@ describe("Quick Case", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        await testData771();
         await testData797();
     });
 
@@ -44,21 +41,21 @@ describe("Quick Case", () => {
         await navigationPage.signOut();
     });
 
-    async function testData771() {
-        await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester("Adam Pavlik");
-        await createCasePo.setSummary(caseSummary771);
-        await createCasePo.setDescription(caseDescription771);
-        await createCasePo.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-    }
-
     //kgaikwad
     it('[DRDMV-771]: [Quick Case] Similar cases search in Resources', async () => {
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseData = {
+            "Requester": "apavlik",
+            "Summary": randomStr + "summary",
+            "description": randomStr + "description"
+        }
+        await apiHelper.apiLogin("qkatawazi");
+        await apiHelper.createCase(caseData);
+
         await navigationPage.gotoQuickCase();
-        let categoryvalues: string[] = [caseSummary771, caseDescription771];
+        let categoryvalues: string[] = [caseData.Summary, caseData.description];
         for (let i = 0; i < categoryvalues.length; i++) {
-            let result;
+            let result: boolean = undefined;
             await utilityCommon.refresh();
             await quickCasePo.selectRequesterName('Adam Pavlik');
             await quickCasePo.setCaseSummary(categoryvalues[i]);
@@ -829,7 +826,7 @@ describe("Quick Case", () => {
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'SMEReview', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy('Status Not Set');
-        
+
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
         await quickCase.selectCaseTemplate(caseTemplateName);
@@ -912,9 +909,9 @@ describe("Quick Case", () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignedCompany":"Petramco",
-            "assigneeBusinessUnit":"United Kingdom Support",
-            "assigneeSupportGroup":"GB Support 1",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills"
         };
 

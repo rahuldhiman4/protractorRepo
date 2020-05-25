@@ -12,7 +12,7 @@ class CreateCaseTemplate {
         copyCaseTemplateOnCreate: '[rx-view-component-id="92e13921-bf7b-494e-9d65-609a07c36505"] button',
         templateName: '[rx-view-component-id="432c5f23-8c50-490d-9e94-8912ac4cd5e1"] input',
         caseSummary: '[rx-view-component-id="9aac1caa-d110-450e-a9a2-d87168ec6162"] input',
-        caseDescription: '[rx-view-component-id="0e50e51b-b99d-481c-8c1e-cb92e8803634"] textarea',
+        caseDescriptionGuid: '9023c12e-819f-4964-8079-b11cd6c0b860',
         saveButton: '[rx-view-component-id="fee3e577-173c-4dec-8265-ec81580ed26d"] button',
         cancelButton: '[rx-view-component-id="be371341-8b3f-4433-93fa-33d242984010"] button',
         companyDropDown: '127214a1-bfc0-4a8c-acb7-cd2be137fa3c',
@@ -171,9 +171,7 @@ class CreateCaseTemplate {
     }
 
     async setCaseDescription(caseDescription: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseDescription)));
-        await $(this.selectors.caseDescription).clear();
-        await $(this.selectors.caseDescription).sendKeys(caseDescription);
+        await utilCommon.setCKEditor(caseDescription, this.selectors.caseDescriptionGuid);
     }
 
     async createCaseTemplateWithMandatoryFields(caseTemplate: ICaseTemplate): Promise<void> {

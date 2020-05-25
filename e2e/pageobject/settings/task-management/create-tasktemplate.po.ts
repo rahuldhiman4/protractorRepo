@@ -17,7 +17,7 @@ class CreateTaskTemplatePage {
         taskCategoryDrpDown3: '09e9fc7b-03ab-45ec-83b2-7dbb42e64f23',
         taskCategoryDrpDown4: '44f1eacf-54a4-473d-b764-4735948ed204',
         changeAssignmentButton: '[rx-view-component-id="0bd0a580-775d-491f-be52-87c14a8b6e2d"] button',
-        taskDescription: '[rx-view-component-id="8dab5855-547b-449d-a010-3f1bd09fd7f5"] textarea',
+        taskDescriptionGuid: 'b9b752cf-8cef-4598-9a8d-85748b13f0d7',
         templateStatus: '09db292a-212a-433e-8c20-a92f8c4e5168',
         ownerCompany: '87ec3995-3350-4e3f-ab19-0f1e7846fbd7',
         buisnessUnit: 'a81cc2df-7b89-4367-81f7-f0ad5e786ca2',
@@ -33,7 +33,6 @@ class CreateTaskTemplatePage {
         searchProcess: '.d-icon-search',
         setInputdataInProcess: '[rx-view-component-id="71e09acc-0077-4e55-9c24-7f6bdc90ce5d"] input',
         selectNameInProcess: '.rx-definition-picker__instance-name mark',
-        taskDescriptionGuid: '8dab5855-547b-449d-a010-3f1bd09fd7f5',
         addTaskTemplateTitle: '[rx-view-component-id="e564f60e-d84f-41fc-b130-998cdc60eca4"] span',
         templateMetadataTitle: '[rx-view-component-id="24bd49d8-5ca3-451a-86a1-eb26b687e801"] span',
         processBundleIdRequiredTxt: '5f30b3d4-caa2-4c28-8af6-cebf094bc2e8',
@@ -53,9 +52,7 @@ class CreateTaskTemplatePage {
     }
 
     async setTaskDescription(inputValue: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskDescription)));
-        await $(this.selectors.taskDescription).clear();
-        await $(this.selectors.taskDescription).sendKeys(inputValue);
+        await utilCommon.setCKEditor(inputValue, this.selectors.taskDescriptionGuid);
     }
 
     async clickOnAssignment(): Promise<void> {

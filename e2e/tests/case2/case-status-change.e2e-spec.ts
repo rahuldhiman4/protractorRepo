@@ -151,7 +151,7 @@ describe('Case Status Change', () => {
         expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
         // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
         expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
-        expect(await $(editCasePage.selectors.caseDescription).isPresent()).toBeTruthy('Description not present');
+        expect(await $(editCasePage.selectors.descriptionLabel).isPresent()).toBeTruthy('Description not present');
         expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
         expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
         expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
@@ -240,7 +240,7 @@ describe('Case Status Change', () => {
         expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
         expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
         expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
-        expect(await $(editCasePage.selectors.caseDescription).isPresent()).toBeTruthy('Description not present');
+        expect(await $(editCasePage.selectors.descriptionLabel).isPresent()).toBeTruthy('Description not present');
         expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
         expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
         expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
@@ -330,7 +330,7 @@ describe('Case Status Change', () => {
         expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
         // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
         expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
-        expect(await $(editCasePage.selectors.caseDescription).isPresent()).toBeTruthy('Description not present');
+        expect(await $(editCasePage.selectors.descriptionLabel).isPresent()).toBeTruthy('Description not present');
         expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
         expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
         expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
@@ -365,7 +365,7 @@ describe('Case Status Change', () => {
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
             // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
             expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
-            expect(await $(editCasePage.selectors.caseDescription).isPresent()).toBeTruthy('Description not present');
+            expect(await $(editCasePage.selectors.descriptionLabel).isPresent()).toBeTruthy('Description not present');
             expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
             expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
             expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
