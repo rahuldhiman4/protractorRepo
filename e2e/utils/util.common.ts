@@ -23,8 +23,8 @@ export class Util {
         warningMsgText: '.modal-content .modal-title-message, .modal-content .d-modal__title',
         warningMsgTextKnowledgeStyle: '.d-modal__content .d-modal__content-item',
         backArrow: '[class="d-button d-icon-left-undo d-button_link d-button_small"]',
-        ckEditor: 'bwf-rich-text-editor[style="display: block;"]',
-        ckEditorTextArea: '.cke_enable_context_menu',
+        ckEditor: '.cke_inner',
+        ckEditorTextArea: '.cke_editable_themed',
     }
 
     async clickOnBackArrow(): Promise<void> {
@@ -395,6 +395,22 @@ export class Util {
             if (result) {
                 await browser.wait(this.EC.elementToBeClickable($(ckEditorTextAreaLocator)), 3000).then(async () => {
                     await $(ckEditorTextAreaLocator).sendKeys(description);
+                });
+            }
+        });
+    }
+
+    async getCKEditorText(guid?: string): Promise<string> {
+        let ckEditorLocator = this.selectors.ckEditor;
+        let ckEditorTextAreaLocator = this.selectors.ckEditorTextArea;
+        if (guid) {
+            ckEditorLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditor}`;
+            ckEditorTextAreaLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditorTextArea}`;
+        }
+        return await $(ckEditorLocator).isPresent().then(async (result) => {
+            if (result) {
+                return await browser.wait(this.EC.visibilityOf($(ckEditorTextAreaLocator)), 3000).then(async () => {
+                    return await $(ckEditorTextAreaLocator).getText();
                 });
             }
         });

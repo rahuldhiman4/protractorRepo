@@ -25,7 +25,7 @@ class ViewCasePage {
         contactPersonName: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .person-main a',
         contactPersonContact: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .person-phone-link',
         contactPersonEmail: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .bwf-button-link',
-        descriptionText: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .bwf-read-only-content',
+        descriptionText: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] label+div',
         assigneeText: '[rx-view-component-id="dfe65f6f-7aea-476c-8042-f3aa34e3fb04"] .person-link',
         assignedGroupText: '[rx-view-component-id="66c1bbab-901d-42ed-b5e6-a04cb54d559f"] .read-only-content',
         departmentText: '[rx-view-component-id="795da3b4-6442-4b07-b6e1-7ce7c9987352"] .read-only-content',
