@@ -29,7 +29,6 @@ describe('Case Activity CKE', () => {
         await utilityCommon.refresh();
     });
 
-    let caseId;
     //kgaikwad
     it('[DRDMV-21617,DRDMV-21618]:1_Verify the Availability and UI of new CK Editor', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -92,7 +91,6 @@ describe('Case Activity CKE', () => {
 
         let newCase = await apiHelper.createCase(caseData);
         await caseConsolePo.searchAndOpenCase(newCase.displayId);
-        caseId = newCase.displayId;
         // Adding Task
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
@@ -402,7 +400,7 @@ describe('Case Activity CKE', () => {
         await manageTaskBladePo.clickAddAdhocTaskButton();
         expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
         await adhoctaskTemplate.setSummary(adhocTaskSummary);
-        await adhoctaskTemplate.setDescription("Description");
+        // await adhoctaskTemplate.setDescription("Description");################################
         await adhoctaskTemplate.clickOnSaveAdhoctask();
         await manageTaskBladePo.clickOnCloseButton();
         await viewCasePo.clickAddTaskButton();
@@ -484,8 +482,19 @@ describe('Case Activity CKE', () => {
 
             let knowledgeArticle = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let addNoteBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            await navigationPage.signOut();
-            await loginPage.login('qdu');
+         
+            await apiHelper.apiLogin('qkatawazi');
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Create Case
+            let caseData = {
+                "Requester": "qtao",
+                "Summary": "DRDMV-21618_TC",
+                "Assigned Company": "Petramco",
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 1",
+                "Assignee": "qdu"
+            }
+            let newCase = await apiHelper.createCase(caseData);
 
             // Create knowledge Article task template
             let articleData = {
@@ -497,13 +506,16 @@ describe('Case Activity CKE', () => {
                 "assigneeSupportGroup": "CA Support 1",
                 "assignee": "qdu"
             }
-
-            await apiHelper.apiLogin('qkatawazi');
             let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID = knowledgeArticleData.id;
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('Status Not Set');
-
+            
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await caseConsolePo.searchAndOpenCase(newCase.displayId);
+            expect (await viewCasePo.getCaseID()).toBe(newCase.displayId,'Case Id is missing');
+ 
             // Verify knowledge Article task template
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeArticlesConsolePo.searchAndOpenKnowledgeArticle(knowledgeArticleData.displayId);
@@ -581,7 +593,7 @@ describe('Case Activity CKE', () => {
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Profile View CK Editor
             await navigationPage.gotoCaseConsole();
-            await caseConsolePo.searchAndOpenCase(caseId);
+            await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await activityTabPage.clickOnRefreshButton();
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
             await activityTabPage.addActivityNote(addNoteBodyText);
