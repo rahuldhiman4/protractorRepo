@@ -400,7 +400,7 @@ describe('Case Activity CKE', () => {
         await manageTaskBladePo.clickAddAdhocTaskButton();
         expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
         await adhoctaskTemplate.setSummary(adhocTaskSummary);
-        // await adhoctaskTemplate.setDescription("Description");################################
+        await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.clickOnSaveAdhoctask();
         await manageTaskBladePo.clickOnCloseButton();
         await viewCasePo.clickAddTaskButton();

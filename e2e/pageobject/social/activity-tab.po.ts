@@ -412,9 +412,9 @@ class ActivityTabPage {
     }
 
     async clearActivityNote(): Promise<void> {
-        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 10000).then(async () => {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 10000).then(async () => {
             await $(this.selectors.activityNoteTextArea).clear();
-        // });
+        });
     }
 
     async getPersonCount(tagPerson: string): Promise<number> {
