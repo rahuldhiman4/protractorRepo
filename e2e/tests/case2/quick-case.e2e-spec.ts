@@ -731,12 +731,16 @@ describe("Quick Case", () => {
             let caseTemplatePsilon = randomStr + 'PsilonTemplate';
             let casTemplateSummaryPsilon = randomStr + 'PsilonSummary';
             let templateDataPsilon = {
-                "templateName": `${caseTemplatePsilon}`,
-                "templateSummary": `${casTemplateSummaryPsilon}`,
+                "templateName": caseTemplatePsilon,
+                "templateSummary": casTemplateSummaryPsilon,
+                "caseStatus": "InProgress",
                 "templateStatus": "Active",
                 "company": "Psilon",
+                "businessUnit": "Psilon Support Org1",
+                "supportGroup": "Psilon Support Group1",
+                "assignee": "gderuno",
             }
-            await apiHelper.apiLogin('gwixillian');
+            await apiHelper.apiLogin('gderuno');
             await apiHelper.createCaseTemplate(templateDataPsilon);
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName('adam');

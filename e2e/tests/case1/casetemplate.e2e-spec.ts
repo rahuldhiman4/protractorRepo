@@ -90,7 +90,7 @@ describe('Case Template', () => {
         await editCasetemplatePo.changeIdentityValidationValue('Enforced');
         await editCaseTemplate.clickSaveCaseTemplate();
         await expect(await viewCaseTemplate.getIdentityValdationValue()).toContain('Enforced');
-    });//, 150 * 1000);
+    },300 * 1000);
 
     //ptidke
     it('[DRDMV-10469]: Case Template creation with Template validation as ENFORCED', async () => {
@@ -175,7 +175,7 @@ describe('Case Template', () => {
         await editCasetemplatePo.changeAssignmentMethodValue(caseTemplateAllFields.assignmentMethod);
         await expect(await editCasetemplatePo.getValueOfAssignmentMethod()).toContain(caseTemplateAllFields.assignmentMethod);
         await editCaseTemplate.clickSaveCaseTemplate();
-    }, 300 * 1000);
+    }, 350 * 1000);
 
     //ptidke
     it('[DRDMV-14880]: Verify Case assignment method is set to None by default in a New/already existing Case template', async () => {
@@ -593,16 +593,16 @@ describe('Case Template', () => {
 
             let caseTemplateNamePsilon = randomStr + 'caseTemplatePsilonDRDMV773';
             let casetemplatePsilon = {
-                "templateName": `${caseTemplateNamePsilon}`,
-                "templateSummary": `${caseTemplateNamePsilon}`,
+                "templateName": caseTemplateNamePsilon,
+                "templateSummary": caseTemplateNamePsilon,
+                "caseStatus": "InProgress",
                 "templateStatus": "Active",
                 "company": "Psilon",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
-                "casePriority": "Low",
+                "businessUnit": "Psilon Support Org1",
+                "supportGroup": "Psilon Support Group1",
+                "assignee": "gderuno",
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('gderuno');
             await apiHelper.createCaseTemplate(casetemplatePsilon);
             await navigationPage.signOut();
             await loginPage.login('fritz');
@@ -625,7 +625,9 @@ describe('Case Template', () => {
             await createCasePo.clickSelectCaseTemplateButton();
             expect(await createCasePo.isTemplateNamePresent(caseTemplateNamePsilon)).toBeFalsy();
             await selectCasetemplateBladePo.clickOnCancelButton();
-            await createCasePo.clickClearRequesterButton();
+            await navigationPage.signOut();
+            await loginPage.login('gderuno');
+            await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('Glit');
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateNamePsilon);
@@ -710,7 +712,6 @@ describe('Case Template', () => {
                 "ownerBU": "Facilities Support",
                 "ownerGroup": "Facilities",
             }
-            console.log(caseTemplateName);        
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
             await navigationPage.gotoSettingsPage();
@@ -967,7 +968,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 300 * 1000);
+    }, 400 * 1000);
 
     it('[DRDMV-9127]:[Negative Testing] - Verify permission for Case Agent from the same support group to edit case template.', async () => {
         try {
@@ -1020,7 +1021,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 300 * 1000);
+    }, 500 * 1000);
 
     it('[DRDMV-9129]:[Negative Testing] - Verify permission for Case Agent from a different support group to edit case template.', async () => {
         try {
@@ -1078,7 +1079,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 300 * 1000);
+    }, 400 * 1000);
 
     it('[DRDMV-9130]:[Negative Testing] - Verify permission for Case Manager from a different support group to edit case template.', async () => {
         try {
