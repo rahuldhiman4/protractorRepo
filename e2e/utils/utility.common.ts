@@ -405,6 +405,22 @@ export class Utility {
             }
         });
     }
+
+    async getCKEditorText(guid?: string): Promise<string> {
+        let ckEditorLocator = this.selectors.ckEditor;
+        let ckEditorTextAreaLocator = this.selectors.ckEditorTextArea;
+        if (guid) {
+            ckEditorLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditor}`;
+            ckEditorTextAreaLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditorTextArea}`;
+        }
+        return await $(ckEditorLocator).isPresent().then(async (result) => {
+            if (result) {
+                return await browser.wait(this.EC.visibilityOf($(ckEditorTextAreaLocator)), 3000).then(async () => {
+                    return await $(ckEditorTextAreaLocator).getText();
+                });
+            }
+        });
+    }
 }
 
 export default new Utility();
