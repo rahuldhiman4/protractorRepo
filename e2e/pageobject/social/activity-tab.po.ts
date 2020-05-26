@@ -5,8 +5,8 @@ import utilCommon from '../../utils/util.common';
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        activityNoteCKEditor: 'bwf-rich-text-editor[style="display: block;"]',
-        activityNoteTextArea: '.cke_enable_context_menu',
+        activityNoteCKEditor: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] bwf-rich-text-editor[style="display: block;"], bwf-rich-text-editor[style="display: block;"]',
+        activityNoteTextArea: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] .cke_enable_context_menu, .cke_enable_context_menu',
         addNoteBox: '.textfield__wrapper .form-control[placeholder="Add a note"]',
         personPopup: '.dropdown-menu .popup-template',
         personPopupCkEditor: '.cke_autocomplete_panel li',
