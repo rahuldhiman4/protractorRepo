@@ -697,7 +697,7 @@ describe("Create Case", () => {
             await apiHelper.createNewUser(userData);
             await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             //Create Case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');

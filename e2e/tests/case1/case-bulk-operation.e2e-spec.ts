@@ -296,7 +296,7 @@ describe('Case Bulk Operation', () => {
             }
 
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials('idPersonBO@petramco.com', "Password_1234");
+            await loginPage.login('idPersonBO@petramco.com', "Password_1234");
 
             await utilityGrid.clearFilter();
             await utilityCommon.refresh();

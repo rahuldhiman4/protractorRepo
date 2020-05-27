@@ -46,7 +46,7 @@ describe('Case Status Configuration', () => {
         await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
         await apiHelper.createNewFlowset(flowsetData['flowsetPhylumFields']);
 
-        await loginPage.loginWithCredentials('idphylum1@petramco.com', 'Password_1234');
+        await loginPage.login('idphylum1@petramco.com', 'Password_1234');
     });
 
     afterAll(async () => {
@@ -239,7 +239,7 @@ describe('Case Status Configuration', () => {
     //asahitya
     it('[DRDMV-13632]: Verify User not able to delete mandatory status for Knowledge', async () => {
         await navigationPage.signOut()
-        await loginPage.loginWithCredentials('idphylumkuser@petramco.com', 'Password_1234');
+        await loginPage.login('idphylumkuser@petramco.com', 'Password_1234');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
         await statusConfigPo.setCompanyDropdown('Phylum', 'knowledge');
@@ -290,7 +290,7 @@ describe('Case Status Configuration', () => {
     it('[DRDMV-13635]:Verify UI for Knowledge status configuration', async () => {
         try {
             await navigationPage.signOut()
-            await loginPage.loginWithCredentials('idphylumkuser@petramco.com', 'Password_1234');
+            await loginPage.login('idphylumkuser@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
             expect(await statusConfigPo.getTitleValue('knowledge')).toBe('Knowledge Status Configuration');
@@ -308,7 +308,7 @@ describe('Case Status Configuration', () => {
         }
         finally {
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials('idphylum1@petramco.com', 'Password_1234');
+            await loginPage.login('idphylum1@petramco.com', 'Password_1234');
         }
     });
 
