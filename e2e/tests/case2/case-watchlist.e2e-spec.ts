@@ -29,10 +29,10 @@ describe('Case Watchlist', () => {
     let statusNotificationStr = "Watchlist Alert: {0} Marked: {1} by {2}.";
     let groupAssignmentNotificationStr = "Watchlist Alert: {0} was assigned to group {1} by {2}";
     let qtaoStr = "qtao";
-    let qyuanStr = "qyuan";
+    let qfengStr = "qfeng";
     let customerResponseStr = "Customer Response";
     let resolvedStr = "Resolved";
-    let qingYuanStr = "Qing Yuan";
+    let qiaoFengStr = "Qiao Feng";
     let auSupport1Str = "AU Support 1";
     let kasiaOstlunStr = "Kasia Ostlun";
     let hrSupportStr = 'HR Support';
@@ -40,11 +40,11 @@ describe('Case Watchlist', () => {
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login(qyuanStr);
+        await loginPage.login(qfengStr);
         await utilityGrid.clearFilter();
         await apiHelper.apiLogin("tadmin");
         await apiHelper.setDefaultNotificationForUser(qannisStr, "Alert");
-        await apiHelper.setDefaultNotificationForUser(qyuanStr, "Alert");
+        await apiHelper.setDefaultNotificationForUser(qfengStr, "Alert");
         await apiHelper.setDefaultNotificationForUser(qtaoStr, "Alert");
     });
 
@@ -288,7 +288,7 @@ describe('Case Watchlist', () => {
         }
         finally {
             await navigationPage.signOut();
-            await loginPage.login(qyuanStr);
+            await loginPage.login(qfengStr);
         }
     }, 600 * 1000);
 
@@ -321,13 +321,14 @@ describe('Case Watchlist', () => {
         await updateStatusBladePo.setStatusReason("No Further Action Required");
         await updateStatusBladePo.clickSaveStatus();
         await utilityCommon.closePopUpMessage();
+        await utilityCommon.refresh();
         await updateStatusBladePo.changeCaseStatus("Closed");
         await updateStatusBladePo.clickSaveStatus();
         await utilityCommon.closePopUpMessage();
-        let statusNotification1 = utilityCommon.formatString(statusNotificationStr, caseId, inProgressStr, qingYuanStr);
-        let statusNotification2 = utilityCommon.formatString(statusNotificationStr, caseId, pendingStr, qingYuanStr);
-        let statusNotification3 = utilityCommon.formatString(statusNotificationStr, caseId, resolvedStr, qingYuanStr);
-        let statusNotification4 = utilityCommon.formatString(statusNotificationStr, caseId, "Closed", qingYuanStr);
+        let statusNotification1 = utilityCommon.formatString(statusNotificationStr, caseId, inProgressStr, qiaoFengStr);
+        let statusNotification2 = utilityCommon.formatString(statusNotificationStr, caseId, pendingStr, qiaoFengStr);
+        let statusNotification3 = utilityCommon.formatString(statusNotificationStr, caseId, resolvedStr, qiaoFengStr);
+        let statusNotification4 = utilityCommon.formatString(statusNotificationStr, caseId, "Closed", qiaoFengStr);
 
         await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
@@ -339,7 +340,7 @@ describe('Case Watchlist', () => {
     });//, 220 * 1000);
 
     it('[DRDMV-16029]: Verify that all the Case Agents having write access can follow/unfollow the cases', async () => {
-        await apiHelper.apiLogin(qyuanStr);
+        await apiHelper.apiLogin(qfengStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let caseId: string[] = [];
         for (let i: number = 0; i < 3; i++) {
@@ -379,10 +380,10 @@ describe('Case Watchlist', () => {
         await changeAssignment.setAssignee(petramcoStr, australiaSupportStr,auSupport1Str, kasiaOstlunStr);
         await editCase.clickSaveCase();
 
-        let assignmentNotification1 = utilityCommon.formatString(assignmentNotificationStr, caseId[1], elizabethPetersStr, qingYuanStr);
-        let statusNotification1 = utilityCommon.formatString(statusNotificationStr, caseId[1], inProgressStr, qingYuanStr);
-        let assignmentNotification2 = utilityCommon.formatString(assignmentNotificationStr, caseId[1], kasiaOstlunStr, qingYuanStr);
-        let statusNotification2 = utilityCommon.formatString(statusNotificationStr, caseId[1], pendingStr, qingYuanStr);
+        let assignmentNotification1 = utilityCommon.formatString(assignmentNotificationStr, caseId[1], elizabethPetersStr, qiaoFengStr);
+        let statusNotification1 = utilityCommon.formatString(statusNotificationStr, caseId[1], inProgressStr, qiaoFengStr);
+        let assignmentNotification2 = utilityCommon.formatString(assignmentNotificationStr, caseId[1], kasiaOstlunStr, qiaoFengStr);
+        let statusNotification2 = utilityCommon.formatString(statusNotificationStr, caseId[1], pendingStr, qiaoFengStr);
 
         await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
@@ -394,7 +395,7 @@ describe('Case Watchlist', () => {
     });//, 200 * 1000);
 
     it('[DRDMV-16044,DRDMV-16060]: Verify the position, Labels and * icon on Case console, Case and Watchlist modal', async () => {
-        await apiHelper.apiLogin(qyuanStr);
+        await apiHelper.apiLogin(qfengStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
         let caseId = response.displayId;
@@ -425,7 +426,7 @@ describe('Case Watchlist', () => {
     });
 
     it('[DRDMV-16554]: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Edit', async () => {
-        await apiHelper.apiLogin(qyuanStr);
+        await apiHelper.apiLogin(qfengStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
         let caseId = response.displayId;
@@ -438,6 +439,7 @@ describe('Case Watchlist', () => {
         //Assign the case to Au Suppport 1 Group
         await viewCasePage.clickEditCaseButton();
         await editCase.clickChangeAssignmentButton();
+        await changeAssignment.selectBusinessUnit('Australia Support');
         await changeAssignment.setAssigneeGroup(auSupport1Str);
         await editCase.clickSaveCase();
         await utilityCommon.closePopUpMessage();
@@ -446,14 +448,15 @@ describe('Case Watchlist', () => {
         await viewCasePage.clickStopWatchingLink();
         await viewCasePage.clickEditCaseButton();
         await editCase.clickChangeAssignmentButton();
+        await changeAssignment.selectBusinessUnit('HR Support');
         await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
         await editCase.clickSaveCase();
         await utilityCommon.closePopUpMessage();
 
         await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
-        let groupAssignmentNotification1 = utilityCommon.formatString(groupAssignmentNotificationStr, caseId, auSupport1Str, qingYuanStr);
-        let groupAssignmentNotification2 = utilityCommon.formatString(groupAssignmentNotificationStr, caseId, compensationAndBenefitsStr, qingYuanStr);
+        let groupAssignmentNotification1 = utilityCommon.formatString(groupAssignmentNotificationStr, caseId, auSupport1Str, qiaoFengStr);
+        let groupAssignmentNotification2 = utilityCommon.formatString(groupAssignmentNotificationStr, caseId, compensationAndBenefitsStr, qiaoFengStr);
 
         expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification1)).toBeTruthy(groupAssignmentNotification1 + " is not present");
         expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification2)).toBeFalsy(groupAssignmentNotification2 + " is present");
@@ -461,7 +464,7 @@ describe('Case Watchlist', () => {
     });
 
     it('[DRDMV-16555]: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Console', async () => {
-        await apiHelper.apiLogin(qyuanStr);
+        await apiHelper.apiLogin(qfengStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
         let caseId = response.displayId;
@@ -475,6 +478,7 @@ describe('Case Watchlist', () => {
         //Assign the case to Au Suppport 1 Group
         await viewCasePage.clickEditCaseButton();
         await editCase.clickChangeAssignmentButton();
+        await changeAssignment.selectBusinessUnit('Australia Support');
         await changeAssignment.setAssigneeGroup(auSupport1Str);
         await editCase.clickSaveCase();
 
@@ -489,14 +493,15 @@ describe('Case Watchlist', () => {
         //Assign the case to Compensation and Benefits Group
         await viewCasePage.clickEditCaseButton();
         await editCase.clickChangeAssignmentButton();
+        await changeAssignment.selectBusinessUnit('HR Support');
         await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
         await editCase.clickSaveCase();
         await utilityCommon.closePopUpMessage();
 
         await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
-        let groupAssignmentNotification1 = utilityCommon.formatString(groupAssignmentNotificationStr, caseId, auSupport1Str, qingYuanStr);
-        let groupAssignmentNotification2 = utilityCommon.formatString(groupAssignmentNotificationStr, caseId, compensationAndBenefitsStr, qingYuanStr);
+        let groupAssignmentNotification1 = utilityCommon.formatString(groupAssignmentNotificationStr, caseId, auSupport1Str, qiaoFengStr);
+        let groupAssignmentNotification2 = utilityCommon.formatString(groupAssignmentNotificationStr, caseId, compensationAndBenefitsStr, qiaoFengStr);
 
         expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification1)).toBeTruthy(groupAssignmentNotification1 + " is not present");
         expect(await notificationAlerts.isAlertPresent(groupAssignmentNotification2)).toBeFalsy(groupAssignmentNotification2 + " is present");
@@ -535,7 +540,8 @@ describe('Case Watchlist', () => {
             await caseWatchlist.clickOnUpdateWatchlistEventsBtn();
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
             await caseWatchlist.saveEvents();
-            await caseWatchlist.openCase(caseId);
+            await caseWatchlist.clickOnBackBtn();
+            await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
@@ -545,6 +551,7 @@ describe('Case Watchlist', () => {
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
             await editCase.clickChangeAssignmentButton();
+            await changeAssignment.selectBusinessUnit('HR Support');
             await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
@@ -567,12 +574,12 @@ describe('Case Watchlist', () => {
         finally {
             //Reset login
             await navigationPage.signOut();
-            await loginPage.login(qyuanStr);
+            await loginPage.login(qfengStr);
         }
     });//, 220 * 1000);
 
     it('[DRDMV-16557]: Verify that Agent can update(add) Case group Assignment for any of the existing Watched case', async () => {
-        await apiHelper.apiLogin(qyuanStr);
+        await apiHelper.apiLogin(qfengStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist_1']);
         let caseId = response.displayId;
@@ -609,9 +616,11 @@ describe('Case Watchlist', () => {
             await caseWatchlist.saveEvents();
 
             //Change case status, case assignment and case group assignment
-            await caseWatchlist.openCase(caseId);
+            await caseWatchlist.clickOnBackBtn();
+            await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickEditCaseButton();
             await editCase.clickChangeAssignmentButton();
+            await changeAssignment.selectBusinessUnit('HR Support');
             await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
@@ -642,12 +651,12 @@ describe('Case Watchlist', () => {
         finally {
             //Reset login
             await navigationPage.signOut();
-            await loginPage.login(qyuanStr);
+            await loginPage.login(qfengStr);
         }
     });//, 230 * 1000);
 
     it('[DRDMV-16062]: Verify that user add the watch from Case Console and remove the watch from Case then it should reflect', async () => {
-        await apiHelper.apiLogin(qyuanStr);
+        await apiHelper.apiLogin(qfengStr);
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
         let caseId = response.displayId;
@@ -682,10 +691,10 @@ describe('Case Watchlist', () => {
         await utilityCommon.closePopUpMessage();
 
         //Verification of notifications
-        let assignmentNotification1 = utilityCommon.formatString(assignmentNotificationStr, caseId, elizabethPetersStr, qingYuanStr);
-        let statusNotification1 = utilityCommon.formatString(statusNotificationStr, caseId, inProgressStr, qingYuanStr);
-        let assignmentNotification2 = utilityCommon.formatString(assignmentNotificationStr, caseId, kasiaOstlunStr, qingYuanStr);
-        let statusNotification2 = utilityCommon.formatString(statusNotificationStr, caseId, pendingStr, qingYuanStr);
+        let assignmentNotification1 = utilityCommon.formatString(assignmentNotificationStr, caseId, elizabethPetersStr, qiaoFengStr);
+        let statusNotification1 = utilityCommon.formatString(statusNotificationStr, caseId, inProgressStr, qiaoFengStr);
+        let assignmentNotification2 = utilityCommon.formatString(assignmentNotificationStr, caseId, kasiaOstlunStr, qiaoFengStr);
+        let statusNotification2 = utilityCommon.formatString(statusNotificationStr, caseId, pendingStr, qiaoFengStr);
 
         await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
@@ -765,7 +774,7 @@ describe('Case Watchlist', () => {
             "operation": operation['addAccess'],
             "type": type['user'],
             "security": security['witeAccess'],
-            "username": qyuanStr
+            "username": qfengStr
         }
         await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQyuan);
 
@@ -791,7 +800,7 @@ describe('Case Watchlist', () => {
             await utilityCommon.closePopUpMessage();
 
             await navigationPage.signOut();
-            await loginPage.login(qyuanStr);
+            await loginPage.login(qfengStr);
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
@@ -800,7 +809,7 @@ describe('Case Watchlist', () => {
             await changeAssignment.setAssignee(petramcoStr, hrSupportStr,compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
 
-            await apiHelper.apiLogin(qyuanStr);
+            await apiHelper.apiLogin(qfengStr);
             //Remove access of Qannis
             let caseAccessRemoveDataQannis = {
                 "operation": operation['deleteAccess'],
@@ -824,10 +833,10 @@ describe('Case Watchlist', () => {
             await loginPage.login(qannisStr);
 
             //Verification of notifications
-            let assignmentNotification1 = utilityCommon.formatString(assignmentNotificationStr, caseId, elizabethPetersStr, qingYuanStr);
-            let statusNotification1 = utilityCommon.formatString(statusNotificationStr, caseId, inProgressStr, qingYuanStr);
-            let assignmentNotification2 = utilityCommon.formatString(assignmentNotificationStr, caseId, kasiaOstlunStr, qingYuanStr);
-            let statusNotification2 = utilityCommon.formatString(statusNotificationStr, caseId, pendingStr, qingYuanStr);
+            let assignmentNotification1 = utilityCommon.formatString(assignmentNotificationStr, caseId, elizabethPetersStr, qiaoFengStr);
+            let statusNotification1 = utilityCommon.formatString(statusNotificationStr, caseId, inProgressStr, qiaoFengStr);
+            let assignmentNotification2 = utilityCommon.formatString(assignmentNotificationStr, caseId, kasiaOstlunStr, qiaoFengStr);
+            let statusNotification2 = utilityCommon.formatString(statusNotificationStr, caseId, pendingStr, qiaoFengStr);
 
             await notificationAlerts.clickOnNotificationIcon();
             expect(await notificationAlerts.isAlertPresent(assignmentNotification1)).toBeTruthy(assignmentNotification1 + " is not present");
@@ -841,7 +850,7 @@ describe('Case Watchlist', () => {
         }
         finally {
             await navigationPage.signOut();
-            await loginPage.login(qyuanStr);
+            await loginPage.login(qfengStr);
         }
     }, 420 * 1000);
 
@@ -862,7 +871,7 @@ describe('Case Watchlist', () => {
             "operation": operation['addAccess'],
             "type": type['user'],
             "security": security['witeAccess'],
-            "username": qyuanStr
+            "username": qfengStr
         }
         await apiHelper.updateCaseAccess(caseGuid[0], caseAccessDataQyuan);
         await apiHelper.updateCaseAccess(caseGuid[1], caseAccessDataQyuan);
@@ -906,7 +915,8 @@ describe('Case Watchlist', () => {
         await utilityCommon.closePopUpMessage();
 
         //Change the case status and case assignment for second case
-        await caseWatchlist.openCase(caseId[1]);
+        await caseWatchlist.clickOnBackBtn();
+        await utilityGrid.searchAndOpenHyperlink(caseId[1]);
         await updateStatusBladePo.changeCaseStatus(inProgressStr);
         await updateStatusBladePo.clickSaveStatus();
         await utilityCommon.closePopUpMessage();
@@ -917,10 +927,10 @@ describe('Case Watchlist', () => {
         await utilityCommon.closePopUpMessage();
 
         //Verification of notifications
-        let assignmentNotification1 = utilityCommon.formatString(assignmentNotificationStr, caseId[0], kasiaOstlunStr, qingYuanStr);
-        let statusNotification1 = utilityCommon.formatString(statusNotificationStr, caseId[0], inProgressStr, qingYuanStr);
-        let assignmentNotification2 = utilityCommon.formatString(assignmentNotificationStr, caseId[1], kasiaOstlunStr, qingYuanStr);
-        let statusNotification2 = utilityCommon.formatString(statusNotificationStr, caseId[1], inProgressStr, qingYuanStr);
+        let assignmentNotification1 = utilityCommon.formatString(assignmentNotificationStr, caseId[0], kasiaOstlunStr, qiaoFengStr);
+        let statusNotification1 = utilityCommon.formatString(statusNotificationStr, caseId[0], inProgressStr, qiaoFengStr);
+        let assignmentNotification2 = utilityCommon.formatString(assignmentNotificationStr, caseId[1], kasiaOstlunStr, qiaoFengStr);
+        let statusNotification2 = utilityCommon.formatString(statusNotificationStr, caseId[1], inProgressStr, qiaoFengStr);
 
         await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
@@ -948,7 +958,7 @@ describe('Case Watchlist', () => {
             "operation": operation['addAccess'],
             "type": type['user'],
             "security": security['witeAccess'],
-            "username": qyuanStr
+            "username": qfengStr
         }
         await apiHelper.updateCaseAccess(caseGuid[0], caseAccessDataQyuan);
         await apiHelper.updateCaseAccess(caseGuid[1], caseAccessDataQyuan);
@@ -991,7 +1001,8 @@ describe('Case Watchlist', () => {
         await utilityCommon.closePopUpMessage();
 
         //Change the case status and case assignment for second case
-        await caseWatchlist.openCase(caseId[1]);
+        await caseWatchlist.clickOnBackBtn();
+        await utilityGrid.searchAndOpenHyperlink(caseId[1]);
         await updateStatusBladePo.changeCaseStatus(inProgressStr);
         await updateStatusBladePo.clickSaveStatus();
         await viewCasePage.clickEditCaseButton();
@@ -1001,10 +1012,10 @@ describe('Case Watchlist', () => {
         await utilityCommon.closePopUpMessage();
 
         //Verification of notifications
-        let assignmentNotification1 = utilityCommon.formatString(assignmentNotificationStr, caseId[0], kasiaOstlunStr, qingYuanStr);
-        let statusNotification1 = utilityCommon.formatString(statusNotificationStr, caseId[0], inProgressStr, qingYuanStr);
-        let assignmentNotification2 = utilityCommon.formatString(assignmentNotificationStr, caseId[1], kasiaOstlunStr, qingYuanStr);
-        let statusNotification2 = utilityCommon.formatString(statusNotificationStr, caseId[1], inProgressStr, qingYuanStr);
+        let assignmentNotification1 = utilityCommon.formatString(assignmentNotificationStr, caseId[0], kasiaOstlunStr, qiaoFengStr);
+        let statusNotification1 = utilityCommon.formatString(statusNotificationStr, caseId[0], inProgressStr, qiaoFengStr);
+        let assignmentNotification2 = utilityCommon.formatString(assignmentNotificationStr, caseId[1], kasiaOstlunStr, qiaoFengStr);
+        let statusNotification2 = utilityCommon.formatString(statusNotificationStr, caseId[1], inProgressStr, qiaoFengStr);
 
         await utilityCommon.refresh();
         await notificationAlerts.clickOnNotificationIcon();
@@ -1067,7 +1078,7 @@ describe('Case Watchlist', () => {
         }
         finally {
             await navigationPage.signOut();
-            await loginPage.login(qyuanStr);
+            await loginPage.login(qfengStr);
         }
     }, 360 * 1000);
 
@@ -1083,7 +1094,7 @@ describe('Case Watchlist', () => {
             "operation": operation['addAccess'],
             "type": type['user'],
             "security": security['witeAccess'],
-            "username": qyuanStr
+            "username": qfengStr
         }
         await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
 
@@ -1163,7 +1174,7 @@ describe('Case Watchlist', () => {
         }
         finally {
             await navigationPage.signOut();
-            await loginPage.login(qyuanStr);
+            await loginPage.login(qfengStr);
         }
     }, 600 * 1000);
 })

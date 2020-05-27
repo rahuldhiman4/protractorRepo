@@ -19,7 +19,7 @@ import documentLibraryConsolePage from '../../pageobject/settings/document-manag
 import editDocumentLibraryPage from '../../pageobject/settings/document-management/edit-document-library.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import utilGrid from "../../utils/util.grid";
+import utilityGrid from "../../utils/utility.grid";
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import utilityCommon from '../../utils/utility.common';
 
@@ -64,6 +64,7 @@ let retiredStatus = "Retired";
 let closedStatus = "Closed";
 let canceledStatus = "Canceled";
 let title = "DRDMV-19004 KnowledgeArticle";
+let knowledgeSetTitle = undefined;
 
 describe('Knowledge Articles - Categorization Tests', () => {
     const filePath = '../../../data/ui/attachment/articleStatus.png';
@@ -78,6 +79,41 @@ describe('Knowledge Articles - Categorization Tests', () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin(knowledgePublisherUser);
+
+        let knowledgeSetData = {
+            "knowledgeSetTitle": "Knowledge Set Petramco",
+            "knowledgeSetDesc": "Knowledge Description Petramco",
+            "company": "Petramco"
+        }
+
+        let knowledgeApprovalFlowData = {
+            "flowName": "Preset Filter",
+            "approver": "KMills",
+            "qualification": "'Operational Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c.304405421}"
+        }
+
+        let knowledgeApprovalMappingData = {
+            "configName": "Approval Config Name",
+            "company": "Petramco",
+            "status1": "CancelApproval",
+            "status2": "PublishApproval",
+            "status3": "RetireApproval"
+        }
+
+        //Create Knowledge Configuraton
+        const randomStr = [...Array(2)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        knowledgeSetTitle = knowledgeSetData.knowledgeSetTitle + randomStr;
+
+        knowledgeSetData.knowledgeSetTitle = knowledgeSetTitle;
+        await apiHelper.createKnowledgeSet(knowledgeSetData);
+
+        let approvalConfigGlobalTitle = knowledgeApprovalFlowData.flowName + randomStr;
+        knowledgeApprovalFlowData.flowName = approvalConfigGlobalTitle;
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.deleteKnowledgeApprovalMapping();
+        await apiHelper.createKnowledgeApprovalFlow(knowledgeApprovalFlowData);
+        await apiHelper.createKnowledgeApprovalMapping(knowledgeApprovalMappingData);
+
         let articleData = {
             "knowledgeSet": "HR",
             "title": "KnowledgeArticle",
@@ -92,6 +128,8 @@ describe('Knowledge Articles - Categorization Tests', () => {
             "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills"
         }
+
+        await apiHelper.apiLogin(knowledgePublisherUser);
         // Create article in in progress status
         articleData.title = title + "_" + inProgressStatus;
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
@@ -113,29 +151,36 @@ describe('Knowledge Articles - Categorization Tests', () => {
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
+        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
 
         //Create article in Retired status
         articleData.title = title + "_" + retiredStatus;
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, retiredStatus)).toBeTruthy("Article with Retired status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
+        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'RetireApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Retired status not updated.");
+        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
 
         //Create article in Closed status
         articleData.title = title + "_" + closedStatus;
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
+        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'RetireApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Retired status not updated.");
+        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, closedStatus)).toBeTruthy("Article with Closed status not updated.");
 
         //Create article in Canceled status
         articleData.title = title + "_" + canceledStatus;
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         knowledgeArticleGUID = knowledgeArticleData.id;
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, canceledStatus)).toBeTruthy("Article with Canceled status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'CancelApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Canceled status not updated.");
+        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
     });//, 180 * 1000);
 
     afterEach(async () => {
@@ -176,7 +221,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         try {
             //* Login with Case BA
             await navigationPage.gotoKnowledgeConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
@@ -205,7 +250,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             //Login with case Manager
             await loginPage.login(caseManagerUser);
             await navigationPage.gotoKnowledgeConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
@@ -233,7 +278,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             //Login with Case Agent user
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoKnowledgeConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
@@ -263,7 +308,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
@@ -294,7 +339,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
@@ -325,7 +370,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
@@ -356,7 +401,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
