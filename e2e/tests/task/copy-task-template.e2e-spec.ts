@@ -123,7 +123,7 @@ describe('Copy Task Template', () => {
             //await utilCommon.waitUntilPopUpDisappear();
 
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(manualTaskTemplate);
@@ -178,7 +178,7 @@ describe('Copy Task Template', () => {
             //Login through both Petramco and Psilon User
 
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(automationTaskTemplate);
@@ -250,7 +250,7 @@ describe('Copy Task Template', () => {
             //await utilCommon.waitUntilPopUpDisappear();
 
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(automationTaskTemplate);

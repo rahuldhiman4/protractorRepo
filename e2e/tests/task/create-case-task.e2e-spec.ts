@@ -429,7 +429,7 @@ describe('Create Case Task', () => {
         await apiHelper.associatePersonToSupportGroup(userData.userId, "Psilon Support Group2");
         try {
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
@@ -497,7 +497,7 @@ describe('Create Case Task', () => {
         //search above template
         try {
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(TaskTemplate);
