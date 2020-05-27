@@ -211,5 +211,5 @@ describe('EmailTemplate', () => {
         await consoleEmailTemplatePo.clickOnDeleteButton();
         await utilCommon.waitUntilSpinnerToHide();
         expect(await consoleEmailTemplatePo.isGridRecordPresent(templateName2)).toBeFalsy('Public template name is preset on grid')
-    }, 560 * 1000);
+    }, 650 * 1000);
 })
