@@ -214,7 +214,7 @@ describe('Email', () => {
         //verify activity email post
         await emailPo.clickOnSendButton();
         expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
-    }, 300 * 1000);
+    }, 450 * 1000);
 
     it('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

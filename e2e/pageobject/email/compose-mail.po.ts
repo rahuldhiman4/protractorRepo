@@ -274,10 +274,10 @@ class ComposeMail {
     }
 
     async isSelectEmailTemplateButtonPresent(): Promise<boolean> {
-        if (await $(this.selectors.selectEmailTemplateLink).isPresent()) {
-            return await $(this.selectors.selectEmailTemplateLink).isDisplayed();
-        }
-        return $(this.selectors.selectEmailTemplateLink).isPresent();
+        return await $(this.selectors.selectEmailTemplateLink).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.selectEmailTemplateLink).isDisplayed();
+            else return false;
+        });
     }
 
 

@@ -808,7 +808,7 @@ describe('Case Status Change', () => {
             let caseId4: string = newCase4.displayId;
             let newCase5 = await apiHelper.createCase(caseData5);
             let caseId5: string = newCase5.displayId;
-            let statusOptions: string[] = ["Pending", "Assigned", "In Progress", "Resolved", "Canceled", "Closed"];
+            let statusOptions: string[] = ["Pending", "Assigned", "In Progress", "Resolved", "Canceled", "Closed", "Approval Rejected"];
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();

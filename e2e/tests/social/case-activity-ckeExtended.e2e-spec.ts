@@ -31,7 +31,6 @@ describe('Case Activity CKE', () => {
     afterEach(async () => {
         await utilityCommon.refresh();
     });
-    let caseId;
     //kgaikwad
     it('[DRDMV-21619]:1_Verify the Comments posted in activity without notes template', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -77,20 +76,18 @@ describe('Case Activity CKE', () => {
         }
         await apiHelper.createExternalTaskTemplate(externalTemplateData);
 
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        // Create Case
-        let caseData = {
-            "Requester": "qtao",
-            "Summary": "DRDMV-21617_TC",
-            "Assigned Company": "Petramco",
-            "Business Unit": "Canada Support",
-            "Support Group": "CA Support 1",
-            "Assignee": "qdu"
-        }
-
-        let newCase = await apiHelper.createCase(caseData);
-        await caseConsolePo.searchAndOpenCase(newCase.displayId);
-        caseId = newCase.displayId;
+ // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Create Case
+            let caseData = {
+                "Requester": "qtao",
+                "Summary": "DRDMV-21617_TC_2",
+                "Assigned Company": "Petramco",
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 1",
+                "Assignee": "qdu"
+            }
+            let newCase = await apiHelper.createCase(caseData);
+            await caseConsolePo.searchAndOpenCase(newCase.displayId);
         // Adding Task
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
@@ -515,8 +512,19 @@ describe('Case Activity CKE', () => {
             let addNoteBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let knowledgeArticle = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let url = 'http://www.google.com ';
-            await navigationPage.signOut();
-            await loginPage.login('qdu');
+            
+            await apiHelper.apiLogin('qkatawazi');
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Create Case
+            let caseData = {
+                "Requester": "qtao",
+                "Summary": "DRDMV-21617_TC_2",
+                "Assigned Company": "Petramco",
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 1",
+                "Assignee": "qdu"
+            }
+            let newCase = await apiHelper.createCase(caseData);
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create knowledge Article task template
             let articleData = {
@@ -528,13 +536,15 @@ describe('Case Activity CKE', () => {
                 "assigneeSupportGroup": "CA Support 1",
                 "assignee": "qdu"
             }
-
-            await apiHelper.apiLogin('qkatawazi');
             let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID = knowledgeArticleData.id;
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('FailureMsg Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('FailureMsg Status Not Set');
-
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await caseConsolePo.searchAndOpenCase(newCase.displayId);
+            expect(await viewCasePo.getCaseID()).toBe(newCase.displayId, 'Case Id is missing');
+     
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create knowledge Article task template
             await navigationPage.gotoKnowledgeConsole();
@@ -621,7 +631,7 @@ describe('Case Activity CKE', () => {
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Profile View CK Editor
             await navigationPage.gotoCaseConsole();
-            await caseConsolePo.searchAndOpenCase(caseId);
+            await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await activityTabPage.clickOnRefreshButton();
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
 
@@ -718,24 +728,25 @@ describe('Case Activity CKE', () => {
             let knowledgeArticle = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let randomStr1 = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
+            
+            await navigationPage.gotoCaseConsole();
+            await apiHelper.apiLogin('qkatawazi');
             // Create manual task template
             let manualTemplateData = {
-                "templateName": "DRDMV-21617_task template" + summary,
-                "templateSummary": "DRDMV-21617_Manual_task template summary" + summary,
+                "templateName": "DRDMV-21620 template" + summary,
+                "templateSummary": "DRDMV-21620_Manual_task template summary" + summary,
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities"
             }
-            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTemplateData);
 
             // Create automated task template
             let autoTemplateData = {
-                "templateName": "DRDMV-21617 auto task template" + summary,
-                "templateSummary": "DRDMV-21617 auto task template summary" + summary,
+                "templateName": "DRDMV-21620 auto task template" + summary,
+                "templateSummary": "DRDMV-21620 auto task template summary" + summary,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process ${summary}`,
@@ -744,13 +755,12 @@ describe('Case Activity CKE', () => {
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities"
             }
-
             await apiHelper.createAutomatedTaskTemplate(autoTemplateData);
-
+           
             // For External
             let externalTemplateData = {
-                "templateName": "DRDMV-21617 external task template name" + summary,
-                "templateSummary": "DRDMV-21617 external task template summary" + summary,
+                "templateName": "DRDMV-21620 external task template name" + summary,
+                "templateSummary": "DRDMV-21620 external task template summary" + summary,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -770,13 +780,12 @@ describe('Case Activity CKE', () => {
                 "assignee": "qdu"
             }
 
-            await apiHelper.apiLogin('qkatawazi');
+            
             let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID = knowledgeArticleData.id;
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('FailureMsg Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('FailureMsg Status Not Set');
             // Create Case Notes Template
-            await apiHelper.apiLogin('qkatawazi');
             let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
             let notesTemplateCaseData = notesTemplateData['notesTemplateWithMandatoryField'];
             let notesTemplateTaskData = notesTemplateData['notesTemplateForTask'];
@@ -812,7 +821,6 @@ describe('Case Activity CKE', () => {
                 "Support Group": "CA Support 1",
                 "Assignee": "qdu"
             }
-            await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await updateStatusBladePo.changeCaseStatus('In Progress');

@@ -213,7 +213,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(displayID);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status Not set');
-            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status Not set');
             await navigationPage.signOut();
@@ -238,7 +238,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(kkohriId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status Not set');
-            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status Not set');
             await navigationPage.signOut();
@@ -264,7 +264,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(kmillsId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status Not set');
-            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status Not set');
             await navigationPage.signOut();
@@ -289,7 +289,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(kWilliamsonId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status Not set');
-            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status Not set');
         }
@@ -352,7 +352,7 @@ describe('Knowledge Article', () => {
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status not Set');
             await navigationPage.signOut();
@@ -375,7 +375,7 @@ describe('Knowledge Article', () => {
             let kkohriId = await apiHelper.createKnowledgeArticle(articleData1);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(kkohriId.displayId);
-            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status Not set');
             await navigationPage.signOut();
@@ -398,7 +398,7 @@ describe('Knowledge Article', () => {
             let kmillsId = await apiHelper.createKnowledgeArticle(articleData2);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(kmillsId.displayId);
-            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status not set');
             await navigationPage.signOut();
@@ -421,7 +421,7 @@ describe('Knowledge Article', () => {
             let kWilliamsonId = await apiHelper.createKnowledgeArticle(articleData3);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(kWilliamsonId.displayId);
-            await editKnowledgePage.setKnowledgeStatus('Cancel Approval');
+            await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status not set');
         }
@@ -541,7 +541,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    }, 400 * 1000);
+    }, 650 * 1000);
 
     it('[DRDMV-1064]:[Create Mode] Removing sections with the Remove button', async () => {
         try {
@@ -776,7 +776,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    });//, 170 * 1000);
+    },300 * 1000);
 
     it('[DRDMV-5192]: Unflag the article', async () => {
         try {
@@ -822,6 +822,7 @@ describe('Knowledge Article', () => {
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
             await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
             expect(await viewKnowledgeArticlePo.isUnFlagButtonDisplayed()).toBeTruthy('Unflag Button is not present');
+            await utilityCommon.refresh();
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain('Peter Kahn flagged the article', 'content not displaying on Activity');
@@ -867,7 +868,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    });//, 240 * 1000);
+    },350 * 1000);
 
     //ptidke
     it('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {
