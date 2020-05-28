@@ -138,6 +138,7 @@ describe('Edit Case', () => {
         await changeAssignmentPage.selectAssigneeAsSupportGroup('AU Support 1');
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
+        await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await viewCasePage.getAssignedGroupText()).toBe('AU Support 1');
         expect(await activityTabPo.getAllTaskActivity('AU Support 1')).toBe('AU Support 1');
         await viewCasePage.clickEditCaseButton();
@@ -147,6 +148,7 @@ describe('Edit Case', () => {
         await changeAssignmentPage.selectAssignee('Qadim Katawazi');
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
+        await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.getAllTaskActivity('US Support 3')).toBe('US Support 3');
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickOnAssignToMe();

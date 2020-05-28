@@ -123,7 +123,7 @@ describe("Create Case", () => {
             expect(await $(viewCasePage.selectors.resolutionDescriptionLabel).isDisplayed()).toBeTruthy('Missing Resolution Description Text');
             await viewCasePage.clickEditCaseButton();
             await editCasePage.updateResolutionCode(randVal);
-            await editCasePage.updateResolutionDescription(randVal);
+            await editCasePage.setResolutionDescription(randVal);
             await editCasePage.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.getResolutionCodeValue()).toBe(randVal);
@@ -193,7 +193,7 @@ describe("Create Case", () => {
         await caseConsolePage.searchAndOpenCase(caseId1);
         await viewCasePage.clickEditCaseButton();
         await editCasePage.updateResolutionCode(randVal);
-        await editCasePage.updateCaseSummary('Updated Summary');
+        await editCasePage.setCaseSummary('Updated Summary');
         await editCasePage.clickSaveCase();
         await utilityCommon.closePopUpMessage();
 
@@ -771,6 +771,7 @@ describe("Create Case", () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            await utilityCommon.waitUntilPopUpDisappear();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
@@ -786,6 +787,7 @@ describe("Create Case", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy();
             await viewCasePage.clickOnReopenCaseLink();
+            await utilityCommon.waitUntilPopUpDisappear();
             expect(await viewCasePage.getTextOfStatus()).toBe('New');
         } catch (e) {
             throw e;
@@ -1002,7 +1004,8 @@ describe("Create Case", () => {
             await changeAssignmentPage.setAssignee(petramcoStr, 'Australia Support', aUsupportStr, kasiaOstlunsStr);
             await editCasePage.clickSaveCase();
             expect(await activityPo.isTextPresentInActivityLog("Kasia Ostlun")).toBeTruthy("Text is not present in activiy tab1");
-            expect(await activityPo.isTextPresentInActivityLog("changed the case assignment")).toBeTruthy("Text is not present in activiy tab2");
+            await activityPo.clickShowMoreLinkInActivity(1);
+            expect(await activityPo.isTextPresentInActivityLog("changed the following case fields")).toBeTruthy("Text is not present in activiy tab2");
             expect(await activityPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab3");
             expect(await activityPo.isTextPresentInActivityLog("Assigned Group")).toBeTruthy("Text is not present in activiy tab4");
             expect(await activityPo.isTextPresentInActivityLog("AU Support 1")).toBeTruthy("Text is not present in activiy tab5");
