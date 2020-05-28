@@ -73,7 +73,7 @@ export class GridOperations {
         let pageTitle = await browser.getTitle();
         await $(appliedPresetFilter).isPresent().then(async (result) => {
             if (result) {
-                if(pageTitle == 'Cases - Business Workflows' || pageTitle  == 'Tasks - Business Workflows'){
+                if (pageTitle == 'Cases - Business Workflows' || pageTitle == 'Tasks - Business Workflows') {
                     await this.addFilter('Assigned Group', 'abc', 'textbox');
                 }
                 await $(filterPresetBtn).click();
@@ -253,13 +253,14 @@ export class GridOperations {
         await $(refreshIcon).click();
     }
 
-    async applyPresetFilter(filterName: string, guid?: string): Promise<void> {
+    async applyPresetFilter(filterName: string, guid?: string): Promise<void> {
+        let refreshIcon = 'button[rx-id="refresh-button"]';
         let guidId: string = "";
-        if (guid) { guidId = `[rx-view-component-id="${guid}"] `; }
+        if (guid) guidId = `[rx-view-component-id="${guid}"] `;
         await $(guidId + this.selectors.filterPresetBtn).click();
         await $$(this.selectors.filterTab).get(1).click();
         await element(by.cssContainingText('.radio__item', filterName)).click();
-        await utilityCommon.refresh();
+        await $(guidId + refreshIcon).click();
     }
 
     async getAppliedFilterName(guid?: string): Promise<string> {

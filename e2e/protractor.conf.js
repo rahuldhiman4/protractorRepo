@@ -5,16 +5,10 @@
 const { SpecReporter } = require("jasmine-spec-reporter");
 var HtmlReporter = require("protractor-beautiful-reporter");
 const specJsonReporter = require("./reporters/spec-json-reporter/jasmine-spec-json-reporter");
-const fs = require('fs');
-const cachedPath = "e2e/reports/cached-data";
 
 /**
  * @type { import("protractor").Config }
  */
-
-if (!fs.existsSync(cachedPath)) {
-  fs.mkdirSync(cachedPath, { recursive: true });
-}
 
 exports.config = {
   allScriptsTimeout: 40 * 1000,
@@ -23,7 +17,6 @@ exports.config = {
   capabilities: {
     browserName: "chrome",
     chromeOptions: {
-      args: [`--user-data-dir=${cachedPath}`],
       prefs: {
         profile: {
           default_content_setting_values: { automatic_downloads: 1 }
