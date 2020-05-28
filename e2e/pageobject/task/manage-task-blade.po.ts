@@ -1,5 +1,4 @@
 import { $, $$, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
-import utilGrid from '../../utils/util.grid';
 import utilityGrid from '../../utils/utility.grid';
 
 class ManageTaskBlade {
@@ -17,7 +16,6 @@ class ManageTaskBlade {
         columnHeaders: '.c-header-container .c-header-name',
         taskTemplateGuid: '0f3712cc-95da-49c3-b2b0-6b7409c8349b',
         templatesLink: '[rx-view-component-id="8334a05d-06ba-4d9b-8c35-e40e90637e85"] .task-summary-wrapper a',
-
     }
 
     async clickAddTaskFromTemplateButton(): Promise<void> {
@@ -28,7 +26,7 @@ class ManageTaskBlade {
         });
     }
 
-    async isSortedValuesFromColumn(columnHeader: string): Promise<boolean> {
+    async isGridColumnSorted(columnHeader: string): Promise<boolean> {
         return await utilityGrid.isGridColumnSorted(columnHeader, 'asc');
     }
 
@@ -41,15 +39,10 @@ class ManageTaskBlade {
         return arr.length == filtered.length;
     }
 
-    async clickonColumnHeader(value: string): Promise<void> {
+    async clickGridColumnHeader(value: string): Promise<void> {
         let column = await element(by.cssContainingText(this.selectors.columnHeaders, value));
         //        await browser.wait(this.EC.elementToBeClickable(column));
         await column.click();
-    }
-
-    async clickManageTaskCloseButton(): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.closeButton)));
-        await $(this.selectors.closeButton).click();
     }
 
     async clickAddAdhocTaskButton(): Promise<void> {
@@ -64,16 +57,16 @@ class ManageTaskBlade {
         await $(this.selectors.searchTextbox).sendKeys(input, Key.ENTER);
     }
 
-    async searchTaskAndClickOnLink(input: string): Promise<void> {
+    async searchAndOpenTaskTemplate(input: string): Promise<void> {
         await utilityGrid.searchAndOpenHyperlink(input);
     }
 
-    async clickOnRefreshButton(): Promise<void> {
+    async clickTaskGridRefresh(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.refreshButton)));
         await $(this.selectors.refreshButton).click();
     }
 
-    async clickTaskLinkOnManageTask(taskSummary: string): Promise<void> {
+    async clickTaskLink(taskSummary: string): Promise<void> {
         //        await browser.wait(this.EC.or(async () => {
         //            let count = await $$(this.selectors.taskFromManageTasks).count();
         //            return count >= 1;
@@ -90,17 +83,17 @@ class ManageTaskBlade {
         await $$(this.selectors.recommendedTemplateCheckbox).first().click();
     }
 
-    async clickOnTaskGridSaveButton(): Promise<void> {
+    async clickTaskGridSaveButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
-    async clickOnTaskGridCancelButton(): Promise<void> {
+    async clickTaskGridCancelButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.canceltaskTemplatbutton)));
         await $(this.selectors.canceltaskTemplatbutton).click();
     }
 
-    async clickOnCloseButton(): Promise<void> {
+    async clickCloseButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         await $(this.selectors.closeButton).click();
         //        await browser.wait(this.EC.invisibilityOf($('.modal-dialog')));
@@ -108,7 +101,7 @@ class ManageTaskBlade {
         //        await utilCommon.waitUntilSpinnerToHide();
     }
 
-    async isTaskLinkOnManageTask(taskSummary: string): Promise<boolean> {
+    async isTaskLinkPresent(taskSummary: string): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary))));
         let summaryLinkTxt = await element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary)).getText();
         return summaryLinkTxt === taskSummary;
@@ -118,7 +111,7 @@ class ManageTaskBlade {
         await this.clickAddTaskFromTemplateButton();
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndSelectGridRecord(templateSummary);
-        await this.clickOnTaskGridSaveButton();
+        await this.clickTaskGridSaveButton();
     }
 }
 

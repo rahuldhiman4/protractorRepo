@@ -485,7 +485,7 @@ describe('Dynamic data', () => {
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await viewTaskPo.clickOnEditTask();
         //dynamic fields
         expect(await editTaskPo.isDynamicFieldDisplayed('temp')).toBeTruthy('field is not present');
@@ -595,7 +595,7 @@ describe('Dynamic data', () => {
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await viewTaskPo.clickOnEditTask();
         //dynamic fields
         expect(await editTaskPo.isDynamicFieldDisplayed('temp')).toBeTruthy('field is not present');
@@ -692,7 +692,7 @@ describe('Dynamic data', () => {
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTask);
         await utilityCommon.waitUntilPopUpDisappear();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         //verify dynamic field
         expect(await viewTaskPo.getDynamicFieldName(dynamicfield1)).toContain(dynamicfield1);
         expect(await viewTaskPo.getDynamicFieldName(dynamicfield2)).toContain(dynamicfield2);
@@ -715,7 +715,7 @@ describe('Dynamic data', () => {
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus('In Progress');
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+        await manageTaskBladePo.clickTaskLink(externalTaskSummary);
         //verify dynamic field on external task
         expect(await viewTaskPo.getDynamicFieldName('theExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
         expect(await viewTaskPo.getDynamicFieldName('theSecondExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theSecondExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
@@ -906,7 +906,7 @@ describe('Dynamic data', () => {
         await manageTaskBladePo.addTaskFromTaskTemplate(automatedTask);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTask);
         await utilCommon.waitUntilPopUpDisappear();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         //verify dynamic field
         await viewTaskPo.clickOnEditTask();
         await editTaskPo.setDynamicFieldValue('temp', 'sssssss');
@@ -935,7 +935,7 @@ describe('Dynamic data', () => {
 
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+        await manageTaskBladePo.clickTaskLink(externalTaskSummary);
 
         await viewTaskPo.clickOnEditTask();
         await editTaskPo.setDynamicFieldValue('externalText', 'sssssss');
@@ -968,7 +968,7 @@ describe('Dynamic data', () => {
         await updateStatusBladePo.clickSaveStatus('In Progress');
         await utilityCommon.waitUntilPopUpDisappear();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(automatedTaskSummary);
+        await manageTaskBladePo.clickTaskLink(automatedTaskSummary);
         await viewTaskPo.clickOnEditTask();
         await editTaskPo.setDynamicFieldValue('automatedText', 'sssssss');
         await editTaskPo.setDateValueInDynamicField('wrong date');

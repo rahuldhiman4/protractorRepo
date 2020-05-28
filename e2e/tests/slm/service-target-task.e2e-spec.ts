@@ -84,7 +84,7 @@ describe('Service Target Tests for Tasks', () => {
             // await adhoctaskTemplate.selectLabel('test');
             await adhoctaskTemplate.clickOnSaveAdhoctask();
             //Update the case status to In Progress
-            await manageTaskBladePo.clickOnCloseButton();
+            await manageTaskBladePo.clickCloseButton();
 
             await browser.sleep(32000);
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -180,9 +180,9 @@ describe('Service Target Tests for Tasks', () => {
             //Add Manual task and Automation Task in Case
             await manageTask.addTaskFromTaskTemplate(manualTaskTemp)
             await manageTask.addTaskFromTaskTemplate(automatedTaskTemp);
-            expect(await manageTask.isTaskLinkOnManageTask(manualTaskTemp)).toBeTruthy(manualTaskTemp + ' Task is not added to case');
-            expect(await manageTask.isTaskLinkOnManageTask(automatedTaskTemp)).toBeTruthy(automatedTaskTemp + ' Task is not added to case');
-            await manageTaskBladePo.clickOnCloseButton();
+            expect(await manageTask.isTaskLinkPresent(manualTaskTemp)).toBeTruthy(manualTaskTemp + ' Task is not added to case');
+            expect(await manageTask.isTaskLinkPresent(automatedTaskTemp)).toBeTruthy(automatedTaskTemp + ' Task is not added to case');
+            await manageTaskBladePo.clickCloseButton();
 
             //Update the case status to In Progress
             await browser.sleep(32000);
@@ -286,9 +286,9 @@ describe('Service Target Tests for Tasks', () => {
             //Add Manual task and Automation Task in Case
             await manageTask.addTaskFromTaskTemplate(automatedTaskTemp)
             await manageTask.addTaskFromTaskTemplate(manualTaskTemp);
-            expect(await manageTask.isTaskLinkOnManageTask(manualTaskTemp)).toBeTruthy(manualTaskTemp + ' Task is not added to case');
-            expect(await manageTask.isTaskLinkOnManageTask(automatedTaskTemp)).toBeTruthy(automatedTaskTemp + ' Task is not added to case');
-            await manageTaskBladePo.clickOnCloseButton();
+            expect(await manageTask.isTaskLinkPresent(manualTaskTemp)).toBeTruthy(manualTaskTemp + ' Task is not added to case');
+            expect(await manageTask.isTaskLinkPresent(automatedTaskTemp)).toBeTruthy(automatedTaskTemp + ' Task is not added to case');
+            await manageTaskBladePo.clickCloseButton();
 
             //Update the case status to In Progress
             await browser.sleep(32000);

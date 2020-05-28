@@ -96,7 +96,7 @@ describe('Case Activity CKE Styling', () => {
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
-        await manageTaskBladePo.clickOnCloseButton();
+        await manageTaskBladePo.clickCloseButton();
 
         await activityTabPage.addActivityNote(addNoteBodyText);
         expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
@@ -174,7 +174,7 @@ describe('Case Activity CKE Styling', () => {
         await navigationPage.gotoCaseConsole();
         await caseConsolePo.searchAndOpenCase(newCase.displayId);
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
         await activityTabPage.addActivityNote(addNoteBodyText);
         expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
         //bold
@@ -248,7 +248,7 @@ describe('Case Activity CKE Styling', () => {
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // Goto Automated Task
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
         await activityTabPage.addActivityNote(addNoteBodyText);
         expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
         //bold
@@ -322,7 +322,7 @@ describe('Case Activity CKE Styling', () => {
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // Goto External Task
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(externalTemplateData.templateSummary);
         await activityTabPage.addActivityNote(addNoteBodyText);
         expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
         //bold
@@ -402,9 +402,9 @@ describe('Case Activity CKE Styling', () => {
         await adhoctaskTemplate.setSummary(adhocTaskSummary);
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await manageTaskBladePo.clickOnCloseButton();
+        await manageTaskBladePo.clickCloseButton();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(adhocTaskSummary);
+        await manageTaskBladePo.clickTaskLink(adhocTaskSummary);
         await activityTabPage.addActivityNote(addNoteBodyText);
         expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
         //bold

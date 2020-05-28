@@ -82,11 +82,11 @@ describe('Create Case Task', () => {
             //Add Manual task and Automation Task in Case
             await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
             await manageTask.addTaskFromTaskTemplate(`manualTaskTemplateDraft ${randomStr}`)
-            await expect(await manageTask.isTaskLinkOnManageTask(manualTaskTemplateData.templateSummary)).toBeTruthy(manualTaskTemplateData.templateSummary + ' Task is not added to case');
-            await expect(await manageTask.isTaskLinkOnManageTask(autoTaskTemplateData.templateSummary)).toBeTruthy(autoTaskTemplateData.templateSummary + ' Task is not added to case');
+            await expect(await manageTask.isTaskLinkPresent(manualTaskTemplateData.templateSummary)).toBeTruthy(manualTaskTemplateData.templateSummary + ' Task is not added to case');
+            await expect(await manageTask.isTaskLinkPresent(autoTaskTemplateData.templateSummary)).toBeTruthy(autoTaskTemplateData.templateSummary + ' Task is not added to case');
 
             //validate Manual Template
-            await manageTask.clickTaskLinkOnManageTask(manualTaskTemplateData.templateSummary);
+            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             await viewTask.clickOnEditTask();
             await expect(await editTask.getTaskTypeValue()).toBe('Manual');
             await expect(await editTask.getTaskTypeValueAttribute('disabled')).toBeTruthy();
@@ -96,7 +96,7 @@ describe('Create Case Task', () => {
             await editTask.clickOnCancelButton();
             await viewTask.clickOnViewCase();
             await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLinkOnManageTask(autoTaskTemplateData.templateSummary);
+            await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
             await viewTask.clickOnEditTask();
             await expect(await editTask.getTaskTypeValue()).toBe('Automated');
             await expect(await editTask.getTaskTypeValueAttribute('disabled')).toBeTruthy();
@@ -171,11 +171,11 @@ describe('Create Case Task', () => {
             await manageTask.addTaskFromTaskTemplate(automationTaskTemplateWithallField);
 
             //Add Automation Task templates in Case
-            await expect(await manageTask.isTaskLinkOnManageTask(autmationTaskSummaryWithRequiredData)).toBeTruthy(autmationTaskTemplateWithRequiredData + ' Task is not added to case');
-            await expect(await manageTask.isTaskLinkOnManageTask(automationTaskSummaryWithallField)).toBeTruthy(automationTaskTemplateWithallField + ' Task is not added to case');
+            await expect(await manageTask.isTaskLinkPresent(autmationTaskSummaryWithRequiredData)).toBeTruthy(autmationTaskTemplateWithRequiredData + ' Task is not added to case');
+            await expect(await manageTask.isTaskLinkPresent(automationTaskSummaryWithallField)).toBeTruthy(automationTaskTemplateWithallField + ' Task is not added to case');
 
             //validate Automation Template With Required Field
-            await manageTask.clickTaskLinkOnManageTask(automationTaskSummaryWithallField);
+            await manageTask.clickTaskLink(automationTaskSummaryWithallField);
             await expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             await expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.bwfa:Get Request Status Data2 ${randomStr}`);
             expect((await viewTask.getDescriptionValue()).trim()).toBe('All field get added in this task template');
@@ -188,7 +188,7 @@ describe('Create Case Task', () => {
             //validate Automation Template
             await viewTask.clickOnViewCase();
             await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLinkOnManageTask(autmationTaskSummaryWithRequiredData);
+            await manageTask.clickTaskLink(autmationTaskSummaryWithRequiredData);
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.bwfa:Get Request Status Data1 ${randomStr}`);
             expect(await viewTask.getDescriptionValue()).toBe(' - ', "getDescriptionValue");
@@ -561,14 +561,14 @@ describe('Create Case Task', () => {
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(templateData.templateName);
-            await manageTask.clickOnCloseButton();
+            await manageTask.clickCloseButton();
 
             //validate Automation Template With Required Field
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
             // await utilCommon.waitUntilPopUpDisappear();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLinkOnManageTask(templateData.templateSummary);
+            await manageTask.clickTaskLink(templateData.templateSummary);
             await viewTask.clickOnChangeStatus();
             await viewTask.clickOnUpdateStatusDrpdown();
             await expect(viewTask.allTaskOptionsPresent(status)).toBeTruthy("Staus Not Found");
@@ -697,9 +697,9 @@ describe('Create Case Task', () => {
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickAddTaskFromTemplateButton();
         await utilityGrid.clearFilter();
-        await manageTask.clickonColumnHeader('Task Type');
+        await manageTask.clickGridColumnHeader('Task Type');
         await expect(await utilityGrid.isGridColumnSorted('Task Type', 'asc')).toBeTruthy();
-        await manageTask.clickonColumnHeader('Task Type');
+        await manageTask.clickGridColumnHeader('Task Type');
         await expect(await utilityGrid.isGridColumnSorted('Task Type', 'desc')).toBeTruthy();
         await utilityGrid.addFilter('Task Type', 'Manual', 'checkbox');
         await expect(await manageTask.getFilterValue('Manual')).toBeTruthy();
@@ -912,7 +912,7 @@ describe('Create Case Task', () => {
         await previewCasePo.clickGoToCaseButton();
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
-        await manageTask.clickOnCloseButton();
+        await manageTask.clickCloseButton();
         await updateStatusBladePo.changeCaseStatus('Pending');
         await updateStatusBladePo.setStatusReason('Customer Response');
         await updateStatusBladePo.clickSaveStatus();
@@ -966,25 +966,25 @@ describe('Create Case Task', () => {
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`FirstAutomatedTaskTemplateActive ${randomStr}`);
         await manageTask.addTaskFromTaskTemplate(`SecondAutomatedTaskTemplateActive1 ${randomStr}`);
-        await manageTask.clickOnCloseButton();
+        await manageTask.clickCloseButton();
         await viewCasePage.openTaskCard(1);
-        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
+        await manageTask.clickTaskLink(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
         await viewTask.clickOnViewCase();
         await viewCasePage.openTaskCard(1);
-        await manageTask.clickTaskLinkOnManageTask(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
+        await manageTask.clickTaskLink(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
         await viewTask.clickOnViewCase();
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus();
         await utilityCommon.closePopUpMessage();
         await viewCasePage.clickAddTaskButton();
-        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
+        await manageTask.clickTaskLink(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Completed");
         await expect(viewTask.getStatusReason()).toBe("Successful")
         await viewTask.clickOnViewCase();
         await viewCasePage.clickAddTaskButton();
-        await manageTask.clickTaskLinkOnManageTask(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
+        await manageTask.clickTaskLink(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Completed");
     }, 280 * 1000);//, 240 * 1000);
 
@@ -1036,24 +1036,24 @@ describe('Create Case Task', () => {
         await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
         await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate2 ${randomStr}`);
         await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate3 ${randomStr}`);
-        await manageTask.clickOnCloseButton();
+        await manageTask.clickCloseButton();
         await viewCasePage.openTaskCard(1);
-        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary1 ${randomStr}`);
+        await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
         await viewTask.clickOnViewCase();
         await viewCasePage.openTaskCard(1);
-        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary2 ${randomStr}`);
+        await manageTask.clickTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
         await viewTask.clickOnViewCase();
         await viewCasePage.openTaskCard(1);
-        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary3 ${randomStr}`);
+        await manageTask.clickTaskLink(`manualTaskTemplateSummary3 ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
         await viewTask.clickOnViewCase();
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus();
         await utilityCommon.closePopUpMessage();
         await viewCasePage.clickAddTaskButton();
-        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary1 ${randomStr}`);
+        await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
         await viewTask.clickOnChangeStatus();
         await expect(viewTask.getTaskStatusValue()).toBe("Assigned");
         await viewTask.changeTaskStatus('Completed');
@@ -1062,11 +1062,11 @@ describe('Create Case Task', () => {
         await utilityCommon.closePopUpMessage();
         await viewTask.clickOnViewCase();
         await viewCasePage.clickAddTaskButton();
-        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary2 ${randomStr}`);
+        await manageTask.clickTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Assigned");
         await viewTask.clickOnViewCase();
         await viewCasePage.clickAddTaskButton();
-        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary3 ${randomStr}`);
+        await manageTask.clickTaskLink(`manualTaskTemplateSummary3 ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
     }, 340 * 1000);
 
@@ -1168,9 +1168,9 @@ describe('Create Case Task', () => {
         await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
-        await manageTask.clickOnCloseButton();
+        await manageTask.clickCloseButton();
         await viewCasePage.openTaskCard(1);
-        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
 
         //Verify Assigned Case
@@ -1184,9 +1184,9 @@ describe('Create Case Task', () => {
         await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
-        await manageTask.clickOnCloseButton();
+        await manageTask.clickCloseButton();
         await viewCasePage.openTaskCard(1);
-        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
 
         //Verify In_progress Case
@@ -1196,9 +1196,9 @@ describe('Create Case Task', () => {
         await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
-        await manageTask.clickOnCloseButton();
+        await manageTask.clickCloseButton();
         await viewCasePage.openTaskCard(1);
-        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Completed");
 
         //Verify Pending Case
@@ -1208,9 +1208,9 @@ describe('Create Case Task', () => {
         await expect(viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
-        await manageTask.clickOnCloseButton();
+        await manageTask.clickCloseButton();
         await viewCasePage.openTaskCard(1);
-        await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateActive ${randomStr}`);
+        await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
         await expect(viewTask.getTaskStatusValue()).toBe("Staged");
 
         //Verify Resolved Case

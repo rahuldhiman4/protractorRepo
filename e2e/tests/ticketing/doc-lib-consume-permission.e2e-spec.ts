@@ -300,7 +300,7 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.clickOnAttachButton();
             await adhoctaskTemplate.clickOnSaveAdhoctask();
             await utilityCommon.waitUntilPopUpDisappear();
-            await manageTask.clickOnCloseButton();
+            await manageTask.clickCloseButton();
             await viewCasePo.clickOnTaskLink(adhocTaskSummary1);
             expect(await viewTaskPo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
@@ -317,7 +317,7 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await adhoctaskTemplate.clickOnSaveAdhoctask();
             await utilityCommon.waitUntilPopUpDisappear();
-            await manageTask.clickTaskLinkOnManageTask(adhocTaskSummary2);
+            await manageTask.clickTaskLink(adhocTaskSummary2);
             expect(await viewTaskPo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await viewTaskPo.clickOnAttachedDocumentFile('bwfPdf.pdf');

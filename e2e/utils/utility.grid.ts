@@ -82,7 +82,7 @@ export class GridOperations {
             } else {
                 console.log("Filters are already cleared");
             }
-        })
+        });
     }
 
     async addGridColumn(columnNameList: string[], guid?: string): Promise<void> {

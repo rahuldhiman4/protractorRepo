@@ -755,7 +755,7 @@ describe('Case Data Store', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTask);
-            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+            await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             // manual task view case
             let dynamicFields: string[] = ['temp', 'temp1', 'temp2', 'temp3', 'temp4', 'attachment1', 'attachment2', 'attachment3'];
             for (let i = 0; i < dynamicFields.length; i++) {
@@ -769,7 +769,7 @@ describe('Case Data Store', () => {
             await editTaskPo.clickOnCancelButton();
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+            await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             // manual task view case
             let dynamicFields1: string[] = ['externalText', 'externalNumber', 'externalDate', 'externalBoolean', 'externalDateTime', 'externalTime', 'externalAttachment1'];
             for (let i = 0; i < dynamicFields1.length; i++) {

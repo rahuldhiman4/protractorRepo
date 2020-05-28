@@ -93,7 +93,7 @@ describe('Case Activity CKE', () => {
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
-        await manageTaskBladePo.clickOnCloseButton();
+        await manageTaskBladePo.clickCloseButton();
 
         await activityTabPage.addActivityNote(addNoteBodyText);
         await activityTabPage.clearActivityNote();
@@ -175,7 +175,7 @@ describe('Case Activity CKE', () => {
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // Goto Manual Task
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
         await activityTabPage.addActivityNote(addNoteBodyText);
         await activityTabPage.clearActivityNote();
         //bold
@@ -256,7 +256,7 @@ describe('Case Activity CKE', () => {
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // Goto Automated Task
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
         await activityTabPage.addActivityNote(addNoteBodyText);
         expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('FailureMsg CkEditor is missing');
         await activityTabPage.clearActivityNote();
@@ -338,7 +338,7 @@ describe('Case Activity CKE', () => {
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // Goto External Task
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(externalTemplateData.templateSummary);
         await activityTabPage.addActivityNote(addNoteBodyText);
         await activityTabPage.clearActivityNote();
         //bold
@@ -425,9 +425,9 @@ describe('Case Activity CKE', () => {
         await adhoctaskTemplate.setSummary(adhocTaskSummary);
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await manageTaskBladePo.clickOnCloseButton();
+        await manageTaskBladePo.clickCloseButton();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(adhocTaskSummary);
+        await manageTaskBladePo.clickTaskLink(adhocTaskSummary);
         await activityTabPage.addActivityNote(addNoteBodyText);
         await activityTabPage.clearActivityNote();
         //bold
@@ -832,7 +832,7 @@ describe('Case Activity CKE', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
-            await manageTaskBladePo.clickOnCloseButton();
+            await manageTaskBladePo.clickCloseButton();
 
             // Verify Case Notes Template
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateCaseData.templateName);
@@ -857,7 +857,7 @@ describe('Case Activity CKE', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
+            await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
             await updateStatusBladePo.setStatusReason('Successful');
@@ -871,7 +871,7 @@ describe('Case Activity CKE', () => {
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto Automated Task
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
+            await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
             await activityTabPage.clickOnPostButton();
@@ -880,7 +880,7 @@ describe('Case Activity CKE', () => {
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Goto External Task
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.clickTaskLinkOnManageTask(externalTemplateData.templateSummary);
+            await manageTaskBladePo.clickTaskLink(externalTemplateData.templateSummary);
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
             await activityTabPage.clickOnPostButton();
@@ -895,9 +895,9 @@ describe('Case Activity CKE', () => {
             await adhoctaskTemplate.setSummary(adhocTaskSummary);
             await adhoctaskTemplate.setDescription("Description");
             await adhoctaskTemplate.clickOnSaveAdhoctask();
-            await manageTaskBladePo.clickOnCloseButton();
+            await manageTaskBladePo.clickCloseButton();
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.clickTaskLinkOnManageTask(adhocTaskSummary);
+            await manageTaskBladePo.clickTaskLink(adhocTaskSummary);
 
             await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)

@@ -95,21 +95,21 @@ describe('Email', () => {
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(automatedTaskSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(automatedTaskSummary);
+        await manageTaskBladePo.clickTaskLink(automatedTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         await viewTaskPo.clickEmailLink();
         await emailPo.clickOnDiscardButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         await viewTaskPo.clickEmailLink();
         await emailPo.clickOnDiscardButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+        await manageTaskBladePo.clickTaskLink(externalTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         await viewTaskPo.clickEmailLink();
         await emailPo.clickOnDiscardButton();
@@ -163,7 +163,7 @@ describe('Email', () => {
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await browser.sleep(2000);
         await expect(await emailPo.isEmailIconLinkPresent()).toBeTruthy();
         let ManualtaskID = await viewTaskPo.getTaskID();
@@ -191,7 +191,7 @@ describe('Email', () => {
         expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+        await manageTaskBladePo.clickTaskLink(externalTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         let ExternaltaskID = await viewTaskPo.getTaskID();
         await viewTaskPo.clickEmailLink();
@@ -264,7 +264,7 @@ describe('Email', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
-            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+            await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await browser.sleep(2000);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
@@ -282,7 +282,7 @@ describe('Email', () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAddTaskButton();
             //verify activity email post
-            await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+            await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
@@ -356,7 +356,7 @@ describe('Email', () => {
         await expect(activityTabPo.getActivityNotesText('Reply all')).toBeFalsy();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await activityTabPo.addActivityNote('This is case notes templates');
         await activityTabPo.clickOnPostButton();
         await expect(activityTabPo.getActivityNotesText('Reply')).toBeFalsy();
@@ -409,7 +409,7 @@ describe('Email', () => {
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await browser.sleep(2000);
         var ManualtaskID = await viewTaskPo.getTaskID();
         await viewTaskPo.clickEmailLink();
@@ -438,7 +438,7 @@ describe('Email', () => {
         await emailPo.clickOnSendButton();
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+        await manageTaskBladePo.clickTaskLink(externalTaskSummary);
         var externaltaskID = await viewTaskPo.getTaskID();
         await viewTaskPo.clickEmailLink();
         await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
@@ -565,7 +565,7 @@ describe('Email', () => {
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await viewTaskPo.clickOnEditTask();
         await editTask.clickOnChangeAssignementButton();
         await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
@@ -591,7 +591,7 @@ describe('Email', () => {
         await emailPo.clickOnSendButton();
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+        await manageTaskBladePo.clickTaskLink(externalTaskSummary);
         await viewTaskPo.clickOnEditTask();
         await editTask.clickOnChangeAssignementButton();
         await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
@@ -678,7 +678,7 @@ describe('Email', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
-            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+            await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
@@ -690,7 +690,7 @@ describe('Email', () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAddTaskButton();
             //verify activity email post
-            await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+            await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('United States Support');
