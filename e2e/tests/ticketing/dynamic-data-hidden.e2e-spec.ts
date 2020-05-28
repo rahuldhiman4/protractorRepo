@@ -140,7 +140,7 @@ describe('Dynamic Hidden Data', () => {
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`)
-            await manageTask.clickTaskLinkOnManageTask(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
             await expect(viewTaskPo.isDynamicFieldPresent('Field Description')).toBeTruthy('Field Description');
             await expect(viewTaskPo.isAssignmentSectionDisplayed()).toBeFalsy('Assignment Section is present');
             await viewTaskPo.clickOnEditTask();
@@ -195,7 +195,7 @@ describe('Dynamic Hidden Data', () => {
         await viewCasePage.getCaseID()
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
-        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary1 ${randomStr}`);
+        await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
         await viewTaskPo.clickOnViewCase();
         expect(await viewCasePage.isDynamicFieldDisplayed('Field1OutsideDRDMV21451')).toBeFalsy();
         await updateStatusBladePo.changeCaseStatus("In Progress");
@@ -265,7 +265,7 @@ describe('Dynamic Hidden Data', () => {
         await viewCasePage.getCaseID()
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate('manualTaskTemplate1' + randomStr);
-        await manageTask.clickTaskLinkOnManageTask('manualTaskTemplateSummary1' + randomStr);
+        await manageTask.clickTaskLink('manualTaskTemplateSummary1' + randomStr);
         await viewTaskPo.clickOnViewCase();
         expect(await viewCasePage.isDynamicFieldDisplayed('Field1OutsideDRDMV21452')).toBeFalsy();
 
@@ -324,7 +324,7 @@ describe('Dynamic Hidden Data', () => {
         let CaseId = await viewCasePage.getCaseID();
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate ${randomStr}`);
-        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary ${randomStr}`);
+        await manageTask.clickTaskLink(`manualTaskTemplateSummary ${randomStr}`);
         await viewTaskPo.clickOnViewCase();
         expect(await viewCasePage.isDynamicFieldDisplayed('Field1OutsideDRDMV21415' + randomStr)).toBeFalsy();
         await navigationPage.gotoSettingsPage();
@@ -432,7 +432,7 @@ describe('Dynamic Hidden Data', () => {
         await viewCasePage.getCaseID();
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
-        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary1 ${randomStr}`);
+        await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
         await viewTaskPo.clickOnViewCase();
         let CaseId = await viewCasePage.getCaseID();
         expect(await viewCasePage.isDynamicFieldDisplayed('FieldGroup1')).toBeFalsy();
@@ -612,7 +612,7 @@ describe('Dynamic Hidden Data', () => {
         expect(await viewCasePage.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeTruthy();
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
-        await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary1 ${randomStr}`);
+        await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
         await viewTaskPo.clickOnViewCase();
         await viewCasePage.getCaseID();
         expect(await viewCasePage.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeTruthy();

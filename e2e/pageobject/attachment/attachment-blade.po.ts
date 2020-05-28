@@ -32,17 +32,17 @@ class AttachmentBlade {
         attachmentName: 'table .attachment-view-thumbnail__title-text',
     }
 
-    async getCountOfSelectedCheckBox(): Promise<string> {
+    async getSelectedCheckBoxCount(): Promise<string> {
         return await $(this.selectors.selectedCheckBoxCount).getText();
     }
 
-    async searchRecord(record: string): Promise<void> {
+    async searchAttachment(record: string): Promise<void> {
         await utilityGrid.searchRecord(record);
         await $(this.selectors.searchbox).clear();
         await $(this.selectors.searchbox).sendKeys(record);
         await $(this.selectors.searchButton).click();
         let i: number;
-        for (i = 0; i <= 10; i++) {
+        for (i = 0; i <= 5; i++) {
             let bolnVal: boolean = await $(this.selectors.selectCheckbox).isPresent();
             if (bolnVal == false) {
                 await browser.sleep(5000);
@@ -91,18 +91,18 @@ class AttachmentBlade {
         return await $(this.selectors.attachmentSize).getText();
     }
 
-    async clickOnColumnHeader(columnHeader: string): Promise<void> {
+    async clickColumnHeader(columnHeader: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.columnnHeader, columnHeader)).click();
     }
 
     async isAttachmentPresent(attachmentName: string): Promise<boolean> {
-        await this.searchRecord(attachmentName);
+        await this.searchAttachment(attachmentName);
         return await $(this.selectors.row).isPresent().then(async (link) => {
             if (link) {
                 return await $(this.selectors.row).isDisplayed();
             } else return false;
         });
-  }
+    }
 
     async getAttachmentNameCount(attachmentName: string): Promise<number> {
         return await $$(`.attachment-view-thumbnail__title-text[title='${attachmentName}']`).count();
@@ -112,7 +112,7 @@ class AttachmentBlade {
         return await $(`.attachment-view-thumbnail__title-text[title=${attachmentName}]`).getAttribute('title') == attachmentName ? true : false;
     }
 
-    async clickOnAllCheckboxButton(): Promise<void> {
+    async clickAllCheckboxButton(): Promise<void> {
         await $(this.selectors.allCheckbox).click();
     }
 
@@ -127,15 +127,15 @@ class AttachmentBlade {
         }
     }
 
-    async clickOnPaginationPreviousButton(): Promise<void> {
+    async clickPaginationPrevious(): Promise<void> {
         await $(this.selectors.paginationPreviousButton).click();
     }
 
-    async clickOnPaginationNextButton(): Promise<void> {
+    async clickPaginationNext(): Promise<void> {
         await $(this.selectors.paginationNextButton).click();
     }
 
-    async clickOnRefreshButton(): Promise<void> {
+    async clickRefreshButton(): Promise<void> {
         await $(this.selectors.refreshButton).click();
     }
 
@@ -143,12 +143,12 @@ class AttachmentBlade {
         return await utilityGrid.getFirstGridRecordColumnValue(columnName);
     }
 
-    async clickOnFileName(attachment: string): Promise<void> {
-        await this.searchRecord(attachment);
+    async clickFileName(attachment: string): Promise<void> {
+        await this.searchAttachment(attachment);
         await element(by.cssContainingText(this.selectors.attachmentName, attachment)).click();
     }
 
-    async clickOnDownloadButton(): Promise<void> {
+    async clickDownloadButton(): Promise<void> {
         await $(this.selectors.download).click();
     }
 
@@ -156,7 +156,7 @@ class AttachmentBlade {
         return await $(this.selectors.download).isEnabled();
     }
 
-    async clickOnCloseButton(): Promise<void> {
+    async clickCloseButton(): Promise<void> {
         await $(this.selectors.close).click();
     }
 

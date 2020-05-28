@@ -417,7 +417,7 @@ describe('Case Template', () => {
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus();
         await viewCasePo.openTaskCard(1);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(ManualTaskTempSummary);
+        await manageTaskBladePo.clickTaskLink(ManualTaskTempSummary);
         await viewTaskPo.clickOnChangeStatus();
         await viewTaskPo.changeTaskStatus('Completed');
         await updateStatusBladePo.setStatusReason('Successful');
@@ -437,7 +437,7 @@ describe('Case Template', () => {
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus();
         await viewCasePo.openTaskCard(1);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(taskTemplateSummaryYesValue);
+        await manageTaskBladePo.clickTaskLink(taskTemplateSummaryYesValue);
         await viewTaskPo.clickOnChangeStatus();
         await viewTaskPo.changeTaskStatus('Completed');
         await updateStatusBladePo.setStatusReason('Successful');

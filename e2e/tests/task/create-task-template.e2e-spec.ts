@@ -379,14 +379,14 @@ describe('Create Task Template', () => {
 
             //Add Automation Task templates in Case
             await manageTask.addTaskFromTaskTemplate(templateData4.templateSummary);
-            await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
+            await manageTask.clickTaskLink(templateData4.templateSummary);
             await expect(viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed")
             await viewTask.clickOnViewCase();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.waitUntilPopUpDisappear();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLinkOnManageTask(templateData4.templateSummary);
+            await manageTask.clickTaskLink(templateData4.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toContain('Completed');
             await expect(activityTabPo.getAllTaskActivity('Completed')).toContain('Completed');
             await expect(activityTabPo.getTaskActivity('Assigned')).toContain('Assigned');

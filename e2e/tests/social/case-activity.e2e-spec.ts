@@ -249,7 +249,7 @@ describe('Case Activity', () => {
             // 2nd Step: Open Task from pre condition and inspect its activities
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateName);
-            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
+            await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
             await activityTabPage.addActivityNote(taskBodyText);
             await activityTabPage.addPersonInActivityNote('Jacqueline Featherstonehaugh');
             await activityTabPage.clickOnPostButton();
@@ -380,7 +380,7 @@ describe('Case Activity', () => {
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
         // 2nd step: From Task Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Task
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.addAuthorOnFilter('Elizabeth Peters');
@@ -495,7 +495,7 @@ describe('Case Activity', () => {
         // On view case page.
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
 
         // 2nd step: Inspect Task Activity UI - Click on FIlter
         await activityTabPage.clickOnFilterButton();
@@ -604,7 +604,7 @@ describe('Case Activity', () => {
         // On view case page.
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
 
         // 2nd step: Inspect Task Activity UI - Click on FIlter
         await activityTabPage.clickOnFilterButton();
@@ -706,7 +706,7 @@ describe('Case Activity', () => {
         // On view case page.
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(externalTemplateData.templateSummary);
 
         // 2nd step: Inspect Task Activity UI - Click on FIlter
         await activityTabPage.clickOnFilterButton();
@@ -847,7 +847,7 @@ describe('Case Activity', () => {
             // 3nd step verification, From Case > Activity > Task related note > Click on Person name
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
-            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
+            await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
 
             // View task page
             await expect(browser.getTitle()).toBe('Task Edit - Business Workflows');
@@ -926,7 +926,7 @@ describe('Case Activity', () => {
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateName);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
         //single line comment
         await activityTabPage.addActivityNote(taskBodyText);
         await activityTabPage.clickOnPostButton();
@@ -1032,7 +1032,7 @@ describe('Case Activity', () => {
             expect(await viewCasePo.getCaseID()).toBe(caseId,'CaseId is missing in qfreng user');
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
-            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskTemplateData.templateSummary);
+            await manageTaskBladePo.clickTaskLink(manualTaskTemplateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
             // Goto case   
             await activityTabPage.clickOnRefreshButton();

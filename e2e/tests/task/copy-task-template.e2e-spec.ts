@@ -77,7 +77,7 @@ describe('Copy Task Template', () => {
 
             //Add Automation Task templates in Case
             await manageTask.addTaskFromTaskTemplate(automatedTaskSummary2);
-            await manageTask.clickOnCloseButton();
+            await manageTask.clickCloseButton();
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await utilityCommon.waitUntilPopUpDisappear();
@@ -421,7 +421,7 @@ describe('Copy Task Template', () => {
             //Add Automation Task templates in Case
             await manageTask.addTaskFromTaskTemplate(updatedTaskTemplate);
             //await browser.sleep(2000);
-            await manageTask.clickOnCloseButton();
+            await manageTask.clickCloseButton();
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await utilityCommon.waitUntilPopUpDisappear();

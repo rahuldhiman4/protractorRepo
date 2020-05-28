@@ -614,7 +614,7 @@ describe("Create Case", () => {
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddTaskFromTemplateButton();
-            await manageTask.searchTaskAndClickOnLink(templateData.templateName);
+            await manageTask.searchAndOpenTaskTemplate(templateData.templateName);
             expect(await taskTemplatePreview.isTaskSummaryTitleDisplayed('Task Summary')).toBeTruthy('Task Summary is not getting displayed');
             expect(await taskTemplatePreview.isTaskCompanyTitleDisplayed('Task Company')).toBeTruthy('Task Company is not getting displayed');
             expect(await taskTemplatePreview.isTaskPriorityTitleDisplayed('Task Priority')).toBeTruthy('Task Priority is not getting displayed');
@@ -685,8 +685,8 @@ describe("Create Case", () => {
             await manageTask.clickAddTaskFromTemplateButton();
             await manageTask.setTaskSearchBoxValue(TaskSummary);
             await manageTask.clickFirstCheckBoxInTaskTemplateSearchGrid();
-            await manageTask.clickOnTaskGridSaveButton();
-            await manageTask.clickOnCloseButton();
+            await manageTask.clickTaskGridSaveButton();
+            await manageTask.clickCloseButton();
 
             await apiHelper.apiLogin('tadmin');
             let userData = {
@@ -708,8 +708,8 @@ describe("Create Case", () => {
             await manageTask.clickAddTaskFromTemplateButton();
             await manageTask.setTaskSearchBoxValue(TaskSummary);
             await manageTask.clickFirstCheckBoxInTaskTemplateSearchGrid();
-            await manageTask.clickOnTaskGridSaveButton();
-            await manageTask.clickOnCloseButton();
+            await manageTask.clickTaskGridSaveButton();
+            await manageTask.clickCloseButton();
         } catch (e) {
             throw e;
         } finally {
@@ -1021,7 +1021,7 @@ describe("Create Case", () => {
             await viewCasePage.clickAttachmentsLink();
             await attachmentBladePage.searchAndSelectCheckBox('bwfPdf');
             expect(await attachmentBladePage.isDownloadButtonEnabled()).toBeTruthy('Download button is disabled');
-            await attachmentBladePage.clickOnDownloadButton();
+            await attachmentBladePage.clickDownloadButton();
             expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
         } catch (e) {
             throw e;
@@ -1057,7 +1057,7 @@ describe("Create Case", () => {
         const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
         await adhoctaskTemplate.addAttachmentInDescription(filesToUpload2);
         await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await manageTask.clickOnCloseButton();
+        await manageTask.clickCloseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await viewCasePage.clickAttachmentsLink();
 
