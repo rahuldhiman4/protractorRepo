@@ -116,8 +116,8 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();
             await utilityCommon.switchToNewTab(1);
+            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
             await editKnowledgePage.setKnowledgeStatus(knowledgeData.DraftStatus);
-            await utilityCommon.waitUntilPopUpDisappear();
             await editKnowledgePage.setKnowledgeStatusWithoutSave(knowledgeData.ReviewStatus);
             expect(await editKnowledgePage.isReviewerCompanyFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
             expect(await editKnowledgePage.isReviewerBusinessUnitFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
@@ -162,6 +162,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();
             await utilityCommon.switchToNewTab(1);
+            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.clickChangeAssignmentButton();
             await changeAssignmentBlade.isCompanyDrpDwnDisplayed();
@@ -187,6 +188,7 @@ describe('Knowledge Article', () => {
         }
     });//, 240 * 1000);
 
+    //Need to change implementation 
     it('[DRDMV-19081]: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
         try {
             let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
@@ -199,6 +201,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickOnViewArticleLink();
             await utilityCommon.switchToNewTab(1);
+            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
             await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.DraftStatus);
             await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.PublishedStatus);
             await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.RetiredStatus);
@@ -403,7 +406,7 @@ describe('Knowledge Article', () => {
             }
             let KACoachDetails = await apiHelper.createKnowledgeArticle(articleDataCoach);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);  
+            await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
@@ -698,6 +701,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'HR Support', 'Compensation and Benefits', 'Peter Kahn');
+            await utilityCommon.waitUntilPopUpDisappear();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePage.getKnowledgeReviewHeader()).toContain('Knowledge Review');
             expect(await editKnowledgePage.isReviewerFieldDisabledInEdit()).toBeTruthy('Reviwer field is enabled');
@@ -710,6 +714,7 @@ describe('Knowledge Article', () => {
             await changeAssignmentBlade.clickOnAssignButton();
             expect(await editKnowledgePage.getReviewerValue()).toContain('Kane Williamson', 'Reviewer not matched with expected');
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            await utilityCommon.waitUntilPopUpDisappear();
         }
         catch (e) {
             throw e;

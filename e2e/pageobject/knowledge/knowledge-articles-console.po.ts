@@ -1,4 +1,4 @@
-import { $, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilGrid from "../../utils/util.grid";
 import utilityGrid from '../../utils/utility.grid';
 
@@ -27,8 +27,10 @@ class KnowledgeArticlesGridConsole {
     }
 
     async getKnowledgeArticleConsoleTitle(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeArticleConsoleTitle)));
-        return await $(this.selectors.knowledgeArticleConsoleTitle).getText();
+        return await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeArticleConsoleTitle)), 5000).then(async (result) => {
+            if(result) return await $(this.selectors.knowledgeArticleConsoleTitle).getText();
+            else return "Text Not Found";
+        });
     }
 
     async addColumnOnGrid(columnHeader: string[]): Promise<void> {

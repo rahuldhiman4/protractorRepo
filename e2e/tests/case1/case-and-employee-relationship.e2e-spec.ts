@@ -130,8 +130,8 @@ describe('Case And Employee Relationship', () => {
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Brad Pitt', 'Inspector');
         await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
-        await relatedTabPage.clickRelatedPersonName('Brad Pitt');
         try {
+            await relatedTabPage.clickRelatedPersonName('Brad Pitt');
             await utilityCommon.switchToNewTab(1);
             await personProfilePage.clickOnTab('Related Cases');
             await relatedCasePage.waitUntilNewRelatedCaseAdded(1);

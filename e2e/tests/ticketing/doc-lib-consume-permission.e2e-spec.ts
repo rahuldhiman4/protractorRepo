@@ -185,7 +185,7 @@ describe('Document Library Consume Permission', () => {
         let caseId: string = newCase.displayId;
         await caseConsolePo.searchAndOpenCase(caseId);
         await viewCasePo.clickEditCaseButton();
-        await editCasePo.updateCaseSummary(publishDocLibData1.docLibTitle);
+        await editCasePo.setCaseSummary(publishDocLibData1.docLibTitle);
         await editCasePo.clickSaveCase();
         await viewCasePo.clickOnTab('Resources')
         expect(await resourcesTabPo.isSearchRecordEmpty(1)).toBeTruthy('Failuer1: Knowledge Article is not empty');

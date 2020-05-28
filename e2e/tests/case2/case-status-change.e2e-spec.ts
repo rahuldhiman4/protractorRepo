@@ -160,7 +160,7 @@ describe('Case Status Change', () => {
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
         await utilityCommon.closePopUpMessage();
-        await editCasePage.updateCaseSummary('Pending AC');
+        await editCasePage.setCaseSummary('Pending AC');
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
     });//, 180 * 1000);
@@ -249,7 +249,7 @@ describe('Case Status Change', () => {
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
         await utilityCommon.closePopUpMessage();
-        await editCasePage.updateCaseSummary('pendingAC');
+        await editCasePage.setCaseSummary('pendingAC');
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
 
@@ -339,7 +339,7 @@ describe('Case Status Change', () => {
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
         await utilityCommon.closePopUpMessage();
-        await editCasePage.updateCaseSummary('pendingAC');
+        await editCasePage.setCaseSummary('pendingAC');
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
     });
@@ -374,7 +374,7 @@ describe('Case Status Change', () => {
             await editCasePage.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
             await utilityCommon.closePopUpMessage();
-            await editCasePage.updateCaseSummary('pendingAC');
+            await editCasePage.setCaseSummary('pendingAC');
             await editCasePage.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
         } catch (e) {
@@ -669,7 +669,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCasePage.updateCaseSummary(summary1);
+            await editCasePage.setCaseSummary(summary1);
             await expect(editCasePage.isSaveCaseEnable()).toBeFalsy("Save button Visible");
             await editCasePage.clickOnCancelCaseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
@@ -680,7 +680,7 @@ describe('Case Status Change', () => {
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
-            await editCasePage.updateCaseSummary(summary1);
+            await editCasePage.setCaseSummary(summary1);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -694,7 +694,7 @@ describe('Case Status Change', () => {
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
-            await editCasePage.updateCaseSummary(summary2);
+            await editCasePage.setCaseSummary(summary2);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -709,7 +709,7 @@ describe('Case Status Change', () => {
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clickOnAssignToMe();
-            await editCasePage.updateCaseSummary(summary3);
+            await editCasePage.setCaseSummary(summary3);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -723,7 +723,7 @@ describe('Case Status Change', () => {
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clickOnAssignToMe();
-            await editCasePage.updateCaseSummary(summary4);
+            await editCasePage.setCaseSummary(summary4);
 
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');

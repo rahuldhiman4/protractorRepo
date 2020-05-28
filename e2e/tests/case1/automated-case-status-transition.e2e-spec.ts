@@ -63,7 +63,6 @@ describe('Automated Case Status Transition', () => {
 
         expect(await automatedStatusTransitionConsole.areGridColumnMatches(['Name', 'Company', 'From Status', 'To Status', 'Days Inactive', 'Enabled', 'Flowset', 'Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']))
         await automatedStatusTransitionConsole.removeGridColumns(['Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']);
-        await utilityCommon.refresh();
         await automatedStatusTransitionConsole.isGridColumnSorted('Days Inactive');
 
         await utilGrid.searchAndOpenHyperlink(configName1);
