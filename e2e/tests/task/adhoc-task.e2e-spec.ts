@@ -343,7 +343,7 @@ describe('Create Adhoc task', () => {
         expect(await viewTask.getShowMoreLessAttachmentsLinkText()).toBe('18 more');
     });
 
-    fdescribe('[Assignment] Changing the Assignment', async () => {
+    describe('[Assignment] Changing the Assignment', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData1, caseData, newCase;
