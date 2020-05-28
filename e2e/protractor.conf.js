@@ -5,10 +5,17 @@
 const { SpecReporter } = require("jasmine-spec-reporter");
 var HtmlReporter = require("protractor-beautiful-reporter");
 const specJsonReporter = require("./reporters/spec-json-reporter/jasmine-spec-json-reporter");
+const fs = require('fs');
+const cachedPath = "e2e/reports/cached-data";
 
 /**
  * @type { import("protractor").Config }
  */
+
+if (!fs.existsSync(cachedPath)) {
+  fs.mkdirSync(cachedPath, { recursive: true });
+}
+
 exports.config = {
   allScriptsTimeout: 40 * 1000,
   getPageTimeout: 60 * 1000,
@@ -16,6 +23,7 @@ exports.config = {
   capabilities: {
     browserName: "chrome",
     chromeOptions: {
+      args: [`--user-data-dir=${cachedPath}`],
       prefs: {
         profile: {
           default_content_setting_values: { automatic_downloads: 1 }
@@ -44,8 +52,8 @@ exports.config = {
     ticketing: ["./tests/ticketing/*.e2e-spec.ts"],
   },
 
-  baseUrl: "http://clm-aus-squo6y.bmc.com:8008",
-  // baseUrl: "http://clm-aus-sqg6c3.bmc.com:8008",
+  baseUrl: "http://clm-aus-u9x5do.bmc.com:8008",
+  // baseUrl: "http://clm-aus-u9x5gh.bmc.com:8008",
   framework: "jasmine",
   jasmineNodeOpts: {
     showColors: true,
