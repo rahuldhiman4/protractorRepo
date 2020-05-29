@@ -1056,7 +1056,7 @@ describe("Create Case", () => {
         let fileName2: string[] = ['bwfXsl.xsl', 'bwfXml.xml', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
         const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
         await adhoctaskTemplate.addAttachmentInDescription(filesToUpload2);
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
+        await adhoctaskTemplate.clickSaveAdhoctask();
         await manageTask.clickCloseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await viewCasePage.clickAttachmentsLink();

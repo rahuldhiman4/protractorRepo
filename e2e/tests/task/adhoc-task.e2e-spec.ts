@@ -68,13 +68,13 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.selectCategoryTier1('Applications');
         await adhoctaskTemplate.selectCategoryTier2('Social');
         await adhoctaskTemplate.selectCategoryTier3('Chatter');
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await utilityCommon.waitUntilPopUpDisappear();
+        await adhoctaskTemplate.clickSaveAdhoctask();
+        await utilityCommon.closePopUpMessage();
         expect(await manageTask.isTaskLinkPresent(summary)).toBeTruthy();
         await manageTask.clickCloseButton();
     });
 
-    describe('Adhoc Task details validation', async () => {
+    describe('[DRDMV-3821,DRDMV-7130,DRDMV-1580,DRDMV-12243]: Adhoc Task details validation', async () => {
         let summary = 'Adhoc task ' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase;
         let caseData;
@@ -86,7 +86,6 @@ describe('Create Adhoc task', () => {
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
         });
-
         it('Create Adhoc Task', async () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             //Adhoc task validation
@@ -99,9 +98,10 @@ describe('Create Adhoc task', () => {
             await adhoctaskTemplate.selectCategoryTier1('Applications');
             await adhoctaskTemplate.selectCategoryTier2('Social');
             await adhoctaskTemplate.selectCategoryTier3('Chatter');
+            await adhoctaskTemplate.clickAssignToMeButton();
             //await adhoctaskTemplate.selectLabel('test');
-            await adhoctaskTemplate.clickOnSaveAdhoctask();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[DRDMV-3821,DRDMV-7130,DRDMV-1580,DRDMV-12243]: Adhoc Task details view (UI verification)', async () => {
@@ -131,70 +131,66 @@ describe('Create Adhoc task', () => {
         });
     });
 
-    //Review steps of this test
-    describe('[Permissions] Navigating to case from the task', async () => {
-        let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
-        let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
-        let newCase;
-        it('Create Task Template', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnManualTaskTemplateButton();
-            await taskTemplate.setTemplateName(manualTaskTemplate);
-            await taskTemplate.setTaskSummary(manualTaskSummary);
-            await taskTemplate.setTaskDescription('Description in manual task');
-            await taskTemplate.selectCompanyByName('Petramco');
-            await taskTemplate.clickOnAssignment();
-            await changeAssignmentOldBlade.selectCompany('Petramco');
-            await changeAssignmentOldBlade.selectBusinessUnit('HR Support');
-            await changeAssignmentOldBlade.selectSupportGroup('Workforce Administration');
-            await changeAssignmentOldBlade.selectAssignee('Elizabeth Peters');
-            await changeAssignmentOldBlade.clickOnAssignButton();
-            await taskTemplate.selectTemplateStatus('Active');
-            await taskTemplate.selectBuisnessUnit('HR Support');
-            await taskTemplate.selectOwnerGroup('Workforce Administration');
-            await taskTemplate.clickOnSaveTaskTemplate();
-            await utilCommon.waitUntilPopUpDisappear();
-        });
-
-        it('Create Case', async () => {
-            await navigationPage.gotoCreateCase();
+    describe('[DRDMV-1500]: [Permissions] Navigating to case from the task', async () => {
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let newCase, taskTemplateData;
+        beforeAll(async () => {
+            // create manual task template
+            taskTemplateData = {
+                "templateName": `${randomStr} Manual task`,
+                "templateSummary": `${randomStr} Manual task summary`,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "buisnessUnit": "HR Support",
+                "supportGroup": "Workforce Administration",
+                "assignee": "Elizabeth",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "HR Support",
+                "ownerGroup": "Workforce Administration"
+            }
+            // create case
             let caseData = {
                 "Requester": "apavlik",
-                "Summary": 'Summary ' + manualTaskSummary,
+                "Summary": 'Summary ' + randomStr,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 1",
+                "Assignee": "qtao"
             }
+            console.log("Task creatededf");
             await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(taskTemplateData);
+            console.log("Task created");
+
             newCase = await apiHelper.createCase(caseData);
+            console.log("Case created");
+        });
+        it('Add task to Case and set case to In Progress', async () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePage.clickAddTaskButton();
-            //Add Manual task and Automation Task in Case
-            await manageTask.addTaskFromTaskTemplate(manualTaskTemplate);
+            await manageTask.addTaskFromTaskTemplate(taskTemplateData.templateName);
             await manageTask.clickCloseButton();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
         });
-
-        it('Verify Case View link is not visible to user having no template access', async () => {
+        it('Case View link is not visible', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
-            await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
+            await taskConsole.setTaskSearchBoxValue(taskTemplateData.templateSummary);
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe("", " Case Id Displayed in Task console");
-            await utilityGrid.searchAndOpenHyperlink(manualTaskSummary);
+            await utilityGrid.searchAndOpenHyperlink(taskTemplateData.templateSummary);
             expect(await viewTask.isCaseViewLinkDisplayed()).toBeFalsy('Case View Link is displayed');
         });
-
         it('[DRDMV-1500]: [Permissions] Navigating to case from the task', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('qfeng');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
-            await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
+            await taskConsole.setTaskSearchBoxValue(taskTemplateData.templateSummary);
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
-            await utilityGrid.searchAndOpenHyperlink(manualTaskSummary);
+            await utilityGrid.searchAndOpenHyperlink(taskTemplateData.templateSummary);
             expect(await viewTask.isCaseViewLinkDisplayed()).toBeTruthy('Case View Link is not displayed');
         });
         afterAll(async () => {
@@ -221,7 +217,7 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.addAttachment([filePath]);
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
+        await adhoctaskTemplate.clickSaveAdhoctask();
         await manageTask.clickCloseButton();
         await viewCasePage.clickOnTaskLink(summary);
         expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeTruthy('Attached file name is missing');
@@ -258,7 +254,6 @@ describe('Create Adhoc task', () => {
         }
         await apiHelper.apiLogin('qtao');
         let newCaseTemplate = await apiHelper.createCase(caseData);
-        console.log("case is created===", newCaseTemplate.id);
         await navigationPage.gotoCaseConsole();
         await caseConsolePo.searchAndOpenCase(newCaseTemplate.displayId);
 
@@ -269,7 +264,7 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.addAttachment([filePath]);
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
+        await adhoctaskTemplate.clickSaveAdhoctask();
         await manageTask.clickCloseButton();
         await viewCasePage.clickOnTaskLink(summary);
         expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeTruthy('Attached file name is not available');
@@ -288,7 +283,6 @@ describe('Create Adhoc task', () => {
         }
         await apiHelper.apiLogin('qtao');
         let newCaseTemplate = await apiHelper.createCase(caseData);
-        console.log("case is created===", newCaseTemplate.id);
         await navigationPage.gotoCaseConsole();
         await caseConsolePo.searchAndOpenCase(newCaseTemplate.displayId);
 
@@ -297,7 +291,7 @@ describe('Create Adhoc task', () => {
         await manageTask.clickAddAdhocTaskButton();
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
+        await adhoctaskTemplate.clickSaveAdhoctask();
         await manageTask.clickCloseButton();
         await viewCasePage.clickOnTaskLink(summary);
         await viewTask.clickOnEditTask();
@@ -314,7 +308,6 @@ describe('Create Adhoc task', () => {
         }
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
-        console.log("case is created===", newCase.id);
         await navigationPage.gotoCaseConsole();
         await caseConsolePo.searchAndOpenCase(newCase.displayId);
 
@@ -330,8 +323,8 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.addAttachmentInDescription(filesToUpload1);
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeFalsy('Attachment button is enabled');
         expect(await adhoctaskTemplate.getAttachmentLimitWarningText()).toBe('The maximum number of attachments allowed is 20');
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await utilCommon.waitUntilPopUpDisappear();
+        await adhoctaskTemplate.clickSaveAdhoctask();
+        await utilCommon.closePopUpMessage();
         await browser.sleep(10000); // hardwait to upload multiple files
         await manageTask.clickTaskLink(summary);
         await viewTask.clickShowMoreShowLessLink();
@@ -343,7 +336,7 @@ describe('Create Adhoc task', () => {
         expect(await viewTask.getShowMoreLessAttachmentsLinkText()).toBe('18 more');
     });
 
-    describe('[Assignment] Changing the Assignment', async () => {
+    describe('[DRDMV-5480]: [Assignment] Changing the Assignment', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData1, caseData, newCase;
@@ -375,13 +368,14 @@ describe('Create Adhoc task', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary("test" + summary);
-            await adhoctaskTemplate.clickOnAssignButton();
-            await adhoctaskTemplate.clickOnSaveAdhoctask();
+            await adhoctaskTemplate.clickAssignButton();
+            await adhoctaskTemplate.clickSaveAdhoctask();
             await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
             await manageTask.clickTaskLink("test" + summary);
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect((await viewTask.getAssigneeText()).trim()).toBe('Franz Schwarz');
         });
         it('Assignee validation2', async () => {
@@ -390,6 +384,7 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.selectAssignee("Fritz Schulz");
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Fritz Schulz');
             expect(await activityTabPo.getAllTaskActivity('Fritz Schulz')).toBe('Fritz Schulz');
             await viewTask.clickOnEditTask();
@@ -397,6 +392,7 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.clickOnAssignToMeCheckBox();
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Franz Schwarz');
         });
         it('Assignee validation3', async () => {
@@ -407,6 +403,7 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('Facilities');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
@@ -417,13 +414,15 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await activityTabPo.getAllTaskActivity('Qadim Katawazi')).toBe('Qadim Katawazi');
             expect(await viewTask.getAssigneeText()).toBe('Qadim Katawazi');
         });
         it('Assignee validation4', async () => {
             await viewTask.clickOnEditTask();
-            await editTask.clickOnAssignToMe();
+            await editTask.clickOnAssignToMe(); // Failing due to slow API response, check with dev
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Franz Schwarz');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
@@ -432,6 +431,7 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('Facilities');
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
@@ -445,12 +445,14 @@ describe('Create Adhoc task', () => {
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect((await viewTask.getAssigneeText()).trim()).toBe('Franz Schwarz');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectAssignee("Fritz Schulz");
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Fritz Schulz');
             expect(await activityTabPo.getAllTaskActivity('Fritz Schulz')).toBe('Fritz Schulz');
             await viewTask.clickOnEditTask();
@@ -458,6 +460,7 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.clickOnAssignToMeCheckBox();
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Franz Schwarz');
         });
         it('Second Task validation2', async () => {
@@ -468,6 +471,7 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('Facilities');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
@@ -478,6 +482,7 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await activityTabPo.getAllTaskActivity('Qadim Katawazi')).toBe('Qadim Katawazi');
             expect(await viewTask.getAssigneeText()).toBe('Qadim Katawazi');
         });
@@ -485,6 +490,7 @@ describe('Create Adhoc task', () => {
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Franz Schwarz');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
@@ -493,6 +499,7 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('Facilities');
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
@@ -503,7 +510,6 @@ describe('Create Adhoc task', () => {
             await navigationPage.signOut();
             await loginPage.login("qtao");
         });
-
     });
 
     it('[DRDMV-3828]: [Task Workspace] Task Workspace verification', async () => {

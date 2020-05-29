@@ -401,7 +401,7 @@ describe('Case Activity CKE Styling', () => {
         expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
         await adhoctaskTemplate.setSummary(adhocTaskSummary);
         await adhoctaskTemplate.setDescription("Description");
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
+        await adhoctaskTemplate.clickSaveAdhoctask();
         await manageTaskBladePo.clickCloseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.clickTaskLink(adhocTaskSummary);
