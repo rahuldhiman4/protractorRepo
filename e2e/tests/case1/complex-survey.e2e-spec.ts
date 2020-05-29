@@ -9,7 +9,7 @@ import utilityGrid from "../../utils/utility.grid";
 describe('Complex Surveys', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('qtao');
+        await loginPage.login('qfeng');
     });
 
     afterAll(async () => {

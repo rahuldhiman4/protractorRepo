@@ -65,9 +65,7 @@ export class GridOperations {
         let refreshIcon = this.selectors.refreshIcon;
         if (guid) {
             let gridGuid = `[rx-view-component-id="${guid}"] `;
-            appliedPresetFilter = gridGuid + appliedPresetFilter;
             filterPresetBtn = gridGuid + filterPresetBtn;
-            clearBtn = gridGuid + clearBtn;
             refreshIcon = gridGuid + refreshIcon;
         }
         let pageTitle = await browser.getTitle();

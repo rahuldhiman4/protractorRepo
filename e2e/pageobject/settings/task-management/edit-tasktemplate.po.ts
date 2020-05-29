@@ -1,4 +1,4 @@
-import { $, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions, element, by, $$ } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class EditTaskTemplate {
@@ -25,7 +25,7 @@ class EditTaskTemplate {
         cancelMetadata: '[rx-view-component-id="209049eb-ef6d-4ddd-8ee4-257ff7a878e5"] button',
         label: '6df27c33-b3bf-400c-98f7-a76b2e848374',
         templateStatusAttribute: '[rx-view-component-id="279fd957-576d-4428-b503-a1330cbd9498"] .btn-default',
-        mangeDynamicField: '[rx-view-component-id="60aedaf2-92a3-433f-8024-34e26e71350c"] .edit-link',
+        mangeDynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] button.d-icon-left-pencil',
         dynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] .d-textfield__item',
         taskTypeValueDisabled: '[rx-view-component-id="cee6d303-5db9-4b3a-98e1-3096ffebf363"] span.btn-default',
         processNameValue: '[rx-view-component-id="534ab8af-7e9d-49a9-8cab-c3ab1aa38c91"] input',
@@ -154,14 +154,14 @@ class EditTaskTemplate {
     }
 
     async isDynamicFieldPresent(dynamic: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.dynamicField, dynamic)).isPresent().then(async (result) => {
-            if (result) {
-                return await element(by.cssContainingText(this.selectors.dynamicField, dynamic)).getText() == dynamic ? true : false;
-            } else {
-                console.log("dynamic data not present");
-                return false;
+        let dynamicFields: number = await $$(this.selectors.dynamicField).count();
+        for (let i = 0; i < dynamicFields; i++) {
+            let field = await $$(this.selectors.dynamicField).get(i).getText();
+            if (dynamic == field) {
+                return true;
             }
-        });
+        }
+        return false;
     }
 }
 

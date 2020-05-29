@@ -33,10 +33,6 @@ describe("Quick Case", () => {
         await testData797();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     afterAll(async () => {
         await navigationPage.signOut();
     });
@@ -51,15 +47,12 @@ describe("Quick Case", () => {
         }
         await apiHelper.apiLogin("qkatawazi");
         await apiHelper.createCase(caseData);
-
         await navigationPage.gotoQuickCase();
         let categoryvalues: string[] = [caseData.Summary, caseData.description];
         for (let i = 0; i < categoryvalues.length; i++) {
             let result: boolean = undefined;
-            await utilityCommon.refresh();
             await quickCasePo.selectRequesterName('Adam Pavlik');
             await quickCasePo.setCaseSummary(categoryvalues[i]);
-            // await utilityCommon.waitUntilSpinnerToHide();
             let qcSummary = await quickCasePo.isCaseSummaryPresentInRecommendedCases(categoryvalues[0]);
             qcSummary = false ? result = false : result = true;
             await expect(result).toBeTruthy(`FailureMsg: Case Summary does not match for ${categoryvalues[i]}`);
@@ -80,7 +73,7 @@ describe("Quick Case", () => {
 
     //kgaikwad
     it('[DRDMV-797]: [Quick Case] Case creation with inactive template (negative)', async () => {
-        await navigationPage.gotoQuickCase();
+        await quickCasePo.clickStartOverButton();
         await quickCasePo.selectRequesterName("Adam Pavlik");
         await quickCasePo.selectCaseTemplate(templateName797);
         await apiHelper.apiLogin('qkatawazi');
@@ -90,7 +83,7 @@ describe("Quick Case", () => {
         await apiHelper.updateCaseTemplateStatus(caseTemplateId797, 'Inactive');
         await quickCasePo.saveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for inactive template');
-    });//, 200 * 1000);
+    });
 
     it('[DRDMV-800]: [Quick Case] Case creation with requester having same name as other company users', async () => {
         let userData1 = {
@@ -156,6 +149,7 @@ describe("Quick Case", () => {
         await quickCase.saveCase();
         expect(await previewCasePo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy();
         expect(await previewCasePo.isContactNameDisplayed('Al Allbrook')).toBeTruthy();
+        await quickCase.gotoCaseButton();
     }, 200 * 1000);
 
     it('[DRDMV-1205]: [Quick Case] People search', async () => {
@@ -217,7 +211,7 @@ describe("Quick Case", () => {
             await editCaseTemplate.clickOnEditCaseTemplateMetadata();
             await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
             await navigationPage.gotoQuickCase();
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
@@ -308,6 +302,7 @@ describe("Quick Case", () => {
             await apiHelper.createCaseTemplate(templateData4);
 
             await navigationPage.gotoQuickCase();
+            await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(caseTemplateName1);
             await quickCasePo.saveCase();
@@ -489,8 +484,6 @@ describe("Quick Case", () => {
         await apiHelper.apiLogin('fritz');
         let automationTaskTemplate = await apiHelper.createAutomatedTaskTemplate(tasktemplateData);
         let newCaseTemplate = await apiHelper.createCaseTemplate(CaseTemplateData);
-        console.log("active case Template is created===", newCaseTemplate.id);
-        console.log("active case Template is created===", newCaseTemplate.displayId);
         await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automationTaskTemplate.displayId);
         await apiHelper.createCaseAssignmentMapping(assignmentData);
         await apiHelper.createCase(caseData);
@@ -632,6 +625,7 @@ describe("Quick Case", () => {
             let dateFormateNew: string = dateFormateValue.substring(0, 3);
             let dateFormate = dateFormateNew + " " + currentDate.getDate() + ", " + currentDate.getFullYear();
             await navigationPage.gotoQuickCase();
+            await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("fritz");
             await quickCasePo.setCaseSummary(knowledgeTitile);
             await utilCommon.waitUntilSpinnerToHide();
@@ -809,7 +803,6 @@ describe("Quick Case", () => {
             "categoryTier3": "Card Issuance",
             "Assignee": "qkatawazi"
         }
-
         let articleData = {
             "knowledgeSet": "HR",
             "title": `${caseTemplateName}`,
@@ -881,6 +874,7 @@ describe("Quick Case", () => {
         await apiHelper.createNewMenuItem(menuItemDataFile['sourceActiveNotOnUI']);
         //creation of quick case
         await navigationPage.gotoQuickCase();
+        await quickCase.clickStartOverButton();
         expect(await quickCase.getDescriptionDetails()).toContain("Begin by entering person's name, email, login ID or employee ID after the @ symbol. Then enter a description of the case.");
         expect(await quickCase.getResourcesText()).toContain('Quick Case finds resources for you while you take notes');
         expect(await quickCase.getSelectedSourceValue()).toContain('Agent');

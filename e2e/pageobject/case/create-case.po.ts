@@ -46,6 +46,7 @@ class CreateCasePage {
         attachmentField: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] input[type="file"]',
         clearRequesterButton: '[rx-view-component-id="be946309-c359-40fe-a579-1a0e0d04bb01"] .d-icon-cross',
         templateValue: 'td .btn-link',
+        cancelButton: '[rx-view-component-id="3e34f97b-e0f1-492e-bb7d-609b5ccc8d4f"] button'
     }
 
     async addDescriptionAttachment(fileToUpload: string[]): Promise<void> {
@@ -278,6 +279,10 @@ class CreateCasePage {
         await selectCasetemplateBladePo.clickOnAllTemplateTab();
         await utilityGrid.searchRecord(templateName);
         return await element(by.cssContainingText(this.selectors.templateValue,templateName)).isPresent();
+    }
+
+    async clickCancelButton():Promise<void>{
+        await $(this.selectors.cancelButton).click();
     }
 }
 

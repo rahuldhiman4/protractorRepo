@@ -1189,7 +1189,6 @@ class ApiHelper {
 
     async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
         let randomStr = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        console.log(data);
         let menuItemFile = await require('../data/api/shared-services/menuItemConfiguration.api.json');
         console.log('New Menu Item API Status =============>');
         let menuItemData = await menuItemFile.MenuItemConfiguration;

@@ -26,10 +26,6 @@ describe('Case And Employee Relationship', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     //asahitya
     it('[DRDMV-16241,DRDMV-16242,DRDMV-16240]: Add person with different relations', async () => {
         await navigationPage.gotoCreateCase();
@@ -43,23 +39,18 @@ describe('Case And Employee Relationship', () => {
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Qianru Tao', 'Inspector');
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qianru Tao', 'Inspector')).toBeTruthy();
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Harry Potter', 'Related to');
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(2);
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Harry Potter', 'Related to')).toBeTruthy();
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Lily Anthony', 'Target');
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(3);
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Lily Anthony', 'Target')).toBeTruthy();
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Demi Moore', 'Victim');
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(4);
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Demi Moore', 'Victim')).toBeTruthy();
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Brain Adams', 'Witness');
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(5);
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Brain Adams', 'Witness')).toBeTruthy();
     }, 270 * 1000);//, 240 * 1000);
 
@@ -74,13 +65,10 @@ describe('Case And Employee Relationship', () => {
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Qianru Tao', 'Inspector');
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Harry Potter', 'Inspector');
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(2);
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Lily Anthony', 'Inspector');
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(3);
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qianru Tao', 'Inspector')).toBeTruthy();
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Harry Potter', 'Inspector')).toBeTruthy();
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Lily Anthony', 'Inspector')).toBeTruthy();
@@ -97,13 +85,11 @@ describe('Case And Employee Relationship', () => {
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Brad Pitt', 'Inspector');
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
         await relatedTabPage.clickRelatedPersonName('Brad Pitt');
         try {
             await utilityCommon.switchToNewTab(1);
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Bobby Hill', 'Former Manager');
-            await relatedTabPage.waitUntilNewRelatedPersonAdded(2);
             expect(await relatedTabPage.getRelatedPersonCompanyName('Bobby Hill')).toBe('Petramco');
             expect(await relatedTabPage.getRelatedPersonEmail('Bobby Hill')).toBe('bhill@bwflabs.localdomain');
             expect(await relatedTabPage.getRelatedPersonPhoneNumber('Bobby Hill')).toBe('+556132296002');
@@ -129,12 +115,10 @@ describe('Case And Employee Relationship', () => {
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Brad Pitt', 'Inspector');
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
         try {
             await relatedTabPage.clickRelatedPersonName('Brad Pitt');
             await utilityCommon.switchToNewTab(1);
             await personProfilePage.clickOnTab('Related Cases');
-            await relatedCasePage.waitUntilNewRelatedCaseAdded(1);
             expect(await relatedCasePage.getRelatedCaseAssignee(caseId)).toBe('Qianru Tao');
             expect(await relatedCasePage.getRelatedCaseModDate(caseId)).toContain('Modified')
             expect(await relatedCasePage.getRelatedCasePriority(caseId)).toBe('Medium');
@@ -180,16 +164,14 @@ describe('Case And Employee Relationship', () => {
         await viewCasePo.clickOnTab('Related Cases');
         await relatedCasePage.addRelatedCases();
         await addRelatedCasespopup.addRelatedCase(caseId1, "Child");
-        await relatedCasePage.waitUntilNewRelatedCaseAdded(1);
         await relatedCasePage.addRelatedCases();
         await addRelatedCasespopup.addRelatedCase(caseId2, "Child");
-        await relatedCasePage.waitUntilNewRelatedCaseAdded(2);
 
         //Open Case 1 and Remove the case 1
         await relatedCasePage.openCaseFromRelatedCases(caseId1);
         await viewCasePo.clickOnTab('Related Cases');
         await relatedCasePage.removeRelatedCase(caseId3);
-        await relatedCasePage.waitUntilNewRelatedCaseAdded(0);
+        //await relatedCasePage.waitUntilNewRelatedCaseAdded(0);
 
         //Open case 3 and verify case1 is not present in Related cases
         await navigationPage.gotoCaseConsole()
@@ -218,7 +200,6 @@ describe('Case And Employee Relationship', () => {
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Qianru Tao', 'Inspector');
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
         expect(await relatedTabPage.getRelatedPersonCompanyName('Qianru Tao')).toBe("Petramco", "Related Person Company name does not match");
         expect(await relatedTabPage.getRelatedPersonPhoneNumber('Qianru Tao')).toBe("+15123431921", "Related Person Phone number does not match");
         expect(await relatedTabPage.getRelatedPersonEmail('Qianru Tao')).toBe("qtao@petramco.com", "Related Person Email ID does not match");
@@ -239,7 +220,6 @@ describe('Case And Employee Relationship', () => {
         await viewCasePo.clickOnTab('Related Cases');
         await relatedCasePage.addRelatedCases();
         await addRelatedCasespopup.addRelatedCase(caseDisplayId2, "Child");
-        await relatedCasePage.waitUntilNewRelatedCaseAdded(1);
         expect(await relatedCasePage.getRelatedCaseAssignee(caseDisplayId2)).toBe("Elizabeth Peters");
         expect(await relatedCasePage.getRelatedCasePriority(caseDisplayId2)).toBe("Low");
         expect(await relatedCasePage.getRelatedCaseModDate(caseDisplayId2)).toContain("Modified");
@@ -253,9 +233,7 @@ describe('Case And Employee Relationship', () => {
         await navigationPage.gotoPersonProfile();
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Brain Adams', 'Parent');
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(2);
         await relatedTabPage.removeRelatedPerson("Brain Adams");
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
 
         await apiHelper.apiLogin("qyuan");
         let caseData = require('../../data/ui/case/case.ui.json');
@@ -275,12 +253,10 @@ describe('Case And Employee Relationship', () => {
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Harry Potter', 'Related to');
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
         await navigationPage.gotoCaseConsole();
         await utilityGrid.searchAndOpenHyperlink(caseId);
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.removeRelatedPerson("Harry Potter");
-        // await utilityCommon.waitUntilSpinnerToHide();
         expect(await relatedTabPage.isRelatedPersonPresent("Harry Potter")).toBeFalsy("Harry Potter is still related to Case: " + caseId);
         await navigationPage.gotoPersonProfile();
         expect(await relatedTabPage.isRelatedPersonPresent("Brain Adams")).toBeFalsy("Brain Adams is still related to Person Profile");
@@ -315,9 +291,7 @@ describe('Case And Employee Relationship', () => {
             "username": 'qtao'
         }
         await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
-        await utilityCommon.refresh();
         await browser.sleep(5000); // required for indexing, case will appear in recommended case section
-        await utilityGrid.searchAndOpenHyperlink(caseId);
         // This validation is not required as tab click is happening based on Tab text
         //expect(await caseEditPage.getRelatedCasesTabText()).toBe("Related Cases");
         await navigationPage.gotoQuickCase();
@@ -327,6 +301,5 @@ describe('Case And Employee Relationship', () => {
         await quickCase.gotoCaseButton();
         await viewCasePo.clickOnTab('Related Cases');
         await relatedCasePage.isCasePresent(caseId2);
-        await utilityCommon.refresh();
     });
 })
