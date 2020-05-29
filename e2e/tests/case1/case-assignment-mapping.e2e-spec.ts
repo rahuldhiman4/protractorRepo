@@ -369,7 +369,7 @@ describe("Create Case Assignment Mapping", () => {
         await manageTask.clickAddAdhocTaskButton();
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
+        await adhoctaskTemplate.clickSaveAdhoctask();
         await manageTask.clickCloseButton();
         await viewCasePage.clickOnTaskLink(summary);
         await viewTask.clickOnEditTask();

@@ -11,24 +11,12 @@ class AttachmentBlade {
         selectCheckbox: '.ui-chkbox-box',
         download: '.bwf-case-attachment__footer-button  .btn-primary',
         close: '.bwf-case-attachment__footer-button  .btn-secondary',
-        gridValue: '.ui-grid-cell-contents',
-        searchbox: '.adapt-search-triggerable .adapt-search-field-ellipsis',
-        searchButton: '.input-group-append button',
-        crossbutton: '.d-icon-cross[aria-label="Clear Search Field"]',
         allCheckbox: '.checkbox__input',
         attachmentSize: '.bwf-case-attachment__paginator .bwf-case-attachment__paginator__page-count',
         paginationNextButton: '.content-outlet .page-next',
         paginationPreviousButton: '.content-outlet .page-prev',
         refreshButton: '.d-icon-refresh',
         selectedCheckBoxCount: '.bwf-case-attachment__footer-button .bwf-case-attachment__footer-button__selected-files-label',
-        attachmentColoumnValues: '[rx-view-component-id="adb9ac10-3732-4fd9-8af3-29bec77272b4"] .attachment-view-thumbnail__title-text',
-        attachmentColoumnHeader: 'table thead tr th:nth-of-type(2) div',
-        attachedToColoumnValues: '[rx-view-component-id="adb9ac10-3732-4fd9-8af3-29bec77272b4"] td:nth-of-type(3)',
-        attachedToColoumnHeader: 'table thead tr th:nth-of-type(3) div',
-        mediaTypemediaTypeColoumnValues: '[rx-view-component-id="adb9ac10-3732-4fd9-8af3-29bec77272b4"] td:nth-of-type(4)',
-        mediaTypeColoumnHeader: 'table thead tr th:nth-of-type(4) div',
-        createdDateColoumnValues: '[rx-view-component-id="adb9ac10-3732-4fd9-8af3-29bec77272b4"] td:nth-of-type(5)',
-        createdDateColoumnHeader: 'table thead tr th:nth-of-type(5) div',
         attachmentName: 'table .attachment-view-thumbnail__title-text',
     }
 
@@ -36,55 +24,21 @@ class AttachmentBlade {
         return await $(this.selectors.selectedCheckBoxCount).getText();
     }
 
-    async searchAttachment(record: string): Promise<void> {
-        await utilityGrid.searchRecord(record);
-        await $(this.selectors.searchbox).clear();
-        await $(this.selectors.searchbox).sendKeys(record);
-        await $(this.selectors.searchButton).click();
-        let i: number;
-        for (i = 0; i <= 5; i++) {
-            let bolnVal: boolean = await $(this.selectors.selectCheckbox).isPresent();
-            if (bolnVal == false) {
+    async searchAttachment(attachment: string): Promise<void> {
+        for (let i: number = 0; i < 5; i++) {
+            let isFilePresent: boolean = await element(by.cssContainingText(this.selectors.attachmentName, attachment)).isPresent();
+            if (isFilePresent == false) {
                 await browser.sleep(5000);
-                await $(this.selectors.searchbox).clear();
-                await $(this.selectors.searchbox).sendKeys(record);
-                await $(this.selectors.searchButton).click();
+                await utilityGrid.searchRecord(attachment);
             } else {
                 break;
             }
         }
     }
 
-    async searchAndSelectCheckBox(record: string): Promise<void> {
-        let allAttachmentRows: ElementFinder[] = await $$('.at-row');
-        let attachmentFound: boolean = false;
-        for (let i: number = 0; i < allAttachmentRows.length; i++) {
-            let attachmentName: ElementFinder = await allAttachmentRows[i].$('.attachment-view-thumbnail__title-text');
-            if (await attachmentName.getText() === record) {
-                await browser.executeScript("arguments[0].scrollIntoView();", await allAttachmentRows[i].$('.ui-chkbox-box').getWebElement());
-                await allAttachmentRows[i].$('.ui-chkbox-box').click();
-                attachmentFound = true;
-                break;
-            }
-        }
-        if (!attachmentFound) {
-            await $(this.selectors.searchbox).clear();
-            await $(this.selectors.searchbox).sendKeys(record);
-            await $(this.selectors.searchButton).click();
-            let i: number;
-            for (i = 0; i <= 10; i++) {
-                let bolnVal: boolean = await $(this.selectors.selectCheckbox).isPresent();
-                if (bolnVal == false) {
-                    await browser.sleep(5000);
-                    await $(this.selectors.searchbox).clear();
-                    await $(this.selectors.searchbox).sendKeys(record);
-                    await $(this.selectors.searchButton).click();
-
-                } else {
-                    break;
-                }
-            }
-        }
+    async searchAndSelectCheckBox(attachmentName: string): Promise<void> {
+        await this.searchAttachment(attachmentName);
+        await $$(this.selectors.selectCheckbox).first().click();
     }
 
     async getAttachmentSize(): Promise<string> {
@@ -144,8 +98,13 @@ class AttachmentBlade {
     }
 
     async clickFileName(attachment: string): Promise<void> {
-        await this.searchAttachment(attachment);
-        await element(by.cssContainingText(this.selectors.attachmentName, attachment)).click();
+        await element(by.cssContainingText(this.selectors.attachmentName, attachment)).isPresent().then(async (result) => {
+            if (result) element(by.cssContainingText(this.selectors.attachmentName, attachment)).click();
+            else {
+                await this.searchAttachment(attachment);
+                await element(by.cssContainingText(this.selectors.attachmentName, attachment)).click();
+            }
+        });
     }
 
     async clickDownloadButton(): Promise<void> {

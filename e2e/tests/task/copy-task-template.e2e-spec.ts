@@ -10,7 +10,7 @@ import updateStatusBladePo from '../../pageobject/common/update.status.blade.po'
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import copyTemplatePage from "../../pageobject/settings/task-management/copy-tasktemplate.po";
 import taskTemplatePage from "../../pageobject/settings/task-management/create-tasktemplate.po";
-import { default as viewTaskTemplate, default as viewTasktemplatePo } from "../../pageobject/settings/task-management/view-tasktemplate.po";
+import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
@@ -52,8 +52,8 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
             await viewTaskTemplate.clickOnCopyTemplate();
-            await expect(await copyTemplatePage.unSelectCopyExistingProcess()).toBeTruthy();
-            await expect(await copyTemplatePage.getProcessName()).toBe(processName);
+            expect(await copyTemplatePage.unSelectCopyExistingProcess()).toBeTruthy();
+            expect(await copyTemplatePage.getProcessName()).toBe(processName);
             await copyTemplatePage.setTemplateName(automatedTaskSummary2);
             await copyTemplatePage.selectTemplateStatus('Active');
             await copyTemplatePage.setTaskSummary(automatedTaskSummary2)
@@ -80,7 +80,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskSummary2);
-            await expect(await viewTask.getTaskStatusValue()).toBe('Completed');
+            expect(await viewTask.getTaskStatusValue()).toBe('Completed');
         } catch (e) {
             throw e;
         } finally {
@@ -122,9 +122,9 @@ describe('Copy Task Template', () => {
             await selectTaskTemplate.searchAndOpenTaskTemplate(manualTaskTemplate);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(newManualTaskTemplate);
-            await expect(await copyTemplatePage.isOwnerGroupEmpty()).toBeTruthy();
+            expect(await copyTemplatePage.isOwnerGroupEmpty()).toBeTruthy();
             await copyTemplatePage.clickSaveCopytemplate();
-            await expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
         } catch (e) {
             throw e;
         } finally {
@@ -175,7 +175,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(newAutomationTaskTemplate);
             await copyTemplatePage.setNewProcessName(newAutomationTaskProcess);
             await copyTemplatePage.clickSaveCopytemplate();
-            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + newAutomationTaskProcess);
+            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + newAutomationTaskProcess);
 
             //Login through only Petramco User
             await navigationPage.signOut();
@@ -183,7 +183,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(newAutomationTaskTemplate);
-            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + newAutomationTaskProcess);
+            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + newAutomationTaskProcess);
 
             //Login through only Psilon User
             //await browser.sleep(2000);
@@ -192,7 +192,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(newAutomationTaskTemplate);
-            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + newAutomationTaskProcess);
+            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + newAutomationTaskProcess);
         } catch (e) {
             throw e;
         } finally {
@@ -242,12 +242,12 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.selectTaskCompany('Psilon')
             await copyTemplatePage.setNewProcessName(newAutomationTaskProcess);
             await copyTemplatePage.clickSaveCopytemplate();
-            await expect(await utilCommon.isErrorMsgPresent()).toBeTruthy(); // ERROR (902): Duplicate process name 
+            expect(await utilCommon.isErrorMsgPresent()).toBeTruthy(); // ERROR (902): Duplicate process name 
             await copyTemplatePage.clickCancelCopytemplate();
             await utilCommon.clickOnWarningOk();
             await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(automationTaskTemplate);
-            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + newAutomationTaskProcess);
+            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + newAutomationTaskProcess);
         } catch (e) {
             throw e;
         } finally {
@@ -283,13 +283,13 @@ describe('Copy Task Template', () => {
 
             await copyTemplatePage.clickSaveCopytemplate();
             await utilCommon.waitUntilPopUpDisappear();
-            await expect(await viewTaskTemplate.getTemplateStatus()).toBe("Draft");
-            await expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
-            await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Facilities");
+            expect(await viewTaskTemplate.getTemplateStatus()).toBe("Draft");
+            expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
+            expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Facilities");
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(newManualTaskTemplate);
-            await expect(await viewTaskTemplate.getTemplateName()).toBe(newManualTaskTemplate);
+            expect(await viewTaskTemplate.getTemplateName()).toBe(newManualTaskTemplate);
         } catch (e) {
             throw e;
         } finally {
@@ -334,14 +334,14 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.clickSaveCopytemplate();
             await utilCommon.waitUntilPopUpDisappear();
 
-            await expect(await viewTaskTemplate.getTemplateStatus()).toBe('Draft');
-            await expect(await viewTaskTemplate.getSummaryValue()).toBe(manualTaskSummary);
-            await expect(await viewTaskTemplate.getTaskTypeValue()).toBe('Automated');
-            await expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('Petramco');
-            await expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe(Description);
-            await expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Applications');
-            await expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
-            await expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
+            expect(await viewTaskTemplate.getTemplateStatus()).toBe('Draft');
+            expect(await viewTaskTemplate.getSummaryValue()).toBe(manualTaskSummary);
+            expect(await viewTaskTemplate.getTaskTypeValue()).toBe('Automated');
+            expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('Petramco');
+            expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe(Description);
+            expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Applications');
+            expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
+            expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
         } catch (e) {
             throw e;
         } finally {
@@ -379,7 +379,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
             await viewTaskTemplate.clickOnCopyTemplate();
-            await expect(await copyTemplatePage.getSourceProcessName()).toBe('com.bmc.dsm.case-lib:' + processName);
+            expect(await copyTemplatePage.getSourceProcessName()).toBe('com.bmc.dsm.case-lib:' + processName);
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.setTaskSummary(updatedTaskSummary);
             await copyTemplatePage.selectBundles("Case Management Service");
@@ -412,7 +412,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(updatedTaskSummary);
-            await expect(await viewTask.getTaskStatusValue()).toBe('Completed');
+            expect(await viewTask.getTaskStatusValue()).toBe('Completed');
         } catch (e) {
             throw e;
         } finally {
@@ -451,7 +451,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setNewProcessName(processName);
             await copyTemplatePage.clickSaveCopytemplate();
             let msgs: string[] = ["Saved successfully.", "Duplicate process name"];
-            await expect(await utilCommon.isPopupMsgsMatches(msgs, 2)).toBeTruthy("Messsages not present");
+            expect(await utilCommon.isPopupMsgsMatches(msgs, 2)).toBeTruthy("Messsages not present");
         } catch (e) {
             throw e;
         } finally {
@@ -495,7 +495,7 @@ describe('Copy Task Template', () => {
             await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(updatedTaskTemplate);
             await viewTaskTemplate.clickOnEditProcessLink();
-            await expect(await utilCommon.isPopupMsgsMatches(['WARNING (222062): Updates to dynamic fields or process affect the templates using the selected process :' + taskTemplate])).toBeTruthy("Popup message doesn't match");
+            expect(await utilCommon.isPopupMsgsMatches(['WARNING (222062): Updates to dynamic fields or process affect the templates using the selected process :' + taskTemplate])).toBeTruthy("Popup message doesn't match");
         } catch (e) {
             throw e;
         } finally {
@@ -533,16 +533,16 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.clickSaveCopytemplate();
             //await utilCommon.waitUntilPopUpDisappear();
-            await expect(await viewTaskTemplate.getTemplateStatus()).toBe('Draft');
-            await expect(await viewTaskTemplate.getSummaryValue()).toBe(taskSummary);
-            await expect(await viewTaskTemplate.getTaskTypeValue()).toBe('External');
-            await expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('Petramco');
-            await expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe(description);
-            await expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Applications');
-            await expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
-            await expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
-            await expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
-            await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Facilities");
+            expect(await viewTaskTemplate.getTemplateStatus()).toBe('Draft');
+            expect(await viewTaskTemplate.getSummaryValue()).toBe(taskSummary);
+            expect(await viewTaskTemplate.getTaskTypeValue()).toBe('External');
+            expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('Petramco');
+            expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe(description);
+            expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Applications');
+            expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
+            expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
+            expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
+            expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Facilities");
         } catch (e) {
             throw e;
         } finally {
@@ -580,9 +580,9 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.clickSaveCopytemplate();
             await utilCommon.waitUntilPopUpDisappear();
-            await expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
+            expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
             expect(await viewTaskTemplate.getBuisnessunitValue()).toBe('HR Support');
-            await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Workforce Administration");
+            expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Workforce Administration");
         } catch (e) {
             throw e;
         } finally {
@@ -620,17 +620,17 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.clickSaveCopytemplate();
             await utilCommon.waitUntilPopUpDisappear();
-            await expect(await viewTaskTemplate.getTemplateStatus()).toBe('Draft');
-            await expect(await viewTaskTemplate.getSummaryValue()).toBe(taskSummary);
-            await expect(await viewTaskTemplate.getTaskTypeValue()).toBe('Manual');
-            await expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('Petramco');
-            await expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe(description);
-            await expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Applications');
-            await expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
-            await expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
-            await expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
+            expect(await viewTaskTemplate.getTemplateStatus()).toBe('Draft');
+            expect(await viewTaskTemplate.getSummaryValue()).toBe(taskSummary);
+            expect(await viewTaskTemplate.getTaskTypeValue()).toBe('Manual');
+            expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('Petramco');
+            expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe(description);
+            expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Applications');
+            expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
+            expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
+            expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
             expect(await viewTaskTemplate.getBuisnessunitValue()).toBe('Facilities Support');
-            await expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Facilities");
+            expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Facilities");
         } catch (e) {
             throw e;
         } finally {
@@ -684,7 +684,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setNewProcessName(updateProcessName);
             await copyTemplatePage.clickSaveCopytemplate();
             await utilCommon.waitUntilPopUpDisappear();
-            await expect(await viewTaskTemplate.getDynamicFieldTitle()).toBe(fieldDescription);
+            expect(await viewTaskTemplate.getDynamicFieldTitle()).toBe(fieldDescription);
         } catch (e) {
             throw e;
         } finally {
@@ -737,7 +737,7 @@ describe('Copy Task Template', () => {
             await dynamicField.setDescriptionName(fieldDescription);
             await dynamicField.clickSaveButton();
             //await utilCommon.waitUntilPopUpDisappear();
-            await expect(await viewTaskTemplate.getDynamicFieldTitle()).toBe(fieldDescription);
+            expect(await viewTaskTemplate.getDynamicFieldTitle()).toBe(fieldDescription);
         } catch (e) {
             throw e;
         } finally {

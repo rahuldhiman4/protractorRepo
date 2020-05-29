@@ -288,7 +288,7 @@ describe('Document Library Consume Permission', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary(adhocTaskSummary1);
-            await adhoctaskTemplate.clickOnAttachButton();
+            await adhoctaskTemplate.clickAttachButton();
 
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
             await attachDocumentBladePo.searchRecord(publishDocLibData1.docLibTitle);
@@ -298,7 +298,7 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
-            await adhoctaskTemplate.clickOnSaveAdhoctask();
+            await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.waitUntilPopUpDisappear();
             await manageTask.clickCloseButton();
             await viewCasePo.clickOnTaskLink(adhocTaskSummary1);
@@ -311,11 +311,11 @@ describe('Document Library Consume Permission', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary(adhocTaskSummary2);
-            await adhoctaskTemplate.clickOnAttachButton();
+            await adhoctaskTemplate.clickAttachButton();
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
-            await adhoctaskTemplate.clickOnAttachButton();
+            await adhoctaskTemplate.clickAttachButton();
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
-            await adhoctaskTemplate.clickOnSaveAdhoctask();
+            await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.waitUntilPopUpDisappear();
             await manageTask.clickTaskLink(adhocTaskSummary2);
             expect(await viewTaskPo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
