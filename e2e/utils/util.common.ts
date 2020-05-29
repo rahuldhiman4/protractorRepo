@@ -415,6 +415,10 @@ export class Util {
             }
         });
     }
+
+    async closeBladeOnSettings(): Promise<void>{
+        await browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
+    }
 }
 
 export default new Util();
