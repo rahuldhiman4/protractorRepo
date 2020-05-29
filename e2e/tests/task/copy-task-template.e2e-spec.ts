@@ -28,33 +28,29 @@ describe('Copy Task Template', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     it('[DRDMV-14214]: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let automatedTaskTemplate1 = 'DRDMV14214AutomationTask' + randomStr;
-            let automatedTaskSummary1 = 'TSummary1' + randomStr;
             let automatedTaskTemplate2 = 'DRDMV14214AutomationTask2' + randomStr;
             let automatedTaskSummary2 = randomStr + 'TSummary2';
             let processName = 'DRDMV14214ProcessName' + randomStr;
+            let templateData = {
+                "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": processName,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
 
-            //Automation Task template
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createAutomatedTaskTemplate(templateData);
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
-            await taskTemplatePage.setTemplateName(automatedTaskTemplate1);
-            await taskTemplatePage.setTaskSummary(automatedTaskSummary1);
-            await taskTemplatePage.setTaskDescription('Description in manual task');
-            await taskTemplatePage.selectCompanyByName('Petramco');
-            await taskTemplatePage.setNewProcessName('Business Workflows', processName);
-            await taskTemplatePage.selectTemplateStatus('Active');
-            await taskTemplatePage.clickOnSaveTaskTemplate();
-            //await utilCommon.waitUntilPopUpDisappear();
-
-            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + processName);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
             await viewTaskTemplate.clickOnCopyTemplate();
             await expect(await copyTemplatePage.unSelectCopyExistingProcess()).toBeTruthy();
             await expect(await copyTemplatePage.getProcessName()).toBe(processName);
@@ -97,7 +93,6 @@ describe('Copy Task Template', () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let manualTaskTemplate = 'DRDMV13548ManualTask1' + randomStr;
-            let manualTaskSummary = 'DRDMV13548Summary' + randomStr;
             let newManualTaskTemplate = 'NewManualtaskDRDMV13548' + randomStr;
 
             await apiHelper.apiLogin('tadmin');
@@ -108,19 +103,17 @@ describe('Copy Task Template', () => {
             }
             await apiHelper.createNewUser(userData);
             await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
-
-            //Manual Task template
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnManualTaskTemplateButton();
-            await taskTemplatePage.setTemplateName(manualTaskTemplate);
-            await taskTemplatePage.setTaskSummary(manualTaskSummary);
-            await taskTemplatePage.setTaskDescription('Description in manual task');
-            await taskTemplatePage.selectCompanyByName('Petramco');
-            await taskTemplatePage.selectTemplateStatus('Active');
-            await taskTemplatePage.clickOnSaveTaskTemplate();
-            await expect(viewTaskTemplate.getTaskCompanyNameValue()).toBe("Petramco");
-            //await utilCommon.waitUntilPopUpDisappear();
+            let templateData1 = {
+                "templateName": manualTaskTemplate,
+                "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+                "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(templateData1);
 
             await navigationPage.signOut();
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
@@ -153,30 +146,25 @@ describe('Copy Task Template', () => {
             await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
             await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
             await apiHelper.associatePersonToSupportGroup(userData.userId, "Compensation and Benefits");
-
             let automationTaskTemplate = 'DRDMV14218AutomationTemplate' + randomStr;
-            let automationTaskSummary = 'DRDMV14218Summary' + randomStr;
-            let AutomationTaskProcess = 'DRDMV14218Process' + randomStr;
-
             let newAutomationTaskTemplate = 'NewAutomationTemplateDRDMV14218' + randomStr;
             let newAutomationTaskProcess = 'NewProcessDRDMV14218' + randomStr;
 
-            //Automation Task template
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
-            await taskTemplatePage.setTemplateName(automationTaskTemplate);
-            await taskTemplatePage.setTaskSummary(automationTaskSummary);
-            await taskTemplatePage.setTaskDescription('Description in manual task');
-            await taskTemplatePage.selectCompanyByName('Petramco');
-            await taskTemplatePage.setNewProcessName('Business Workflows', AutomationTaskProcess);
-            await taskTemplatePage.selectTemplateStatus('Active');
-            await taskTemplatePage.clickOnSaveTaskTemplate();
-            await expect(viewTaskTemplate.getTaskCompanyNameValue()).toBe("Petramco");
-            //await utilCommon.waitUntilPopUpDisappear();
+            let templateData = {
+                "templateName": automationTaskTemplate,
+                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": `Case Process 1 ${randomStr}`,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createAutomatedTaskTemplate(templateData);
 
             //Login through both Petramco and Psilon User
-
             await navigationPage.signOut();
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -187,8 +175,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(newAutomationTaskTemplate);
             await copyTemplatePage.setNewProcessName(newAutomationTaskProcess);
             await copyTemplatePage.clickSaveCopytemplate();
-            // await utilCommon.waitUntilPopUpDisappear();
-            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
+            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + newAutomationTaskProcess);
 
             //Login through only Petramco User
             await navigationPage.signOut();
@@ -196,7 +183,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(newAutomationTaskTemplate);
-            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
+            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + newAutomationTaskProcess);
 
             //Login through only Psilon User
             //await browser.sleep(2000);
@@ -205,7 +192,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(newAutomationTaskTemplate);
-            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
+            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + newAutomationTaskProcess);
         } catch (e) {
             throw e;
         } finally {
@@ -229,25 +216,21 @@ describe('Copy Task Template', () => {
             await apiHelper.associatePersonToSupportGroup(userData.userId, "Compensation and Benefits");
 
             let automationTaskTemplate = 'DRDMV14217Automationtask' + randomStr;
-            let automationTaskSummary = 'DRDMV14217Summary' + randomStr;
-
             let newAutomationTaskTemplate = 'NewAutomationtaskDRDMV14217' + randomStr;
             let newAutomationTaskProcess = 'NewProcessDRDMV14217' + randomStr;
-
-            //Automation Task template
-            await navigationPage.gotoCaseConsole();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
-            await taskTemplatePage.setTemplateName(automationTaskTemplate);
-            await taskTemplatePage.setTaskSummary(automationTaskSummary);
-            await taskTemplatePage.setTaskDescription('Description in manual task');
-            await taskTemplatePage.selectCompanyByName('Petramco');
-            await taskTemplatePage.setNewProcessName('Business Workflows', newAutomationTaskProcess);
-            await taskTemplatePage.selectTemplateStatus('Active');
-            await taskTemplatePage.clickOnSaveTaskTemplate();
-            await expect(viewTaskTemplate.getTaskCompanyNameValue()).toBe("Petramco");
-            //await utilCommon.waitUntilPopUpDisappear();
+            let templateData = {
+                "templateName": automationTaskTemplate,
+                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": `Case Process 1 ${randomStr}`,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createAutomatedTaskTemplate(templateData);
 
             await navigationPage.signOut();
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
@@ -264,7 +247,7 @@ describe('Copy Task Template', () => {
             await utilCommon.clickOnWarningOk();
             await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(automationTaskTemplate);
-            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.bwfa:' + newAutomationTaskProcess);
+            await expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + newAutomationTaskProcess);
         } catch (e) {
             throw e;
         } finally {
@@ -277,23 +260,23 @@ describe('Copy Task Template', () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let manualTaskTemplate = 'DRDMV13540ManualTask' + randomStr;
-            let manualTaskSummary = 'DRDMV13540Summary' + randomStr;
-
             let newManualTaskTemplate = 'NewManualTaskDRDMV13540' + randomStr;
             let newmanualTaskSummary = 'NewSummaryDRDMV13540' + randomStr;
 
-            //Automation Task template
+            let templateData1 = {
+                "templateName": manualTaskTemplate,
+                "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+                "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(templateData1);
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnManualTaskTemplateButton();
-            await taskTemplatePage.setTemplateName(manualTaskTemplate);
-            await taskTemplatePage.setTaskSummary(manualTaskSummary);
-            await taskTemplatePage.setTaskDescription('Description in manual task');
-            await taskTemplatePage.selectCompanyByName('Petramco');
-            await taskTemplatePage.selectTemplateStatus('Active');
-            await taskTemplatePage.clickOnSaveTaskTemplate();
-            //await utilCommon.waitUntilPopUpDisappear();
-
+            await selectTaskTemplate.searchAndOpenTaskTemplate(manualTaskTemplate);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(newManualTaskTemplate);
             await copyTemplatePage.setTaskSummary(newmanualTaskSummary);
@@ -371,31 +354,32 @@ describe('Copy Task Template', () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let taskTemplate = 'DRDMV14215AutomationTask' + randomStr;
-            let taskSummary = 'DRDMV14215Summary' + randomStr;
             let processName = 'DRDMV14215Process' + randomStr;
             let newProcessName = 'NewProcessDRDMV14215' + randomStr;
 
             let updatedTaskTemplate = 'UpdatedTaskDRDMV14215' + randomStr;
-            let updatedTaskSummary = randomStr+ 'NewSummaryDRDMV14215';
-            let description = 'DescriptionDRDMV14215' + randomStr;
+            let updatedTaskSummary = randomStr + 'NewSummaryDRDMV14215';
 
             //Automation Task template
+            let templateData = {
+                "templateName": taskTemplate,
+                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": processName,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createAutomatedTaskTemplate(templateData);
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
-            await taskTemplatePage.setTemplateName(taskTemplate);
-            await taskTemplatePage.setTaskSummary(taskSummary);
-            await taskTemplatePage.setTaskDescription(description);
-            await taskTemplatePage.setNewProcessName('Business Workflows', processName);
-            await taskTemplatePage.selectCompanyByName('Petramco');
-            await taskTemplatePage.selectTemplateStatus('Active');
-            await taskTemplatePage.clickOnSaveTaskTemplate();
-            await utilCommon.waitUntilPopUpDisappear();
-
-            await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
             await viewTaskTemplate.clickOnCopyTemplate();
-            await expect(await copyTemplatePage.getSourceProcessName()).toBe('com.bmc.dsm.bwfa:' + processName);
+            await expect(await copyTemplatePage.getSourceProcessName()).toBe('com.bmc.dsm.case-lib:' + processName);
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.setTaskSummary(updatedTaskSummary);
             await copyTemplatePage.selectBundles("Case Management Service");
@@ -441,27 +425,27 @@ describe('Copy Task Template', () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let taskTemplate = 'DRDMV13737Task' + randomStr;
-            let taskSummary = 'DRDMV13737Summary' + randomStr;
             let processName = 'DRDMV13737Process' + randomStr;
             let updatedTaskTemplate = 'DRDMV13737UpdatedTask' + randomStr;
-            let description = 'DRDMV13737Description' + randomStr;
 
             //Automation Task template
+            let templateData = {
+                "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateStatus": "Draft",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": processName,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createAutomatedTaskTemplate(templateData);
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
-            await taskTemplatePage.setTemplateName(taskTemplate);
-            await taskTemplatePage.setTaskSummary(taskSummary);
-            await taskTemplatePage.setTaskDescription(description);
-            await taskTemplatePage.setNewProcessName('Business Workflows', processName);
-            await taskTemplatePage.selectCompanyByName('Petramco');
-            await taskTemplatePage.selectTemplateStatus('Active');
-            await taskTemplatePage.clickOnSaveTaskTemplate();
-            await expect(viewTasktemplatePo.getOwnerCompanyValue()).toBe("Petramco");
-            //await utilCommon.waitUntilPopUpDisappear();
-
-            await utilCommon.clickOnBackArrow();
-            await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.setNewProcessName(processName);
@@ -480,26 +464,27 @@ describe('Copy Task Template', () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let taskTemplate = 'DRDMV14221AutomationTask' + randomStr;
-            let taskSummary = 'DRDMV14221Summary' + randomStr;
             let processName = 'DRDMV14221Process' + randomStr;
             let updatedTaskTemplate = 'DRDMV14221UpdatedTask' + randomStr;
-            let description = 'DRDMV14221Description' + randomStr;
 
             //Automation Task template
+            let templateData = {
+                "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": processName,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createAutomatedTaskTemplate(templateData);
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
-            await taskTemplatePage.setTemplateName(taskTemplate);
-            await taskTemplatePage.setTaskSummary(taskSummary);
-            await taskTemplatePage.setTaskDescription(description);
-            await taskTemplatePage.setNewProcessName('Business Workflows', processName);
-            await taskTemplatePage.selectCompanyByName('Petramco');
-            await taskTemplatePage.selectTemplateStatus('Active');
-            await taskTemplatePage.clickOnSaveTaskTemplate();
-            //await utilCommon.waitUntilPopUpDisappear();
-
-            await utilCommon.clickOnBackArrow();
-            await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplate);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.setNewProcessName(processName);
@@ -527,7 +512,7 @@ describe('Copy Task Template', () => {
             let updatedTaskTemplate = 'DRDMV13574UpdatedTask' + randomStr;
             let description = 'DRDMV13574Description' + randomStr;
 
-            //Automation Task template
+            //External Task template
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.clickOnExtrnalTaskTemplateButton();
@@ -572,23 +557,19 @@ describe('Copy Task Template', () => {
             let taskTemplate = 'DRDMV13547ExternalTask' + randomStr;
             let taskSummary = 'DRDMV13547Summary' + randomStr;
             let updatedTaskTemplate = 'DRDMV13547UpdatedTask' + randomStr;
-            let description = 'DRDMV13547Description' + randomStr;
 
             //Automation Task template
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnExtrnalTaskTemplateButton();
-            await taskTemplatePage.setTemplateName(taskTemplate);
-            await taskTemplatePage.setTaskSummary(taskSummary);
-            await taskTemplatePage.setTaskDescription(description);
-            await taskTemplatePage.selectCompanyByName('Petramco');
-            await taskTemplatePage.selectTaskCategoryTier1('Applications');
-            await taskTemplatePage.selectTaskCategoryTier2('Social');
-            await taskTemplatePage.selectTaskCategoryTier3('Chatter');
-            await taskTemplatePage.selectTemplateStatus('Active');
-            await taskTemplatePage.clickOnSaveTaskTemplate();
-            await expect(viewTasktemplatePo.getOwnerCompanyValue()).toBe("Petramco");
-            //await utilCommon.waitUntilPopUpDisappear();
+            let externalTemplateData = {
+                "templateName": taskTemplate,
+                "templateSummary": taskSummary,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createExternalTaskTemplate(externalTemplateData);
 
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
@@ -662,24 +643,29 @@ describe('Copy Task Template', () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let automationTaskTemplate = 'DRDMV13569AutomationTask' + randomStr;
-            let automationTaskSummary = 'DRDMV13569Summary' + randomStr;
             let fieldDescription = 'DRDMV13569FieldDescription' + randomStr;
-            let processName = 'DRDMV13569Process' + randomStr;
 
             let updatedTaskTemplate = 'UpdatedTaskDRDMV13569' + randomStr;
             let updatedTaskSummary = 'UpdatedSummaryDRDMV13569' + randomStr;
             let updateProcessName = 'UpdatedProcessDRDMV13569' + randomStr;
 
-            //Automation Task template
+            let templateData = {
+                "templateName": automationTaskTemplate,
+                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateStatus": "Draft",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": `Case Process 1 ${randomStr}`,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createAutomatedTaskTemplate(templateData);
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
-            await taskTemplatePage.setTemplateName(automationTaskTemplate);
-            await taskTemplatePage.setTaskSummary(automationTaskSummary);
-            await taskTemplatePage.selectCompanyByName('Petramco');
-            await taskTemplatePage.setNewProcessName('Business Workflows', processName);
-            await taskTemplatePage.clickOnSaveTaskTemplate();
-
+            await selectTaskTemplate.searchAndOpenTaskTemplate(automationTaskTemplate);
 
             //Add Dynamic Field
             await viewTaskTemplate.clickOnManageDynamicFieldLink();
@@ -719,19 +705,23 @@ describe('Copy Task Template', () => {
             let updatedTaskSummary = 'DRDMV14220Summary' + randomStr;
             let updateProcessName = 'DRDMV14220Process' + randomStr;
 
-            //Automation Task template
+            let templateData = {
+                "templateName": automationTaskTemplate,
+                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateStatus": "Draft",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": `Case Process 1 ${randomStr}`,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createAutomatedTaskTemplate(templateData);
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
-            await taskTemplatePage.setTemplateName(automationTaskTemplate);
-            await taskTemplatePage.setTaskSummary(automationTaskSummary);
-            await taskTemplatePage.selectCompanyByName('Petramco');
-            await taskTemplatePage.setNewProcessName('Business Workflows', processName);
-            await taskTemplatePage.clickOnSaveTaskTemplate();
-            //await utilCommon.waitUntilPopUpDisappear();
-
-            await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(automationTaskTemplate);
+
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.setTaskSummary(updatedTaskSummary);
