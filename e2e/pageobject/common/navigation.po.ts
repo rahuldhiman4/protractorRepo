@@ -1,4 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../utils/utility.common';
 
 class NavigationPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -88,97 +89,136 @@ class NavigationPage {
 
     async gotoKnoweldgeConsoleFromKM(): Promise<void> {
         if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
-        await element(by.cssContainingText('.a-menu__link[type="button"]', 'Knowledge Console')).click();
+        await this.acceptUnsavedDataPopup();
+        await element(by.cssContainingText('.a-menu__link[type="button"]', 'Knowledge Console')).click().then(async () => {
+            await this.acceptUnsavedDataPopup();
+        });
     }
 
     async gotoCaseConsole(): Promise<void> {
         if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
+        await this.acceptUnsavedDataPopup();
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Workspace')).click();
-            await element(by.buttonText('Case ')).click();
+            await element(by.buttonText('Case ')).click().then(async () => {
+                await this.acceptUnsavedDataPopup();
+            });
         } else {
             await element(by.cssContainingText(this.selectors.menu, /^Workspace$/)).click();
-            await element(by.cssContainingText(this.selectors.menu, /^Case$/)).click();
+            await element(by.cssContainingText(this.selectors.menu, /^Case$/)).click().then(async () => {
+                await this.acceptUnsavedDataPopup();
+            });
         }
         await browser.wait(this.EC.titleContains('Cases - Business Workflows'), 10000);
     }
 
     async gotoKnowledgeConsole(): Promise<void> {
         if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
+        await this.acceptUnsavedDataPopup();
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Workspace')).click();
-            await element(by.buttonText('Knowledge ')).click();
+            await element(by.buttonText('Knowledge ')).click().then(async () => {
+                await this.acceptUnsavedDataPopup();
+            });
         } else {
             await element(by.cssContainingText(this.selectors.menu, /^Workspace$/)).click();
-            await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).click();
+            await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).click().then(async () => {
+                await this.acceptUnsavedDataPopup();
+            });
         }
         await browser.wait(this.EC.titleContains('Knowledge Articles - Business Workflows'), 10000);
     }
 
     async gotoTaskConsole(): Promise<void> {
         if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
+        await this.acceptUnsavedDataPopup();
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Workspace')).click();
-            await element(by.buttonText('Task ')).click();
+            await element(by.buttonText('Task ')).click().then(async () => {
+                await this.acceptUnsavedDataPopup();
+            });
         } else {
             await element(by.cssContainingText(this.selectors.menu, /^Workspace$/)).click();
-            await element(by.cssContainingText(this.selectors.menu, /^Task$/)).click();
+            await element(by.cssContainingText(this.selectors.menu, /^Task$/)).click().then(async () => {
+                await this.acceptUnsavedDataPopup();
+            });
         }
         await browser.wait(this.EC.titleContains('Tasks - Business Workflows'), 10000);
     }
 
     async gotoCreateCase(): Promise<void> {
         if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
+        await this.acceptUnsavedDataPopup();
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Create')).click();
-            await element(by.cssContainingText('.a-hamburger__content.submenu [id="submenu_4"] button', /^Case $/)).click();
+            await element(by.cssContainingText('.a-hamburger__content.submenu [id="submenu_4"] button', /^Case $/)).click().then(async () => {
+                await this.acceptUnsavedDataPopup();
+            });
         } else {
             await element(by.cssContainingText(this.selectors.menu, /^Create$/)).click();
-            await element(by.cssContainingText(this.selectors.menu, /^Case$/)).click();
+            await element(by.cssContainingText(this.selectors.menu, /^Case$/)).click().then(async () => {
+                await this.acceptUnsavedDataPopup();
+            });
         }
         await browser.wait(this.EC.titleContains('Case Create - Business Workflows'), 10000);
     }
 
     async gotoQuickCase(): Promise<void> {
         if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
+        await this.acceptUnsavedDataPopup();
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
-            await element(by.buttonText('Quick Case ')).click();
-        } else await element(by.cssContainingText('button.a-menu__link', 'Quick Case ')).click();
+            await element(by.buttonText('Quick Case ')).click().then(async () => {
+                await this.acceptUnsavedDataPopup();
+            });
+        } else await element(by.cssContainingText('button.a-menu__link', 'Quick Case ')).click().then(async () => {
+            await this.acceptUnsavedDataPopup();
+        });
         await browser.wait(this.EC.titleContains('Case Create - Quick Case - Business Workflows'), 10000);
     }
 
     async gotoCreateKnowledge(): Promise<void> {
         if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
+        await this.acceptUnsavedDataPopup();
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Create')).click();
-            await element(by.cssContainingText('.a-hamburger__content.submenu [id="submenu_4"] button', /^Knowledge $/)).click();
+            await element(by.cssContainingText('.a-hamburger__content.submenu [id="submenu_4"] button', /^Knowledge $/)).click().then(async () => {
+                await this.acceptUnsavedDataPopup();
+            });
         } else {
             await element(by.cssContainingText(this.selectors.menu, /^Create$/)).click();
-            await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).click();
+            await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).click().then(async () => {
+                await this.acceptUnsavedDataPopup();
+            });
         }
         await browser.wait(this.EC.titleContains('Knowledge Article Templates Preview'), 10000);
     }
 
     async gotoPersonProfile(): Promise<void> {
         if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
+        await this.acceptUnsavedDataPopup();
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
-            await element(by.buttonText('My Profile ')).click();
+            await element(by.buttonText('My Profile ')).click().then(async () => {
+                await this.acceptUnsavedDataPopup();
+            });
         } else {
             await $(this.selectors.profileMenu).click();
-            await element(by.buttonText('My Profile')).click();
+            await element(by.buttonText('My Profile')).click().then(async () => {
+                await this.acceptUnsavedDataPopup();
+            });
         }
         await browser.wait(this.EC.titleContains('Person Profile - Business Workflows'), 10000);
     }
 
     async gotoSettingsPage(): Promise<void> {
         if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
+        await this.acceptUnsavedDataPopup();
         await $(this.selectors.settingsButton).click();
         await this.switchToAngularJsTab();
     }
@@ -232,12 +272,17 @@ class NavigationPage {
     async signOut(): Promise<void> {
         try {
             await this.switchToAngularTab();
+            await this.acceptUnsavedDataPopup();
             if (await this.isHambergerIconPresent()) {
                 await $(this.selectors.hamburgerIcon).click();
-                await element(by.buttonText('Sign Out')).click();
+                await element(by.buttonText('Sign Out')).click().then(async () => {
+                    await this.acceptUnsavedDataPopup();
+                });
             } else {
                 await $(this.selectors.profileMenu).click();
-                await element(by.buttonText('Sign Out')).click();
+                await element(by.buttonText('Sign Out')).click().then(async () => {
+                    await this.acceptUnsavedDataPopup();
+                });
             }
             let noAccess = this.EC.titleContains('No Access');
             let bwfLogin = this.EC.titleContains('Login - Business Workflows');
@@ -249,6 +294,7 @@ class NavigationPage {
 
     async switchToAnotherApplication(applicationName: string): Promise<void> {
         if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
+        await this.acceptUnsavedDataPopup();
         await $(this.selectors.adaptIconTiles).click();
         await $(this.selectors.TileSearchInput).clear();
         await $(this.selectors.TileSearchInput).click();
@@ -280,6 +326,12 @@ class NavigationPage {
                 await browser.close();
             }
             await browser.switchTo().window(handles[0]);
+        });
+    }
+
+    async acceptUnsavedDataPopup(): Promise<void> {
+        await $('.modal-title').isPresent().then(async (result) => {
+            if (result) await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
     }
 }
