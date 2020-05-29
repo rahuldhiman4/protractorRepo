@@ -1,13 +1,9 @@
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
-import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
@@ -19,14 +15,11 @@ import taskTemplate from "../../pageobject/settings/task-management/create-taskt
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import activityTabPo from '../../pageobject/social/activity-tab.po';
-import taskConsole from "../../pageobject/task/console-task.po";
-import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
 
 let filePath = '../../data/ui/attachment/bwfPdf.pdf';
@@ -40,10 +33,6 @@ describe('Create Task Template', () => {
 
     afterAll(async () => {
         await navigationPage.signOut();
-    });
-
-    afterEach(async () => {
-        await utilityCommon.refresh();
     });
 
     async function foundationData12111(company: string) {
@@ -184,19 +173,17 @@ describe('Create Task Template', () => {
         try {
             let manualTaskTemplate = 'Manual task' + Math.floor(Math.random() * 1000000);
             let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
-
-            //Manual task Template
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnManualTaskTemplateButton();
-            await taskTemplate.setTemplateName(manualTaskTemplate);
-            await taskTemplate.setTaskSummary(manualTaskSummary);
-            await taskTemplate.setTaskDescription('Description in manual task');
-            await taskTemplate.selectCompanyByName('Petramco');
-            await taskTemplate.selectTemplateStatus('Active');
-            await taskTemplate.clickOnSaveTaskTemplate();
-            await expect(viewTaskTemplate.getTemplateName()).toBe(manualTaskTemplate);
-            //await utilCommon.waitUntilPopUpDisappear();
+            let templateData1 = {
+                "templateName": manualTaskTemplate,
+                "templateSummary": manualTaskSummary,
+                "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(templateData1);
 
             await navigationPage.signOut();
             await loginPage.login('fritz');
@@ -222,21 +209,23 @@ describe('Create Task Template', () => {
             let updateSummary = 'update Summary' + Math.floor(Math.random() * 1000000);
             let Description = 'Description' + Math.floor(Math.random() * 1000000);
 
-            //Manual task Template
-            await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-                .toEqual('Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnManualTaskTemplateButton();
-            await taskTemplate.setTemplateName(manualTaskTemplate);
-            await taskTemplate.setTaskSummary(manualTaskSummary);
-            await taskTemplate.setTaskDescription('Description in manual task');
-            await taskTemplate.selectCompanyByName('Petramco');
-            await taskTemplate.selectTemplateStatus('Active');
-            await taskTemplate.clickOnSaveTaskTemplate();
-            //await utilCommon.waitUntilPopUpDisappear();
 
-            await utilCommon.clickOnBackArrow();
-            await selectTaskTemplate.searchAndOpenTaskTemplate(manualTaskTemplate);
+            
+            //Manual task Template
+            let templateData1 = {
+                "templateName": manualTaskTemplate,
+                "templateSummary": manualTaskSummary,
+                "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(templateData1);
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus("Draft");
             await editTaskTemplate.clickOnSaveMetadata();
@@ -269,22 +258,21 @@ describe('Create Task Template', () => {
             let updateSummary = 'update Summary' + Math.floor(Math.random() * 1000000);
             let Description = 'Description' + Math.floor(Math.random() * 1000000);
 
+            
             //Manual task Template
+            let templateData1 = {
+                "templateName": manualTaskTemplate,
+                "templateSummary": manualTaskSummary,
+                "templateStatus": "Draft",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(templateData1);
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-                .toEqual('Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnManualTaskTemplateButton();
-            await taskTemplate.setTemplateName(manualTaskTemplate);
-            await taskTemplate.setTaskSummary(manualTaskSummary);
-            await taskTemplate.setTaskDescription('Description in manual task');
-            await taskTemplate.selectCompanyByName('Petramco');
-            await taskTemplate.selectBuisnessUnit("Facilities Support");
-            await taskTemplate.selectOwnerGroup("Facilities")
-            await taskTemplate.clickOnSaveTaskTemplate();
-            //await utilCommon.waitUntilPopUpDisappear();
-
-            await utilCommon.clickOnBackArrow();
-            await selectTaskTemplate.searchAndOpenTaskTemplate(manualTaskTemplate);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await viewTaskTemplate.clickOnEditLink();
             await editTaskTemplate.setSummary(updateSummary);
             await editTaskTemplate.setDescription(Description);

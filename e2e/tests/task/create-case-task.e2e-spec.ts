@@ -35,10 +35,6 @@ describe('Create Case Task', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     //ankagraw
     it('[DRDMV-7165,DRDMV-7147]: Update Task Type field for any task', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -274,21 +270,12 @@ describe('Create Case Task', () => {
         }
 
         await apiHelper.apiLogin('qkatawazi');
-        let temp1 = await apiHelper.createAutomatedTaskTemplate(templateData4);
-        let temp2 = await apiHelper.createAutomatedTaskTemplate(templateData5);
-        let temp3 = await apiHelper.createAutomatedTaskTemplate(templateData6);
-        let temp4 = await apiHelper.createManualTaskTemplate(templateData);
-        let temp5 = await apiHelper.createManualTaskTemplate(templateData1);
-        let temp6 = await apiHelper.createManualTaskTemplate(templateData2);
-
-        console.log(
-            temp1.displayId, "\n",
-            temp2.displayId, "\n",
-            temp3.displayId, "\n",
-            temp4.displayId, "\n",
-            temp5.displayId, "\n",
-            temp6.displayId
-        );
+        await apiHelper.createAutomatedTaskTemplate(templateData4);
+        await apiHelper.createAutomatedTaskTemplate(templateData5);
+        await apiHelper.createAutomatedTaskTemplate(templateData6);
+        await apiHelper.createManualTaskTemplate(templateData);
+        await apiHelper.createManualTaskTemplate(templateData1);
+        await apiHelper.createManualTaskTemplate(templateData2);
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
@@ -482,17 +469,17 @@ describe('Create Case Task', () => {
         await apiHelper.associatePersonToSupportGroup(userData.userId, "Facilities");
         await apiHelper.associatePersonToSupportGroup(userData.userId, "Psilon Support Group2");
 
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await selectTaskTemplate.clickOnManualTaskTemplateButton();
-        await taskTemplate.setTemplateName(TaskTemplate);
-        await taskTemplate.setTaskSummary(TaskSummary);
-        await taskTemplate.selectTemplateStatus('Active');
-        await taskTemplate.selectCompanyByName('Petramco');
-        await taskTemplate.selectBuisnessUnit('Facilities Support');
-        await taskTemplate.selectOwnerGroup('Facilities');
-        await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.closePopUpMessage();
+        let templateData1 = {
+            "templateName": TaskTemplate,
+            "templateSummary":TaskSummary,
+            "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createManualTaskTemplate(templateData1);
 
         //search above template
         try {
@@ -850,15 +837,13 @@ describe('Create Case Task', () => {
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(CaseTemplateData);
-        console.log("active case Template is created===", newCaseTemplate.id);
-        console.log("active case Template is created===", newCaseTemplate.displayId);
         await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automationTaskTemplate.displayId);
        try{
         await navigationPage.signOut();
         await loginPage.login('fritz');   
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('fritz');
-        await createCasePage.setSummary('SummaryAnkush');
+        await createCasePage.setSummary('Summary');
         await createCasePage.clickSelectCaseTemplateButton();
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
         await createCasePage.clickAssignToMeButton();
