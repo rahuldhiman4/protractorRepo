@@ -88,8 +88,8 @@ class NavigationPage {
     }
 
     async gotoKnoweldgeConsoleFromKM(): Promise<void> {
-        await this.acceptUnsavedDataPopup();
         if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
+        await this.acceptUnsavedDataPopup();
         await element(by.cssContainingText('.a-menu__link[type="button"]', 'Knowledge Console')).click().then(async () => {
             await this.acceptUnsavedDataPopup();
         });
