@@ -208,7 +208,6 @@ describe('Create Task Template', () => {
             let Description = 'Description' + Math.floor(Math.random() * 1000000);
 
 
-
             //Manual task Template
             let templateData1 = {
                 "templateName": manualTaskTemplate,
@@ -223,7 +222,7 @@ describe('Create Task Template', () => {
             await apiHelper.createManualTaskTemplate(templateData1);
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-
+            await selectTaskTemplate.searchAndOpenTaskTemplate(manualTaskTemplate);
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus("Draft");
             await editTaskTemplate.clickOnSaveMetadata();
@@ -256,7 +255,6 @@ describe('Create Task Template', () => {
             let updateSummary = 'update Summary' + Math.floor(Math.random() * 1000000);
             let Description = 'Description' + Math.floor(Math.random() * 1000000);
 
-
             //Manual task Template
             let templateData1 = {
                 "templateName": manualTaskTemplate,
@@ -271,6 +269,7 @@ describe('Create Task Template', () => {
             await apiHelper.createManualTaskTemplate(templateData1);
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.searchAndOpenTaskTemplate(manualTaskTemplate)
             await viewTaskTemplate.clickOnEditLink();
             await editTaskTemplate.setSummary(updateSummary);
             await editTaskTemplate.setDescription(Description);
