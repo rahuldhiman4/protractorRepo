@@ -7,12 +7,9 @@ import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
-import changeAssignmentOldBlade from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
-import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
-import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import taskConsole from "../../pageobject/task/console-task.po";
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
@@ -157,13 +154,9 @@ describe('Create Adhoc task', () => {
                 "Support Group": "US Support 1",
                 "Assignee": "qtao"
             }
-            console.log("Task creatededf");
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(taskTemplateData);
-            console.log("Task created");
-
             newCase = await apiHelper.createCase(caseData);
-            console.log("Case created");
         });
         it('Add task to Case and set case to In Progress', async () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
@@ -514,6 +507,7 @@ describe('Create Adhoc task', () => {
 
     it('[DRDMV-3828]: [Task Workspace] Task Workspace verification', async () => {
         await navigationPage.gotoTaskConsole();
+        await utilityGrid.clearFilter();
         let allHeaders: string[] = ["Task ID", "Case ID", "Priority", "Task Type", "Status", "Summary", "Assigned Group", "Assignee", "Modified Date", "SLM Status"];
         let remainingHeaders: string[] = ["Task ID", "Case ID", "Priority", "Task Type", "Status", "Summary", "Assigned Group", "Assignee", "Modified Date"]
         let removeHeader: string[] = ["SLM Status"];
