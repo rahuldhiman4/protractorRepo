@@ -68,5 +68,23 @@
         "firstName": "fnPerson12080",
         "lastName": "lnPerson12080",
         "userId": "idphylum312080"
+    },
+    "PhytoCaseAdmin1": {
+        "firstName": "Ashish",
+        "lastName": "Nehra",
+        "userId": "anehra",
+        "company": "Phyto"
+    },
+    "PhytoCaseAdmin2": {
+        "firstName": "Zaheer",
+        "lastName": "Khan",
+        "userId": "zkhan",
+        "company": "Phyto"
+    },
+    "PhytoKnowledgeUser": {
+        "firstName": "Sachin",
+        "lastName": "Tendulkar",
+        "userId": "stendulkar",
+        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
     }
 }

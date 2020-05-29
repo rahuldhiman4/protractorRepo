@@ -421,6 +421,12 @@ export class Utility {
             }
         });
     }
+
+    async getOldDate(noOfDays: number): Promise<Date>{
+        let d: Date = new Date();
+        d.setDate(d.getDate() - noOfDays);
+        return d;
+    }
 }
 
 export default new Utility();

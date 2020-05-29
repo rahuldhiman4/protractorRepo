@@ -49,7 +49,9 @@ class LoginPage {
         //     passwordLocator = this.selectors.rssoPassword;
         //     signInButtonLocator = this.selectors.rssoSignInButton;
         // }
-        await $(userLocator).sendKeys(user);
+        await browser.wait(this.EC.elementToBeClickable($(userLocator)), 30000).then(async () => {
+            await $(userLocator).sendKeys(user);
+        })
         await $(passwordLocator).sendKeys(password);
         await $(signInButtonLocator).click();
         let caseConsole = this.EC.titleContains('Cases - Business Workflows');

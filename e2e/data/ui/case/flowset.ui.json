@@ -11,10 +11,10 @@
         "company": "- Global -",
         "description": "test description"
     },
-    "flowsetPhylumFields" : {
-        "flowsetName": "Test Flowset Phylum name",
+    "flowsetPhytoFields" : {
+        "flowsetName": "Test Flowset Phyto name",
         "flowsetStatus": 10,
-        "company": "Phylum",
-        "description": "test description for Phylum"
+        "company": "Phyto",
+        "description": "test description for Phyto"
     }
 }

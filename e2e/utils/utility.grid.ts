@@ -253,7 +253,7 @@ export class GridOperations {
         await $(refreshIcon).click();
     }
 
-    async applyPresetFilter(filterName: string, guid?: string): Promise<void> {
+    async applyPresetFilter(filterName: string, guid?: string): Promise<void> {
         let refreshIcon = 'button[rx-id="refresh-button"]';
         let guidId: string = "";
         if (guid) guidId = `[rx-view-component-id="${guid}"] `;
@@ -282,6 +282,14 @@ export class GridOperations {
         if (await checkboxLocator.isPresent()) await checkboxLocator.click();
         else await radioButtonLocator.click();
     }
+
+    async clickRefreshIcon(guidId?: string): Promise<void>{
+        if(guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.refreshIcon).click();
+        else await $(this.selectors.refreshIcon).click();
+    }
+
 }
+
+
 
 export default new GridOperations();
