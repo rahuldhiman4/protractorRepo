@@ -84,6 +84,7 @@ describe('Create Adhoc task', () => {
             newCase = await apiHelper.createCase(caseData);
         });
         it('Create Adhoc Task', async () => {
+            await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             //Adhoc task validation
             await viewCasePage.clickAddTaskButton();
@@ -159,6 +160,7 @@ describe('Create Adhoc task', () => {
             newCase = await apiHelper.createCase(caseData);
         });
         it('Add task to Case and set case to In Progress', async () => {
+            await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(taskTemplateData.templateName);
