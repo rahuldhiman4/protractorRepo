@@ -315,8 +315,6 @@ describe('Copy Task Template', () => {
     });
 
     describe('[DRDMV-14215]: Create Copy of an automated Task and check execution', () => {
-        console.log("Starting....DRDMV-14215");
-        
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, newCase;
         let newProcessName = 'NewProcessDRDMV14215' + randomStr;
