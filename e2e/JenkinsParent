@@ -2,12 +2,12 @@ def suiteNameList = [];
 properties([
     parameters([
         stringParam(
-          defaultValue: 'PrivateSlave',
+          defaultValue: 'SlaveUI1',
           description: 'Node name to run the job',
           name: 'NODE',
         ),
         text(
-            defaultValue: 'case1,cognitive=http://clm-aus-t5jiqs.bmc.com:8008\ncase2=http://clm-aus-t5pip8.bmc.com:8008\ntask,social,attachment=http://clm-aus-t5jj9s.bmc.com:8008\nknowledge,email=http://clm-aus-t5jipb.bmc.com:8008\nslm,flowset,notification=http://clm-aus-t5jhb8.bmc.com:8008\nticketing=http://clm-aus-t5jher.bmc.com:8008',
+            defaultValue: 'case1,cognitive=http://clm-aus-u9x5hb.bmc.com:8008\ncase2=http://clm-aus-u9x5hb.bmc.com:8008\ntask,social,attachment=http://clm-aus-u9x5hb.bmc.com:8008\nknowledge,email=http://clm-aus-u9x5hb.bmc.com:8008\nslm,flowset,notification=http://clm-aus-u9x5hb.bmc.com:8008\nticketing=http://clm-aus-u9x5hb.bmc.com:8008',
             description: 'Execution Suite List',
             name: 'SUITELIST',
         ),
@@ -130,7 +130,7 @@ node("${NODE}"){
                 '${FILE, path="e2e/reports/spec-jira-report/CycleReport.html"}'
                 +
                 "</table>",
-                to: "prasad_vidhate@bmc.com;sunil_patil@bmc.com;pravin_ajagunde@bmc.com;tushar_garud@bmc.com;anant_sahitya@bmc.com;swapnil_khobragade_tp@bmc.com;ankush_agrawal_tp@bmc.com;pravin_tidke_tp@bmc.com;kiran_gaikwad_tp@bmc.com;naziya_mujawar@bmc.com;rahul_dhiman_tp@bmc.com;rajan_bangar_tp@bmc.com;apurva_deshmukh_tp@bmc.com;ashish_gabhane@bmc.com;swapnil_yelkar@bmc.com;sushrut_sawarkar@bmc.com",
+                to: "prasad_vidhate@bmc.com;sunil_patil@bmc.com;pravin_ajagunde@bmc.com;tushar_garud@bmc.com;anant_sahitya@bmc.com;swapnil_khobragade_tp@bmc.com;ankush_agrawal_tp@bmc.com;pravin_tidke_tp@bmc.com;kiran_gaikwad_tp@bmc.com;naziya_mujawar@bmc.com;rahul_dhiman_tp@bmc.com;apurva_deshmukh_tp@bmc.com;ashish_gabhane@bmc.com;swapnil_yelkar@bmc.com;sushrut_sawarkar@bmc.com",
                 from: "jenkins@noreply",
                 attachmentsPattern: 'artefact/jira-report/jira-report.csv'
             )

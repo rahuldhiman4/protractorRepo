@@ -32,10 +32,6 @@ describe('Case Status Change', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     //kgaikwad
     it('[DRDMV-2530]: [Case Status] Case status change from New', async () => {
         let priority: string = "Medium";
@@ -76,7 +72,6 @@ describe('Case Status Change', () => {
         expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
         expect(await caseConsole.isCaseStatusPresent(statusAssigned)).toBeTruthy("Status Assigned not matching");
         expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
-        console.log('Assigned status success');
         // - Change status from New to Canceled.
         let newCase2 = await apiHelper.createCase(caseData);
         let caseId2: string = newCase2.displayId;
@@ -100,7 +95,6 @@ describe('Case Status Change', () => {
         expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
         expect(await caseConsole.isCaseStatusPresent(statusCanceled)).toBeTruthy("Status Cancelled not matching");
         expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
-        console.log('Canceled status success');
         // - Change status from New to Pending.
         let newCase3 = await apiHelper.createCase(caseData);
         let caseId3: string = newCase3.displayId;
@@ -140,7 +134,6 @@ describe('Case Status Change', () => {
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
-        console.log(await viewCasePage.getCaseID());
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
         await updateStatusBladePo.changeCaseStatus(statusResolved);
         await updateStatusBladePo.setStatusReason('Auto Resolved');
@@ -160,7 +153,7 @@ describe('Case Status Change', () => {
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
         await utilityCommon.closePopUpMessage();
-        await editCasePage.updateCaseSummary('Pending AC');
+        await editCasePage.setCaseSummary('Pending AC');
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
     });//, 180 * 1000);
@@ -175,7 +168,6 @@ describe('Case Status Change', () => {
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
-        console.log(await viewCasePage.getCaseID());
         await updateStatusBladePo.changeCaseStatus(statusResolved);
         await updateStatusBladePo.setStatusReason('Customer Follow-Up Required');
         await updateStatusBladePo.clickSaveStatus(statusResolved);
@@ -249,7 +241,7 @@ describe('Case Status Change', () => {
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
         await utilityCommon.closePopUpMessage();
-        await editCasePage.updateCaseSummary('pendingAC');
+        await editCasePage.setCaseSummary('pendingAC');
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
 
@@ -292,6 +284,8 @@ describe('Case Status Change', () => {
         expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
         await updateStatusBladePo.changeCaseStatus(statusInProgress);
         expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
+        await updateStatusBladePo.clickCancelButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     }, 450 * 1000);
 
     //kgaikwad
@@ -304,7 +298,6 @@ describe('Case Status Change', () => {
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
-        console.log(await viewCasePage.getCaseID());
         await updateStatusBladePo.changeCaseStatus(statusCanceled);
         await updateStatusBladePo.setStatusReason('Approval Rejected');
         await updateStatusBladePo.clickSaveStatus(statusCanceled);
@@ -323,7 +316,6 @@ describe('Case Status Change', () => {
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
-        console.log(await viewCasePage.getCaseID());
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
@@ -339,7 +331,7 @@ describe('Case Status Change', () => {
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
         await utilityCommon.closePopUpMessage();
-        await editCasePage.updateCaseSummary('pendingAC');
+        await editCasePage.setCaseSummary('pendingAC');
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
     });
@@ -355,7 +347,6 @@ describe('Case Status Change', () => {
             await createCasePage.setContactName('qtao');
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            console.log(await viewCasePage.getCaseID());
             await updateStatusBladePo.changeCaseStatus(statusPending);
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus(statusPending);
@@ -374,7 +365,7 @@ describe('Case Status Change', () => {
             await editCasePage.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
             await utilityCommon.closePopUpMessage();
-            await editCasePage.updateCaseSummary('pendingAC');
+            await editCasePage.setCaseSummary('pendingAC');
             await editCasePage.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
         } catch (e) {
@@ -388,8 +379,6 @@ describe('Case Status Change', () => {
     //ankagraw
     it('[DRDMV-1199]: [Case Status] Case status change from In Progress', async () => {
         try {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let summary1: string = randomStr + "Summary 1";
             let summary2: string = randomStr + "Summary 2";
@@ -455,12 +444,12 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickCancelButton();
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(manualTask);
-            await manageTask.clickOnCloseButton();
+            await manageTask.clickCloseButton();
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Third Party');
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLinkOnManageTask(manualSummary);
+            await manageTask.clickTaskLink(manualSummary);
             expect(await viewTask.getTaskStatusValue()).toBe('Assigned', 'Assigned status not found');
 
             await navigationPage.gotoCaseConsole();
@@ -473,12 +462,12 @@ describe('Case Status Change', () => {
             await caseConsole.searchAndOpenCase(caseId3);
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(manualTask);
-            await manageTask.clickOnCloseButton();
+            await manageTask.clickCloseButton();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLinkOnManageTask(manualSummary);
+            await manageTask.clickTaskLink(manualSummary);
             expect(await viewTask.getTaskStatusValue()).toBe('Canceled', 'canceled status not found');
         } catch (e) {
             throw e;
@@ -640,13 +629,14 @@ describe('Case Status Change', () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBU": "United States Support",
-                "ownerGroup": "US Support 1",
                 "categoryTier1": "Purchasing Card",
                 "categoryTier2": "Policies",
                 "categoryTier3": "Card Issuance",
                 "casePriority": "Low",
                 "caseStatus": "New",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCase1 = await apiHelper.createCase(caseData1);
@@ -669,10 +659,11 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCasePage.updateCaseSummary(summary1);
+            await editCasePage.setCaseSummary(summary1);
             await expect(editCasePage.isSaveCaseEnable()).toBeFalsy("Save button Visible");
             await editCasePage.clickOnCancelCaseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+           
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickEditCaseButton();
@@ -680,7 +671,7 @@ describe('Case Status Change', () => {
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
-            await editCasePage.updateCaseSummary(summary1);
+            await editCasePage.setCaseSummary(summary1);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -694,7 +685,7 @@ describe('Case Status Change', () => {
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
-            await editCasePage.updateCaseSummary(summary2);
+            await editCasePage.setCaseSummary(summary2);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -709,12 +700,13 @@ describe('Case Status Change', () => {
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clickOnAssignToMe();
-            await editCasePage.updateCaseSummary(summary3);
+            await editCasePage.setCaseSummary(summary3);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
+           
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId4);
             await viewCasePage.clickEditCaseButton();
@@ -723,8 +715,7 @@ describe('Case Status Change', () => {
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clickOnAssignToMe();
-            await editCasePage.updateCaseSummary(summary4);
-
+            await editCasePage.setCaseSummary(summary4);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -808,7 +799,7 @@ describe('Case Status Change', () => {
             let caseId4: string = newCase4.displayId;
             let newCase5 = await apiHelper.createCase(caseData5);
             let caseId5: string = newCase5.displayId;
-            let statusOptions: string[] = ["Pending", "Assigned", "In Progress", "Resolved", "Canceled", "Closed"];
+            let statusOptions: string[] = ["Pending", "Assigned", "In Progress", "Resolved", "Canceled", "Closed", "Approval Rejected"];
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();

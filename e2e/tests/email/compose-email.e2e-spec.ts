@@ -383,7 +383,7 @@ describe("Compose Email", () => {
         expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate2, 'Email Template name heading does not match');
         await composeMail.clickOnSendButton();
         await utilityCommon.waitUntilPopUpDisappear();
-    });//, 150 * 1000);
+    },300 * 1000);
 
     //kgaikwad
     it('[DRDMV-8392,DRDMV-10384]: Negative: In Email "To" and "cc" should be user from Foundation data ', async () => {

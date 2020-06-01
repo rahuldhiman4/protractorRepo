@@ -53,11 +53,6 @@ describe('Case Bulk Operation', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-        await navigationPage.gotoCaseConsole();
-    });
-
     it('[DRDMV-15953]: Verify if Case Agent can select and change the assignee of multiple cases', async () => {
         await apiHelper.apiLogin(qfengStr);
         let caseData = require('../../data/ui/case/case.ui.json');
@@ -66,7 +61,7 @@ describe('Case Bulk Operation', () => {
             let response = await apiHelper.createCase(caseData['bulkCaseAssignee_New']);
             caseId[i] = response.displayId;
         }
-        await utilityCommon.refresh();
+        await utilityGrid.clickRefreshIcon();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -97,7 +92,7 @@ describe('Case Bulk Operation', () => {
             let response = await apiHelper.createCase(caseData['bulkCaseAssignee_New']);
             caseId[i] = response.displayId;
         }
-        await utilityCommon.refresh();
+        await utilityGrid.clickRefreshIcon();
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[1]);
         await caseConsolePage.clickOnChangeAssignmentButton();
@@ -162,7 +157,7 @@ describe('Case Bulk Operation', () => {
             await caseConsolePage.clickOnChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee(petramcoStr, unitedStateSupportStr, usSupportGroup3Str, 'Qiao Feng');
             expect(await utilityCommon.isPopUpMessagePresent('You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy();
-
+            await utilityCommon.closePopUpMessage();
         }
         catch (ex) {
             throw ex;
@@ -183,7 +178,7 @@ describe('Case Bulk Operation', () => {
             caseId[i] = response.displayId;
             caseGuid[i] = response.id;
         }
-        await utilityCommon.refresh();
+        await utilityGrid.clickRefreshIcon();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -222,7 +217,7 @@ describe('Case Bulk Operation', () => {
         caseId[0] = (await apiHelper.createCase(caseData['bulkCaseAssignee_Assigned'])).displayId;
         caseId[1] = (await apiHelper.createCase(caseData['bulkCaseAssignee_InProgress'])).displayId;
         caseId[2] = (await apiHelper.createCase(caseData['bulkCaseAssignee_Resolved'])).displayId;
-        await utilityCommon.refresh();
+        await utilityGrid.clickRefreshIcon();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -249,7 +244,7 @@ describe('Case Bulk Operation', () => {
             caseId[i] = response.displayId;
             caseGuid[i] = response.id;
         }
-        await utilityCommon.refresh();
+        await utilityGrid.clickRefreshIcon();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -296,10 +291,9 @@ describe('Case Bulk Operation', () => {
             }
 
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials('idPersonBO@petramco.com', "Password_1234");
+            await loginPage.login('idPersonBO@petramco.com', "Password_1234");
 
             await utilityGrid.clearFilter();
-            await utilityCommon.refresh();
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
             }
@@ -342,7 +336,7 @@ describe('Case Bulk Operation', () => {
         await apiHelper.updateCaseStatus(caseGuid, "Resolved", "Customer Follow-Up Required");
         await apiHelper.updateCaseStatus(caseGuid, "Closed");
 
-        await utilityCommon.refresh();
+        await utilityGrid.clickRefreshIcon();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }

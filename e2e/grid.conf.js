@@ -9,17 +9,18 @@ const specJsonReporter = require("./reporters/spec-json-reporter/jasmine-spec-js
 /**
  * @type { import("protractor").Config }
  */
+
 exports.config = {
   allScriptsTimeout: 40 * 1000,
   getPageTimeout: 60 * 1000,
 
   capabilities: {
     browserName: "chrome",
-    "goog:chromeOptions": {
-      w3c: false,
-    },
     chromeOptions: {
       prefs: {
+        profile: {
+          default_content_setting_values: { automatic_downloads: 1 }
+        },
         download: {
           prompt_for_download: false,
           directory_upgrade: true,
@@ -46,13 +47,13 @@ exports.config = {
 
   //directConnect: false,
   seleniumAddress: "http://clm-pun-u8picl:4444/wd/hub",
-  //baseUrl: 'http://clm-pun-t3erts.bmc.com:8008',
-  baseUrl: "http://clm-aus-t5jj96.bmc.com:8008",
+  baseUrl: "http://clm-aus-u9x5do.bmc.com:8008",
+  // baseUrl: "http://clm-aus-u9x5gh.bmc.com:8008",
   framework: "jasmine",
   jasmineNodeOpts: {
     showColors: true,
     defaultTimeoutInterval: 240 * 1000,
-    print: function () {},
+    print: function () { },
   },
 
   async onPrepare() {

@@ -65,15 +65,13 @@ export class GridOperations {
         let refreshIcon = this.selectors.refreshIcon;
         if (guid) {
             let gridGuid = `[rx-view-component-id="${guid}"] `;
-            appliedPresetFilter = gridGuid + appliedPresetFilter;
             filterPresetBtn = gridGuid + filterPresetBtn;
-            clearBtn = gridGuid + clearBtn;
             refreshIcon = gridGuid + refreshIcon;
         }
         let pageTitle = await browser.getTitle();
         await $(appliedPresetFilter).isPresent().then(async (result) => {
             if (result) {
-                if(pageTitle == 'Cases - Business Workflows' || pageTitle  == 'Tasks - Business Workflows'){
+                if (pageTitle == 'Cases - Business Workflows' || pageTitle == 'Tasks - Business Workflows') {
                     await this.addFilter('Assigned Group', 'abc', 'textbox');
                 }
                 await $(filterPresetBtn).click();
@@ -82,7 +80,7 @@ export class GridOperations {
             } else {
                 console.log("Filters are already cleared");
             }
-        })
+        });
     }
 
     async addGridColumn(columnNameList: string[], guid?: string): Promise<void> {
@@ -254,12 +252,13 @@ export class GridOperations {
     }
 
     async applyPresetFilter(filterName: string, guid?: string): Promise<void> {
+        let refreshIcon = 'button[rx-id="refresh-button"]';
         let guidId: string = "";
-        if (guid) { guidId = `[rx-view-component-id="${guid}"] `; }
+        if (guid) guidId = `[rx-view-component-id="${guid}"] `;
         await $(guidId + this.selectors.filterPresetBtn).click();
         await $$(this.selectors.filterTab).get(1).click();
         await element(by.cssContainingText('.radio__item', filterName)).click();
-        await utilityCommon.refresh();
+        await $(guidId + refreshIcon).click();
     }
 
     async getAppliedFilterName(guid?: string): Promise<string> {
@@ -281,6 +280,14 @@ export class GridOperations {
         if (await checkboxLocator.isPresent()) await checkboxLocator.click();
         else await radioButtonLocator.click();
     }
+
+    async clickRefreshIcon(guidId?: string): Promise<void>{
+        if(guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.refreshIcon).click();
+        else await $(this.selectors.refreshIcon).click();
+    }
+
 }
+
+
 
 export default new GridOperations();

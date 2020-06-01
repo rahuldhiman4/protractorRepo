@@ -435,7 +435,7 @@ describe('Notes template', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(taskTemplateName);
             //await utilCommon.waitUntilSpinnerToHide();
-            await manageTask.clickTaskLinkOnManageTask(manualTaskSummary);
+            await manageTask.clickTaskLink(manualTaskSummary);
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();

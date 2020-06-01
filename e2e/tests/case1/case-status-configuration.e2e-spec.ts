@@ -21,47 +21,43 @@ describe('Case Status Configuration', () => {
         await browser.get(BWF_BASE_URL);
         await apiHelper.apiLogin('tadmin');
         const personDataFile = require('../../data/ui/foundation/person.ui.json');
-        let personData1 = personDataFile['PhylumCaseAgent1'];
+        let personData1 = personDataFile['PhytoCaseAdmin1'];
         await apiHelper.createNewUser(personData1);
-        await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
-        await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
+        await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phyto Support Group1');
+        await apiHelper.associatePersonToCompany(personData1.userId, 'Phyto');
 
-        let personData2 = personDataFile['PhylumCaseAgent2'];
+        let personData2 = personDataFile['PhytoCaseAdmin2'];
         await apiHelper.createNewUser(personData2);
-        await apiHelper.associatePersonToSupportGroup(personData2.userId, 'Phylum Support Group1');
-        await apiHelper.associatePersonToCompany(personData2.userId, 'Phylum');
+        await apiHelper.associatePersonToSupportGroup(personData2.userId, 'Phyto Support Group1');
+        await apiHelper.associatePersonToCompany(personData2.userId, 'Phyto');
 
-        let personData3 = personDataFile['PhylumKnowledgeUser1'];
+        let personData3 = personDataFile['PhytoKnowledgeUser'];
         await apiHelper.createNewUser(personData3);
-        await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Phylum Support Group1');
-        await apiHelper.associatePersonToCompany(personData3.userId, 'Phylum');
+        await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Phyto Support Group1');
+        await apiHelper.associatePersonToCompany(personData3.userId, 'Phyto');
 
         //Wait to reflect the user created above
         await browser.sleep(12000);
 
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         flowsetData = require('../../data/ui/case/flowset.ui.json');
-        flowsetName = await flowsetData['flowsetPhylumFields'].flowsetName + randomStr;
-        flowsetData['flowsetPhylumFields'].flowsetName = flowsetName;
-        await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
-        await apiHelper.createNewFlowset(flowsetData['flowsetPhylumFields']);
+        flowsetName = await flowsetData['flowsetPhytoFields'].flowsetName + randomStr;
+        flowsetData['flowsetPhytoFields'].flowsetName = flowsetName;
+        await apiHelper.apiLoginWithCredential('anehra@petramco.com', 'Password_1234');
+        await apiHelper.createNewFlowset(flowsetData['flowsetPhytoFields']);
 
-        await loginPage.loginWithCredentials('idphylum1@petramco.com', 'Password_1234');
+        await loginPage.login('anehra@petramco.com', 'Password_1234');
     });
 
     afterAll(async () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-    });
-
     //asahitya
     it('[DRDMV-13617]: Verify User not able to delete mandatory status for case', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
-        await statusConfigPo.setCompanyDropdown('Phylum', 'case');
+        await statusConfigPo.setCompanyDropdown('Phyto', 'case');
         await statusConfigPo.clickEditLifeCycleLink();
         await statusConfigPo.clickEditStatus("New");
         expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
@@ -93,7 +89,7 @@ describe('Case Status Configuration', () => {
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
-        await statusConfigPo.setCompanyDropdown('Phylum', 'case');
+        await statusConfigPo.setCompanyDropdown('Phyto', 'case');
         await statusConfigPo.selectFlowset(flowsetName);
         await statusConfigPo.clickEditLifeCycleLink();
         await statusConfigPo.clickEditStatus("New");
@@ -123,6 +119,7 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.clickEditStatus("Canceled");
         expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
         await statusConfigPo.clickOnBackButton();
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     }, 340 * 1000);
 
     //asahitya
@@ -133,25 +130,26 @@ describe('Case Status Configuration', () => {
         expect(await statusConfigPo.isCompanyRequiredText('case')).toBeTruthy();
         expect(await statusConfigPo.getDefaultCompanyValue()).toBe('- Global -');
         expect(await statusConfigPo.getStatusLifeCycle()).toBe('Status Lifecycle for - Global -');
-        await statusConfigPo.setCompanyDropdown("Phylum", 'case');
+        await statusConfigPo.setCompanyDropdown("Phyto", 'case');
         await statusConfigPo.selectFlowset(flowsetName);
-        expect(await statusConfigPo.getStatusLifeCycle()).toBe('Status Lifecycle for Phylum - ' + flowsetName);
+        expect(await statusConfigPo.getStatusLifeCycle()).toBe('Status Lifecycle for Phyto - ' + flowsetName);
         expect(await statusConfigPo.isEditLifeCycleBtnDisabled()).toBeFalsy('Button is disabled');
         await statusConfigPo.clickEditLifeCycleLink();
         await statusConfigPo.clickEditStatus("Canceled");
         await statusConfigPo.clickOnCancelButton();
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
     //asahitya
     it('[DRDMV-13899]:Verify case created prior to label change will reflect new status label changes', async () => {
         await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester('phylumfn2');
+        await createCasePo.selectRequester('zkhan');
         await createCasePo.setSummary("DRDMV-13899 before configuration");
         await createCasePo.clickChangeAssignmentButton();
-        await assignmentBladePO.selectCompany('Phylum');
-        await assignmentBladePO.selectBusinessUnit('Phylum Support Org1');
-        await assignmentBladePO.selectSupportGroup('Phylum Support Group1');
-        await assignmentBladePO.selectAssignee('phylumfn2');
+        await assignmentBladePO.selectCompany('Phyto');
+        await assignmentBladePO.selectBusinessUnit('Phyto Support Org1');
+        await assignmentBladePO.selectSupportGroup('Phyto Support Group1');
+        await assignmentBladePO.selectAssignee('Zaheer Khan');
         await assignmentBladePO.clickOnAssignButton();
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -159,14 +157,14 @@ describe('Case Status Configuration', () => {
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
-        await statusConfigPo.setCompanyDropdown("Phylum", 'case');
+        await statusConfigPo.setCompanyDropdown("Phyto", 'case');
         await statusConfigPo.clickEditLifeCycleLink();
         await statusConfigPo.clickEditStatus("Assigned");
         await statusConfigPo.renameExistingStatus('Staged');
         await utilityCommon.switchToDefaultWindowClosingOtherTabs();
 
         await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester('phylumfn2');
+        await createCasePo.selectRequester('zkhan');
         await createCasePo.setSummary("DRDMV-13899 after configuration");
         await createCasePo.clickAssignToMeButton();
         await createCasePo.clickSaveCaseButton();
@@ -181,18 +179,17 @@ describe('Case Status Configuration', () => {
         //back to default
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
-        await statusConfigPo.setCompanyDropdown("Phylum", 'case');
+        await statusConfigPo.setCompanyDropdown("Phyto", 'case');
         await statusConfigPo.clickEditLifeCycleLink();
         await statusConfigPo.clickEditStatus("Staged");
         await statusConfigPo.renameExistingStatus('Assigned');
     }, 420 * 1000);
 
-    //failing due to DRDMV-21311
     //asahitya  
     it('[DRDMV-13631]: Verify User not able to delete mandatory status for task', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
-        await statusConfigPo.setCompanyDropdown('Phylum', 'task');
+        await statusConfigPo.setCompanyDropdown('Phyto', 'task');
         await statusConfigPo.clickEditLifeCycleLink();
         await statusConfigPo.addCustomStatus("Staged", "Assigned", "customStatus");
         await statusConfigPo.clickOnBackButton();
@@ -239,10 +236,10 @@ describe('Case Status Configuration', () => {
     //asahitya
     it('[DRDMV-13632]: Verify User not able to delete mandatory status for Knowledge', async () => {
         await navigationPage.signOut()
-        await loginPage.loginWithCredentials('idphylumkuser@petramco.com', 'Password_1234');
+        await loginPage.login('stendulkar@petramco.com', 'Password_1234');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
-        await statusConfigPo.setCompanyDropdown('Phylum', 'knowledge');
+        await statusConfigPo.setCompanyDropdown('Phyto', 'knowledge');
         await statusConfigPo.clickEditLifeCycleLink();
         await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
         await statusConfigPo.clickOnBackButton();
@@ -290,14 +287,14 @@ describe('Case Status Configuration', () => {
     it('[DRDMV-13635]:Verify UI for Knowledge status configuration', async () => {
         try {
             await navigationPage.signOut()
-            await loginPage.loginWithCredentials('idphylumkuser@petramco.com', 'Password_1234');
+            await loginPage.login('stendulkar@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
             expect(await statusConfigPo.getTitleValue('knowledge')).toBe('Knowledge Status Configuration');
             expect(await statusConfigPo.isCompanyRequiredText('knowledge')).toBeTruthy();
             expect(await statusConfigPo.getDefaultCompanyValue()).toBe('- Global -');
             expect(await statusConfigPo.getStatusLifeCycle()).toBe('Status Lifecycle for - Global -');
-            await statusConfigPo.setCompanyDropdown("Phylum", 'knowledge');
+            await statusConfigPo.setCompanyDropdown("Phyto", 'knowledge');
             expect(await statusConfigPo.isEditLifeCycleBtnDisabled()).toBeFalsy('Button is disabled');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("Canceled");
@@ -308,7 +305,7 @@ describe('Case Status Configuration', () => {
         }
         finally {
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials('idphylum1@petramco.com', 'Password_1234');
+            await loginPage.login('anehra@petramco.com', 'Password_1234');
         }
     });
 
@@ -320,18 +317,19 @@ describe('Case Status Configuration', () => {
         expect(await statusConfigPo.isCompanyRequiredText('task')).toBeTruthy();
         expect(await statusConfigPo.getDefaultCompanyValue()).toBe('- Global -');
         expect(await statusConfigPo.getStatusLifeCycle()).toBe('Status Lifecycle for - Global -');
-        await statusConfigPo.setCompanyDropdown("Phylum", 'task');
+        await statusConfigPo.setCompanyDropdown("Phyto", 'task');
         expect(await statusConfigPo.isEditLifeCycleBtnDisabled()).toBeFalsy('Button is disabled');
         await statusConfigPo.clickEditLifeCycleLink();
         await statusConfigPo.clickEditStatus("Canceled");
         await statusConfigPo.clickOnCancelButton();
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
     //asahitya
     it('[DRDMV-13639,DRDMV-13710]:Verify Custom status operations for case', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
-        await statusConfigPo.setCompanyDropdown("Phylum", 'case');
+        await statusConfigPo.setCompanyDropdown("Phyto", 'case');
         await statusConfigPo.clickEditLifeCycleLink();
         await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
         await statusConfigPo.clickOnBackButton();
@@ -353,7 +351,7 @@ describe('Case Status Configuration', () => {
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
-        await statusConfigPo.setCompanyDropdown("Phylum", 'case');
+        await statusConfigPo.setCompanyDropdown("Phyto", 'case');
         await statusConfigPo.selectFlowset(flowsetName);
         await statusConfigPo.clickEditLifeCycleLink();
         await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
@@ -372,12 +370,13 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await statusConfigPo.clickOnBackButton();
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     }, 360 * 1000);
 
     it('[DRDMV-13625]:Verify Custom status operations for Task', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
-        await statusConfigPo.setCompanyDropdown('Phylum', 'task');
+        await statusConfigPo.setCompanyDropdown('Phyto', 'task');
         await statusConfigPo.clickEditLifeCycleLink();
         await statusConfigPo.addCustomStatus("Assigned", "In Progress", "customStatus");
         await statusConfigPo.clickOnBackButton();
@@ -395,10 +394,6 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         await statusConfigPo.clickOnBackButton();
-
-        await browser.refresh();
-        await statusConfigPo.setCompanyDropdown('Phylum', 'task');
-        await statusConfigPo.clickEditLifeCycleLink();
         await statusConfigPo.clickEditStatus("Staged");
         await statusConfigPo.updateExistingStatusName('Updated');
         await statusConfigPo.cancelSettingChange();

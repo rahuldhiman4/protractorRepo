@@ -6,6 +6,10 @@ export interface ITaskTemplate {
     ownerCompany: string;
     ownerBusinessUnit:string;
     ownerGroup:string;
+    description?: string;
+    category1?: string;
+    category2?: string;
+    category3?: string;
     priority?: string;
     processBundle?: string;
     processName?: string;

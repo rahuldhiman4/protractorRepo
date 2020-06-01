@@ -210,7 +210,7 @@ describe('Service Target Tests for Cases', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 600 * 1000);
+    }, 750 * 1000);
 
     //skhobrag   
     it('[DRDMV-11914]:[Global] Both svt gets attached if we have Global and company specific SVTs', async () => {
@@ -225,7 +225,7 @@ describe('Service Target Tests for Cases', () => {
             let expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
-            await serviceTargetConfig.selectGoal("3");
+            await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMileStone();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
@@ -241,7 +241,7 @@ describe('Service Target Tests for Cases', () => {
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
-            await serviceTargetConfig.selectGoal("3");
+            await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMileStone();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
@@ -261,14 +261,14 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-            await browser.sleep(160000);
+            await browser.sleep(170000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
-            await browser.sleep(50000);
+            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(241, 178, 32, 1)'); //orange
+            await browser.sleep(90000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 52, 0, 1)');
         }
         catch (error) {
             throw error;
@@ -278,7 +278,7 @@ describe('Service Target Tests for Cases', () => {
             await loginPage.login(caseBAUser);
         }
 
-    }, 650 * 1000);
+    }, 700 * 1000);
 
     //skhobrag
     it('[DRDMV-8365]:Verify the SLA Progress Bar change in color when single SVT attached', async () => {

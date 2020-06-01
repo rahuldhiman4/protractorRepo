@@ -123,7 +123,7 @@ describe("Create Case", () => {
             expect(await $(viewCasePage.selectors.resolutionDescriptionLabel).isDisplayed()).toBeTruthy('Missing Resolution Description Text');
             await viewCasePage.clickEditCaseButton();
             await editCasePage.updateResolutionCode(randVal);
-            await editCasePage.updateResolutionDescription(randVal);
+            await editCasePage.setResolutionDescription(randVal);
             await editCasePage.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.getResolutionCodeValue()).toBe(randVal);
@@ -193,7 +193,7 @@ describe("Create Case", () => {
         await caseConsolePage.searchAndOpenCase(caseId1);
         await viewCasePage.clickEditCaseButton();
         await editCasePage.updateResolutionCode(randVal);
-        await editCasePage.updateCaseSummary('Updated Summary');
+        await editCasePage.setCaseSummary('Updated Summary');
         await editCasePage.clickSaveCase();
         await utilityCommon.closePopUpMessage();
 
@@ -292,7 +292,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 800 * 1000);
+    }, 900 * 1000);
 
     //ankagraw
     it('[DRDMV-1191,DRDMV-1198]: [Case Creation] Case creation with/without mandatory fields populated ', async () => {
@@ -485,7 +485,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 850 * 1000);
+    }, 950 * 1000);
 
     //ankagraw
     it('[DRDMV-1237]: [Global navigation] Navigation to Workspaces and Create subitems in the Shell ', async () => {
@@ -614,7 +614,7 @@ describe("Create Case", () => {
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddTaskFromTemplateButton();
-            await manageTask.searchTaskAndClickOnLink(templateData.templateName);
+            await manageTask.searchAndOpenTaskTemplate(templateData.templateName);
             expect(await taskTemplatePreview.isTaskSummaryTitleDisplayed('Task Summary')).toBeTruthy('Task Summary is not getting displayed');
             expect(await taskTemplatePreview.isTaskCompanyTitleDisplayed('Task Company')).toBeTruthy('Task Company is not getting displayed');
             expect(await taskTemplatePreview.isTaskPriorityTitleDisplayed('Task Priority')).toBeTruthy('Task Priority is not getting displayed');
@@ -685,8 +685,8 @@ describe("Create Case", () => {
             await manageTask.clickAddTaskFromTemplateButton();
             await manageTask.setTaskSearchBoxValue(TaskSummary);
             await manageTask.clickFirstCheckBoxInTaskTemplateSearchGrid();
-            await manageTask.clickOnTaskGridSaveButton();
-            await manageTask.clickOnCloseButton();
+            await manageTask.clickTaskGridSaveButton();
+            await manageTask.clickCloseButton();
 
             await apiHelper.apiLogin('tadmin');
             let userData = {
@@ -697,7 +697,7 @@ describe("Create Case", () => {
             await apiHelper.createNewUser(userData);
             await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             //Create Case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
@@ -708,15 +708,15 @@ describe("Create Case", () => {
             await manageTask.clickAddTaskFromTemplateButton();
             await manageTask.setTaskSearchBoxValue(TaskSummary);
             await manageTask.clickFirstCheckBoxInTaskTemplateSearchGrid();
-            await manageTask.clickOnTaskGridSaveButton();
-            await manageTask.clickOnCloseButton();
+            await manageTask.clickTaskGridSaveButton();
+            await manageTask.clickCloseButton();
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 500 * 1000);
+    }, 600 * 1000);
 
     //ankagraw
     it('[DRDMV-15974]: Verify the status transition Closed->New is available only when Closed case is Reopened', async () => {
@@ -771,6 +771,7 @@ describe("Create Case", () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            await utilityCommon.waitUntilPopUpDisappear();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
@@ -786,6 +787,7 @@ describe("Create Case", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy();
             await viewCasePage.clickOnReopenCaseLink();
+            await utilityCommon.waitUntilPopUpDisappear();
             expect(await viewCasePage.getTextOfStatus()).toBe('New');
         } catch (e) {
             throw e;
@@ -793,7 +795,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 800 * 1000);
+    }, 900 * 1000);
 
     //ankagraw
     it('[DRDMV-5479,DRDMV-1192]: Verify case assignment on Create Case', async () => {
@@ -886,7 +888,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 550 * 1000);
+    }, 600 * 1000);
 
     //ankagraw
     it('[DRDMV-1614]: [Case] Fields validation for case in New status ', async () => {
@@ -1002,7 +1004,8 @@ describe("Create Case", () => {
             await changeAssignmentPage.setAssignee(petramcoStr, 'Australia Support', aUsupportStr, kasiaOstlunsStr);
             await editCasePage.clickSaveCase();
             expect(await activityPo.isTextPresentInActivityLog("Kasia Ostlun")).toBeTruthy("Text is not present in activiy tab1");
-            expect(await activityPo.isTextPresentInActivityLog("changed the case assignment")).toBeTruthy("Text is not present in activiy tab2");
+            await activityPo.clickShowMoreLinkInActivity(1);
+            expect(await activityPo.isTextPresentInActivityLog("changed the following case fields")).toBeTruthy("Text is not present in activiy tab2");
             expect(await activityPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab3");
             expect(await activityPo.isTextPresentInActivityLog("Assigned Group")).toBeTruthy("Text is not present in activiy tab4");
             expect(await activityPo.isTextPresentInActivityLog("AU Support 1")).toBeTruthy("Text is not present in activiy tab5");
@@ -1018,7 +1021,7 @@ describe("Create Case", () => {
             await viewCasePage.clickAttachmentsLink();
             await attachmentBladePage.searchAndSelectCheckBox('bwfPdf');
             expect(await attachmentBladePage.isDownloadButtonEnabled()).toBeTruthy('Download button is disabled');
-            await attachmentBladePage.clickOnDownloadButton();
+            await attachmentBladePage.clickDownloadButton();
             expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
         } catch (e) {
             throw e;
@@ -1053,8 +1056,8 @@ describe("Create Case", () => {
         let fileName2: string[] = ['bwfXsl.xsl', 'bwfXml.xml', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
         const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
         await adhoctaskTemplate.addAttachmentInDescription(filesToUpload2);
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await manageTask.clickOnCloseButton();
+        await adhoctaskTemplate.clickSaveAdhoctask();
+        await manageTask.clickCloseButton();
         await utilCommon.waitUntilPopUpDisappear();
         await viewCasePage.clickAttachmentsLink();
 

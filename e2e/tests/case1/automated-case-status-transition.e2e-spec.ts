@@ -24,10 +24,6 @@ describe('Automated Case Status Transition', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     //asahitya
     it('[DRDMV-17551]: Case business analyst - automatic case status transtion rule console', async () => {
         let automatedStatusTransitionData = await require('../../data/ui/case/automatedStatusTransition.ui.json');
@@ -56,14 +52,10 @@ describe('Automated Case Status Transition', () => {
         await utilGrid.clearGridSearchBox();
         expect(await utilGrid.isGridRecordPresent(configName2)).toBeFalsy();
         await utilGrid.clearGridSearchBox();
-
         await utilGrid.clearFilter();
-
         await automatedStatusTransitionConsole.addGridColumns(['Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']);
-
         expect(await automatedStatusTransitionConsole.areGridColumnMatches(['Name', 'Company', 'From Status', 'To Status', 'Days Inactive', 'Enabled', 'Flowset', 'Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']))
         await automatedStatusTransitionConsole.removeGridColumns(['Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']);
-        await utilityCommon.refresh();
         await automatedStatusTransitionConsole.isGridColumnSorted('Days Inactive');
 
         await utilGrid.searchAndOpenHyperlink(configName1);
@@ -77,6 +69,7 @@ describe('Automated Case Status Transition', () => {
         expect(await automatedStatusTransitionEditPage.isNumberOfDaysFieldEnabled()).toBeTruthy("Change After Days is disabled");
         expect(await automatedStatusTransitionEditPage.isToStatusReasonFieldEnabled()).toBeTruthy("To Staus Reason is disabled");
         expect(await automatedStatusTransitionEditPage.isFromStatusReasonFieldEnabled()).toBeTruthy("From Staus Reason is disabled");
+        await utilCommon.closeBladeOnSettings();
     }, 340 * 1000);//, 180 * 1000);
 
     //asahitya
@@ -106,12 +99,10 @@ describe('Automated Case Status Transition', () => {
             expect(await automatedStatusTransitionConsole.isAddAutomatedStatusTransitionBtnPresent()).toBeFalsy();
             await utilGrid.searchAndSelectGridRecord(configName1);
             expect(await automatedStatusTransitionConsole.isDeleteAutomatedStatusTransitionBtnPresent()).toBeFalsy();
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
             await automatedStatusTransitionConsole.openAutomatedTransitionConfig(configName1);
             expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionNameEnabled()).toBeFalsy();
             expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionSaveBtnEnabled()).toBeFalsy();
-            await utilityCommon.refresh();
+            await utilCommon.closeBladeOnSettings();
 
             //Search and presence of existing rule test
             expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy();
@@ -131,7 +122,6 @@ describe('Automated Case Status Transition', () => {
             await automatedStatusTransitionConsole.addGridColumns(['Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']);
             expect(await automatedStatusTransitionConsole.areGridColumnMatches(['Name', 'Company', 'From Status', 'To Status', 'Days Inactive', 'Enabled', 'Flowset', 'Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']))
             await automatedStatusTransitionConsole.removeGridColumns(['Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']);
-            await utilityCommon.refresh();
             await automatedStatusTransitionConsole.isGridColumnSorted('Days Inactive');
         }
         catch (ex) {
@@ -228,9 +218,9 @@ describe('Automated Case Status Transition', () => {
         await apiHelper.runAutomatedCaseTransitionProcess();
 
         await navigationPage.gotoCaseConsole();
-        await utilityCommon.refresh();
         await notificationPo.clickOnNotificationIcon();
         expect(await notificationPo.isAlertPresent('tadmin Tenant Administrator changed the status of ' + caseId + ' to Closed')).toBeTruthy('Alert message is not present');
+        await utilCommon.closePopUpMessage();
     });
 
     //ankagraw

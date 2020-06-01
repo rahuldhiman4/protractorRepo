@@ -273,9 +273,9 @@ export class GridOperation {
 
     async searchOnGridConsole(searchValue: string): Promise<void> {
         await $(this.selectors.searchInput).clear();
+        await $(this.selectors.refreshButton).click();
         await $(this.selectors.searchInput).sendKeys(searchValue);
         await $(this.selectors.searchIcon).click();
-        await $(this.selectors.refreshButton).click();
     }
 
     async searchAndSelectGridRecord(searchValue: string, guid?: string): Promise<void> {

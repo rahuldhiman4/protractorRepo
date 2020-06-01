@@ -35,7 +35,7 @@ class CaseEditPage {
         targetDateHours: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] input[ng-model="hours"]',
         targetDateMinutes: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] input[ng-model="minutes"]',
         targetDateMeredian: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] button.d-timepicker__input',
-        resolutionGuid: '923de542-50b0-482f-a370-3823d0c07645',
+        resolutionDescription: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] textarea',
         attachLink: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] button',
         requesterPersonImage: 'img.person-profile-image',
         requesterText: '.person-main .text-field',
@@ -110,7 +110,7 @@ class CaseEditPage {
         await $(this.selectors.summary).sendKeys('m' + Key.BACK_SPACE);
     }
 
-    async updateCaseSummary(summary: string): Promise<void> {
+    async setCaseSummary(summary: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summary)));
         await $(this.selectors.summary).clear();
         await $(this.selectors.summary).sendKeys(summary);
@@ -180,8 +180,9 @@ class CaseEditPage {
         await utilityCommon.isValuePresentInDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
     }
 
-    async updateResolutionDescription(resolutionDescription: string): Promise<void> {
-        await utilityCommon.setCKEditor(resolutionDescription, this.selectors.resolutionGuid);
+    async setResolutionDescription(resolutionDescription: string): Promise<void> {
+        await $(this.selectors.resolutionDescription).clear();
+        await $(this.selectors.resolutionDescription).sendKeys(resolutionDescription);
     }
 
     async updateDescription(description: string): Promise<void> {

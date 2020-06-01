@@ -20,10 +20,6 @@ describe('Person Profile test', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     //asahitya
     it('[DRDMV-14085]: Verify Profile picture of logged in user on My profile page', async () => {
         expect(await personProfile.isPersonProfileImageDisplayed()).toBeTruthy("Person Profile image is not displayed");
@@ -61,6 +57,7 @@ describe('Person Profile test', () => {
 
     //asahitya
     it('[DRDMV-14023]: Verify My Profile Console', async () => {
+        await personProfile.clickOnTab("Related Persons");
         expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
         expect(await personProfile.getContactNumber()).toBe("+19255553456", "Phone number mismatch");
         expect(await personProfile.getEmail()).toBe("elizabeth@bwflabs.localdomain", "Email mismatch");
@@ -76,37 +73,30 @@ describe('Person Profile test', () => {
     //asahitya
     it('[DRDMV-14025]: Verify navigation to Managers Profile from My Profile->Assigned Manager', async () => {
         await personProfile.clickOnManagerLink();
-        try {
-            await utilityCommon.switchToNewTab(1);
-            expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
-            expect(await personProfile.getContactNumber()).toBe("+12135559393", "Phone number mismatch");
-            expect(await personProfile.getEmail()).toBe("hannah.haas@petramco.com", "Email mismatch");
-            expect(await personProfile.getSite()).toBe("Aichi\n4-6-23 Meieki, Nakamura-ku, Nagoya-shi, Nagoya-shi, Aichi, 450-0002, Japan ");
-            await personProfile.clickOnTab("Requested Cases");
-            await personProfile.clickOnTab("Assigned Cases");
-            await personProfile.clickOnTab("Support Groups");
-            await personProfile.clickOnTab("Related Cases");
-            await personProfile.clickOnTab("Related Persons");
-        }
-        catch (ex) { throw ex; }
-        finally {
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-        }
+        await utilityCommon.switchToNewTab(1);
+        expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
+        expect(await personProfile.getContactNumber()).toBe("+12135559393", "Phone number mismatch");
+        expect(await personProfile.getEmail()).toBe("hannah.haas@petramco.com", "Email mismatch");
+        expect(await personProfile.getSite()).toBe("Aichi\n4-6-23 Meieki, Nakamura-ku, Nagoya-shi, Nagoya-shi, Aichi, 450-0002, Japan ");
+        await personProfile.clickOnTab("Requested Cases");
+        await personProfile.clickOnTab("Assigned Cases");
+        await personProfile.clickOnTab("Support Groups");
+        await personProfile.clickOnTab("Related Cases");
+        await personProfile.clickOnTab("Related Persons");
+
     });
 
     //asahitya
     it('[DRDMV-17020]: Check agent can view the notes of other agents Person profile in agent work history tab for which he is submitter of the note', async () => {
-        await personProfile.clickOnManagerLink();
-        try {
-            await utilityCommon.switchToNewTab(1);
-            await activityTabPage.addActivityNote("DRDMV-17020");
-            await activityTabPage.clickOnPostButton();
-            expect(await activityTabPage.isTextPresentInActivityLog("DRDMV-17020")).toBeTruthy("Activity notes is missing");
-        }
-        catch (ex) { throw ex; }
-        finally {
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-        }
+            try{
+                await activityTabPage.addActivityNote("DRDMV-17020");
+                await activityTabPage.clickOnPostButton();
+                expect(await activityTabPage.isTextPresentInNote("DRDMV-17020")).toBeTruthy("Activity notes is missing");
+            }
+            catch(ex){ throw ex; }
+            finally{
+                await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            }
     });
 
     //asahitya
@@ -114,7 +104,6 @@ describe('Person Profile test', () => {
         await navigationPage.gotoPersonProfile();
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Qiang Du', 'Former Manager');
-        await relatedTabPage.waitUntilNewRelatedPersonAdded(2);
         await relatedTabPage.clickRelatedPersonName('Qiang Du');
         await utilityCommon.switchToNewTab(1);
         await activityTabPage.addActivityNote("DRDMV-17019");
@@ -163,7 +152,6 @@ describe('Person Profile test', () => {
 
     //asahitya
     it('[DRDMV-14029]: Verify Assigned Cases tab of My Profile console', async () => {
-        await navigationPage.gotoPersonProfile();
         await personProfile.clickOnTab("Assigned Cases");
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');

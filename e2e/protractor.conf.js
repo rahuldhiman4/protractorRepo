@@ -9,6 +9,7 @@ const specJsonReporter = require("./reporters/spec-json-reporter/jasmine-spec-js
 /**
  * @type { import("protractor").Config }
  */
+
 exports.config = {
   allScriptsTimeout: 40 * 1000,
   getPageTimeout: 60 * 1000,
@@ -44,8 +45,8 @@ exports.config = {
     ticketing: ["./tests/ticketing/*.e2e-spec.ts"],
   },
 
-  baseUrl: "http://clm-aus-squo6y.bmc.com:8008",
-  // baseUrl: "http://clm-aus-sqg6c3.bmc.com:8008",
+  baseUrl: "http://clm-aus-u9x5do.bmc.com:8008",
+  // baseUrl: "http://clm-aus-u9x5gh.bmc.com:8008",
   framework: "jasmine",
   jasmineNodeOpts: {
     showColors: true,

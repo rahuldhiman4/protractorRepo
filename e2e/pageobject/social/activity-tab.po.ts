@@ -553,14 +553,16 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first()), 3000)
-            .catch(async () => {
-                console.log('Notes is not present');
-                return false;
-            });
-        let activityText = await $$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first();
-        let value = await activityText.getText();
-        return value.includes(bodyText) ? true : false;
+        let status: boolean = undefined;
+        await browser.wait(this.EC.visibilityOf($$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first()), 3000).then(async () => {
+            let activityText = await $$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first();
+            let value = await activityText.getText();
+            status = value.includes(bodyText) ? true : false;
+        }).catch(async () => {
+            console.log('Notes is not present');
+            status = false;
+        });
+        return status;
     }
 
     async getCaseViewCount(TitleText: string): Promise<number> {
@@ -939,8 +941,8 @@ class ActivityTabPage {
             } else return false;
         });
     }
- 
-    async isNoteTemplateLinkDisplayedInCkEditor(notesTemplateText:string, activityNumber: number): Promise<boolean> {
+
+    async isNoteTemplateLinkDisplayedInCkEditor(notesTemplateText: string, activityNumber: number): Promise<boolean> {
         return await $$(this.selectors.activityNoteTextArea).get(activityNumber - 1).$('a').isPresent().then(async (link) => {
             if (link) {
                 let getTextNotesTemplate = await $$(this.selectors.activityNoteTextArea).get(activityNumber - 1).$$('p').first().getText();

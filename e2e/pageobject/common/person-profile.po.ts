@@ -26,7 +26,7 @@ class PersonProfilePage {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.tab, tabName))),5000);
+        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.tab, tabName))),7000);
         await element(by.cssContainingText(this.selectors.tab, tabName)).click();
     }
 
@@ -89,8 +89,8 @@ class PersonProfilePage {
     }
 
     async isCasePresentOnAssignedCases(caseId: string): Promise<boolean> {
-        await utilityGrid.clearFilter();
-        await utilityGrid.searchRecord(caseId);
+        await utilityGrid.clearFilter(this.selectors.assignedCasesGuid);
+        await utilityGrid.searchRecord(caseId, this.selectors.assignedCasesGuid);
         return caseId == await utilityGrid.getFirstGridRecordColumnValue("Case ID", this.selectors.assignedCasesGuid);
     }
 

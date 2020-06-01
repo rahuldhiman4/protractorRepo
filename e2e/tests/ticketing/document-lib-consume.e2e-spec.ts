@@ -89,10 +89,10 @@ describe('Document Library Consume UI', () => {
         await viewCasePo.clickAttachmentsLink();
         expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('bwfJpg');
-        await attachmentBladePo.clickOnDownloadButton();
+        await attachmentBladePo.clickDownloadButton();
         expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('bwfJpg.jpg File is not downloaded.');
         expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is delete sucessfully');
-        await attachmentBladePo.clickOnCloseButton();
+        await attachmentBladePo.clickCloseButton();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocData.docLibTitle);
@@ -105,7 +105,7 @@ describe('Document Library Consume UI', () => {
         await viewCasePo.clickAttachmentsLink();
         expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('failureMsg: Fail to delete bwfJpg.jpg file');
         await attachmentBladePo.searchAndSelectCheckBox('bwfJpg');
-        await attachmentBladePo.clickOnDownloadButton();
+        await attachmentBladePo.clickDownloadButton();
         expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is not downloaded.');
     }, 750 * 1000);
 

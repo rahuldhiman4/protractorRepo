@@ -185,7 +185,7 @@ describe('Document Library Consume Permission', () => {
         let caseId: string = newCase.displayId;
         await caseConsolePo.searchAndOpenCase(caseId);
         await viewCasePo.clickEditCaseButton();
-        await editCasePo.updateCaseSummary(publishDocLibData1.docLibTitle);
+        await editCasePo.setCaseSummary(publishDocLibData1.docLibTitle);
         await editCasePo.clickSaveCase();
         await viewCasePo.clickOnTab('Resources')
         expect(await resourcesTabPo.isSearchRecordEmpty(1)).toBeTruthy('Failuer1: Knowledge Article is not empty');
@@ -288,7 +288,7 @@ describe('Document Library Consume Permission', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary(adhocTaskSummary1);
-            await adhoctaskTemplate.clickOnAttachButton();
+            await adhoctaskTemplate.clickAttachButton();
 
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
             await attachDocumentBladePo.searchRecord(publishDocLibData1.docLibTitle);
@@ -298,9 +298,9 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
-            await adhoctaskTemplate.clickOnSaveAdhoctask();
+            await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.waitUntilPopUpDisappear();
-            await manageTask.clickOnCloseButton();
+            await manageTask.clickCloseButton();
             await viewCasePo.clickOnTaskLink(adhocTaskSummary1);
             expect(await viewTaskPo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
@@ -311,13 +311,13 @@ describe('Document Library Consume Permission', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary(adhocTaskSummary2);
-            await adhoctaskTemplate.clickOnAttachButton();
+            await adhoctaskTemplate.clickAttachButton();
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
-            await adhoctaskTemplate.clickOnAttachButton();
+            await adhoctaskTemplate.clickAttachButton();
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
-            await adhoctaskTemplate.clickOnSaveAdhoctask();
+            await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.waitUntilPopUpDisappear();
-            await manageTask.clickTaskLinkOnManageTask(adhocTaskSummary2);
+            await manageTask.clickTaskLink(adhocTaskSummary2);
             expect(await viewTaskPo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await viewTaskPo.clickOnAttachedDocumentFile('bwfPdf.pdf');
@@ -394,7 +394,7 @@ describe('Document Library Consume Permission', () => {
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
 
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials(username, password);
+            await loginPage.login(username, password);
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
@@ -607,7 +607,7 @@ describe('Document Library Consume Permission', () => {
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
 
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials('hhaas@petramco.com', 'Password_1234');
+            await loginPage.login('hhaas@petramco.com', 'Password_1234');
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailureMsg:bwfXlsx.xlsx Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is delete sucessfully');
@@ -703,7 +703,7 @@ describe('Document Library Consume Permission', () => {
             await editCasePo.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials('qgeorge@petramco.com', 'Password_1234');
+            await loginPage.login('qgeorge@petramco.com', 'Password_1234');
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeFalsy('FailureMsg: bwfJpg.jpg Attached Document is displayed');
             expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeFalsy('FailureMsg: bwfPdf.pdf Attached Document is displayed');

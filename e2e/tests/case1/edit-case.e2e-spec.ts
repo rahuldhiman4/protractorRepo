@@ -93,18 +93,19 @@ describe('Edit Case', () => {
         await expect(editCasePage.getChangeCaseTemplate()).toBe('Change Case Template');
         await editCasePage.clickSaveCase();
         await expect(editCasePage.isActivityFeedPresent()).toBeTruthy();
-
-        await viewCasePage.clickEditCaseButton();
-        await editCasePage.clickOnRequesterName();
-        await expect(personProfilePage.getPersonName()).toBe('Adam Pavlik');
-        await browser.navigate().back();
         await viewCasePage.clickOnRequestersEmail();
         await composemailPage.clickOnDiscardButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+
+        await viewCasePage.clickEditCaseButton();
+        await editCasePage.clickOnRequesterName();
+        await utilityCommon.switchToNewTab(1);
+        await expect(personProfilePage.getPersonName()).toBe('Adam Pavlik');
+        await utilityCommon.switchToNewTab(0);
    
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
-    });//, 160 * 1000);
+    });
 
     //ankagraw
     it('[DRDMV-7063]: [Case Edit] [Assignment] Changing the Assignment when editing the case by the member of one Support Group', async () => {
@@ -137,6 +138,7 @@ describe('Edit Case', () => {
         await changeAssignmentPage.selectAssigneeAsSupportGroup('AU Support 1');
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
+        await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await viewCasePage.getAssignedGroupText()).toBe('AU Support 1');
         expect(await activityTabPo.getAllTaskActivity('AU Support 1')).toBe('AU Support 1');
         await viewCasePage.clickEditCaseButton();
@@ -146,6 +148,7 @@ describe('Edit Case', () => {
         await changeAssignmentPage.selectAssignee('Qadim Katawazi');
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
+        await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.getAllTaskActivity('US Support 3')).toBe('US Support 3');
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickOnAssignToMe();
