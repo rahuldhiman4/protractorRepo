@@ -838,50 +838,52 @@ describe("Create Case", () => {
     }, 350 * 1000);
 
     //ankagraw
-    it('[DRDMV-11818]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplate1 = 'Case Template 1' + randomStr;
-
-        let caseTemplateSummary1 = 'Summary 1' + randomStr;
-        let flowsetData = require('../../data/ui/case/flowset.ui.json');
-        let flowsetName: string = await flowsetData['flowsetGlobalFields'].flowsetName + randomStr;
-        flowsetData['flowsetGlobalFields'].flowsetName = flowsetName;
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createNewFlowset(flowsetData['flowsetGlobalFields']);
-
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-        await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-        await createCaseTemplate.setTemplateName(caseTemplate1);
-        await createCaseTemplate.setCompanyName('- Global -');
-        await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
-        await createCaseTemplate.setFlowsetValue(flowsetName);
-        await createCaseTemplate.setTemplateStatusDropdownValue('Active');
-        await createCaseTemplate.clickSaveCaseTemplate();
-        //expect(await utilCommon.isErrorMsgPresent()).toBeTruthy(); //no error message
-        //await utilCommon.waitUntilPopUpDisappear();
-        expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
-        expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetName);
-        await viewCaseTemplate.clickOnEditCaseTemplateButton();
-        expect(await editCaseTemplate.isCaseCompanyDisabled()).toBeTruthy();
-
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
-        await consoleReadAcess.clickOnReadAccessConfiguration();
-        await addReadAccess.setReadAccessConfigurationName("test");
-        await addReadAccess.selectCompany('Global');
-        await addReadAccess.selectFlowset(flowsetName);
-        await addReadAccess.selectSupportCompany('Petramco');
-        await addReadAccess.selectBusinessUnit('Australia Support');
-        await addReadAccess.selectSupportGroup('AU Support 2');
-        await addReadAccess.clickOnSave();
+    it('[DRDMV-11818,DRDMV-11821]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
         try {
+            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let caseTemplate1 = 'Case Template 1' + randomStr;
+            let caseTemplateSummary1 = 'Summary 1' + randomStr;
+            let flowsetData = require('../../data/ui/case/flowset.ui.json');
+            let flowsetName: string = await flowsetData['flowsetGlobalFields'].flowsetName + randomStr;
+            flowsetData['flowsetGlobalFields'].flowsetName = flowsetName;
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createNewFlowset(flowsetData['flowsetGlobalFields']);
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.setTemplateName(caseTemplate1);
+            await createCaseTemplate.setCompanyName('- Global -');
+            await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
+            await createCaseTemplate.setFlowsetValue(flowsetName);
+            await createCaseTemplate.setTemplateStatusDropdownValue('Active');
+            await createCaseTemplate.clickSaveCaseTemplate();
+            //expect(await utilCommon.isErrorMsgPresent()).toBeTruthy(); //no error message
+            //await utilCommon.waitUntilPopUpDisappear();
+            expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
+            expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetName);
+            await viewCaseTemplate.clickOnEditCaseTemplateButton();
+            expect(await editCaseTemplate.isCaseCompanyDisabled()).toBeTruthy();
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await consoleReadAcess.clickOnReadAccessConfiguration();
+            await addReadAccess.setReadAccessConfigurationName("test");
+            await addReadAccess.selectCompany('Global');
+            await addReadAccess.selectFlowset(flowsetName);
+            await addReadAccess.selectSupportCompany('Petramco');
+            await addReadAccess.selectBusinessUnit('Australia Support');
+            await addReadAccess.selectSupportGroup('AU Support 2');
+            await addReadAccess.clickOnSave();
+
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplate1);
-            await expect(viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
+            expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
+            await viewCaseTemplate.clickOnEditCaseTemplateButton();
+            expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeTruthy();
         } catch (e) {
             throw e;
         } finally {
