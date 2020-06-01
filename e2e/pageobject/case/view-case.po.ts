@@ -78,7 +78,7 @@ class ViewCasePage {
         await $(this.selectors.requesterEmail).click();
     }
 
-    async clickOnContactEmail(): Promise<void>{
+    async clickOnContactEmail(): Promise<void> {
         await $(this.selectors.contactEmail).click();
     }
 
@@ -183,7 +183,7 @@ class ViewCasePage {
     }
 
     async clickAddTaskButton(): Promise<void> {
-         await $(this.selectors.addTaskButton).isPresent().then(async (link) => {
+        await $(this.selectors.addTaskButton).isPresent().then(async (link) => {
             if (link) {
                 await utilityCommon.scrollUpOrDownTillElement(this.selectors.addTaskButton);
                 await $(this.selectors.addTaskButton).click();
@@ -209,6 +209,10 @@ class ViewCasePage {
     async getRequesterName(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterName)));
         return await $(this.selectors.requesterName).getText();
+    }
+
+    async clickRequsterName() {
+        await $(this.selectors.requesterName).click();
     }
 
     async getRequesterPhoneNo(): Promise<string> {
@@ -316,7 +320,7 @@ class ViewCasePage {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.tab, tabName))),6000);
+        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.tab, tabName))), 6000);
         await element(by.cssContainingText(this.selectors.tab, tabName)).click();
     }
 

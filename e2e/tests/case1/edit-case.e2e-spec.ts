@@ -24,10 +24,6 @@ describe('Edit Case', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     //ankagraw
     it('[DRDMV-3765]: [Case] [Edit Case] Edit Case view (UI verification)', async () => {
         let Summary = 'Summary' + Math.floor(Math.random() * 1000000);
@@ -162,5 +158,5 @@ describe('Edit Case', () => {
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
         await utilCommon.closePopUpMessage();
-    });//, 170 * 1000);
+    });
 });
