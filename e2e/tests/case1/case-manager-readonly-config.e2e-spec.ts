@@ -1,3 +1,4 @@
+import { NOTES_TEMPLATE_MANDATORY_FIELD } from '../../data/ui/Social/notesTemplate.api';
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import loginPage from "../../pageobject/common/login.po";
@@ -187,19 +188,17 @@ describe('Case Manager Read-only Config', () => {
         //API call to create the case notes template
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
-        let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
-        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
-        await apiHelper.createNotesTemplate("Case", notesTemplateData['notesTemplateWithMandatoryField']);
+        NOTES_TEMPLATE_MANDATORY_FIELD.templateName = NOTES_TEMPLATE_MANDATORY_FIELD.templateName + randomStr;
+        await apiHelper.createNotesTemplate("Case", NOTES_TEMPLATE_MANDATORY_FIELD);
 
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
-        await utilGrid.clickCheckBoxOfValueInGrid(notesTemplateName);
+        await utilGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisplayed()).toBeFalsy("Delete notes template button is enabled");
         await utilityCommon.refresh();
-        await utilGrid.searchAndOpenHyperlink(notesTemplateName);
+        await utilGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
         await utilityCommon.refresh();
@@ -210,19 +209,17 @@ describe('Case Manager Read-only Config', () => {
         //API call to create the case notes template
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
-        let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
-        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
-        await apiHelper.createNotesTemplate("Task", notesTemplateData['notesTemplateWithMandatoryField']);
+        NOTES_TEMPLATE_MANDATORY_FIELD.templateName = NOTES_TEMPLATE_MANDATORY_FIELD + randomStr;
+        await apiHelper.createNotesTemplate("Task", NOTES_TEMPLATE_MANDATORY_FIELD);
 
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
-        await utilGrid.clickCheckBoxOfValueInGrid(notesTemplateName);
+        await utilGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisplayed()).toBeFalsy("Delete notes template button is enabled");
         await utilityCommon.refresh();
-        await utilGrid.searchAndOpenHyperlink(notesTemplateName);
+        await utilGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
         await utilityCommon.refresh();
@@ -233,19 +230,17 @@ describe('Case Manager Read-only Config', () => {
         //API call to create the case notes template
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
-        let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
-        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
-        await apiHelper.createNotesTemplate("People", notesTemplateData['notesTemplateWithMandatoryField']);
+        NOTES_TEMPLATE_MANDATORY_FIELD.templateName = NOTES_TEMPLATE_MANDATORY_FIELD.templateName + randomStr;
+        await apiHelper.createNotesTemplate("People", NOTES_TEMPLATE_MANDATORY_FIELD);
 
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
-        await utilGrid.clickCheckBoxOfValueInGrid(notesTemplateName);
+        await utilGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisplayed()).toBeFalsy("Delete notes template button is enabled");
         await utilityCommon.refresh();
-        await utilGrid.searchAndOpenHyperlink(notesTemplateName);
+        await utilGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
         await utilityCommon.refresh();

@@ -1,5 +1,6 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
+import { NOTES_TEMPLATE_KNOWLEDGE_ARTICLE, NOTES_TEMPLATE_MANDATORY_FIELD, NOTES_TEMPLATE_PEOPLE, NOTES_TEMPLATE_TASK } from '../../data/ui/Social/notesTemplate.api';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import linkPropertiesPo from '../../pageobject/common/ck-editor/link-properties.po';
@@ -76,18 +77,18 @@ describe('Case Activity CKE', () => {
         }
         await apiHelper.createExternalTaskTemplate(externalTemplateData);
 
- // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-            // Create Case
-            let caseData = {
-                "Requester": "qtao",
-                "Summary": "DRDMV-21617_TC_2",
-                "Assigned Company": "Petramco",
-                "Business Unit": "Canada Support",
-                "Support Group": "CA Support 1",
-                "Assignee": "qdu"
-            }
-            let newCase = await apiHelper.createCase(caseData);
-            await caseConsolePo.searchAndOpenCase(newCase.displayId);
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // Create Case
+        let caseData = {
+            "Requester": "qtao",
+            "Summary": "DRDMV-21617_TC_2",
+            "Assigned Company": "Petramco",
+            "Business Unit": "Canada Support",
+            "Support Group": "CA Support 1",
+            "Assignee": "qdu"
+        }
+        let newCase = await apiHelper.createCase(caseData);
+        await caseConsolePo.searchAndOpenCase(newCase.displayId);
         // Adding Task
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
@@ -512,7 +513,7 @@ describe('Case Activity CKE', () => {
             let addNoteBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let knowledgeArticle = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let url = 'http://www.google.com ';
-            
+
             await apiHelper.apiLogin('qkatawazi');
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create Case
@@ -544,7 +545,7 @@ describe('Case Activity CKE', () => {
             await loginPage.login('qdu');
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             expect(await viewCasePo.getCaseID()).toBe(newCase.displayId, 'Case Id is missing');
-     
+
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create knowledge Article task template
             await navigationPage.gotoKnowledgeConsole();
@@ -728,7 +729,7 @@ describe('Case Activity CKE', () => {
             let knowledgeArticle = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let randomStr1 = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            
+
             await navigationPage.gotoCaseConsole();
             await apiHelper.apiLogin('qkatawazi');
             // Create manual task template
@@ -756,7 +757,7 @@ describe('Case Activity CKE', () => {
                 "ownerGroup": "Facilities"
             }
             await apiHelper.createAutomatedTaskTemplate(autoTemplateData);
-           
+
             // For External
             let externalTemplateData = {
                 "templateName": "DRDMV-21620 external task template name" + summary,
@@ -780,17 +781,16 @@ describe('Case Activity CKE', () => {
                 "assignee": "qdu"
             }
 
-            
+
             let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID = knowledgeArticleData.id;
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('FailureMsg Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('FailureMsg Status Not Set');
             // Create Case Notes Template
-            let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
-            let notesTemplateCaseData = notesTemplateData['notesTemplateWithMandatoryField'];
-            let notesTemplateTaskData = notesTemplateData['notesTemplateForTask'];
-            let notesTemplatePeopleData = notesTemplateData['notesTemplateForPeople'];
-            let notesTemplateKnowledgeData = notesTemplateData['notesTemplateForKnowledgeArticle'];
+            let notesTemplateCaseData = NOTES_TEMPLATE_MANDATORY_FIELD;
+            let notesTemplateTaskData = NOTES_TEMPLATE_TASK;
+            let notesTemplatePeopleData = NOTES_TEMPLATE_PEOPLE;
+            let notesTemplateKnowledgeData = NOTES_TEMPLATE_KNOWLEDGE_ARTICLE;
 
             notesTemplateCaseData.body = notesTemplateCaseData.body + randomStr;
             notesTemplateCaseData.templateName = notesTemplateCaseData.templateName + randomStr1;
@@ -835,7 +835,7 @@ describe('Case Activity CKE', () => {
             await manageTaskBladePo.clickCloseButton();
 
             // Verify Case Notes Template
-            await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateCaseData.templateName);
+            await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateCaseData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateCaseData.body)
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateCaseData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
@@ -847,7 +847,7 @@ describe('Case Activity CKE', () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await activityTabPage.clickOnRefreshButton();
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
-            await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplatePeopleData.templateName);
+            await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplatePeopleData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplatePeopleData.body)
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplatePeopleData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
@@ -862,7 +862,7 @@ describe('Case Activity CKE', () => {
             await viewTaskPo.changeTaskStatus('Completed');
             await updateStatusBladePo.setStatusReason('Successful');
             await viewTaskPo.clickOnSaveStatus();
-            await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
+            await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
@@ -872,7 +872,7 @@ describe('Case Activity CKE', () => {
             // Goto Automated Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
-            await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
+            await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
@@ -881,7 +881,7 @@ describe('Case Activity CKE', () => {
             // Goto External Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTemplateData.templateSummary);
-            await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
+            await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
@@ -899,7 +899,7 @@ describe('Case Activity CKE', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(adhocTaskSummary);
 
-            await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
+            await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
@@ -912,7 +912,7 @@ describe('Case Activity CKE', () => {
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('FailureMsg KA Edit link is missing')
             await viewKnowledgeArticlePo.clickOnActivityTab();
 
-            await notesTemplateUsage.clickOnAddNoteAndAddNoteTemplate(notesTemplateKnowledgeData.templateName);
+            await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateKnowledgeData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateKnowledgeData.body)
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateKnowledgeData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
