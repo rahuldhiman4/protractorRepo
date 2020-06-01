@@ -1,6 +1,7 @@
 import { $, browser, by, element, protractor, ProtractorExpectedConditions, $$, Key } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
+
 class CreateEmailTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
