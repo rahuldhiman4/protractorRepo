@@ -6,7 +6,7 @@ class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         activityNoteCKEditor: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] bwf-rich-text-editor[style="display: block;"], bwf-rich-text-editor[style="display: block;"]',
-        activityNoteTextArea: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] .cke_enable_context_menu, .cke_enable_context_menu',
+        activityNoteTextArea: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] .cke_enable_context_menu, [rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .cke_enable_context_menu',
         addNoteBox: '.textfield__wrapper .form-control[placeholder="Add a note"]',
         personPopup: '.dropdown-menu .popup-template',
         personPopupCkEditor: '.cke_autocomplete_panel li',
@@ -396,13 +396,13 @@ class ActivityTabPage {
         if (searchBoxdisplay == true) {
             await this.clickActivityNoteTextBox();
         }
-        await $(this.selectors.activityNoteCKEditor).isPresent().then(async (result) => {
-            if (result) {
+//        await $(this.selectors.activityNoteCKEditor).isPresent().then(async (result) => {
+//            if (result) {
                 await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 10000).then(async () => {
                     await $(this.selectors.activityNoteTextArea).sendKeys(addNoteText);
                 });
-            }
-        });
+//            }
+//        });
     }
 
     async addPersonInActivityNote(tagPerson: string): Promise<void> {

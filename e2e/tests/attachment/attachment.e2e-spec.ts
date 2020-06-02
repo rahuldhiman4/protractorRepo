@@ -18,6 +18,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe("Attachment", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -25,11 +26,6 @@ describe("Attachment", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qtao");
-    });
-
-    afterEach(async () => {
-        await utilityCommon.refresh();
-        await navigationPage.gotoCaseConsole();
     });
 
     afterAll(async () => {
@@ -102,6 +98,8 @@ describe("Attachment", () => {
         await attachmentInformationBladePo.clickDownloadButton();
         expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
+        await attachmentInformationBladePo.clickCloseButton();
+        await attachmentBladePo.clickCloseButton();
     });
 
     //kgaikwad
@@ -120,12 +118,12 @@ describe("Attachment", () => {
         expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Media type ')).toBe('Media type', 'Media type  column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
-    })
+        await attachmentBladePo.clickCloseButton();
+    });
 
     //kgaikwad
     it('[DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
         await navigationPage.gotoCaseConsole();
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = {
             "Requester": "araisin",
             "Summary": "Test case for DRDMV-11713",
@@ -149,6 +147,7 @@ describe("Attachment", () => {
         expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('demo', 'demo txt file name is missing');
         await attachmentBladePo.clickDownloadButton();
         expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
+        await attachmentBladePo.clickCloseButton();
     });
 
     //kgaikwad
@@ -223,7 +222,7 @@ describe("Attachment", () => {
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
-
+        await navigationPage.gotoCaseConsole();
         await caseConsole.searchAndOpenCase(caseId);
         await viewCasePo.clickAddTaskButton();
         await manageTaskPo.clickAddAdhocTaskButton();
@@ -263,30 +262,34 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-11718,DRDMV-11720]: Large number of attachments verification', async () => {
-        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester('Elizabeth Peters');
-        await createCasePo.setSummary(caseSummary);
-        let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf', 'bwfXlsx.xlsx', 'demo.txt'];
-        await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/bwfJpg1.jpg', '../../data/ui/attachment/bwfJpg2.jpg', '../../data/ui/attachment/bwfJpg3.jpg', '../../data/ui/attachment/bwfJpg4.jpg', '../../data/ui/attachment/bwfJson1.json', '../../data/ui/attachment/bwfJson2.json', '../../data/ui/attachment/bwfJson3.json', '../../data/ui/attachment/bwfJson4.json', '../../data/ui/attachment/bwfJson5.json', '../../data/ui/attachment/bwfPdf.pdf', '../../data/ui/attachment/bwfPdf1.pdf', '../../data/ui/attachment/bwfPdf2.pdf', '../../data/ui/attachment/bwfPdf3.pdf', '../../data/ui/attachment/bwfPdf4.pdf', '../../data/ui/attachment/bwfWord1.rtf', '../../data/ui/attachment/bwfWord2.rtf', '../../data/ui/attachment/bwfXlsx.xlsx', '../../data/ui/attachment/demo.txt']);
-        await createCasePo.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await viewCasePo.clickAttachmentsLink();
-
-        let fileName2: string[] = ['articleStatus', 'bwfJpg', 'bwfJpg1', 'bwfJpg2', 'bwfJpg3', 'bwfJpg4', 'bwfJson1', 'bwfJson2', 'bwfJson3', 'bwfJson4', 'bwfJson5', 'bwfPdf', 'bwfPdf1', 'bwfPdf2', 'bwfPdf3', 'bwfPdf4', 'bwfWord1', 'bwfWord2', 'bwfXlsx', 'demo'];
-        let j: number;
-        for (j = 0; j < fileName2.length; j++) {
-            await attachmentBladePo.searchAttachment(`${fileName2[j]}`);
-            await attachmentBladePo.searchAndSelectCheckBox(`${fileName2[j]}`);
-            expect(await attachmentBladePo.getRecordValue('Attachments')).toBe(`${fileName2[j]}`, 'Attachment file name is missing');
-            await attachmentBladePo.clickDownloadButton();
-            expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
-            await attachmentBladePo.searchAndSelectCheckBox(`${fileName2[j]}`);
-            expect(await utilCommon.isFileDownloaded(`${fileName1[j]}`)).toBeTruthy(`${fileName1[j]} File is not downloaded.`);
-            expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
-        }
-    }, 900 * 1000);
+    describe('[DRDMV-11718,DRDMV-11720]: Large number of attachments verification', async () => {
+        let fileName: string[];
+        it('Create case with Large number of attachments', async () => {
+            let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('Elizabeth Peters');
+            await createCasePo.setSummary(caseSummary);
+            let fileName: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf', 'bwfXlsx.xlsx', 'demo.txt'];
+            let filesToUpload = fileName.map((file) => { return `../../data/ui/attachment/${file}` });
+            await createCasePo.addDescriptionAttachment(filesToUpload);
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePo.clickAttachmentsLink();
+            await utilityGrid.sortGridColumn("Attachments", "asc");
+        });
+        it('Create case with Large number of attachments', async () => {
+            for (let j: number = 0; j < fileName.length; j++) {
+                let file: string = fileName[j].substring(0, fileName[j].indexOf("."));
+                await utilCommon.deleteAlreadyDownloadedFile(file);
+                await attachmentBladePo.searchAndSelectCheckBox(file);
+                await attachmentBladePo.clickDownloadButton(); // select file checkbox
+                expect(await utilCommon.isFileDownloaded(fileName[j])).toBeTruthy(`${fileName[j]} File is not downloaded.`);
+                expect(await utilCommon.deleteAlreadyDownloadedFile(file)).toBeTruthy('File is deleted sucessfully');
+                await attachmentBladePo.searchAndSelectCheckBox(file); // unselect file checkbox
+            }
+            await attachmentBladePo.clickCloseButton();
+        });
+    });
 
     //kgaikwad
     it('[DRDMV-11721,DRDMV-11746]: Multiple tasks on same case with attachments verification with task id', async () => {
@@ -308,6 +311,7 @@ describe("Attachment", () => {
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
         let caseId: string = newCase.displayId;
+        await navigationPage.gotoCaseConsole();
         await caseConsole.searchAndOpenCase(caseId);
         //Create Task API
 
@@ -430,6 +434,7 @@ describe("Attachment", () => {
             expect(await utilCommon.isFileDownloaded(`${fileName1[j]}`)).toBeTruthy('File is not downloaded.');
             expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName1[j]}`)).toBeTruthy('File is delete sucessfully');
         }
+        await attachmentBladePo.clickCloseButton();
     });
 
     //kgaikwad
@@ -476,5 +481,6 @@ describe("Attachment", () => {
         await attachmentBladePo.clickPaginationPrevious();
         expect(await attachmentBladePo.isCheckBoxSelected('bwfPdf')).toBeFalsy('bwfPdf CheckBox is selected');
         expect(await attachmentBladePo.isCheckBoxSelected('bwfJson5')).toBeFalsy('bwfJson5 CheckBox is selected');
+        await attachmentBladePo.clickCloseButton();
     }, 300 * 1000);
 });
