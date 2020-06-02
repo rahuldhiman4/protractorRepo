@@ -8,6 +8,8 @@ import editEmailTemplatePo from '../../pageobject/settings/email/edit-email-temp
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
+import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
+let emailTemplateData = require('../../data/ui/email/email.template.api.json');
 
 describe('EmailTemplate', () => {
     let label: string
@@ -211,5 +213,62 @@ describe('EmailTemplate', () => {
         await consoleEmailTemplatePo.clickOnDeleteButton();
         await utilCommon.waitUntilSpinnerToHide();
         expect(await consoleEmailTemplatePo.isGridRecordPresent(templateName2)).toBeFalsy('Public template name is preset on grid')
-    }, 650 * 1000);
+    }, 520 * 1000);
+
+     //tzope
+     it('[DRDMV-21497,DRDMV-21498,DRDMV-21507]: Email Template : User Creates Email Template and Add/Delete Attachment and check error message', async () => {
+        let filePath1 = 'e2e/data/ui/attachment/bwfJpg1.jpg';
+        let filePath2 = 'e2e/data/ui/attachment/bwfJpg2.jpg';
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoSettingsPage();
+        //step 1 login and goto doc lib and create two doc lib
+        let publishDocData = {
+            docLibTitle: 'Public holiday list',
+            company: 'Petramco',
+            businessUnit: "United States Support",
+            ownerGroup: "US Support 3"
+        }
+        let publishDocData2 = {
+            docLibTitle: 'Bonus Chart',
+            company: 'Petramco',
+            businessUnit: "United States Support",
+            ownerGroup: "US Support 3"
+        }        
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDocumentLibrary(publishDocData.docLibTitle);
+        await apiHelper.deleteDocumentLibrary(publishDocData2.docLibTitle);
+        await apiHelper.apiLogin('qkatawazi');
+        let docLib = await apiHelper.createDocumentLibrary(publishDocData, filePath1);
+        await apiHelper.publishDocumentLibrary(docLib);
+        let docLib2 = await apiHelper.createDocumentLibrary(publishDocData2, filePath2);
+        await apiHelper.publishDocumentLibrary(docLib2);
+        //step 2 add email template using API
+        await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+        let emailTemplateName: string = await emailTemplateData['emailTemplateWithAttachment'].TemplateName + summary;
+        emailTemplateData['emailTemplateWithAttachment'].TemplateName = emailTemplateName;
+        await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithAttachment']);
+        //await utilityCommon.refresh();
+        await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
+        await editEmailTemplatePo.clickOnAttachLink();
+        await attachDocumentBladePo.searchAndAttachDocument(publishDocData.docLibTitle);
+        expect(await editEmailTemplatePo.isAttachedFileNameDisplayed('bwfJpg1.jpg')).toBeTruthy('Failed as bwfJpg1.jpg is not attached to Email Template');
+        await editEmailTemplatePo.clickOnSaveButton();
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not added in Email Template');
+        //Add another Document lib to the Email Template with same name
+        await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
+        await editEmailTemplatePo.clickOnAttachLink();
+        await attachDocumentBladePo.searchAndAttachDocument(publishDocData.docLibTitle);
+        expect(await utilCommon.isPopUpMessagePresent('The document is already attached.')).toBeTruthy('No Error message seen for duplicate attachment');
+        await editEmailTemplatePo.clickOnAttachLink();
+        await attachDocumentBladePo.searchAndAttachDocument(publishDocData2.docLibTitle);
+        expect(await editEmailTemplatePo.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy('Failed as bwfJpg2.jpg is not attached to Email Template');
+        await editEmailTemplatePo.clickOnSaveButton();
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not added in Email Template');
+        //Delete doc lib from Email Template
+        await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
+        await editEmailTemplatePo.removeAttachedDocument(1);
+        expect(await editEmailTemplatePo.isAttachedFileNameDisplayed('bwfJpg1.jpg')).toBeFalsy('Failed as bwfJpg1.jpg is not removed from Email Template');
+        await editEmailTemplatePo.clickOnSaveButton();
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not deleted from Email Template');
+    }, 300 * 1000);
 })

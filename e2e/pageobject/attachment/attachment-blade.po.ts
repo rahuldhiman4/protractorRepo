@@ -38,7 +38,14 @@ class AttachmentBlade {
 
     async searchAndSelectCheckBox(attachmentName: string): Promise<void> {
         await this.searchAttachment(attachmentName);
-        await $$(this.selectors.selectCheckbox).first().click();
+        let tableRows = await $$('tbody.ui-table-tbody tr');
+        for (let i: number = 0; i < tableRows.length; i++) {
+            let fileName: string = await $$('tbody.ui-table-tbody tr').get(i).$('[title]').getText();
+            if (fileName === attachmentName) {
+                await $$('tbody.ui-table-tbody tr').get(i).$('.at-selection-checkbox').click();
+                break;
+            }
+        }
     }
 
     async getAttachmentSize(): Promise<string> {

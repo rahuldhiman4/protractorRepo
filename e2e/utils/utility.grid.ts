@@ -218,6 +218,26 @@ export class GridOperations {
         );
     }
 
+    //Accepts sortType as 'asc' or 'desc'
+    async sortGridColumn(columnName: string, sortType: string, guid?: string): Promise<void> {
+        let columnHeaderLocator = '.c-header-container .c-header-name';
+        let columnContainerLocator = '.c-header-container';
+        if (guid) {
+            columnHeaderLocator = `[rx-view-component-id='${guid}'] ` + columnHeaderLocator;
+            columnContainerLocator = `[rx-view-component-id='${guid}'] ` + columnContainerLocator;
+        }
+        let columnHeaderContainer = await $$(columnContainerLocator);
+        for (let i = 0; i < await columnHeaderContainer.length; i++) {
+            if (await $$(columnHeaderLocator).get(i).getText() == columnName) {
+                for (let j = 0; j < 3; j++) {
+                    let b: string = await $$(columnContainerLocator).get(i).$$('.c-header-sort svg path').getAttribute('class') + '';
+                    if (b.includes('ng-star-inserted') && b.includes(sortType)) break;
+                    else await $$(columnContainerLocator).get(i).$$('.c-header-sort').click();
+                }
+            }
+        }
+    }
+
     async addFilter(fieldName: string, textValue: string, type: string, guid?: string): Promise<void> {
         let guidId: string = "";
         let refreshIcon = this.selectors.refreshIcon;
@@ -281,8 +301,8 @@ export class GridOperations {
         else await radioButtonLocator.click();
     }
 
-    async clickRefreshIcon(guidId?: string): Promise<void>{
-        if(guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.refreshIcon).click();
+    async clickRefreshIcon(guidId?: string): Promise<void> {
+        if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.refreshIcon).click();
         else await $(this.selectors.refreshIcon).click();
     }
 
