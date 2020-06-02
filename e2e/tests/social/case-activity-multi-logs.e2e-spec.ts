@@ -9,6 +9,9 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 
+import updateStatusBladePo  from '../../pageobject/common/update.status.blade.po';
+import viewTaskPo from "../../pageobject/task/view-task.po";
+
 describe('Case Activity', () => {
 
     beforeAll(async () => {
@@ -24,23 +27,10 @@ describe('Case Activity', () => {
     it('[DRDMV-16756]:Validate Show More/Less option in Task Activity Tab', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues1 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomValues2 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomValues3 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomValues4 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomValues5 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomValues6 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let addNoteBodyText1 = `${randomValues1}\n${randomValues2}\n${randomValues3}\n${randomValues4}\n${randomValues5}`;
-        let addNoteBodyText2 = `${randomValues1}\n${randomValues2}\n${randomValues3}\n${randomValues4}\n${randomValues5}\n${randomValues6}`;
+        let addNoteBodyText1 = `${randomValues1}\n${randomValues1}\n${randomValues1}\n${randomValues1}\n${randomValues1}`;
+        let addNoteBodyText2 = `${randomValues1}\n${randomValues1}\n${randomValues1}\n${randomValues1}\n${randomValues1}\n${randomValues1}`;
 
-        let filePath1 = '../../data/ui/attachment/articleStatus.png';
-        let filePath2 = '../../data/ui/attachment/bwfJpg.jpg';
-        let filePath4 = '../../data/ui/attachment/bwfJpg2.jpg';
-        let filePath5 = '../../data/ui/attachment/bwfJpg3.jpg';
-        let filePath7 = '../../data/ui/attachment/bwfJson1.json';
-        let filePath8 = '../../data/ui/attachment/bwfJson2.json';
-        let filePath9 = '../../data/ui/attachment/bwfJson3.json';
-        let filePath10 = '../../data/ui/attachment/bwfJson4.json';
-        let filePath11 = '../../data/ui/attachment/bwfJson5.json';
+        let filePath:string[]=['../../data/ui/attachment/articleStatus.png','../../data/ui/attachment/bwfJpg.jpg','../../data/ui/attachment/bwfJpg2.jpg','../../data/ui/attachment/bwfJpg3.jpg','../../data/ui/attachment/bwfJson1.json','../../data/ui/attachment/bwfJson2.json','../../data/ui/attachment/bwfJson3.json','../../data/ui/attachment/bwfJson4.json','../../data/ui/attachment/bwfJson5.json'];
         // Create Case
         let caseData = {
             "Requester": "Fritz",
@@ -88,26 +78,26 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg8: BodyText is missing');
         // Verify logs with 5 lines  with 3 attachment
         await activityTabPage.addActivityNote(addNoteBodyText1);
-        await activityTabPage.addAttachment([filePath1, filePath2]);
+        await activityTabPage.addAttachment([filePath[0], filePath[1]]);
         await activityTabPage.clickOnPostButton();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('articleStatus.png')).toBeTruthy(`FailureMsg9: ${filePath1} is missing`);
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy(`FailureMsg10: ${filePath2} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('articleStatus.png')).toBeTruthy(`FailureMsg9: ${filePath[0]} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy(`FailureMsg10: ${filePath[1]} is missing`);
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg13: BodyText is missing');
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg14: Show more link is displayed');
         // Verify logs with more than 5 lines  with 3 attachment
         await activityTabPage.addActivityNote(addNoteBodyText2);
-        await activityTabPage.addAttachment([filePath4, filePath5]);
+        await activityTabPage.addAttachment([filePath[2], filePath[3]]);
         await activityTabPage.clickOnPostButton();
         await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy(`FailureMsg15: ${filePath4} is missing`);
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg3.jpg')).toBeTruthy(`FailureMsg16: ${filePath5} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy(`FailureMsg15: ${filePath[2]} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg3.jpg')).toBeTruthy(`FailureMsg16: ${filePath[3]} is missing`);
         await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg19: Show more link is displayed');
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg20: BodyText is missing');
         await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg21: Show less missing for body text');
         // Verify logs with more than 5 lines  with more than 4 attachment
         await activityTabPage.addActivityNote(addNoteBodyText2);
-        await activityTabPage.addAttachment([filePath7, filePath8, filePath9, filePath10, filePath11]);
+        await activityTabPage.addAttachment([filePath[4], filePath[5], filePath[6], filePath[7], filePath[8]]);
 
         await activityTabPage.clickOnPostButton();
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
@@ -117,11 +107,11 @@ describe('Case Activity', () => {
         await expect(activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg43: ShowLess link is missing')
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg26: BodyText is missing');
 
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson1.json')).toBeTruthy(`FailureMsg27: ${filePath7} is missing`);
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson2.json')).toBeTruthy(`FailureMsg28: ${filePath8} is missing`);
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson3.json')).toBeTruthy(`FailureMsg29: ${filePath9} is missing`);
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson4.json')).toBeTruthy(`FailureMsg30: ${filePath10} is missing`);
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson5.json')).toBeTruthy(`FailureMsg31: ${filePath11} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson1.json')).toBeTruthy(`FailureMsg27: ${filePath[4]} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson2.json')).toBeTruthy(`FailureMsg28: ${filePath[5]} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson3.json')).toBeTruthy(`FailureMsg29: ${filePath[6]} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson4.json')).toBeTruthy(`FailureMsg30: ${filePath[7]} is missing`);
+        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson5.json')).toBeTruthy(`FailureMsg31: ${filePath[8]} is missing`);
 
         // Download Attachments Files
         expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJson1.json')).toBeTruthy('FailureMsg32: bwfJson1.json File is delete sucessfully');
@@ -147,5 +137,4 @@ describe('Case Activity', () => {
         await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
 
     });
-
 })

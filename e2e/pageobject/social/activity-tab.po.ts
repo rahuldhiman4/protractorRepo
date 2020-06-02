@@ -1,12 +1,14 @@
 import { resolve } from "path";
 import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
+import ckEditorOpsPo from '../common/ck-editor/ck-editor-ops.po';
 
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         activityNoteCKEditor: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] bwf-rich-text-editor[style="display: block;"], bwf-rich-text-editor[style="display: block;"]',
         activityNoteTextArea: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] .cke_enable_context_menu, [rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .cke_enable_context_menu',
+        activityCkEditorGuid: '76b9d8a2-54ef-4b24-a086-fc6ff745449d',
         addNoteBox: '.textfield__wrapper .form-control[placeholder="Add a note"]',
         personPopup: '.dropdown-menu .popup-template',
         personPopupCkEditor: '.cke_autocomplete_panel li',
@@ -396,9 +398,7 @@ class ActivityTabPage {
         if (searchBoxdisplay == true) {
             await this.clickActivityNoteTextBox();
         }
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 10000).then(async () => {
-            await $(this.selectors.activityNoteTextArea).sendKeys(addNoteText);
-        });
+        await ckEditorOpsPo.setCKEditor(addNoteText);
     }
 
     async addPersonInActivityNote(tagPerson: string): Promise<void> {
