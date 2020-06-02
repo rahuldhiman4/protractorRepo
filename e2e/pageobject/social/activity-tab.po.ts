@@ -396,13 +396,9 @@ class ActivityTabPage {
         if (searchBoxdisplay == true) {
             await this.clickActivityNoteTextBox();
         }
-//        await $(this.selectors.activityNoteCKEditor).isPresent().then(async (result) => {
-//            if (result) {
-                await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 10000).then(async () => {
-                    await $(this.selectors.activityNoteTextArea).sendKeys(addNoteText);
-                });
-//            }
-//        });
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 10000).then(async () => {
+            await $(this.selectors.activityNoteTextArea).sendKeys(addNoteText);
+        });
     }
 
     async addPersonInActivityNote(tagPerson: string): Promise<void> {
