@@ -3,6 +3,7 @@ import { $, browser, protractor, ProtractorExpectedConditions, element, by } fro
 import utilCommon from '../../../utils/util.common';
 import utilGrid from '../../../utils/util.grid';
 
+
 class DocumentLibraryPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -44,7 +45,7 @@ class DocumentLibraryPage {
         buisnessUnit:    '3b6ebf9c-13f1-4924-8740-3f720ae8335a',
         keyWordGuid:     'afdfcbdf-13c4-45ec-8870-f53a0bf32bac',
         cancelGuid:      '00107b90-bb31-4776-a855-44fea128a0de',
-        cancelButton:    '[rx-view-component-id="00107b90-bb31-4776-a855-44fea128a0de"] button',
+        cancelButton:    '[rx-view-component-id="00107b90-bb31-4776-a855-44fea128a0de"] button'
     }
 
     async addAttachment(fileToUpload: string): Promise<void> {

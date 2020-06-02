@@ -24,6 +24,8 @@ import utilCommon from "../../utils/util.common";
 import utilGrid from '../../utils/util.grid';
 import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
+import editEmailTemplatePo from '../../pageobject/settings/email/edit-email-template.po';
+import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
 
 let emailTemplateData = require('../../data/ui/email/email.template.api.json');
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
@@ -62,10 +64,6 @@ describe("Compose Email", () => {
         await apiHelper.deleteIncomingOrOutgoingEmailConfiguration(outgoingGUID);
         await apiHelper.deleteEmailConfiguration(emailconfigGUID);
         await navigationPage.signOut();
-    });
-
-    afterEach(async () => {
-        await utilityCommon.refresh();
     });
 
     //kgaikwad
@@ -892,6 +890,74 @@ describe("Compose Email", () => {
             await loginPage.login('qtao');
         }
     }, 650 * 1000);
+    
+    //tzope
+    it('[DRDMV-21499]: Compose email using email template and check attachments are added', async () => {
+        let filePath1 = 'e2e/data/ui/attachment/bwfJpg1.jpg';
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseData =
+        {   
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-21499RandVal" + summary,
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
+        }
+        let publishDocData = {
+            docLibTitle: 'Holiday Calender',
+            company: 'Petramco',
+            businessUnit: "United States Support",
+            ownerGroup: "US Support 3",
+            shareExternally: true
+        }
+        //create a doc lib
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteDocumentLibrary(publishDocData.docLibTitle);
+        await apiHelper.apiLogin('qkatawazi');
+        let docLib = await apiHelper.createDocumentLibrary(publishDocData, filePath1);
+        await apiHelper.publishDocumentLibrary(docLib);
+        //create an email template
+        let emailTemplateName: string = await emailTemplateData['emailTemplateToComposeEmail'].TemplateName + summary;
+        emailTemplateData['emailTemplateToComposeEmail'].TemplateName = emailTemplateName;
+        await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateToComposeEmail']);
+        try {
+        await navigationPage.signOut();
+        //link doc to email template
+        await loginPage.login("qkatawazi");
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+        await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
+        await editEmailTemplatePo.clickOnAttachLink();
+        await attachDocumentBladePo.searchAndAttachDocument(publishDocData.docLibTitle);
+        await editEmailTemplatePo.clickOnSaveButton();
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not added in Email Template');
+        //Create a Case and compose email and send it
+        await utilCommon.switchToDefaultWindowClosingOtherTabs();
+        await navigationPage.gotoCaseConsole();
+        let newCase = await apiHelper.createCase(caseData);
+        await caseConsole.searchAndOpenCase(newCase.displayId);
+        expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
+        await viewCasePo.clickOnEmailLink();
+        await composeMail.clickOnSelectEmailTemplateLink();    
+        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
+        await emailTemplateBladePo.clickOnApplyButton();
+        await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+        expect(await composeMail.getEmailBody()).toContain('Hi Team ,Company Financial Calender will be from March. Thanks.');
+        expect(await composeMail.getSubject()).toContain(newCase.displayId);
+        expect(await composeMail.getSubjectInputValue()).toContain('Declared Company Holidays');
+        expect(await composeMail.getFileDisplayedFileName()).toContain('bwfJpg1.jpg');
+        await composeMail.clickOnSendButton();
+        expect(await utilityCommon.isPopUpMessagePresent('Email sent successfully')).toBeTruthy('Email is not sent successfully');
+    }
+    catch(ex){
+        throw ex;
+    }
+    finally{
+        await navigationPage.signOut();
+        await loginPage.login("qtao");        
+    }
+}, 700 * 1000);
 
     //radhiman
     //Bug-21778
