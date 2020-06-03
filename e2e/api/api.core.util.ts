@@ -68,6 +68,17 @@ class ApiCoreUtil {
         return allRecords.data.data.length >= 1 ? allRecords.data.data[0]['signatureInstanceID'] || null : null;
     }
 
+    async getSignatureId(guid: string): Promise<string> {
+        let dataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.approval.application.datapage.SignatureDetailDataPageQuery&pageSize=-1&startIndex=0&status=Pending&requestGUID="
+            + guid;
+        await browser.sleep(10000);
+        let allRecords = await axios.get(
+            dataPageUri
+        );
+        console.log('Get Signature ID API Status =============>', allRecords.status);
+        return allRecords.data.data.length >= 1 ? allRecords.data.data[0]['signatureID'] || null : null;
+    }
+
     async getEmailTemplateGuid(emailTemplateName: string, company?: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.notification-lib:NotificationTemplate");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
@@ -305,8 +316,9 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
-    async multiFormPostWithAttachment(parameters: object): Promise<AxiosResponse> {
+    async multiFormPostWithAttachment(parameters: object, url?: string): Promise<AxiosResponse> {
         let bodyFormData = new FormData();
+        let uri: string = recordInstanceUri;
         for (let i: number = 0; i < Object.keys(parameters).length; i++) {
             let key: string = Object.keys(parameters)[i].toString();
             let value: any = Object.values(parameters)[i];
@@ -320,7 +332,8 @@ class ApiCoreUtil {
         const headers = {
             ...bodyFormData.getHeaders(),
         };
-        let newRecord = await axios.post(recordInstanceUri, bodyFormData, { headers });
+        if(url) uri = url;
+        let newRecord = await axios.post(uri, bodyFormData, { headers });
         console.log('Create RecordInstance API Status =============>', newRecord.status);
         return newRecord;
     }
