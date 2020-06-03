@@ -1,7 +1,7 @@
 import { resolve } from "path";
 import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
-import ckEditorOpsPo from '../common/ck-editor/ck-editor-ops.po';
+import ckEditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
