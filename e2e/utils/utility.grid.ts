@@ -301,8 +301,15 @@ export class GridOperations {
         else await radioButtonLocator.click();
     }
 
-    async clickRefreshIcon(guidId?: string): Promise<void> {
-        if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.refreshIcon).click();
+    async clearFilterPreset(): Promise<void>{
+        await $(this.selectors.filterPresetBtn).click();
+        await $$('button.nav-link').first().click();
+        await $(this.selectors.refreshIcon).click();
+        await this.clearFilter();
+    }
+
+    async clickRefreshIcon(guidId?: string): Promise<void>{
+        if(guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.refreshIcon).click();
         else await $(this.selectors.refreshIcon).click();
     }
 
