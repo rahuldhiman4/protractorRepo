@@ -1,7 +1,7 @@
 import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
 
-class CkEditorOps {
+class CKEditor {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         activityNoteCKEditor: '.bwf-rich-text-editor[style="display: block;"]',
@@ -71,8 +71,9 @@ class CkEditorOps {
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame(await $('iframe.cke_panel_frame').getWebElement());
         let locator: string = `a[title="${colorValue}"]`;
-        await browser.wait(this.EC.elementToBeClickable($(locator)), 2000);
-        await $(locator).click();
+        await browser.wait(this.EC.elementToBeClickable($(locator)), 2000).then(async () => {
+            await $(locator).click();
+        });
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
     }
@@ -93,13 +94,14 @@ class CkEditorOps {
     }
 
     async selectFontTypeOrSize(value: string, fontTypeOrFontSizeText: string, guidId?: string): Promise<void> {
-        if (fontTypeOrFontSizeText == "FontType") { this.clickOnFontTypeIcon(guidId); }
-        else if (fontTypeOrFontSizeText == "FontSize") { this.clickOnFontSizeIcon(guidId); }
+        if (fontTypeOrFontSizeText == "FontType") { await this.clickOnFontTypeIcon(guidId); }
+        else if (fontTypeOrFontSizeText == "FontSize") { await this.clickOnFontSizeIcon(guidId); }
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame($('.cke_panel.cke_combopanel iframe.cke_panel_frame').getWebElement());
         let locator = `a[title="${value}"]`;
-        await browser.wait(this.EC.elementToBeClickable($(locator)), 4000);
-        await $(locator).click();
+        await browser.wait(this.EC.elementToBeClickable($(locator)), 4000).then(async () => {
+            await $(locator).click();
+        });
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
     }
@@ -461,4 +463,4 @@ class CkEditorOps {
     
 }
 
-export default new CkEditorOps();
+export default new CKEditor();
