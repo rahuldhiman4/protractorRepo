@@ -88,11 +88,6 @@ class EditTaskTemplate {
         //        await utilCommon.waitUntilPopUpDisappear();
     }
 
-    async clickOnSaveButtonWithoutWait() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
-        await $(this.selectors.saveButton).click();
-    }
-
     async clickOnSaveMetadata() {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveMetadata)));
         await $(this.selectors.saveMetadata).click();
