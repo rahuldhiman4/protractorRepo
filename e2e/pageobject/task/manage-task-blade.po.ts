@@ -7,7 +7,6 @@ class ManageTaskBlade {
         addTaskFromTemplateButton: '[rx-view-component-id="d02d64d8-5a76-4cdc-8263-1d45b2da4dd1"] button',
         addAdhocTaskButton: '[rx-view-component-id="0b9c53ae-7090-446f-af7e-317ef1391d39"] button',
         refreshButton: '[rx-id="refresh-button"]',
-        taskFromManageTasks: 'ux-task-manager a.link',
         saveButton: '[rx-view-component-id="b7f9f666-5c22-463a-bc86-4cb66e26fa35"] button',
         searchTextbox: '.adapt-search-triggerable input[type="search"]',
         canceltaskTemplatbutton: '[rx-view-component-id="ba0bd5fe-391a-4885-8f0c-56cfead43ebd"] button',
@@ -15,7 +14,7 @@ class ManageTaskBlade {
         closeButton: '[rx-view-component-id="8e7b2768-299d-468a-bd46-4827677e8eff"] button',
         columnHeaders: '.c-header-container .c-header-name',
         taskTemplateGuid: '0f3712cc-95da-49c3-b2b0-6b7409c8349b',
-        templatesLink: '[rx-view-component-id="8334a05d-06ba-4d9b-8c35-e40e90637e85"] .task-summary-wrapper a',
+        taskSummaryLink: '[rx-view-component-id="8334a05d-06ba-4d9b-8c35-e40e90637e85"] .task-summary-wrapper a',
     }
 
     async clickAddTaskFromTemplateButton(): Promise<void> {
@@ -67,14 +66,11 @@ class ManageTaskBlade {
     }
 
     async clickTaskLink(taskSummary: string): Promise<void> {
-        //        await browser.wait(this.EC.or(async () => {
-        //            let count = await $$(this.selectors.taskFromManageTasks).count();
-        //            return count >= 1;
-        //        }));
-        // await browser.wait(this.EC.elementToBeClickable(element(by.linkText(taskSummary))), 3000);
-        // await element(by.partialLinkText(taskSummary)).click();
-        //        await utilCommon.waitUntilSpinnerToHide();
-        await element(by.cssContainingText('[rx-view-component-id="8334a05d-06ba-4d9b-8c35-e40e90637e85"] .task-summary-wrapper a', taskSummary)).click();
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.taskSummaryLink).count();
+            return count >= 1;
+        }));
+        await element(by.cssContainingText(this.selectors.taskSummaryLink, taskSummary)).click();
     }
 
     async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {
@@ -102,8 +98,7 @@ class ManageTaskBlade {
     }
 
     async isTaskLinkPresent(taskSummary: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary))));
-        let summaryLinkTxt = await element(by.cssContainingText(this.selectors.taskFromManageTasks, taskSummary)).getText();
+        let summaryLinkTxt = await element(by.cssContainingText(this.selectors.taskSummaryLink, taskSummary)).getText();
         return summaryLinkTxt === taskSummary;
     }
 

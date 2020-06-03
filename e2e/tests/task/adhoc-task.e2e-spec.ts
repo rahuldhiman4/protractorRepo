@@ -97,7 +97,6 @@ describe('Create Adhoc task', () => {
             await adhoctaskTemplate.selectCategoryTier2('Social');
             await adhoctaskTemplate.selectCategoryTier3('Chatter');
             await adhoctaskTemplate.clickAssignToMeButton();
-            //await adhoctaskTemplate.selectLabel('test');
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
         });
