@@ -149,13 +149,12 @@ class RelatedCasePage {
     async isCasePresent(caseId: string): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.addRelatedCasesButton)));
         let allCasesNum: number = await $$(this.selectors.allRelatedCases).count();
-        let status: boolean = true;;
+        let status: boolean = false;
         for (let i = 0; i < allCasesNum; i++) {
             let cases = await $$(this.selectors.allRelatedCases).get(i);
             let nm: string = await cases.$(this.selectors.caseId).getText();
             if (nm == caseId) {
-                await cases.$(this.selectors.removeCaseButton).click();
-                status = false;
+                status = true;
                 break;
             }
         }

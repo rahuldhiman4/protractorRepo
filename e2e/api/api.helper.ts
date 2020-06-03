@@ -1812,6 +1812,7 @@ class ApiHelper {
         if (assignee) {
             APPROVAL_ACTION.commands[0]["assignToApprovers"] = assignee;
         }
+
         await browser.sleep(20000);
         let response = await axios.post(
             commandUri,
@@ -1844,7 +1845,7 @@ class ApiHelper {
             headers: { 'request-overlay-group': 'Petramco' }
         };
 
-        ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING.fieldInstances[3205].value = browser.baseUrl + '/';
+        ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING.fieldInstances[3205].value = browser.baseUrl;
         let response = await axios.post(
             'api/rx/application/record/recordinstance',
             ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING,
