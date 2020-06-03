@@ -147,7 +147,7 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    fit('[DRDMV-11710,DRDMV-11698]: Upload attachment from Social & verify all attachments grid', async () => {
+    it('[DRDMV-11710,DRDMV-11698]: Upload attachment from Social & verify all attachments grid', async () => {
         let filePath = '../../data/ui/attachment/bwfPdf.pdf';
         let caseBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
