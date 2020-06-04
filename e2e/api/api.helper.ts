@@ -831,9 +831,11 @@ class ApiHelper {
         oneTaskFlowProcess.name = oneTaskFlowProcess.name + "_" + randomString;
         let taskTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid);
         let taskSummary = taskTemplateJsonData.fieldInstances[8].value;
+        let taskName = taskTemplateJsonData.fieldInstances[1000001437].value;
 
         oneTaskFlowProcess.flowElements[2].inputMap[0].expression = `"${taskSummary}"`;
         oneTaskFlowProcess.flowElements[2].inputMap[3].expression = `"${taskTemplateGuid}"`;
+        oneTaskFlowProcess.layout = (oneTaskFlowProcess.layout).replace("New Task", taskName);
 
         let processGuid = await coreApi.createProcess(oneTaskFlowProcess);
         console.log('New Process Created =============>', oneTaskFlowProcess.name, "=====GUID:", processGuid);
@@ -860,13 +862,17 @@ class ApiHelper {
 
         let taskTemplateJsonData1 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid1);
         let taskSummary1 = taskTemplateJsonData1.fieldInstances[8].value;
+        let taskName1 = taskTemplateJsonData1.fieldInstances[1000001437].value;
         let taskTemplateJsonData2 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid2);
         let taskSummary2 = taskTemplateJsonData2.fieldInstances[8].value;
+        let taskName2 = taskTemplateJsonData2.fieldInstances[1000001437].value;
 
         twoTaskFlowProcess.flowElements[2].inputMap[1].expression = `"${taskSummary1}"`;
         twoTaskFlowProcess.flowElements[3].inputMap[1].expression = `"${taskSummary2}"`;
         twoTaskFlowProcess.flowElements[2].inputMap[2].expression = `"${taskTemplateGuid1}"`;
         twoTaskFlowProcess.flowElements[3].inputMap[2].expression = `"${taskTemplateGuid2}"`;
+        twoTaskFlowProcess.layout = (twoTaskFlowProcess.layout).replace("New Task 1", taskName1);
+        twoTaskFlowProcess.layout = (twoTaskFlowProcess.layout).replace("New Task 2", taskName2);
 
         let processGuid = await coreApi.createProcess(twoTaskFlowProcess);
         console.log('New Process Created =============>', twoTaskFlowProcess.name, "=====GUID:", processGuid);
