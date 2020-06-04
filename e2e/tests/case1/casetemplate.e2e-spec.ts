@@ -27,8 +27,7 @@ import utilityGrid from '../../utils/utility.grid';
 
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
-let userName = "DRDMV-12581";
-let userData = undefined;
+let userData;
 
 describe('Case Template', () => {
     beforeAll(async () => {
@@ -37,13 +36,13 @@ describe('Case Template', () => {
         userData = {
             "firstName": "Petramco",
             "lastName": "withoutSG",
-            "userId": userName,
+            "userId": "DRDMV-12581",
         }
-        // await apiHelper.apiLogin('tadmin');
-        // await apiHelper.createNewUser(userData);
-        // await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
-        // await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
-        // await apiHelper.associatePersonToCompany(userData.userId, "Phylum");
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.createNewUser(userData);
+        await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
+        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
+        await apiHelper.associatePersonToCompany(userData.userId, "Phylum");
     });
 
     afterAll(async () => {

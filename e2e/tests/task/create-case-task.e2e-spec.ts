@@ -76,7 +76,7 @@ describe('Create Case Task', () => {
             await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
         });
-        it('added task on created case ', async () => {
+        it('added task on created case', async () => {
             //open create case
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -90,7 +90,7 @@ describe('Create Case Task', () => {
             expect(await manageTask.isTaskLinkPresent(`manualTaskTemplateDraft ${randomStr}`)).toBeTruthy(`manualTaskTemplateDraft ${randomStr}` + ' Task is not added to case');
             expect(await manageTask.isTaskLinkPresent(`AutomatedTaskTemplateActive ${randomStr}`)).toBeTruthy(`AutomatedTaskTemplateActive ${randomStr}` + ' Task is not added to case');
         });
-        it('Verify task on task type ', async () => {
+        it('[DRDMV-7165,DRDMV-7147]: Update Task Type field for any task', async () => {
             //validate Manual Template
             await manageTask.clickTaskLink(`manualTaskTemplateDraft ${randomStr}`);
             await viewTask.clickOnEditTask();
@@ -116,7 +116,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Automatic Task data validation once Task is created	', async () => {
+    describe('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Automatic Task data validation once Task is created', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let menuItemName: string = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
         let autmationTaskTemplateWithRequiredData = 'Automatic task With Required Field' + Math.floor(Math.random() * 1000000);
@@ -195,7 +195,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.getCategoryTier3Value()).toBe('Chatter');
             expect(await viewTask.getCategoryTier4Value()).toBe('Failure');
         });
-        it('validate Automation task', async () => {
+        it('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Automatic Task data validation once Task is created', async () => {
             //validate Automation Template
             await viewTask.clickOnViewCase();
             await viewCasePage.openTaskCard(1);
@@ -216,7 +216,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-7124]: [Automatic Task] - Task Template UI in Edit mode: New fields validations ', async () => {
+    describe('[DRDMV-7124]: [Automatic Task] - Task Template UI in Edit mode: New fields validations', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             let templateData = {
@@ -341,7 +341,7 @@ describe('Create Case Task', () => {
             expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
         });
-        it('Verify the Automation Draft task template', async () => {
+        it('[DRDMV-7124]: [Automatic Task] - Task Template UI in Edit mode: New fields validations', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateDraft ${randomStr}`);
@@ -711,7 +711,6 @@ describe('Create Case Task', () => {
             expect(await navigationPage.isSettingSubMenusMatches("Email", emailtList)).toBeTruthy("Email");
             expect(await navigationPage.isSettingSubMenusMatches("Notification Configuration", notificationConfigurationList)).toBeTruthy("Notification Configuration");
         });
-
         it('[DRDMV-2475]: Verify permission from manger role and agent role', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
@@ -796,6 +795,7 @@ describe('Create Case Task', () => {
             expect(await viewTasktemplatePo.getTemplateStatus()).toBe('Draft');
         });
     });
+
     //ankagraw
     describe('[DRDMV-7254]: Automated Task] - Automated Task Activation behavior when Case is created in In Progress status via Case template having Task templates in it', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -965,6 +965,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
         });
     });
+
     //ankagraw
     describe('[DRDMV-7145]: [Automatic task] - Task Activation based on its sequence no.', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1055,6 +1056,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
         });
     });
+
     //ankagraw
     describe('[DRDMV-7143,DRDMV-7144]: [Automatic Task] - Task Activation behaviour immediately after creation when Task is at seq 1', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

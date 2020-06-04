@@ -73,8 +73,7 @@ describe('Create Adhoc task', () => {
 
     describe('[DRDMV-3821,DRDMV-7130,DRDMV-1580,DRDMV-12243]: Adhoc Task details validation', async () => {
         let summary = 'Adhoc task ' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase;
-        let caseData;
+        let newCase, caseData;
         beforeAll(async () => {
             caseData = {
                 "Requester": "apavlik",
@@ -100,7 +99,6 @@ describe('Create Adhoc task', () => {
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
         });
-
         it('[DRDMV-3821,DRDMV-7130,DRDMV-1580,DRDMV-12243]: Adhoc Task details view (UI verification)', async () => {
             await manageTask.clickTaskLink(summary);
             expect(await adhoctaskTemplate.isProcessFieldPresent()).toBeFalsy();
