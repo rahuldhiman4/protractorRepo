@@ -1,4 +1,4 @@
-import { browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import attachmentBladePo from '../../pageobject/attachment/attachment-blade.po';
 import attachmentInformationBladePo from '../../pageobject/attachment/attachment-information-blade.po';
@@ -306,7 +306,6 @@ describe("Attachment", () => {
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
         });
-
         it('Multiple tasks on same case with attachments', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase.displayId);

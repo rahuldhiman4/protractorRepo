@@ -1,9 +1,14 @@
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
+import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
+import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
+import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
@@ -15,21 +20,14 @@ import taskTemplate from "../../pageobject/settings/task-management/create-taskt
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import activityTabPo from '../../pageobject/social/activity-tab.po';
+import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
-import editTaskPo from '../../pageobject/task/edit-task.po';
-import caseConsolePo from '../../pageobject/case/case-console.po';
 import utilityGrid from '../../utils/utility.grid';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
 
 describe('Create Task Template', () => {
     beforeAll(async () => {
@@ -183,7 +181,6 @@ describe('Create Task Template', () => {
             await apiHelper.createManualTaskTemplate(templateData1);
         });
         it('Create Manual Task template', async () => {
-
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate('manualTaskTemplate' + randomStr);
@@ -282,12 +279,12 @@ describe('Create Task Template', () => {
             expect(await viewTaskTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
             expect(await viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
             expect(await viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
-        })
+        });
     });
 
     describe('[DRDMV-7151]: [Automatic Task] - Automatic Task: Social: System Comments', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        var templateData4 = {
+        let templateData = {
             "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
             "templateSummary": `SummaryAutomatedTaskTemplate ${randomStr}`,
             "templateStatus": "Active",
@@ -300,7 +297,7 @@ describe('Create Task Template', () => {
         }
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createAutomatedTaskTemplate(templateData4);
+            await apiHelper.createAutomatedTaskTemplate(templateData);
         });
         //Create a Case
         it('Assign task on case', async () => {
@@ -315,8 +312,8 @@ describe('Create Task Template', () => {
             await viewCasePage.clickAddTaskButton();
 
             //Add Automation Task templates in Case
-            await manageTask.addTaskFromTaskTemplate(templateData4.templateSummary);
-            await manageTask.clickTaskLink(templateData4.templateSummary);
+            await manageTask.addTaskFromTaskTemplate(templateData.templateSummary);
+            await manageTask.clickTaskLink(templateData.templateSummary);
             expect(await viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed")
             await viewTask.clickOnViewCase();
         });
@@ -325,7 +322,7 @@ describe('Create Task Template', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.waitUntilPopUpDisappear();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(templateData4.templateSummary);
+            await manageTask.clickTaskLink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toContain('Completed');
             expect(await activityTabPo.getAllTaskActivity('Completed')).toContain('Completed');
             expect(await activityTabPo.getTaskActivity('Assigned')).toContain('Assigned');
@@ -350,7 +347,7 @@ describe('Create Task Template', () => {
         let taskTemplateName = 'taskTemplateWithYesResolve' + randomStr;
         let taskTemplateSummary = 'taskSummaryYesResolved' + randomStr;
         let createdDate = new Date();
-        var month = new Array();
+        let month = new Array();
         month[0] = "January";
         month[1] = "February";
         month[2] = "March";
@@ -379,7 +376,6 @@ describe('Create Task Template', () => {
             await taskTemplate.selectTemplateStatus('Active');
             await taskTemplate.clickOnSaveTaskTemplate();
         });
-
         it('Created task template and change the status of it', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
@@ -395,12 +391,10 @@ describe('Create Task Template', () => {
             await editTaskTemplate.selectTemplateStatus('Inactive');
             await editTaskTemplate.clickOnSaveMetadata();
         });
-
         let modifiedDate = new Date();
         let monthValue: string = month[modifiedDate.getMonth()];
         let modifiedMonthValue = monthValue.substring(0, 3);
         let modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + modifiedDate.toLocaleTimeString();
-
         it('Apply Filter Options', async () => {
             let addColoumn: string[] = ['Display ID'];
             await navigationPage.gotoSettingsPage();
@@ -508,7 +502,6 @@ describe('Create Task Template', () => {
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTaskPo.clickOnSaveButton();
         });
-
         it('verify the task in task console', async () => {
             activityTabPo.getTaskActivity('Assigned');
             await activityTabPo.addActivityNote("testing123");
@@ -536,7 +529,6 @@ describe('Create Task Template', () => {
             await caseConsolePo.searchAndOpenCase(CaseId);
             expect(await viewCasePage.getCaseStatusValue()).toBe('In Progress');
         });
-
         it('[DRDMV-5326]: Verify the case with different support group', async () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();
@@ -571,23 +563,23 @@ describe('Create Task Template', () => {
             "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
-        let displayId,taskName1,taskName2,taskName3,taskName4,taskName5;
+        let displayId, taskName1, taskName2, taskName3, taskName4, taskName5;
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             let newCase1 = await apiHelper.createCase(caseData1);
             let tasktemp = await apiHelper.createAdhocTask(newCase1.id, templateData);
-            taskName1 = templateData.taskName='manualTaskTemplateInProgress' + randomStr;
+            taskName1 = templateData.taskName = 'manualTaskTemplateInProgress' + randomStr;
             let tasktemp1 = await apiHelper.createAdhocTask(newCase1.id, templateData);
-            taskName2 = templateData.taskName='manualTaskTemplatePending' + randomStr;
+            taskName2 = templateData.taskName = 'manualTaskTemplatePending' + randomStr;
             let tasktemp2 = await apiHelper.createAdhocTask(newCase1.id, templateData);
-            taskName3 = templateData.taskName='manualTaskTemplateCompleted' + randomStr
+            taskName3 = templateData.taskName = 'manualTaskTemplateCompleted' + randomStr
             let tasktemp3 = await apiHelper.createAdhocTask(newCase1.id, templateData);
-            taskName4 = templateData.taskName='manualTaskTemplateCancelled' + randomStr
+            taskName4 = templateData.taskName = 'manualTaskTemplateCancelled' + randomStr
             let tasktemp4 = await apiHelper.createAdhocTask(newCase1.id, templateData);
-            taskName5 = templateData.taskName='manualTaskTemplateClosed' + randomStr
+            taskName5 = templateData.taskName = 'manualTaskTemplateClosed' + randomStr
             let tasktemp5 = await apiHelper.createAdhocTask(newCase1.id, templateData);
-            
-        
+
+
             await apiHelper.updateCaseStatus(newCase1.id, 'InProgress');
             await apiHelper.updateTaskStatus(tasktemp.id, 'Assigned');
             await apiHelper.updateTaskStatus(tasktemp1.id, 'InProgress');
