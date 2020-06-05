@@ -406,6 +406,10 @@ class ViewCasePage {
         }
         return undefined;
     }
+
+    async isAssigneeNameDisplayed(): Promise<boolean> {
+        return await $(this.selectors.assigneeText).isDisplayed();
+    }
 }
 
 export default new ViewCasePage();
