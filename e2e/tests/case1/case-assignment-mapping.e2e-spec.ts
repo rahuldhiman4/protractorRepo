@@ -336,7 +336,7 @@ describe("Create Case Assignment Mapping", () => {
         await apiHelper.associatePersonToCompany(personData.userId, company)
     }
 
-    it('[DRDMV-11825,DRDMV-11826, DRDMV-11827, DRDMV-11828]: Verify Company and Support Group selection hierarchy.', async () => {
+    it('[DRDMV-11825,DRDMV-11826, DRDMV-11827, DRDMV-11828, DRDMV-11978]: Verify Company and Support Group selection hierarchy.', async () => {
         const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
         const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
         const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');

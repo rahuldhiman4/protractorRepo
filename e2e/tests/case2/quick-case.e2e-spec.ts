@@ -83,6 +83,7 @@ describe("Quick Case", () => {
         await apiHelper.updateCaseTemplateStatus(caseTemplateId797, 'Inactive');
         await quickCasePo.saveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for inactive template');
+        await utilityCommon.closePopUpMessage();
     });
 
     it('[DRDMV-800]: [Quick Case] Case creation with requester having same name as other company users', async () => {
@@ -91,32 +92,27 @@ describe("Quick Case", () => {
             "lastName": "Person1",
             "userId": "userData1",
         }
-
         let userData2 = {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData2",
         }
-
         let userData3 = {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData3",
         }
-
         let userData4 = {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData4",
         }
-
         await apiHelper.apiLogin('tadmin');
         await apiHelper.createNewUser(userData1);
         await apiHelper.createNewUser(userData2);
         await apiHelper.createNewUser(userData3);
         await apiHelper.createNewUser(userData4);
-
-        await navigationPage.gotoQuickCase();
+        await quickCase.clickStartOverButton();
         await quickCase.selectRequesterName('Person1 Person1');
         await quickCase.setCaseSummary('caseSummary');
         await quickCase.createCaseButton();
@@ -124,36 +120,9 @@ describe("Quick Case", () => {
         expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
     });
 
-    it('[DRDMV-794]: [Quick Case] Requester, Contact, Subject Employee people selection', async () => {
-        await navigationPage.gotoQuickCase();
-        await quickCase.selectRequesterName('allen');
-        expect(await quickCase.getDrpDownValueByIndex(1)).toBe('The requester of the case');
-        await quickCase.selectRequesterName('adam');
-        expect(await quickCase.getDrpDownValueByIndex(2)).toBe('Related to');
-        await quickCase.selectRequesterName('bpitt');
-        expect(await quickCase.getDrpDownValueByIndex(3)).toBe('Related to');
-        await quickCase.selectRequesterName('brain');
-        expect(await quickCase.getDrpDownValueByIndex(4)).toBe('Related to');
-        await quickCase.selectDrpDownValueByIndex('Target', 1);
-        expect(await quickCase.isCreateButtonDisabled()).toBeTruthy('Save button Enabled');
-        await quickCase.selectRequesterName('kye');
-        expect(await quickCase.getDrpDownValueByIndex(5)).toBe('The requester of the case');
-        expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Target');
-        await quickCase.selectDrpDownValueByIndex('The requester of the case', 1);
-        expect(await quickCase.getDrpDownValueByIndex(1)).toBe('The requester of the case');
-        expect(await quickCase.getDrpDownValueByIndex(5)).toBe('Another person contacting on behalf of the requester');
-        await quickCase.selectDrpDownValueByIndex('Another person contacting on behalf of the requester', 1);
-        expect(await quickCase.getDrpDownValueByIndex(5)).toBe('The requester of the case');
-        expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Another person contacting on behalf of the requester');
-        await quickCase.setCaseSummary('address');
-        await quickCase.saveCase();
-        expect(await previewCasePo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy();
-        expect(await previewCasePo.isContactNameDisplayed('Al Allbrook')).toBeTruthy();
-        await quickCase.gotoCaseButton();
-    }, 200 * 1000);
-
     it('[DRDMV-1205]: [Quick Case] People search', async () => {
         await navigationPage.gotoQuickCase();
+        await quickCase.clickStartOverButton();
         await quickCase.selectRequesterName('Allen');
         expect(await quickCase.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
         await quickCase.clickStartOverButton();
@@ -173,35 +142,73 @@ describe("Quick Case", () => {
         expect(await quickCase.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
     });
 
-    //apdeshmu
-    it('[DRDMV-1087]:[Quick Case] Case Template search via !', async () => {
+    describe('[DRDMV-794]: [Quick Case] Requester, Contact, Subject Employee people selection', async () => {
+        it('Employee people selection', async () => {
+            await quickCase.clickStartOverButton();
+            await quickCase.selectRequesterName('allen');
+            expect(await quickCase.getDrpDownValueByIndex(1)).toBe('The requester of the case');
+            await quickCase.selectRequesterName('adam');
+            expect(await quickCase.getDrpDownValueByIndex(2)).toBe('Related to');
+            await quickCase.selectRequesterName('bpitt');
+            expect(await quickCase.getDrpDownValueByIndex(3)).toBe('Related to');
+            await quickCase.selectRequesterName('brain');
+            expect(await quickCase.getDrpDownValueByIndex(4)).toBe('Related to');
+            await quickCase.selectDrpDownValueByIndex('Target', 1);
+            expect(await quickCase.isCreateButtonDisabled()).toBeTruthy('Save button Enabled');
+        });
+        it('[DRDMV-794]: [Quick Case] Requester, Contact, Subject Employee people selection', async () => {
+            await quickCase.selectRequesterName('kye');
+            expect(await quickCase.getDrpDownValueByIndex(5)).toBe('The requester of the case');
+            expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Target');
+            await quickCase.selectDrpDownValueByIndex('The requester of the case', 1);
+            expect(await quickCase.getDrpDownValueByIndex(1)).toBe('The requester of the case');
+            expect(await quickCase.getDrpDownValueByIndex(5)).toBe('Another person contacting on behalf of the requester');
+            await quickCase.selectDrpDownValueByIndex('Another person contacting on behalf of the requester', 1);
+            expect(await quickCase.getDrpDownValueByIndex(5)).toBe('The requester of the case');
+            expect(await quickCase.getDrpDownValueByIndex(1)).toBe('Another person contacting on behalf of the requester');
+            await quickCase.setCaseSummary('address');
+            await quickCase.saveCase();
+            expect(await previewCasePo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy();
+            expect(await previewCasePo.isContactNameDisplayed('Al Allbrook')).toBeTruthy();
+            await quickCase.gotoCaseButton();
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-1087]:[Quick Case] Case Template search via !', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = randomStr + "Petramco";
         let caseTemplateName1 = randomStr + "Psilon";
         let threeCharacterString = randomStr.substr(0, 3);
-        let templateData = {
-            "templateName": caseTemplateName,
-            "templateSummary": caseTemplateName,
-            "categoryTier1": "Purchasing Card",
-            "categoryTier2": "Policies",
-            "categoryTier3": "Card Issuance",
-            "casePriority": "Low",
-            "templateStatus": "Draft",
-            "company": "Petramco",
-        }
-        let templateData1 = {
-            "templateName": caseTemplateName1,
-            "templateSummary": caseTemplateName1,
-            "templateStatus": "Active",
-            "company": 'Psilon'
-        }
-        try {
+        beforeAll(async () => {
+            let templateData = {
+                "templateName": caseTemplateName,
+                "templateSummary": caseTemplateName,
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "templateStatus": "Draft",
+                "company": "Petramco",
+            }
+            let templateData1 = {
+                "templateName": caseTemplateName1,
+                "templateSummary": caseTemplateName1,
+                "templateStatus": "Active",
+                "company": 'Psilon'
+            }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData);
             await apiHelper.apiLogin('gwixillian');
             await apiHelper.createCaseTemplate(templateData1);
+        });
+        it('Checking change case template button for In Progress', async () => {
             //Draft Template Search 
             await navigationPage.gotoQuickCase();
+            await quickCase.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
             expect(await quickCasePo.selectCaseTemplate(caseTemplateName)).toBeFalsy("Draft Template is founded");;
             //Active Template Verification
@@ -219,6 +226,8 @@ describe("Quick Case", () => {
             await quickCase.setCaseSummary(caseTemplateName);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
+        });
+        it('[DRDMV-1087]:[Quick Case] Case Template search via !', async () => {
             //Different Company Search
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
@@ -227,80 +236,56 @@ describe("Quick Case", () => {
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
             expect(await quickCasePo.selectCaseTemplate(threeCharacterString)).toBeTruthy("Template is not founded");
-        } catch (e) {
-            throw e;
-        }
-        finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        }
-    }, 950 * 1000);
+        });
+    });
 
-    //apdeshmu
-    it('[DRDMV-786]:[Quick Case] Case creation with all case statuses in template', async () => {
+    fdescribe('[DRDMV-786]:[Quick Case] Case creation with all case statuses in template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName1 = randomStr + "Petramco1";
         let caseTemplateName2 = randomStr + "Petramco2";
-        let caseTemplateName3 = randomStr + "Petramco3";
-        let caseTemplateName4 = randomStr + "Petramco4";
-
-        let templateData1 = {
-            "templateName": caseTemplateName1,
-            "templateSummary": caseTemplateName1,
-            "templateStatus": "Active",
-            "company": "Petramco",
-            "caseStatus": "New",
-            "businessUnit": "HR Support",
-            "supportGroup": "Workforce Administration",
-        }
-        let templateData2 = {
-            "templateName": caseTemplateName2,
-            "templateSummary": caseTemplateName2,
-            "categoryTier1": "Purchasing Card",
-            "categoryTier2": "Policies",
-            "categoryTier3": "Card Issuance",
-            "casePriority": "Low",
-            "templateStatus": "Active",
-            "company": "Petramco",
-            "caseStatus": "Assigned",
-            "businessUnit": "Facilities Support",
-            "supportGroup": "Facilities",
-            "assignee": "Fritz",
-            "ownerBU": "Facilities Support",
-            "ownerGroup": "Facilities"
-        }
-        let templateData3 = {
-            "templateName": caseTemplateName3,
-            "templateSummary": caseTemplateName3,
-            "caseStatus": "InProgress",
-            "templateStatus": "Active",
-            "company": "Petramco",
-            "businessUnit": "Facilities Support",
-            "supportGroup": "Facilities",
-            "assignee": "Fritz",
-            "ownerBU": "Facilities Support",
-            "ownerGroup": "Facilities"
-        }
-        let templateData4 = {
-            "templateName": caseTemplateName4,
-            "templateSummary": caseTemplateName4,
-            "caseStatus": "Resolved",
-            "templateStatus": "Active",
-            "company": "Petramco",
-            "businessUnit": "Facilities Support",
-            "supportGroup": "Facilities",
-            "assignee": "Fritz",
-            "ownerBU": "Facilities Support",
-            "ownerGroup": "Facilities"
-        }
-        try {
+        beforeAll(async () => {
+            let templateData1 = {
+                "templateName": caseTemplateName1,
+                "templateSummary": caseTemplateName1,
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "caseStatus": "New",
+                "businessUnit": "HR Support",
+                "supportGroup": "Workforce Administration",
+            }
+            let templateData2 = {
+                "templateName": caseTemplateName2,
+                "templateSummary": caseTemplateName2,
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "caseStatus": "Assigned",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData1);
+            templateData2.caseStatus= "Assigned",
             await apiHelper.createCaseTemplate(templateData2);
             await apiHelper.apiLogin('fritz');
-            await apiHelper.createCaseTemplate(templateData3);
-            await apiHelper.createCaseTemplate(templateData4);
-
+            templateData2.caseStatus= "InProgress",
+            templateData2.templateName = randomStr + "Petramco3";
+            await apiHelper.createCaseTemplate(templateData2);
+            templateData2.caseStatus= "Resolved",
+            templateData2.templateName = randomStr + "Petramco3";
+            await apiHelper.createCaseTemplate(templateData2);
+        });
+        it('Creating the case with diffrent statuses', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
@@ -314,65 +299,65 @@ describe("Quick Case", () => {
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('Assigned');
-
+        });
+        it('[DRDMV-786]:[Quick Case] Case creation with all case statuses in template', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("fritz");
-            await quickCasePo.selectCaseTemplate(caseTemplateName4);
+            await quickCasePo.selectCaseTemplate(caseTemplateName2);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("fritz");
-            await quickCasePo.selectCaseTemplate(caseTemplateName3);
+            await quickCasePo.selectCaseTemplate(caseTemplateName2);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
-        } catch (e) {
-            throw e;
-        }
-        finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        }
-    }, 500 * 1000);
+        });
+    });
 
     //ankagraw
-    it('[DRDMV-795]: [Quick Case] Case template search in Resources', async () => {
+    describe('[DRDMV-795]: [Quick Case] Case template search in Resources', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = randomStr + 'templateDraft';
         let caseTemplateSummary = randomStr + 'SummaryDraft';
         let caseTempalteDescription = randomStr + 'Description';
-
-        let CaseTemplateDataInDraftStatus = {
-            "templateName": caseTemplateName,
-            "templateSummary": caseTemplateSummary,
-            "caseStatus": "InProgress",
-            "templateStatus": "Draft",
-            "description": caseTempalteDescription,
-            "company": "Petramco",
-            "businessUnit": "Facilities Support",
-            "supportGroup": "Facilities",
-            "assignee": "Fritz",
-            "ownerBU": "Facilities Support",
-            "ownerGroup": "Facilities"
-        }
-        let CaseTemplateDataWithDifferentOrganization = {
-            "templateName": `${randomStr}` + 'WithOtherOrg',
-            "templateSummary": `${randomStr}`,
-            "caseStatus": "InProgress",
-            "templateStatus": "Active",
-            "company": "Psilon",
-            "businessUnit": "Psilon Support Org1",
-            "supportGroup": "Psilon Support Group1",
-            "assignee": "gderuno",
-        }
-        try {
+        beforeAll(async () => {
+            let CaseTemplateDataInDraftStatus = {
+                "templateName": caseTemplateName,
+                "templateSummary": caseTemplateSummary,
+                "caseStatus": "InProgress",
+                "templateStatus": "Draft",
+                "description": caseTempalteDescription,
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            let CaseTemplateDataWithDifferentOrganization = {
+                "templateName": `${randomStr}` + 'WithOtherOrg',
+                "templateSummary": `${randomStr}`,
+                "caseStatus": "InProgress",
+                "templateStatus": "Active",
+                "company": "Psilon",
+                "businessUnit": "Psilon Support Org1",
+                "supportGroup": "Psilon Support Group1",
+                "assignee": "gderuno",
+            }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(CaseTemplateDataInDraftStatus);
             await apiHelper.apiLogin('gderuno');
             await apiHelper.createCaseTemplate(CaseTemplateDataWithDifferentOrganization);
+        });
+        it('Case template search in Resources', async () => {
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName('adam');
             expect(await quickCase.selectCaseTemplate(caseTemplateName)).toBeFalsy("Draft case template present");
@@ -385,7 +370,9 @@ describe("Quick Case", () => {
             await editCaseTemplate.clickOnEditCaseTemplateMetadata();
             await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-795]: [Quick Case] Case template search in Resources', async () => {
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName('adam');
             expect(await quickCase.selectCaseTemplate(`${randomStr}` + 'WithOtherOrg')).toBeFalsy('Different organization case template present');
@@ -397,98 +384,97 @@ describe("Quick Case", () => {
             expect(await resources.getAdvancedSearchResultForParticularSection(caseTemplateName)).toEqual(caseTemplateName);
             await quickCase.setCaseSummary(caseTempalteDescription);
             expect(await resources.getAdvancedSearchResultForParticularSection(caseTemplateName)).toEqual(caseTemplateName);
-        } catch (e) {
-            throw e;
-        }
-        finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        }
-    }, 900 * 1000);
+        });
+    });
 
     //apdeshmu 
-    it('[DRDMV-767]:[Quick Case] Case creation with template (end-to-end)', async () => {
+    describe('[DRDMV-767]:[Quick Case] Case creation with template (end-to-end)', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let assignmentMappingName = "DRDMV-767" + randomStr;
         let caseTemplateName = randomStr + "767Petramco";
-        let tasktemplateData = {
-            "templateName": `${caseTemplateName}`,
-            "templateSummary": `${caseTemplateName}`,
-            "templateStatus": "Active",
-            "processBundle": "com.bmc.dsm.case-lib",
-            "processName": `Case Process 1 ${randomStr}`,
-            "categoryTier1": "Purchasing Card",
-            "categoryTier2": "Policies",
-            "categoryTier3": "Card Issuance",
-            "taskCompany": "Petramco",
-            "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
-        }
-        let CaseTemplateData = {
-            "templateName": `${caseTemplateName}`,
-            "templateSummary": `${caseTemplateName}`,
-            "caseStatus": "InProgress",
-            "templateStatus": "Active",
-            "assignee": "Fritz",
-            "company": "Petramco",
-            "businessUnit": "Facilities Support",
-            "supportGroup": "Facilities",
-            "ownerBU": "Facilities Support",
-            "ownerGroup": "Facilities",
-            "supportCompany": "Petramco",
-            "categoryTier1": "Purchasing Card",
-            "categoryTier2": "Policies",
-            "categoryTier3": "Card Issuance",
-            "priority": "Low",
-        }
-        let caseData =
-        {
-            "Requester": "qtao",
-            "Summary": caseTemplateName,
-            "Assigned Company": "Petramco",
-            "Business Unit": "United States Support",
-            "Support Group": "US Support 3",
-            "categoryTier1": "Purchasing Card",
-            "categoryTier2": "Policies",
-            "categoryTier3": "Card Issuance",
-            "Assignee": "qkatawazi"
-        }
-        let assignmentData =
-        {
-            "assignmentMappingName": assignmentMappingName,
-            "company": "Petramco",
-            "supportCompany": "Petramco",
-            "supportGroup": "Employee Relations",
-            "assignee": "qliu",
-            "categoryTier1": "Purchasing Card",
-            "categoryTier2": "Policies",
-            "categoryTier3": "Card Issuance",
-            "priority": "Low",
-        }
-        let articleData1 = {
-            "knowledgeSet": "HR",
-            "title": caseTemplateName,
-            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "categoryTier1": "Applications",
-            "categoryTier2": "Help Desk",
-            "categoryTier3": "Incident",
-            "region": "Australia",
-            "site": "Canberra",
-            "assignedCompany": "Petramco",
-            "assigneeBusinessUnit": "Australia Support",
-            "assigneeSupportGroup": "AU Support 3",
-            "assignee": "KWilliamson"
-        }
-
-        await apiHelper.apiLogin('fritz');
-        let automationTaskTemplate = await apiHelper.createAutomatedTaskTemplate(tasktemplateData);
-        let newCaseTemplate = await apiHelper.createCaseTemplate(CaseTemplateData);
-        await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automationTaskTemplate.displayId);
-        await apiHelper.createCaseAssignmentMapping(assignmentData);
-        await apiHelper.createCase(caseData);
-        await apiHelper.createKnowledgeArticle(articleData1);
-        try {
+        beforeAll(async () => {
+            let tasktemplateData = {
+                "templateName": `${caseTemplateName}`,
+                "templateSummary": `${caseTemplateName}`,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": `Case Process 1 ${randomStr}`,
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            let CaseTemplateData = {
+                "templateName": `${caseTemplateName}`,
+                "templateSummary": `${caseTemplateName}`,
+                "caseStatus": "InProgress",
+                "templateStatus": "Active",
+                "assignee": "Fritz",
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "supportCompany": "Petramco",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "priority": "Low",
+            }
+            let caseData =
+            {
+                "Requester": "qtao",
+                "Summary": caseTemplateName,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "Assignee": "qkatawazi"
+            }
+            let assignmentData =
+            {
+                "assignmentMappingName": assignmentMappingName,
+                "company": "Petramco",
+                "supportCompany": "Petramco",
+                "supportGroup": "Employee Relations",
+                "assignee": "qliu",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "priority": "Low",
+            }
+            let articleData1 = {
+                "knowledgeSet": "HR",
+                "title": caseTemplateName,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "categoryTier1": "Applications",
+                "categoryTier2": "Help Desk",
+                "categoryTier3": "Incident",
+                "region": "Australia",
+                "site": "Canberra",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "Australia Support",
+                "assigneeSupportGroup": "AU Support 3",
+                "assignee": "KWilliamson"
+            }
+            await apiHelper.apiLogin('fritz');
+            let automationTaskTemplate = await apiHelper.createAutomatedTaskTemplate(tasktemplateData);
+            let newCaseTemplate = await apiHelper.createCaseTemplate(CaseTemplateData);
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automationTaskTemplate.displayId);
+            await apiHelper.createCaseAssignmentMapping(assignmentData);
+            await apiHelper.createCase(caseData);
+            await apiHelper.createKnowledgeArticle(articleData1);
+        });
+        it('Case creation with template', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoQuickCase();
@@ -507,6 +493,8 @@ describe("Quick Case", () => {
             await quickCase.pinRecommendedKnowledgeArticles(1);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
+        });
+        it('[DRDMV-767]:[Quick Case] Case creation with template (end-to-end)', async () => {
             expect(await viewCasePage.getCaseSummary()).toBe(caseTemplateName, "Template is not Found");
             expect(await viewCasePage.getCategoryTier1Value()).toBe('Purchasing Card', "Category is not displaying");
             expect(await viewCasePage.getCategoryTier2Value()).toBe('Policies', "Category is not displaying");
@@ -526,104 +514,43 @@ describe("Quick Case", () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             expect(await resources.getAdvancedSearchResultForParticularSection(caseTemplateName)).toEqual(caseTemplateName);
-        } catch (e) {
-            throw e;
-        }
-        finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        }
-    }, 550 * 1000);
+        });
+    });
 
-    it('[DRDMV-624]:  Advanced Search UI verification on the Quick Case view', async () => {
+    describe('[DRDMV-624]:  Advanced Search UI verification on the Quick Case view', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let knowledgeTitile = 'knowledge3542' + randomStr;
-        await apiHelper.apiLogin('fritz');
-        let articleData1 = {
-            "knowledgeSet": "HR",
-            "title": `${knowledgeTitile}`,
-            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "categoryTier1": "Workforce Administration",
-            "region": "Australia",
-            "site": "Canberra",
-            "assignedCompany": "Petramco",
-            "assigneeBusinessUnit": "United States Support",
-            "assigneeSupportGroup": "US Support 1",
-            "assignee": "kayo"
-        }
-        let articleData2 = {
-            "knowledgeSet": "HR",
-            "title": `${knowledgeTitile}`,
-            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "categoryTier1": "Workforce Administration",
-            "region": "Australia",
-            "site": "Canberra",
-            "assignedCompany": "Petramco",
-            "assigneeBusinessUnit": "United States Support",
-            "assigneeSupportGroup": "US Support 1",
-            "assignee": "kayo"
-        }
-        let articleData3 = {
-            "knowledgeSet": "HR",
-            "title": `${knowledgeTitile}`,
-            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "categoryTier1": "Workforce Administration",
-            "region": "Australia",
-            "site": "Canberra",
-            "assignedCompany": "Petramco",
-            "assigneeBusinessUnit": "United States Support",
-            "assigneeSupportGroup": "US Support 1",
-            "assignee": "kayo"
-        }
-        let articleData4 = {
-            "knowledgeSet": "HR",
-            "title": `${knowledgeTitile}`,
-            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "categoryTier1": "Workforce Administration",
-            "region": "Australia",
-            "site": "Canberra",
-            "assignedCompany": "Petramco",
-            "assigneeBusinessUnit": "United States Support",
-            "assigneeSupportGroup": "US Support 1",
-            "assignee": "kayo"
-        }
-        let articleData5 = {
-            "knowledgeSet": "HR",
-            "title": `${knowledgeTitile}`,
-            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "categoryTier1": "Workforce Administration",
-            "region": "Australia",
-            "site": "Canberra",
-            "assignedCompany": "Petramco",
-            "assigneeBusinessUnit": "United States Support",
-            "assigneeSupportGroup": "US Support 1",
-            "assignee": "kayo"
-        }
-        let articleData6 = {
-            "knowledgeSet": "HR",
-            "title": `${knowledgeTitile}`,
-            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "categoryTier1": "Workforce Administration",
-            "region": "Australia",
-            "site": "Canberra",
-            "assignedCompany": "Petramco",
-            "assigneeBusinessUnit": "United States Support",
-            "assigneeSupportGroup": "US Support 1",
-            "assignee": "kayo"
-        }
-
-        await apiHelper.createKnowledgeArticle(articleData1);
-        await apiHelper.createKnowledgeArticle(articleData2);
-        await apiHelper.createKnowledgeArticle(articleData3);
-        await apiHelper.createKnowledgeArticle(articleData4);
-        await apiHelper.createKnowledgeArticle(articleData5);
-        await apiHelper.createKnowledgeArticle(articleData6);
-        try {
-            let currentDate = new Date();
-            let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            let dateFormateValue: string = months[currentDate.getMonth()];
-            let dateFormateNew: string = dateFormateValue.substring(0, 3);
-            let dateFormate = dateFormateNew + " " + currentDate.getDate() + ", " + currentDate.getFullYear();
+        let currentDate = new Date();
+        let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let dateFormateValue: string = months[currentDate.getMonth()];
+        let dateFormateNew: string = dateFormateValue.substring(0, 3);
+        let dateFormate = dateFormateNew + " " + currentDate.getDate() + ", " + currentDate.getFullYear();
+        beforeAll(async () => {
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitile}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "categoryTier1": "Workforce Administration",
+                "region": "Australia",
+                "site": "Canberra",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "kayo"
+            }
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createKnowledgeArticle(articleData);
+            await apiHelper.createKnowledgeArticle(articleData);
+            await apiHelper.createKnowledgeArticle(articleData);
+            await apiHelper.createKnowledgeArticle(articleData);
+            await apiHelper.createKnowledgeArticle(articleData);
+            await apiHelper.createKnowledgeArticle(articleData);
+        });
+        it('Advanced Search UI verification on the Quick Case view', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("fritz");
@@ -636,6 +563,8 @@ describe("Quick Case", () => {
             expect(await quickCasePo.isFilterAvailable('Site')).toBeTruthy();
             expect(await quickCasePo.isFilterAvailable('Region')).toBeTruthy();
             expect(await quickCasePo.isFilterAvailable('Operational Category Tier 1')).toBeTruthy();
+        });
+        it('[DRDMV-624]: Advanced Search UI verification on the Quick Case view', async () => {
             let statusFieldValues: string[] = ["Select None", "Closed", "Retired", "Canceled", "In Progress", "Draft", "SME Review", "Published", "Publish Approval", "Retire Approval", "Request Cancelation"];
             expect(await resources.isAdvancedSearchFilterOptionDropDownValueDisplayed(statusFieldValues, 0)).toBeTruthy();
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
@@ -656,14 +585,233 @@ describe("Quick Case", () => {
             expect(await previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy('viewArticle link Not peresent');
             expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Status not displaying');
             await previewKnowledgePo.clickOnBackButton();
-        } catch (e) {
-            throw e;
-        }
-        finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        }
-    }, 360 * 1000);
+        });
+    });
+
+    //ptidke
+    describe('[DRDMV-773]: [Quick Case] Case template selection via !', async () => {
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateName = randomStr + 'templateActive';
+        let casTemplateSummary = randomStr + 'SummaryActive';
+        let caseTemplatePsilon = randomStr + 'PsilonTemplate';
+        let casTemplateSummaryPsilon = randomStr + 'PsilonSummary';
+        let caseTemplateDraft = randomStr + 'templateDraft';
+        let casTemplateSummaryDraft = randomStr + 'SummaryDraft';
+        beforeAll(async () => {
+            let templateData = {
+                "templateName": `${caseTemplateName}`,
+                "templateSummary": `${casTemplateSummary}`,
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "resolveCaseonLastTaskCompletion": "1",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createCaseTemplate(templateData);
+            let templateDataDraft = {
+                "templateName": `${caseTemplateDraft}`,
+                "templateSummary": `${casTemplateSummaryDraft}`,
+                "templateStatus": "Draft",
+                "company": "Petramco",
+                "resolveCaseonLastTaskCompletion": "1",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createCaseTemplate(templateDataDraft);
+            let templateDataPsilon = {
+                "templateName": caseTemplatePsilon,
+                "templateSummary": casTemplateSummaryPsilon,
+                "caseStatus": "InProgress",
+                "templateStatus": "Active",
+                "company": "Psilon",
+                "businessUnit": "Psilon Support Org1",
+                "supportGroup": "Psilon Support Group1",
+                "assignee": "gderuno",
+            }
+            await apiHelper.apiLogin('gderuno');
+            await apiHelper.createCaseTemplate(templateDataPsilon);
+        });
+        it('Case template selection via !', async () => {
+            await navigationPage.gotoQuickCase();
+            await quickCase.selectRequesterName('adam');
+            expect(await quickCase.selectCaseTemplate(caseTemplateName)).toBeTruthy('template is present1');
+            await quickCase.selectRequesterName('adam');
+            await quickCase.selectRoleValue('Related to');
+            expect(await quickCase.selectCaseTemplate(caseTemplateDraft)).toBeFalsy('template is present2');
+            await quickCase.selectRequesterName('fritz');
+            expect(await quickCase.selectCaseTemplate(caseTemplatePsilon)).toBeFalsy('template is present3');
+        });
+        it('[DRDMV-773]: [Quick Case] Case template selection via !', async () => {
+            await quickCase.clickStartOverButton();
+            await quickCase.selectRequesterName('fritz');
+            await quickCase.selectCaseTemplate(caseTemplateName);
+            await quickCase.createCaseButton();
+            await quickCase.gotoCaseButton();
+            expect(await viewCasePo.getCaseTemplateText()).toBe(caseTemplateName);
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    //ankagraw
+    describe('[DRDMV-796]: [Quick Case] Resources preview', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateName = randomStr + 'Template';
+        let casTemplateSummary = 'CaseSummaryName' + randomStr;
+        beforeAll(async () => {
+            let userData1 = {
+                "firstName": "Person1",
+                "lastName": "Person1",
+                "userId": "userData1",
+            }
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createNewUser(userData1);
+            let manualTaskTemplateData = {
+                "templateName": `manualTaskTemplateDraft ${randomStr}`,
+                "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            let CaseTemplateData = {
+                "templateName": `${caseTemplateName}`,
+                "templateSummary": `${casTemplateSummary}`,
+                "caseStatus": "InProgress",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "casePriority": "Low",
+            }
+            let caseData =
+            {
+                "Requester": "qtao",
+                "Summary": caseTemplateName,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "Assignee": "qkatawazi"
+            }
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `${caseTemplateName}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "Australia Support",
+                "assigneeSupportGroup": "AU Support 3",
+                "assignee": "KWilliamson"
+            }
+
+            await apiHelper.apiLogin('qkatawazi');
+            let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+            let newCaseTemplate = await apiHelper.createCaseTemplate(CaseTemplateData);
+            await apiHelper.createCase(caseData);
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
+            let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+            let knowledgeArticleGUID = knowledgeArticleData.id;
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'SMEReview', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy('Status Not Set');
+        });
+        it('Creating case with template/Knowledge selection', async () => {
+            await navigationPage.gotoQuickCase();
+            await quickCase.selectRequesterName('adam');
+            await quickCase.selectCaseTemplate(caseTemplateName);
+            await quickCase.clickArrowFirstRecommendedCaseTemplate();
+            expect(await previewCaseTemplateCasesPo.getCaseSummary()).toBe(`${casTemplateSummary}`);
+            expect(await previewCaseTemplateCasesPo.getCaseStatus()).toBe("In Progress");
+            expect(await previewCaseTemplateCasesPo.getCaseCompanyValue()).toBe("Petramco");
+            expect(await previewCaseTemplateCasesPo.getCaseTemplateName()).toBe(caseTemplateName);
+            expect(await previewCaseTemplateCasesPo.getCasePriority()).toBe("Low");
+            await previewCaseTemplateCasesPo.clickOnBackButton();
+            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.enterAdvancedSearchText(caseTemplateName);
+            await resources.clickOnAdvancedSearchSettingsIconToOpen();
+            await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
+            await quickCase.clickArrowFirstRecommendedKnowledge();
+        });
+        it('[DRDMV-796]: [Quick Case] Resources preview', async () => {
+            expect(await previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy('View article link not present');
+            expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Knowledge status not present');
+            expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
+            await previewKnowledgePo.clickOnBackButton();
+            await quickCase.createCaseButton();
+            expect(await previewCasePo.isRequesterNameDisplayed('Adam Pavlik')).toBeTruthy();
+            expect(await previewCasePo.isCaseSummaryDisplayed(casTemplateSummary)).toBeTruthy();
+            expect(await previewCasePo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();
+            expect(await previewCasePo.isRequesterEmailIdDisplayed('apavlik@petramco.com')).toBeTruthy();
+            expect(await previewCasePo.isDescriptionDisplayed('Adam Pavlik ' + `${caseTemplateName}`)).toBeTruthy();
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    //ptidke 
+    describe('[DRDMV-741]: [Quick Case] UI validation including Source field in Quick Case', async () => {
+        let activeSourceUI, inActiveSource741, sourceDeprecated741, activeSourceNotUI;
+        beforeAll(async () => {
+            let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
+            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            activeSourceUI = await menuItemDataFile['sourceMenuItem'].menuItemName + randomStr;
+            menuItemDataFile['sourceMenuItem'].menuItemName = activeSourceUI;
+            await apiHelper.apiLogin('qkatawazi');
+            //active yes on UI
+            await apiHelper.createNewMenuItem(menuItemDataFile['sourceMenuItem']);
+            inActiveSource741 = await menuItemDataFile['sourceInActive'].menuItemName + randomStr;
+            menuItemDataFile['sourceInActive'].menuItemName = inActiveSource741;
+            //Inactive 
+            await apiHelper.createNewMenuItem(menuItemDataFile['sourceInActive']);
+            sourceDeprecated741 = await menuItemDataFile['sourceDeprecated'].menuItemName + randomStr;
+            menuItemDataFile['sourceDeprecated'].menuItemName = sourceDeprecated741;
+            //deprecated
+            await apiHelper.createNewMenuItem(menuItemDataFile['sourceDeprecated']);
+            activeSourceNotUI = await menuItemDataFile['sourceActiveNotOnUI'].menuItemName + randomStr;
+            menuItemDataFile['sourceActiveNotOnUI'].menuItemName = activeSourceNotUI;
+            //Not on UI
+            await apiHelper.createNewMenuItem(menuItemDataFile['sourceActiveNotOnUI']);
+        });
+        it('Creating the case with source values', async () => {
+            await navigationPage.gotoQuickCase();
+            await quickCase.clickStartOverButton();
+            expect(await quickCase.getDescriptionDetails()).toContain("Begin by entering person's name, email, login ID or employee ID after the @ symbol. Then enter a description of the case.");
+            expect(await quickCase.getResourcesText()).toContain('Quick Case finds resources for you while you take notes');
+            expect(await quickCase.getSelectedSourceValue()).toContain('Agent');
+            await quickCase.selectRequesterName('fritz');
+            await quickCase.setCaseSummary('new case creation');
+            await quickCase.selectSourceValue(activeSourceUI);
+            await quickCase.createCaseButton();
+            await quickCase.gotoCaseButton();
+            expect(await viewCasePo.getSourceValue()).toContain(activeSourceUI);
+        });
+        it('[DRDMV-741]: [Quick Case] UI validation including Source field in Quick Case', async () => {
+            await navigationPage.gotoQuickCase();
+            expect(await quickCase.isValuePresentInSourceDropDown(sourceDeprecated741)).toBeFalsy(sourceDeprecated741 + 'is present');
+            expect(await quickCase.isValuePresentInSourceDropDown(inActiveSource741)).toBeFalsy(inActiveSource741 + 'is present');
+            expect(await quickCase.isValuePresentInSourceDropDown(activeSourceNotUI)).toBeFalsy(activeSourceNotUI + 'is present');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
 
     it('[DRDMV-8387]: UI validation Email Option via Quick case', async () => {
         await navigationPage.gotoQuickCase();
@@ -687,208 +835,6 @@ describe("Quick Case", () => {
         await composeMail.clickOnDiscardButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
-
-    //ptidke
-    it('[DRDMV-773]: [Quick Case] Case template selection via !', async () => {
-        try {
-            let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let caseTemplateName = randomStr + 'templateActive';
-            let casTemplateSummary = randomStr + 'SummaryActive';
-            let templateData = {
-                "templateName": `${caseTemplateName}`,
-                "templateSummary": `${casTemplateSummary}`,
-                "templateStatus": "Active",
-                "company": "Petramco",
-                "resolveCaseonLastTaskCompletion": "1",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-            }
-            await apiHelper.apiLogin('fritz');
-            await apiHelper.createCaseTemplate(templateData);
-
-            let caseTemplateDraft = randomStr + 'templateDraft';
-            let casTemplateSummaryDraft = randomStr + 'SummaryDraft';
-            let templateDataDraft = {
-                "templateName": `${caseTemplateDraft}`,
-                "templateSummary": `${casTemplateSummaryDraft}`,
-                "templateStatus": "Draft",
-                "company": "Petramco",
-                "resolveCaseonLastTaskCompletion": "1",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-            }
-            await apiHelper.apiLogin('fritz');
-            await apiHelper.createCaseTemplate(templateDataDraft);
-
-            let caseTemplatePsilon = randomStr + 'PsilonTemplate';
-            let casTemplateSummaryPsilon = randomStr + 'PsilonSummary';
-            let templateDataPsilon = {
-                "templateName": caseTemplatePsilon,
-                "templateSummary": casTemplateSummaryPsilon,
-                "caseStatus": "InProgress",
-                "templateStatus": "Active",
-                "company": "Psilon",
-                "businessUnit": "Psilon Support Org1",
-                "supportGroup": "Psilon Support Group1",
-                "assignee": "gderuno",
-            }
-            await apiHelper.apiLogin('gderuno');
-            await apiHelper.createCaseTemplate(templateDataPsilon);
-            await navigationPage.gotoQuickCase();
-            await quickCase.selectRequesterName('adam');
-            expect(await quickCase.selectCaseTemplate(caseTemplateName)).toBeTruthy('template is present1');
-            await quickCase.selectRequesterName('adam');
-            await quickCase.selectRoleValue('Related to');
-            expect(await quickCase.selectCaseTemplate(caseTemplateDraft)).toBeFalsy('template is present2');
-            await quickCase.selectRequesterName('fritz');
-            expect(await quickCase.selectCaseTemplate(caseTemplatePsilon)).toBeFalsy('template is present3');
-            await quickCase.clickStartOverButton();
-            await quickCase.selectRequesterName('fritz');
-            await quickCase.selectCaseTemplate(caseTemplateName);
-            await quickCase.createCaseButton();
-            await quickCase.gotoCaseButton();
-            expect(await viewCasePo.getCaseTemplateText()).toBe(caseTemplateName);
-        } catch (e) {
-            throw e;
-        }
-        finally {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        }
-    }, 750 * 1000);
-
-    //ankagraw
-    it('[DRDMV-796]: [Quick Case] Resources preview', async () => {
-        let userData1 = {
-            "firstName": "Person1",
-            "lastName": "Person1",
-            "userId": "userData1",
-        }
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.createNewUser(userData1);
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName = randomStr + 'Template';
-        let casTemplateSummary = 'CaseSummaryName' + randomStr;
-        let manualTaskTemplateData = {
-            "templateName": `manualTaskTemplateDraft ${randomStr}`,
-            "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
-            "templateStatus": "Active",
-            "taskCompany": "Petramco",
-            "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
-        }
-        let CaseTemplateData = {
-            "templateName": `${caseTemplateName}`,
-            "templateSummary": `${casTemplateSummary}`,
-            "caseStatus": "InProgress",
-            "templateStatus": "Active",
-            "company": "Petramco",
-            "businessUnit": "Facilities Support",
-            "supportGroup": "Facilities",
-            "assignee": "Fritz",
-            "casePriority": "Low",
-        }
-        let caseData =
-        {
-            "Requester": "qtao",
-            "Summary": caseTemplateName,
-            "Assigned Company": "Petramco",
-            "Business Unit": "United States Support",
-            "Support Group": "US Support 3",
-            "categoryTier1": "Purchasing Card",
-            "categoryTier2": "Policies",
-            "categoryTier3": "Card Issuance",
-            "Assignee": "qkatawazi"
-        }
-        let articleData = {
-            "knowledgeSet": "HR",
-            "title": `${caseTemplateName}`,
-            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "assignedCompany": "Petramco",
-            "assigneeBusinessUnit": "Australia Support",
-            "assigneeSupportGroup": "AU Support 3",
-            "assignee": "KWilliamson"
-        }
-
-        await apiHelper.apiLogin('qkatawazi');
-        let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
-        let newCaseTemplate = await apiHelper.createCaseTemplate(CaseTemplateData);
-        await apiHelper.createCase(caseData);
-        await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
-        let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        let knowledgeArticleGUID = knowledgeArticleData.id;
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'SMEReview', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy('Status Not Set');
-
-        await navigationPage.gotoQuickCase();
-        await quickCase.selectRequesterName('adam');
-        await quickCase.selectCaseTemplate(caseTemplateName);
-        await quickCase.clickArrowFirstRecommendedCaseTemplate();
-        expect(await previewCaseTemplateCasesPo.getCaseSummary()).toBe(`${casTemplateSummary}`);
-        expect(await previewCaseTemplateCasesPo.getCaseStatus()).toBe("In Progress");
-        expect(await previewCaseTemplateCasesPo.getCaseCompanyValue()).toBe("Petramco");
-        expect(await previewCaseTemplateCasesPo.getCaseTemplateName()).toBe(caseTemplateName);
-        expect(await previewCaseTemplateCasesPo.getCasePriority()).toBe("Low");
-        await previewCaseTemplateCasesPo.clickOnBackButton();
-        await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
-        await resources.enterAdvancedSearchText(caseTemplateName);
-        await resources.clickOnAdvancedSearchSettingsIconToOpen();
-        await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
-        await quickCase.clickArrowFirstRecommendedKnowledge();
-        expect(await previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy('View article link not present');
-        expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Knowledge status not present');
-        expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
-        await previewKnowledgePo.clickOnBackButton();
-        await quickCase.createCaseButton();
-        expect(await previewCasePo.isRequesterNameDisplayed('Adam Pavlik')).toBeTruthy();
-        expect(await previewCasePo.isCaseSummaryDisplayed(casTemplateSummary)).toBeTruthy();
-        expect(await previewCasePo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();
-        expect(await previewCasePo.isRequesterEmailIdDisplayed('apavlik@petramco.com')).toBeTruthy();
-        expect(await previewCasePo.isDescriptionDisplayed('Adam Pavlik ' + `${caseTemplateName}`)).toBeTruthy();
-    }, 500 * 1000);
-
-    //ptidke 
-    it('[DRDMV-741]: [Quick Case] UI validation including Source field in Quick Case', async () => {
-        let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let activeSourceUI = await menuItemDataFile['sourceMenuItem'].menuItemName + randomStr;
-        menuItemDataFile['sourceMenuItem'].menuItemName = activeSourceUI;
-        await apiHelper.apiLogin('qkatawazi');
-        //active yes on UI
-        await apiHelper.createNewMenuItem(menuItemDataFile['sourceMenuItem']);
-        let inActiveSource741 = await menuItemDataFile['sourceInActive'].menuItemName + randomStr;
-        menuItemDataFile['sourceInActive'].menuItemName = inActiveSource741;
-        //Inactive 
-        await apiHelper.createNewMenuItem(menuItemDataFile['sourceInActive']);
-        let sourceDeprecated741 = await menuItemDataFile['sourceDeprecated'].menuItemName + randomStr;
-        menuItemDataFile['sourceDeprecated'].menuItemName = sourceDeprecated741;
-        //deprecated
-        await apiHelper.createNewMenuItem(menuItemDataFile['sourceDeprecated']);
-        let activeSourceNotUI = await menuItemDataFile['sourceActiveNotOnUI'].menuItemName + randomStr;
-        menuItemDataFile['sourceActiveNotOnUI'].menuItemName = activeSourceNotUI;
-        //Not on UI
-        await apiHelper.createNewMenuItem(menuItemDataFile['sourceActiveNotOnUI']);
-        //creation of quick case
-        await navigationPage.gotoQuickCase();
-        await quickCase.clickStartOverButton();
-        expect(await quickCase.getDescriptionDetails()).toContain("Begin by entering person's name, email, login ID or employee ID after the @ symbol. Then enter a description of the case.");
-        expect(await quickCase.getResourcesText()).toContain('Quick Case finds resources for you while you take notes');
-        expect(await quickCase.getSelectedSourceValue()).toContain('Agent');
-        await quickCase.selectRequesterName('fritz');
-        await quickCase.setCaseSummary('new case creation');
-        await quickCase.selectSourceValue(activeSourceUI);
-        await quickCase.createCaseButton();
-        await quickCase.gotoCaseButton();
-        expect(await viewCasePo.getSourceValue()).toContain(activeSourceUI);
-        await navigationPage.gotoQuickCase();
-        expect(await quickCase.isValuePresentInSourceDropDown(sourceDeprecated741)).toBeFalsy(sourceDeprecated741 + 'is present');
-        expect(await quickCase.isValuePresentInSourceDropDown(inActiveSource741)).toBeFalsy(inActiveSource741 + 'is present');
-        expect(await quickCase.isValuePresentInSourceDropDown(activeSourceNotUI)).toBeFalsy(activeSourceNotUI + 'is present');
-    }, 250 * 1000);
 
     // tgarud 
     it('[DRDMV-559]: [Quick Case] Knowledge article search in Resources', async () => {

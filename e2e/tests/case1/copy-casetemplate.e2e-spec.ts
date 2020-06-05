@@ -19,13 +19,13 @@ describe('Copy Case Template', () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await apiHelper.apiLogin('tadmin');
-            userData = {
-                "firstName": "Petramco",
-                "lastName": "withoutSG",
-                "userId": "DRDMV-13550",
-            }
-            await apiHelper.createNewUser(userData);
-            await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
+        userData = {
+            "firstName": "Petramco",
+            "lastName": "withoutSG",
+            "userId": "DRDMV-13550",
+        }
+        await apiHelper.createNewUser(userData);
+        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
     });
 
     afterAll(async () => {
@@ -187,4 +187,37 @@ describe('Copy Case Template', () => {
         expect(await copyCaseTemplate.getCopyCaseTemplateInstruction()).toContain('If no similar task templates are available, new task templates are automatically created.');
         expect(await copyCaseTemplate.getCopyCaseTemplateInstruction()).toContain('Assignment and ownership for new task templates are copied from new case template.');
     });//, 150 * 1000);
+
+    it('[DRDMV-13588]: Create a Copy of Case template where Support Group belongs to Business Unit ', async () => {
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateName1 = 'caseTemplateNameCase3' + randomStr;
+        let casetemplatePetramco1 = {
+            "templateName": caseTemplateName1,
+            "templateSummary": caseTemplateName1,
+            "templateStatus": "Active",
+            "categoryTier1": "Purchasing Card",
+            "categoryTier2": "Policies",
+            "categoryTier3": "Card Issuance",
+            "casePriority": "Low",
+            "caseStatus": "New",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "supportGroup": "Facilities",
+            "assignee": "Fritz",
+            "ownerBU": "Facilities Support",
+            "ownerGroup": "Facilities"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createCaseTemplate(casetemplatePetramco1);
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName1);
+        await consoleCasetemplatePo.clickOnCopyCaseTemplate();
+        let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
+        await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
+        expect(await copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
+        expect(await copyCaseTemplate.getValueOfAssignee()).toBe('Fritz Schulz');
+        expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe('Facilities');
+        expect(await copyCaseTemplate.getValueOfBuisnessUnit()).toBe('Facilities Support');
+    });
 });
