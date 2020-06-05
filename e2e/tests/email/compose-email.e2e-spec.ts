@@ -1007,7 +1007,8 @@ describe("Compose Email", () => {
         expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
         await selectEmailTemplateBladePo.removeGridColumn(columns);
         await selectEmailTemplateBladePo.clickOnCancelButton();
-        await composeMail.closeComposeEmail();
+        await composeMail.clickOnDiscardButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
 
     it('[DRDMV-8388]: Compose and Send Email to Requester', async () => {
@@ -1093,7 +1094,8 @@ describe("Compose Email", () => {
         expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
         await selectEmailTemplateBladePo.clearFilter();
         await selectEmailTemplateBladePo.clickOnCancelButton();
-        await composeMail.closeComposeEmail();
+        await composeMail.clickOnDiscardButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
 
     it('[DRDMV-10399]: Compose email UI changes via different way', async () => {
