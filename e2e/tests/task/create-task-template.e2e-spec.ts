@@ -28,6 +28,7 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 
 describe('Create Task Template', () => {
     beforeAll(async () => {
@@ -672,4 +673,240 @@ describe('Create Task Template', () => {
             expect(await utilityGrid.isGridRecordPresent('Closed')).toBeFalsy('Closed not present');
         });
     });
+
+    describe('[DRDMV-5284]: [Tasks] Tasks status when resolving the case', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let newCase, taskName1, taskName2;
+        beforeAll(async () => {
+            //adhoc task Template
+            let templateData = {
+                "taskName": 'manualTaskTemplateAssigned' + randomStr,
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+            };
+            let caseData1 = {
+                "Requester": "Fritz",
+                "Summary": "Test case for inProgress task",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi"
+            }
+            let CaseTemplateData = {
+                "templateName": 'caseTemplateName' + randomStr,
+                "templateSummary": 'casTemplateSummary' + randomStr,
+                "caseStatus": "Assigned",
+                "resolveCaseonLastTaskCompletion": "1",
+                "templateStatus": "Active",
+                "assignee": "Fritz",
+                "ownerCompany": "Petramco",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities",
+            }
+            let manualTemplateData = {
+                "templateName": 'manualTaskTemplate' + randomStr,
+                "templateSummary": 'manualTaskSummary' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
+
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(manualTemplateData);
+            manualTemplateData.templateName='manualTaskTemplate1' + randomStr;
+            manualTemplateData.templateSummary='manualTaskSummary1' + randomStr;
+            await apiHelper.createManualTaskTemplate(manualTemplateData);
+            await apiHelper.createCaseTemplate(CaseTemplateData);
+            newCase = await apiHelper.createCase(caseData1);
+            let tasktemp = await apiHelper.createAdhocTask(newCase.id, templateData);
+            taskName1 = templateData.taskName = 'manualTaskTemplateInProgress' + randomStr;
+            let tasktemp1 = await apiHelper.createAdhocTask(newCase.id, templateData);
+            taskName2 = templateData.taskName = 'manualTaskTemplatePending' + randomStr;
+            let tasktemp2 = await apiHelper.createAdhocTask(newCase.id, templateData);
+            await apiHelper.updateCaseStatus(newCase.id, 'InProgress');
+            await apiHelper.updateTaskStatus(tasktemp.id, 'Assigned');
+            await apiHelper.updateTaskStatus(tasktemp1.id, 'InProgress');
+            await apiHelper.updateTaskStatus(tasktemp2.id, 'Pending');
+        });
+        it('Add the task and change the case status to cancel', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(newCase.displayId);
+            await updateStatusBladePo.changeCaseStatus("Resolved");
+            await updateStatusBladePo.setStatusReason("Auto Resolved");
+            await updateStatusBladePo.clickSaveStatus();
+            expect(await utilityCommon.isPopUpMessagePresent("The case contains active tasks. Please close all the tasks and resolve the case.")).toBeTruthy();
+            await updateStatusBladePo.clickCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await updateStatusBladePo.changeCaseStatus("Canceled");
+            await updateStatusBladePo.setStatusReason("Approval Rejected");
+            await updateStatusBladePo.clickSaveStatus();
+        });
+        it('veify the task status when case status is canceled', async () => {
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink('manualTaskTemplateAssigned' + randomStr);
+            expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
+            await viewTask.clickOnViewCase();
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(taskName1);
+            expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
+            await viewTask.clickOnViewCase();
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(taskName2);
+            expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
+        });
+        it('Create second case and validate it', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('caseTemplateName' + randomStr);
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate('caseTemplateName' + randomStr);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+        });
+        it('Add the task on the case', async () => {
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.addTaskFromTaskTemplate('manualTaskTemplate' + randomStr);
+            await manageTask.addTaskFromTaskTemplate('manualTaskTemplate1' + randomStr);
+            await manageTask.clickCloseButton();
+            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.clickSaveStatus();
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink('manualTaskSummary' + randomStr);
+            await viewTask.clickOnEditTask();
+            await editTaskPo.clickOnAssignToMe();
+            await editTaskPo.clickOnSaveButton();
+        });
+        it('change the task to complete', async () => {
+            await viewTask.clickOnChangeStatus();
+            await updateStatusBladePo.changeStatus("Completed");
+            await updateStatusBladePo.setStatusReason("Successful")
+            await viewTask.clickOnSaveStatus();
+            await viewTask.clickOnViewCase();
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink('manualTaskSummary1' + randomStr);
+            await viewTask.clickOnEditTask();
+            await editTaskPo.clickOnAssignToMe();
+            await editTaskPo.clickOnSaveButton();
+        });
+        it('[DRDMV-5284]: verify the add button ', async () => {
+            await viewTask.clickOnChangeStatus();
+            await updateStatusBladePo.changeStatus("Completed");
+            await updateStatusBladePo.setStatusReason("Successful")
+            await viewTask.clickOnSaveStatus();
+            await viewTask.clickOnViewCase();
+            expect(await viewCasePage.getCaseStatusValue()).toBe("Resolved");
+            expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy();
+        });
+    });
+    //ankagraw
+    describe('[DRDMV-3830]: [Task Workspace] Filter menu verification', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let newCase1, tempId, exactDate;
+        let createdDate = new Date();
+        let month = new Array();
+        month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        let dateFormateValue: string = month[createdDate.getMonth()];
+        let dateFormateNew: string = dateFormateValue.substring(0, 3);
+        let time1 = createdDate.toLocaleTimeString();
+        let diffTime1 = time1.split(" ");
+        let newTime1 = diffTime1[0].split(":");
+        let exactTime1 = newTime1[0] + ":" + newTime1[1] + " " + diffTime1[1];
+        let dateFormate: string = dateFormateNew + " " + createdDate.getDate() + ", " + createdDate.getFullYear() + " " + exactTime1;
+        beforeAll(async () => {
+            let templateData = {
+                "taskName": 'manualTaskTemplate' + randomStr,
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+            };
+            let caseData1 = {
+                "Requester": "Fritz",
+                "Summary": "Test case for inProgress task",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            newCase1 = await apiHelper.createCase(caseData1);
+            tempId = await apiHelper.createAdhocTask(newCase1.id, templateData);
+        });
+        it('create case with task', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(newCase1.displayId);
+            await viewCasePage.clickEditCaseButton();
+            await editCasePo.clickOnAssignToMe();
+            await editCasePo.clickSaveCase();
+            let modifiedDate = new Date();
+            let monthValue: string = month[modifiedDate.getMonth()];
+            let modifiedMonthValue = monthValue.substring(0, 3);
+            let time = modifiedDate.toLocaleTimeString();
+            let diffTime = time.split(" ");
+            let newTime = diffTime[0].split(":");
+            let exactTime = newTime[0] + ":" + newTime[1] + " " + diffTime[1];
+            console.log("exactTime" + exactTime)
+            let modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + exactTime;
+            console.log("exactDate" + dateFormate + "-" + modifiedDateFormate);
+            exactDate = dateFormate + "-" + modifiedDateFormate;
+        });
+        it('Verify filter with Case ID values', async () => {
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Summary", 'manualTaskTemplate' + randomStr, "default");
+            expect(await utilityGrid.isGridRecordPresent('manualTaskTemplate' + randomStr)).toBeTruthy("Summary not Displayed");
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Task ID", tempId.displayId, "default");
+            expect(await utilityGrid.isGridRecordPresent(tempId.displayId)).toBeTruthy("Task ID not Displayed");;
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Case ID", newCase1.displayId, "default");
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy("Case ID not Displayed");
+        });
+        it('Verify filter with priority values', async () => {
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Priority", 'Low', "checkbox");
+            expect(await utilityGrid.isGridRecordPresent('Low')).toBeTruthy("Low not Displayed");
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Priority", 'Medium', "checkbox");
+            expect(await utilityGrid.isGridRecordPresent('Medium')).toBeTruthy("Medium not Displayed");
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Priority", 'High', "checkbox");
+            expect(await utilityGrid.isGridRecordPresent('High')).toBeTruthy("High not Displayed");
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Priority", 'Critical', "checkbox");
+            expect(await utilityGrid.isGridRecordPresent('Critical')).toBeTruthy("Critical not Displayed");
+        });
+        it('Verify filter with status values', async () => {
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Status", 'Assigned', "default");
+            expect(await utilityGrid.isGridRecordPresent('Assigned')).toBeTruthy("Assigned not Displayed");
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Status", 'In Progress', "default");
+            expect(await utilityGrid.isGridRecordPresent('In Progress')).toBeTruthy("In Progress not Displayed");
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Status", 'Pending', "default");
+            expect(await utilityGrid.isGridRecordPresent('Pending')).toBeTruthy("Pending not Displayed");
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Status", 'Completed', "default");
+            expect(await utilityGrid.isGridRecordPresent('Completed')).toBeTruthy("Completed not Displayed");
+        });
+        it('[DRDMV-3830]: Verify filter with modified values', async () => {
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Status", 'Closed', "default");
+            expect(await utilityGrid.isGridRecordPresent('Closed')).toBeTruthy("Closed not Displayed");
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Status", 'Canceled', "default");
+            expect(await utilityGrid.isGridRecordPresent('Canceled')).toBeTruthy("Canceled not Displayed");
+            await utilityGrid.clearFilter();
+            await utilityGrid.typeInFilterExperssion("Modified Date:" + exactDate);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+        });
+    });
 });
+
+   

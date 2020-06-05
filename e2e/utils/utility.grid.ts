@@ -20,7 +20,8 @@ export class GridOperations {
         filterCheckboxOptions: '.a-select-inline__list .a-select-inline__item .checkbox__label',
         filterTab: '.nav-item button',
         visibleColumnButton: '.d-icon-left-lines_vertical',
-        refreshIcon: 'button[rx-id="refresh-button"]'
+        refreshIcon: 'button[rx-id="refresh-button"]',
+        filterSearchValueBox: '.adapt-mt-input-container input',
     }
 
     async searchRecord(searchValue: string, guid?: string): Promise<void> {
@@ -28,6 +29,13 @@ export class GridOperations {
         if (guid) { searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator; }
         await $(searchTextBoxLocator).clear();
         await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
+    }
+
+    async typeInFilterExperssion(date: string): Promise<void> {
+       await $(this.selectors.filterPresetBtn).click();
+       await $(this.selectors.filterSearchValueBox).clear();
+       await $(this.selectors.filterSearchValueBox).sendKeys(date,Key.ENTER);
+
     }
 
     async isGridRecordPresent(searchRecord: string, guid?: string): Promise<boolean> {
