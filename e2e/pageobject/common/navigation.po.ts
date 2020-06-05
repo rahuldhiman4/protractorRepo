@@ -240,7 +240,7 @@ class NavigationPage {
                 if (i < menuItems.length - 1) {
                     await element(by.xpath(`//rx-administration-settings//*[text()="${menuItems[i]}"]/../*[@class="tree-branch-head"]`)).click();
                 } else {
-                    await element(by.xpath(`//rx-administration-settings//*[text()="${menuItems[i]}"]`)).click();
+                    await element(by.xpath(`//li[@class="tree-expanded"]//*[text()="${menuItems[i]}"]`)).click();
                 }
             }
         }

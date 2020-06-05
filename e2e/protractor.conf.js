@@ -32,6 +32,7 @@ exports.config = {
 
   suites: {
     attachment: ["./tests/attachment/*.e2e-spec.ts"],
+    approvals: ["./tests/approvals/*.e2e-spec.ts"],
     case1: ["./tests/case1/*.e2e-spec.ts"],
     case2: ["./tests/case2/*.e2e-spec.ts"],
     cognitive: ["./tests/cognitive/*.e2e-spec.ts"],
