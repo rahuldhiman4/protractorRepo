@@ -6,8 +6,8 @@ import ckEditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        activityNoteCKEditor: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] bwf-rich-text-editor[style="display: block;"], bwf-rich-text-editor[style="display: block;"]',
-        activityNoteTextArea: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] .cke_enable_context_menu, [rx-view-component-id="972e87ef-cfa0-469e-9eda-a5e2d679d9d2"] .cke_enable_context_menu',
+        //        activityNoteCKEditor: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] bwf-rich-text-editor[style="display: block;"], bwf-rich-text-editor[style="display: block;"]',
+        activityNoteTextArea: '.cke_enable_context_menu',
         activityCkEditorGuid: '76b9d8a2-54ef-4b24-a086-fc6ff745449d',
         addNoteBox: '.textfield__wrapper .form-control[placeholder="Add a note"]',
         personPopup: '.dropdown-menu .popup-template',
@@ -762,13 +762,13 @@ class ActivityTabPage {
     }
 
     async getTextCkEditorTextArea(): Promise<string> {
-        return await $(this.selectors.activityNoteCKEditor).getText();
+        return await $(this.selectors.activityNoteTextArea).getText();
     }
 
     async isCkEditorDisplayed(): Promise<boolean> {
-        return await $(this.selectors.activityNoteCKEditor).isPresent().then(async (link) => {
+        return await $(this.selectors.activityNoteTextArea).isPresent().then(async (link) => {
             if (link) {
-                return await $(this.selectors.activityNoteCKEditor).isDisplayed();
+                return await $(this.selectors.activityNoteTextArea).isDisplayed();
             } else return false;
         });
     }

@@ -14,7 +14,7 @@ class ManageTaskBlade {
         closeButton: '[rx-view-component-id="8e7b2768-299d-468a-bd46-4827677e8eff"] button',
         columnHeaders: '.c-header-container .c-header-name',
         taskTemplateGuid: '0f3712cc-95da-49c3-b2b0-6b7409c8349b',
-        taskSummaryLink: '[rx-view-component-id="8334a05d-06ba-4d9b-8c35-e40e90637e85"] .task-summary-wrapper a',
+        taskSummaryLink: '[rx-view-component-id="8334a05d-06ba-4d9b-8c35-e40e90637e85"] .task-summary__name',
     }
 
     async clickAddTaskFromTemplateButton(): Promise<void> {

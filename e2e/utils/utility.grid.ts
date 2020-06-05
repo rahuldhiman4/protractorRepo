@@ -68,12 +68,8 @@ export class GridOperations {
             filterPresetBtn = gridGuid + filterPresetBtn;
             refreshIcon = gridGuid + refreshIcon;
         }
-        let pageTitle = await browser.getTitle();
         await $(appliedPresetFilter).isPresent().then(async (result) => {
             if (result) {
-                if (pageTitle == 'Cases - Business Workflows' || pageTitle == 'Tasks - Business Workflows') {
-                    await this.addFilter('Assigned Group', 'abc', 'textbox');
-                }
                 await $(filterPresetBtn).click();
                 await $$(clearBtn).first().click();
                 await $(refreshIcon).click();
@@ -301,15 +297,15 @@ export class GridOperations {
         else await radioButtonLocator.click();
     }
 
-    async clearFilterPreset(): Promise<void>{
+    async clearFilterPreset(): Promise<void> {
         await $(this.selectors.filterPresetBtn).click();
         await $$('button.nav-link').first().click();
         await $(this.selectors.refreshIcon).click();
         await this.clearFilter();
     }
 
-    async clickRefreshIcon(guidId?: string): Promise<void>{
-        if(guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.refreshIcon).click();
+    async clickRefreshIcon(guidId?: string): Promise<void> {
+        if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.refreshIcon).click();
         else await $(this.selectors.refreshIcon).click();
     }
 
