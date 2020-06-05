@@ -416,6 +416,7 @@ describe('Create Case Task', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
 
     });
