@@ -94,7 +94,8 @@ describe("Compose Email", () => {
         expect(await composeMail.isAttachLinkPresent()).toBeTruthy('Attach Link is  missing');
         expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
         expect(await composeMail.isDiscardButtonPresent()).toBeTruthy('Discard Button is missing');
-        await composeMail.closeComposeEmail();
+        await composeMail.clickOnDiscardButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await viewCasePo.isEmailLinkPresent();
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');
@@ -114,7 +115,8 @@ describe("Compose Email", () => {
         expect(await composeMail.isAttachLinkPresent()).toBeTruthy('Attach Link is  missing');
         expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
         expect(await composeMail.isDiscardButtonPresent()).toBeTruthy('Discard Button is missing');
-        await composeMail.closeComposeEmail();
+        await composeMail.clickOnDiscardButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
 
     //kgaikwad
@@ -164,7 +166,8 @@ describe("Compose Email", () => {
         let columnHeaders: string[] = ["Template Name", "Message Subject", "Locale"];
         expect(await selectEmailTemplateBladePo.areColumnHeaderMatches(columnHeaders)).toBeTruthy('wrong column headers');
         await selectEmailTemplateBladePo.clickOnCancelButton();
-        await composeMail.closeComposeEmail();
+        await composeMail.clickOnDiscardButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
 
     //kgaikwad
@@ -193,7 +196,8 @@ describe("Compose Email", () => {
         expect(await selectEmailTemplateBladePo.areColumnHeaderMatches(columnHeaders)).toBeTruthy('wrong column headers');
         await selectEmailTemplateBladePo.removeGridColumn(columns);
         await selectEmailTemplateBladePo.clickOnCancelButton();
-        await composeMail.closeComposeEmail();
+        await composeMail.clickOnDiscardButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
 
     //kgaikwad
@@ -218,7 +222,8 @@ describe("Compose Email", () => {
         await composeMail.clickOnSelectEmailTemplateLink();
         expect(selectEmailTemplateBladePo.isApplyButtonEnabled()).toBeFalsy('Apply button is clickable');
         await selectEmailTemplateBladePo.clickOnCancelButton();
-        await composeMail.closeComposeEmail();
+        await composeMail.clickOnDiscardButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
 
     //kgaikwad
