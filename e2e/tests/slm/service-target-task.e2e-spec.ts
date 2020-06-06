@@ -15,10 +15,13 @@ import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
+import statusConfig from "../../pageobject/settings/common/status-config.po";
 
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
+let psilonCaseBAUser = 'gderuno';
+let psilonCaseAgentUser = 'werusha';
 
 describe('Service Target Tests for Tasks', () => {
     beforeAll(async () => {
@@ -431,5 +434,102 @@ describe('Service Target Tests for Tasks', () => {
             await loginPage.login(caseBAUser);
         });
     });
+
+    describe('[DRDMV-13058]:Create a SVT for Task where build expression has Custom Status', async () => {
+        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
+
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteServiceTargets();
+        });
+
+        it('Create Custom Status configuration for Task', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(psilonCaseBAUser);
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
+            await statusConfig.setCompanyDropdown('Psilon', 'task');
+            await statusConfig.clickEditLifeCycleLink();
+            await statusConfig.addCustomStatus('Staged', 'Assigned', 'Planning');
+            await statusConfig.addCustomStatus('In Progress', 'Completed', 'BeforeCompleted');
+        })
+
+        it('Create SVT', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Psilon', 'Task Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+            let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
+            expect(selectedExp).toEqual(expectedSelectedExp);
+            await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
+            await serviceTargetConfig.selectGoal("3");
+            await serviceTargetConfig.selectMileStone();
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Planning");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "BeforeCompleted");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.clickOnSaveSVTButton();
+        });
+
+        it('Create a Case', async () => {
+            await browser.sleep(1000);
+            await navigationPage.signOut();
+            await loginPage.login(psilonCaseAgentUser);
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('Doomi Bomei');
+            await createCasePage.setPriority('Critical');
+            await createCasePage.setSummary('Case for SVT creation');
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+        });
+
+        it('Create Adhoc Task', async () => {
+            await previewCasePo.clickGoToCaseButton();
+            await browser.sleep(2000);
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            await adhoctaskTemplate.setSummary(summary);
+            await adhoctaskTemplate.setDescription("Description");
+            await adhoctaskTemplate.selectPriority('Critical');
+            await adhoctaskTemplate.selectCategoryTier1('Applications');
+            await adhoctaskTemplate.selectCategoryTier2('Social');
+            await adhoctaskTemplate.selectCategoryTier3('Chatter');
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await manageTaskBladePo.clickCloseButton();
+            await browser.sleep(32000);
+        });
+
+        it('[DRDMV-13058]:Create a SVT for Task where build expression has Custom Status', async () => {
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await viewCasePage.clickOnTaskLink(summary);
+            expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
+            expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
+            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
+            expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");
+            expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');
+            expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : InProcess');
+            expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
+            await viewTask.clickOnChangeStatus();
+            await viewTask.changeTaskStatus('Assigned');
+            await viewTask.clickOnSaveStatus();
+            expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
+            await viewTask.clickOnChangeStatus();
+            await viewTask.changeTaskStatus('In Progress');
+            await viewTask.clickOnSaveStatus();
+            expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
+            await viewTask.clickOnChangeStatus();
+            await viewTask.changeTaskStatus('BeforeCompleted');
+            await viewTask.clickOnSaveStatus();
+            expect(await slmProgressBar.isSLAProgressBarSVTMetIconDisplayed()).toBe(true); //green
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login(caseBAUser);
+        });
+    });
+
 
 })
