@@ -632,9 +632,10 @@ describe('Case Template', () => {
 
     describe('[DRDMV-1215]: [Case Template] Case Status, Template status, Priority, Case Company, Owner population', async () => {
         let casetemplatePetramco,randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateName='caseTemplateName' + randomStr;
         beforeAll(async () => {
             let casetemplatePetramco = {
-                "templateName": 'caseTemplateName' + randomStr,
+                "templateName": caseTemplateName,
                 "templateSummary": 'caseTemplateSummaryName' + randomStr,
                 "templateStatus": "Draft",
                 "company": "Petramco",
@@ -659,7 +660,7 @@ describe('Case Template', () => {
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(casetemplatePetramco.templateName);
+            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
             await viewCaseTemplate.clickEditTemplateMetaData();
             await editCasetemplatePo.changeBusinessUnitDropdownValue('Australia Support');
             await editCasetemplatePo.changeOwnerGroupDropdownValue('AU Support 1');
@@ -1198,10 +1199,10 @@ describe('Case Template', () => {
             await apiHelper.createCaseTemplate(casetemplatePetramco1);
             await apiHelper.createCaseTemplate(casetemplatePetramco2);
             await apiHelper.createCaseTemplate(casetemplatePetramco3);
-            let newCase1 = await apiHelper.createCase(caseData);
-            let newCase2 = await apiHelper.createCase(caseData);
-            let newCase3 = await apiHelper.createCase(caseData);
-            let newCase4 = await apiHelper.createCase(caseData);
+            newCase1 = await apiHelper.createCase(caseData);
+            newCase2 = await apiHelper.createCase(caseData);
+            newCase3 = await apiHelper.createCase(caseData);
+            newCase4 = await apiHelper.createCase(caseData);
         });
         it('Adding methods to case template', async () => {
             await navigationPage.gotoSettingsPage();

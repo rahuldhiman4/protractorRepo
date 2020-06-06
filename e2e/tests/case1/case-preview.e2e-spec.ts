@@ -16,7 +16,6 @@ let caseTemplateName = "Case Preview Sample " + [...Array(4)].map(i => (~~(Math.
 
 describe("Case Preview", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qtao");
@@ -37,10 +36,6 @@ describe("Case Preview", () => {
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCaseTemplate(templateData);
-    });
-
-    afterEach(async () => {
-        await utilityCommon.refresh();
     });
 
     afterAll(async () => {
@@ -88,7 +83,8 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
-    });//, 150 * 1000);
+        await casePreviewPo.clickGoToCaseButton();
+    });
 
     //kgaikwad
     it('[DRDMV-14110]: Create a Case without template via Quick Case and check Case Preview screen', async () => {
@@ -114,6 +110,7 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
+        await casePreviewPo.clickGoToCaseButton();
     });
 
     //kgaikwad
@@ -143,6 +140,7 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');
+        await casePreviewPo.clickGoToCaseButton();
     });
 
     //kgaikwad
@@ -177,7 +175,6 @@ describe("Case Preview", () => {
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
         await createCasePo.clickAssignToMeButton();
         await createCasePo.clickSaveCaseButton();
-
         expect(await casePreviewPo.isCaseSummaryDisplayed(caseSummary)).toBeTruthy('Summary is missing');
         expect(await casePreviewPo.isCaseIdDisplayed()).toBeTruthy('Case ID is missing');
         expect(await casePreviewPo.isPriorityDisplayed('Medium')).toBeTruthy('Priority is missing');
@@ -199,6 +196,7 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');
+        await casePreviewPo.clickGoToCaseButton();
     });
 
     //kgaikwad
@@ -247,7 +245,6 @@ describe("Case Preview", () => {
         await apiHelper.createCase(caseData);
         await apiHelper.createCaseTemplate(templateData);
         await apiHelper.createKnowledgeArticle(articleData1);
-
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName('qkatawazi');
         await quickCasePo.selectCaseTemplate(caseTemplateName);
@@ -259,7 +256,6 @@ describe("Case Preview", () => {
         await quickCasePo.pinRecommendedKnowledgeArticles(1);
         await quickCasePo.pinRecommendedCases(1);
         await quickCasePo.saveCase();
-
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('failureMsg: Case Preview Title is missing');
         expect(await casePreviewPo.isCaseSummaryDisplayed(caseTemplateName)).toBeTruthy('failureMsg: Summary is missing');
         expect(await casePreviewPo.isCaseIdDisplayed()).toBeTruthy('failureMsg: Case ID is missing');
@@ -278,5 +274,6 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('failureMsg: Assigned company name is missing');
         expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('failureMsg: View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('failureMsg: Create New Case button is missing');
+        await casePreviewPo.clickGoToCaseButton();
     });
 }) 
