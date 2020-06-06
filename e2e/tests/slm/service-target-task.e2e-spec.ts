@@ -13,7 +13,9 @@ import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
+import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
+
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -28,80 +30,6 @@ describe('Service Target Tests for Tasks', () => {
 
     afterAll(async () => {
         await navigationPage.signOut();
-    });
-
-    //skhobrag
-    describe('[DRDMV-13029]:Create a SVT for Tasks- Create Task and Check SLA progress Bar', async () => {
-        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-
-        beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteServiceTargets();
-        });
-
-        it('Create SVT', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
-            await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Task Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
-            let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
-            let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
-            expect(selectedExp).toEqual(expectedSelectedExp);
-            await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
-            await serviceTargetConfig.selectGoal("2");
-            await serviceTargetConfig.selectMileStone();
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
-            await serviceTargetConfig.clickOnSaveSVTButton();
-        });
-
-        it('Create a Case', async () => {
-            await browser.sleep(1000);
-            await navigationPage.signOut();
-            await loginPage.login(caseAgentUser);
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('Qiang Du');
-            await createCasePage.setPriority('Critical');
-            await createCasePage.setSummary('Case for SVT creation');
-            await createCasePage.clickAssignToMeButton();
-            await createCasePage.clickSaveCaseButton();
-        });
-
-        it('Create Adhoc Task', async () => {
-            await previewCasePo.clickGoToCaseButton();
-            await viewCasePage.clickAddTaskButton();
-            await manageTask.clickAddAdhocTaskButton();
-            await adhoctaskTemplate.setSummary(summary);
-            await adhoctaskTemplate.setDescription("Description");
-            await adhoctaskTemplate.selectPriority('Critical');
-            await adhoctaskTemplate.selectCategoryTier1('Applications');
-            await adhoctaskTemplate.selectCategoryTier2('Social');
-            await adhoctaskTemplate.selectCategoryTier3('Chatter');
-            await adhoctaskTemplate.clickSaveAdhoctask();
-            await manageTaskBladePo.clickCloseButton();
-        });
-
-        it('[DRDMV-13029]:Verify SVT attached on task', async () => {
-            await browser.sleep(32000);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
-            await updateStatusBladePo.clickSaveStatus();
-            await viewCasePage.clickOnTaskLink(summary);
-            expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
-            expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
-            expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");
-            expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');
-            expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : InProcess');
-            expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
-        });
-
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login(caseBAUser);
-        });
-
     });
 
     //skhobrag
@@ -331,8 +259,13 @@ describe('Service Target Tests for Tasks', () => {
 
     });
 
-    describe('[DRDMV-13035]:Task SLA Progress bar shows status like In Process/Warning/Missed-Goal//Missed and check Console Overall status with respect to Task SLA status', async () => {
+    //skhobrag
+    describe('[DRDMV-13029,DRDMV-13035,DRDMV-13065]:Task SLA Progress bar shows status like In Process/Warning/Missed-Goal//Missed and check Console Overall status with respect to Task SLA status', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
+        let taskId: string = '';
+        let slmStatusWithinTimeLimitArr: string[] = ["Within Time Limit"];
+        let slmStatusWarningArr: string[] = ["Warning"];
+        let slmStatusBreachedArr: string[] = ["Breached"];
 
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -371,8 +304,7 @@ describe('Service Target Tests for Tasks', () => {
 
         it('Create Adhoc Task', async () => {
             await previewCasePo.clickGoToCaseButton();
-            await browser.sleep(5000);
-            let caseId:string = await viewCasePage.getCaseID();
+            await browser.sleep(2000);
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary(summary);
@@ -382,31 +314,117 @@ describe('Service Target Tests for Tasks', () => {
             await adhoctaskTemplate.selectCategoryTier2('Social');
             await adhoctaskTemplate.selectCategoryTier3('Chatter');
             await adhoctaskTemplate.clickSaveAdhoctask();
-            await manageTaskBladePo.clickCloseButton();           
+            await manageTaskBladePo.clickCloseButton();
+            await browser.sleep(32000);
         });
 
-        it('[DRDMV-13035]:Verify SVT attached on task', async () => {
-            await browser.sleep(32000);
+        it('Verify SVT status on task console when SVT condition is Met', async () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickOnTaskLink(summary);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
+            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
+            expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");
+            expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');
+            expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : InProcess');
+            expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
+            taskId = await viewTask.getTaskID();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchRecord(taskId);
+            expect(await utilityGrid.getAllValuesFromColumn('SLM Status')).toEqual(slmStatusWithinTimeLimitArr);
+            await utilityGrid.searchAndOpenHyperlink(taskId);
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Pending');
             await viewTask.clickOnSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchRecord(taskId);
+            expect(await utilityGrid.getAllValuesFromColumn('SLM Status')).toEqual(slmStatusWithinTimeLimitArr);
+            await utilityGrid.searchAndOpenHyperlink(taskId);
+            await viewTask.clickOnChangeStatus();
+            await viewTask.changeTaskStatus('Completed');
+            await updateStatusBladePo.setStatusReason('Successful');
+            await viewTask.clickOnSaveStatus();
+            expect(await slmProgressBar.isSLAProgressBarSVTMetIconDisplayed()).toBe(true); //green
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchRecord(taskId);
+            expect(await utilityGrid.getAllValuesFromColumn('SLM Status')).toEqual(slmStatusWithinTimeLimitArr);
+        });
+
+        it('Create another case with adhoc task', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('Qiang Du');
+            await createCasePage.setPriority('Critical');
+            await createCasePage.setSummary('Case for SVT creation');
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await browser.sleep(2000);
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            await adhoctaskTemplate.setSummary(summary);
+            await adhoctaskTemplate.setDescription("Description");
+            await adhoctaskTemplate.selectPriority('Critical');
+            await adhoctaskTemplate.selectCategoryTier1('Applications');
+            await adhoctaskTemplate.selectCategoryTier2('Social');
+            await adhoctaskTemplate.selectCategoryTier3('Chatter');
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await manageTaskBladePo.clickCloseButton();
+        });
+        it('Change the status of Case to trigger SVT on Task', async () => {
+            await browser.sleep(32000);
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await viewCasePage.clickOnTaskLink(summary);
+            taskId = await viewTask.getTaskID();
+            await browser.sleep(90000);
+        })
+
+        it('Verify Task SLM Status "Warning" on Task Console', async () => {
+            await browser.sleep(80000);
+            await utilityCommon.refresh();
+            expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true);
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchRecord(taskId);
+            expect(await utilityGrid.getAllValuesFromColumn('SLM Status')).toEqual(slmStatusWarningArr);
+            await utilityGrid.searchAndOpenHyperlink(taskId);
+        });
+
+        it('Verify Task SLM Status "Warning Pending" on Task Console', async () => {
+            await viewTask.clickOnChangeStatus();
+            await viewTask.changeTaskStatus('Pending');
+            await viewTask.clickOnSaveStatus();
+            expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchRecord(taskId);
+            expect(await utilityGrid.getAllValuesFromColumn('SLM Status')).toEqual(slmStatusWarningArr);
+            await utilityGrid.searchAndOpenHyperlink(taskId);
+        });
+
+        it('Verify Task SLM Status "Missed Goal" on Task Console ', async () => {
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('In Progress');
             await viewTask.clickOnSaveStatus();
-            await browser.sleep(180000);
-            expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true);
-            await browser.sleep(40000);
+            await browser.sleep(70000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true);
-
-
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchRecord(taskId);
+            expect(await utilityGrid.getAllValuesFromColumn('SLM Status')).toEqual(slmStatusBreachedArr);
+            await utilityGrid.searchAndOpenHyperlink(taskId);
         });
+
+        it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]:Verify Task SLM Status "Missed Goal" on Task Console ', async () => {
+            await viewTask.clickOnChangeStatus();
+            await viewTask.changeTaskStatus('Pending');
+            await viewTask.clickOnSaveStatus();
+            expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchRecord(taskId);
+            expect(await utilityGrid.getAllValuesFromColumn('SLM Status')).toEqual(slmStatusBreachedArr);
+        })
 
         afterAll(async () => {
             await navigationPage.signOut();
