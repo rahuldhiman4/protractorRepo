@@ -243,7 +243,7 @@ describe("Quick Case", () => {
         });
     });
 
-    fdescribe('[DRDMV-786]:[Quick Case] Case creation with all case statuses in template', async () => {
+    describe('[DRDMV-786]:[Quick Case] Case creation with all case statuses in template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName1 = randomStr + "Petramco1";
         let caseTemplateName2 = randomStr + "Petramco2";
