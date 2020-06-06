@@ -69,7 +69,7 @@ class ManageTaskBlade {
         await browser.wait(this.EC.or(async () => {
             let count = await $$(this.selectors.taskSummaryLink).count();
             return count >= 1;
-        }));
+        }), 5000);
         await element(by.cssContainingText(this.selectors.taskSummaryLink, taskSummary)).click();
     }
 
@@ -98,6 +98,10 @@ class ManageTaskBlade {
     }
 
     async isTaskLinkPresent(taskSummary: string): Promise<boolean> {
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.taskSummaryLink).count();
+            return count >= 1;
+        }), 5000);
         let summaryLinkTxt = await element(by.cssContainingText(this.selectors.taskSummaryLink, taskSummary)).getText();
         return summaryLinkTxt === taskSummary;
     }
