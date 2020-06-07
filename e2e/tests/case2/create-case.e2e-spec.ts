@@ -236,7 +236,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setAllowCaseReopenValue('Yes');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
 
             //case template without reopen case
             await navigationPage.gotoSettingsPage();
@@ -251,7 +251,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setAllowCaseReopenValue('No');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
 
             //create case
             await navigationPage.signOut();
@@ -306,7 +306,7 @@ describe("Create Case", () => {
         expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy();
         //expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).tobeTruthy; Save button wont enable unless summary is set
         //await utilCommon.closePopUpMessage();
-        //await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.closePopUpMessage();
         await createCasePage.setSummary(caseSummary);
         expect(await createCasePage.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
         await createCasePage.clickAssignToMeButton();
@@ -670,7 +670,7 @@ describe("Create Case", () => {
             await createTaskTemplate.selectTemplateStatus('Active');
             await createTaskTemplate.clickOnSaveTaskTemplate();
             await expect(viewTasktemplatePage.getOwnerCompanyValue()).toBe("Petramco");
-            //await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.closePopUpMessage();
 
             //Create Case
             await navigationPage.signOut();
@@ -771,7 +771,7 @@ describe("Create Case", () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
@@ -787,7 +787,7 @@ describe("Create Case", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy();
             await viewCasePage.clickOnReopenCaseLink();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.getTextOfStatus()).toBe('New');
         } catch (e) {
             throw e;
@@ -859,7 +859,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
             //expect(await utilCommon.isErrorMsgPresent()).toBeTruthy(); //no error message
-            //await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.closePopUpMessage();
             expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
             expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
@@ -912,7 +912,7 @@ describe("Create Case", () => {
             // expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.').tobeTruthy();
             // await utilCommon.closePopUpMessage();
             await expect(createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is Enabled");
-            //await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.closePopUpMessage();
             await createCasePage.setSummary(caseSummary);
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -1060,7 +1060,7 @@ describe("Create Case", () => {
         await adhoctaskTemplate.addAttachmentInDescription(filesToUpload2);
         await adhoctaskTemplate.clickSaveAdhoctask();
         await manageTask.clickCloseButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await viewCasePage.clickAttachmentsLink();
 
         expect(await utilityGrid.isGridColumnSorted('Attachments', 'desc')).toBeTruthy("Attachment Not Sorted Desecnding");

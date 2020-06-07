@@ -115,7 +115,7 @@ class CreateKnowledgePage {
     async clickOnSaveKnowledgeButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveKnowlegeButton)));
         await $(this.selectors.saveKnowlegeButton).click();
-        //        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.closePopUpMessage();
     }
 
     async isAssignmentFieldDisabled(fldName: String): Promise<boolean> {

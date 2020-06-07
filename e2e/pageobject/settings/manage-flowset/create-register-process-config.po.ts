@@ -98,19 +98,19 @@ class CreateFlowset {
     async clickSaveButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.savebutton)));
         await ($(this.selectors.savebutton)).click();
-        //        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.closePopUpMessage();
     }
 
     async isSaveButtonEnabled(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.savebutton)));
         return await $(this.selectors.savebutton).isEnabled();
-        //        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.closePopUpMessage();
     }
 
     async isErrorMsgPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.savebutton)));
         return await utilCommon.isErrorMsgPresent();
-        //        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.closePopUpMessage();
     }
 
     async clickCancelButton(): Promise<void> {

@@ -90,7 +90,7 @@ describe('Create Task Template', () => {
             await taskTemplate.clickOnSaveTaskTemplate();
         });
         it('[DRDMV-3817,DRDMV-3819]: [Task Template] Task Template Create view (UI verification)', async () => {
-            //await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.closePopUpMessage();
             expect(await viewTaskTemplate.isTaskSummaryTitlePresent('Task Summary')).toBeTruthy();
             expect(await viewTaskTemplate.isTaskTypeTitlePresent('Task Type')).toBeTruthy();
             expect(await viewTaskTemplate.isTaskCompanyTitlePresent('Task Company')).toBeTruthy();
@@ -321,7 +321,7 @@ describe('Create Task Template', () => {
         it('[DRDMV-7151]: Assign task on case', async () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toContain('Completed');
@@ -332,7 +332,7 @@ describe('Create Task Template', () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTaskTemplate.isEditButtonPresent()).toBeTruthy();
 
         });

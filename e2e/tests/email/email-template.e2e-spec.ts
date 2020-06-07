@@ -175,7 +175,7 @@ describe('EmailTemplate', () => {
         await editEmailTemplatePo.clickOnGridEditButton();
         await editEmailTemplatePo.updateEditMessageTextBladeBody(body2);
         await editEmailTemplatePo.clickOnEditMessageTextBladeSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
 
         await editEmailTemplatePo.searchAndSelectGridRecord('subject');
         await editEmailTemplatePo.clickOnGridEditButton();
@@ -199,7 +199,7 @@ describe('EmailTemplate', () => {
         await editEmailTemplatePo.clickOnCancelButton();
         await utilCommon.waitUntilSpinnerToHide();
         await editEmailTemplatePo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         // DRDMV-11091
         await consoleEmailTemplatePo.searchOnGridConsole(templateName2);
         expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Search Template Name is missing in column');

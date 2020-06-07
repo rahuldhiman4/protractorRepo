@@ -56,7 +56,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16767');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await previewKnowledgePo.clickOnViewArticleLink();
             await utilityCommon.switchToNewTab(1);
             await utilityCommon.refresh();
@@ -156,7 +156,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16768');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await previewKnowledgePo.clickOnViewArticleLink();
             await utilityCommon.switchToNewTab(1);
             await utilityCommon.refresh();
@@ -262,7 +262,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16773');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await previewKnowledgePo.clickOnViewArticleLink();
             await utilCommon.switchToNewWidnow(1);
             await utilityCommon.refresh();
@@ -875,7 +875,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('Knowledge Article for DRDMV-16754');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await previewKnowledgePo.clickOnViewArticleLink();
 
             // View Knowledege Page
@@ -1317,9 +1317,9 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test_KA_for_DRDMV-16765');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await utilityCommon.switchToNewTab(1);
             await utilityCommon.refresh();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
@@ -1442,17 +1442,17 @@ describe('Case Activity', () => {
             await flagUnflagKnowledgePo.setTextInTellUsMore(flag);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
 
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnUnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(unFlag);
             await flagUnflagKnowledgePo.clickOnUnFlageButtonOnBlade();
 
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(feedback);
             await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
 
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(reviewPending);
             await reviewCommentsPo.clickApprovedButton();

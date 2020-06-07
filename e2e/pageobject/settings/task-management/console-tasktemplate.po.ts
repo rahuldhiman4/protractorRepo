@@ -26,7 +26,7 @@ class TaskTemplateGridPage {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTemplate)));
         await $(this.selectors.searchTemplate).clear();
         await $(this.selectors.searchTemplate).sendKeys(input, Key.ENTER);
-        //        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.closePopUpMessage();
     }
 
     async searchAndOpenTaskTemplate(taskName: string): Promise<void> {
