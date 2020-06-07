@@ -51,7 +51,7 @@ class CreateKATemplate {
     async clickOnSaveButton(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-//        await utilCommon.waitUntilPopUpDisappear();
+//        await utilCommon.closePopUpMessage();
     }
 
     async clickRemoveSection(): Promise<void> {

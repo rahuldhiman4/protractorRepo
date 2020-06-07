@@ -135,7 +135,7 @@ describe('Knowledge Article', () => {
             await changeAssignmentBlade.clickOnAssignButton();
             await browser.sleep(1000);
             await editKnowledgePage.clickSaveStatusBtn();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await editKnowledgePage.isReviewPendingButtonDisplayed();
         }
         catch (error) {
@@ -701,7 +701,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'HR Support', 'Compensation and Benefits', 'Peter Kahn');
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePage.getKnowledgeReviewHeader()).toContain('Knowledge Review');
             expect(await editKnowledgePage.isReviewerFieldDisabledInEdit()).toBeTruthy('Reviwer field is enabled');
@@ -714,7 +714,7 @@ describe('Knowledge Article', () => {
             await changeAssignmentBlade.clickOnAssignButton();
             expect(await editKnowledgePage.getReviewerValue()).toContain('Kane Williamson', 'Reviewer not matched with expected');
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
         }
         catch (e) {
             throw e;

@@ -259,7 +259,7 @@ describe("Compose Email", () => {
         expect(await composeMail.getSubject()).toContain(caseId);
         expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
         await composeMail.clickOnSendButton();
-        await utilityCommon.waitUntilPopUpDisappear();
+        await utilityCommon.closePopUpMessage();
         expect(await activityTabPo.getEmailTitle()).toContain('Qianru Tao sent an email');
         expect(await activityTabPo.getEmailTemplateDetails()).toContain(emailTemplateName);
         expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');
@@ -545,7 +545,7 @@ describe("Compose Email", () => {
             expect(await composeMail.getEmailTemplateNameHeading()).toContain("templateName" + randomString);
             await composeMail.setEmailBody('this is newly added text');
             await composeMail.clickOnSendButton();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.getFirstPostContent()).toContain('Fritz Schulz sent an email', 'not');
             expect(await activityTabPo.isLinkDisplayedInActivity('http://www.google.com')).toBeTruthy('Link is not displayed');
@@ -650,7 +650,7 @@ describe("Compose Email", () => {
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             let subject = `Fritz Schulz changed the status of ${newCase.displayId} to In Progress`;
             console.log("Subject of the email: ", subject);
             await apiHelper.apiLogin('tadmin');
@@ -859,7 +859,7 @@ describe("Compose Email", () => {
             await composeMail.setBulletPointAndNumer('PlusThree');
             await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMail.clickOnSendButton();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             //activity verify
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isImageDisplayedInActivity(sourceValue)).toBeTruthy('Image is not displayed');
@@ -1040,7 +1040,7 @@ describe("Compose Email", () => {
         await composeMail.addAttachment(['../../data/ui/attachment/demo.txt']);
         expect(await composeMail.getFileDisplayedFileName()).toContain('demo.txt');
         await composeMail.clickOnSendButton();
-        await utilityCommon.waitUntilPopUpDisappear();
+        await utilityCommon.closePopUpMessage();
         await activityTabPo.clickOnRefreshButton();
         await activityTabPo.clickOnShowMore();
         expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');

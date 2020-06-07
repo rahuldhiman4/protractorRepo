@@ -65,7 +65,7 @@ describe('Menu Item', () => {
             await createMenuItems.selectStatusDropDown('Active');
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Source');
             await createMenuItems.clickOnLocalizeLink();
@@ -76,7 +76,7 @@ describe('Menu Item', () => {
             await createMenuItems.selectStatusDropDown('Active');
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
         });
         it('Create Duplicate Menu Item Source and Label', async () => {
             await createMenuItems.clickOnMenuOptionLink();
@@ -117,7 +117,7 @@ describe('Menu Item', () => {
             await utilCommon.waitUntilSpinnerToHide();
             await createMenuItems.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
         });
         it('[DRDMV-16173]: [Menu Items] - Multiple records with same name and type are not allowed', async () => {
             await createMenuItems.clickOnMenuOptionLink();
@@ -157,7 +157,7 @@ describe('Menu Item', () => {
             await utilCommon.waitUntilSpinnerToHide();
             await createMenuItems.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
         });
     });
 
@@ -180,7 +180,7 @@ describe('Menu Item', () => {
             await createMenuItems.selectStatusDropDown('Active');
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Source');
             await createMenuItems.clickOnLocalizeLink();
@@ -191,7 +191,7 @@ describe('Menu Item', () => {
             await createMenuItems.selectStatusDropDown('Inactive');
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Resolution Code');
             await createMenuItems.clickOnLocalizeLink();
@@ -202,7 +202,7 @@ describe('Menu Item', () => {
             await createMenuItems.selectStatusDropDown('Active');
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
         });
         it('[Menu Items] - Update Menu Item', async () => {
             await menuItemsConfigConsolePo.searchAndEditMenuOption(source);
@@ -212,12 +212,12 @@ describe('Menu Item', () => {
             await localizeValuePopPo.clearValueTextBox();
             await localizeValuePopPo.setLocalizeValue(source);
             await localizeValuePopPo.clickOnSaveButton();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
             let statusdropDown1: string[] = ["Deprecated", "Inactive", "Active"];
             expect(await editMenuItemsConfigPo.isStatusDropDownValuesMatch(statusdropDown1)).toBeTruthy('wrong column headers');
             await editMenuItemsConfigPo.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
             await menuItemsConfigConsolePo.searchAndEditMenuOption(label);
             expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeTruthy('MenuName drop down is editable');
             await editMenuItemsConfigPo.clickOnLocalizeLink();
@@ -225,13 +225,13 @@ describe('Menu Item', () => {
             await localizeValuePopPo.clearValueTextBox();
             await localizeValuePopPo.setLocalizeValue(label);
             await localizeValuePopPo.clickOnSaveButton();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
             let statusDropDown2: string[] = ["Deprecated", "Inactive", "Active"];
             expect(await editMenuItemsConfigPo.isStatusDropDownValuesMatch(statusDropDown2)).toBeTruthy('wrong column headers');
             await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(true);
             await editMenuItemsConfigPo.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
         });
         it('[DRDMV-16105,DRDMV-16106]: [Menu Items] - Update records AND grid Validation', async () => {
             await menuItemsConfigConsolePo.searchAndEditMenuOption(resolutionCode);
@@ -241,13 +241,13 @@ describe('Menu Item', () => {
             await localizeValuePopPo.clearValueTextBox();
             await localizeValuePopPo.setLocalizeValue(resolutionCode);
             await localizeValuePopPo.clickOnSaveButton();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
             let statusDropDown3: string[] = ["Deprecated", "Inactive", "Active"];
             expect(await editMenuItemsConfigPo.isStatusDropDownValuesMatch(statusDropDown3)).toBeTruthy('wrong column headers');
             await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(true);
             await editMenuItemsConfigPo.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
 
             let column1: string[] = ["ID", "Created Date", "Modified Date", "Menu Name", "Menu Options", "Status"];
             await menuItemsConfigConsolePo.addColumnOnGrid(column1);

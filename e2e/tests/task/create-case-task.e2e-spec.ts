@@ -143,7 +143,7 @@ describe('Create Case Task', () => {
             await taskTemplate.selectTemplateStatus('Active');
             await taskTemplate.clickOnSaveTaskTemplate();
             expect(await viewTasktemplatePo.getTaskCompanyNameValue()).toBe("Petramco");
-            //await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.closePopUpMessage();
         });
         it('create manual task template', async () => {
             //Automation Task template
@@ -571,7 +571,7 @@ describe('Create Case Task', () => {
             //validate Automation Template With Required Field
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
-            // await utilCommon.waitUntilPopUpDisappear();
+            // await utilCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(automationTaskSummary);
             await viewTask.clickOnChangeStatus();

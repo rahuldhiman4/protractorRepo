@@ -257,7 +257,7 @@ describe('Case Data Store', () => {
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
         });
         it('[DRDMV-13118]:[Dynamic Data] - Case Template and Case UI with dynamic fields and groups having long title', async () => {
             await navigationPage.gotoCreateCase();
@@ -268,7 +268,7 @@ describe('Case Data Store', () => {
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             //edit case
             await viewCasePo.clickEditCaseButton();
             await editCasePo.setDynamicFieldValue(field1InGroup, 'New values for field 1 group');

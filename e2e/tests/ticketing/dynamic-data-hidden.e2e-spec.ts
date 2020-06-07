@@ -83,7 +83,7 @@ describe('Dynamic Hidden Data', () => {
             await createTaskTemplate.setNewProcessName('Business Workflows', processName);
             // await createTaskTemplate.selectTemplateStatus('Active');
             await createTaskTemplate.clickOnSaveTaskTemplate();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilCommon.closePopUpMessage();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(automatedTaskTemplate1);

@@ -112,7 +112,7 @@ class ViewCasePage {
     async clickOnReopenCaseLink(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.reOpenCase)));
         await $(this.selectors.reOpenCase).click();
-        //        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.closePopUpMessage();
     }
 
     async getErrorMsgOfInprogressStatus(): Promise<string> {

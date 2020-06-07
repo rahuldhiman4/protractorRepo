@@ -122,7 +122,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.setReferenceValue('KnowledgeReference1164' + randomStr)
             await createKnowledgePage.selectKnowledgeSet('HR');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             expect(await previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy();
             await previewKnowledgePo.clickOnBackButton();
             await navigationPage.gotoKnoweldgeConsoleFromKM();
@@ -319,7 +319,7 @@ describe('Knowledge Article', () => {
         let updatedName = 'updatedName' + randomStr;
         await editKnowledgePage.changeKnowledgeTitle(updatedName);
         await editKnowledgePage.clickOnSaveButtonOfKA();
-        await utilityCommon.waitUntilPopUpDisappear();
+        await utilityCommon.closePopUpMessage();
         expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('edit link is not present');
         await navigationPage.gotoKnowledgeConsole();
         await utilityGrid.clearFilter();
@@ -993,6 +993,6 @@ describe('Knowledge Article', () => {
         expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitile, 'expected Value not present');
         await createKnowledgePage.selectKnowledgeSet('HR');
         await createKnowledgePage.clickOnSaveKnowledgeButton();
-        await utilityCommon.waitUntilPopUpDisappear();
+        await utilityCommon.closePopUpMessage();
     });
 })

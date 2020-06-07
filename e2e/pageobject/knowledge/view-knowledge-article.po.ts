@@ -75,7 +75,7 @@ class ViewKnowledgePage {
     }
 
     async getStatusValue(): Promise<string> {
-        //        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.closePopUpMessage();
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         return await $(this.selectors.statusChange).getText();
     }
