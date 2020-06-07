@@ -22,21 +22,22 @@ describe('Document Template', () => {
 
     //kgaikwad
     describe('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Verify Document template creation with Case business analyst', async () => {
-        let templateRandVal1 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateRandVal2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let description2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let documentBody = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let documentBody2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let labelRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let labelRandVal2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateRandVal1 = 'templateRandVal1' + randomStr;
+        let templateRandVal2 = 'templateRakndVal2' + randomStr;
+        let description1 = 'description1' + randomStr;
+        let description2 = 'description2' + randomStr;
+        let documentBody1 = 'documentBody1' + randomStr;
+        let documentBody2 = 'documentBody2' + randomStr;
+        let labelRandVal1 = 'labelRandVal1' + randomStr;
+        let labelRandVal2 = 'labelRandVal2' + randomStr;
         it('Create Menu item label', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             await createMenuItemsBladePo.clickOnMenuOptionLink();
             await createMenuItemsBladePo.selectMenuNameDropDown('Label');
             await createMenuItemsBladePo.clickOnLocalizeLink();
-            await localizeValuePopPo.setLocalizeValue(labelRandVal);
+            await localizeValuePopPo.setLocalizeValue(labelRandVal1);
             await localizeValuePopPo.clickOnSaveButton();
             await createMenuItemsBladePo.selectStatusDropDown('Active');
             await createMenuItemsBladePo.selectAvailableOnUiToggleButton(true);
@@ -58,9 +59,9 @@ describe('Document Template', () => {
             expect(await createDocumentTemplatePo.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
             await createDocumentTemplatePo.setTemplateName(templateRandVal1);
             await createDocumentTemplatePo.setCompany('Petramco');
-            await createDocumentTemplatePo.selectLabelDropDown(labelRandVal);
-            await createDocumentTemplatePo.setDescription(description);
-            await createDocumentTemplatePo.setDocumentBody(documentBody);
+            await createDocumentTemplatePo.selectLabelDropDown(labelRandVal1);
+            await createDocumentTemplatePo.setDescription(description1);
+            await createDocumentTemplatePo.setDocumentBody(documentBody1);
             await createDocumentTemplatePo.clickOnDocumentBodyImageButton();
             await imagePropertiesPo.addImg('Upload', '../../../data/ui/attachment/articleStatus.png');
             await createDocumentTemplatePo.clickOnSaveButton();
@@ -68,27 +69,27 @@ describe('Document Template', () => {
             await createDocumentTemplatePo.setTemplateName(templateRandVal2);
             expect(await createDocumentTemplatePo.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
             await createDocumentTemplatePo.setCompany('- Global -');
-            await createDocumentTemplatePo.selectLabelDropDown(labelRandVal);
-            await createDocumentTemplatePo.setDescription(description);
-            await createDocumentTemplatePo.setDocumentBody(documentBody);
+            await createDocumentTemplatePo.selectLabelDropDown(labelRandVal1);
+            await createDocumentTemplatePo.setDescription(description1);
+            await createDocumentTemplatePo.setDocumentBody(documentBody1);
             await createDocumentTemplatePo.clickOnSaveButton();
         });
         it('Validation of document template', async () => {
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
             expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal1)).toBeTruthy('Template Name is missing');
             expect(await editDocumentTemplatePo.isCompanyNameDisplayed('Petramco')).toBeTruthy('Petramco Company Name is missing');
-            expect(await editDocumentTemplatePo.isLabelValueDisplayed(labelRandVal)).toBeTruthy('label is missing');
-            expect(await editDocumentTemplatePo.isDescriptionValueDisplayed(description)).toBeTruthy('Description Name is missing');
-            expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody)).toBeTruthy('Document body text is missing');
+            expect(await editDocumentTemplatePo.isLabelValueDisplayed(labelRandVal1)).toBeTruthy('label is missing');
+            expect(await editDocumentTemplatePo.isDescriptionValueDisplayed(description1)).toBeTruthy('Description Name is missing');
+            expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody1)).toBeTruthy('Document body text is missing');
             expect(await editDocumentTemplatePo.isDocumentBodyImgDisplay()).toBeTruthy('Document body Img text is missing');
             await editDocumentTemplatePo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal2);
             expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal2)).toBeTruthy('Template Name is missing for Global company');
             expect(await editDocumentTemplatePo.isCompanyNameDisplayed('- Global -')).toBeTruthy('Global Company Name is missing ');
-            expect(await editDocumentTemplatePo.isLabelValueDisplayed(labelRandVal)).toBeTruthy('label is missing of Global company');
-            expect(await editDocumentTemplatePo.isDescriptionValueDisplayed(description)).toBeTruthy('Description Name is missing of Global company ');
-            expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody)).toBeTruthy('Document body text is missing of Global company');
+            expect(await editDocumentTemplatePo.isLabelValueDisplayed(labelRandVal1)).toBeTruthy('label is missing of Global company');
+            expect(await editDocumentTemplatePo.isDescriptionValueDisplayed(description1)).toBeTruthy('Description Name is missing of Global company ');
+            expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody1)).toBeTruthy('Document body text is missing of Global company');
             expect(await editDocumentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('company drop down is enabled of Global company');
             await editDocumentTemplatePo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
@@ -127,4 +128,4 @@ describe('Document Template', () => {
             expect(await documentTemplateConsolePo.isGridRecordPresent(templateRandVal2)).toBeFalsy('template name is preset on grid');
         });
     });
-})
+});

@@ -298,7 +298,7 @@ describe('Case Data Store', () => {
     describe('[DRDMV-13140]:[Dynamic Data] - Verify Dynamic Field On Task Template', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let arr: string[] = ['temp', 'temp1', 'temp2', 'temp3', 'temp4', 'temp5', 'attachment1', 'attachment2', 'attachment3'];
-        let templateData, inactiveTemplateSummary, inactiveTemplateName, inactiveTemplateStatus, draftTemplateSummary, draftTemplateName, draftTemplateStatus, activeTemplateSummary, activeTemplateName, activeTemplateStatus;
+        let templateData, inactiveTemplateName, draftTemplateName, activeTemplateName;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
@@ -316,27 +316,27 @@ describe('Case Data Store', () => {
             let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
             //Inactive
-            inactiveTemplateSummary = templateData.templateSummary = 'ManualtaskSummaryInactiveDRDMV-13940' + randomStr;
+            templateData.templateSummary = 'ManualtaskSummaryInactiveDRDMV-13940' + randomStr;
             inactiveTemplateName = templateData.templateName = 'ManualtaskInactiveDRDMV-13940' + randomStr;
-            inactiveTemplateStatus = templateData.templateStatus = 'Inactive';
+            templateData.templateStatus = 'Inactive';
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             await apiHelper.apiLogin('qkatawazi');
             let tasktemplateInactive = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(tasktemplateInactive.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
             //Draft only
-            draftTemplateSummary = templateData.templateSummary = 'ManualtaskSummaryDraftOnlyDRDMV-13940' + randomStr;
+            templateData.templateSummary = 'ManualtaskSummaryDraftOnlyDRDMV-13940' + randomStr;
             draftTemplateName = templateData.templateName = 'ManualtaskDraftOnlyDRDMV-13940' + randomStr;
-            draftTemplateStatus = templateData.templateStatus = 'Draft';
+            templateData.templateStatus = 'Draft';
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             await apiHelper.apiLogin('qkatawazi');
             let tasktemplateDraft = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(tasktemplateDraft.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
             //active
-            activeTemplateSummary = templateData.templateSummary = 'ManualtaskSummaryActiveDRDMV-13940' + randomStr;
+            templateData.templateSummary = 'ManualtaskSummaryActiveDRDMV-13940' + randomStr;
             activeTemplateName = templateData.templateName = 'ManualtaskActiveDRDMV-13940' + randomStr;
-            activeTemplateStatus = templateData.templateStatus = 'Active';
+            templateData.templateStatus = 'Active';
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             await apiHelper.apiLogin('qkatawazi');
@@ -710,7 +710,7 @@ describe('Case Data Store', () => {
     //ptidke
     describe('[DRDMV-13154]:[Dynamic Data] - Verify Dynamic Field On Task Edit View', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateData, externalTemplateName, externalTemplateSummary;
+        let templateData;
         let dynamicFields: string[] = ['temp', 'temp1', 'temp2', 'temp3', 'temp4', 'attachment1', 'attachment2', 'attachment3'];
         beforeAll(async () => {
             await navigationPage.signOut();
@@ -730,8 +730,8 @@ describe('Case Data Store', () => {
             await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
-            externalTemplateName = templateData.templateName = 'externalTaskDRDMV-13154' + randomStr;
-            externalTemplateSummary = templateData.templateSummary = 'externalTaskSummaryDRDMV-13154' + randomStr,
+            templateData.templateName = 'externalTaskDRDMV-13154' + randomStr;
+            templateData.templateSummary = 'externalTaskSummaryDRDMV-13154' + randomStr,
                 await apiHelper.apiLogin('qkatawazi');
             let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(externalTaskTemplate.id, 'EXTERNAL_TASK_TEMPLATE__DYNAMIC_FIELDS');
@@ -832,7 +832,7 @@ describe('Case Data Store', () => {
                 "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('qkatawazi');
-            let casetemplateddetails = await apiHelper.createCaseTemplate(caseTemplateData);
+            await apiHelper.createCaseTemplate(caseTemplateData);
         });
         it('Create Dynamic Fields In Field Library', async () => {
             await navigationPage.gotoSettingsPage();
@@ -938,7 +938,7 @@ describe('Case Data Store', () => {
     //ptidke
     describe('[DRDMV-13112]: [Dynamic Data] Verify Dynamic Field On Case Template Edit view UI', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateData, inactiveTemplateSummary, inactiveTemplateName, inactiveTemplateStatus, draftTemplateSummary, draftTemplateName, draftTemplateStatus, activeTemplateSummary, activeTemplateName, activeTemplateStatus;
+        let templateData, inactiveTemplateName, draftTemplateName, activeTemplateName;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
@@ -954,21 +954,21 @@ describe('Case Data Store', () => {
                 "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('fritz');
-            let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
-            activeTemplateSummary = templateData.templateSummary = 'caseTemplate2SummaryDRDMV-13112' + randomStr;
+            await apiHelper.createCaseTemplate(templateData);
+            templateData.templateSummary = 'caseTemplate2SummaryDRDMV-13112' + randomStr;
             activeTemplateName = templateData.templateName = 'caseTemplate2DRDMV-13112' + randomStr;
             activeTemplateName = templateData.templateStatus = 'Active';
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate2 = await apiHelper.createCaseTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate2.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
-            draftTemplateSummary = templateData.templateSummary = 'caseTemplateDraftSummaryDRDMV-13112' + randomStr;
+            templateData.templateSummary = 'caseTemplateDraftSummaryDRDMV-13112' + randomStr;
             draftTemplateName = templateData.templateName = 'caseTemplateDraftDRDMV-13112' + randomStr;
             draftTemplateName = templateData.templateStatus = 'Draft';
-            let newCaseTemplate3 = await apiHelper.createCaseTemplate(templateData);
-            inactiveTemplateSummary = templateData.templateSummary = 'caseTemplateInactiveSummaryDRDMV-13112' + randomStr;
+            await apiHelper.createCaseTemplate(templateData);
+            templateData.templateSummary = 'caseTemplateInactiveSummaryDRDMV-13112' + randomStr;
             inactiveTemplateName = templateData.templateName = 'caseTemplateInactiveDRDMV-13112' + randomStr;
-            inactiveTemplateStatus = templateData.templateStatus = 'Inactive';
-            let newCaseTemplate4 = await apiHelper.createCaseTemplate(templateData);
+            templateData.templateStatus = 'Inactive';
+            await apiHelper.createCaseTemplate(templateData);
         });
         it('Verify Dynamic Fields On Active Case Template  ', async () => {
             await navigationPage.gotoSettingsPage();

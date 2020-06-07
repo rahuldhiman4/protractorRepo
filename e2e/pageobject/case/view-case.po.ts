@@ -306,11 +306,18 @@ class ViewCasePage {
     }
 
     async isCoreTaskPresent(taskSummary: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.addedTaskFromCaseTemplate, taskSummary))));
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.addedTaskFromCaseTemplate).count();
+            return count >= 1;
+        }), 5000);
         return await element(by.cssContainingText(this.selectors.addedTaskFromCaseTemplate, taskSummary)).isDisplayed();
     }
 
     async clickOnTaskLink(taskSummary: string): Promise<void> {
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.addedTaskFromCaseTemplate).count();
+            return count >= 1;
+        }), 5000);
         await element(by.cssContainingText(this.selectors.addedTaskFromCaseTemplate, taskSummary)).click();
     }
 
