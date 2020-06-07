@@ -26,9 +26,9 @@ describe('Dynamic Library Configuration', () => {
         await apiHelper.deleteDynamicFieldAndGroup();
         //field Text type    
         await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
-        await createDynamicFieldLibraryConfigPo.setFieldName('LibTextField'+randomString);
+        await createDynamicFieldLibraryConfigPo.setFieldName('LibTextField' + randomString);
         await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
-        await localizeValuePopPo.setLocalizeValue('LibTextField'+randomString);
+        await localizeValuePopPo.setLocalizeValue('LibTextField' + randomString);
         await localizeValuePopPo.clickOnSaveButton();
         await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
         await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
@@ -36,9 +36,9 @@ describe('Dynamic Library Configuration', () => {
         await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
         //field Number Type  
         await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
-        await createDynamicFieldLibraryConfigPo.setFieldName('LibTextField'+randomString);
+        await createDynamicFieldLibraryConfigPo.setFieldName('LibTextField' + randomString);
         await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
-        await localizeValuePopPo.setLocalizeValue('LibNumberField'+randomString);
+        await localizeValuePopPo.setLocalizeValue('LibNumberField' + randomString);
         await localizeValuePopPo.clickOnSaveButton();
         await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
         await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');

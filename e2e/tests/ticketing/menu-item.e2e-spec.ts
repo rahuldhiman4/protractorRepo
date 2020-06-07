@@ -45,14 +45,13 @@ describe('Menu Item', () => {
 
     //kgaikwad
     describe('[DRDMV-16173]: Verify Multiple records with same name', async () => {
-        let lableRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let sourceRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let label = 'Legal' + lableRandVal;
-        let label1 = 'legal' + lableRandVal;
-        let label2 = 'leGAL' + lableRandVal;
-        let source = 'Phone' + sourceRandVal;
-        let source1 = 'phONE' + sourceRandVal;
-        let source2 = 'phone' + sourceRandVal;
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let label = 'Legal' + randomStr;
+        let label1 = 'legal' + randomStr;
+        let label2 = 'leGAL' + randomStr;
+        let source = 'Phone' + randomStr;
+        let source1 = 'phONE' + randomStr;
+        let source2 = 'phone' + randomStr;
         it('Create Menu Item label and Source', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
@@ -164,9 +163,10 @@ describe('Menu Item', () => {
 
     //kgaikwad
     describe('[DRDMV-16105,DRDMV-16106]: Verify Multiple records with same name', async () => {
-        let lableRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let sourceRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let resolutionCodeRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let label = 'label' + randomStr;
+        let source = 'source' + randomStr;
+        let resolutionCode = 'resolutionCode' + randomStr;
         it('[Menu Items] - Create Menu Item', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
@@ -174,7 +174,7 @@ describe('Menu Item', () => {
             await createMenuItems.selectMenuNameDropDown('Label');
             await createMenuItems.clickOnLocalizeLink();
             await utilCommon.waitUntilSpinnerToHide();
-            await localizeValuePopPo.setLocalizeValue(lableRandVal);
+            await localizeValuePopPo.setLocalizeValue(label);
             await localizeValuePopPo.clickOnSaveButton();
             await utilCommon.waitUntilSpinnerToHide();
             await createMenuItems.selectStatusDropDown('Active');
@@ -185,7 +185,7 @@ describe('Menu Item', () => {
             await createMenuItems.selectMenuNameDropDown('Source');
             await createMenuItems.clickOnLocalizeLink();
             await utilCommon.waitUntilSpinnerToHide();
-            await localizeValuePopPo.setLocalizeValue(sourceRandVal);
+            await localizeValuePopPo.setLocalizeValue(source);
             await localizeValuePopPo.clickOnSaveButton();
             await utilCommon.waitUntilSpinnerToHide();
             await createMenuItems.selectStatusDropDown('Inactive');
@@ -196,7 +196,7 @@ describe('Menu Item', () => {
             await createMenuItems.selectMenuNameDropDown('Resolution Code');
             await createMenuItems.clickOnLocalizeLink();
             await utilCommon.waitUntilSpinnerToHide();
-            await localizeValuePopPo.setLocalizeValue(resolutionCodeRandVal);
+            await localizeValuePopPo.setLocalizeValue(resolutionCode);
             await localizeValuePopPo.clickOnSaveButton();
             await utilCommon.waitUntilSpinnerToHide();
             await createMenuItems.selectStatusDropDown('Active');
@@ -205,12 +205,12 @@ describe('Menu Item', () => {
             await utilCommon.waitUntilPopUpDisappear();
         });
         it('[Menu Items] - Update Menu Item', async () => {
-            await menuItemsConfigConsolePo.searchAndEditMenuOption(sourceRandVal);
+            await menuItemsConfigConsolePo.searchAndEditMenuOption(source);
             expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeTruthy('MenuName drop down is editable');
             await editMenuItemsConfigPo.clickOnLocalizeLink();
             await utilCommon.waitUntilSpinnerToHide();
             await localizeValuePopPo.clearValueTextBox();
-            await localizeValuePopPo.setLocalizeValue(sourceRandVal);
+            await localizeValuePopPo.setLocalizeValue(source);
             await localizeValuePopPo.clickOnSaveButton();
             await utilCommon.waitUntilPopUpDisappear();
             let statusdropDown1: string[] = ["Deprecated", "Inactive", "Active"];
@@ -218,12 +218,12 @@ describe('Menu Item', () => {
             await editMenuItemsConfigPo.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
             await utilCommon.waitUntilPopUpDisappear();
-            await menuItemsConfigConsolePo.searchAndEditMenuOption(lableRandVal);
+            await menuItemsConfigConsolePo.searchAndEditMenuOption(label);
             expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeTruthy('MenuName drop down is editable');
             await editMenuItemsConfigPo.clickOnLocalizeLink();
             await utilCommon.waitUntilSpinnerToHide();
             await localizeValuePopPo.clearValueTextBox();
-            await localizeValuePopPo.setLocalizeValue(lableRandVal);
+            await localizeValuePopPo.setLocalizeValue(label);
             await localizeValuePopPo.clickOnSaveButton();
             await utilCommon.waitUntilPopUpDisappear();
             let statusDropDown2: string[] = ["Deprecated", "Inactive", "Active"];
@@ -234,12 +234,12 @@ describe('Menu Item', () => {
             await utilCommon.waitUntilPopUpDisappear();
         });
         it('[DRDMV-16105,DRDMV-16106]: [Menu Items] - Update records AND grid Validation', async () => {
-            await menuItemsConfigConsolePo.searchAndEditMenuOption(resolutionCodeRandVal);
+            await menuItemsConfigConsolePo.searchAndEditMenuOption(resolutionCode);
             expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeTruthy('MenuName drop down is editable');
             await editMenuItemsConfigPo.clickOnLocalizeLink();
             await utilCommon.waitUntilSpinnerToHide();
             await localizeValuePopPo.clearValueTextBox();
-            await localizeValuePopPo.setLocalizeValue(resolutionCodeRandVal);
+            await localizeValuePopPo.setLocalizeValue(resolutionCode);
             await localizeValuePopPo.clickOnSaveButton();
             await utilCommon.waitUntilPopUpDisappear();
             let statusDropDown3: string[] = ["Deprecated", "Inactive", "Active"];
@@ -258,19 +258,19 @@ describe('Menu Item', () => {
             expect(await menuItemsConfigConsolePo.isGridColumnSorted('Menu Options', 'descending')).toBeTruthy('MenuOption Column is not sorted');
             expect(await menuItemsConfigConsolePo.isGridColumnSorted('Menu Name', 'descending')).toBeTruthy('Menu Name Column is not sorted');
 
-            await menuItemsConfigConsolePo.searchOnGridConsole(lableRandVal);
+            await menuItemsConfigConsolePo.searchOnGridConsole(label);
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Name')).toBe('Label'), 'Menu Name column value is missing. for label';
-            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(lableRandVal), 'Menu Option column value is missing for label';
+            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(label), 'Menu Option column value is missing for label';
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Status')).toBe('Active'), 'Status column value is missing for label';
 
-            await menuItemsConfigConsolePo.searchOnGridConsole(sourceRandVal);
+            await menuItemsConfigConsolePo.searchOnGridConsole(source);
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Name')).toBe('Source'), 'Menu Name column value is missing for Source';
-            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(sourceRandVal), 'Menu Option column value is missing for source';
+            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(source), 'Menu Option column value is missing for source';
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Status')).toBe('Inactive'), 'Status column value is missing for source';
 
-            await menuItemsConfigConsolePo.searchOnGridConsole(resolutionCodeRandVal);
+            await menuItemsConfigConsolePo.searchOnGridConsole(resolutionCode);
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Name')).toBe('Resolution Code'), 'Menu Name column value is missing for resolution code';
-            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(resolutionCodeRandVal), 'Menu Option column value is missing for resolution code';
+            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(resolutionCode), 'Menu Option column value is missing for resolution code';
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Status')).toBe('Active'), 'Status column value is missing for resolution code';
         });
     });
