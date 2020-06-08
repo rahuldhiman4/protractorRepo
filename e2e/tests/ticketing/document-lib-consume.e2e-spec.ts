@@ -168,7 +168,7 @@ describe('Document Library Consume UI', () => {
             await viewCasePo.clickOnTab('Case Access');
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('qstrong');
-            expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Quin Strong')).toBeTruthy('FailuerMsg1: Quanah George Agent Name is missing');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Quin Strong')).toBeTruthy('FailuerMsg1: Quanah George Agent Name is missing');
             await navigationPage.gotoCaseConsole();
         });
         it('[DRDMV-13533]: Verify the case with different user', async () => {

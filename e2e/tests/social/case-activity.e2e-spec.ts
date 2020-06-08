@@ -1105,7 +1105,7 @@ describe('Case Activity', () => {
             //Read Access Agent
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('Fabian');
-            await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Fabian Krause')).toBeTruthy('Failuer:Fabian Krause Agent Name is missing');
+            await expect(await caseAccessTabPo.isCaseAccessEntityAdded('Fabian Krause')).toBeTruthy('Failuer:Fabian Krause Agent Name is missing');
 
             //Login with Read Permission User
             await navigationPage.signOut();
