@@ -39,10 +39,8 @@ class CaseAccessTab {
         await $$(this.selectors.agentAssignWriteAccess).get(2).click();
     }
 
-    async isAgentNameOrSupportGroupNameDisplayed(agentNameOrSupportGroupName: string): Promise<boolean> {
-        // return await element(by.cssContainingText(this.selectors.agentNameOrSupportGroupName, agentNameOrSupportGroupName)).isDisplayed();
-        return await $(`.bfw-badge .mr-2[aria-label="${agentNameOrSupportGroupName}"]`).isDisplayed();
-        
+    async isCaseAccessEntityAdded(agentNameOrSupportGroupName: string): Promise<boolean> {
+        return await $(`.bfw-badge .badge-text[aria-label="${agentNameOrSupportGroupName}"]`).isDisplayed();
     }
 
     async selectCompany(companyValue: string, dropDownList: string): Promise<void> {

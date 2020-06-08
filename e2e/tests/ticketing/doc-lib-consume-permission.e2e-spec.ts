@@ -583,9 +583,9 @@ describe('Document Library Consume Permission', () => {
             await viewCasePo.clickOnTab('Case Access');
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('qstrong');
-            expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Quin Strong')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Quin Strong')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
             await caseAccessTabPo.selectAndAddAgent('hhaas');
-            expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Hannah Haas')).toBeTruthy('Failuer: Quanah George Agent Name is missing');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Hannah Haas')).toBeTruthy('Failuer: Quanah George Agent Name is missing');
 
             await navigationPage.signOut();
             await loginPage.login('qstrong');
