@@ -106,7 +106,7 @@ describe('Case Console Preset Filter', () => {
         caseId.push(response11.displayId);
 
         await utilityGrid.clickRefreshIcon();
-        await utilityGrid.clearFilterPreset();
+        await utilityGrid.clearFilter();
 
         for (let i: number = 0; i < 11; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -123,7 +123,7 @@ describe('Case Console Preset Filter', () => {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
         }
 
-        await utilityGrid.clearFilterPreset();
+        await utilityGrid.clearFilter();
 
         for (let i: number = 0; i < 11; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -185,7 +185,7 @@ describe('Case Console Preset Filter', () => {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
         }
 
-        await utilityGrid.clearFilterPreset();
+        await utilityGrid.clearFilter();
 
         for (let i: number = 0; i < 10; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -246,7 +246,7 @@ describe('Case Console Preset Filter', () => {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
         }
 
-        await utilityGrid.clearFilterPreset();
+        await utilityGrid.clearFilter();
 
         for (let i: number = 0; i < 10; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -312,7 +312,7 @@ describe('Case Console Preset Filter', () => {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
         }
 
-        await utilityGrid.clearFilterPreset();
+        await utilityGrid.clearFilter();
 
         for (let i: number = 0; i < 12; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -378,7 +378,7 @@ describe('Case Console Preset Filter', () => {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
         }
 
-        await utilityGrid.clearFilterPreset();
+        await utilityGrid.clearFilter();
 
         for (let i: number = 0; i < 12; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -408,7 +408,7 @@ describe('Case Console Preset Filter', () => {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
         }
 
-        await utilityGrid.clearFilterPreset();
+        await utilityGrid.clearFilter();
 
         for (let i: number = 0; i < 3; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -509,7 +509,7 @@ describe('Case Console Preset Filter', () => {
 
         await dbConnectObj.dbConnectionEnd(dbConnectVar);
 
-        await utilityGrid.clearFilterPreset();
+        await utilityGrid.clearFilter();
         await utilityGrid.applyPresetFilter('All Cases In Last 1 month');
         expect(await utilityGrid.getAppliedFilterName()).toBe('All Cases In Last 1 month');
 
@@ -521,7 +521,7 @@ describe('Case Console Preset Filter', () => {
             expect(await utilityGrid.isGridRecordPresent(caseId[3])).toBeFalsy(caseId[3] + ' :Record is available');
         }
 
-        await utilityGrid.clearFilterPreset();
+        await utilityGrid.clearFilter();
         for (let i: number = 0; i < 4; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
         }
@@ -558,7 +558,7 @@ describe('Case Console Preset Filter', () => {
 
         await dbConnectObj.dbConnectionEnd(dbConnectVar);
 
-        await utilityGrid.clearFilterPreset();
+        await utilityGrid.clearFilter();
         await utilityGrid.applyPresetFilter('All Cases  In Last 3 months');
         expect(await utilityGrid.getAppliedFilterName()).toBe('All Cases In Last 3 months');
 
@@ -567,7 +567,7 @@ describe('Case Console Preset Filter', () => {
         }
         expect(await utilityGrid.isGridRecordPresent(caseId[2])).toBeFalsy(caseId[2] + ' :Record is available');
 
-        await utilityGrid.clearFilterPreset();
+        await utilityGrid.clearFilter();
         for (let i: number = 0; i < 3; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
         }
@@ -612,7 +612,7 @@ describe('Case Console Preset Filter', () => {
 
         await dbConnectObj.dbConnectionEnd(dbConnectVar);
 
-        await utilityGrid.clearFilterPreset();
+        await utilityGrid.clearFilter();
         await utilityGrid.applyPresetFilter('All Cases  In Last 6 months');
         expect(await utilityGrid.getAppliedFilterName()).toBe('All Cases In Last 6 months');
 
@@ -621,7 +621,7 @@ describe('Case Console Preset Filter', () => {
         }
         expect(await utilityGrid.isGridRecordPresent(caseId[3])).toBeFalsy(caseId[3] + ' :Record is available');
 
-        await utilityGrid.clearFilterPreset();
+        await utilityGrid.clearFilter();
         for (let i: number = 0; i < 4; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
         }
