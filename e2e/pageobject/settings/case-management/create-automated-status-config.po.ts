@@ -1,5 +1,6 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon  from '../../../utils/util.common';
+import utilCommon from '../../../utils/util.common';
+import { IAutomatedStatusTransitionConfig } from '../../../data/ui/interface/automatedStatusTransition.interface';
 
 class AutomatedStatusTransitionConfigCreatePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -32,7 +33,7 @@ class AutomatedStatusTransitionConfigCreatePage {
 
     async setCategoryTier1Value(categoryTier1: string): Promise<void> {
         await utilCommon.selectDropDown('d84b98ad-9983-41e2-b6f2-6c5b9d404b7c', categoryTier1).catch(async (error) => {
-            if(error) await utilCommon.selectDropDown('e352fa1a-9440-4a8c-a77d-e2030beec03b', categoryTier1);
+            if (error) await utilCommon.selectDropDown('e352fa1a-9440-4a8c-a77d-e2030beec03b', categoryTier1);
         });
     }
 
@@ -53,11 +54,11 @@ class AutomatedStatusTransitionConfigCreatePage {
     }
 
     async isNameRequiredText(): Promise<boolean> {
-      return  await utilCommon.isRequiredTagToField(this.selectors.nameGuid);
+        return await utilCommon.isRequiredTagToField(this.selectors.nameGuid);
     }
 
     async setCompany(companyName: string): Promise<void> {
-        return   await utilCommon.selectDropDown(this.selectors.companyGuid, companyName);
+        return await utilCommon.selectDropDown(this.selectors.companyGuid, companyName);
     }
 
     async isCompanyRequiredText(): Promise<boolean> {
@@ -83,7 +84,7 @@ class AutomatedStatusTransitionConfigCreatePage {
 
     async isFromStatusEnabled(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
-        return await $(this.selectors.fromStatus).getAttribute('aria-disabled')=="false";
+        return await $(this.selectors.fromStatus).getAttribute('aria-disabled') == "false";
     }
 
     async setToStatus(status: string): Promise<void> {
@@ -103,12 +104,12 @@ class AutomatedStatusTransitionConfigCreatePage {
         //        await utilCommon.waitUntilSpinnerToHide();
     }
 
-    async createAutomatedStatusTransition(data: Map<string, string>): Promise<void> {
-        await this.setName(data['automatedStatusTransitionWithMandatoryFields'].name);
-        await this.setCompany(data['automatedStatusTransitionWithMandatoryFields'].company);
-        await this.setFromStatus(data['automatedStatusTransitionWithMandatoryFields'].fromStatus);
-        await this.setToStatus(data['automatedStatusTransitionWithMandatoryFields'].toStatus);
-        await this.setChangeStatusAfter(data['automatedStatusTransitionWithMandatoryFields'].changeStatusAfter);
+    async createAutomatedStatusTransition(data: IAutomatedStatusTransitionConfig): Promise<void> {
+        await this.setName(data.name);
+        await this.setCompany(data.company);
+        await this.setFromStatus(data.fromStatus);
+        await this.setToStatus(data.toStatus);
+        await this.setChangeStatusAfter(data.changeStatusAfter.toString());
         await this.saveConfig();
     }
 

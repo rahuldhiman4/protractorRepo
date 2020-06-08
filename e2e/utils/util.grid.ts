@@ -330,7 +330,6 @@ export class GridOperation {
         columnPosition = columnPosition + 1;
         var gridRows: number = await element.all(by.xpath(gridRecords)).count();
         let gridRecordCellValue;
-        console.log(gridRows);
         for (let i: number = 1; i <= gridRows; i++) {
             try {
                 gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[${i}]/div[${columnPosition}]/div`;
