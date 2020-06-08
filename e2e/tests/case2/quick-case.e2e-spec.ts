@@ -87,19 +87,32 @@ describe("Quick Case", () => {
     });
 
     it('[DRDMV-800]: [Quick Case] Case creation with requester having same name as other company users', async () => {
-        let userData = {
+        let userData1 = {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData1",
         }
+        let userData2 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData2",
+        }
+        let userData3 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData3",
+        }
+        let userData4 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData4",
+        }
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.createNewUser(userData);
-        userData.userId = "userData2";
-        await apiHelper.createNewUser(userData);
-        userData.userId = "userData3";
-        await apiHelper.createNewUser(userData);
-        userData.userId = "userData4";
-        await apiHelper.createNewUser(userData);
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.createNewUser(userData3);
+        await apiHelper.createNewUser(userData4);
+        
         await quickCase.clickStartOverButton();
         await quickCase.selectRequesterName('Person1 Person1');
         await quickCase.setCaseSummary('caseSummary');
@@ -229,7 +242,7 @@ describe("Quick Case", () => {
     });
 
     describe('[DRDMV-786]:[Quick Case] Case creation with all case statuses in template', async () => {
-        let templateData1,templateData2,randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData1,templateData2,templateData3,templateData4,randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             templateData1 = {
                 "templateName": randomStr + "Petramco1",
@@ -256,17 +269,44 @@ describe("Quick Case", () => {
                 "ownerBU": "Facilities Support",
                 "ownerGroup": "Facilities"
             }
+            templateData3 = {
+                "templateName": randomStr + "Petramco3",
+                "templateSummary": randomStr + "Petramco3",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "caseStatus": "InProgress",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            templateData4 = {
+                "templateName": randomStr + "Petramco4",
+                "templateSummary": randomStr + "Petramco4",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "caseStatus": "Resolved",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData1);
-            templateData2.caseStatus= "Assigned",
             await apiHelper.createCaseTemplate(templateData2);
             await apiHelper.apiLogin('fritz');
-            templateData2.caseStatus= "InProgress",
-            templateData2.templateName = randomStr + "Petramco3";
-            await apiHelper.createCaseTemplate(templateData2);
-            templateData2.caseStatus= "Resolved",
-            templateData2.templateName = randomStr + "Petramco4";
-            await apiHelper.createCaseTemplate(templateData2);
+            await apiHelper.createCaseTemplate(templateData3);
+            await apiHelper.createCaseTemplate(templateData4);
         });
         it('Creating the case with diffrent statuses', async () => {
             await navigationPage.gotoQuickCase();
@@ -288,13 +328,13 @@ describe("Quick Case", () => {
             await loginPage.login('fritz');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("fritz");
-            await quickCasePo.selectCaseTemplate(templateData2.templateName);
+            await quickCasePo.selectCaseTemplate(templateData4.templateName);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("fritz");
-            await quickCasePo.selectCaseTemplate(templateData2.templateName);
+            await quickCasePo.selectCaseTemplate(templateData3.templateName);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');

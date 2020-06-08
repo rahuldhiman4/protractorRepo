@@ -33,6 +33,7 @@ class CopyCaseTemplate {
         ownerGroupDropdown: 'b3ebc604-b7dc-4090-90a5-9515d1ea7f3e',
         copyInstruction: '[rx-view-component-id="162ce9d1-22d1-42a6-8360-f3d1c8dc3a20"] ul span',
         businessUnitValueOnCopy: '[rx-view-component-id="0bfe6a89-2484-44d1-bae8-9353753f78fa"] .ui-select-match-text',
+        departmentValueOnCopy: '[rx-view-component-id="6c570cf5-7f7b-4141-bd17-755e202e7095"] .ui-select-match-text',
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
@@ -85,6 +86,10 @@ class CopyCaseTemplate {
 
     async getValueOfBuisnessUnit(): Promise<string> {
         return await $(this.selectors.businessUnitValueOnCopy).getText();
+    }
+
+    async getValueOfDepartement(): Promise<string> {
+        return await $(this.selectors.departmentValueOnCopy).getText();
     }
 
     async getValueOfAssignee(): Promise<string> {
