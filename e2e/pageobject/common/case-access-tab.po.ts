@@ -35,21 +35,23 @@ class CaseAccessTab {
         await $$(this.selectors.agentAddButton).click();
     }
 
-    async isAgentNameOrSupportGroupNameDisplayed(agentNameOrSupportGroupName: string): Promise<boolean> {
-        // return await element(by.cssContainingText(this.selectors.agentNameOrSupportGroupName, agentNameOrSupportGroupName)).isDisplayed();
-        return await $(`.bfw-badge .mr-2[aria-label="${agentNameOrSupportGroupName}"]`).isDisplayed();
-        
+    async selectSupportGroupWriteAccess(): Promise<void> {
+        await $$(this.selectors.agentAssignWriteAccess).get(2).click();
     }
 
-    async selectCompany(companyValue: string,dropDownList:string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.dropDownType,dropDownList)).click();
+    async isCaseAccessEntityAdded(agentNameOrSupportGroupName: string): Promise<boolean> {
+        return await $(`.bfw-badge .badge-text[aria-label="${agentNameOrSupportGroupName}"]`).isDisplayed();
+    }
+
+    async selectCompany(companyValue: string, dropDownList: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.dropDownType, dropDownList)).click();
         await $(this.selectors.searchInputField).sendKeys(companyValue);
         let option = await element(by.cssContainingText(this.selectors.dropdownList, companyValue));
         await option.click();
     }
 
-    async selectSupportGroup(SupportValue: string,dropDownList:string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.dropDownType,dropDownList)).click();
+    async selectSupportGroup(SupportValue: string, dropDownList: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.dropDownType, dropDownList)).click();
         await $(this.selectors.searchInputField).sendKeys(SupportValue);
         let option = await element(by.cssContainingText(this.selectors.dropdownList, SupportValue));
         await option.click();
@@ -62,8 +64,8 @@ class CaseAccessTab {
         await option.click();
     }
 
-    async selectDepartment(DepartmentValue: string,dropDownList:string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.dropDownType,dropDownList)).click();
+    async selectDepartment(DepartmentValue: string, dropDownList: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.dropDownType, dropDownList)).click();
         await $(this.selectors.searchInputField).sendKeys(DepartmentValue);
         let option = await element(by.cssContainingText(this.selectors.dropdownList, DepartmentValue));
         await option.click();

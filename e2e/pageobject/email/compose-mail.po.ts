@@ -5,7 +5,6 @@ class ComposeMail {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         title: '.modal-title',
-        crossIcon: 'button.close-inverse',
         commonId: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"]',
         selectEmailTemplateLink: '.select-template-button',
         attachLink: '.attachment-button button',
@@ -159,10 +158,6 @@ class ComposeMail {
     async isComposeEmailTitlePresent(title: string): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.title)));
         return await element(by.cssContainingText((this.selectors.title), title)).isPresent();
-    }
-
-    async closeComposeEmail(): Promise<void> {
-        await $(this.selectors.crossIcon).click();
     }
 
     async isSubjectPresent(): Promise<boolean> {

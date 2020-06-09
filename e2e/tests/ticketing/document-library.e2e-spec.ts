@@ -73,16 +73,16 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectBusinessUnit('United States Support');
         await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
         await createDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is not enabled');
         await editDocumentLibraryPo.selectStatus('Draft');
         await editDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await utilGrid.clearFilter();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeTruthy('Delete buttton is not enabled');
@@ -90,7 +90,7 @@ describe('Document Library', () => {
         expect(await editDocumentLibraryPo.getDeleteWarningMsgText('Are you sure you want to delete the document?')).toBe('Are you sure you want to delete the document?'), 'Warning Message of Delete button is missing';
         await editDocumentLibraryPo.clickOnYesButtonOfDeleteWarningMsg();
         expect(await utilCommon.isPopUpMessagePresent('Document deleted successfully.')).toBeTruthy('Document deleted message not valid');
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Grid Record displayed which should not be');
     });
 
@@ -108,14 +108,14 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'status is not in draft status';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled).toBeTruthy('Delete Button is not enabled');
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'status is not in Published status';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
@@ -151,7 +151,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal), 'Title is missing';
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'Draft Status is missing';
@@ -160,7 +160,7 @@ describe('Document Library', () => {
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal), 'Title is missing';
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'Published Status is missing';
@@ -208,7 +208,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await utilCommon.waitUntilSpinnerToHide();
         expect(await editDocumentLibraryPo.isDeleteButtonDisplayed()).toBeTruthy('Delete button is not displayed');
@@ -269,7 +269,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
-        // await utilCommon.waitUntilPopUpDisappear();
+        // await utilCommon.closePopUpMessage();
         await navigationPage.gotoKnowledgeConsole();
         await utilityGrid.clearFilter();
         expect(await consoleKnowledgePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Record is present on knowledge article grid');
@@ -289,7 +289,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectBusinessUnit('United States Support');
         await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
         await createDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
 
@@ -411,7 +411,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         expect(await documentLibraryConsolePo.isGridColumnSorted('Title', 'descending')).toBeTruthy('Title column not sorted');
         await documentLibraryConsolePo.isGridColumnSorted('Status', 'descending');
         await documentLibraryConsolePo.isGridColumnSorted('Owner Group', 'descending');
@@ -437,7 +437,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
 
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal), 'Title is missing';
@@ -657,7 +657,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
 
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName('Angelina Jolie');

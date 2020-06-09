@@ -43,7 +43,7 @@ class ViewCasePage {
         resolutionDescriptionValue: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .bwf-read-only-content',
         priority: '[rx-view-component-id="7b47ca08-e9d4-4656-8f96-3bc751c098b0"] .selection-field',
         emailLink: '[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
-        addedTaskFromCaseTemplate: '.task-summary-wrapper a',
+        addedTaskFromCaseTemplate: '.task-summary__name',
         taskCardArrow: '[class="d-icon-angle_right task-list__task-card__preview-icon"]',
         attachmentFile: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .bwf-attachment-container__file-name',
         caseTemplate: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .read-only-content',
@@ -112,7 +112,7 @@ class ViewCasePage {
     async clickOnReopenCaseLink(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.reOpenCase)));
         await $(this.selectors.reOpenCase).click();
-        //        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.closePopUpMessage();
     }
 
     async getErrorMsgOfInprogressStatus(): Promise<string> {
@@ -304,11 +304,18 @@ class ViewCasePage {
     }
 
     async isCoreTaskPresent(taskSummary: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.addedTaskFromCaseTemplate, taskSummary))));
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.addedTaskFromCaseTemplate).count();
+            return count >= 1;
+        }), 5000);
         return await element(by.cssContainingText(this.selectors.addedTaskFromCaseTemplate, taskSummary)).isDisplayed();
     }
 
     async clickOnTaskLink(taskSummary: string): Promise<void> {
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.addedTaskFromCaseTemplate).count();
+            return count >= 1;
+        }), 5000);
         await element(by.cssContainingText(this.selectors.addedTaskFromCaseTemplate, taskSummary)).click();
     }
 
@@ -403,6 +410,10 @@ class ViewCasePage {
             }
         }
         return undefined;
+    }
+
+    async isAssigneeNameDisplayed(): Promise<boolean> {
+        return await $(this.selectors.assigneeText).isDisplayed();
     }
 }
 

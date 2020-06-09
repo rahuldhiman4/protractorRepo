@@ -33,7 +33,9 @@ class CopyCaseTemplate {
         caseDescriptionValueOnCopy: '[rx-view-component-id="3b3506af-b9a2-47bd-88f7-032092bc1264"] [ux-bind-html]',
         ownerGroupDropdown: 'b3ebc604-b7dc-4090-90a5-9515d1ea7f3e',
         copyInstruction: '[rx-view-component-id="162ce9d1-22d1-42a6-8360-f3d1c8dc3a20"] ul span',
-        label:  '[rx-view-component-id="2e5123d3-c442-4146-b941-0591e9c156bc"] .ui-select-match-text'
+        label:  '[rx-view-component-id="2e5123d3-c442-4146-b941-0591e9c156bc"] .ui-select-match-text',
+        businessUnitValueOnCopy: '[rx-view-component-id="0bfe6a89-2484-44d1-bae8-9353753f78fa"] .ui-select-match-text',
+        departmentValueOnCopy: '[rx-view-component-id="6c570cf5-7f7b-4141-bd17-755e202e7095"] .ui-select-match-text'
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
@@ -82,6 +84,14 @@ class CopyCaseTemplate {
     async getValueOfSupportGroup(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupValueOnCopy)));
         return await $(this.selectors.supportGroupValueOnCopy).getText();
+    }
+
+    async getValueOfBuisnessUnit(): Promise<string> {
+        return await $(this.selectors.businessUnitValueOnCopy).getText();
+    }
+
+    async getValueOfDepartement(): Promise<string> {
+        return await $(this.selectors.departmentValueOnCopy).getText();
     }
 
     async getValueOfAssignee(): Promise<string> {

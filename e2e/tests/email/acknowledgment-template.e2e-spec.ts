@@ -56,7 +56,7 @@ describe('Acknowledgment Template', () => {
         await createAcknowledgmentTemplatesPo.setSubject(subject);
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         let arr: string[] = ["Label"];
         await consoleAcknowledgmentTemplatePo.addColumnOnGrid(arr);
         let arr2: string[] = ['Template Name', 'Subject', "Company", "Status", "Label"];
@@ -76,7 +76,7 @@ describe('Acknowledgment Template', () => {
         await createAcknowledgmentTemplatesPo.setSubject(subject);
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole(templateName2);
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Public template name is missing');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Public template subject is missing');
@@ -119,7 +119,7 @@ describe('Acknowledgment Template', () => {
         await createAcknowledgmentTemplatesPo.setSubject(subject);
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
 
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
         await createAcknowledgmentTemplatesPo.setTemplateName(templateName2);
@@ -130,7 +130,7 @@ describe('Acknowledgment Template', () => {
         await createAcknowledgmentTemplatesPo.setSubject(subject);
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         // DRDMV-10900
         await utilGrid.clearFilter();
         await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate(templateName);
@@ -150,12 +150,12 @@ describe('Acknowledgment Template', () => {
         await editAcknowledgmentTemplatePo.clickOnGridEditButton();
         await editAcknowledgmentTemplatePo.updateEditMessageTextBladeBody(body2);
         await editAcknowledgmentTemplatePo.clickOnEditMessageTextBladeSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await editAcknowledgmentTemplatePo.searchAndSelectGridRecord('subject');
         await editAcknowledgmentTemplatePo.clickOnGridEditButton();
         await editAcknowledgmentTemplatePo.updateEditMessageTextBladeSubject(subject2);
         await editAcknowledgmentTemplatePo.clickOnEditMessageTextBladeSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('body');
         expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toContain(body2, 'body not updated correctly');
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('subject');

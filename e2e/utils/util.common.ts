@@ -166,7 +166,7 @@ export class Util {
     }
 
     async clickOnWarningOk(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningOk)), 2000).then(async (result) => {
+        await $(this.selectors.warningOk).isPresent().then(async (result) => {
             if (result) {
                 await $(this.selectors.warningOk).click();
             }
@@ -423,7 +423,8 @@ export class Util {
     }
 
     async closeBladeOnSettings(): Promise<void> {
-        await browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
+        await $('body').sendKeys(protractor.Key.ESCAPE);
+        await this.clickOnWarningOk();
     }
 }
 

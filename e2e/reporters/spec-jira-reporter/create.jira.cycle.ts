@@ -291,17 +291,20 @@ export class CreateJiraCycle {
             // get issue id details
             let issueIdApiResponse = await this.getIssueIdDetails(issueId);
             if (issueIdApiResponse) {
-                // Is new status of issue key
-                let lastExecution = issueIdApiResponse.data.executions[0].executionStatus;
-                lastExecution == "1" ? (lastExecutionStatus = "passed")
-                    : ((lastExecution == "2") ? (lastExecutionStatus = "failed")
-                        : (lastExecutionStatus = "skipped"));
+                // Is new execution status
+                let lastExecution = "passed";
+                if (issueIdApiResponse.data.executions[0]) {
+                    lastExecution = issueIdApiResponse.data.executions[0].executionStatus;
+                    lastExecution == "1" ? (lastExecutionStatus = "passed")
+                        : ((lastExecution == "2") ? (lastExecutionStatus = "failed")
+                            : (lastExecutionStatus = "skipped"));
 
-                // calculate pass percentage
-                if (this.generateStats.toLowerCase() == 'true') {
-                    let passPercent = await this.getTotalExecutionAndPassPercent(issueId);
-                    passDetails = passPercent.passPercentage;
-                    totalExe = passPercent.totalExecution;
+                    // calculate pass percentage
+                    if (this.generateStats.toLowerCase() == 'true') {
+                        let passPercent = await this.getTotalExecutionAndPassPercent(issueIdApiResponse);
+                        passDetails = passPercent.passPercentage;
+                        totalExe = passPercent.totalExecution;
+                    }
                 }
             }
             const { fixVersions } = issueDetails.data.fields;
@@ -355,7 +358,8 @@ export class CreateJiraCycle {
         }
         const fields = ['JiraId', 'Description', 'ExecutionStatus', 'IsNewExecutionStatus', 'TotalExecution', 'PassPercent', 'Version', 'Priority', 'JiraStatus'];
         const json2csvParser = new Parser({ fields });
-        fs.writeFileSync('e2e/reports/spec-jira-report/jira-report.csv', json2csvParser.parse(this.jiraReport.concat(this.invalidJiraTest)));
+        //fs.writeFileSync('e2e/reports/spec-jira-report/jira-report.csv', json2csvParser.parse(this.jiraReport.concat(this.invalidJiraTest))); write invalid entries in file
+        fs.writeFileSync('e2e/reports/spec-jira-report/jira-report.csv', json2csvParser.parse(this.jiraReport)); // write only valid entries in CSV file
     }
 
     async writeExecutionSummary() {

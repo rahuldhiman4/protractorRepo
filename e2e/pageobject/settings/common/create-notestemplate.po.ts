@@ -61,7 +61,7 @@ class createNotesTemplate {
     async clickOnSaveButton(): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-//        await utilCommon.waitUntilPopUpDisappear();
+//        await utilCommon.closePopUpMessage();
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
     }
 
@@ -79,7 +79,7 @@ class createNotesTemplate {
         await this.setLanguageValue('English (United States)');
         await this.setBody("This is new notes template " + randomStr);
         await this.clickOnSaveButton();
-//        await utilCommon.waitUntilPopUpDisappear();
+//        await utilCommon.closePopUpMessage();
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.settingsButton)));
         return randomStr;
     }

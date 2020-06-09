@@ -20,6 +20,9 @@ class CreateEmailTemplateBlade {
         newLocalizeMessageEmailMessageSubject: '[rx-view-component-id="31bcbb1a-0420-481c-8233-d9d9e117b230"] input',
         newLocalizeMessageEmailMessageLocalizeDropDownGuid: '1389f79d-65df-4090-9bd5-76bd2981a775',
         saveButton: '[rx-view-component-id="2a376fd7-bf9c-459b-bdf1-52456c5f972c"] button',
+        editBodySaveButton: '[rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button',
+        editSubjectSaveButton: '[rx-view-component-id="cd6ddce5-4729-4cc9-a5a4-6f76e967de03"] button',
+        localizeMessageSaveButton: '[rx-view-component-id="1ff4ce55-6547-451c-b7ef-afe1c93dd194"] button',
         cancelButton: '.rx-button-bar-action-buttons__inner .d-button_secondary',
         gridGuid: '8b59641c-2fca-4d96-8395-03e232cf05de',
         msgCheckBox: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] .ui-grid-row-header-cell',
@@ -128,9 +131,16 @@ class CreateEmailTemplateBlade {
         await $(this.selectors.cancelButton).click();
     }
 
-    async clickOnEditMessageTextBladeSaveButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
-        await $(this.selectors.saveButton).click();
+    async clickEditBodySaveButton(): Promise<void> {
+        await $(this.selectors.editBodySaveButton).click();
+    }
+
+    async clickEditSubjectSaveButton(): Promise<void> {
+        await $(this.selectors.editSubjectSaveButton).click();
+    }
+
+    async clickLocalizeMessageSaveButton(): Promise<void> {
+        await $(this.selectors.localizeMessageSaveButton).click();
     }
 
     async clickOnSaveButton(): Promise<void> {

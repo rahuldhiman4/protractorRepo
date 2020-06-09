@@ -299,7 +299,7 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
             await adhoctaskTemplate.clickSaveAdhoctask();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await manageTask.clickCloseButton();
             await viewCasePo.clickOnTaskLink(adhocTaskSummary1);
             expect(await viewTaskPo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
@@ -316,7 +316,7 @@ describe('Document Library Consume Permission', () => {
             await adhoctaskTemplate.clickAttachButton();
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await adhoctaskTemplate.clickSaveAdhoctask();
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await manageTask.clickTaskLink(adhocTaskSummary2);
             expect(await viewTaskPo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
@@ -583,9 +583,9 @@ describe('Document Library Consume Permission', () => {
             await viewCasePo.clickOnTab('Case Access');
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('qstrong');
-            expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Quin Strong')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Quin Strong')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
             await caseAccessTabPo.selectAndAddAgent('hhaas');
-            expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Hannah Haas')).toBeTruthy('Failuer: Quanah George Agent Name is missing');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Hannah Haas')).toBeTruthy('Failuer: Quanah George Agent Name is missing');
 
             await navigationPage.signOut();
             await loginPage.login('qstrong');

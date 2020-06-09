@@ -27,7 +27,9 @@ class AttachmentBlade {
     }
 
     async clickCloseButton(): Promise<void> {
-        await $(this.selectors.close).click();
+        await $(this.selectors.close).isEnabled().then(async (result) => {
+            if (result) await $(this.selectors.close).click();
+        });
     }
 
     async isTitleNameDisplayed(): Promise<boolean> {

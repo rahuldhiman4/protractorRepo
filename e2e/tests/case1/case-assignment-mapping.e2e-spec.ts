@@ -1,13 +1,14 @@
-import { browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import caseConsolePage from "../../pageobject/case/case-console.po";
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from "../../pageobject/case/create-case.po";
 import QuickCasePage from "../../pageobject/case/quick-case.po";
-import { default as viewCasePage, default as viewCasePo } from "../../pageobject/case/view-case.po";
+import viewCasePo from "../../pageobject/case/view-case.po";
 import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
 import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import AssignmentConfigConsolePage from "../../pageobject/settings/case-management/assignments-config-console.po";
@@ -21,15 +22,17 @@ import taskTemplate from "../../pageobject/settings/task-management/create-taskt
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTaskPo from '../../pageobject/task/edit-task.po';
-import { default as manageTask } from "../../pageobject/task/manage-task-blade.po";
+import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
-import changeAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
 
 describe("Create Case Assignment Mapping", () => {
-    const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
+    const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
+    const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
+    const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+    const personDataFile = require('../../data/ui/foundation/person.ui.json');
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -37,12 +40,26 @@ describe("Create Case Assignment Mapping", () => {
         await foundationData("Petramco");
     });
 
+    async function foundationData(company: string) {
+        await apiHelper.apiLogin('tadmin');
+        let businessData = businessDataFile['BusinessUnitData11825'];
+        let departmentData = departmentDataFile['DepartmentData11825'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData11825'];
+        let personData = personDataFile['PersonData11825'];
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        departmentData.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData);
+        suppGrpData.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData);
+        await apiHelper.createNewUser(personData);
+        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
+        await apiHelper.associatePersonToCompany(personData.userId, company);
+    }
+
     afterAll(async () => {
         await navigationPage.signOut();
-    });
-
-    afterEach(async () => {
-        await utilityCommon.refresh();
     });
 
     //radhiman
@@ -54,7 +71,7 @@ describe("Create Case Assignment Mapping", () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
-        expect(await viewCasePage.getCaseSite()).toBe('Berlin');
+        expect(await viewCasePo.getCaseSite()).toBe('Berlin');
     });
 
     //radhiman
@@ -76,7 +93,7 @@ describe("Create Case Assignment Mapping", () => {
         await caseConsolePage.removeRequestedCaseGridColumn(caseLabelColumn);
         await defaultCaseColumns.splice(defaultCaseColumns.indexOf("Label"), 1);
         expect(await caseConsolePage.areCaseGridColumnMatches(defaultCaseColumns)).toBeTruthy("Default And remaining new columns are not matching");
-    });//, 150 * 1000);
+    });
 
     //radhiman
     it('[DRDMV-15168]: Assignment mapping table columns', async () => {
@@ -157,10 +174,9 @@ describe("Create Case Assignment Mapping", () => {
     });
 
     //radhiman
-    it('[DRDMV-11963]: [Assignment Mapping] Global Assignment Mapping', async () => {
-        try {
-            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let assignmentMappingName = "DRDMV-11963 " + randomStr;
+    describe('[DRDMV-11963]: [Assignment Mapping] Global Assignment Mapping', async () => {
+        let assignmentMappingName = "DRDMV-11963 " + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        it('Global Assignment Mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
             await AssignmentConfigConsolePage.clearFilter();
@@ -176,6 +192,8 @@ describe("Create Case Assignment Mapping", () => {
             await AssignmentConfigCreatePage.setBusinessUnit('Australia Support');
             await AssignmentConfigCreatePage.setSupportGroup("AU Support 1");
             await AssignmentConfigCreatePage.clickonSaveButton();
+        });
+        it('[DRDMV-11963]: [Assignment Mapping] Global Assignment Mapping', async () => {
             await AssignmentConfigConsolePage.searchAssignmentConfig(assignmentMappingName);
             expect(await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Assignment Name")).toBe(assignmentMappingName);
             await navigationPage.signOut();
@@ -185,63 +203,61 @@ describe("Create Case Assignment Mapping", () => {
             await AssignmentConfigConsolePage.clearFilter();
             await AssignmentConfigConsolePage.searchAssignmentConfig(assignmentMappingName);
             expect(await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Assignment Name")).toBe(assignmentMappingName);
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        }
-    }, 310 * 1000);
+        });
+    });
 
     //radhiman
-    it('[DRDMV-12034]: [Assignment Mapping] Verify precedence will be given to company specific assignment mapping if we have global approval mapping with Same name', async () => {
-        const randomStr1 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        const randomStr2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let globalAssignmentMappingName = "DRDMV-12034 " + randomStr1;
-        let companyAssignmentMappingName = "DRDMV-12034 " + randomStr2;
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
-        await AssignmentConfigConsolePage.clearFilter();
-        await AssignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
-        await AssignmentConfigCreatePage.setAssignmentMapName(globalAssignmentMappingName);
-        await AssignmentConfigCreatePage.setCompany("- Global -");
-        await AssignmentConfigCreatePage.setCategoryTier1("Facilities");
-        await AssignmentConfigCreatePage.setPriority("Low");
-        await AssignmentConfigCreatePage.setSupportCompany("Petramco");
-        await AssignmentConfigCreatePage.setBusinessUnit('Australia Support');
-        await AssignmentConfigCreatePage.setSupportGroup("AU Support 1");
-        await AssignmentConfigCreatePage.clickonSaveButton();
-        await AssignmentConfigConsolePage.searchAssignmentConfig(globalAssignmentMappingName);
-        expect(await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Assignment Name")).toBe(globalAssignmentMappingName);
-        await AssignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
-        await AssignmentConfigCreatePage.setAssignmentMapName(companyAssignmentMappingName);
-        await AssignmentConfigCreatePage.setCompany("Petramco");
-        await AssignmentConfigCreatePage.setCategoryTier1("Facilities");
-        await AssignmentConfigCreatePage.setPriority("Low");
-        await AssignmentConfigCreatePage.setSupportCompany("Petramco");
-        await AssignmentConfigCreatePage.setBusinessUnit('Australia Support');
-        await AssignmentConfigCreatePage.setSupportGroup("AU Support 2");
-        await AssignmentConfigCreatePage.clickonSaveButton();
-        await AssignmentConfigConsolePage.searchAssignmentConfig(companyAssignmentMappingName);
-        expect(await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Assignment Name")).toBe(companyAssignmentMappingName);
-        await utilCommon.switchToDefaultWindowClosingOtherTabs();
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary("DRDMV-12034 Case Summary");
-        await createCasePage.setPriority("Low");
-        await createCasePage.selectCategoryTier1("Facilities");
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        expect(await viewCasePage.getAssignedGroupText()).toBe("AU Support 2");
-    }, 330 * 1000);
+    describe('[DRDMV-12034]: [Assignment Mapping] Verify precedence will be given to company specific assignment mapping if we have global approval mapping with Same name', async () => {
+        let globalAssignmentMappingName = "DRDMV-12034 " + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let companyAssignmentMappingName = "DRDMV-12034 " + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        it('Precedence will be given to company specific assignment mapping', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await AssignmentConfigConsolePage.clearFilter();
+            await AssignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
+            await AssignmentConfigCreatePage.setAssignmentMapName(globalAssignmentMappingName);
+            await AssignmentConfigCreatePage.setCompany("- Global -");
+            await AssignmentConfigCreatePage.setCategoryTier1("Facilities");
+            await AssignmentConfigCreatePage.setPriority("Low");
+            await AssignmentConfigCreatePage.setSupportCompany("Petramco");
+            await AssignmentConfigCreatePage.setBusinessUnit('Australia Support');
+            await AssignmentConfigCreatePage.setSupportGroup("AU Support 1");
+            await AssignmentConfigCreatePage.clickonSaveButton();
+            await AssignmentConfigConsolePage.searchAssignmentConfig(globalAssignmentMappingName);
+            expect(await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Assignment Name")).toBe(globalAssignmentMappingName);
+        });
+        it('[DRDMV-12034]: [Assignment Mapping] Verify precedence will be given to company specific assignment mapping if we have global approval mapping with Same name', async () => {
+            await AssignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
+            await AssignmentConfigCreatePage.setAssignmentMapName(companyAssignmentMappingName);
+            await AssignmentConfigCreatePage.setCompany("Petramco");
+            await AssignmentConfigCreatePage.setCategoryTier1("Facilities");
+            await AssignmentConfigCreatePage.setPriority("Low");
+            await AssignmentConfigCreatePage.setSupportCompany("Petramco");
+            await AssignmentConfigCreatePage.setBusinessUnit('Australia Support');
+            await AssignmentConfigCreatePage.setSupportGroup("AU Support 2");
+            await AssignmentConfigCreatePage.clickonSaveButton();
+            await AssignmentConfigConsolePage.searchAssignmentConfig(companyAssignmentMappingName);
+            expect(await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Assignment Name")).toBe(companyAssignmentMappingName);
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary("DRDMV-12034 Case Summary");
+            await createCasePage.setPriority("Low");
+            await createCasePage.selectCategoryTier1("Facilities");
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getAssignedGroupText()).toBe("AU Support 2");
+        });
+    });
 
     //radhiman
-    it('[DRDMV-12033]: [Assignment Mapping] Verify Global assignment mapping applied to case if assignment qualification matches', async () => {
-        try {
-            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let assignmentMappingName = "DRDMV-12033 " + randomStr;
+    describe('[DRDMV-12033]: [Assignment Mapping] Verify Global assignment mapping applied to case if assignment qualification matches', async () => {
+        let assignmentMappingName = "DRDMV-12033 " + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        it('Global assignment mapping applied to case if assignment qualification matches', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -261,6 +277,8 @@ describe("Create Case Assignment Mapping", () => {
             await AssignmentConfigCreatePage.setBusinessUnit('Psilon Support Org2')
             await AssignmentConfigCreatePage.setSupportGroup("Psilon Support Group2");
             await AssignmentConfigCreatePage.clickonSaveButton();
+        });
+        it('[DRDMV-12033]: [Assignment Mapping] Verify Global assignment mapping applied to case if assignment qualification matches', async () => {
             await AssignmentConfigConsolePage.searchAssignmentConfig(assignmentMappingName);
             expect(await AssignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Assignment Name")).toBe(assignmentMappingName);
             await navigationPage.gotoCreateCase();
@@ -271,207 +289,183 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectCategoryTier2("Repair");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePage.getAssignedGroupText()).toBe("Psilon Support Group2");
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
+            expect(await viewCasePo.getAssignedGroupText()).toBe("Psilon Support Group2");
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        }
-    }, 400 * 1000);
+        });
+    });
 
     //radhiman
-    it('[DRDMV-1212]: [Assignment Mapping] Configuring an Assignment Mapping', async () => {
+    describe('[DRDMV-1212]: [Assignment Mapping] Configuring an Assignment Mapping', async () => {
+        let templateData, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            templateData = {
+                "templateName": 'caseTemplateName' + randomStr,
+                "templateSummary": 'caseTemplateSummary' + randomStr,
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createCaseTemplate(templateData);
+        });
+        it('[DRDMV-1212]: [Assignment Mapping] Configuring an Assignment Mapping', async () => {
+            await navigationPage.gotoQuickCase();
+            await QuickCasePage.selectRequesterName("adam");
+            await QuickCasePage.selectCaseTemplate(templateData.templateName);
+            await QuickCasePage.saveCase();
+            await QuickCasePage.gotoCaseButton();
+            await expect(await viewCasePo.getAssignedGroupText()).toBe("Facilities");
+            await expect(await viewCasePo.getAssigneeText()).toBe("Fritz Schulz");
+        });
+    });
+
+    describe('[DRDMV-11825,DRDMV-11826, DRDMV-11827, DRDMV-11828, DRDMV-11978]: Verify Company and Support Group selection hierarchy.', async () => {
+        let businessData = businessDataFile['BusinessUnitData11825'];
+        let departmentData = departmentDataFile['DepartmentData11825'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData11825'];
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let assignmentMappingName = "DRDMV-1212 " + randomStr;
-        let caseTemplateName = "DRDMV-1212 CT " + randomStr;
+        let summary = 'Adhoc task' + randomStr;
 
-        let templateData = {
-            "templateName": caseTemplateName,
-            "templateSummary": caseTemplateName,
-            "categoryTier1": "Purchasing Card",
-            "categoryTier2": "Policies",
-            "categoryTier3": "Card Issuance",
-            "casePriority": "Low",
-            "templateStatus": "Active",
-            "company": "Petramco",
-            "businessUnit": "Facilities Support", 
-            "supportGroup": "Facilities",
-            "assignee": "Fritz",
-            "ownerBU": "Facilities Support",
-            "ownerGroup": "Facilities"
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createCaseTemplate(templateData);
-        await navigationPage.gotoQuickCase();
-        await QuickCasePage.selectRequesterName("adam");
-        await QuickCasePage.selectCaseTemplate(caseTemplateName);
-        await QuickCasePage.saveCase();
-        await QuickCasePage.gotoCaseButton();
-        await expect(await viewCasePage.getAssignedGroupText()).toBe("Facilities");
-        await expect(await viewCasePage.getAssigneeText()).toBe("Fritz Schulz");
-    }, 360 * 1000);
+        it('Case Company and Support Group selection hierarchy', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary("DRDMV-11825 Case Summary");
+            await createCasePage.setPriority("Medium");
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentPage.selectBusinessUnit(businessData.orgName);
+            await changeAssignmentPage.selectDepartment(departmentData.orgName);
+            await changeAssignmentPage.selectSupportGroup(suppGrpData.orgName);
+            await changeAssignmentPage.selectAssignee('fnPerson11825 lnPerson11825');
+            await changeAssignmentPage.clickOnAssignButton();
+            await createCasePage.clickSaveCaseButton();
+            await utilityCommon.closePopUpMessage();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData.orgName, "Support Group Not Populated");
+            expect(await viewCasePo.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
+            expect(await viewCasePo.getBusinessUnitText()).toBe(businessData.orgName, "Buisness Unit is not available");
+            expect(await viewCasePo.getDepartmentText()).toBe(departmentData.orgName, "Department is not available");
+            expect(await viewCasePo.getAssignedCompanyText()).toBe("Petramco", "Company is not available");
+        });
+        it('Task Company and Support Group selection hierarchy', async () => {
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskPo.clickAddAdhocTaskButton();
+            await adhoctaskTemplate.setSummary(summary);
+            await adhoctaskTemplate.setDescription("Description");
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await manageTaskPo.clickTaskLink(summary);
+            await viewTask.clickOnEditTask();
+            await editTaskPo.clickOnChangeAssignementButton();
+            await changeAssignmentPage.selectBusinessUnit(businessData.orgName);
+            await changeAssignmentPage.selectDepartment(departmentData.orgName);
+            await changeAssignmentPage.selectSupportGroup(suppGrpData.orgName);
+            await changeAssignmentPage.selectAssignee('fnPerson11825 lnPerson11825');
+            await changeAssignmentPage.clickOnAssignButton();
+            await editTaskPo.updateTaskSummary(summary);
+            await editTaskPo.clickOnSaveButton();
+            await utilCommon.closePopUpMessage();
+            await utilCommon.scrollUpOrDownTillElement(viewTask.selectors.assignedGroupValue);
+            expect(await viewTask.getAssignedGroupText()).toBe(suppGrpData.orgName, "Support Group Not Populated");
+            expect(await viewTask.getAssigneeText()).toContain('fnPerson11825 lnPerson11825', "assignee is not available");
+            expect(await viewTask.getBusinessUnitText()).toBe(businessData.orgName, "Buisness Unit is not available");
+            expect(await viewTask.getDepartmentText()).toBe(departmentData.orgName, "Department is not available");
+            expect(await viewTask.getAssignedCompanyText()).toBe("Petramco", "Company is not available");
+        });
+        it('Case Template Company and Support Group selection hierarchy', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.setTemplateName("caseTemplateName" + randomStr);
+            await createCaseTemplate.setCompanyName("Petramco");
+            await createCaseTemplate.setCaseSummary("caseTemplateSummary1" + randomStr);
+            await createCaseTemplate.setOwnerCompanyValue("Petramco");
+            await createCaseTemplate.setBusinessUnitDropdownValue(businessData.orgName);
+            await createCaseTemplate.setDepartmentDropdownValue(departmentData.orgName);
+            await createCaseTemplate.setOwnerGroupDropdownValue(suppGrpData.orgName);
+            await createCaseTemplate.clickOnChangeAssignmentButton();
+            await changeAssignmentOldPage.selectBusinessUnit(businessData.orgName);
+            await changeAssignmentOldPage.selectDepartment(departmentData.orgName);
+            await changeAssignmentOldPage.selectSupportGroup(suppGrpData.orgName);
+            await changeAssignmentOldPage.selectAssignee('fnPerson11825 lnPerson11825');
+            await changeAssignmentOldPage.clickOnAssignButton();
+            await createCaseTemplate.clickSaveCaseTemplate();
+            expect(await viewCaseTemplate.getAssigneeText()).toContain('fnPerson11825 lnPerson11825', "assignee is not available");
+            expect(await viewCaseTemplate.getAssigneeBusinessUnitValue()).toBe(businessData.orgName);
+            expect(await viewCaseTemplate.getAssigneeDepartmentValue()).toBe(departmentData.orgName);
+            expect(await viewCaseTemplate.getBuisnessUnitValue()).toBe(businessData.orgName);
+            expect(await viewCaseTemplate.getDepartmentValue()).toBe(departmentData.orgName);
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+        });
+        it('[DRDMV-11825,DRDMV-11826, DRDMV-11827, DRDMV-11828, DRDMV-11978]: Verify Company and Support Group selection hierarchy.', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.clickOnManualTaskTemplateButton();
+            await taskTemplate.setTemplateName('manualTaskTemplate' + randomStr);
+            await taskTemplate.setTaskSummary('manualTaskSummary' + randomStr);
+            await taskTemplate.setTaskDescription('Description in manual task');
+            await taskTemplate.selectCompanyByName('Petramco');
+            await taskTemplate.selectOwnerCompany("Petramco");
+            await taskTemplate.selectBuisnessUnit(businessData.orgName);
+            await taskTemplate.selectDepartment(departmentData.orgName);
+            await taskTemplate.selectOwnerGroup(suppGrpData.orgName);
+            await taskTemplate.clickOnAssignment();
+            await changeAssignmentOldPage.selectBusinessUnit(businessData.orgName);
+            await changeAssignmentOldPage.selectDepartment(departmentData.orgName);
+            await changeAssignmentOldPage.selectSupportGroup(suppGrpData.orgName);
+            await changeAssignmentOldPage.selectAssignee('fnPerson11825 lnPerson11825');
+            await changeAssignmentOldPage.clickOnAssignButton();
+            await taskTemplate.clickOnSaveTaskTemplate();
+            expect(await viewTaskTemplate.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
+            await expect(viewTaskTemplate.getAssigneeBusinessUnitValue()).toBe(businessData.orgName);
+            await expect(viewTaskTemplate.getAssigneeDepartmentValue()).toBe(departmentData.orgName);
+            await expect(viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
+            await expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
+            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+        });
+    });
 
-    async function foundationData(company: string) {
-        const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
-        const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
-        const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
-        const personDataFile = require('../../data/ui/foundation/person.ui.json');
-        await apiHelper.apiLogin('tadmin');
+    describe('[DRDMV-12080]: Verify Company and Support Group selection hierarchy.', async () => {
         let businessData = businessDataFile['BusinessUnitData11825'];
         let departmentData = departmentDataFile['DepartmentData11825'];
         let suppGrpData = supportGrpDataFile['SuppGrpData11825'];
-        let personData = personDataFile['PersonData11825'];
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
-        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
-        departmentData.relatedOrgId = businessUnitId;
-        let depId = await apiHelper.createDepartment(departmentData);
-        suppGrpData.relatedOrgId = depId;
-        await apiHelper.createSupportGroup(suppGrpData);
-        await apiHelper.createNewUser(personData);
-        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
-        await apiHelper.associatePersonToCompany(personData.userId, company)
-    }
-
-    it('[DRDMV-11825,DRDMV-11826, DRDMV-11827, DRDMV-11828]: Verify Company and Support Group selection hierarchy.', async () => {
-        const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
-        const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
-        const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
-        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-        let businessData = businessDataFile['BusinessUnitData11825'];
-        let departmentData = departmentDataFile['DepartmentData11825'];
-        let suppGrpData = supportGrpDataFile['SuppGrpData11825'];
-        //Case
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary("DRDMV-11825 Case Summary");
-        await createCasePage.setPriority("Medium");
-        await createCasePage.clickChangeAssignmentButton();
-        await changeAssignmentPage.selectBusinessUnit(businessData.orgName);
-        await changeAssignmentPage.selectDepartment(departmentData.orgName);
-        await changeAssignmentPage.selectSupportGroup(suppGrpData.orgName);
-        await changeAssignmentPage.selectAssignee('fnPerson11825 lnPerson11825');
-        await changeAssignmentPage.clickOnAssignButton();
-        await createCasePage.clickSaveCaseButton();
-        await utilityCommon.closePopUpMessage();
-        await previewCasePo.clickGoToCaseButton();
-        expect(await viewCasePage.getAssignedGroupText()).toBe(suppGrpData.orgName, "Support Group Not Populated");
-        expect(await viewCasePage.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
-        expect(await viewCasePage.getBusinessUnitText()).toBe(businessData.orgName, "Buisness Unit is not available");
-        expect(await viewCasePage.getDepartmentText()).toBe(departmentData.orgName, "Department is not available");
-        expect(await viewCasePage.getAssignedCompanyText()).toBe("Petramco", "Company is not available");
-        //task
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.clickAddAdhocTaskButton();
-        await adhoctaskTemplate.setSummary(summary);
-        await adhoctaskTemplate.setDescription("Description");
-        await adhoctaskTemplate.clickSaveAdhoctask();
-        await manageTask.clickCloseButton();
-        await viewCasePage.clickOnTaskLink(summary);
-        await viewTask.clickOnEditTask();
-        await editTaskPo.clickOnChangeAssignementButton();
-        await changeAssignmentPage.selectBusinessUnit(businessData.orgName);
-        await changeAssignmentPage.selectDepartment(departmentData.orgName);
-        await changeAssignmentPage.selectSupportGroup(suppGrpData.orgName);
-        await changeAssignmentPage.selectAssignee('fnPerson11825 lnPerson11825');
-        await changeAssignmentPage.clickOnAssignButton();
-        await editTaskPo.updateTaskSummary(summary);
-        await editTaskPo.clickOnSaveButton();
-        await utilCommon.closePopUpMessage();
-        await utilCommon.scrollUpOrDownTillElement(viewTask.selectors.assignedGroupValue);
-        expect(await viewTask.getAssignedGroupText()).toBe(suppGrpData.orgName, "Support Group Not Populated");
-        expect(await viewTask.getAssigneeText()).toContain('fnPerson11825 lnPerson11825', "assignee is not available");
-        expect(await viewTask.getBusinessUnitText()).toBe(businessData.orgName, "Buisness Unit is not available");
-        expect(await viewTask.getDepartmentText()).toBe(departmentData.orgName, "Department is not available");
-        expect(await viewTask.getAssignedCompanyText()).toBe("Petramco", "Company is not available");
-        //Case Template
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-        await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
-        await createCaseTemplate.setTemplateName("caseTemplateName" + randomStr);
-        await createCaseTemplate.setCompanyName("Petramco");
-        await createCaseTemplate.setCaseSummary("caseTemplateSummary1" + randomStr);
-        await createCaseTemplate.setOwnerCompanyValue("Petramco");
-        await createCaseTemplate.setBusinessUnitDropdownValue(businessData.orgName);
-        await createCaseTemplate.setDepartmentDropdownValue(departmentData.orgName);
-        await createCaseTemplate.setOwnerGroupDropdownValue(suppGrpData.orgName);
-        await createCaseTemplate.clickOnChangeAssignmentButton();
-        await changeAssignmentOldPage.selectBusinessUnit(businessData.orgName);
-        await changeAssignmentOldPage.selectDepartment(departmentData.orgName);
-        await changeAssignmentOldPage.selectSupportGroup(suppGrpData.orgName);
-        await changeAssignmentOldPage.selectAssignee('fnPerson11825 lnPerson11825');
-        await changeAssignmentOldPage.clickOnAssignButton();
-        await createCaseTemplate.clickSaveCaseTemplate();
-        expect(await viewCaseTemplate.getAssigneeText()).toContain('fnPerson11825 lnPerson11825', "assignee is not available");
-        expect(await viewCaseTemplate.getAssigneeBusinessUnitValue()).toBe(businessData.orgName);
-        expect(await viewCaseTemplate.getAssigneeDepartmentValue()).toBe(departmentData.orgName);
-        expect(await viewCaseTemplate.getBuisnessUnitValue()).toBe(businessData.orgName);
-        expect(await viewCaseTemplate.getDepartmentValue()).toBe(departmentData.orgName);
-        await utilCommon.switchToDefaultWindowClosingOtherTabs();
-        //Manual task Template
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await selectTaskTemplate.clickOnManualTaskTemplateButton();
-        await taskTemplate.setTemplateName('manualTaskTemplate' + randomStr);
-        await taskTemplate.setTaskSummary('manualTaskSummary' + randomStr);
-        await taskTemplate.setTaskDescription('Description in manual task');
-        await taskTemplate.selectCompanyByName('Petramco');
-        await taskTemplate.selectOwnerCompany("Petramco");
-        await taskTemplate.selectBuisnessUnit(businessData.orgName);
-        await taskTemplate.selectDepartment(departmentData.orgName);
-        await taskTemplate.selectOwnerGroup(suppGrpData.orgName);
-        await taskTemplate.clickOnAssignment();
-        await changeAssignmentOldPage.selectBusinessUnit(businessData.orgName);
-        await changeAssignmentOldPage.selectDepartment(departmentData.orgName);
-        await changeAssignmentOldPage.selectSupportGroup(suppGrpData.orgName);
-        await changeAssignmentOldPage.selectAssignee('fnPerson11825 lnPerson11825');
-        await changeAssignmentOldPage.clickOnAssignButton();
-        await taskTemplate.clickOnSaveTaskTemplate();
-        expect(await viewTaskTemplate.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
-        await expect(viewTaskTemplate.getAssigneeBusinessUnitValue()).toBe(businessData.orgName);
-        await expect(viewTaskTemplate.getAssigneeDepartmentValue()).toBe(departmentData.orgName);
-        await expect(viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
-        await expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
-        await utilCommon.switchToDefaultWindowClosingOtherTabs();
-    }, 600 * 1000);
-
-    it('[DRDMV-12080]: Verify Company and Support Group selection hierarchy.', async () => {
-        const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
-        const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
-        const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
-        let businessData = businessDataFile['BusinessUnitData11825'];
-        let departmentData = departmentDataFile['DepartmentData11825'];
-        let suppGrpData = supportGrpDataFile['SuppGrpData11825'];
-
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary("DRDMV-12080 Case Summary");
-        await createCasePage.setPriority("Medium");
-        await createCasePage.selectCategoryTier1("Projectors");
-        await createCasePage.selectCategoryTier2("Repair");
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await utilityCommon.refresh();
-        await viewCasePo.clickOnTab('Case Access');
-        await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-        await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-        await caseAccessTabPo.selectBusinessUnit(businessData.orgName, 'Select Business Unit');
-        await caseAccessTabPo.clickOnReadAccessAddButton('Add Business Unit');
-        await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-        await caseAccessTabPo.selectBusinessUnit(businessData.orgName, 'Select Business Unit');
-        await caseAccessTabPo.selectDepartment(departmentData.orgName, 'Select Department');
-        await caseAccessTabPo.clickOnReadAccessAddButton('Add Support Department');
-        await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-        await caseAccessTabPo.selectBusinessUnit(businessData.orgName, 'Select Business Unit');
-        await caseAccessTabPo.selectDepartment(departmentData.orgName, 'Select Department');
-        await caseAccessTabPo.selectSupportGroup(suppGrpData.orgName, 'Select Support Group');
-        await caseAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
-        await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
-        await caseAccessTabPo.selectAndAddAgent('fnPerson11825 lnPerson11825');
-        await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('fnPerson11825 lnPerson11825')).toBeTruthy('Failuer: Quanah George Agent Name is missing');
-    }, 300 * 1000);
+        it('Create case', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary("DRDMV-12080 Case Summary");
+            await createCasePage.setPriority("Medium");
+            await createCasePage.selectCategoryTier1("Projectors");
+            await createCasePage.selectCategoryTier2("Repair");
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePo.clickOnTab('Case Access');
+        });
+        it('[DRDMV-12080]: Verify Company and Support Group selection hierarchy.', async () => {
+            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await caseAccessTabPo.selectBusinessUnit(businessData.orgName, 'Select Business Unit');
+            await caseAccessTabPo.clickOnReadAccessAddButton('Add Business Unit');
+            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await caseAccessTabPo.selectBusinessUnit(businessData.orgName, 'Select Business Unit');
+            await caseAccessTabPo.selectDepartment(departmentData.orgName, 'Select Department');
+            await caseAccessTabPo.clickOnReadAccessAddButton('Add Support Department');
+            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await caseAccessTabPo.selectBusinessUnit(businessData.orgName, 'Select Business Unit');
+            await caseAccessTabPo.selectDepartment(departmentData.orgName, 'Select Department');
+            await caseAccessTabPo.selectSupportGroup(suppGrpData.orgName, 'Select Support Group');
+            await caseAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
+            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
+            await caseAccessTabPo.selectAndAddAgent('fnPerson11825 lnPerson11825');
+            await expect(await caseAccessTabPo.isCaseAccessEntityAdded('fnPerson11825 lnPerson11825')).toBeTruthy('Failuer: Agent Name is missing');
+        });
+    });
 });

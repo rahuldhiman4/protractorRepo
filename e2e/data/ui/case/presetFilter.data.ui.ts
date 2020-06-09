@@ -643,7 +643,7 @@ export const FAILED_TASK_TEMPLATE = {
     "ownerCompany": "Phylum",
 	"ownerBusinessUnit": "Phylum Support Org1",
     "ownerGroup": "Phylum Support Group1",
-    "processBundle": "com.bmc.arsys.rx.approval",
+    "processBundle": "com.bmc.dsm.task-lib",
     "processName": "failing_task",
     "assignee": "idphylum3",
     "supportGroup": "Phylum Support Group1",
@@ -658,7 +658,7 @@ export const FAILED_TASK_TEMPLATE_HIGH_PRIORITY = {
     "ownerCompany": "Phylum",
 	"ownerBusinessUnit": "Phylum Support Org1",
     "ownerGroup": "Phylum Support Group1",
-    "processBundle": "com.bmc.arsys.rx.approval",
+    "processBundle": "com.bmc.dsm.task-lib",
     "processName": "failing_task",
     "assignee": "idphylum3",
     "supportGroup": "Phylum Support Group1",
@@ -674,7 +674,7 @@ export const FAILED_TASK_TEMPLATE_CRITICAL_PRIORITY = {
     "ownerCompany": "Phylum",
 	"ownerBusinessUnit": "Phylum Support Org1",
     "ownerGroup": "Phylum Support Group1",
-    "processBundle": "com.bmc.arsys.rx.approval",
+    "processBundle": "com.bmc.dsm.task-lib",
     "processName": "failing_task",
     "assignee": "idphylum3",
     "supportGroup": "Phylum Support Group1",
@@ -791,7 +791,10 @@ export const ARTICLE_DATA_ASSIGNTOME = {
     "knowledgeSet": "Phylum Knowledge Set",
     "title": "KnowledgeArticle",
     "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+    "company": "Phylum",
+    "categoryTier1": "Applications",
     "assignee": "idphylumkuser",
+    "assigneeBusinessUnit": "Phylum Support Org1",
     "assigneeSupportGroup": "Phylum Support Group1"
 };
 
@@ -799,6 +802,9 @@ export const ARTICLE_DATA_ASSIGNTOGROUP = {
     "knowledgeSet": "Phylum Knowledge Set",
     "title": "KnowledgeArticle",
     "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+    "categoryTier1": "Applications",
+    "company": "Phylum",
+    "assigneeBusinessUnit": "Phylum Support Org1",
     "assigneeSupportGroup": "Phylum Support Group1"
 };
 
@@ -807,6 +813,9 @@ export const ARTICLE_DATA_ASSIGNTOANOTHERUSER = {
     "title": "KnowledgeArticle",
     "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
     "assignee": "idphylumkuser2",
+    "company": "Phylum",
+    "categoryTier1": "Applications",
+    "assigneeBusinessUnit": "Phylum Support Org1",
     "assigneeSupportGroup": "Phylum Support Group1"
 };
 

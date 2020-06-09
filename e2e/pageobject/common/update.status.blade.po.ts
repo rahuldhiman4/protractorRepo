@@ -106,7 +106,9 @@ class UpdateStatus {
     }
 
     async allStatusOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.caseStatusDropDownGuid, list);
+        let isCaseStatusdropDownGid: boolean = await element(by.css(this.selectors.caseStatusDropDown)).isPresent();
+        if (isCaseStatusdropDownGid) return await utilityCommon.isAllDropDownValuesMatches(this.selectors.caseStatusDropDownGuid, list);
+        else return await utilityCommon.isAllDropDownValuesMatches(this.selectors.taskStatusDropDownGuid, list);
     }
 
     async isRequiredTagToResolutionCode(): Promise<boolean> {

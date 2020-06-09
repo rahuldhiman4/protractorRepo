@@ -691,7 +691,7 @@ describe('Dynamic data', () => {
         await manageTaskBladePo.addTaskFromTaskTemplate(automatedTask);
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTask);
-        await utilityCommon.waitUntilPopUpDisappear();
+        await utilityCommon.closePopUpMessage();
         await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         //verify dynamic field
         expect(await viewTaskPo.getDynamicFieldName(dynamicfield1)).toContain(dynamicfield1);
@@ -782,7 +782,7 @@ describe('Dynamic data', () => {
         await editCasePo.setTimeInDynamicField('02');
         await editCasePo.selectValueFromList('dynamicList', 'listvalues');
         await editCasePo.clickSaveCase();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         //verify update values on case view
         expect(await viewCasePo.getValueOfDynamicFields('temp')).toBe('newtemp');
         expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('333');
@@ -905,7 +905,7 @@ describe('Dynamic data', () => {
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
         await manageTaskBladePo.addTaskFromTaskTemplate(automatedTask);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTask);
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         //verify dynamic field
         await viewTaskPo.clickOnEditTask();
@@ -918,7 +918,7 @@ describe('Dynamic data', () => {
         await editTaskPo.setDateTimeDynamicFieldValue('wrongdatetime');
         await editTaskPo.clickOnSaveButton();
         expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
-        //  await utilCommon.waitUntilPopUpDisappear();
+        //  await utilCommon.closePopUpMessage();
         await editTaskPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
         await viewTaskPo.clickOnEditTask();
@@ -927,7 +927,7 @@ describe('Dynamic data', () => {
         await editTaskPo.clickOnAssignToMe();
         await editTaskPo.setDynamicFieldValue('temp1', 'sssssss');
         await editTaskPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         //verify update values on case view
         expect(await viewTaskPo.getDynamicFieldValue('temp2')).toBe('Mar 1, 2020');
         expect(await viewTaskPo.getDynamicFieldValue('temp4')).toBe('Mar 4, 2020 12:00 AM');
@@ -954,7 +954,7 @@ describe('Dynamic data', () => {
         await editTaskPo.clickOnAssignToMe();
         await editTaskPo.setDynamicFieldValue('externalNumber', 'sssssss');
         await editTaskPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         //verify update values on case view
         expect(await viewTaskPo.getDynamicFieldValue('externalDate')).toBe('Mar 1, 2020');
         expect(await viewTaskPo.getDynamicFieldValue('externalDateTime')).toBe('Mar 4, 2020 12:00 AM');
@@ -963,10 +963,10 @@ describe('Dynamic data', () => {
         await viewCasePo.clickEditCaseButton();
         await editCasePo.clickOnAssignToMe();
         await editCasePo.clickSaveCase();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus('In Progress');
-        await utilityCommon.waitUntilPopUpDisappear();
+        await utilityCommon.closePopUpMessage();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.clickTaskLink(automatedTaskSummary);
         await viewTaskPo.clickOnEditTask();
@@ -984,7 +984,7 @@ describe('Dynamic data', () => {
         await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
         await editTaskPo.setDynamicFieldValue('automatedNumber', 'values');
         await editTaskPo.clickOnSaveButton();
-        await utilityCommon.waitUntilPopUpDisappear();
+        await utilityCommon.closePopUpMessage();
         //verify update values on case view
         expect(await viewTaskPo.getDynamicFieldValue('automatedDate')).toBe('Mar 1, 2020');
         expect(await viewTaskPo.getDynamicFieldValue('automatedDateTime')).toBe('Mar 4, 2020 12:00 AM');
@@ -1025,7 +1025,7 @@ describe('Dynamic data', () => {
         await dynamicFieldsPo.setDescriptionName('newDescri' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
         expect(await utilCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy("Wrong pop up message");
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await dynamicFieldsPo.setFieldName('newName' + randomStr);
         await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
@@ -1037,7 +1037,7 @@ describe('Dynamic data', () => {
         await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
         expect(await utilCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy('Wrong pop up message');
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await dynamicFieldsPo.setFieldName('newNameUpdate' + randomStr);
         await dynamicFieldsPo.setDescriptionName('NewUpdatedDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
