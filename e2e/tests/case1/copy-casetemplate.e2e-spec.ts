@@ -15,10 +15,18 @@ import previewTaskTemplateCasesPo from '../../pageobject/settings/task-managemen
 import utilCommon from '../../utils/util.common';
 import changeAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
 import apiCoreUtil from '../../api/api.core.util';
+import dynamicField from "../../pageobject/common/dynamic-fields.po";
+import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
+import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
+import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
+import copyTasktemplatePo from '../../pageobject/settings/task-management/copy-tasktemplate.po';
+import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
+import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
 
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
-let userData = undefined;
+let userData1 = undefined;
+let userData2 = undefined;
 
 describe('Copy Case Template', () => {
     beforeAll(async () => {
@@ -26,13 +34,26 @@ describe('Copy Case Template', () => {
         await loginPage.login("qkatawazi");
         await foundationData("Petramco");
         await apiHelper.apiLogin('tadmin');
-        userData = {
+        userData1 = {
             "firstName": "Petramco",
-            "lastName": "withoutSG",
-            "userId": "DRDMV-13550",
+            "lastName": "SGUser1",
+            "userId": "DRDMV13550User1",
+            "userPermission": "AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7",
         }
-        await apiHelper.createNewUser(userData);
-        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
+        await apiHelper.createNewUser(userData1);
+        userData2 = {
+            "firstName": "Petramco",
+            "lastName": "SGUser2",
+            "userId": "DRDMV13550User2",
+            "userPermission": "AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7",
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToCompany(userData1.userId, "- Global -");
+        await apiHelper.associatePersonToCompany(userData1.userId, "Psilon");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "Psilon Support Group1");
+        await apiHelper.associatePersonToCompany(userData2.userId, "Psilon");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "Psilon Support Group2");
     });
 
     afterAll(async () => {
@@ -142,7 +163,7 @@ describe('Copy Case Template', () => {
             caseTemplateRequiredFields.templateName = caseTemplateName;
             await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplateRequiredFields);
             await navigationPage.signOut();
-            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
@@ -347,5 +368,153 @@ describe('Copy Case Template', () => {
         await viewCasetemplatePo.clickOneTask();
         expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(taskTemplateName);
         await previewTaskTemplateCasesPo.clickOnBackButton();
+    });
+
+    describe('[DRDMV-13557]:Permission Check to verify who can edit the Case/Task template', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let copyCaseTemplateName: string = "copycasetemplate" + randomStr;
+        let copytaskTemplateName: string = "copyTasktemplate" + randomStr;
+        let caseTemplateName = "caseTemplateName" + randomStr;
+        it('Permission Check to verify who can edit the Case Template', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.setTemplateName(caseTemplateName);
+            await createCaseTemplate.setCompanyName("Psilon");
+            await createCaseTemplate.setCaseSummary("caseTemplateSummary1" + randomStr);
+            await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org2");
+            await createCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group2");
+            await createCaseTemplate.clickSaveCaseTemplate();
+            await editCaseTemplate.clickOnCopyCaseTemplate();
+            await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
+            await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
+            await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
+            await copyCaseTemplate.clickSaveCaseTemplate();
+            await utilCommon.closePopUpMessage();
+        });
+        it('Permission Check to verify who can edit the Case Template', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(userData2.userId + "@petramco.com", 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(copyCaseTemplateName);
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
+            await utilCommon.closePopUpMessage();
+            await navigationPage.signOut();
+            await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(copyCaseTemplateName);
+            await viewCasetemplatePo.clickOnEditCaseTemplateButton();
+            expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeFalsy("Copy Case Template is editable");
+        });
+        it('Permission Check to verify who can edit the Task Template', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.clickOnManualTaskTemplateButton();
+            await taskTemplate.setTemplateName('manualTaskTemplate' + randomStr);
+            await taskTemplate.setTaskSummary('manualTaskSummary' + randomStr);
+            await taskTemplate.selectCompanyByName('Psilon');
+            await taskTemplate.selectOwnerCompany("Psilon");
+            await taskTemplate.selectBuisnessUnit("Psilon Support Org2");
+            await taskTemplate.selectOwnerGroup("Psilon Support Group2");
+            await taskTemplate.clickOnSaveTaskTemplate();
+            await viewTaskTemplate.clickOnCopyTemplate();
+            await copyTasktemplatePo.setTemplateName(copytaskTemplateName);
+            await copyTasktemplatePo.selectBuisnessUnitGroup("Psilon Support Org1");
+            await copyTasktemplatePo.selectOwnerGroup("Psilon Support Group1");
+            await copyTasktemplatePo.clickSaveCopytemplate();
+            await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-13557]:Permission Check to verify who can edit the Task Template', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(userData2.userId + "@petramco.com", 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.searchAndOpenTaskTemplate(copytaskTemplateName);         
+            await viewTaskTemplate.clickOnManageDynamicFieldLink();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
+            await utilCommon.closePopUpMessage();
+            await navigationPage.signOut();
+            await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(copytaskTemplateName);
+            await viewTaskTemplate.clickOnEditLink();
+            await editTasktemplatePo.setSummary("UpdatedTaskSummary");
+            await editTasktemplatePo.clickOnSaveButton();
+            expect(await viewTasktemplatePo.getSummaryValue()).toBe('UpdatedTaskSummary');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+        });
+    });
+
+    describe('[DRDMV-13570]: Dynamic Field get copied upon creating copy of Case Template', () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let dynamicFieldName1 = 'DRDMV13570FieldName1' + randomStr;
+        let dynamicFieldName2 = 'DRDMV13570FieldName2' + randomStr;
+        let dynamicFieldDescription1 = 'DRDMV13570FieldDescription1' + randomStr;
+        let dynamicFieldDescription2 = 'DRDMV13570FieldDescription2' + randomStr;
+        let updatedCaseTemplate = 'UpdatedCaseDRDMV13570' + randomStr;
+        let casetemplatePetramco, caseTemplateName1 = 'caseTemplateName' + randomStr;
+        beforeAll(async () => {
+            casetemplatePetramco = {
+                "templateName": caseTemplateName1,
+                "templateSummary": caseTemplateName1,
+                "templateStatus": "Draft",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "caseStatus": "New",
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createCaseTemplate(casetemplatePetramco);
+        });
+        it('Add Dynamic Field', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(casetemplatePetramco.templateName);
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            await dynamicField.clickOnDynamicField();
+            await dynamicField.setFieldName(dynamicFieldName1);
+            await dynamicField.setDescriptionName(dynamicFieldDescription1);
+            await dynamicField.clickSaveButton();
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            await dynamicField.clickOnDynamicField();
+            await dynamicField.setFieldName(dynamicFieldName2);
+            await dynamicField.setDescriptionName(dynamicFieldDescription2);
+            await dynamicField.clickSaveButton();
+            await utilCommon.closePopUpMessage();
+            await utilCommon.clickOnBackArrow();
+        });
+        it('[DRDMV-13570]: Dynamic Field get copied upon creating copy of Case Template', async () => {
+            await consoleCasetemplatePo.searchAndselectCaseTemplate(casetemplatePetramco.templateName);
+            await consoleCasetemplatePo.clickOnCopyCaseTemplate();
+            await copyCaseTemplate.setTemplateName(updatedCaseTemplate);
+            await copyCaseTemplate.clickSaveCaseTemplate();
+            await utilCommon.closePopUpMessage();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed(dynamicFieldDescription1)).toBeTruthy(`${dynamicFieldDescription1} dynamic field not present`);
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed(dynamicFieldDescription2)).toBeTruthy(`${dynamicFieldDescription2} dynamic field not present`);
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+        });
     });
 });

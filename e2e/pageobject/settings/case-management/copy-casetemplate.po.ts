@@ -34,6 +34,7 @@ class CopyCaseTemplate {
         copyInstruction: '[rx-view-component-id="162ce9d1-22d1-42a6-8360-f3d1c8dc3a20"] ul span',
         businessUnitValueOnCopy: '[rx-view-component-id="0bfe6a89-2484-44d1-bae8-9353753f78fa"] .ui-select-match-text',
         departmentValueOnCopy: '[rx-view-component-id="6c570cf5-7f7b-4141-bd17-755e202e7095"] .ui-select-match-text',
+        companyDropDown: '127214a1-bfc0-4a8c-acb7-cd2be137fa3c',
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
@@ -55,8 +56,8 @@ class CopyCaseTemplate {
         return textInstruction;
     }
 
-    async setOwnerGroupDropdownValue(caseTemplate: ICaseTemplate): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.ownerGroupDropdown, caseTemplate.ownerGroup);
+    async setOwnerGroupDropdownValue(ownerGroup: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.ownerGroupDropdown,ownerGroup);
     }
 
     async clickSaveCaseTemplate(): Promise<void> {
@@ -197,6 +198,11 @@ class CopyCaseTemplate {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCategoryTier3ValueOnCopy)));
         return await $(this.selectors.caseCategoryTier3ValueOnCopy).getText();
     }
+
+    async setCompanyName(companyValue: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.companyDropDown, companyValue);
+    }
+
 }
 
 export default new CopyCaseTemplate();
