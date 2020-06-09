@@ -599,7 +599,6 @@ describe("Quick Case", () => {
             await quickCasePo.clickArrowFirstRecommendedKnowledge();
             expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(articleData.title);
             expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
-            expect(await previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy('viewArticle link Not peresent');
             expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Status not displaying');
             await previewKnowledgePo.clickOnBackButton();
         });
@@ -761,7 +760,6 @@ describe("Quick Case", () => {
             await quickCase.clickArrowFirstRecommendedKnowledge();
         });
         it('[DRDMV-796]: [Quick Case] Resources preview', async () => {
-            expect(await previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy('View article link not present');
             expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Knowledge status not present');
             expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
             await previewKnowledgePo.clickOnBackButton();

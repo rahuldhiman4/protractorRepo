@@ -86,8 +86,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickAssignToMeButton();
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
+            await previewKnowledgePo.clickGoToArticleButton();
             await editKnowledgePage.verifyKnowledgeMetadata('Assignee', 'Qadim Katawazi');
             await editKnowledgePage.verifyKnowledgeMetadata('Assigned Group', 'Compensation and Benefits');
         }
@@ -101,118 +100,91 @@ describe('Knowledge Article', () => {
     });//, 190 * 1000);
 
     it('[DRDMV-19079]: Change Reviewer blade should process properly on KA', async () => {
-        try {
-            let businessData = businessDataFile['BusinessUnitData'];
-            let departmentData = departmentDataFile['DepartmentData'];
-            let suppGrpData = supportGrpDataFile['SuppGrpData'];
-            let personData = personDataFile['PersonData'];
-            let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
-            let knowledgeData = knowledgeDataFile['DRDMV-19079'];
-            await navigationPage.gotoCreateKnowledge();
-            await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
-            await createKnowledgePage.clickOnUseSelectedTemplateButton();
-            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-            await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
-            await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
-            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
-            await editKnowledgePage.setKnowledgeStatus(knowledgeData.DraftStatus);
-            await editKnowledgePage.setKnowledgeStatusWithoutSave(knowledgeData.ReviewStatus);
-            expect(await editKnowledgePage.isReviewerCompanyFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
-            expect(await editKnowledgePage.isReviewerBusinessUnitFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
-            expect(await editKnowledgePage.isReviewerDepartmentfieldDisbaledOnStatusChangeBlade()).toBeTruthy();
-            expect(await editKnowledgePage.isReviewerGrpFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
-            expect(await editKnowledgePage.isReviewerFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
-            expect(await statusBladeKnowledgeArticlePo.isChangeReviewerButtonPresent()).toBeTruthy();
-            expect(await editKnowledgePage.isAssignToMeReviewerBladePresent()).toBeTruthy();
-            await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
-            await changeAssignmentBlade.selectCompany(knowledgeData.Company);
-            await changeAssignmentBlade.selectBusinessUnit(businessData.orgName);
-            await changeAssignmentBlade.selectDepartment(departmentData.orgName);
-            await changeAssignmentBlade.selectSupportGroup(suppGrpData.orgName);
-            await changeAssignmentBlade.selectAssignee(personData.firstName);
-            await changeAssignmentBlade.clickOnAssignButton();
-            await browser.sleep(1000);
-            await editKnowledgePage.clickSaveStatusBtn();
-            await utilityCommon.closePopUpMessage();
-            await editKnowledgePage.isReviewPendingButtonDisplayed();
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-        }
+        let businessData = businessDataFile['BusinessUnitData'];
+        let departmentData = departmentDataFile['DepartmentData'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData'];
+        let personData = personDataFile['PersonData'];
+        let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
+        let knowledgeData = knowledgeDataFile['DRDMV-19079'];
+        await navigationPage.gotoCreateKnowledge();
+        await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+        await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+        await previewKnowledgePo.clickGoToArticleButton();
+        expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
+        await editKnowledgePage.setKnowledgeStatus(knowledgeData.DraftStatus);
+        await editKnowledgePage.setKnowledgeStatusWithoutSave(knowledgeData.ReviewStatus);
+        expect(await editKnowledgePage.isReviewerCompanyFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
+        expect(await editKnowledgePage.isReviewerBusinessUnitFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
+        expect(await editKnowledgePage.isReviewerDepartmentfieldDisbaledOnStatusChangeBlade()).toBeTruthy();
+        expect(await editKnowledgePage.isReviewerGrpFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
+        expect(await editKnowledgePage.isReviewerFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
+        expect(await statusBladeKnowledgeArticlePo.isChangeReviewerButtonPresent()).toBeTruthy();
+        expect(await editKnowledgePage.isAssignToMeReviewerBladePresent()).toBeTruthy();
+        await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
+        await changeAssignmentBlade.selectCompany(knowledgeData.Company);
+        await changeAssignmentBlade.selectBusinessUnit(businessData.orgName);
+        await changeAssignmentBlade.selectDepartment(departmentData.orgName);
+        await changeAssignmentBlade.selectSupportGroup(suppGrpData.orgName);
+        await changeAssignmentBlade.selectAssignee(personData.firstName);
+        await changeAssignmentBlade.clickOnAssignButton();
+        await browser.sleep(1000);
+        await editKnowledgePage.clickSaveStatusBtn();
+        await utilityCommon.closePopUpMessage();
+        await editKnowledgePage.isReviewPendingButtonDisplayed();
     });
 
     it('[DRDMV-19080]: On Edit KA, Change Assignment blade should process properly ', async () => {
-        try {
-            let businessData = businessDataFile['BusinessUnitData19082'];
-            let departmentData = departmentDataFile['DepartmentData19082'];
-            let suppGrpData = supportGrpDataFile['SuppGrpData19082'];
-            let personData = personDataFile['PersonData19082'];
-            let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
-            let knowledgeData = knowledgeDataFile['DRDMV-19080'];
-            await navigationPage.gotoCreateKnowledge();
-            await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
-            await createKnowledgePage.clickOnUseSelectedTemplateButton();
-            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-            await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
-            await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
-            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
-            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            await editKnowledgePage.clickChangeAssignmentButton();
-            await changeAssignmentBlade.isCompanyDrpDwnDisplayed();
-            await changeAssignmentBlade.isBuisnessUnitDrpDwnDisplayed();
-            await changeAssignmentBlade.isDepartmentDrpDwnDisplayed();
-            await expect(changeAssignmentBlade.isAssignButtonDisabled()).toBeTruthy();
-            await changeAssignmentBlade.selectCompany(knowledgeData.Company);
-            await changeAssignmentBlade.selectBusinessUnit(businessData.orgName);
-            await changeAssignmentBlade.selectDepartment(departmentData.orgName);
-            await changeAssignmentBlade.selectSupportGroup(suppGrpData.orgName);
-            await changeAssignmentBlade.selectAssignee(personData.firstName);
-            await changeAssignmentBlade.clickOnAssignButton();
-            await editKnowledgePage.saveKnowledgeMedataDataChanges();
-            let assigneeFullName = personData.firstName + " " + personData.lastName;
-            await editKnowledgePage.verifyKnowledgeMetadata('Assignee', assigneeFullName);
-            await editKnowledgePage.verifyKnowledgeMetadata('Assigned Group', suppGrpData.orgName);
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-        }
+        let businessData = businessDataFile['BusinessUnitData19082'];
+        let departmentData = departmentDataFile['DepartmentData19082'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData19082'];
+        let personData = personDataFile['PersonData19082'];
+        let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
+        let knowledgeData = knowledgeDataFile['DRDMV-19080'];
+        await navigationPage.gotoCreateKnowledge();
+        await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+        await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+        await previewKnowledgePo.clickGoToArticleButton();
+        expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.clickChangeAssignmentButton();
+        await changeAssignmentBlade.isCompanyDrpDwnDisplayed();
+        await changeAssignmentBlade.isBuisnessUnitDrpDwnDisplayed();
+        await changeAssignmentBlade.isDepartmentDrpDwnDisplayed();
+        await expect(changeAssignmentBlade.isAssignButtonDisabled()).toBeTruthy();
+        await changeAssignmentBlade.selectCompany(knowledgeData.Company);
+        await changeAssignmentBlade.selectBusinessUnit(businessData.orgName);
+        await changeAssignmentBlade.selectDepartment(departmentData.orgName);
+        await changeAssignmentBlade.selectSupportGroup(suppGrpData.orgName);
+        await changeAssignmentBlade.selectAssignee(personData.firstName);
+        await changeAssignmentBlade.clickOnAssignButton();
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        let assigneeFullName = personData.firstName + " " + personData.lastName;
+        await editKnowledgePage.verifyKnowledgeMetadata('Assignee', assigneeFullName);
+        await editKnowledgePage.verifyKnowledgeMetadata('Assigned Group', suppGrpData.orgName);
     });//, 240 * 1000);
 
     //Need to change implementation 
     it('[DRDMV-19081]: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
-        try {
-            let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
-            let knowledgeData = knowledgeDataFile['DRDMV-19081'];
-            await navigationPage.gotoCreateKnowledge();
-            await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
-            await createKnowledgePage.clickOnUseSelectedTemplateButton();
-            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-            await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
-            await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
-            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
-            await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.DraftStatus);
-            await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.PublishedStatus);
-            await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.RetiredStatus);
-            await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.ClosedStatus);
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-        }
+        let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
+        let knowledgeData = knowledgeDataFile['DRDMV-19081'];
+        await navigationPage.gotoCreateKnowledge();
+        await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+        await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+        await previewKnowledgePo.clickGoToArticleButton();
+        expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
+        await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.DraftStatus);
+        await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.PublishedStatus);
+        await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.RetiredStatus);
+        await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.ClosedStatus);
     });
 
     it('[DRDMV-19508]: On Create KA, Change Assignment blade should process properly', async () => {
@@ -326,7 +298,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             var knowledgeIdValue: string = await previewKnowledgePo.getKnowledgeArticleID();
             await utilityCommon.refresh();
-            await navigationPage.gotoKnowledgeConsole(); 
+            await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
             await knowledgeArticlesConsolePo.searchKnowledgeArticle(knowledgeTitle);
             await expect(knowledgeArticlesConsolePo.isArticleIdDisplayed(knowledgeIdValue.trim())).toBeTruthy("Knowledge Article is not displayed");
@@ -349,9 +321,9 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignedCompany":"Petramco",
-                "assigneeBusinessUnit":"Australia Support",
-                "assigneeSupportGroup":"AU Support 3",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "Australia Support",
+                "assigneeSupportGroup": "AU Support 3",
                 "assignee": "KWilliamson",
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
@@ -399,8 +371,8 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitileCoach}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignedCompany":"Petramco",
-                "assigneeBusinessUnit":"HR Support",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "HR Support",
                 "assigneeSupportGroup": "Compensation and Benefits",
                 "assignee": "peter"
             }
@@ -455,9 +427,9 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignedCompany":"Petramco",
-                "assigneeBusinessUnit":"United Kingdom Support",
-                "assigneeSupportGroup":"US Support 1",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "US Support 1",
                 "assignee": "kayo"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
@@ -581,9 +553,9 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignedCompany":"Petramco",
-                "assigneeBusinessUnit":"United Kingdom Support",
-                "assigneeSupportGroup":"GB Support 1",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
                 "assignee": "KMills"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
@@ -634,9 +606,9 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignedCompany":"Petramco",
-                "assigneeBusinessUnit":"United Kingdom Support",
-                "assigneeSupportGroup":"GB Support 1",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
                 "assignee": "KMills"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
@@ -687,9 +659,9 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignedCompany":"Petramco",
-                "assigneeBusinessUnit":"United Kingdom Support",
-                "assigneeSupportGroup":"GB Support 1",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
                 "assignee": "KMills"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
@@ -786,9 +758,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.selectRegionDropDownOption('Australia');
             await createKnowledgePage.selectSiteDropDownOption('Melbourne');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
-            await utilityCommon.refresh();
+            await previewKnowledgePo.clickGoToArticleButton();
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
             expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Melbourne');
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
@@ -812,8 +782,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.selectKnowledgeSet('HR');
             await createKnowledgePage.selectRegionDropDownOption('Australia');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA();
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
         }

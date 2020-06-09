@@ -113,35 +113,24 @@ describe('Knowledge Articles - Versioning Tests', () => {
     it('[DRDMV-20656]: Verify that the newly created article shows the article version', async () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let knowledgeRefStr = 'KnowledgeReference' + randomStr;
-        try {
-            await navigationPage.signOut();
-            await loginPage.login('qtao');
-            await navigationPage.gotoCreateKnowledge();
-            await createKnowledgePage.clickOnTemplate('Reference');
-            await createKnowledgePage.clickOnUseSelectedTemplateButton();
-            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitleStr);
-            await createKnowledgePage.setReferenceValue(knowledgeRefStr)
-            await createKnowledgePage.selectKnowledgeSet('HR');
-            await createKnowledgePage.clickOnSaveKnowledgeButton();
-            expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(knowledgeTitleStr, 'Article title not matched.');
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
-            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
-            expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
-            let actualVersion = await viewKnowledgeArticlePo.getArticleVersion();
-            let actualDate = await viewKnowledgeArticlePo.formatDate();
-            console.log(actualDate);
-            let expectedVersion = "Version " + "1" + " - " + actualDate;
-            expect(actualVersion).toBe(expectedVersion);
-        }
-        catch (e) {
-            throw e;
-        }
-        finally {
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
-        }
+        await navigationPage.signOut();
+        await loginPage.login('qtao');
+        await navigationPage.gotoCreateKnowledge();
+        await createKnowledgePage.clickOnTemplate('Reference');
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitleStr);
+        await createKnowledgePage.setReferenceValue(knowledgeRefStr)
+        await createKnowledgePage.selectKnowledgeSet('HR');
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+        expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(knowledgeTitleStr, 'Article title not matched.');
+        await previewKnowledgePo.clickGoToArticleButton();
+        expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
+        expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
+        let actualVersion = await viewKnowledgeArticlePo.getArticleVersion();
+        let actualDate = await viewKnowledgeArticlePo.formatDate();
+        console.log(actualDate);
+        let expectedVersion = "Version " + "1" + " - " + actualDate;
+        expect(actualVersion).toBe(expectedVersion);
     });//, 150 * 1000);
 
     //skhobrag
@@ -164,9 +153,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignedCompany":"Petramco",
-            "assigneeBusinessUnit":"United Kingdom Support",
-            "assigneeSupportGroup":"GB Support 1",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
@@ -313,9 +302,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
                 "categoryTier3": "Incident",
                 "region": "Australia",
                 "site": "Canberra",
-                "assignedCompany":"Petramco",
-                "assigneeBusinessUnit":"United Kingdom Support",
-                "assigneeSupportGroup":"GB Support 1",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
                 "assignee": "KMills",
                 "articleDesc": `${knowledgeTitleStr} Desc`
             }
@@ -591,9 +580,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignedCompany":"Petramco",
-            "assigneeBusinessUnit":"United Kingdom Support",
-            "assigneeSupportGroup":"GB Support 1",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
@@ -784,9 +773,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignedCompany":"Petramco",
-            "assigneeBusinessUnit":"United Kingdom Support",
-            "assigneeSupportGroup":"GB Support 1",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
@@ -891,9 +880,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignedCompany":"Petramco",
-            "assigneeBusinessUnit":"United Kingdom Support",
-            "assigneeSupportGroup":"GB Support 1",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
@@ -1023,9 +1012,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignedCompany":"Petramco",
-            "assigneeBusinessUnit":"United Kingdom Support",
-            "assigneeSupportGroup":"GB Support 1",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
@@ -1054,7 +1043,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(actualVersion).toBe(expectedVersion);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Draft status.');
-            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support','AU Support 3', 'Kane Williamson');
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
@@ -1145,9 +1134,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignedCompany":"Petramco",
-            "assigneeBusinessUnit":"United Kingdom Support",
-            "assigneeSupportGroup":"GB Support 1",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
@@ -1369,9 +1358,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignedCompany":"Petramco",
-            "assigneeBusinessUnit":"United Kingdom Support",
-            "assigneeSupportGroup":"GB Support 1",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }

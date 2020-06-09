@@ -57,9 +57,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await utilityCommon.closePopUpMessage();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
-            await utilityCommon.refresh();
+            await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             // 2nd Step: Inspect Case Activity UI - Click on Filter       
@@ -157,9 +155,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await utilityCommon.closePopUpMessage();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
-            await utilityCommon.refresh();
+            await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             // 2nd step: From Task Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Task
@@ -263,9 +259,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await utilityCommon.closePopUpMessage();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
-            await utilityCommon.refresh();
+            await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(knowledgeBodyText);
@@ -876,11 +870,9 @@ describe('Case Activity', () => {
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await utilityCommon.closePopUpMessage();
-            await previewKnowledgePo.clickOnViewArticleLink();
+            await previewKnowledgePo.clickGoToArticleButton();
 
             // View Knowledege Page
-            await utilityCommon.switchToNewTab(1);
-            await utilityCommon.refresh();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('knowoledge Edit link is missing');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(knowledgeBodyText);
@@ -1318,10 +1310,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await utilityCommon.closePopUpMessage();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.closePopUpMessage();
-            await utilityCommon.switchToNewTab(1);
-            await utilityCommon.refresh();
+            await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             // Verify logs with 5 lines or less than 5 lines

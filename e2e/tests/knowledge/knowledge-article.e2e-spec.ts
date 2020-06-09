@@ -98,7 +98,6 @@ describe('Knowledge Article', () => {
             expect(await previewKnowledgePo.getKnowledgeArticleSection()).toContain('KnowledgeReference' + randomStr, 'section not correct');
             expect(await previewKnowledgePo.getKnowledgeArticleID()).toContain('KA-', 'article id is not as expected');
             expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
-            expect(await previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy('viewArticle link Not peresent');
             expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Status not displaying');
             await previewKnowledgePo.clickOnBackButton();
         }
@@ -123,7 +122,6 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.selectKnowledgeSet('HR');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await utilityCommon.closePopUpMessage();
-            expect(await previewKnowledgePo.isViewArticleLInkDisplay()).toBeTruthy();
             await previewKnowledgePo.clickOnBackButton();
             await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
@@ -765,8 +763,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.selectCategoryTier2Option('Invoices');
             await createKnowledgePage.selectCategoryTier3Option('Payment');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
+            await previewKnowledgePo.clickGoToArticleButton();
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('full view of article is not displayed');
         }
         catch (e) {
@@ -776,7 +773,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    },300 * 1000);
+    }, 300 * 1000);
 
     it('[DRDMV-5192]: Unflag the article', async () => {
         try {
@@ -868,7 +865,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    },350 * 1000);
+    }, 350 * 1000);
 
     //ptidke
     it('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {
