@@ -441,10 +441,9 @@ describe('Notes template', () => {
         await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16754');
         await createKnowlegePo.selectKnowledgeSet('HR');
         await createKnowlegePo.clickOnSaveKnowledgeButton();
-        await previewKnowledgePo.clickOnViewArticleLink();
+        await previewKnowledgePo.clickGoToArticleButton();
 
         // View Knowledege Page
-        await utilityCommon.switchToNewTab(1);
         await utilityCommon.closePopUpMessage();
         await viewKnowledgeArticlePo.clickOnTab('Activity');
         await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
