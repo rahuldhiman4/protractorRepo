@@ -1,5 +1,5 @@
 import utilCommon from '../../../utils/util.common';
-import { $, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
+import {$$, $, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
 
 class ViewTaskTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -47,13 +47,16 @@ class ViewTaskTemplate {
         assigneeBusinessUnitValue: '[rx-view-component-id="e4548927-a25e-439e-8e9c-d495c7c87378"] p',
         assigneeDepartmentValue: '[rx-view-component-id="ea7695f8-ebd3-41e6-b85f-ebd800e9c913"] p',     
         editMetaData:'[rx-view-component-id="8b8bfec6-0ee2-42a3-be4b-ac4f37d060f1"] .edit-link',
-        priorityValue:'.selection-field'   
+        priorityValue:'.selection-field',
+        taskSummaryValue: '[rx-view-component-id="80087f51-1b1f-4b47-9fde-36aed981db13"] p',
+        backButton: '[rx-view-component-id="ae1743d3-c8e3-47f7-b257-fba698a2e6e0"] button'
     }
 
 
     async getDynamicFieldTitle(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.dynamicFieldTitle)));
         return await $(this.selectors.dynamicFieldTitle).getText();
+        
     }
 
     async isDynamicFieldPresent(dynamic: string): Promise<boolean> {
@@ -279,8 +282,12 @@ class ViewTaskTemplate {
         await $(this.selectors.editMetaData).click();
     }
 
-    async getPriorityValue(): Promise<string> {
-        return await $(this.selectors.priorityValue).getText();
+    async gettaskSummaryValue(): Promise<string> {
+        return await $(this.selectors.taskSummaryValue).getText();
+    }
+
+    async gotoTaskTemplateConsolePage(): Promise<void> {
+        await $(this.selectors.backButton).click();
     }
 }
 

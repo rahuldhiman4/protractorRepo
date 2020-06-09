@@ -18,6 +18,14 @@ export const CASE_TEMPLATE_PAYLOAD = {
       "id": 1000001437,
       "value": "Template Name"
     },
+    "450000162": {
+      "id": 450000162,
+      "value": null
+    },
+    "450000164": {
+      "id": 450000164,
+      "value": null
+    },
     "300287900": {
       "id": 300287900,
       "value": "99bc0b14a69b6458093b487c47cd310fc591b486cc95611a5d8910763653d58aa5e4b84299c9a4b91f09d4f627c247e78ddae9fdc1f9aeebdc336b77a2806520"

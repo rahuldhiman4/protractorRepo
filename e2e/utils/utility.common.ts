@@ -179,10 +179,11 @@ export class Utility {
         return (await $(locator).getAttribute("required")) == 'required';
     }
 
-    async isRequiredTagToField(guid: string): Promise<boolean> {
+    async isRequiredTagToField(guid: string, element?: ElementFinder): Promise<boolean> {
         let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent();
         if (!isRequired) {
-            let nameElement = await $(`[rx-view-component-id="${guid}"] label`);
+            let nameElement
+            if (element) {nameElement =  element;} else {nameElement = await $(`[rx-view-component-id="${guid}"] label`);}
             let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
             isRequired = value.trim().substring(3, value.length - 2) === 'required';
         }
@@ -422,9 +423,9 @@ export class Utility {
         });
     }
 
-    async getOldDate(noOfDays: number): Promise<Date>{
+    async getOldDate(noOfDays: number): Promise<Date> {
         let d: Date = new Date();
-        d.setDate(d.getDate() - noOfDays);
+        d.setDate(d.getDate() - noOfDays);
         return d;
     }
 }

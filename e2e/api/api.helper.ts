@@ -198,6 +198,8 @@ class ApiHelper {
 
     async createCaseTemplate(data: ICaseTemplate): Promise<IIDs> {
         let templateData = CASE_TEMPLATE_PAYLOAD;
+        templateData= Object.assign({},templateData); 
+
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[7].value = constants.CaseTemplate[data.templateStatus];
@@ -209,6 +211,8 @@ class ApiHelper {
         templateData.fieldInstances[1000000064].value = data.categoryTier2 ? await coreApi.getCategoryGuid(data.categoryTier2) : templateData.fieldInstances[1000000064].value;
         templateData.fieldInstances[1000000065].value = data.categoryTier3 ? await coreApi.getCategoryGuid(data.categoryTier3) : templateData.fieldInstances[1000000065].value;
         templateData.fieldInstances[450000061].value = data.description ? data.description : templateData.fieldInstances[450000061].value;
+        templateData.fieldInstances[450000162].value = data.resolutionCode ? data.resolutionCode : templateData.fieldInstances[450000162].value;
+        templateData.fieldInstances[450000164].value = data.resolutionDescription ? data.resolutionDescription : templateData.fieldInstances[450000164].value;
 
         if (data.caseStatus) {
             let statusValue = constants.CaseStatus[data.caseStatus];

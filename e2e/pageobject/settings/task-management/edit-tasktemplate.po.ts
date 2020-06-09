@@ -19,16 +19,18 @@ class EditTaskTemplate {
         taskCategoryDrpDown1: 'cab2e62d-090e-4281-985d-2f021bb01a9f',
         taskCategoryDrpDown2: '27a4fb75-0d9c-417b-9638-698f371ec4ec',
         taskCategoryDrpDown3: '414723be-a5c7-4271-b9b0-d76f07023682',
-        taskCategoryDrpDown4: 'd88c4135-b283-4b9a-9909-80f1e83e6087',
+        taskCategoryDrpDown4: 'f1703efa-79e9-4e74-b38f-782272b803af',
         priority: '0cf493f2-9e6b-4f23-bf3e-ba210c2baef8',
         saveMetadata: '[rx-view-component-id="39f08c8c-48ad-450e-b5f2-f379a4432666"] button',
         cancelMetadata: '[rx-view-component-id="209049eb-ef6d-4ddd-8ee4-257ff7a878e5"] button',
-        label: '6df27c33-b3bf-400c-98f7-a76b2e848374',
+        label: '11b0e7ec-10f6-4ecf-a69f-b513d68fa45d',
         templateStatusAttribute: '[rx-view-component-id="279fd957-576d-4428-b503-a1330cbd9498"] .btn-default',
         mangeDynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] button.d-icon-left-pencil',
         dynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] .d-textfield__item',
         taskTypeValueDisabled: '[rx-view-component-id="cee6d303-5db9-4b3a-98e1-3096ffebf363"] span.btn-default',
         processNameValue: '[rx-view-component-id="534ab8af-7e9d-49a9-8cab-c3ab1aa38c91"] input',
+        dropdownBox: '.ui-select-toggle',
+        changeAssignment:'[rx-view-component-id="dae8cbcf-3c00-42c1-b0c3-acab348b9ed9"] button'
     }
 
     async selectPriorityValue(priority: string): Promise<void> {
@@ -43,23 +45,30 @@ class EditTaskTemplate {
         return await $(this.selectors.processNameValue).getAttribute('readOnly') == 'true' ? true : false;
     }
     async selectTaskCategoryTier1(category1: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown1, category1);
+        let dropDownBoxElement = await $(`[rx-view-component-id="${this.selectors.taskCategoryDrpDown1}"]`).$(this.selectors.dropdownBox);
+        await utilCommon.selectDropDown2(dropDownBoxElement, category1);
     }
 
     async selectTaskCategoryTier2(category2: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown2, category2);
+        let dropDownBoxElement = await $(`[rx-view-component-id="${this.selectors.taskCategoryDrpDown2}"]`).$(this.selectors.dropdownBox);
+        await utilCommon.selectDropDown2(dropDownBoxElement, category2);
     }
 
     async selectTaskCategoryTier3(category3: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown3, category3);
+        let dropDownBoxElement = await $(`[rx-view-component-id="${this.selectors.taskCategoryDrpDown3}"]`).$(this.selectors.dropdownBox);
+        await utilCommon.selectDropDown2(dropDownBoxElement, category3);
     }
 
     async selectTaskCategoryTier4(category4: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown4, category4);
+        let dropDownBoxElement = await $(`[rx-view-component-id="${this.selectors.taskCategoryDrpDown4}"]`).$(this.selectors.dropdownBox);
+        await utilCommon.selectDropDown2(dropDownBoxElement, category4);
     }
 
     async selectLabel(label: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.label, label);
+        // let  dropDown = await $(`[rx-view-component-id="${this.selectors.label}"]`);
+        let dropDownBoxElement = await $(`[rx-view-component-id="${this.selectors.label}"]`).$(this.selectors.dropdownBox);
+        await utilCommon.selectDropDown2(dropDownBoxElement, label);
+      
     }
 
     async selectTaskCompany(company: string): Promise<void> {
@@ -162,6 +171,10 @@ class EditTaskTemplate {
             }
         }
         return false;
+    }
+
+    async clickChangeAssignmentButton(): Promise<void> {
+        await $(this.selectors.changeAssignment).click();
     }
 }
 

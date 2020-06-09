@@ -183,11 +183,9 @@ class ViewCasePage {
     }
 
     async clickAddTaskButton(): Promise<void> {
-        await $(this.selectors.addTaskButton).isPresent().then(async (link) => {
-            if (link) {
-                await utilityCommon.scrollUpOrDownTillElement(this.selectors.addTaskButton);
-                await $(this.selectors.addTaskButton).click();
-            } else console.log('Add Task button not found');
+        await utilityCommon.scrollUpOrDownTillElement(this.selectors.addTaskButton);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskButton)), 15000).then(async () => {
+            await $(this.selectors.addTaskButton).click();
         });
     }
 

@@ -14,8 +14,8 @@ export interface ICaseTemplate {
     supportGroup?: string;
     assignee?: string;
     description?: string;
-    resolutionCode?: boolean;
-    resolutionDescription?: boolean,
+    resolutionCode?: string;
+    resolutionDescription?: string,
     caseStatus?: string,
     statusReason?: string,
     casePriority?: string,

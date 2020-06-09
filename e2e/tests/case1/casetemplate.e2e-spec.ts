@@ -202,8 +202,8 @@ describe('Case Template', () => {
 
     //ptidke 
     it('[DRDMV-1231]: [Edit Case Template] Template metadata edit', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        // await navigationPage.gotoSettingsPage();
+        // await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         let caseTemplateName: string = caseTemplateRequiredFields.templateName + Math.floor(Math.random() * 100000);
         let templateData = {
             "templateName": caseTemplateName,

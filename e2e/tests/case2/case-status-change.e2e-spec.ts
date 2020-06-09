@@ -886,12 +886,12 @@ describe('Case Status Change', () => {
             await updateStatusBlade.isChangeStatusFieldPresent();
             await updateStatusBlade.isCancelUpdateStatusButtonPresent();
             await updateStatusBlade.isStatusReasonFieldPresent();
-            expect(await updateStatusBlade.isSaveUpdateStatusButtonPresent()).toBeFalsy("Save Button is enabled");
+            expect(await updateStatusBlade.isSaveUpdateStatusButtonEnabled()).toBeFalsy("Save Button is enabled");
             await updateStatusBladePo.clickCancelButton();
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBlade.isStatusReasonRequiredTextPresent();
             await updateStatusBladePo.setStatusReason('Auto Resolved');
-            expect(await updateStatusBlade.isSaveUpdateStatusButtonPresent()).toBeTruthy("Save Button is enabled");
+            expect(await updateStatusBlade.isSaveUpdateStatusButtonEnabled()).toBeTruthy("Save Button is enabled");
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
             await navigationPage.gotoCaseConsole();
