@@ -101,7 +101,7 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Workspace')).click();
-            await element(by.buttonText('Case ')).click().then(async () => {
+            await element(by.cssContainingText('.a-hamburger__menu-link', 'Case ')).click().then(async () => {
                 await this.acceptUnsavedDataPopup();
             });
         } else {
@@ -119,7 +119,7 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Workspace')).click();
-            await element(by.buttonText('Knowledge ')).click().then(async () => {
+            await element(by.cssContainingText('.a-hamburger__menu-link', 'Knowledge ')).click().then(async () => {
                 await this.acceptUnsavedDataPopup();
             });
         } else {
@@ -137,7 +137,7 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Workspace')).click();
-            await element(by.buttonText('Task ')).click().then(async () => {
+            await element(by.cssContainingText('.a-hamburger__menu-link', 'Task ')).click().then(async () => {
                 await this.acceptUnsavedDataPopup();
             });
         } else {

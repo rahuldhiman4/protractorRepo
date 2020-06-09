@@ -1,4 +1,5 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../utils/utility.common';
 
 class PreviewKnowledge {
 
@@ -28,6 +29,7 @@ class PreviewKnowledge {
 
     async clickGoToArticleButton(): Promise<void> {
         await $(this.selectors.goToArticleButton).click();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes'); // please remove this after defect fix DRDMV-22182
     }
 
     async clickOnBackButton(): Promise<void> {
