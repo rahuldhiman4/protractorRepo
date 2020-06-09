@@ -669,8 +669,8 @@ describe('Create Task Template', () => {
             expect(await utilityGrid.isGridRecordPresent('In Progress')).toBeTruthy('In Progress not present');
             expect(await utilityGrid.isGridRecordPresent('Pending')).toBeTruthy('Pending not present');
             expect(await utilityGrid.isGridRecordPresent('Completed')).toBeTruthy('Completed not present');
-            expect(await utilityGrid.isGridRecordPresent('Canceled')).toBeFalsy('Canceled not present');
-            expect(await utilityGrid.isGridRecordPresent('Closed')).toBeFalsy('Closed not present');
+            expect(await utilityGrid.isGridRecordPresent('Canceled')).toBeTruthy('Canceled not present');
+            expect(await utilityGrid.isGridRecordPresent('Closed')).toBeTruthy('Closed not present');
         });
     });
 
@@ -734,23 +734,25 @@ describe('Create Task Template', () => {
         });
         it('Add the task and change the case status to cancel', async () => {
             await navigationPage.gotoCaseConsole();
-            await caseConsolePo.searchAndOpenCase(newCase.displayId);
+            await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await updateStatusBladePo.changeCaseStatus("Resolved");
             await updateStatusBladePo.setStatusReason("Auto Resolved");
             await updateStatusBladePo.clickSaveStatus();
             expect(await utilityCommon.isPopUpMessagePresent("The case contains active tasks. Please close all the tasks and resolve the case.")).toBeTruthy();
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        });
+            it('Update the task to cancel', async () => {
             await updateStatusBladePo.changeCaseStatus("Canceled");
             await updateStatusBladePo.setStatusReason("Approval Rejected");
             await updateStatusBladePo.clickSaveStatus();
-        });
-        it('veify the task status when case status is canceled', async () => {
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink('manualTaskTemplateAssigned' + randomStr);
             expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
             await viewTask.clickOnViewCase();
             await viewCasePage.openTaskCard(1);
+        });
+        it('veify the task status when case status is canceled', async () => {
             await manageTask.clickTaskLink(taskName1);
             expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
             await viewTask.clickOnViewCase();
@@ -908,5 +910,3 @@ describe('Create Task Template', () => {
         });
     });
 });
-
-   
