@@ -149,11 +149,10 @@ describe("Attachment", () => {
     //kgaikwad
     it('[DRDMV-11710,DRDMV-11698]: Upload attachment from Social & verify all attachments grid', async () => {
         let filePath = '../../data/ui/attachment/bwfPdf.pdf';
-        let caseBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = {
             "Requester": "araisin",
-            "Summary": "Test case for DRDMV-8377RandVal" + summary,
+            "Summary": "Test case for DRDMV-8377RandVal" + randomStr,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
             "Support Group": "US Support 1",
@@ -161,9 +160,9 @@ describe("Attachment", () => {
         }
         await apiHelper.apiLogin('qkatawazi');
         let newCase = await apiHelper.createCase(caseData);
-        let caseId: string = newCase.displayId;
-        await caseConsole.searchAndOpenCase(caseId);
-        await activityTabPo.addActivityNote(caseBodyText);
+        await navigationPage.gotoCaseConsole();
+        await caseConsole.searchAndOpenCase(newCase.displayId);
+        await activityTabPo.addActivityNote('CaseBodyText' + randomStr);
         await activityTabPo.addAttachment([filePath]);
         await activityTabPo.clickOnPostButton();
         expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
@@ -189,13 +188,11 @@ describe("Attachment", () => {
     it('[DRDMV-11708]: Upload attachment from task activity & verify all attachments grid', async () => {
         let xlsxFilePath = '../../data/ui/attachment/bwfXlsx.xlsx';
         let wordFilePath = '../../data/ui/attachment/bwfWord1.rtf';
-        let adhocTaskSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let addNotes = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
         let caseData = {
             "Requester": "araisin",
-            "Summary": caseSummary,
+            "Summary": "CaseSummary" + randomStr,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
             "Support Group": "US Support 3",
@@ -206,7 +203,6 @@ describe("Attachment", () => {
         let caseId: string = newCase.displayId;
 
         // Create Task Template
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTaskTemplateData = {
             "templateName": "manualTaskTemplateDraft" + randomStr,
             "templateSummary": "manualTaskTemplateDraft" + randomStr,
@@ -222,7 +218,7 @@ describe("Attachment", () => {
         await caseConsole.searchAndOpenCase(caseId);
         await viewCasePo.clickAddTaskButton();
         await manageTaskPo.clickAddAdhocTaskButton();
-        await adhoctaskTemplate.setSummary(adhocTaskSummary);
+        await adhoctaskTemplate.setSummary('AdhocTaskSummary' + randomStr);
         await adhoctaskTemplate.addAttachment([xlsxFilePath]);
         await adhoctaskTemplate.clickSaveAdhoctask();
         await manageTaskPo.clickCloseButton();
@@ -238,7 +234,7 @@ describe("Attachment", () => {
         await viewCasePo.clickAddTaskButton();
         await manageTaskPo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
         await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateName);
-        await activityTabPo.addActivityNote(addNotes);
+        await activityTabPo.addActivityNote('AddNotes' + randomStr);
         await activityTabPo.addAttachment([wordFilePath]);
         await activityTabPo.clickOnPostButton();
         expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
