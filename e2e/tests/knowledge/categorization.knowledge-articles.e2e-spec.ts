@@ -922,8 +922,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await createKnowledgePage.selectCategoryTier2Option(categoryTier2FieldVal);
             await createKnowledgePage.selectCategoryTier3Option(categoryTier3FieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePage.getCategoryTier1SelectedValue(categoryTier1)).toBe(categoryTier1FieldVal);
         }
@@ -931,8 +930,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
             throw error;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
             await apiHelper.apiLogin('tadmin');
             let domainTagData = domainTagDataFile['DomainTagDataPsilon'];
             let domainTag = await apiHelper.createDomainTag(domainTagData);
