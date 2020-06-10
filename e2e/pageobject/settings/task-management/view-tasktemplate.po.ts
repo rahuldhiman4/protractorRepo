@@ -282,6 +282,10 @@ class ViewTaskTemplate {
         await $(this.selectors.editMetaData).click();
     }
 
+    async getPriorityValue(): Promise<string> {
+        return await $(this.selectors.priorityValue).getText();
+    }
+
     async gettaskSummaryValue(): Promise<string> {
         return await $(this.selectors.taskSummaryValue).getText();
     }
