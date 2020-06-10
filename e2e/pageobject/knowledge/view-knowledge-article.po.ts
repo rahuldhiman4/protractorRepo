@@ -48,6 +48,7 @@ class ViewKnowledgePage {
         unflagOption: '[rx-view-component-id="b54365bf-0ead-4c54-8c8b-42aced61690e"] span',
         editKnowledgeAccess: '[rx-view-component-id="cbdd812c-4899-4503-84ab-412020d820df"] button',
         tab: 'button[role="tab"] span.nav-link-wrapper',
+        attachmentName: 'bwf-attachment-viewer .bwf-attachment-container__file-name',
     }
 
     async clickOnKAUsefulYesButton(): Promise<void> {
@@ -371,6 +372,9 @@ class ViewKnowledgePage {
         await $(this.selectors.editKnowledgeAccess).click();
     }
 
+    async isAttachedFileNamePresent(fileName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isPresent();
+    }
 
 }
 
