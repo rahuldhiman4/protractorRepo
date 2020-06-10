@@ -18,7 +18,7 @@ class ActivityTabPage {
         activityLog: '.activity__body .activity-title, .activity__body [style="position: relative;"], .activity__body .field, .activity__body .value',
         filterButton: '.d-icon-filter',
         filterCheckbox: '.checkbox__label span',
-        filterAuthor: '.dropdown input[placeholder="Enter name, email, or login ID"]',
+        filterAuthor: '.dropdown [placeholder="Enter name, email, login ID or employee ID"]',
         filterPopupApplyOrClearButton: '.filter-options button span',
         FilterPopUp: '.bwf-activity-log-filter button[aria-expanded]',
         filterApplyButtonEnableDisabled: '.filter-options button[disabled="disabled"]',
