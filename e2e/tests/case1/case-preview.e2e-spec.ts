@@ -43,21 +43,6 @@ describe("Case Preview", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-13703]: Navigate the Case from Quick Case->Preview Case->Case Full view', async () => {
-        let caseSummary = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoQuickCase();
-        await quickCasePo.selectRequesterName('qkatawazi');
-        await quickCasePo.setCaseSummary(caseSummary);
-        await quickCasePo.saveCase();
-        await casePreviewPo.clickOnViewCaseLink();
-        await utilityCommon.switchToNewTab(1);
-        expect(await viewCasePo.getCaseSummary()).toBe(caseSummary);
-        expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy('On View Case page edit button not present');
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-        await previewCasePo.clickGoToCaseButton();
-    });
-
-    //kgaikwad
     it('[DRDMV-13640]: Create a Case via Quick Case and check Case Preview screen', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoQuickCase();
@@ -81,7 +66,6 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isAssigneeDisplayed('Al Allbrook')).toBeTruthy('Assignee name is missing');
         expect(await casePreviewPo.isAssignedGroupDisplayed('Workforce Administration')).toBeTruthy('Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
-        expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         await casePreviewPo.clickGoToCaseButton();
     });
@@ -108,7 +92,6 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isAssigneeDisplayed('None')).toBeTruthy('Assignee name is missing');
         expect(await casePreviewPo.isAssignedGroupDisplayed('Workforce Administration')).toBeTruthy('Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
-        expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         await casePreviewPo.clickGoToCaseButton();
     });
@@ -137,7 +120,6 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isAssigneeDisplayed('Peter Kahn')).toBeTruthy('Assignee name is missing');
         expect(await casePreviewPo.isAssignedGroupDisplayed('Compensation and Benefits')).toBeTruthy('Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
-        expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');
         await casePreviewPo.clickGoToCaseButton();
@@ -193,7 +175,6 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isAssigneeDisplayed('Qianru Tao')).toBeTruthy('Assignee name is missing');
         expect(await casePreviewPo.isAssignedGroupDisplayed('US Support 1')).toBeTruthy('Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
-        expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');
         await casePreviewPo.clickGoToCaseButton();
@@ -272,7 +253,6 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isAssigneeDisplayed('Qianru Tao')).toBeTruthy('failureMsg: Assignee name is missing');
         expect(await casePreviewPo.isAssignedGroupDisplayed('US Support 1')).toBeTruthy('failureMsg: Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('failureMsg: Assigned company name is missing');
-        expect(await casePreviewPo.isViewCaseButtonDisplayed()).toBeTruthy('failureMsg: View Case button is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('failureMsg: Create New Case button is missing');
         await casePreviewPo.clickGoToCaseButton();
     });

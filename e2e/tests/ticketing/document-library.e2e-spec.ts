@@ -671,8 +671,7 @@ describe('Document Library', () => {
         await createKnowlegePo.selectKnowledgeSet('HR');
         expect(await createKnowlegePo.isAttachDocumentBladeDisplayed()).toBeFalsy('Attach Document Blade is displayed');
         await createKnowlegePo.clickOnSaveKnowledgeButton();
-        await previewKnowledgePo.clickOnViewArticleLink();
-        await utilityCommon.switchToNewTab(1);
+        await previewKnowledgePo.clickGoToArticleButton();
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         expect(await editKnowledgeMetaDataPo.isAttachDocumentBladeDisplayed()).toBeFalsy('Attach Document Blade is displayed');
         await utilityCommon.refresh();

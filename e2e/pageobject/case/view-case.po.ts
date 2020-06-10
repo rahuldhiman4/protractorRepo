@@ -413,7 +413,11 @@ class ViewCasePage {
     }
 
     async isAssigneeNameDisplayed(): Promise<boolean> {
-        return await $(this.selectors.assigneeText).isDisplayed();
+        return await $(this.selectors.assigneeText).isPresent().then(async (link) => {
+            if (link) {
+                return await $(this.selectors.assigneeText).isDisplayed();
+            } else return false;
+        });
     }
 }
 

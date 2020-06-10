@@ -39,9 +39,8 @@ class ManageTaskBlade {
     }
 
     async clickGridColumnHeader(value: string): Promise<void> {
-        let column = await element(by.cssContainingText(this.selectors.columnHeaders, value));
-        //        await browser.wait(this.EC.elementToBeClickable(column));
-        await column.click();
+        await element(by.cssContainingText(this.selectors.columnHeaders, value)).click();
+        await browser.sleep(1500); // wait until sorting
     }
 
     async clickAddAdhocTaskButton(): Promise<void> {

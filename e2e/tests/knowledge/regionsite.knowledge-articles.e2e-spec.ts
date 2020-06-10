@@ -84,9 +84,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignedCompany":"Petramco",
-            "assigneeBusinessUnit":"United Kingdom Support",
-            "assigneeSupportGroup":"GB Support 1",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills"
         }
         // Create article in in progress status
@@ -292,15 +292,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
             //Create Knowledge article by Case Manager
@@ -316,15 +314,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
             //Create Knowledge article by Case Agent
@@ -340,15 +336,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
             //Login with Knowledge Candidate
@@ -365,15 +359,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(2);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
             //Login with Knowledge Contributor
@@ -390,8 +382,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(2);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
@@ -415,15 +406,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(2);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
             //Login with Knowledge Coach
@@ -440,21 +429,18 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(2);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
         catch (error) {
             throw error;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
