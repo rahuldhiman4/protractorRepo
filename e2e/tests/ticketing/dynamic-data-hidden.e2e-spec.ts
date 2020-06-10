@@ -434,7 +434,7 @@ describe('Dynamic Hidden Data', () => {
         let caseId, templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
         beforeAll(async () => {
-            let templateData = {
+            templateData = {
                 "templateName": `manualTaskTemplate1 ${randomStr}`,
                 "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
                 "templateStatus": "Active",
