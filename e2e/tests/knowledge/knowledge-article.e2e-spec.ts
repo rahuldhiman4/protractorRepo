@@ -992,4 +992,139 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.clickOnSaveKnowledgeButton();
         await utilityCommon.closePopUpMessage();
     });
+
+    it('[DRDMV-777]:[Edit Knowledge Article] Modify knowledge article by removing all optional data on edit article view', async () => {
+        await apiHelper.apiLogin(knowledgeCoachUser);
+        let articleData = {
+            "knowledgeSet": "HR",
+            "title": 'knowledge2746' + randomStr,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United States Support",
+            "assigneeSupportGroup": "US Support 1",
+            "assignee": "kayo",
+            "categoryTier1": "Applications",
+            "categoryTier2": "Help Desk",
+            "categoryTier3": "Incident",
+            "region": "Australia",
+            "site": "Canberra",
+            "articleDesc" : 'knowledge2746' + randomStr,
+        }
+        let kaDetails = await apiHelper.createKnowledgeArticle(articleData);
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
+        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await utilityCommon.switchToNewTab(1);
+        expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(kaDetails.displayId);
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.removeRegionValue();
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('-');
+        expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(articleData.title);
+        expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(articleData.knowledgeSet);
+        expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
+    });
+
+    it('[DRDMV-772]:[Edit Knowledge Article] Modify Knowledge metadata on edit knowledge screen', async () => {
+        await apiHelper.apiLogin(knowledgeCoachUser);
+        let articleData = {
+            "knowledgeSet": "HR",
+            "title": 'knowledge2746' + randomStr,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United States Support",
+            "assigneeSupportGroup": "US Support 1",
+            "assignee": "kayo",
+            "categoryTier1": "Applications",
+            "categoryTier2": "Help Desk",
+            "categoryTier3": "Incident",
+            "region": "Australia",
+            "site": "Canberra",
+            "articleDesc" : 'knowledge2746' + randomStr,
+        }
+        let kaDetails = await apiHelper.createKnowledgeArticle(articleData);        
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
+        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await utilityCommon.switchToNewTab(1);
+        expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(kaDetails.displayId);
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.setCategoryTier1('Employee Relations');
+        await editKnowledgePage.setCategoryTier2('Compensation');
+        await editKnowledgePage.setCategoryTier3('Final Pay');
+        await editKnowledgePage.selectRegionDropDownOption('EMEA');
+        await editKnowledgePage.selectSiteDropDownOption('Barcelona 1');
+        await editKnowledgePage.addAttachment(['../../data/ui/attachment/bwfJpg.jpg']);
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        await utilityCommon.closePopUpMessage();
+        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('EMEA');
+        expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Barcelona 1');
+        expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(articleData.title);
+        expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(articleData.knowledgeSet);
+        expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
+        expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Employee Relations');
+        expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Compensation');
+        expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('Final Pay');
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.removeAttachment();
+        await editKnowledgePage.addAttachment(['../../data/ui/attachment/bwfJpg1.jpg']);
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        await utilityCommon.closePopUpMessage();
+        expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfJpg1')).toBeTruthy();
+    });
+
+    it('[DRDMV-3461]:[Knowledge Article] Adding one or two or three level operational categorization while creating knowledge articles_Tier1, Tier2 & Tier3', async () => {
+        await apiHelper.apiLogin(knowledgeCoachUser);
+        let articleData = {
+            "knowledgeSet": "HR",
+            "title": 'knowledge2746' + randomStr,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United States Support",
+            "assigneeSupportGroup": "US Support 1",
+            "assignee": "kayo",
+            "categoryTier1": "Accounts Payable",
+            "categoryTier2": "Invoices",
+            "categoryTier3": "Payment",
+            "region": "Australia",
+            "site": "Canberra",
+            "articleDesc" : 'knowledge2746' + randomStr,
+        }
+        let kaDetails = await apiHelper.createKnowledgeArticle(articleData);        
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
+        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await utilityCommon.switchToNewTab(1);
+        expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(kaDetails.displayId);
+        expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Accounts Payable');
+        expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Invoices');
+        expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('Payment');
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.removeCategoryTier1();
+        await editKnowledgePage.removeCategoryTier2();
+        await editKnowledgePage.removeCategoryTier3();
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        await utilityCommon.closePopUpMessage();
+        expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('-');
+        expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('-');
+        expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('-');
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.setCategoryTier1('Employee Relations');
+        await editKnowledgePage.setCategoryTier2('Compensation');
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        await utilityCommon.closePopUpMessage();
+        expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Employee Relations');
+        expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Compensation');
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.setCategoryTier1('Accounts Payable');
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        await utilityCommon.closePopUpMessage();
+        expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Accounts Payable');
+    });
 })

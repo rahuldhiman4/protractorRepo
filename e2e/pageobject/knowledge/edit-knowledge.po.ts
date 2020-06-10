@@ -1,6 +1,7 @@
 import { $, $$, by, element, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common'
+import { resolve } from 'path';
 
 class EditKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -41,6 +42,13 @@ class EditKnowledgePage {
         selectIsExternalGUID: '660f2cd8-9439-4954-9638-0064fbcb0e28',
         keywordValue: '[rx-view-component-id="51e52d59-3acd-49b3-8291-e10558985fa1"] input',
         attachmentField: '[rx-view-component-id="1f42f6d7-99cc-4c07-9249-94172d98d526"] .d-icon-paperclip',
+        categoryTier1Guid: '2e629e99-f2fa-48a2-910b-0652a6bf032f',
+        categoryTier2Guid: '7e8a318c-2948-4b54-a8b6-049146bdf6c9',
+        categoryTier3Guid: 'f2703b24-f357-46f7-83bc-e216f6d33cb0',
+        regionGuid: '6c3548bc-bd52-4da6-b365-f546ca7bd744',
+        siteGuid: '6c3548bc-bd52-4da6-b365-f546ca7bd744',
+        uploadAttachmentField : '[rx-view-component-id="1f42f6d7-99cc-4c07-9249-94172d98d526"] input[type="file"]',
+        closedTip: '.bwf-attachment-container__remove .d-icon-cross',
     }
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
@@ -293,6 +301,40 @@ class EditKnowledgePage {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentField)));
         let attribute = await $(this.selectors.attachmentField).getAttribute('ng-click');
         return attribute == 'openDocumentLibrary()' ? true : false
+    }
+
+    async setCategoryTier1(fieldOption: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.categoryTier1Guid, fieldOption);
+    }
+
+    async setCategoryTier2(fieldOption: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.categoryTier2Guid, fieldOption);
+    }
+
+    async setCategoryTier3(fieldOption: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.categoryTier3Guid, fieldOption);
+    }
+
+    async addAttachment(fileToUpload: string[]): Promise<void> {
+        const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
+        console.log(absPathArray);
+        await $(this.selectors.uploadAttachmentField).sendKeys(absPathArray.join('\n'));
+    }
+
+    async removeAttachment(): Promise<void> {
+        await $(this.selectors.closedTip).click();
+    }
+
+    async removeCategoryTier1(): Promise<void> {
+        await utilityCommon.clearDropDown(this.selectors.categoryTier1Guid);
+    }
+    
+    async removeCategoryTier2(): Promise<void> {
+        await utilityCommon.clearDropDown(this.selectors.categoryTier2Guid);
+    }
+    
+    async removeCategoryTier3(): Promise<void> {
+        await utilityCommon.clearDropDown(this.selectors.categoryTier3Guid);
     }
 }
 
