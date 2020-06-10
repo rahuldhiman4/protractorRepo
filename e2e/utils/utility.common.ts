@@ -422,10 +422,20 @@ export class Utility {
         });
     }
 
-    async getOldDate(noOfDays: number): Promise<Date>{
+    async getOldDate(noOfDays: number): Promise<Date> {
         let d: Date = new Date();
-        d.setDate(d.getDate() - noOfDays);
+        d.setDate(d.getDate() - noOfDays);
         return d;
+    }
+
+    async closeAllBlades(): Promise<void> {
+        await $('body').sendKeys(protractor.Key.ESCAPE);
+        await $('.modal-title').isPresent().then(async (result) => {
+            if (result) await this.clickOnApplicationWarningYesNoButton("Yes");
+        });
+        for (let i: number = 0; i < 2; i++) {
+            await $('body').sendKeys(protractor.Key.ESCAPE);
+        }
     }
 }
 
