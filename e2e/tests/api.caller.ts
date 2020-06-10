@@ -119,7 +119,7 @@ describe('Login and create case from API', () => {
         await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
     });
 
-    fit('Associate task template to case template', async () => {
+    it('Associate task template to case template', async () => {
 
         await apiHelper.apiLogin('qkatawazi');
 
@@ -170,7 +170,7 @@ describe('Login and create case from API', () => {
         //await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
         //await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "sequential");
         //await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "parallel");
-        await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, autoTaskTemplate.displayId);
+        //await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, autoTaskTemplate.displayId);
         //await apiHelper.associateCaseTemplateWithOneTaskTemplate('CTPL-0000000214', 'TTPL-0000000506');
         //await apiHelper.associateCaseTemplateWithTwoTaskTemplate('CTPL-0000000215', 'TTPL-0000000517', 'TTPL-0000000518', "sequential");
     });
