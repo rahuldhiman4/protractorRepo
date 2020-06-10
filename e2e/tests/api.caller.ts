@@ -119,19 +119,19 @@ describe('Login and create case from API', () => {
         await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
     });
 
-    it('Associate task template to case template', async () => {
+    fit('Associate task template to case template', async () => {
 
         await apiHelper.apiLogin('qkatawazi');
 
         let caseTemplateData = {
-            "templateName": "case template name 5",
-            "templateSummary": "case template summary 5",
+            "templateName": "case template name 1",
+            "templateSummary": "case template summary 1",
             "templateStatus": "Active",
         }
         let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
         let manualTaskTemplateData = {
-            "templateName": "manual task template name 5",
-            "templateSummary": "manual task template summary 5",
+            "templateName": "manual task template name 1",
+            "templateSummary": "manual task template summary 1",
             "templateStatus": "Active",
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
@@ -140,12 +140,23 @@ describe('Login and create case from API', () => {
         }
         let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
+        let externalTaskTemplateData = {
+            "templateName": "external task template name 1",
+            "templateSummary": "external task template summary 1",
+            "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
+        }
+        let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTaskTemplateData);
+
         let autoTaskTemplateData = {
-            "templateName": "auto task template 5",
-            "templateSummary": "auto task template summary 5",
+            "templateName": "auto task template 1",
+            "templateSummary": "auto task template summary 1",
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
-            "processName": "Case Process 5",
+            "processName": "Case Process 1",
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
             "ownerBusinessUnit": "Facilities Support",
@@ -156,9 +167,10 @@ describe('Login and create case from API', () => {
         console.log(newCaseTemplate.id, "\ntaskID\n", manualTaskTemplate.id, "\ntaskID\n", autoTaskTemplate.id);
         console.log(newCaseTemplate.displayId, "\ntaskID\n", manualTaskTemplate.displayId, "\ntaskID\n", autoTaskTemplate.displayId);
 
-        await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
-        await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "sequential");
-        await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "parallel");
+        //await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
+        //await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "sequential");
+        //await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "parallel");
+        await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, autoTaskTemplate.displayId);
         //await apiHelper.associateCaseTemplateWithOneTaskTemplate('CTPL-0000000214', 'TTPL-0000000506');
         //await apiHelper.associateCaseTemplateWithTwoTaskTemplate('CTPL-0000000215', 'TTPL-0000000517', 'TTPL-0000000518', "sequential");
     });

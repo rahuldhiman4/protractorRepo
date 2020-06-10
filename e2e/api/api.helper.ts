@@ -19,7 +19,7 @@ import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
 import { FLAG_UNFLAG_KA } from '../data/api/knowledge/flag-unflag.data.api';
 import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/process.data.api';
-import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
+import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL, THREE_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
 import { IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api';
@@ -879,6 +879,45 @@ class ApiHelper {
         let caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
         let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = twoTaskFlowProcess.name;
+        await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
+    }
+
+    async associateCaseTemplateWithThreeTaskTemplate(caseTemplateId: string, taskTemplateId1: string, taskTemplateId2: string, taskTemplateId3: string, structure?: any): Promise<void> {
+        let threeTaskFlowProcess: any = THREE_TASKFLOW_SEQUENTIAL;
+        if (structure) threeTaskFlowProcess = threeTaskFlowProcess;
+
+        threeTaskFlowProcess = Object.assign({}, threeTaskFlowProcess);
+        let taskTemplateGuid1 = await coreApi.getTaskTemplateGuid(taskTemplateId1);
+        let taskTemplateGuid2 = await coreApi.getTaskTemplateGuid(taskTemplateId2);
+        let taskTemplateGuid3 = await coreApi.getTaskTemplateGuid(taskTemplateId3);
+        let randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        threeTaskFlowProcess.name = await threeTaskFlowProcess.name + "_" + randomString;
+
+        let taskTemplateJsonData1 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid1);
+        let taskSummary1 = taskTemplateJsonData1.fieldInstances[8].value;
+        let taskName1 = taskTemplateJsonData1.fieldInstances[1000001437].value;
+        let taskTemplateJsonData2 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid2);
+        let taskSummary2 = taskTemplateJsonData2.fieldInstances[8].value;
+        let taskName2 = taskTemplateJsonData2.fieldInstances[1000001437].value;
+        let taskTemplateJsonData3 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid3);
+        let taskSummary3 = taskTemplateJsonData3.fieldInstances[8].value;
+        let taskName3 = taskTemplateJsonData3.fieldInstances[1000001437].value;
+
+        threeTaskFlowProcess.flowElements[2].inputMap[1].expression = `"${taskSummary1}"`;
+        threeTaskFlowProcess.flowElements[3].inputMap[1].expression = `"${taskSummary2}"`;
+        threeTaskFlowProcess.flowElements[4].inputMap[1].expression = `"${taskSummary3}"`;
+        threeTaskFlowProcess.flowElements[2].inputMap[2].expression = `"${taskTemplateGuid1}"`;
+        threeTaskFlowProcess.flowElements[3].inputMap[2].expression = `"${taskTemplateGuid2}"`;
+        threeTaskFlowProcess.flowElements[4].inputMap[2].expression = `"${taskTemplateGuid3}"`;
+        threeTaskFlowProcess.layout = (threeTaskFlowProcess.layout).replace("New Task 1", taskName1);
+        threeTaskFlowProcess.layout = (threeTaskFlowProcess.layout).replace("New Task 2", taskName2);
+        threeTaskFlowProcess.layout = (threeTaskFlowProcess.layout).replace("New Task 3", taskName3);
+
+        let processGuid = await coreApi.createProcess(threeTaskFlowProcess);
+        console.log('New Process Created =============>', threeTaskFlowProcess.name, "=====GUID:", processGuid);
+        let caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
+        let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
+        caseTemplateJsonData.fieldInstances[450000165].value = threeTaskFlowProcess.name;
         await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
     }
 
