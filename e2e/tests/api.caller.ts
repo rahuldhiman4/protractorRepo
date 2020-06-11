@@ -120,18 +120,40 @@ describe('Login and create case from API', () => {
     });
 
     it('Associate task template to case template', async () => {
-
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
 
-        let caseTemplateData = {
-            "templateName": "case template name 1",
-            "templateSummary": "case template summary 1",
+        let caseTemplateData1 = {
+            "templateName": "case template1 " + randomStr,
+            "templateSummary": "case template1 summary " + randomStr,
             "templateStatus": "Active",
         }
-        let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
+        let newCaseTemplate1 = await apiHelper.createCaseTemplate(caseTemplateData1);
+
+        let caseTemplateData2 = {
+            "templateName": "case template2 " + randomStr,
+            "templateSummary": "case template2 summary " + randomStr,
+            "templateStatus": "Active",
+        }
+        let newCaseTemplate2 = await apiHelper.createCaseTemplate(caseTemplateData2);
+
+        let caseTemplateData3 = {
+            "templateName": "case template3 " + randomStr,
+            "templateSummary": "case template3 summary " + randomStr,
+            "templateStatus": "Active",
+        }
+        let newCaseTemplate3 = await apiHelper.createCaseTemplate(caseTemplateData3);
+
+        let caseTemplateData4 = {
+            "templateName": "case template4 " + randomStr,
+            "templateSummary": "case template4 summary " + randomStr,
+            "templateStatus": "Active",
+        }
+        let newCaseTemplate4 = await apiHelper.createCaseTemplate(caseTemplateData4);
+
         let manualTaskTemplateData = {
-            "templateName": "manual task template name 1",
-            "templateSummary": "manual task template summary 1",
+            "templateName": "manual task template name " + randomStr,
+            "templateSummary": "manual task template summary " + randomStr,
             "templateStatus": "Active",
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
@@ -141,8 +163,8 @@ describe('Login and create case from API', () => {
         let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
         let externalTaskTemplateData = {
-            "templateName": "external task template name 1",
-            "templateSummary": "external task template summary 1",
+            "templateName": "external task template name " + randomStr,
+            "templateSummary": "external task template summary " + randomStr,
             "templateStatus": "Active",
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
@@ -152,25 +174,26 @@ describe('Login and create case from API', () => {
         let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTaskTemplateData);
 
         let autoTaskTemplateData = {
-            "templateName": "auto task template 1",
-            "templateSummary": "auto task template summary 1",
+            "templateName": "auto task template " + randomStr,
+            "templateSummary": "auto task template summary " + randomStr,
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
-            "processName": "Case Process 1",
+            "processName": "Case Process " + randomStr,
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
             "ownerBusinessUnit": "Facilities Support",
             "ownerGroup": "Facilities"
         }
+
         let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
-
-        console.log(newCaseTemplate.id, "\ntaskID\n", manualTaskTemplate.id, "\ntaskID\n", autoTaskTemplate.id);
-        console.log(newCaseTemplate.displayId, "\ntaskID\n", manualTaskTemplate.displayId, "\ntaskID\n", autoTaskTemplate.displayId);
-
-        //await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
-        //await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "sequential");
-        //await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "parallel");
-        //await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, autoTaskTemplate.displayId);
+        await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate1.displayId, manualTaskTemplate.displayId);
+        console.log("Case Template with one task: ", caseTemplateData1.templateName, manualTaskTemplate.displayId);
+        await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate2.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "sequential");
+        console.log("Case Template with two sequence task: ", caseTemplateData2.templateName, manualTaskTemplate.displayId, autoTaskTemplate.displayId);
+        await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate3.displayId, externalTaskTemplate.displayId, autoTaskTemplate.displayId, "parallel");
+        console.log("Case Template with two parallel task: ", caseTemplateData3.templateName, externalTaskTemplate.displayId, autoTaskTemplate.displayId);
+        await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate4.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, autoTaskTemplate.displayId);
+        console.log("Case Template with three sequential task: ", caseTemplateData4.templateName, manualTaskTemplate.displayId, externalTaskTemplate.displayId, autoTaskTemplate.displayId);
         //await apiHelper.associateCaseTemplateWithOneTaskTemplate('CTPL-0000000214', 'TTPL-0000000506');
         //await apiHelper.associateCaseTemplateWithTwoTaskTemplate('CTPL-0000000215', 'TTPL-0000000517', 'TTPL-0000000518', "sequential");
     });
