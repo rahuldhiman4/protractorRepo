@@ -109,14 +109,14 @@ describe('Login and create case from API', () => {
 
     it('create user with psilon and petramco access', async () => {
         await apiHelper.apiLogin('tadmin');
-        // let userData = {
-        //     "firstName": "Petramco2",
-        //     "lastName": "Psilon2",
-        //     "userId": "psilopetra2",
-        // }
-        // await apiHelper.createNewUser(userData);
-        // await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
-        // await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
+        let userData = {
+            "firstName": "Petramco2",
+            "lastName": "Psilon2",
+            "userId": "psilopetra2",
+        }
+        await apiHelper.createNewUser(userData);
+        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
+        await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
     });
 
     it('Associate task template to case template', async () => {
