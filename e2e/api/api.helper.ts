@@ -833,8 +833,8 @@ class ApiHelper {
         let taskSummary = taskTemplateJsonData.fieldInstances[8].value;
         let taskName = taskTemplateJsonData.fieldInstances[1000001437].value;
 
-        oneTaskFlowProcess.flowElements[2].inputMap[0].expression = `"${taskSummary}"`;
-        oneTaskFlowProcess.flowElements[2].inputMap[3].expression = `"${taskTemplateGuid}"`;
+        oneTaskFlowProcess.flowElements[2].inputMap[1].expression = `"${taskSummary}"`;
+        oneTaskFlowProcess.flowElements[2].inputMap[2].expression = `"${taskTemplateGuid}"`;
         oneTaskFlowProcess.layout = (oneTaskFlowProcess.layout).replace("New Task", taskName);
 
         let processGuid = await coreApi.createProcess(oneTaskFlowProcess);
