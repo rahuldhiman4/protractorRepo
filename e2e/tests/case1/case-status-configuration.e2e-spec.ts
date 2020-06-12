@@ -393,7 +393,6 @@ describe('Case Status Configuration', () => {
         expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
         await statusConfigPo.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        await statusConfigPo.clickOnBackButton();
         await statusConfigPo.clickEditStatus("Staged");
         await statusConfigPo.updateExistingStatusName('Updated');
         await statusConfigPo.cancelSettingChange();

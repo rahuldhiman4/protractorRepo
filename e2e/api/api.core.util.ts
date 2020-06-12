@@ -160,6 +160,14 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getPersonFunctionalRoles(personName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Person");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[4] === personName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['430000002'] || null : null;
+    }
+
     async getFunctionalRoleGuid(functionalRole: string): Promise<string> {
         let dataPageUri = "rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.functionalrole.datapage.FunctionalRoleDataPageQuery"
             + "&pageSize=50&startIndex=0"

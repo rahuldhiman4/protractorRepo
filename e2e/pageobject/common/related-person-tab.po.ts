@@ -36,7 +36,7 @@ class RelatedPersonPage {
     }
 
     async isPersonRelatedHasCorrectRelation(relatedName: string, relation: string): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)));
+        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)),6000);
         let status: boolean = false;
         let allPersonNum: number = await $$(this.selectors.allRelatedPersons).count();
         for (let i = 0; i < allPersonNum; i++) {
