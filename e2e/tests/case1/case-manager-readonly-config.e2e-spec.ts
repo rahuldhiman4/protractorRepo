@@ -1,6 +1,6 @@
-import { NOTES_TEMPLATE_MANDATORY_FIELD } from '../../data/ui/Social/notesTemplate.api';
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
+import { NOTES_TEMPLATE_MANDATORY_FIELD } from '../../data/ui/Social/notesTemplate.api';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import menuItemEditPage from "../../pageobject/settings/application-config/edit-menu-items-config.po";
@@ -360,6 +360,5 @@ describe('Case Manager Read-only Config', () => {
         await editAcknowledementTemplatePage.clickOnSubjectCheckbox();
         expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Subject button is enabled');
         await utilityCommon.refresh();
-    });//, 150 * 1000);
-
-})
+    });
+});

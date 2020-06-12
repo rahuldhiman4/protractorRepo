@@ -38,6 +38,7 @@ describe("Create Case Assignment Mapping", () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await foundationData("Petramco");
+        await browser.sleep(5000);
     });
 
     async function foundationData(company: string) {
@@ -330,13 +331,12 @@ describe("Create Case Assignment Mapping", () => {
         });
     });
 
-    describe('[DRDMV-11825,DRDMV-11826, DRDMV-11827, DRDMV-11828, DRDMV-11978]: Verify Company and Support Group selection hierarchy.', async () => {
+    describe('[DRDMV-11825,DRDMV-11826,DRDMV-11827,DRDMV-11828,DRDMV-11978]: Verify Company and Support Group selection hierarchy.', async () => {
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let businessData = businessDataFile['BusinessUnitData11825'];
         let departmentData = departmentDataFile['DepartmentData11825'];
         let suppGrpData = supportGrpDataFile['SuppGrpData11825'];
-        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let summary = 'Adhoc task' + randomStr;
-        await browser.sleep(5000);
+        let summary = 'Adhoc task ' + randomStr;
 
         it('Case Company and Support Group selection hierarchy', async () => {
             await navigationPage.gotoCreateCase();
