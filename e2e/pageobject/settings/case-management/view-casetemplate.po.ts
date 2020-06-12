@@ -168,5 +168,4 @@ class ViewCaseTemplate {
         });
     }
 }
-
 export default new ViewCaseTemplate();
