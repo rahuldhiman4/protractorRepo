@@ -1,5 +1,4 @@
 import { browser } from "protractor";
-import apiHelper from '../../api/api.helper';
 import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -10,8 +9,6 @@ import documentTemplateConsolePo from '../../pageobject/settings/document-manage
 import editDocumentTemplatePo from '../../pageobject/settings/document-management/edit-document-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import { create } from 'domain';
-import utilGrid from 'e2e/utils/util.grid';
 
 describe('Document Template', () => {
     beforeAll(async () => {
@@ -131,67 +128,4 @@ describe('Document Template', () => {
             expect(await documentTemplateConsolePo.isGridRecordPresent(templateRandVal2)).toBeFalsy('template name is preset on grid');
         });
     });
-
-    //kgaikwad
-    describe('[DRDMV-14977]: Verify UI for Document template create ,edit, view mode', async () => {
-        let templateRandVal1 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let documentBody = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomStr1 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomStr2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let lable1;
-        let lable2;
-
-        beforeAll(async () => {
-            // Create Menu item Lables with API
-            await apiHelper.apiLogin('qkatawazi');
-            let menuItemDataFile1 = require('../../data/ui/ticketing/menuItem.ui.json');
-            lable1 = await menuItemDataFile1['sampleMenuItem'].menuItemName + randomStr1;
-            menuItemDataFile1['sampleMenuItem'].menuItemName = lable1;
-            await apiHelper.createNewMenuItem(menuItemDataFile1['sampleMenuItem']);
-
-            let menuItemDataFile2 = require('../../data/ui/ticketing/menuItem.ui.json');
-            lable2 = await menuItemDataFile2['sampleMenuItem'].menuItemName + randomStr2;
-            menuItemDataFile2['sampleMenuItem'].menuItemName = lable2;
-            await apiHelper.createNewMenuItem(menuItemDataFile2['sampleMenuItem']);
-        });
-
-        it('Verify Create Document Template UI', async () => {
-            // Goto document template
-            await navigationPage.gotoCaseConsole();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
-
-            await createDocumentTemplatePo.clickOnAddTemplate();
-            expect(await createDocumentTemplatePo.isHeaderDisplayed('Create Document Template')).toBeTruthy('Create document template header is missing');
-            expect(await createDocumentTemplatePo.isTemplateNameFieldRequired()).toBeTruthy('FailureMsg: Required tag is missing for Template Name')
-            expect(await createDocumentTemplatePo.isCompanyFieldRequired()).toBeTruthy('FailureMsg: Required tag is missing for Company')
-            expect(await createDocumentTemplatePo.isDescriptionFieldRequired()).toBeTruthy('FailureMsg: Required tag is missing for Description')
-            expect(await createDocumentTemplatePo.isDocumentBodyFieldRequired()).toBeTruthy('FailureMsg: Required tag is missing for Document Body')
-            expect(await createDocumentTemplatePo.isLabelFieldRequired()).toBeFalsy('FailureMsg: Required tag is displayed for Label')
-
-            await createDocumentTemplatePo.setTemplateName(templateRandVal1);
-            await createDocumentTemplatePo.setCompany('Petramco');
-            await createDocumentTemplatePo.selectLabelDropDown(lable1);
-            await createDocumentTemplatePo.setDescription(description);
-            await createDocumentTemplatePo.setDocumentBody(documentBody);
-            await createDocumentTemplatePo.clickOnSaveButton();
-        });
-        it('[DRDMV-14977]: Updated new Label and verify on console', async () => {
-            await documentTemplateConsolePo.clickOnGridRefreshButton();
-            await documentTemplateConsolePo.addColumnOnGrid(['Label']);
-            await documentTemplateConsolePo.searchOnGridConsole(templateRandVal1);
-            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Template Name')).toBe(templateRandVal1, 'FailureMsg: Template name is missing on Grid');
-            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'FailureMsg: Petramco  Company name is missing on Grid');
-            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Label')).toBe(lable1, 'FailureMsg: Label is missing on Grid');
-
-            await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
-            await editDocumentTemplatePo.selectLabelDropDown(lable2);
-            await editDocumentTemplatePo.clickOnSaveButton();
-            await documentTemplateConsolePo.searchOnGridConsole(templateRandVal1);
-            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Label')).toBe(lable2, 'Label is missing on Grid');
-            expect(await documentTemplateConsolePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label is not get sorted with descending order');
-        });
-    });
 });
-

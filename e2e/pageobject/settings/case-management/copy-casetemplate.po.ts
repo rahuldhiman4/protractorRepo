@@ -8,10 +8,9 @@ class CopyCaseTemplate {
     selectors = {
         templateName: '[rx-view-component-id="432c5f23-8c50-490d-9e94-8912ac4cd5e1"] input',
         saveButton: '[rx-view-component-id="fee3e577-173c-4dec-8265-ec81580ed26d"] button',
-        caseCategoryTier1ValueOnCopy: '[rx-view-component-id="57b0a78a-b91a-46c3-8800-04acc0d81108"] .ui-select-match-text',
+        caseCategoryTier1ValueOnCopy: '[rx-view-component-id="c8ce4fd2-d864-4544-baf7-4b27b59c12c3"] .ui-select-match-text',
         caseCategoryTier2ValueOnCopy: '[rx-view-component-id="42e3edda-f057-41e2-8160-7a9482e847dc"] .ui-select-match-text',
         caseCategoryTier3ValueOnCopy: '[rx-view-component-id="bb675d8f-82bc-497b-8b99-dfc1baa1dd41"] .ui-select-match-text',
-        caseCategoryTier4ValueOnCopy: '[rx-view-component-id="ec532c69-dbc8-4473-b76d-ad90bec193d2"] .ui-select-match-text',
         casePriorityValueOnCopy: '[rx-view-component-id="98327bc1-9ada-48f9-ab88-9787ddecd409"] .ui-select-match-text',
         caseSummaryValueOnCopy: '[rx-view-component-id="e3cb1a92-1e94-477d-93fa-b63b29c1c129"] .d-textfield__rx-value',
         statusReasonValueOnCopy: '[rx-view-component-id="cfde7589-436d-4835-aab8-f5d71e04f91a"] .d-textfield__rx-value',
@@ -33,7 +32,6 @@ class CopyCaseTemplate {
         caseDescriptionValueOnCopy: '[rx-view-component-id="3b3506af-b9a2-47bd-88f7-032092bc1264"] [ux-bind-html]',
         ownerGroupDropdown: 'b3ebc604-b7dc-4090-90a5-9515d1ea7f3e',
         copyInstruction: '[rx-view-component-id="162ce9d1-22d1-42a6-8360-f3d1c8dc3a20"] ul span',
-        label:  '[rx-view-component-id="2e5123d3-c442-4146-b941-0591e9c156bc"] .ui-select-match-text',
         businessUnitValueOnCopy: '[rx-view-component-id="0bfe6a89-2484-44d1-bae8-9353753f78fa"] .ui-select-match-text',
         departmentValueOnCopy: '[rx-view-component-id="6c570cf5-7f7b-4141-bd17-755e202e7095"] .ui-select-match-text',
         companyDropDown: '127214a1-bfc0-4a8c-acb7-cd2be137fa3c',
@@ -41,14 +39,14 @@ class CopyCaseTemplate {
 
     async setTemplateName(templateNameValue: string): Promise<void> {
         let element = $(this.selectors.templateName);
-        //        await browser.wait(this.EC.visibilityOf(element));
+//        await browser.wait(this.EC.visibilityOf(element));
         await element.clear();
         await element.sendKeys(templateNameValue);
     }
 
     async getCopyCaseTemplateInstruction(): Promise<string> {
         var textInstruction;
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.copyInstruction)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.copyInstruction)));
         var alltext: number = await $$(this.selectors.copyInstruction).count();
         for (var i = 0; i < alltext; i++) {
             var textInst = await $$(this.selectors.copyInstruction).get(i);
@@ -63,27 +61,27 @@ class CopyCaseTemplate {
     }
 
     async clickSaveCaseTemplate(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async getValueOfCaseSummary(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummaryValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummaryValueOnCopy)));
         return await $(this.selectors.caseSummaryValueOnCopy).getText();
     }
 
     async getValueOfCaseCompany(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCompanyValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCompanyValueOnCopy)));
         return await $(this.selectors.caseCompanyValueOnCopy).getText();
     }
 
     async getValueOfSupportCompany(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.supportCompanyValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.supportCompanyValueOnCopy)));
         return await $(this.selectors.supportCompanyValueOnCopy).getText();
     }
 
     async getValueOfSupportGroup(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupValueOnCopy)));
         return await $(this.selectors.supportGroupValueOnCopy).getText();
     }
 
@@ -96,22 +94,22 @@ class CopyCaseTemplate {
     }
 
     async getValueOfAssignee(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeValueOnCopy)));
         return await $(this.selectors.assigneeValueOnCopy).getText();
     }
 
     async getValueOfFlowset(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.FlowsetValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.FlowsetValueOnCopy)));
         return await $(this.selectors.FlowsetValueOnCopy).getText();
     }
 
     async getValueOfStatusReason(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.statusReasonValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.statusReasonValueOnCopy)));
         return await $(this.selectors.statusReasonValueOnCopy).getText();
     }
 
     async getValueOfTemplateStatus(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.templateStatusValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.templateStatusValueOnCopy)));
         return await $(this.selectors.templateStatusValueOnCopy).getText();
     }
 
@@ -124,7 +122,7 @@ class CopyCaseTemplate {
     }
 
     async getValueOfOwnerGroup(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerGroupValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerGroupValueOnCopy)));
         return await $(this.selectors.ownerGroupValueOnCopy).getText();
     }
 
@@ -137,79 +135,70 @@ class CopyCaseTemplate {
     }
 
     async getValueOfOwnerCompany(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.OwnerCompanyValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.OwnerCompanyValueOnCopy)));
         return await $(this.selectors.OwnerCompanyValueOnCopy).getText();
     }
 
     async getValueOfIdentityValidation(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.identityValidationValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.identityValidationValueOnCopy)));
         return await $(this.selectors.identityValidationValueOnCopy).getText();
     }
 
     async getValueOfAssignementMethod(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignmentMethodValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.assignmentMethodValueOnCopy)));
         return await $(this.selectors.assignmentMethodValueOnCopy).getText();
     }
 
     async getValueOfTaskFailureConfiguration(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskFailureConfigurationValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.taskFailureConfigurationValueOnCopy)));
         return await $(this.selectors.taskFailureConfigurationValueOnCopy).getText();
     }
 
     async getValueOfAllowReopen(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.allowCaseReopenValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.allowCaseReopenValueOnCopy)));
         return await $(this.selectors.allowCaseReopenValueOnCopy).getText();
     }
 
     async getValueOfResolutionCode(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.resolutionCodeValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.resolutionCodeValueOnCopy)));
         return await $(this.selectors.resolutionCodeValueOnCopy).getText() == "Yes" ? true : false;
     }
 
     async getValueOfResolutionDescription(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.resoltuionDescriptionValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.resoltuionDescriptionValueOnCopy)));
         return await $(this.selectors.resoltuionDescriptionValueOnCopy).getText() == "Yes" ? true : false;
     }
 
     async getValueOfcaseStatus(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseStatusValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseStatusValueOnCopy)));
         return await $(this.selectors.caseStatusValueOnCopy).getText();
     }
 
     async isValueOfCasePriorityPresent(priorityValue: string): Promise<boolean> {
-        //        return await browser.wait(this.EC.or(async () => {
-        return await $(this.selectors.casePriorityValueOnCopy).getAttribute('aria-label') == priorityValue;
-        //            return value;
-        //        }), 3000);
+//        return await browser.wait(this.EC.or(async () => {
+            return await $(this.selectors.casePriorityValueOnCopy).getAttribute('aria-label') == priorityValue;
+//            return value;
+//        }), 3000);
     }
 
     async getValueOfCaseDescription(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseDescriptionValueOnCopy)));
+//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseDescriptionValueOnCopy)));
         return await $(this.selectors.caseDescriptionValueOnCopy).getText();
     }
 
     async getValueofCaseCategoryTier1(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCategoryTier1ValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCategoryTier1ValueOnCopy)));
         return await $(this.selectors.caseCategoryTier1ValueOnCopy).getText();
     }
     async getValueofCaseCategoryTier2(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCategoryTier2ValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCategoryTier2ValueOnCopy)));
         return await $(this.selectors.caseCategoryTier2ValueOnCopy).getText();
     }
     async getValueofCaseCategoryTier3(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCategoryTier3ValueOnCopy)));
+//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCategoryTier3ValueOnCopy)));
         return await $(this.selectors.caseCategoryTier3ValueOnCopy).getText();
     }
 
-    async getValueofCaseCategoryTier4(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCategoryTier3ValueOnCopy)));
-        return await $(this.selectors.caseCategoryTier4ValueOnCopy).getText();
-    }
-
-    async getValueofLabel(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCategoryTier3ValueOnCopy)));
-        return await $(this.selectors.label).getText();
-    }
     async setCompanyName(companyValue: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.companyDropDown, companyValue);
     }

@@ -19,7 +19,7 @@ class EditCaseTemplate {
         casePriority: '98327bc1-9ada-48f9-ab88-9787ddecd409',
         caseStatus: '5289a531-7138-4e4f-afdc-ee3f67a2aa64',
         statusReason: 'cfde7589-436d-4835-aab8-f5d71e04f91a',
-        label: '06d4ad28-b48e-493a-b6b3-925fea737576',
+        label: '7ea99756-16a7-4aae-a8a0-8e5e11acfb77',
         caseCategoryTier1: '241f0e58-3106-4f8a-a1cc-43554414bb7c',
         caseCategoryTier2: '4f950be7-d968-41a4-8bb9-018674e53f88',
         caseCategoryTier3: 'a7fbc4bc-23c6-4f92-818a-5554107d04c0',
@@ -54,8 +54,7 @@ class EditCaseTemplate {
         saveTemplateData: '[rx-view-component-id="16f6e232-26f8-4c72-a30a-b4e765fd09b6"] button',
         caseStatusValue: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .ui-select-toggle', 
         manageDynamicField: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
-        dynamicFieldsName:'[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] span',
-        dropdownBox: '.ui-select-toggle'
+        dynamicFieldsName:'[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] span'
     }
 
     async clickOnCopyCaseTemplate(): Promise<void> {
@@ -151,10 +150,7 @@ class EditCaseTemplate {
     }
 
     async changeLabelValue(labelValue: string): Promise<void> {
-        // await utilCommon.selectDropDown(this.selectors.label, labelValue);
-        let  dropDown = await $(`[rx-view-component-id="${this.selectors.label}"]`);
-        let  dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-        await utilCommon.selectDropDown2(dropDownBoxElement,labelValue);
+        await utilCommon.selectDropDown(this.selectors.caseCategoryTier4, labelValue);
     }
 
     async changeFlowsetValue(flowsetValue: string): Promise<void> {

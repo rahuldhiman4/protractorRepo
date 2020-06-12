@@ -1,3 +1,4 @@
+  
 import { $, browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import caseConsole from '../../pageobject/case/case-console.po';
@@ -950,6 +951,4 @@ describe('Case Status Change', () => {
             await loginPage.login('qkatawazi');
         }
     });
-
-    
 });

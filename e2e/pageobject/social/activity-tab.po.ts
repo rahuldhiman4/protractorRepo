@@ -2,7 +2,6 @@ import { resolve } from "path";
 import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 import ckEditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
-import utilityCommon from 'e2e/utils/utility.common';
 
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -16,7 +15,7 @@ class ActivityTabPage {
         addNotePostButton: '.activity-feed-note-buttons__right .btn-primary',
         addNoteCancelButton: '.activity-feed-note-buttons__right .btn-secondary',
         addNoteNotesTemplate: '.activity-note .d-icon-note_pencil',
-        activityLog: '.activity__body .activity-title, .activity__body [style="position: relative;"], .activity__body .field, .activity__body .value, .activity__body div',
+        activityLog: '.activity__body .activity-title, .activity__body [style="position: relative;"], .activity__body .field, .activity__body .value',
         filterButton: '.d-icon-filter',
         filterCheckbox: '.checkbox__label span',
         filterAuthor: '.dropdown [placeholder="Enter name, email, login ID or employee ID"]',
@@ -86,28 +85,19 @@ class ActivityTabPage {
         activityLogBody: '.activity__wrapper .collapse-block div div[style="position: relative;"]',
     }
 
-    async scrollUpOrDownActivityLogs(activityNumber: number): Promise<void> {
-            await browser.executeScript("arguments[0].scrollIntoView();", $$(this.selectors.activityLogList).get(activityNumber - 1).getWebElement());
-        }
-
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isPresent().then(async (result) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });
     }
 
     async isTitleTextDisplayedInActivity(caseActivityLogTitleText: string, activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.logTitle).isPresent().then(async (result) => {
-           if (result){
-               let logtitleText=await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.logTitle).getText();
-               if(logtitleText.includes(caseActivityLogTitleText)){
-                   return true;
-               }
-           }
-           else return false;
-       });
-   }
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText(this.selectors.logTitle, caseActivityLogTitleText)).isDisplayed().then(async (result) => {
+            if (result) return true;
+            else return false;
+        });
+    }
 
     async isBodyDisplayedInActivity(caseActivityLogTitleText: string, activityNumber: number): Promise<boolean> {
         return await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.body', caseActivityLogTitleText)).isDisplayed().then(async (result) => {
@@ -126,64 +116,39 @@ class ActivityTabPage {
     async isLogIconDisplayedInActivity(iconName: string, activityNumber: number): Promise<boolean> {
         switch (iconName) {
             case "note_pencil": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-note_pencil').isPresent().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
-            }
-
-            case "pencil": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-pencil').isPresent().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
-            }
-
-            case "comments": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-comments').isPresent().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
-            }
-
-            case "unflag": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-flag_o').isPresent().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
-            }
-
-            case "flag": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('d-icon-flag').isPresent().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
-            }
-
-            case "filePlus": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-file_plus_o').isPresent().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
-            }
-
-            case "arrow_exclamation_circle": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-list_arrow_exclamation_circle').isPresent().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
-            }
-
-            case "squares_arrows": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-squares_arrows').isPresent().then(async (result) => {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-note_pencil').isDisplayed().then(async (result) => {
                     if (result) return true;
                     else return false;
                 });
                 break;
             }
 
-            case "files_change": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-files_change_o').isPresent().then(async (result) => {
+            case "pencil": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-pencil').isDisplayed().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+                break;
+            }
+
+            case "comments": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-comments').isDisplayed().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+                break;
+            }
+
+            case "unflag": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-flag_o').isDisplayed().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+                break;
+            }
+
+            case "flag": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('d-icon-flag').isDisplayed().then(async (result) => {
                     if (result) return true;
                     else return false;
                 });
@@ -377,8 +342,6 @@ class ActivityTabPage {
     async getActivityNotesText(textToMatch: string): Promise<boolean> {
         var elem = element(by.xpath("//div[contains(@class,'d-icon-note_pencil')]/following-sibling::div"));
         //        browser.wait(this.EC.elementToBeClickable(elem));
-        console.log('>>>>>>>',elem);
-        
         var value = await elem.getText();
         //        await utilCommon.waitUntilSpinnerToHide();
         return value.includes(textToMatch) ? true : false;
