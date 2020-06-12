@@ -49,6 +49,7 @@ class ViewKnowledgePage {
         editKnowledgeAccess: '[rx-view-component-id="cbdd812c-4899-4503-84ab-412020d820df"] button',
         tab: 'button[role="tab"] span.nav-link-wrapper',
         attachmentName: 'bwf-attachment-viewer .bwf-attachment-container__file-name',
+        expandAllAttachment: '.bwf-attachment-viewer .d-icon-plus',
     }
 
     async clickOnKAUsefulYesButton(): Promise<void> {
@@ -376,6 +377,9 @@ class ViewKnowledgePage {
         return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isPresent();
     }
 
+    async clickShowMoreButton(): Promise<void> {
+        await $(this.selectors.expandAllAttachment).click();
+    }
 }
 
 export default new ViewKnowledgePage();
