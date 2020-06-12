@@ -8,7 +8,7 @@ export class Utility {
     selectors = {
         dropdownBox: '.dropdown-toggle',
         dropDownInput: 'input.form-control',
-        dropDownNoneOpt: '.dropdown_select__btn',
+        dropDownNoneOpt: '.dropdown-item span',
         dropDownOption: '.dropdown_select__menu-content button',
         warningDialog: '.modal-content .modal-title, .modal-content .d-modal__title',
         warningDialogMsg: '.modal-content .modal-body, .modal-content .d-modal__content-item',
@@ -49,7 +49,7 @@ export class Utility {
     async clearDropDown(guid: string): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-        const dropDownSelectNoneItem = await dropDown.$(this.selectors.dropDownNoneOpt);
+        const dropDownSelectNoneItem = await dropDown.element(by.cssContainingText(this.selectors.dropDownNoneOpt,'Select None'));
         await dropDownBoxElement.click();
         await dropDownSelectNoneItem.click();
         await dropDownBoxElement.click();
@@ -427,6 +427,16 @@ export class Utility {
         let d: Date = new Date();
         d.setDate(d.getDate() - noOfDays);
         return d;
+    }
+
+    async closeAllBlades(): Promise<void> {
+        await $('body').sendKeys(protractor.Key.ESCAPE);
+        await $('.modal-title').isPresent().then(async (result) => {
+            if (result) await this.clickOnApplicationWarningYesNoButton("Yes");
+        });
+        for (let i: number = 0; i < 2; i++) {
+            await $('body').sendKeys(protractor.Key.ESCAPE);
+        }
     }
 }
 

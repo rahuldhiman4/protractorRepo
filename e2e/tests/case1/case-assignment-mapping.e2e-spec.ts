@@ -336,6 +336,7 @@ describe("Create Case Assignment Mapping", () => {
         let suppGrpData = supportGrpDataFile['SuppGrpData11825'];
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary = 'Adhoc task' + randomStr;
+        await browser.sleep(5000);
 
         it('Case Company and Support Group selection hierarchy', async () => {
             await navigationPage.gotoCreateCase();

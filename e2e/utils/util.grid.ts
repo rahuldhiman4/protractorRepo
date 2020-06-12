@@ -58,11 +58,12 @@ export class GridOperation {
         );
     }
 
-    async isGridRecordPresent(searchRecord: string): Promise<boolean> {
-         await this.clearGridSearchBox();
-         await this.searchOnGridConsole(searchRecord);
-        //        await browser.sleep(5000);
-        return await $(this.selectors.gridRecordPresent).isPresent();
+    async isGridRecordPresent(searchRecord: string, guid?: string): Promise<boolean> {
+        await this.clearGridSearchBox(guid);
+        await this.searchOnGridConsole(searchRecord, guid);
+        let gridRecord = this.selectors.gridRecordPresent;
+        if (guid) { gridRecord = `[rx-view-component-id="${guid}"] ` + gridRecord; }
+        return await $(gridRecord).isPresent();
     }
 
     async addGridColumn(guid: string, columnName: string[]): Promise<void> {
@@ -112,11 +113,12 @@ export class GridOperation {
         await element(by.cssContainingText('.ui-grid__link', id)).click();
     }
 
-    async clearGridSearchBox() {
-        let clearBtn: boolean = await $(this.selectors.clearGridSearchBoxButton).isDisplayed();
+    async clearGridSearchBox(guid?: string) {
+        let searchBoxCrossIcon: string = this.selectors.clearGridSearchBoxButton;
+        if (guid) { searchBoxCrossIcon = `[rx-view-component-id="${guid}"] ` + searchBoxCrossIcon; }
+        let clearBtn: boolean = await $(searchBoxCrossIcon).isDisplayed();
         if (clearBtn == true) {
-            //            await browser.wait(this.EC.visibilityOf($(this.selectors.clearGridSearchBoxButton)));
-            await $(this.selectors.clearGridSearchBoxButton).click();
+            await $(searchBoxCrossIcon).click();
         } else { console.log('Grid search box is already cleared') }
     }
 
@@ -271,11 +273,19 @@ export class GridOperation {
         }
     }
 
-    async searchOnGridConsole(searchValue: string): Promise<void> {
-        await $(this.selectors.searchInput).clear();
-        await $(this.selectors.refreshButton).click();
-        await $(this.selectors.searchInput).sendKeys(searchValue);
-        await $(this.selectors.searchIcon).click();
+    async searchOnGridConsole(searchValue: string, guid?: string): Promise<void> {
+        let searchBoxInput: string = this.selectors.searchInput;
+        let gridRefreshButton: string = this.selectors.refreshButton;
+        let gridSearchIcon: string = this.selectors.searchIcon;
+        if (guid) {
+            searchBoxInput = `[rx-view-component-id="${guid}"] ` + searchBoxInput;
+            gridRefreshButton = `[rx-view-component-id="${guid}"] ` + gridRefreshButton;
+            gridSearchIcon = `[rx-view-component-id="${guid}"] ` + gridSearchIcon;
+        }
+        await $(searchBoxInput).clear();
+        await $(gridRefreshButton).click();
+        await $(searchBoxInput).sendKeys(searchValue);
+        await $(gridSearchIcon).click();
     }
 
     async searchAndSelectGridRecord(searchValue: string, guid?: string): Promise<void> {
@@ -367,7 +377,7 @@ export class GridOperation {
         await $(guidId + this.selectors.filterIcon).click();
         await element.all(by.cssContainingText(guidId + this.selectors.filterItems, fieldName)).last().click();
         // await browser.wait(this.EC.elementToBeClickable(fldLocator));
-        
+
         switch (type) {
             case "checkbox": {
                 let cbox = `.rx-search-filter-option[title='${textValue}']`
