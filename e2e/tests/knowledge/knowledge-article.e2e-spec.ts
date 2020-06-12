@@ -1027,7 +1027,9 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
     });
 
-    it('[DRDMV-772]:[Edit Knowledge Article] Modify Knowledge metadata on edit knowledge screen', async () => {
+    it('[DRDMV-772,DRDMV-4264]:[Edit Knowledge Article] Modify Knowledge metadata on edit knowledge screen', async () => {
+        let fileName: string[] = [];
+        fileName = ['bwfJpg.jpg', 'bwfXlsx.xlsx', 'bwfXml.xml','bwfPdf.pdf','bwfWord1.rtf','demo.txt'];
         await apiHelper.apiLogin(knowledgeCoachUser);
         let articleData = {
             "knowledgeSet": "HR",
@@ -1071,37 +1073,36 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('Final Pay');
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         await editKnowledgePage.removeAttachment();
-        await editKnowledgePage.addAttachment(['../../data/ui/attachment/bwfJpg1.jpg']);
+        for (let i: number = 0; i < fileName.length; i++) {
+        await editKnowledgePage.addAttachment([`../../data/ui/attachment/${fileName[i]}`]);
+        }
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         await utilityCommon.closePopUpMessage();
-        expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfJpg1')).toBeTruthy();
+        await viewKnowledgeArticlePo.clickShowMoreButton();
+        expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfJpg')).toBeTruthy();
+        expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfXlsx')).toBeTruthy();
+        expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfXml')).toBeTruthy();
+        expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfWord1')).toBeTruthy();
+        expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('demo')).toBeTruthy();
     });
 
-    it('[DRDMV-3461]:[Knowledge Article] Adding one or two or three level operational categorization while creating knowledge articles_Tier1, Tier2 & Tier3', async () => {
-        await apiHelper.apiLogin(knowledgeCoachUser);
-        let articleData = {
-            "knowledgeSet": "HR",
-            "title": 'knowledge2746' + randomStr,
-            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "assignedCompany": "Petramco",
-            "assigneeBusinessUnit": "United States Support",
-            "assigneeSupportGroup": "US Support 1",
-            "assignee": "kayo",
-            "categoryTier1": "Accounts Payable",
-            "categoryTier2": "Invoices",
-            "categoryTier3": "Payment",
-            "region": "Australia",
-            "site": "Canberra",
-            "articleDesc" : 'knowledge2746' + randomStr,
-        }
-        let kaDetails = await apiHelper.createKnowledgeArticle(articleData);        
+    it('[DRDMV-3461,DRDMV-12610]:[Knowledge Article] Adding one or two or three level operational categorization while creating knowledge articles_Tier1, Tier2 & Tier3', async () => {
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
         await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
         await utilityCommon.switchToNewTab(1);
-        expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-        await utilityGrid.clearFilter();
-        await utilityGrid.searchAndOpenHyperlink(kaDetails.displayId);
+        await navigationPage.gotoCreateKnowledge();
+        await createKnowledgePage.clickOnTemplate('Reference');
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
+        await createKnowledgePage.setReferenceValue('KnowledgeReference' + randomStr)
+        await createKnowledgePage.selectKnowledgeSet('HR');
+        await createKnowledgePage.clickAssignToMeButton();
+        await createKnowledgePage.selectCategoryTier1Option('Accounts Payable');
+        await createKnowledgePage.selectCategoryTier2Option('Invoices');
+        await createKnowledgePage.selectCategoryTier3Option('Payment');
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+        await previewKnowledgePo.clickGoToArticleButton();
         expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Accounts Payable');
         expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Invoices');
         expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('Payment');
@@ -1126,5 +1127,39 @@ describe('Knowledge Article', () => {
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         await utilityCommon.closePopUpMessage();
         expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Accounts Payable');
+    });
+
+    it('[DRDMV-2448]:KA Console - Search Article by name, keywords', async () => {
+        await apiHelper.apiLogin(knowledgeCoachUser);
+        let articleData = {
+            "knowledgeSet": "HR",
+            "title": 'knowledge2746' + randomStr,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United States Support",
+            "assigneeSupportGroup": "US Support 1",
+            "assignee": "kayo",
+            "categoryTier1": "Applications",
+            "categoryTier2": "Help Desk",
+            "categoryTier3": "Incident",
+            "region": "Australia",
+            "site": "Canberra",
+            "articleDesc": 'knowledge2746' + randomStr,
+        }
+        let kaDetails = await apiHelper.createKnowledgeArticle(articleData);
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
+        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await utilityCommon.switchToNewTab(1);
+        expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchRecord(kaDetails.displayId);
+        expect(await utilityGrid.isGridRecordPresent(kaDetails.displayId)).toBeTruthy(kaDetails.displayId + ' :Record is not available');
+        await utilityGrid.searchRecord('HR');
+        expect(await utilityGrid.isGridRecordPresent('HR')).toBeTruthy();
+        await utilityGrid.searchRecord(articleData.title);
+        expect(await utilityGrid.isGridRecordPresent(articleData.title)).toBeTruthy();
+        await utilityGrid.searchRecord(articleData.assignedCompany);
+        expect(await utilityGrid.isGridRecordPresent(articleData.assignedCompany)).toBeTruthy();
     });
 })

@@ -42,6 +42,7 @@ class EditTaskTemplate {
     async isProcessNameDisabled(): Promise<boolean> {
         return await $(this.selectors.processNameValue).getAttribute('readOnly') == 'true' ? true : false;
     }
+    
     async selectTaskCategoryTier1(category1: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown1, category1);
     }
@@ -157,6 +158,10 @@ class EditTaskTemplate {
             }
         }
         return false;
+    }
+
+    async isCaseSummaryReadOnly(): Promise<boolean> {
+        return await $(this.selectors.summary).getAttribute('readonly') == 'true' ? true : false;
     }
 }
 
