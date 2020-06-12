@@ -350,7 +350,7 @@ describe('Menu Item', () => {
     });
 
     //kgaikwad
-    fdescribe('[DRDMV-17654]: Check Resolution Code and Resolution Description fields added on Case Template', async () => {
+    describe('[DRDMV-17654]: Check Resolution Code and Resolution Description fields added on Case Template', async () => {
         let caseTemplateName1: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName2: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName3: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
