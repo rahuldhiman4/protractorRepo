@@ -179,15 +179,23 @@ export class Utility {
         return (await $(locator).getAttribute("required")) == 'required';
     }
 
-    async isRequiredTagToField(guid: string, element?: ElementFinder): Promise<boolean> {
+    async isRequiredTagToField(guid: string): Promise<boolean> {
         let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent();
         if (!isRequired) {
-            let nameElement
-            if (element) {nameElement =  element;} else {nameElement = await $(`[rx-view-component-id="${guid}"] label`);}
+            let nameElement = await $(`[rx-view-component-id="${guid}"] label`);
             let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
             isRequired = value.trim().substring(3, value.length - 2) === 'required';
         }
         return isRequired;
+    }
+
+    async isRequiredTagToFieldElement(nameElement: ElementFinder): Promise<boolean> {
+        return await nameElement.isPresent().then(async (result) => {
+            if (result) {
+                let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+                return value.trim().substring(3, value.length - 2) === 'required';
+            } else return false;
+        });
     }
 
     async deleteAlreadyDownloadedFile(fileName: string): Promise<boolean> {

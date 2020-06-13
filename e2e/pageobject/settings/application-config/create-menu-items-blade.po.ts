@@ -117,7 +117,7 @@ class CreateNewMenuOptionPage {
 
     async isMenuOptionFieldRequired(): Promise<boolean> {
         let menuOptionElementRequiredTag= await $('[rx-view-component-id="d40aa6f2-090d-4641-9779-ae724673575c"] span.d-textfield__item');
-        return await utilCommon.isRequiredTagToField('d40aa6f2-090d-4641-9779-ae724673575c',menuOptionElementRequiredTag);
+        return await utilCommon.isRequiredTagToFieldElement(menuOptionElementRequiredTag);
     }
 
     async isStatusFieldRequired(): Promise<boolean> {

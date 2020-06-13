@@ -285,14 +285,12 @@ describe('Menu Item', () => {
 
     //kgaikwad
     describe('[DRDMV-16104]: [Menu Items] Create new records in Menu Items', async () => {
-        let lableRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let sourceRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let resolutionCodeRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let lableRandVal='labelVal'+randomStr;
+        let sourceRandVal='sourceVal'+randomStr;
+        let resolutionCodeRandVal='resolutionCodeVal'+randomStr;
 
         it('Verify Create Menu Item UI', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
-
             await createMenuItems.clickOnMenuOptionLink();
             expect(await createMenuItems.isMenuNameFieldRequired()).toBeTruthy('FailureMsg: Menu Name required label is missing');
             expect(await createMenuItems.isMenuOptionFieldRequired()).toBeTruthy('FailureMsg: Menu Option required label is missing');
@@ -310,7 +308,7 @@ describe('Menu Item', () => {
         it('Create Label Menu and verify in in Grid', async () => {
             await createMenuItems.selectMenuNameDropDown('Label');
             await createMenuItems.clickOnLocalizeLink();
-            await localizeValuePopPo.setLocalizeValue(lableRandVal)
+            await localizeValuePopPo.setLocalizeValue(lableRandVal);
             await localizeValuePopPo.clickOnSaveButton();
             await utilCommon.waitUntilPopUpDisappear();
             await createMenuItems.selectStatusDropDown('Active');
@@ -351,12 +349,8 @@ describe('Menu Item', () => {
 
     //kgaikwad
     describe('[DRDMV-17654]: Check Resolution Code and Resolution Description fields added on Case Template', async () => {
-        let caseTemplateName1: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName2: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName3: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName4: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let resolutionCode;
+        let caseTemplateName1, caseTemplateName2, caseTemplateName3, caseTemplateName4, resolutionCode;
         beforeAll(async () => {
             // Create Resoution code
             await apiHelper.apiLogin('qkatawazi');
@@ -366,60 +360,9 @@ describe('Menu Item', () => {
             await apiHelper.createNewMenuItem(menuItemDataFile['resolutionCodeActiveOnUI']);
 
             // Create case template 1 
-            let templateData1 = {
-                "templateName": caseTemplateName1,
-                "templateSummary": caseTemplateName1,
-                "caseStatus": "InProgress",
-                "templateStatus": "Active",
-                "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": 'Facilities Support',
-                "ownerGroup": "Facilities",
-                "resolutionCode": "1",
-                "resolutionDescription": "0"
-            }
-            await apiHelper.createCaseTemplate(templateData1);
-
-            // Create case template 2
-            let templateData2 = {
-                "templateName": caseTemplateName2,
-                "templateSummary": caseTemplateName2,
-                "caseStatus": "InProgress",
-                "templateStatus": "Active",
-                "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": 'Facilities Support',
-                "ownerGroup": "Facilities",
-                "resolutionCode": "0",
-                "resolutionDescription": "1"
-            }
-            await apiHelper.createCaseTemplate(templateData2);
-
-            // Create case template 3
-            let templateData3 = {
-                "templateName": caseTemplateName3,
-                "templateSummary": caseTemplateName3,
-                "caseStatus": "InProgress",
-                "templateStatus": "Active",
-                "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": 'Facilities Support',
-                "ownerGroup": "Facilities",
-                "resolutionCode": "1",
-                "resolutionDescription": "1"
-            }
-            await apiHelper.createCaseTemplate(templateData3);
-
-            // Create case template 4
-            let templateData4 = {
-                "templateName": caseTemplateName4,
-                "templateSummary": caseTemplateName4,
+            let caseTemplateData = {
+                "templateName": 'caseTemplateName',
+                "templateSummary": 'case_Template_Summary',
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -431,7 +374,26 @@ describe('Menu Item', () => {
                 "resolutionCode": "0",
                 "resolutionDescription": "0"
             }
-            await apiHelper.createCaseTemplate(templateData4);
+
+            caseTemplateName1 = caseTemplateData.templateName = 'DRDMV-17654_caseTemplateName_1' + randomStr;
+            caseTemplateData.resolutionCode = "1"
+            caseTemplateData.resolutionDescription = "0"
+            await apiHelper.createCaseTemplate(caseTemplateData);
+
+            caseTemplateName2 = caseTemplateData.templateName = 'DRDMV-17654_caseTemplateName_2' + randomStr;
+            caseTemplateData.resolutionCode = "0"
+            caseTemplateData.resolutionDescription = "1"
+            await apiHelper.createCaseTemplate(caseTemplateData);
+
+            caseTemplateName3 = caseTemplateData.templateName = 'DRDMV-17654_caseTemplateName_3' + randomStr;
+            caseTemplateData.resolutionCode = "1"
+            caseTemplateData.resolutionDescription = "1"
+            await apiHelper.createCaseTemplate(caseTemplateData);
+
+            caseTemplateName4 = caseTemplateData.templateName = 'caseTemplateName_4' + randomStr;
+            caseTemplateData.resolutionCode = "0"
+            caseTemplateData.resolutionDescription = "0"
+            await apiHelper.createCaseTemplate(caseTemplateData);
         });
 
         it('Create case with selecting case template 1', async () => {
