@@ -30,7 +30,7 @@ import { INCOMINGMAIL, EMAILCONFIG, OUTGOINGEMAIL } from '../data/api/email/emai
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
-import { UPDATE_PERSON_AS_VIP } from '../data/api/foundation/update.person.data.api';
+import { UPDATE_PERSON_AS_VIP, ADD_FUNCTIONAL_ROLE } from '../data/api/foundation/update.person.data.api';
 import { SERVICE_TARGET_PAYLOAD } from '../data/api/slm/serviceTarget.api';
 import { ADHOC_TASK_PAYLOAD, UPDATE_TASK_STATUS, TASK_CREATION_FROM_TEMPLATE } from '../data/api/task/task.creation.api';
 import { KNOWLEDGE_APPROVAL_CONFIG, KNOWLEDGE_APPROVAL_FLOW_CONFIG } from '../data/api/knowledge/knowledge-approvals-config.api';
@@ -1959,6 +1959,15 @@ class ApiHelper {
             id: businessTimeSegment.data.id,
             displayId: businessTimeSegment.data.displayId
         };
+    }
+
+    async addFunctionalRole(person: string, functionalRoleGuid?: string): Promise<boolean>{
+        let userRoles = await coreApi.getPersonFunctionalRoles(person);
+        let personGuid = await coreApi.getPersonGuid(person)
+        ADD_FUNCTIONAL_ROLE.fieldInstances[430000002].value = userRoles + ';' + functionalRoleGuid;
+        let response = await coreApi.updateRecordInstance('com.bmc.arsys.rx.foundation:Person', personGuid, ADD_FUNCTIONAL_ROLE);        
+        console.log(`Functional role of ${person} is successfully updated  =============>`, response.status);
+        return response.status == 204;
     }
 
 }

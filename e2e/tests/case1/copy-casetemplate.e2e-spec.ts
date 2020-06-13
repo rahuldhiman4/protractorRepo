@@ -37,14 +37,14 @@ describe('Copy Case Template', () => {
         userData1 = {
             "firstName": "Petramco",
             "lastName": "SGUser1",
-            "userId": "DRDMV13550User1",
+            "userId": "13550User1",
             "userPermission": "AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7",
         }
         await apiHelper.createNewUser(userData1);
         userData2 = {
             "firstName": "Petramco",
             "lastName": "SGUser2",
-            "userId": "DRDMV13550User2",
+            "userId": "13550User2",
             "userPermission": "AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7",
         }
         await apiHelper.createNewUser(userData2);
@@ -403,6 +403,8 @@ describe('Copy Case Template', () => {
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await utilCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickOnEditCaseTemplateButton();
+            expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeTruthy("Copy Case Template is non editable");
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -440,6 +442,8 @@ describe('Copy Case Template', () => {
             await viewTaskTemplate.clickOnManageDynamicFieldLink();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await utilCommon.closePopUpMessage();
+            await viewTaskTemplate.clickOnEditLink();
+            expect(await editTasktemplatePo.isCaseSummaryReadOnly()).toBeTruthy("Copy Case Template is editable"); 
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -458,10 +462,6 @@ describe('Copy Case Template', () => {
 
     describe('[DRDMV-13570]: Dynamic Field get copied upon creating copy of Case Template', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let dynamicFieldName1 = 'DRDMV13570FieldName1' + randomStr;
-        let dynamicFieldName2 = 'DRDMV13570FieldName2' + randomStr;
-        let dynamicFieldDescription1 = 'DRDMV13570FieldDescription1' + randomStr;
-        let dynamicFieldDescription2 = 'DRDMV13570FieldDescription2' + randomStr;
         let updatedCaseTemplate = 'UpdatedCaseDRDMV13570' + randomStr;
         let casetemplatePetramco, caseTemplateName1 = 'caseTemplateName' + randomStr;
         beforeAll(async () => {
@@ -492,13 +492,30 @@ describe('Copy Case Template', () => {
             await utilGrid.searchAndOpenHyperlink(casetemplatePetramco.templateName);
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             await dynamicField.clickOnDynamicField();
-            await dynamicField.setFieldName(dynamicFieldName1);
-            await dynamicField.setDescriptionName(dynamicFieldDescription1);
-            await dynamicField.clickSaveButton();
-            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            await dynamicField.setFieldName('news16' + randomStr);
+            await dynamicField.setDescriptionName('newDescri16' + randomStr);
+            await dynamicField.selectFieldValueType('DATE');
+            await dynamicField.selectInfromationSource('Requester');
             await dynamicField.clickOnDynamicField();
-            await dynamicField.setFieldName(dynamicFieldName2);
-            await dynamicField.setDescriptionName(dynamicFieldDescription2);
+            await dynamicField.setFieldName('news17' + randomStr);
+            await dynamicField.setDescriptionName('newDescri17' + randomStr);
+            await dynamicField.selectFieldValueType('NUMBER');
+            await dynamicField.selectInfromationSource('System');
+            await dynamicField.clickOnDynamicField();
+            await dynamicField.setFieldName('news18' + randomStr);
+            await dynamicField.setDescriptionName('newDescri18' + randomStr);
+            await dynamicField.selectFieldValueType('BOOLEAN');
+            await dynamicField.selectInfromationSource('Task Assignee');
+            await dynamicField.clickOnDynamicField();
+            await dynamicField.setFieldName('news19' + randomStr);
+            await dynamicField.setDescriptionName('newDescri19' + randomStr);
+            await dynamicField.selectFieldValueType('ATTACHMENT');
+            await dynamicField.selectInfromationSource('Agent');
+            await dynamicField.clickOnDynamicField();
+            await dynamicField.setFieldName('news20' + randomStr);
+            await dynamicField.setDescriptionName('newDescri20' + randomStr);
+            await dynamicField.selectFieldValueType('TEXT');
+            await dynamicField.selectInfromationSource('Agent');
             await dynamicField.clickSaveButton();
             await utilCommon.closePopUpMessage();
             await utilCommon.clickOnBackArrow();
@@ -509,8 +526,11 @@ describe('Copy Case Template', () => {
             await copyCaseTemplate.setTemplateName(updatedCaseTemplate);
             await copyCaseTemplate.clickSaveCaseTemplate();
             await utilCommon.closePopUpMessage();
-            expect(await viewCasetemplatePo.isDynamicFieldDisplayed(dynamicFieldDescription1)).toBeTruthy(`${dynamicFieldDescription1} dynamic field not present`);
-            expect(await viewCasetemplatePo.isDynamicFieldDisplayed(dynamicFieldDescription2)).toBeTruthy(`${dynamicFieldDescription2} dynamic field not present`);
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri16' + randomStr)).toBeTruthy('field not present');
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri17' + randomStr)).toBeTruthy('field not present');
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri18' + randomStr)).toBeTruthy('field not present');
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri19' + randomStr)).toBeTruthy('field not present');
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri20' + randomStr)).toBeTruthy('field not present');
         });
         afterAll(async () => {
             await navigationPage.signOut();

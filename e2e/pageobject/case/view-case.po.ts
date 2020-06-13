@@ -422,6 +422,14 @@ class ViewCasePage {
             } else return false;
         });
     }
+
+    async clickAssigneeLink(): Promise<void> {
+        await $(this.selectors.assigneeText).click();
+    }
+
+    async clickContactPersonName(): Promise<void> {
+        await $(this.selectors.contactPersonName).click();
+    }
 }
 
 export default new ViewCasePage();

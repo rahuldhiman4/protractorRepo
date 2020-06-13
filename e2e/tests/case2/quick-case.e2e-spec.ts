@@ -87,22 +87,23 @@ describe("Quick Case", () => {
     });
 
     it('[DRDMV-800]: [Quick Case] Case creation with requester having same name as other company users', async () => {
-        let userData1 = {
+        let userData1 = undefined,userData2 = undefined,userData3 = undefined,userData4 = undefined;
+        userData1 = {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData1",
         }
-        let userData2 = {
+        userData2 = {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData2",
         }
-        let userData3 = {
+        userData3 = {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData3",
         }
-        let userData4 = {
+        userData4 = {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData4",
@@ -123,6 +124,7 @@ describe("Quick Case", () => {
 
     it('[DRDMV-1205]: [Quick Case] People search', async () => {
         await navigationPage.gotoQuickCase();
+        await quickCase.clickStartOverButton();
         await quickCase.selectRequesterName('Allen');
         expect(await quickCase.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
         await quickCase.clickStartOverButton();
@@ -534,6 +536,7 @@ describe("Quick Case", () => {
             expect(await resources.getAdvancedSearchResultForParticularSection(CaseTemplateData.templateName)).toEqual(CaseTemplateData.templateName);
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -603,6 +606,7 @@ describe("Quick Case", () => {
             await previewKnowledgePo.clickOnBackButton();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -772,6 +776,7 @@ describe("Quick Case", () => {
             await previewCasePo.clickGoToCaseButton();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

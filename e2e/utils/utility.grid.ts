@@ -280,16 +280,9 @@ export class GridOperations {
         let guidId: string = "";
         if (guid) guidId = `[rx-view-component-id="${guid}"] `;
         await $(guidId + this.selectors.filterPresetBtn).click();
-        if (filterName == 'My Open Articles') {
-            await $$(this.selectors.filterTab).get(1).click().then(async () => {
-                await $$('.radio__item').get(1).click();
-            });
-        }
-        else {
-            await $$(this.selectors.filterTab).get(1).click().then(async () => {
-                await element(by.cssContainingText('.radio__item', filterName)).click();
-            });
-        }
+        await $$(this.selectors.filterTab).get(1).click().then(async () => {
+            await element(by.cssContainingText('.radio__item', filterName)).click();
+        });
         await $(guidId + refreshIcon).click();
     }
 
