@@ -123,6 +123,7 @@ describe('Person Profile test', () => {
 
         let response = await apiHelper.createCase(caseData);
         await navigationPage.gotoCaseConsole();
+        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(response.displayId);
         await viewCasePage.clickAssigneeLink();
         try {
