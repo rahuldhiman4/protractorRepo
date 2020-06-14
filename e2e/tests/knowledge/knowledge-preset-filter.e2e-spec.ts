@@ -42,8 +42,8 @@ describe('Knowledge Console Preset Filter', () => {
         await apiHelper.createKnowledgeApprovalFlow(KNOWLEDGE_APPROVAL_FLOW_DATA);
         await apiHelper.deleteKnowledgeApprovalMapping();
         await apiHelper.createKnowledgeApprovalMapping(KNOWLEDGE_APPROVAL_MAPPING_DATA);
-
-        browser.sleep(9000); //New user is created above, waiting for its backend access preperation
+        //Update the sleep time to 9000 later
+        await browser.sleep(15000); //New user is created above, waiting for its backend access preperation
         await loginPage.login(userIdKnowledgeCoach, passwordKnowledgeCoach);
         await navigationPage.gotoKnowledgeConsole();
         try {

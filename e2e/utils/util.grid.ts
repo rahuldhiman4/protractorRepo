@@ -161,14 +161,15 @@ export class GridOperation {
         await element(by.xpath(checkbox)).click();
     }
 
-    async searchAndSelectAllCheckBox(gridId: string, value: string) {
+    async searchAndSelectFirstCheckBox(gridId: string, value: string) {
         //        await browser.wait(this.EC.elementToBeClickable($(this.getGridLocator('summaryField', gridId))));	
+        await $(this.getGridLocator('summaryField', gridId)).clear();
         await $(this.getGridLocator('summaryField', gridId)).sendKeys(value);
         //        await browser.wait(this.EC.elementToBeClickable($(this.getGridLocator('searchButton', gridId))));	
         await $(this.getGridLocator('searchButton', gridId)).click();
         //        browser.sleep(3000);	
         //        await browser.wait(this.EC.elementToBeClickable(element(by.model(this.selectors.selectAllCheckBox))));	
-        await element(by.model(this.selectors.selectAllCheckBox)).click();
+        await $(this.getGridLocator('firstCheckBox', gridId)).click();
     }
 
     async selectAllCheckBox() {

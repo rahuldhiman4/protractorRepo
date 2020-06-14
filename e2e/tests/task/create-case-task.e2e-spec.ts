@@ -459,10 +459,10 @@ describe('Create Case Task', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(TaskTemplate);
             await viewTasktemplatePo.clickOnEditLink();
-            await editTaskTemplate.setDescription(description);
             await editTaskTemplate.selectTaskCategoryTier1('Applications');
             await editTaskTemplate.selectTaskCategoryTier2('Social');
             await editTaskTemplate.selectTaskCategoryTier3('Chatter');
+            await editTaskTemplate.setDescription(description);
             await editTaskTemplate.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
             expect(await viewTasktemplatePo.getTaskDescriptionNameValue()).toBe(description, 'description is not present');
