@@ -124,6 +124,9 @@ describe('Create Adhoc task', () => {
             await viewTask.clickOnViewCase();
             expect(await viewCasePage.getCaseSummary()).toBe(caseData.Summary);
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     describe('[DRDMV-1500]: [Permissions] Navigating to case from the task', async () => {
