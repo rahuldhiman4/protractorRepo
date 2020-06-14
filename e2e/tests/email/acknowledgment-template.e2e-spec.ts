@@ -32,6 +32,21 @@ describe('Acknowledgment Template', () => {
         await utilityCommon.refresh();
     });
 
+      //ankagraw
+      it('[DRDMV-10897]: Acknowledgment Template : Acknowledgment Template creation UI validations', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');   
+        await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
+        expect(await createAcknowledgmentTemplatesPo.isTemplateNameRequired()).toBeTruthy();
+        expect(await createAcknowledgmentTemplatesPo.isCompanyRequired()).toBeTruthy();
+        expect(await createAcknowledgmentTemplatesPo.isStatusRequired()).toBeTruthy();
+        expect(await createAcknowledgmentTemplatesPo.isSubjectRequired()).toBeTruthy();
+        expect(await createAcknowledgmentTemplatesPo.isModuleDisabled()).toBeTruthy();
+        expect(await createAcknowledgmentTemplatesPo.isLocaleDisabled()).toBeTruthy();
+		await createAcknowledgmentTemplatesPo.clickOnCancelButton();
+		await utilCommon.clickOnWarningOk();
+    });
+
     //kgaikwad
     it('[DRDMV-10896,DRDMV-10901,DRDMV-10922,DRDMV-10895]: Acknowledgment Template : Acknowledgment Template creation', async () => {
         let templateName = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
