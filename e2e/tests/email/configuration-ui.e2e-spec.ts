@@ -11,7 +11,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 describe('Configuration Email ', () => {
-    let incomingGUID, outgoingGUID, emailGuid, emailconfigGUID;
+    let emailGuid, emailID = "bmctemptestemail@gmail.com";
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
@@ -23,7 +23,6 @@ describe('Configuration Email ', () => {
 
     //ankagraw
     describe('[DRDMV-8528,DRDMV-8527]: [Email Configuration] Verify Email configuration Grid view', async () => {
-        let emailID = "bmctemptestemail@gmail.com";
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             emailGuid = await apiHelper.createEmailConfiguration();
@@ -39,11 +38,12 @@ describe('Configuration Email ', () => {
             expect(await ConsoleEmailConfig.coloumnHeaderMatches(newEmailHeaders)).toBeTruthy();
             await ConsoleEmailConfig.removeHeader(add);
             expect(await ConsoleEmailConfig.coloumnHeaderMatches(emailHeaders)).toBeTruthy();
+
+        });
+        it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
             await ConsoleEmailConfig.searchAndSelectCheckbox(emailID);
             await ConsoleEmailConfig.deleteConfigurationEmail();
             await utilCommon.clickOnWarningOk();
-        });
-        it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
             await ConsoleEmailConfig.clickNewEmailConfiguration();
             await createEmailConfigPo.selectEmailID(emailID);
             await createEmailConfigPo.selectCompany("Petramco");
@@ -56,7 +56,6 @@ describe('Configuration Email ', () => {
     //ankagraw
     describe('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: [Email Configuration] Verify Email configuration Grid view', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
-        let emailID = "bmctemptestemail@gmail.com";
         it('Verify Email configuration Grid view', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
@@ -67,6 +66,8 @@ describe('Configuration Email ', () => {
             await newExclusiveSubjectPo.setSortOrder('20');
             await newExclusiveSubjectPo.selectGlobal("True");
             await newExclusiveSubjectPo.clickSaveButton();
+        });
+        it('Verify Email configuration Grid view and add new exclusive', async () => {
             await editEmailConfigPo.clickNewExclusiveSubjectsButton();
             await newExclusiveSubjectPo.setSubject("Delete" + randomStr);
             await newExclusiveSubjectPo.setSortOrder('20');
@@ -82,6 +83,8 @@ describe('Configuration Email ', () => {
             await editEmailConfigPo.editExclusiveSubjectsButton();
             await editExclusiveSubjectPo.setSubject('updated123' + randomStr);
             await editExclusiveSubjectPo.clickSaveButton();
+        });
+        it('Verify the exclusion details ', async () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Delete' + randomStr)).toBeTruthy();
             await utilGrid.clickCheckBoxOfValueInGrid('Delete' + randomStr);
             await editEmailConfigPo.removeExclusiveSubjectsButton();
@@ -108,7 +111,6 @@ describe('Configuration Email ', () => {
 
     //ankagraw
     it('[DRDMV-10410,DRDMV-10418,DRDMV-10428]: Support Group: Associate Support group tab in Email Configuration.', async () => {
-        let emailID = "bmctemptestemail@gmail.com";
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
         await utilGrid.searchAndOpenHyperlink(emailID);
@@ -121,7 +123,6 @@ describe('Configuration Email ', () => {
 
     //ankagraw
     it('[DRDMV-10419]: Support Group: Default Email checkbox', async () => {
-        let emailID = "bmctemptestemail@gmail.com";
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
         await utilGrid.searchAndOpenHyperlink(emailID);
@@ -130,5 +131,29 @@ describe('Configuration Email ', () => {
         expect(await utilCommon.isPopUpMessagePresent("One Email Id for the company needs to be marked as default. If another email configurations for the company exist, please mark one of them as default instead")).toBeTruthy();
         await editEmailConfigPo.clickDefaultMailIdCheckbox("True");
         expect(await editEmailConfigPo.isSaveButtonEnabled()).toBeFalsy();
+    });
+
+    //ankagraw
+    describe('[DRDMV-10438,DRDMV-10437,DRDMV-10436,DRDMV-10552]: [Email Configuration] Verify Email configuration Grid view', async () => {
+        let acknowledgementTemplateHeaders: string[] = ["Type", "Operation Type", "Ticket Status", "Template Name"];
+        it('Verify all templates', async () => {
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            await utilGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.selectTab("Acknowledgment Templates");
+            expect(await editEmailConfigPo.isColumnPresentInAcknowledgementTemplateGrid(acknowledgementTemplateHeaders)).toBeTruthy();
+            expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid("Update"));
+            expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid("Create"));
+            await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
+            await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
+        });
+        it('[DRDMV-10438,DRDMV-10437,DRDMV-10436,DRDMV-10552]: update the delete template', async () => {
+            expect(await editEmailConfigPo.isTicketTypeAcknowledgementTemplateDisabled()).toBeTruthy("Ticket Type is enable");
+            expect(await editEmailConfigPo.isOperationTypeAcknowledgementTemplateDisabled()).toBeTruthy("Operation Type is enable");
+            expect(await editEmailConfigPo.isTicketStatusAcknowledgementTemplateDisabled()).toBeTruthy("Ticket status is enable");
+            await editEmailConfigPo.selectAcknowledgementTemplate("Case Create Ack Template");
+            await editEmailConfigPo.clickSaveAcknowledgementTemplate();
+            expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid('Case Create Ack Template')).toBeTruthy();
+        });
     });
 });
