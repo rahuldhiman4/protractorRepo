@@ -49,15 +49,15 @@ export class EditEmailConfig {
     }
 
     async isTicketTypeAcknowledgementTemplateDisabled(): Promise<string> {
-      return await $(this.selectors.ticketTypeAcknowledgementTemplate).getAttribute("disabled");
+      return await $(this.selectors.ticketTypeAcknowledgementTemplate).getAttribute("readOnly");
     }
 
     async isOperationTypeAcknowledgementTemplateDisabled(): Promise<string> {
-        return await $(this.selectors.operationTypeAcknowledgementTemplate).getAttribute("disabled");
+        return await $(this.selectors.operationTypeAcknowledgementTemplate).getAttribute("readOnly");
     }
 
     async isTicketStatusAcknowledgementTemplateDisabled(): Promise<string> {
-        return await $(this.selectors.ticketStatusAcknowledgementTemplate).getAttribute("disabled");
+        return await $(this.selectors.ticketStatusAcknowledgementTemplate).getAttribute("readOnly");
     }
 
     async selectTab(tabValue: string): Promise<void> {

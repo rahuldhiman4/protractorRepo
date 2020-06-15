@@ -131,4 +131,25 @@ describe('Configuration Email ', () => {
         await editEmailConfigPo.clickDefaultMailIdCheckbox("True");
         expect(await editEmailConfigPo.isSaveButtonEnabled()).toBeFalsy();
     });
+
+    //ankagraw
+    it('[DRDMV-10438,DRDMV-10437,DRDMV-10436,DRDMV-10552]: [Email Configuration] Verify Email configuration Grid view', async () => {
+        let emailID = "bmctemptestemail@gmail.com";
+        let acknowledgementTemplateHeaders: string[] = ["Type", "Operation Type", "Ticket Status", "Template Name"];
+        await navigationPage.gotoSettingsPage();
+        expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+        await utilGrid.searchAndOpenHyperlink(emailID);
+        await editEmailConfigPo.selectTab("Acknowledgment Templates");
+        expect(await editEmailConfigPo.isColumnPresentInAcknowledgementTemplateGrid(acknowledgementTemplateHeaders)).toBeTruthy();
+        expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid("Update"));
+        expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid("Create"));
+        await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
+        await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
+        expect(await editEmailConfigPo.isTicketTypeAcknowledgementTemplateDisabled()).toBeTruthy("Ticket Type is enable");
+        expect(await editEmailConfigPo.isOperationTypeAcknowledgementTemplateDisabled()).toBeTruthy("Operation Type is enable");
+        expect(await editEmailConfigPo.isTicketStatusAcknowledgementTemplateDisabled()).toBeTruthy("Ticket status is enable");
+        await editEmailConfigPo.selectAcknowledgementTemplate("Case Create Ack Template");
+        await editEmailConfigPo.clickSaveAcknowledgementTemplate();
+        expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid('Case Create Ack Template')).toBeTruthy();
+    });
 });
