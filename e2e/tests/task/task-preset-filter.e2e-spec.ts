@@ -5,9 +5,9 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import statusConfig from "../../pageobject/settings/common/status-config.po";
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilityGrid from "../../utils/utility.grid";
 import utilityCommon from '../../utils/utility.common';
 import dbConnectObj from '../../utils/utility.db-connect';
+import utilityGrid from "../../utils/utility.grid";
 
 describe('Task Console Preset Filter', () => {
     let randomString: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -58,7 +58,7 @@ describe('Task Console Preset Filter', () => {
 
     describe('[DRDMV-20883]: Validate the My Open Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
-        it('Task Data creation with different status', async () => {
+        it('[DRDMV-20883]: Task Data creation with different status', async () => {
             await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
             taskData.FAILED_TASK_TEMPLATE.templateName = taskData.FAILED_TASK_TEMPLATE.templateName + randomString;
             await apiHelper.createAutomatedTaskTemplate(taskData.FAILED_TASK_TEMPLATE).catch(() => {
@@ -150,7 +150,6 @@ describe('Task Console Preset Filter', () => {
             await apiHelper.updateCaseStatus(response23.id, 'InProgress');
             await apiHelper.updateTaskStatus(response24.id, 'InProgress');
         });
-
         it('[DRDMV-20883]: Validate the My Open Tasks filter after applying and removing the filter', async () => {
             await utilityGrid.applyPresetFilter('My Open Tasks');
             expect(await utilityGrid.getAppliedFilterName()).toBe('My Open Tasks');
@@ -173,7 +172,7 @@ describe('Task Console Preset Filter', () => {
 
     describe('[DRDMV-20884]: Validate the All Open Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
-        it('Task Data creation with different status', async () => {
+        it('[DRDMV-20884]: Task Data creation with different status', async () => {
             await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
 
             //Creating the task 1 and updating it to In Progress state
@@ -250,7 +249,6 @@ describe('Task Console Preset Filter', () => {
             await apiHelper.updateTaskStatus(response20.id, 'Completed', 'Successful');
             await apiHelper.updateTaskStatus(response20.id, 'AfterCompleted');
         });
-
         it('[DRDMV-20884]: Validate the All Open Tasks filter after applying and removing the filter', async () => {
             await utilityGrid.applyPresetFilter('All Open Tasks');
             expect(await utilityGrid.getAppliedFilterName()).toBe('All Open Tasks');
@@ -273,7 +271,7 @@ describe('Task Console Preset Filter', () => {
 
     describe('[DRDMV-20885]: Validate the High Priority Open Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
-        it('Task data creation with different status 1', async () => {
+        it('[DRDMV-20885]: Task data creation with different status 1', async () => {
             await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
 
             //Create Low Priority and Assigned status Task
@@ -330,8 +328,7 @@ describe('Task Console Preset Filter', () => {
             await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
             await apiHelper.updateCaseStatus(response13.id, 'InProgress');
         });
-
-        it('Task data creation with different status 2', async () => {
+        it('[DRDMV-20885]: Task data creation with different status 2', async () => {
             //Create High Priority and After Completed status Task
             let response15 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
             let response16 = await apiHelper.createAdhocTask(response15.id, taskData.TASK_DATA_HIGH_PRIORITY);
@@ -373,7 +370,6 @@ describe('Task Console Preset Filter', () => {
             await apiHelper.updateTaskStatus(response26.id, 'InProgress');
             await apiHelper.updateTaskStatus(response26.id, 'BeforeCompleted');
         });
-
         it('[DRDMV-20885]: Validate the High Priority Open Tasks filter after applying and removing the filter', async () => {
             await utilityGrid.applyPresetFilter('High Priority Open Tasks');
             expect(await utilityGrid.getAppliedFilterName()).toBe('High Priority Open Tasks');
@@ -396,7 +392,7 @@ describe('Task Console Preset Filter', () => {
 
     describe('[DRDMV-20886]: Validate the Critical Priority Open Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
-        it('Task data creation with different status 1', async () => {
+        it('[DRDMV-20886]: Task data creation with different status 1', async () => {
             await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
 
             //Create Low Priority and Assigned status Task
@@ -455,8 +451,7 @@ describe('Task Console Preset Filter', () => {
             await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
             await apiHelper.updateCaseStatus(response13.id, 'InProgress');
         });
-
-        it('Task data creation with different status 1', async () => {
+        it('[DRDMV-20886]: Task data creation with different status 1', async () => {
             //Create High Priority and After Completed status Task
             let response15 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
             let response16 = await apiHelper.createAdhocTask(response15.id, taskData.TASK_DATA_CRITICAL_PRIORITY);
@@ -498,7 +493,6 @@ describe('Task Console Preset Filter', () => {
             await apiHelper.updateTaskStatus(response26.id, 'InProgress');
             await apiHelper.updateTaskStatus(response26.id, 'BeforeCompleted');
         });
-
         it('[DRDMV-20886]: Validate the Critical Priority Open Tasks filter after applying and removing the filter', async () => {
             await utilityGrid.applyPresetFilter('Critical Priority Open Tasks');
             expect(await utilityGrid.getAppliedFilterName()).toBe('Critical Priority Open Tasks');
@@ -561,7 +555,7 @@ describe('Task Console Preset Filter', () => {
 
     describe('[DRDMV-20889]: Validate the All Open Breached Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
-        it('Create SVT data and task data', async () => {
+        it('[DRDMV-20889]: Create SVT data and task data', async () => {
             await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
             await apiHelper.createSVT(taskData.SERVICE_TARGET_ASSIGNED_TASK);
             await apiHelper.createSVT(taskData.SERVICE_TARGET_INPROGRESS_TASK);
@@ -591,8 +585,7 @@ describe('Task Console Preset Filter', () => {
             await apiHelper.updateTaskStatus(response12.id, 'Completed', 'Successful');
             await apiHelper.updateTaskStatus(response12.id, 'AfterCompleted');
         });
-
-        it('Task creation with different status', async () => {
+        it('[DRDMV-20889]: Task creation with different status', async () => {
             let randomString1: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             taskData.FAILED_TASK_TEMPLATE_CRITICAL_PRIORITY.templateName = taskData.FAILED_TASK_TEMPLATE_CRITICAL_PRIORITY.templateName + randomString1;
             await apiHelper.createAutomatedTaskTemplate(taskData.FAILED_TASK_TEMPLATE_CRITICAL_PRIORITY).catch(() => {
@@ -631,15 +624,13 @@ describe('Task Console Preset Filter', () => {
             taskId.push(response16.displayId);
             await apiHelper.updateCaseStatus(response15.id, 'InProgress');
         });
-
-        it('Verification with 50 percent SVT warning Task', async () => {
+        it('[DRDMV-20889]: Verification with 50 percent SVT warning Task', async () => {
             await utilityGrid.applyPresetFilter('All Open Breached Tasks');
             expect(await utilityGrid.getAppliedFilterName()).toBe('All Open Breached Tasks');
 
             await browser.sleep(130000);
             expect(await utilityGrid.isGridRecordPresent(taskId[7])).toBeFalsy(taskId[7] + ' :Record is available');
         });
-
         it('[DRDMV-20889]: Validate the All Open Breached Tasks filter after applying and removing the filter', async () => {
             browser.sleep(120000);
             for (let i: number = 4; i < 7; i++) {
@@ -834,4 +825,4 @@ describe('Task Console Preset Filter', () => {
         }
 
     });
-})
+});

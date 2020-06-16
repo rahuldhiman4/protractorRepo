@@ -5,9 +5,9 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import statusConfigPO from "../../pageobject/settings/common/status-config.po";
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilityGrid from "../../utils/utility.grid";
-import dbConnectObj from '../../utils/utility.db-connect';
 import utilityCommon from '../../utils/utility.common';
+import dbConnectObj from '../../utils/utility.db-connect';
+import utilityGrid from "../../utils/utility.grid";
 
 describe('Knowledge Console Preset Filter', () => {
     let userIdKnowledgeCoach = "idphylumkuser@petramco.com";
@@ -65,7 +65,7 @@ describe('Knowledge Console Preset Filter', () => {
     describe('[DRDMV-20894]: Validate the My Open Articles filter after applying and removing the filter', async () => {
         let title = 'KnowledgeArticle';
         let knowledgeId: string[] = [];
-        it('Article data creation with multiple status 1', async () => {
+        it('[DRDMV-20894]: Article data creation with multiple status 1', async () => {
             await apiHelper.apiLoginWithCredential(userIdKnowledgeCoach, passwordKnowledgeCoach);
 
             ARTICLE_DATA_ASSIGNTOME.knowledgeSet = knowledgeSetTitle;
@@ -133,8 +133,7 @@ describe('Knowledge Console Preset Filter', () => {
 
             knowledgeId.push(knowledgeArticleData13.displayId);
         });
-
-        it('Article data creation with multiple status 2', async () => {
+        it('[DRDMV-20894]: Article data creation with multiple status 2', async () => {
             //Create article in Closed status
             ARTICLE_DATA_ASSIGNTOME.title = title + "_Closed";
             let knowledgeArticleData9 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
@@ -159,8 +158,7 @@ describe('Knowledge Console Preset Filter', () => {
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData10.id, 'AfterPublished');
             knowledgeId.push(knowledgeArticleData10.displayId);
         });
-
-        it('Article data creation with multiple status 3', async () => {
+        it('[DRDMV-20894]: Article data creation with multiple status 3', async () => {
             //Create article in Retire Approval status
             ARTICLE_DATA_ASSIGNTOME.title = title + "_Retire Approval";
             let knowledgeArticleData11 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
@@ -189,7 +187,6 @@ describe('Knowledge Console Preset Filter', () => {
             let knowledgeArticleData14 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOANOTHERUSER);
             knowledgeId.push(knowledgeArticleData14.displayId);
         });
-
         it('[DRDMV-20894]: Validate the My Open Articles filter after applying and removing the filter', async () => {
             await utilityGrid.applyPresetFilter('My Open Articles');
             expect(await utilityGrid.getAppliedFilterName()).toBe('My Open Articles');
@@ -213,7 +210,7 @@ describe('Knowledge Console Preset Filter', () => {
         let knowledgeId: string[] = [];
         let title = 'KnowledgeArticle';
 
-        it('Article data creation for different status 1', async () => {
+        it('[DRDMV-20890]: Article data creation for different status 1', async () => {
             await apiHelper.apiLoginWithCredential(userIdKnowledgeCoach, passwordKnowledgeCoach);
             ARTICLE_DATA_ASSIGNTOME.knowledgeSet = knowledgeSetTitle;
             ARTICLE_DATA_ASSIGNTOGROUP.knowledgeSet = knowledgeSetTitle;
@@ -281,7 +278,7 @@ describe('Knowledge Console Preset Filter', () => {
             knowledgeId.push(knowledgeArticleData9.displayId);
         });
 
-        it('Article data creation for different status 2', async () => {
+        it('[DRDMV-20890]: Article data creation for different status 2', async () => {
             //Create article in After Published status
             ARTICLE_DATA_ASSIGNTOME.title = title + "_After Published";
             let knowledgeArticleData10 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
@@ -304,7 +301,7 @@ describe('Knowledge Console Preset Filter', () => {
             knowledgeId.push(knowledgeArticleData11.displayId);
         });
 
-        it('Article data creation for different status 3', async () => {
+        it('[DRDMV-20890]: Article data creation for different status 3', async () => {
             //Create article in Retired status
             ARTICLE_DATA_ASSIGNTOME.title = title + "_Retired";
             let knowledgeArticleData12 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);

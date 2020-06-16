@@ -82,7 +82,7 @@ describe('Create Adhoc task', () => {
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('Create Adhoc Task', async () => {
+        it('[DRDMV-3821,DRDMV-7130,DRDMV-1580,DRDMV-12243]: Create Adhoc Task', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             //Adhoc task validation
@@ -159,7 +159,7 @@ describe('Create Adhoc task', () => {
             await apiHelper.createManualTaskTemplate(taskTemplateData);
             newCase = await apiHelper.createCase(caseData);
         });
-        it('Add task to Case and set case to In Progress', async () => {
+        it('[DRDMV-1500]: Add task to Case and set case to In Progress', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePage.clickAddTaskButton();
@@ -168,7 +168,7 @@ describe('Create Adhoc task', () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
         });
-        it('Case View link is not visible', async () => {
+        it('[DRDMV-1500]: Case View link is not visible', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoTaskConsole();
@@ -356,7 +356,7 @@ describe('Create Adhoc task', () => {
             await apiHelper.apiLogin('franz');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('Assignee validation1', async () => {
+        it('[DRDMV-5480]: Assignee validation1', async () => {
             await navigationPage.signOut();
             await loginPage.login('franz');
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
@@ -373,7 +373,7 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closePopUpMessage();
             expect((await viewTask.getAssigneeText()).trim()).toBe('Franz Schwarz');
         });
-        it('Assignee validation2', async () => {
+        it('[DRDMV-5480]: Assignee validation2', async () => {
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectAssignee("Fritz Schulz");
@@ -390,7 +390,7 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Franz Schwarz');
         });
-        it('Assignee validation3', async () => {
+        it('[DRDMV-5480]: Assignee validation3', async () => {
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
@@ -413,7 +413,7 @@ describe('Create Adhoc task', () => {
             expect(await activityTabPo.getAllTaskActivity('Qadim Katawazi')).toBe('Qadim Katawazi');
             expect(await viewTask.getAssigneeText()).toBe('Qadim Katawazi');
         });
-        it('Assignee validation4', async () => {
+        it('[DRDMV-5480]: Assignee validation4', async () => {
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe(); // Failing due to slow API response, check with dev
             await editTask.clickOnSaveButton();
@@ -433,7 +433,7 @@ describe('Create Adhoc task', () => {
             await editTask.clickOnSaveButton();
             expect(await viewTask.getAssigneeText()).toBe('Franz Schwarz');
         });
-        it('Second Task validation1', async () => {
+        it('[DRDMV-5480]: Second Task validation1', async () => {
             await viewTask.clickOnViewCase()
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
@@ -458,7 +458,7 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Franz Schwarz');
         });
-        it('Second Task validation2', async () => {
+        it('[DRDMV-5480]: Second Task validation2', async () => {
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');

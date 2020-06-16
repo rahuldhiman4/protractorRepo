@@ -6,6 +6,7 @@ import { default as viewCasePage, default as viewCasePo } from '../../pageobject
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import statusConfig from "../../pageobject/settings/common/status-config.po";
 import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
 import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
@@ -13,9 +14,8 @@ import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
-import statusConfig from "../../pageobject/settings/common/status-config.po";
+import utilityGrid from '../../utils/utility.grid';
 
 
 let caseBAUser = 'qkatawazi';
@@ -36,11 +36,10 @@ describe('Service Target Tests for Tasks', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-13055]:Create a SVT for tasks type= Manual, Verify Task SLM for Manual Task and Automated Task', async () => {
+    describe('[DRDMV-13055]: Create a SVT for tasks type= Manual, Verify Task SLM for Manual Task and Automated Task', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTaskTemp = `manualTaskTemplateActive ${randomStr}`;
         let automatedTaskTemp = `AutomatedTaskTemplateActive ${randomStr}`;
-
         beforeAll(async () => {
             let templateData = {
                 "templateName": `manualTaskTemplateActive ${randomStr}`,
@@ -69,8 +68,7 @@ describe('Service Target Tests for Tasks', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create SVT', async () => {
+        it('[DRDMV-13055]: Create SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             //Create a SVT with 2 mins timeline
@@ -88,8 +86,7 @@ describe('Service Target Tests for Tasks', () => {
             await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
-
-        it('Create a Case', async () => {
+        it('[DRDMV-13055]: Create a Case', async () => {
             // Create a Case
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -102,8 +99,7 @@ describe('Service Target Tests for Tasks', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
-
-        it('Add Tasks into Case', async () => {
+        it('[DRDMV-13055]: Add Tasks into Case', async () => {
             await viewCasePage.clickAddTaskButton();
             //Add Manual task and Automation Task in Case
             await manageTask.addTaskFromTaskTemplate(manualTaskTemp)
@@ -113,7 +109,6 @@ describe('Service Target Tests for Tasks', () => {
             await manageTaskBladePo.clickCloseButton();
             await browser.sleep(32000);
         });
-
         it('[DRDMV-13055]:Verify SVT applied on Manual Task', async () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
@@ -134,7 +129,6 @@ describe('Service Target Tests for Tasks', () => {
             await viewCasePage.clickOnTaskLink(automatedTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(false);
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
@@ -142,11 +136,10 @@ describe('Service Target Tests for Tasks', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-13056]:Create a SVT for tasks type= Automated, verify Manual Task and Automated Task', async () => {
+    describe('[DRDMV-13056]: Create a SVT for tasks type= Automated, verify Manual Task and Automated Task', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTaskTemp = `manualTaskTemplateActive ${randomStr}`;
         let automatedTaskTemp = `AutomatedTaskTemplateActive ${randomStr}`;
-
         beforeAll(async () => {
             let templateData = {
                 "templateName": `manualTaskTemplateActive ${randomStr}`,
@@ -175,8 +168,7 @@ describe('Service Target Tests for Tasks', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create a SVT', async () => {
+        it('[DRDMV-13056]: Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Task Management');
@@ -194,8 +186,7 @@ describe('Service Target Tests for Tasks', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             // await utilityCommon.refresh();
         });
-
-        it('Create a Case', async () => {
+        it('[DRDMV-13056]: Create a Case', async () => {
             await browser.sleep(1000);
             await navigationPage.signOut();
             await loginPage.login(caseAgentUser);
@@ -207,8 +198,7 @@ describe('Service Target Tests for Tasks', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
-
-        it('Add tasks to case', async () => {
+        it('[DRDMV-13056]: Add tasks to case', async () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(automatedTaskTemp)
             await manageTask.addTaskFromTaskTemplate(manualTaskTemp);
@@ -217,8 +207,7 @@ describe('Service Target Tests for Tasks', () => {
             await manageTaskBladePo.clickCloseButton();
             await browser.sleep(32000);
         });
-
-        it('[DRDMV-13056]:Verify SVT attached on Automated task', async () => {
+        it('[DRDMV-13056]: Verify SVT attached on Automated task', async () => {
             await viewCasePage.clickOnTaskLink(automatedTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
@@ -234,7 +223,6 @@ describe('Service Target Tests for Tasks', () => {
             await viewCasePage.clickOnTaskLink(manualTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(false);
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
@@ -242,12 +230,11 @@ describe('Service Target Tests for Tasks', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-13064]:UI Validation for Qualification builder for Task SVT', async () => {
+    describe('[DRDMV-13064]: UI Validation for Qualification builder for Task SVT', async () => {
         let firstLevelAssociationFields: string[] = ["Assigned Business Unit", "Assigned Department", "Assigned Group", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Category Tier 4", "Created Date", "Label", "Modified By", "Priority", "Status", "Status Reason", "Task Region", "Task Type"];
         let secondLevelAssociationFields: string[] = ["Assigned Company", "Company", "Requester", "Site"];
         let expressionOperatorFields: string[] = ["(", ")", ">", "<", "=", "!=", ">=", "<=", "LIKE", "AND", "OR", "NOT", "NEW VALUE", "OLD VALUE"];
-
-        it('[DRDMV-13064]:Verify Qualification Builder UI for Task SVT', async () => {
+        it('[DRDMV-13064]: Verify Qualification Builder UI for Task SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             //Create a SVT with 2 mins timeline
@@ -259,23 +246,20 @@ describe('Service Target Tests for Tasks', () => {
             let expressionOperatorsVal = await SlmExpressionBuilder.getExpressionFieldOperatorAvailableAll(expressionOperatorFields);
             expect(expressionOperatorsVal).toBeTruthy('Expression Builder Operators does not matches.');
         });
-
     });
 
     //skhobrag
-    describe('[DRDMV-13029,DRDMV-13035,DRDMV-13065]:Task SLA Progress bar shows status like In Process/Warning/Missed-Goal//Missed and check Console Overall status with respect to Task SLA status', async () => {
+    describe('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Task SLA Progress bar shows status like In Process/Warning/Missed-Goal//Missed and check Console Overall status with respect to Task SLA status', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         let taskId: string = '';
         let slmStatusWithinTimeLimitArr: string[] = ["Within Time Limit"];
         let slmStatusWarningArr: string[] = ["Warning"];
         let slmStatusBreachedArr: string[] = ["Breached"];
-
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create SVT', async () => {
+        it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Create SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Task Management');
@@ -292,8 +276,7 @@ describe('Service Target Tests for Tasks', () => {
             await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
-
-        it('Create a Case', async () => {
+        it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Create a Case', async () => {
             await browser.sleep(1000);
             await navigationPage.signOut();
             await loginPage.login(caseAgentUser);
@@ -304,8 +287,7 @@ describe('Service Target Tests for Tasks', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
         });
-
-        it('Create Adhoc Task', async () => {
+        it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Create Adhoc Task', async () => {
             await previewCasePo.clickGoToCaseButton();
             await browser.sleep(2000);
             await viewCasePage.clickAddTaskButton();
@@ -320,8 +302,7 @@ describe('Service Target Tests for Tasks', () => {
             await manageTaskBladePo.clickCloseButton();
             await browser.sleep(32000);
         });
-
-        it('Verify SVT status on task console when SVT condition is Met', async () => {
+        it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Verify SVT status on task console when SVT condition is Met', async () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickOnTaskLink(summary);
@@ -355,8 +336,7 @@ describe('Service Target Tests for Tasks', () => {
             await utilityGrid.searchRecord(taskId);
             expect(await utilityGrid.getAllValuesFromColumn('SLM Status')).toEqual(slmStatusWithinTimeLimitArr);
         });
-
-        it('Create another case with adhoc task', async () => {
+        it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Create another case with adhoc task', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('Critical');
@@ -376,7 +356,7 @@ describe('Service Target Tests for Tasks', () => {
             await adhoctaskTemplate.clickSaveAdhoctask();
             await manageTaskBladePo.clickCloseButton();
         });
-        it('Change the status of Case to trigger SVT on Task', async () => {
+        it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Change the status of Case to trigger SVT on Task', async () => {
             await browser.sleep(32000);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
@@ -384,8 +364,7 @@ describe('Service Target Tests for Tasks', () => {
             taskId = await viewTask.getTaskID();
             await browser.sleep(90000);
         })
-
-        it('Verify Task SLM Status "Warning" on Task Console', async () => {
+        it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Verify Task SLM Status "Warning" on Task Console', async () => {
             await browser.sleep(80000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true);
@@ -394,8 +373,7 @@ describe('Service Target Tests for Tasks', () => {
             expect(await utilityGrid.getAllValuesFromColumn('SLM Status')).toEqual(slmStatusWarningArr);
             await utilityGrid.searchAndOpenHyperlink(taskId);
         });
-
-        it('Verify Task SLM Status "Warning Pending" on Task Console', async () => {
+        it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Verify Task SLM Status "Warning Pending" on Task Console', async () => {
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Pending');
             await viewTask.clickOnSaveStatus();
@@ -405,8 +383,7 @@ describe('Service Target Tests for Tasks', () => {
             expect(await utilityGrid.getAllValuesFromColumn('SLM Status')).toEqual(slmStatusWarningArr);
             await utilityGrid.searchAndOpenHyperlink(taskId);
         });
-
-        it('Verify Task SLM Status "Missed Goal" on Task Console ', async () => {
+        it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Verify Task SLM Status "Missed Goal" on Task Console ', async () => {
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('In Progress');
             await viewTask.clickOnSaveStatus();
@@ -418,8 +395,7 @@ describe('Service Target Tests for Tasks', () => {
             expect(await utilityGrid.getAllValuesFromColumn('SLM Status')).toEqual(slmStatusBreachedArr);
             await utilityGrid.searchAndOpenHyperlink(taskId);
         });
-
-        it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]:Verify Task SLM Status "Missed Goal" on Task Console ', async () => {
+        it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Verify Task SLM Status "Missed Goal" on Task Console ', async () => {
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Pending');
             await viewTask.clickOnSaveStatus();
@@ -428,22 +404,19 @@ describe('Service Target Tests for Tasks', () => {
             await utilityGrid.searchRecord(taskId);
             expect(await utilityGrid.getAllValuesFromColumn('SLM Status')).toEqual(slmStatusBreachedArr);
         })
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
     });
 
-    describe('[DRDMV-13058]:Create a SVT for Task where build expression has Custom Status', async () => {
+    describe('[DRDMV-13058]: Create a SVT for Task where build expression has Custom Status', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create Custom Status configuration for Task', async () => {
+        it('[DRDMV-13058]: Create Custom Status configuration for Task', async () => {
             await navigationPage.signOut();
             await loginPage.login(psilonCaseBAUser);
             await navigationPage.gotoSettingsPage();
@@ -452,9 +425,8 @@ describe('Service Target Tests for Tasks', () => {
             await statusConfig.clickEditLifeCycleLink();
             await statusConfig.addCustomStatus('Staged', 'Assigned', 'Planning');
             await statusConfig.addCustomStatus('In Progress', 'Completed', 'BeforeCompleted');
-        })
-
-        it('Create SVT', async () => {
+        });
+        it('[DRDMV-13058]: Create SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Psilon', 'Task Management');
@@ -471,8 +443,7 @@ describe('Service Target Tests for Tasks', () => {
             await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
-
-        it('Create a Case', async () => {
+        it('[DRDMV-13058]: Create a Case', async () => {
             await browser.sleep(1000);
             await navigationPage.signOut();
             await loginPage.login(psilonCaseAgentUser);
@@ -483,8 +454,7 @@ describe('Service Target Tests for Tasks', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
         });
-
-        it('Create Adhoc Task', async () => {
+        it('[DRDMV-13058]: Create Adhoc Task', async () => {
             await previewCasePo.clickGoToCaseButton();
             await browser.sleep(2000);
             await viewCasePage.clickAddTaskButton();
@@ -499,7 +469,6 @@ describe('Service Target Tests for Tasks', () => {
             await manageTaskBladePo.clickCloseButton();
             await browser.sleep(32000);
         });
-
         it('[DRDMV-13058]:Create a SVT for Task where build expression has Custom Status', async () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
@@ -524,12 +493,9 @@ describe('Service Target Tests for Tasks', () => {
             await viewTask.clickOnSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarSVTMetIconDisplayed()).toBe(true); //green
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
     });
-
-
-})
+});

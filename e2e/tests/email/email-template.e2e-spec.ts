@@ -35,7 +35,7 @@ describe('EmailTemplate', () => {
         let description = 'Description' + randomStr;
         let subject = 'Subject' + randomStr;
         let body = 'Body' + randomStr;
-        it('Create Duplicate Email Template1', async () => {
+        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Create Duplicate Email Template1', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
@@ -48,7 +48,7 @@ describe('EmailTemplate', () => {
             await createEmailTemplatePo.setBody(body);
             await createEmailTemplatePo.clickOnSaveButton();
         });
-        it('Create Duplicate Email Template2', async () => {
+        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Create Duplicate Email Template2', async () => {
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName(templateName2);
             await createEmailTemplatePo.selectCompany('- Global -');
@@ -59,7 +59,7 @@ describe('EmailTemplate', () => {
             await createEmailTemplatePo.setBody(body);
             await createEmailTemplatePo.clickOnSaveButton();
         });
-        it('Create Duplicate Email Template3', async () => {
+        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Create Duplicate Email Template3', async () => {
             await consoleEmailTemplatePo.searchOnGridConsole(templateName1);
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName1, 'Template Name for Petramco compnay is missing')
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Subject for Petramco compnay is missing')
@@ -71,7 +71,7 @@ describe('EmailTemplate', () => {
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Company')).toBe('- Global -', 'Petramco for Petramco compnay is missing')
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Status')).toBe('Active', 'Active for Petramco compnay is missing')
         });
-        it('Create Duplicate Email Template4', async () => {
+        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Create Duplicate Email Template4', async () => {
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName(templateName1);
             await createEmailTemplatePo.selectCompany('Petramco');
@@ -117,7 +117,7 @@ describe('EmailTemplate', () => {
         let arr1: string[] = ["Label"];
         let arr2: string[] = ['Template Name', 'Subject', "Company", "Status", "Label"];
 
-        it('User Is able to delete Email Template1', async () => {
+        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: User Is able to delete Email Template1', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
@@ -132,7 +132,7 @@ describe('EmailTemplate', () => {
             await utilCommon.waitUntilSpinnerToHide();
             await consoleEmailTemplatePo.clearGridFilter();
         });
-        it('User Is able to delete Email Template2', async () => {
+        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: User Is able to delete Email Template2', async () => {
             // DRDMV-10786
             await consoleEmailTemplatePo.addColumnOnGrid(arr1);
             expect(await consoleEmailTemplatePo.areGridColumnHeaderMatches(arr2)).toBeTruthy('Column header not matches');
@@ -153,7 +153,7 @@ describe('EmailTemplate', () => {
             await consoleEmailTemplatePo.addFilter('Subject', subject1, 'text');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject1, 'Filter Subject is missing in column');
         });
-        it('User Is able to delete Email Template3', async () => {
+        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: User Is able to delete Email Template3', async () => {
             await consoleEmailTemplatePo.clearGridFilter();
             await consoleEmailTemplatePo.searchOnGridConsole(templateName1);
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName1, 'Search Template Name is missing in column');
@@ -175,7 +175,7 @@ describe('EmailTemplate', () => {
             expect(await editEmailTemplatePo.isLocalizedMessageButtonDisplayed()).toBeTruthy('Localize Message button is missing');
             await editEmailTemplatePo.selectlocaleDropDown('English (United States)');
         });
-        it('User Is able to delete Email Template4', async () => {
+        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: User Is able to delete Email Template4', async () => {
             await editEmailTemplatePo.clickOnGridSearchIcon();
             await editEmailTemplatePo.searchAndSelectGridRecord('body');
             await editEmailTemplatePo.clickOnGridEditButton();

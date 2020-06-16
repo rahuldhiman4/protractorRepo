@@ -108,7 +108,7 @@ describe('KnowledgeArticlestyle', () => {
     });
 
     it('[DRDMV-5014,DRDMV-5022]: [Template Styles] Availability of default styles on custom templates', async () => {
-        let styleName:string = "DRDMV-5014" + randomStr;
+        let styleName: string = "DRDMV-5014" + randomStr;
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates - Business Workflows');
         await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
@@ -137,4 +137,4 @@ describe('KnowledgeArticlestyle', () => {
         await articleTemplateStylePo.clickSaveButton();
         expect(await utilCommon.isPopUpMessagePresent(`The style name ${styleName} is already taken by another style. Please select a different name.`)).toBeTruthy("Duplicate style Message is not present");
     }, 500 * 1000);
-})
+});

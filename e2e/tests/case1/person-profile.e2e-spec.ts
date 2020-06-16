@@ -1,17 +1,16 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
+import viewCasePage from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfile from "../../pageobject/common/person-profile.po";
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
-import activityTabPage from '../../pageobject/social/activity-tab.po';
+import relationshipsConfigsPage from '../../pageobject/settings/relationship/relationships-configs.po';
+import { default as activityTabPage, default as caseActivityPage } from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import viewCasePage from '../../pageobject/case/view-case.po';
-import caseActivityPage from '../../pageobject/social/activity-tab.po';
-import relationshipsConfigsPage from '../../pageobject/settings/relationship/relationships-configs.po';
 
 describe('Person Profile test', () => {
     beforeAll(async () => {
@@ -234,13 +233,12 @@ describe('Person Profile test', () => {
 
     //asahitya
     describe('[DRDMV-16802]: Person profile display for Contact', () => {
-
         afterEach(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         });
 
-        it('Person profile display for non Agent Contact', async () => {
+        it('[DRDMV-16802]: Person profile display for non Agent Contact', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updatePersonAsVIP('apavlik', 'Yes');
             await apiHelper.apiLogin('elizabeth');
@@ -479,4 +477,4 @@ describe('Person Profile test', () => {
         //Verify sorting
         expect(await personProfile.isAssignedCasesColumnsSortedAscending("Case ID")).toBeTruthy("Columns are not sorted");
     });//, 160 * 1000);
-})
+});

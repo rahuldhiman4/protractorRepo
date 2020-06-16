@@ -12,6 +12,7 @@ import composeMailPo from '../../pageobject/email/compose-mail.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
 import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import createDocumentLibraryPage from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryPage from '../../pageobject/settings/document-management/document-library-console.po';
@@ -20,7 +21,6 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
-import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import utilityCommon from '../../utils/utility.common';
 
 let caseBAUser = 'qkatawazi';
@@ -1393,4 +1393,4 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await loginPage.login(caseBAUser);
         }
     }, 900 * 1000);
-})
+});

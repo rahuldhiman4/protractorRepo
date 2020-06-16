@@ -1,20 +1,18 @@
 import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
+import createCasePage from '../../pageobject/case/create-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
 import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import createMenuItems from '../../pageobject/settings/application-config/create-menu-items-blade.po';
 import editMenuItemsConfigPo from '../../pageobject/settings/application-config/edit-menu-items-config.po';
 import menuItemsConfigConsolePo from '../../pageobject/settings/application-config/menu-items-config-console.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import utilityCommon from '../../utils/utility.common';
-import apiHelper from '../../api/api.helper';
-import createCasePage from '../../pageobject/case/create-case.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import caseConsolePo from '../../pageobject/case/case-console.po';
 
 describe('Menu Item', () => {
     beforeAll(async () => {
@@ -60,7 +58,7 @@ describe('Menu Item', () => {
         let source = 'Phone' + randomStr;
         let source1 = 'phONE' + randomStr;
         let source2 = 'phone' + randomStr;
-        it('Create Menu Item label and Source', async () => {
+        it('[DRDMV-16173]: Create Menu Item label and Source', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             await createMenuItems.clickOnMenuOptionLink();
@@ -86,7 +84,7 @@ describe('Menu Item', () => {
             await createMenuItems.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('Create Duplicate Menu Item Source and Label', async () => {
+        it('[DRDMV-16173]: Create Duplicate Menu Item Source and Label', async () => {
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Label');
             await createMenuItems.clickOnLocalizeLink();
@@ -175,7 +173,7 @@ describe('Menu Item', () => {
         let label = 'label' + randomStr;
         let source = 'source' + randomStr;
         let resolutionCode = 'resolutionCode' + randomStr;
-        it('[Menu Items] - Create Menu Item', async () => {
+        it('[DRDMV-16105,DRDMV-16106]: [Menu Items] - Create Menu Item', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             await createMenuItems.clickOnMenuOptionLink();
@@ -212,7 +210,7 @@ describe('Menu Item', () => {
             await createMenuItems.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('[Menu Items] - Update Menu Item', async () => {
+        it('[DRDMV-16105,DRDMV-16106]: [Menu Items] - Update Menu Item', async () => {
             await menuItemsConfigConsolePo.searchAndEditMenuOption(source);
             expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeTruthy('MenuName drop down is editable');
             await editMenuItemsConfigPo.clickOnLocalizeLink();
@@ -286,11 +284,10 @@ describe('Menu Item', () => {
     //kgaikwad
     describe('[DRDMV-16104]: [Menu Items] Create new records in Menu Items', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let lableRandVal='labelVal'+randomStr;
-        let sourceRandVal='sourceVal'+randomStr;
-        let resolutionCodeRandVal='resolutionCodeVal'+randomStr;
-
-        it('Verify Create Menu Item UI', async () => {
+        let lableRandVal = 'labelVal' + randomStr;
+        let sourceRandVal = 'sourceVal' + randomStr;
+        let resolutionCodeRandVal = 'resolutionCodeVal' + randomStr;
+        it('[DRDMV-16104]: Verify Create Menu Item UI', async () => {
             await createMenuItems.clickOnMenuOptionLink();
             expect(await createMenuItems.isMenuNameFieldRequired()).toBeTruthy('FailureMsg: Menu Name required label is missing');
             expect(await createMenuItems.isMenuOptionFieldRequired()).toBeTruthy('FailureMsg: Menu Option required label is missing');
@@ -304,8 +301,7 @@ describe('Menu Item', () => {
             await createMenuItems.selectMenuNameDropDown('Source');
             expect(await createMenuItems.isToggleButtonDisplayed()).toBeTruthy('FailureMsg: Available On UI toogle button is missing ')
         });
-
-        it('Create Label Menu and verify in in Grid', async () => {
+        it('[DRDMV-16104]: Create Label Menu and verify in in Grid', async () => {
             await createMenuItems.selectMenuNameDropDown('Label');
             await createMenuItems.clickOnLocalizeLink();
             await localizeValuePopPo.setLocalizeValue(lableRandVal);
@@ -317,8 +313,7 @@ describe('Menu Item', () => {
             await menuItemsConfigConsolePo.searchOnGridConsole(lableRandVal);
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(lableRandVal);
         });
-
-        it('Create Resolution Code Menu and verify in in Grid', async () => {
+        it('[DRDMV-16104]: Create Resolution Code Menu and verify in in Grid', async () => {
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Resolution Code');
             await createMenuItems.clickOnLocalizeLink();
@@ -331,7 +326,6 @@ describe('Menu Item', () => {
             await menuItemsConfigConsolePo.searchOnGridConsole(resolutionCodeRandVal);
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(resolutionCodeRandVal);
         });
-
         it('[DRDMV-16104]: Create Source Menu and verify in in Grid', async () => {
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Source');
@@ -395,8 +389,7 @@ describe('Menu Item', () => {
             caseTemplateData.resolutionDescription = "0"
             await apiHelper.createCaseTemplate(caseTemplateData);
         });
-
-        it('Create case with selecting case template 1', async () => {
+        it('[DRDMV-17654]: Create case with selecting case template 1', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('DRDMV-17654_Summary_1');
@@ -406,8 +399,7 @@ describe('Menu Item', () => {
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
         });
-
-        it('Validate case with resolution code required true condition ', async () => {
+        it('[DRDMV-17654]: Validate case with resolution code required true condition ', async () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             expect(await updateStatusBladePo.isRequiredTagToResolutionCode()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
@@ -420,8 +412,7 @@ describe('Menu Item', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
         });
-
-        it('Create case with selecting case template 2', async () => {
+        it('[DRDMV-17654]: Create case with selecting case template 2', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('DRDMV-17654_Summary_2');
@@ -431,8 +422,7 @@ describe('Menu Item', () => {
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
         });
-
-        it('Validate case with resolution description required true condition', async () => {
+        it('[DRDMV-17654]: Validate case with resolution description required true condition', async () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             expect(await updateStatusBladePo.isRequiredTagToResolutionDescription()).toBeTruthy('FailureMsg: Required Tab for Resolution Description is missing');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
@@ -445,8 +435,7 @@ describe('Menu Item', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
         });
-
-        it('Create case with selecting case template 3', async () => {
+        it('[DRDMV-17654]: Create case with selecting case template 3', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('DRDMV-17654_Summary_3');
@@ -456,8 +445,7 @@ describe('Menu Item', () => {
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
         });
-
-        it('Validate case with Resolution code and Resolution description required true condition', async () => {
+        it('[DRDMV-17654]: Validate case with Resolution code and Resolution description required true condition', async () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             expect(await updateStatusBladePo.isRequiredTagToResolutionCode()).toBeTruthy('FailureMsg: Required Tag for Resolution Code is displayed ');
             expect(await updateStatusBladePo.isRequiredTagToResolutionDescription()).toBeTruthy('FailureMsg: Required Tab for Resolution Description is missing');
@@ -473,8 +461,7 @@ describe('Menu Item', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
         });
-
-        it('Create case with selecting case template 4', async () => {
+        it('[DRDMV-17654]: Create case with selecting case template 4', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('DRDMV-17654_Summary_4');
@@ -484,7 +471,6 @@ describe('Menu Item', () => {
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
         });
-
         it('[DRDMV-17654]: Validate case with Resolution code and Resolution description required false condition', async () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
@@ -497,5 +483,4 @@ describe('Menu Item', () => {
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
         });
     });
-
-})
+});

@@ -149,7 +149,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
             await consoleFlowsetProcessLibrary.searchAndSelectFlowset(`Process${randomStr}`);
             await editFlowsetProcessLibrary.setDescription('UpdataDescription' + randomStr);
-            let alias= 'UpdateAlias'+randomStr;
+            let alias = 'UpdateAlias' + randomStr;
             await editFlowsetProcessLibrary.setAliasName(alias);
             await editFlowsetProcessLibrary.clickOnSaveButton();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
@@ -183,7 +183,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    },350 * 1000);
+    }, 350 * 1000);
 
     it('[DRDMV-1298]: [Flowsets] Flowsets Console verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

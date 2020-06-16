@@ -5,9 +5,9 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import statusConfig from "../../pageobject/settings/common/status-config.po";
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilityGrid from "../../utils/utility.grid";
 import utilityCommon from '../../utils/utility.common';
 import dbConnectObj from '../../utils/utility.db-connect';
+import utilityGrid from "../../utils/utility.grid";
 
 describe('Case Console Preset Filter', () => {
 
@@ -458,7 +458,7 @@ describe('Case Console Preset Filter', () => {
             await utilityGrid.applyPresetFilter('All Open Breached Cases');
             expect(await utilityGrid.getAppliedFilterName()).toBe('All Open Breached Cases');
             expect(await utilityGrid.isGridRecordPresent(caseId[5])).toBeFalsy(caseId[5] + ' :Record is available');
-            
+
             //Waiting for SVT to Breached
             browser.sleep(120000);
             for (let i: number = 0; i < 3; i++) {
@@ -626,5 +626,4 @@ describe('Case Console Preset Filter', () => {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
         }
     });
-
 });

@@ -1,27 +1,26 @@
 import { browser } from "protractor";
+import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import { ALL_FIELD, MANDATORY_FIELD } from '../../data/ui/case/casetemplate.data.ui';
+import changeAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
+import dynamicField from "../../pageobject/common/dynamic-fields.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import copyCaseTemplate from "../../pageobject/settings/case-management/copy-casetemplate.po";
 import createCaseTemplate from "../../pageobject/settings/case-management/create-casetemplate.po";
 import editCaseTemplate from "../../pageobject/settings/case-management/edit-casetemplate.po";
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilityCommon from '../../utils/utility.common';
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
-import utilGrid from '../../utils/util.grid';
-import previewTaskTemplateCasesPo from '../../pageobject/settings/task-management/preview-task-template-cases.po';
-import utilCommon from '../../utils/util.common';
-import changeAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
-import apiCoreUtil from '../../api/api.core.util';
-import dynamicField from "../../pageobject/common/dynamic-fields.po";
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
-import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
-import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import copyTasktemplatePo from '../../pageobject/settings/task-management/copy-tasktemplate.po';
-import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
+import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
+import previewTaskTemplateCasesPo from '../../pageobject/settings/task-management/preview-task-template-cases.po';
+import { default as viewTaskTemplate, default as viewTasktemplatePo } from "../../pageobject/settings/task-management/view-tasktemplate.po";
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
@@ -248,7 +247,7 @@ describe('Copy Case Template', () => {
         expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe('Facilities');
         expect(await copyCaseTemplate.getValueOfBuisnessUnit()).toBe('Facilities Support');
     });
-    
+
     async function foundationData(company: string) {
         const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
         const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
@@ -352,7 +351,7 @@ describe('Copy Case Template', () => {
         await editCaseTemplate.changeTemplateStatusDropdownValue('Draft');
         await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
         await viewCasetemplatePo.clickOnEditCaseTemplateButton();
-        await editCaseTemplate.changeIdentityValidationValue('Enforced');         
+        await editCaseTemplate.changeIdentityValidationValue('Enforced');
         await editCaseTemplate.setResolutionCodeRequired(true);
         await editCaseTemplate.setResolutionDescriptionRequired(true);
         await editCaseTemplate.clickSaveCaseTemplate();
@@ -364,18 +363,18 @@ describe('Copy Case Template', () => {
         await copyCaseTemplate.clickSaveCaseTemplate();
         expect(await viewCasetemplatePo.getIdentityValdationValue()).toBe('Enforced');
         expect(await copyCaseTemplate.getValueOfResolutionCode()).toBe(caseTemplateAllFields.resolutionCode);
-        expect(await copyCaseTemplate.getValueOfResolutionDescription()).toBe(caseTemplateAllFields.resolutionDescription);       
+        expect(await copyCaseTemplate.getValueOfResolutionDescription()).toBe(caseTemplateAllFields.resolutionDescription);
         await viewCasetemplatePo.clickOneTask();
         expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(taskTemplateName);
         await previewTaskTemplateCasesPo.clickOnBackButton();
     });
 
-    describe('[DRDMV-13557]:Permission Check to verify who can edit the Case/Task template', async () => {
+    describe('[DRDMV-13557]: Permission Check to verify who can edit the Case/Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let copyCaseTemplateName: string = "copycasetemplate" + randomStr;
         let copytaskTemplateName: string = "copyTasktemplate" + randomStr;
         let caseTemplateName = "caseTemplateName" + randomStr;
-        it('Permission Check to verify who can edit the Case Template', async () => {
+        it('[DRDMV-13557]: Permission Check to verify who can edit the Case Template', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -394,7 +393,7 @@ describe('Copy Case Template', () => {
             await copyCaseTemplate.clickSaveCaseTemplate();
             await utilCommon.closePopUpMessage();
         });
-        it('Permission Check to verify who can edit the Case Template', async () => {
+        it('[DRDMV-13557]: Permission Check to verify who can edit the Case Template', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData2.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -413,7 +412,7 @@ describe('Copy Case Template', () => {
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeFalsy("Copy Case Template is editable");
         });
-        it('Permission Check to verify who can edit the Task Template', async () => {
+        it('[DRDMV-13557]: Permission Check to verify who can edit the Task Template', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -433,17 +432,17 @@ describe('Copy Case Template', () => {
             await copyTasktemplatePo.clickSaveCopytemplate();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-13557]:Permission Check to verify who can edit the Task Template', async () => {
+        it('[DRDMV-13557]: Permission Check to verify who can edit the Task Template', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData2.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.searchAndOpenTaskTemplate(copytaskTemplateName);         
+            await selectTaskTemplate.searchAndOpenTaskTemplate(copytaskTemplateName);
             await viewTaskTemplate.clickOnManageDynamicFieldLink();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await utilCommon.closePopUpMessage();
             await viewTaskTemplate.clickOnEditLink();
-            expect(await editTasktemplatePo.isCaseSummaryReadOnly()).toBeTruthy("Copy Case Template is editable"); 
+            expect(await editTasktemplatePo.isCaseSummaryReadOnly()).toBeTruthy("Copy Case Template is editable");
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -484,7 +483,7 @@ describe('Copy Case Template', () => {
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
         });
-        it('Add Dynamic Field', async () => {
+        it('[DRDMV-13570]: Add Dynamic Field', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();

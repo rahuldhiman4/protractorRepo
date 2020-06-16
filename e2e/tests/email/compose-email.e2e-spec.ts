@@ -1135,4 +1135,4 @@ describe("Compose Email", () => {
         await composeMail.clickOnDiscardButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
-})
+});

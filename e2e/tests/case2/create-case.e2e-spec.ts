@@ -31,12 +31,12 @@ import taskTemplatePreview from '../../pageobject/settings/task-management/previ
 import viewTasktemplatePage from '../../pageobject/settings/task-management/view-tasktemplate.po';
 import { default as activityPo, default as activityTabPo } from '../../pageobject/social/activity-tab.po';
 import taskConsolepage from "../../pageobject/task/console-task.po";
+import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import utilityGrid from '../../utils/utility.grid';
 
 describe("Create Case", () => {
@@ -117,7 +117,7 @@ describe("Create Case", () => {
             await createMenuItems.clickOnSaveButton();
             await utilGrid.searchRecord(randVal);
 
-            await navigationPage.gotoCaseConsole();      
+            await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await $(viewCasePage.selectors.resolutionCodeText).isDisplayed()).toBeTruthy('Missing Resolution Text');
             expect(await $(viewCasePage.selectors.resolutionDescriptionLabel).isDisplayed()).toBeTruthy('Missing Resolution Description Text');
@@ -151,7 +151,7 @@ describe("Create Case", () => {
 
     //kgaikwad
     it('[DRDMV-18031]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
-        let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');      
+        let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData1 =
         {
             "Requester": "qtao",
@@ -169,9 +169,9 @@ describe("Create Case", () => {
             "Business Unit": "United States Support",
             "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
-        }        
+        }
         await apiHelper.apiLogin("qkatawazi");
-        let newCase1 = await apiHelper.createCase(caseData1);      
+        let newCase1 = await apiHelper.createCase(caseData1);
         let caseId1: string = newCase1.displayId;
         let newCase2 = await apiHelper.createCase(caseData2);
         let caseId2: string = newCase2.displayId;
@@ -188,7 +188,7 @@ describe("Create Case", () => {
         await createMenuItems.selectStatusDropDown('Active');
         await createMenuItems.selectAvailableOnUiToggleButton(true);
         await createMenuItems.clickOnSaveButton();
-        
+
         await navigationPage.gotoCaseConsole();
         await caseConsolePage.searchAndOpenCase(caseId1);
         await viewCasePage.clickEditCaseButton();
@@ -204,7 +204,7 @@ describe("Create Case", () => {
         await editMenuItemsConfigPo.clickOnSaveButton();
         await utilCommon.closePopUpMessage();
 
-        await navigationPage.gotoCaseConsole();    
+        await navigationPage.gotoCaseConsole();
         await caseConsolePage.searchAndOpenCase(caseId2);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
@@ -986,7 +986,7 @@ describe("Create Case", () => {
             "priority": "Low",
         }
         await apiHelper.apiLogin('qtao');
-        await apiHelper.createCaseTemplate(CaseTemplateData);     
+        await apiHelper.createCaseTemplate(CaseTemplateData);
         try {
             await navigationPage.signOut();
             await loginPage.login("qtao");

@@ -2,7 +2,6 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import viewCasePo from "../../pageobject/case/view-case.po";
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
-import changeAssignmentOldBladePo from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import emailPo from '../../pageobject/email/compose-mail.po';
@@ -720,4 +719,4 @@ describe('Email', () => {
             await loginPage.login('elizabeth');
         }
     }, 400 * 1000);
-})
+});

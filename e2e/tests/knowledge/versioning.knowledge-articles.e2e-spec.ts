@@ -20,8 +20,8 @@ import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-ar
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import utilityGrid from "../../utils/utility.grid";
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from "../../utils/utility.grid";
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -1492,7 +1492,4 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await loginPage.login(caseBAUser);
         }
     }, 400 * 1000);
-
-
-
-})
+});

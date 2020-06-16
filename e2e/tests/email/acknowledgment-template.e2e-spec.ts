@@ -32,10 +32,10 @@ describe('Acknowledgment Template', () => {
         await utilityCommon.refresh();
     });
 
-      //ankagraw
-      it('[DRDMV-10897]: Acknowledgment Template : Acknowledgment Template creation UI validations', async () => {
+    //ankagraw
+    it('[DRDMV-10897]: Acknowledgment Template : Acknowledgment Template creation UI validations', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');   
+        await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
         expect(await createAcknowledgmentTemplatesPo.isTemplateNameRequired()).toBeTruthy();
         expect(await createAcknowledgmentTemplatesPo.isCompanyRequired()).toBeTruthy();
@@ -43,8 +43,8 @@ describe('Acknowledgment Template', () => {
         expect(await createAcknowledgmentTemplatesPo.isSubjectRequired()).toBeTruthy();
         expect(await createAcknowledgmentTemplatesPo.isModuleDisabled()).toBeTruthy();
         expect(await createAcknowledgmentTemplatesPo.isLocaleDisabled()).toBeTruthy();
-		await createAcknowledgmentTemplatesPo.clickOnCancelButton();
-		await utilCommon.clickOnWarningOk();
+        await createAcknowledgmentTemplatesPo.clickOnCancelButton();
+        await utilCommon.clickOnWarningOk();
     });
 
     //kgaikwad
@@ -263,4 +263,4 @@ describe('Acknowledgment Template', () => {
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
     }, 650 * 1000);
-})
+});

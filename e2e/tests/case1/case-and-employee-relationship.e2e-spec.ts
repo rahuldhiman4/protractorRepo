@@ -12,8 +12,8 @@ import personProfilePage from '../../pageobject/common/person-profile.po';
 import relatedCasePage from '../../pageobject/common/related-case-tab.po';
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
-import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Case And Employee Relationship', () => {
     beforeAll(async () => {
@@ -299,4 +299,4 @@ describe('Case And Employee Relationship', () => {
         await viewCasePo.clickOnTab('Related Cases');
         await relatedCasePage.isCasePresent(caseId2);
     });
-})
+});

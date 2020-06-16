@@ -450,4 +450,4 @@ describe('Notes template', () => {
         await activityTabPo.clickOnPostButton();
         expect(await activityTabPo.isTextPresentInActivityLog(NOTES_TEMPLATE_MANDATORY_FIELD.body)).toBeTruthy();
     });
-})
+});

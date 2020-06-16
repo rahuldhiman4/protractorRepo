@@ -14,8 +14,8 @@ import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-bla
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Knowledge Article', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -794,4 +794,4 @@ describe('Knowledge Article', () => {
             await previewKnowledgePo.clickOnBackButton();
         }
     });//, 150 * 1000);
-})
+});
