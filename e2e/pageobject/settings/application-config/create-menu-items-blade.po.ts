@@ -24,7 +24,6 @@ class CreateNewMenuOptionPage {
         cancelButton: '[rx-view-component-id="4d21900d-87ce-40b1-839b-01c72ff77014"] .d-button_secondary',
         createNewMenuOptionDialogueBox: 'a.modal-dialog .modal-contentsf',
         menuOptionGuid: 'd40aa6f2-090d-4641-9779-ae724673575c',
-
     }
 
     async isCreateNewMenuOptionBladeDisplayed(): Promise<boolean> {
@@ -55,10 +54,11 @@ class CreateNewMenuOptionPage {
         await utilCommon.selectDropDown(this.selectors.statusDropDownGuid,value);
     }
 
-    async isToggleButtonPresent(): Promise<boolean> {
+    async isToggleButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.toggleButtonCheckIcon).isPresent().then(async (result) => {
-            if (result) return true;
-            else return false;
+            if (result){
+                return await $(this.selectors.toggleButtonCheckIcon).isDisplayed();
+            } else return false;
         });
     }
 

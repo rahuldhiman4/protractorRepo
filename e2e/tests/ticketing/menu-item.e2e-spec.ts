@@ -40,7 +40,7 @@ describe('Menu Item', () => {
         await createMenuItems.selectStatusDropDown('Active');
         await createMenuItems.selectStatusDropDown('Inactive');
         await createMenuItems.selectStatusDropDown('Deprecated');
-        expect(await createMenuItems.isToggleButtonPresent()).toBeTruthy('Toggle Button is missing');
+        expect(await createMenuItems.isToggleButtonDisplayed()).toBeTruthy('Toggle Button is missing');
     });
 
     //kgaikwad
@@ -302,7 +302,7 @@ describe('Menu Item', () => {
             expect(await createMenuItems.isSaveButtonDisplayed()).toBeTruthy('FailureMsg: save button is missing');
             expect(await createMenuItems.isCancelButtonDisplayed()).toBeTruthy('FailureMsg: Cancel button is missing');
             await createMenuItems.selectMenuNameDropDown('Source');
-            expect(await createMenuItems.isToggleButtonPresent()).toBeTruthy('FailureMsg: Available On UI toogle button is missing ')
+            expect(await createMenuItems.isToggleButtonDisplayed()).toBeTruthy('FailureMsg: Available On UI toogle button is missing ')
         });
 
         it('Create Label Menu and verify in in Grid', async () => {
@@ -390,7 +390,7 @@ describe('Menu Item', () => {
             caseTemplateData.resolutionDescription = "1"
             await apiHelper.createCaseTemplate(caseTemplateData);
 
-            caseTemplateName4 = caseTemplateData.templateName = 'caseTemplateName_4' + randomStr;
+            caseTemplateName4 = caseTemplateData.templateName = 'DRDMV-17654_caseTemplateName_4' + randomStr;
             caseTemplateData.resolutionCode = "0"
             caseTemplateData.resolutionDescription = "0"
             await apiHelper.createCaseTemplate(caseTemplateData);
