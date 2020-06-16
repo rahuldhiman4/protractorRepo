@@ -1,6 +1,7 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import { ALL_FIELD, MANDATORY_FIELD } from '../../data/ui/case/casetemplate.data.ui';
+import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
@@ -15,14 +16,13 @@ import copyCasetemplatePo from '../../pageobject/settings/case-management/copy-c
 import createCaseTemplate from "../../pageobject/settings/case-management/create-casetemplate.po";
 import editCasetemplatePo from "../../pageobject/settings/case-management/edit-casetemplate.po";
 import viewCaseTemplate from "../../pageobject/settings/case-management/view-casetemplate.po";
+import activityTabPo from '../../pageobject/social/activity-tab.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import utilCommon from '../../utils/util.common';
-import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
-import activityTabPo from '../../pageobject/social/activity-tab.po';
-import caseConsolePo from '../../pageobject/case/case-console.po';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Template', () => {
@@ -367,7 +367,7 @@ describe('Case Template', () => {
     });
 
     //ptidke
-    describe('[DRDMV-9003]:[Negative Testing]-Checking change case template button disabled/hidden for different case status.', async () => {
+    describe('[DRDMV-9003]: [Negative Testing]-Checking change case template button disabled/hidden for different case status.', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData;
         beforeAll(async () => {
@@ -388,7 +388,7 @@ describe('Case Template', () => {
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(templateData);
         });
-        it('Checking change case template button for In Progress', async () => {
+        it('[DRDMV-9003]: Checking change case template button for In Progress', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('fritz');
             await createCasePo.clickSelectCaseTemplateButton();
@@ -404,7 +404,7 @@ describe('Case Template', () => {
             await editCasePo.clickOnCancelCaseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
-        it('Checking change case template button for Resolved', async () => {
+        it('[DRDMV-9003]: Checking change case template button for Resolved', async () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus('Resolved');
@@ -414,7 +414,7 @@ describe('Case Template', () => {
             await editCasePo.clickOnCancelCaseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
-        it('Checking change case template button for Closed', async () => {
+        it('[DRDMV-9003]: Checking change case template button for Closed', async () => {
             await updateStatusBladePo.changeCaseStatus('Closed');
             await updateStatusBladePo.clickSaveStatus('Closed');
             await viewCasePo.clickEditCaseButton();
@@ -423,7 +423,7 @@ describe('Case Template', () => {
             await editCasePo.clickOnCancelCaseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
-        it('Checking change case template button for Pending', async () => {
+        it('[DRDMV-9003]: Checking change case template button for Pending', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('fritz');
             await createCasePo.clickSelectCaseTemplateButton();
@@ -440,7 +440,7 @@ describe('Case Template', () => {
             await editCasePo.clickOnCancelCaseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
-        it('[DRDMV-9003]:Checking change case template button disabled/hidden for different case status.', async () => {
+        it('[DRDMV-9003]: Checking change case template button disabled/hidden for different case status.', async () => {
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Customer Canceled');
             await updateStatusBladePo.clickSaveStatus('Canceled');
@@ -458,7 +458,7 @@ describe('Case Template', () => {
 
     describe('[DRDMV-769]: [Case Creation] [Template Selection] Applying a Template to a Case', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let casetemplatePetramco,casetemplatePsilon;
+        let casetemplatePetramco, casetemplatePsilon;
         beforeAll(async () => {
             casetemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomStr,
@@ -493,7 +493,7 @@ describe('Case Template', () => {
             await apiHelper.apiLogin('gderuno');
             await apiHelper.createCaseTemplate(casetemplatePsilon);
         });
-        it('Applying a Template to a Case with Franz', async () => {
+        it('[DRDMV-769]: Applying a Template to a Case with Franz', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('Franz');
             await createCasePo.setSummary(casetemplatePetramco.templateName);
@@ -507,7 +507,7 @@ describe('Case Template', () => {
             expect(await viewCasePo.getCategoryTier3Value()).toBe('Card Issuance');
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
         });
-        it('Applying a Template to a Case with qdu', async () => {
+        it('[DRDMV-769]: Applying a Template to a Case with qdu', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qdu');
             await createCasePo.setSummary(casetemplatePsilon.templateName);
@@ -579,7 +579,7 @@ describe('Case Template', () => {
     });
 
     describe('[DRDMV-1216]: [Case Template] Create Case Template with all fields data populated', async () => {
-        let casetemplatePetramco,randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let casetemplatePetramco, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             casetemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomStr,
@@ -599,9 +599,9 @@ describe('Case Template', () => {
                 "description": 'description' + randomStr,
             }
             await apiHelper.apiLogin('fritz');
-            await apiHelper.createCaseTemplate(casetemplatePetramco);            
+            await apiHelper.createCaseTemplate(casetemplatePetramco);
         });
-        it('Create Case Template with all fields', async () => {
+        it('[DRDMV-1216]: Create Case Template with all fields', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(casetemplatePetramco.templateName);
@@ -638,7 +638,7 @@ describe('Case Template', () => {
 
     describe('[DRDMV-1215]: [Case Template] Case Status, Template status, Priority, Case Company, Owner population', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName='caseTemplateName' + randomStr;
+        let caseTemplateName = 'caseTemplateName' + randomStr;
         beforeAll(async () => {
             let casetemplatePetramco = {
                 "templateName": caseTemplateName,
@@ -661,7 +661,7 @@ describe('Case Template', () => {
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
         });
-        it('Checking change case template button for In Progress', async () => {
+        it('[DRDMV-1215]: Checking change case template button for In Progress', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -725,7 +725,7 @@ describe('Case Template', () => {
             casetemplatePetramco.templateName = updatedCaseTemplateName;
             await apiHelper.createCaseTemplate(casetemplatePetramco);
         });
-        it('Changing case template for new case status', async () => {
+        it('[DRDMV-8965,DRDMV-8990]: Changing case template for new case status', async () => {
             // await navigationPage.signOut();
             // await loginPage.login('fritz');
             await navigationPage.gotoCreateCase();
@@ -759,7 +759,7 @@ describe('Case Template', () => {
         });
     });
 
-    describe('[DRDMV-9019]:[Case] [Template Selection] Changing case template for the case in Assigned Status', async () => {
+    describe('[DRDMV-9019]: [Case] [Template Selection] Changing case template for the case in Assigned Status', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = 'caseTemplateName' + randomStr;
         let updatedCaseTemplateName = 'updatedCaseTemplateName' + randomStr;
@@ -818,7 +818,7 @@ describe('Case Template', () => {
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate1.displayId, manualTaskTemplate.displayId);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate2.displayId, manualTaskTemplate.displayId);
         });
-        it('Changing case template for the case in Assigned Status', async () => {
+        it('[DRDMV-9019]: Changing case template for the case in Assigned Status', async () => {
             // await navigationPage.signOut();
             // await loginPage.login('fritz');
             await navigationPage.gotoCreateCase();
@@ -832,7 +832,7 @@ describe('Case Template', () => {
             expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateName);
             expect(await viewCasePo.isCoreTaskPresent(taskTemplateName)).toBeTruthy();
         });
-        it('[DRDMV-9019]:[Case] [Template Selection] Changing case template for the case in Assigned Status', async () => {
+        it('[DRDMV-9019]: [Case] [Template Selection] Changing case template for the case in Assigned Status', async () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(updatedCaseTemplateName);
@@ -854,7 +854,7 @@ describe('Case Template', () => {
         });
     });
 
-    describe('[DRDMV-9129]:[Negative Testing] - Verify permission for Case Agent from a different support group to edit case template.', async () => {
+    describe('[DRDMV-9129]: [Negative Testing] - Verify permission for Case Agent from a different support group to edit case template.', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = 'caseTemplateName' + randomStr;
         beforeAll(async () => {
@@ -880,7 +880,7 @@ describe('Case Template', () => {
             await apiHelper.apiLogin('franz');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
         });
-        it('Creating the Case with case template', async () => {
+        it('[DRDMV-9129]: Creating the Case with case template', async () => {
             await navigationPage.signOut();
             await loginPage.login('franz');
             await navigationPage.gotoCreateCase();
@@ -893,7 +893,7 @@ describe('Case Template', () => {
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateName);
         });
-        it('Login to CM with diffrent support group', async () => {
+        it('[DRDMV-9129]: Login to CM with diffrent support group', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoCaseConsole();
@@ -901,7 +901,7 @@ describe('Case Template', () => {
             await caseConsolePo.searchCase(caseTemplateName);
             expect(await caseConsolePo.isCaseSummaryPresent(caseTemplateName)).toBeFalsy("Case is present for diffrent company");
         });
-        it('[DRDMV-9129]:[Negative Testing] - Verify permission for Case Agent from a different support group to edit case template.', async () => {
+        it('[DRDMV-9129]: [Negative Testing] - Verify permission for Case Agent from a different support group to edit case template.', async () => {
             await navigationPage.signOut();
             await loginPage.login('rrovnitov');
             await navigationPage.gotoCaseConsole();
@@ -915,9 +915,9 @@ describe('Case Template', () => {
         });
     });
 
-    describe('[DRDMV-12581,DRDMV-12554]:Case Template access when owner group from different company is applied', async () => {
+    describe('[DRDMV-12581,DRDMV-12554]: Case Template access when owner group from different company is applied', async () => {
         let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);
-        it('Checking change case template button for In Progress', async () => {
+        it('[DRDMV-12581,DRDMV-12554]: Checking change case template button for In Progress', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData.emailId, 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -933,7 +933,7 @@ describe('Case Template', () => {
             await createCaseTemplate.setTemplateStatusDropdownValue('Draft');
             await createCaseTemplate.clickSaveCaseTemplate();
         });
-        it('Checking change case template button for Resolved', async () => {
+        it('[DRDMV-12581,DRDMV-12554]: Checking change case template button for Resolved', async () => {
             await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
             await editCasetemplatePo.changeOwnerCompanyValue('Psilon');
             await editCasetemplatePo.changeBusinessUnitDropdownValue("Psilon Support Org1");
@@ -943,7 +943,7 @@ describe('Case Template', () => {
             expect(await viewCaseTemplate.getOwnerGroupValue()).toContain("Psilon Support Group1");
             expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Psilon');
         });
-        it('[DRDMV-12581,DRDMV-12554]:Case Template access when owner group from different company is applied', async () => {
+        it('[DRDMV-12581,DRDMV-12554]: Case Template access when owner group from different company is applied', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -959,7 +959,7 @@ describe('Case Template', () => {
         });
     });
 
-    describe('[DRDMV-1245]:[Case Template] Template status lifecycle', async () => {
+    describe('[DRDMV-1245]: [Case Template] Template status lifecycle', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = randomStr + 'Draft';
         beforeAll(async () => {
@@ -982,7 +982,7 @@ describe('Case Template', () => {
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(templateDataDraft);
         });
-        it('Case Agent checks for Draft template', async () => {
+        it('[DRDMV-1245]: Case Agent checks for Draft template', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoQuickCase();
@@ -999,7 +999,7 @@ describe('Case Template', () => {
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
             expect(await viewCaseTemplate.getTemplateStatusValue()).toBe('Active');
         });
-        it('Case Agent checks for Active template & Consume it', async () => {
+        it('[DRDMV-1245]: Case Agent checks for Active template & Consume it', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(caseTemplateName);
@@ -1008,7 +1008,7 @@ describe('Case Template', () => {
             await quickCasePo.gotoCaseButton();
             expect(await viewCasePo.getCaseTemplateText()).toBe(caseTemplateName);
         });
-        it('[DRDMV-1245]:[Case Template] Template status lifecycle', async () => {
+        it('[DRDMV-1245]: [Case Template] Template status lifecycle', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(caseTemplateName);
@@ -1026,7 +1026,7 @@ describe('Case Template', () => {
         });
     })
 
-    describe('[DRDMV-9130,DRDMV-9127]:[Negative Testing] - Verify permission for Case Manager from a different/same support group to edit case template.', async () => {
+    describe('[DRDMV-9130,DRDMV-9127]: [Negative Testing] - Verify permission for Case Manager from a different/same support group to edit case template.', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = 'caseTemplateName' + randomStr;
         beforeAll(async () => {
@@ -1052,7 +1052,7 @@ describe('Case Template', () => {
             await apiHelper.apiLogin('franz');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
         });
-        it('Creating the Case with case template', async () => {
+        it('[DRDMV-9130,DRDMV-9127]: Creating the Case with case template', async () => {
             await navigationPage.signOut();
             await loginPage.login('franz');
             await navigationPage.gotoCreateCase();
@@ -1065,7 +1065,7 @@ describe('Case Template', () => {
             await previewCasePo.clickGoToCaseButton(); //popup 
             expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateName);
         });
-        it('Login to CA with diffrent support group', async () => {
+        it('[DRDMV-9130,DRDMV-9127]: Login to CA with diffrent support group', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoCaseConsole();
@@ -1073,7 +1073,7 @@ describe('Case Template', () => {
             await caseConsolePo.searchCase(caseTemplateName);
             expect(await caseConsolePo.isCaseSummaryPresent(caseTemplateName)).toBeFalsy("Case is present for diffrent company");
         });
-        it('Login to CA with diffrent company', async () => {
+        it('[DRDMV-9130,DRDMV-9127]: Login to CA with diffrent company', async () => {
             await navigationPage.signOut();
             await loginPage.login('werusha');
             await navigationPage.gotoCaseConsole();
@@ -1081,7 +1081,7 @@ describe('Case Template', () => {
             await caseConsolePo.searchCase(caseTemplateName);
             expect(await caseConsolePo.isCaseSummaryPresent(caseTemplateName)).toBeFalsy("Case is present for diffrent company");
         });
-        it('[DRDMV-9130,DRDMV-9127]:[Negative Testing] - Verify permission for Case Manager from a different/same support group to edit case template.', async () => {
+        it('[DRDMV-9130,DRDMV-9127]: [Negative Testing] - Verify permission for Case Manager from a different/same support group to edit case template.', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoCaseConsole();
@@ -1157,9 +1157,9 @@ describe('Case Template', () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName1 = 'caseTemplateNameCase1' + randomStr;
         let caseTemplateName2 = 'caseTemplateNameCase2' + randomStr;
-        let caseTemplateName3 = 'caseTemplateNameCase3' + randomStr;    
+        let caseTemplateName3 = 'caseTemplateNameCase3' + randomStr;
         let caseName = 'caseName' + randomStr;
-        let newCase1,newCase2,newCase3,newCase4;
+        let newCase1, newCase2, newCase3, newCase4;
         beforeAll(async () => {
             let casetemplatePetramco1 = {
                 "templateName": caseTemplateName1,
@@ -1213,15 +1213,15 @@ describe('Case Template', () => {
             let caseData =
             {
                 "Requester": "qtao",
-                "Summary": caseName,               
+                "Summary": caseName,
                 "categoryTier1": "Purchasing Card",
                 "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",   
+                "categoryTier3": "Card Issuance",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "Assignee": "qkatawazi"            
-            }       
+                "Assignee": "qkatawazi"
+            }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(casetemplatePetramco1);
             await apiHelper.createCaseTemplate(casetemplatePetramco2);
@@ -1231,7 +1231,7 @@ describe('Case Template', () => {
             newCase3 = await apiHelper.createCase(caseData);
             newCase4 = await apiHelper.createCase(caseData);
         });
-        it('Adding methods to case template', async () => {
+        it('[DRDMV-15245]: Adding methods to case template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(caseTemplateName1);
@@ -1250,7 +1250,7 @@ describe('Case Template', () => {
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
         });
-        it('Verify case assignment method is not applicable if user changes the case template', async () => {
+        it('[DRDMV-15245]: Verify case assignment method is not applicable if user changes the case template', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase1.displayId);
             expect(await viewCasePo.getAssigneeText()).toBe("Qadim Katawazi");
@@ -1263,7 +1263,7 @@ describe('Case Template', () => {
             expect(await viewCasePo.getAssignedGroupText()).toBe('Facilities');
             expect(await viewCasePo.getBusinessUnitText()).toBe('Facilities Support');
         });
-        it('Verify case assignment method is not applicable if user changes the case template', async () => {
+        it('[DRDMV-15245]: Verify case assignment method is not applicable if user changes the case template', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase2.displayId);
             expect(await viewCasePo.getAssigneeText()).toBe("Qadim Katawazi");
@@ -1283,7 +1283,7 @@ describe('Case Template', () => {
             expect(await viewCasePo.getAssignedGroupText()).toBe('Workforce Administration');
             expect(await viewCasePo.getBusinessUnitText()).toBe('HR Support');
         });
-        it('Verify case assignment method is not applicable if user changes the case template', async () => {
+        it('[DRDMV-15245]: Verify case assignment method is not applicable if user changes the case template', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase3.displayId);
             expect(await viewCasePo.getAssigneeText()).toBe("Qadim Katawazi");
@@ -1329,7 +1329,7 @@ describe('Case Template', () => {
         });
     });
 
-    describe('[DRDMV-19741]:[RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
+    describe('[DRDMV-19741]: [RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = 'caseTemplateName' + randomStr;
         let casTemplateSummary = 'CaseSummaryName' + randomStr;
@@ -1386,7 +1386,7 @@ describe('Case Template', () => {
             let manualTaskTemplateOne = await apiHelper.createManualTaskTemplate(taskTemplateData);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplateOne.displayId, manualTaskTemplateOne.displayId);
         });
-        it('Case behavior when Case Template is changed', async () => {
+        it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('fritz');
             await createCasePo.setSummary('Summary');
@@ -1402,7 +1402,7 @@ describe('Case Template', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateNameWithNoValue);
             await editCasePo.clickSaveCase();
         });
-        it('Case behavior when Case Template is changed', async () => {
+        it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
             await utilCommon.closePopUpMessage();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
@@ -1415,7 +1415,7 @@ describe('Case Template', () => {
             await viewTaskPo.clickOnViewCase();
             expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
         });
-        it('Case behavior when Case Template is changed', async () => {
+        it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('fritz');
             await createCasePo.setSummary('Summary');
@@ -1427,7 +1427,7 @@ describe('Case Template', () => {
             await viewCasePo.isEditLinkDisplay();
             expect(await viewCasePo.isCoreTaskPresent(taskTemplateSummaryYesValue)).toBeTruthy();
         });
-        it('[DRDMV-19741]:[RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
+        it('[DRDMV-19741]: [RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await viewCasePo.openTaskCard(1);
@@ -1444,4 +1444,4 @@ describe('Case Template', () => {
             await loginPage.login('fritz');
         });
     });
-});   
+});

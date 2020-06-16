@@ -11,8 +11,7 @@ import personProfilePage from '../../pageobject/common/person-profile.po';
 import composemailPage from '../../pageobject/email/compose-mail.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/utility.common';
-import utilityCommon from '../../utils/utility.common';
+import { default as utilCommon, default as utilityCommon } from '../../utils/utility.common';
 
 describe('Edit Case', () => {
     beforeAll(async () => {
@@ -37,7 +36,7 @@ describe('Edit Case', () => {
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
-         
+
         await expect(viewCasePage.getRequesterName()).toBe('Adam Pavlik');
         await expect(viewCasePage.getRequesterPhoneNo()).toBe('+19254694006');
         await expect(viewCasePage.getRequesterEmail()).toBe('apavlik@petramco.com');
@@ -98,7 +97,7 @@ describe('Edit Case', () => {
         await utilityCommon.switchToNewTab(1);
         await expect(personProfilePage.getPersonName()).toBe('Adam Pavlik');
         await utilityCommon.switchToNewTab(0);
-   
+
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
     });

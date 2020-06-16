@@ -31,7 +31,7 @@ describe('Document Template', () => {
         let documentBody2 = 'documentBody2' + randomStr;
         let labelRandVal1 = 'labelRandVal1' + randomStr;
         let labelRandVal2 = 'labelRandVal2' + randomStr;
-        it('Create Menu item label', async () => {
+        it('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Create Menu item label', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             await createMenuItemsBladePo.clickOnMenuOptionLink();
@@ -51,7 +51,7 @@ describe('Document Template', () => {
             await createMenuItemsBladePo.selectAvailableOnUiToggleButton(true);
             await createMenuItemsBladePo.clickOnSaveButton();
         });
-        it('Create document template', async () => {
+        it('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Create document template', async () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
@@ -74,7 +74,7 @@ describe('Document Template', () => {
             await createDocumentTemplatePo.setDocumentBody(documentBody1);
             await createDocumentTemplatePo.clickOnSaveButton();
         });
-        it('Validation of document template', async () => {
+        it('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Validation of document template', async () => {
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
             expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal1)).toBeTruthy('Template Name is missing');
             expect(await editDocumentTemplatePo.isCompanyNameDisplayed('Petramco')).toBeTruthy('Petramco Company Name is missing');
@@ -94,7 +94,7 @@ describe('Document Template', () => {
             await editDocumentTemplatePo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('update document template', async () => {
+        it('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Update document template', async () => {
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
             expect(await editDocumentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company Drop down is not disabled');
             expect(await editDocumentTemplatePo.isTemplateNameDisabled()).toBeTruthy('Template Name is disabled');

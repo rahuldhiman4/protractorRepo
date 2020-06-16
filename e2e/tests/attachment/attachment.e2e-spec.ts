@@ -256,7 +256,7 @@ describe("Attachment", () => {
     //kgaikwad
     describe('[DRDMV-11718,DRDMV-11720]: Large number of attachments verification', async () => {
         let fileName: string[];
-        it('Create case with Large number of attachments', async () => {
+        it('[DRDMV-11718,DRDMV-11720]: Create case with Large number of attachments', async () => {
             let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('Elizabeth Peters');
@@ -302,7 +302,7 @@ describe("Attachment", () => {
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('Multiple tasks on same case with attachments', async () => {
+        it('[DRDMV-11721,DRDMV-11746]: Multiple tasks on same case with attachments', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             //Create Task API
@@ -356,7 +356,7 @@ describe("Attachment", () => {
     //kgaikwad
     describe('[DRDMV-11714,DRDMV-11705]: Remove attachment which is added via case console & verify all attachments grid', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('Create case with attachment', async () => {
+        it('[DRDMV-11714,DRDMV-11705]: Create case with attachment', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('Elizabeth Peters');
             await createCasePo.setSummary(caseSummary);
@@ -410,7 +410,7 @@ describe("Attachment", () => {
 
     //kgaikwad
     describe('[DRDMV-11701,DRDMV-11706,DRDMV-11722]: Multiple attachments selection from different pages', async () => {
-        it('Uplaod 50 attachments', async () => {
+        it('[DRDMV-11701,DRDMV-11706,DRDMV-11722]: Uplaod 50 attachments', async () => {
             let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('Elizabeth Peters');

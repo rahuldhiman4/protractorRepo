@@ -923,5 +923,4 @@ describe('Case Activity CKE', () => {
             await loginPage.login('qkatawazi');
         }
     }, 1100 * 1000);
-
-})
+});

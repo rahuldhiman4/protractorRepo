@@ -12,7 +12,7 @@ import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbu
 import serviceTargetInfoPage from '../../pageobject/slm/service-target-info.po';
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilityCommon, { Utility } from '../../utils/utility.common';
+import utilityCommon from '../../utils/utility.common';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -31,14 +31,12 @@ describe('Service Target Tests for Cases', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-17016,DRDMV-7044]:Check if expression is build by using all available field with different relation', async () => {
-
+    describe('[DRDMV-17016,DRDMV-7044]: Check if expression is build by using all available field with different relation', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create a SVT', async () => {
+        it('[DRDMV-17016,DRDMV-7044]:Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
@@ -56,8 +54,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
-
-        it('Create a case', async () => {
+        it('[DRDMV-17016,DRDMV-7044]:Create a case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Mary');
             await createCasePage.setSummary('Case for SVT creation');
@@ -67,8 +64,7 @@ describe('Service Target Tests for Cases', () => {
             await previewCasePo.clickGoToCaseButton();
             await browser.sleep(32000);
         });
-
-        it('Verify SVT attached to a Case', async () => {
+        it('[DRDMV-17016,DRDMV-7044]:Verify SVT attached to a Case', async () => {
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
             await slmProgressBar.clickOnSLAProgressBarInProcessIcon();
@@ -84,7 +80,6 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(120000);
             await utilityCommon.refresh();
         });
-
         it('[DRDMV-17016,DRDMV-7044]:Check if expression is build by using all available field with different relation', async () => {
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
             await browser.sleep(70000);
@@ -95,14 +90,12 @@ describe('Service Target Tests for Cases', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-11913]:[Global] Create a Case with global SVT', async () => {
-
+    describe('[DRDMV-11913]: [Global] Create a Case with global SVT', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create a Global SVT', async () => {
+        it('[DRDMV-11913]: Create a Global SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
@@ -120,8 +113,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
-
-        it('Create a Case', async () => {
+        it('[DRDMV-11913]: Create a Case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Mary');
             await createCasePage.setPriority('High');
@@ -132,35 +124,30 @@ describe('Service Target Tests for Cases', () => {
             await previewCasePo.clickGoToCaseButton();
             await browser.sleep(32000);
         });
-
-        it('Verify SVT attached to a Case', async () => {
+        it('[DRDMV-11913]: Verify SVT attached to a Case', async () => {
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
             await browser.sleep(120000);
             await utilityCommon.refresh();
         });
-
-        it('[DRDMV-11913]:[Global] Create a Case with global SVT', async () => {
+        it('[DRDMV-11913]: [Global] Create a Case with global SVT', async () => {
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
             await browser.sleep(70000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
-
     });
 
     //skhobrag
-    describe('[DRDMV-2027]:Icons representing measurement status on SLA Progress Bar', async () => {
+    describe('[DRDMV-2027]: Icons representing measurement status on SLA Progress Bar', async () => {
         let selectedExp = '';
         let expectedSelectedExp = '';
-
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create a SVT',async()=>{
+        it('[DRDMV-2027]: Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
@@ -178,8 +165,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
-
-        it('Create a Case and verify SVT attached to case',async()=>{
+        it('[DRDMV-2027]: Create a Case and verify SVT attached to case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qianru Tao');
             await createCasePage.setPriority('High');
@@ -193,8 +179,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
             await browser.sleep(80000);
         });
-
-        it('Verify SVT warning and missed goal status',async()=>{
+        it('[DRDMV-2027]: Verify SVT warning and missed goal status', async () => {
             await browser.sleep(30000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
@@ -204,8 +189,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
-
-        it('Create another svt',async()=>{
+        it('[DRDMV-2027]: Create another svt', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
                 .toEqual('Service Target - Administration - Business Workflows');
@@ -224,8 +208,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
-
-        it('[DRDMV-2027]:Verify new SVT created on case',async()=>{
+        it('[DRDMV-2027]: Verify new SVT created on case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qianru Tao');
             await createCasePage.setPriority('High');
@@ -238,20 +221,17 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         });
-
     });
 
     //skhobrag   
-    describe('[DRDMV-11914]:[Global] Both svt gets attached if we have Global and company specific SVTs', async () => {
+    describe('[DRDMV-11914]: [Global] Both svt gets attached if we have Global and company specific SVTs', async () => {
         let selectedExp = '';
         let expectedSelectedExp = '';
-
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create Global SVT', async () => {
+        it('[DRDMV-11914]: Create Global SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
@@ -269,8 +249,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(2000);
         });
-
-        it('Create company specific SVT', async () => {
+        it('[DRDMV-11914]: Create company specific SVT', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
             await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
@@ -286,8 +265,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
         });
-
-        it('Create a case to attach both Global and Company specific SVT', async () => {
+        it('[DRDMV-11914]: Create a case to attach both Global and Company specific SVT', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qianru Tao');
             await createCasePage.setPriority('High');
@@ -302,21 +280,18 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
             await browser.sleep(70000);
         });
-
-        it('Verify Dual SVT in SLA Warning state', async () => {
+        it('[DRDMV-11914]: Verify Dual SVT in SLA Warning state', async () => {
             await browser.sleep(100000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
         });
-
-        it('[DRDMV-11914]:Verify Dual SVT in SLA Missed Goal state', async () => {
+        it('[DRDMV-11914]: Verify Dual SVT in SLA Missed Goal state', async () => {
             await browser.sleep(90000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
@@ -324,14 +299,12 @@ describe('Service Target Tests for Cases', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-8365]:Verify the SLA Progress Bar change in color when single SVT attached', async () => {
-
+    describe('[DRDMV-8365]: Verify the SLA Progress Bar change in color when single SVT attached', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create SVT',async()=>{
+        it('[DRDMV-8365]: Create SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
@@ -348,8 +321,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
-
-        it('Create a case and verify SVT attached to a case',async()=>{
+        it('[DRDMV-8365]: Create a case and verify SVT attached to a case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qianru Tao');
             await createCasePage.setPriority('Critical');
@@ -363,8 +335,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         });
-
-        it('Verify SVT status when case is in Pending status',async()=>{
+        it('[DRDMV-8365]: Verify SVT status when case is in Pending status', async () => {
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
@@ -378,8 +349,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             await browser.sleep(80000);
         });
-
-        it('Verify SVT when its in Warning Pending status',async()=>{
+        it('[DRDMV-8365]: Verify SVT when its in Warning Pending status', async () => {
             await browser.sleep(70000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
@@ -390,8 +360,7 @@ describe('Service Target Tests for Cases', () => {
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
         });
-
-        it('[DRDMV-8365]:Verify SVT in Missed goal status',async()=>{
+        it('[DRDMV-8365]: Verify SVT in Missed goal status', async () => {
             browser.sleep(50000);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
@@ -411,20 +380,17 @@ describe('Service Target Tests for Cases', () => {
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true);
         });
-
     });
 
     //skhobrag
-    describe('[DRDMV-2022]:Verify SLA Progress Bar timeline properties', async () => {
+    describe('[DRDMV-2022]: Verify SLA Progress Bar timeline properties', async () => {
         let selectedExp = '';
         let expectedSelectedExp = '';
-
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create a SVT with 2 min timeline', async () => {
+        it('[DRDMV-2022]: Create a SVT with 2 min timeline', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
@@ -442,8 +408,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(2000);
         });
-
-        it('Create a SVT with 4 mins timeline', async () => {
+        it('[DRDMV-2022]: Create a SVT with 4 mins timeline', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
@@ -459,8 +424,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(2000);
         });
-
-        it('Create a case', async () => {
+        it('[DRDMV-2022]: Create a case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qianru Tao');
             await createCasePage.setPriority('Critical');
@@ -470,8 +434,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
-
-        it('[DRDMV-2022]:Verify Multiple SVT attached on Case', async () => {
+        it('[DRDMV-2022]: Verify Multiple SVT attached on Case', async () => {
             await browser.sleep(31000);
             expect(await slmProgressBar.isMultipleSVTAttached()).toBe(true);
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true); //green
@@ -480,14 +443,12 @@ describe('Service Target Tests for Cases', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-6150]:If Company doesnt match, SVT is not applied', async () => {
-
+    describe('[DRDMV-6150]: If Company doesnt match, SVT is not applied', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create a SVT', async () => {
+        it('[DRDMV-6150]: Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
@@ -505,8 +466,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             await navigationPage.signOut();
         });
-
-        it('[DRDMV-6150]:Verify if SVT attached to a case created through different company user', async () => {
+        it('[DRDMV-6150]: Verify if SVT attached to a case created through different company user', async () => {
             await loginPage.login(caseAgentUserPsilon);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Doomi Bomei');
@@ -517,23 +477,19 @@ describe('Service Target Tests for Cases', () => {
             await previewCasePo.clickGoToCaseButton();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeFalsy('SVT is attached to case created by different company user.');
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
-
     });
 
     //skhobrag
-    describe('[DRDMV-6311]:Create an Svt with Pause qualification and identity the SLA bar in different pause conditions', async () => {
-
+    describe('[DRDMV-6311]: Create an Svt with Pause qualification and identity the SLA bar in different pause conditions', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create SVT',async()=>{
+        it('[DRDMV-6311]: Create SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
@@ -552,8 +508,7 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(1000);
             await navigationPage.signOut();
         });
-
-        it('Create a case and verify SVT attached to case',async()=>{
+        it('[DRDMV-6311]: Create a case and verify SVT attached to case', async () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
@@ -573,8 +528,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('InProcess');
             await serviceTargetInfoPage.clickOnCloseButton();
         });
-
-        it('verify SVT in pending status',async()=>{
+        it('[DRDMV-6311]: Verify SVT in pending status', async () => {
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
@@ -596,8 +550,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetInfoPage.clickOnCloseButton();
             await browser.sleep(70000);
         });
-
-        it('verify svt in warning status',async()=>{
+        it('[DRDMV-6311]: Verify svt in warning status', async () => {
             await browser.sleep(100000);
             await utilityCommon.refresh();
             await expect(slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SLA Warning bar is not displayed');
@@ -609,8 +562,7 @@ describe('Service Target Tests for Cases', () => {
             await utilityCommon.refresh();
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
         });
-
-        it('[DRDMV-6311]:Verify SVT with missed goal status',async()=>{
+        it('[DRDMV-6311]: Verify SVT with missed goal status', async () => {
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Warning Pending Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Warning Pending');
@@ -633,25 +585,21 @@ describe('Service Target Tests for Cases', () => {
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Missed Goal Pending');
             await serviceTargetInfoPage.clickOnCloseButton();
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
-
     });
 
     //skhobrag
-    describe('[DRDMV-8368]:Verify SLA Progress Bar change in color when multiple SVT attached and one SVT is missed', async () => {
+    describe('[DRDMV-8368]: Verify SLA Progress Bar change in color when multiple SVT attached and one SVT is missed', async () => {
         let selectedExp = '';
         let expectedSelectedExp = '';
-
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
- 
-        it('Create a SVT',async()=>{
+        it('[DRDMV-8368]: Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
@@ -668,8 +616,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
-
-        it('Create another SVT',async()=>{
+        it('[DRDMV-8368]: Create another SVT', async () => {
             browser.sleep(2000);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
@@ -687,8 +634,7 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(1000);
             await navigationPage.signOut();
         });
-
-        it('Create a case and verify SVT attached to a case',async()=>{
+        it('[DRDMV-8368]: Create a case and verify SVT attached to a case', async () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
@@ -702,8 +648,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             browser.sleep(100000);
         });
-
-        it('Verify SVT missed goal pending status',async()=>{
+        it('[DRDMV-8368]: Verify SVT missed goal pending status', async () => {
             browser.sleep(120000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
@@ -714,8 +659,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await utilityCommon.refresh();
         });
-
-        it('[DRDMV-8368]:Verify SVT Missed Goal Status',async()=>{
+        it('[DRDMV-8368]: Verify SVT Missed Goal Status', async () => {
             await utilityCommon.refresh();
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
@@ -739,21 +683,17 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
-
     });
 
     //skhobrag
-    describe('[DRDMV-8367]:Verify the SLA Progress Bar change in color when multiple SVT attached and all SVT are in Pause State', async () => {
-
+    describe('[DRDMV-8367]: Verify the SLA Progress Bar change in color when multiple SVT attached and all SVT are in Pause State', async () => {
         let selectedExp = '';
         let expectedSelectedExp = '';
-
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create a SVT',async()=>{
+        it('[DRDMV-8367]: Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
@@ -771,8 +711,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(2000);
         });
-
-        it('Create another SVT',async()=>{
+        it('[DRDMV-8367]: Create another SVT', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
             await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
@@ -789,8 +728,7 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(1000);
             await navigationPage.signOut();
         });
-
-        it('Create a case and verify SVT attached to case',async()=>{
+        it('[DRDMV-8367]: Create a case and verify SVT attached to case', async () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
@@ -804,8 +742,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
         });
-
-        it('[DRDMV-8367]:Verify the SLA Progress Bar change in color when multiple SVT attached and all SVT are in Pause State',async()=>{
+        it('[DRDMV-8367]: Verify the SLA Progress Bar change in color when multiple SVT attached and all SVT are in Pause State', async () => {
             await browser.sleep(2000);
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
@@ -817,26 +754,21 @@ describe('Service Target Tests for Cases', () => {
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Pending');
             await serviceTargetInfoPage.clickOnCloseButton();
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
-
     });
 
     //skhobrag
-    describe('[DRDMV-8366]:Verify the SLA Progress Bar change in color when multiple SVT attached and one SVT is Met', async () => {
-
+    describe('[DRDMV-8366]: Verify the SLA Progress Bar change in color when multiple SVT attached and one SVT is Met', async () => {
         let selectedExp = '';
         let expectedSelectedExp = '';
-
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create a SVT', async () => {
+        it('[DRDMV-8366]: Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
@@ -854,8 +786,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
-
-        it('Create another SVT', async () => {
+        it('[DRDMV-8366]: Create another SVT', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
             await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
@@ -872,8 +803,7 @@ describe('Service Target Tests for Cases', () => {
             browser.sleep(1000);
             await navigationPage.signOut();
         });
-
-        it('Create case and verify SVT attached to case', async () => {
+        it('[DRDMV-8366]: Create case and verify SVT attached to case', async () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
@@ -895,8 +825,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetInfoPage.clickOnCloseButton();
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
         });
-
-        it('Verify SLA Warning status', async () => {
+        it('[DRDMV-8366]: Verify SLA Warning status', async () => {
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
@@ -912,8 +841,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             await browser.sleep(80000);
         });
-
-        it('Change case status to pending and verify SVT in Paused condition',async()=>{
+        it('[DRDMV-8366]: Change case status to pending and verify SVT in Paused condition', async () => {
             await browser.sleep(100000);
             await expect(slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SLA Warning bar is not displayed');
             await updateStatusBladePo.changeCaseStatus('Pending');
@@ -922,8 +850,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await utilityCommon.refresh();
         });
-
-        it('[DRDMV-8366]:Verify the SLA Progress Bar change in color when multiple SVT attached and one SVT is Met', async () => {
+        it('[DRDMV-8366]: Verify the SLA Progress Bar change in color when multiple SVT attached and one SVT is Met', async () => {
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Warning Pending Icon on SVT Info Blade is not displayed.');
@@ -946,7 +873,6 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetInfoPage.clickOnCloseButton();
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
@@ -954,14 +880,12 @@ describe('Service Target Tests for Cases', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-8370]:Verify Visualization change when Status changes(In Process-> Pending)', async () => {
-
+    describe('[DRDMV-8370]: Verify Visualization change when Status changes(In Process-> Pending)', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create a SVT', async () => {
+        it('[DRDMV-8370]: Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
@@ -980,8 +904,7 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(1000);
             await navigationPage.signOut();
         });
-
-        it('Create a Case', async () => {
+        it('[DRDMV-8370]: Create a Case', async () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
@@ -991,8 +914,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
-
-        it('[DRDMV-8370]:Verify Visualization change when Status changes(In Process-> Pending)', async () => {
+        it('[DRDMV-8370]: Verify Visualization change when Status changes(In Process-> Pending)', async () => {
             await browser.sleep(31000);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
@@ -1012,18 +934,15 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
-
     });
 
     //skhobrag
-    describe('[DRDMV-8371]:Verify Visualization change when Status changes(In Process-> Met)', async () => {
-
+    describe('[DRDMV-8371]: Verify Visualization change when Status changes(In Process-> Met)', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create a SVT', async () => {
+        it('[DRDMV-8371]: Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
@@ -1042,8 +961,7 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(1000);
             await navigationPage.signOut();
         });
-
-        it('Create a Case', async () => {
+        it('[DRDMV-8371]: Create a Case', async () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
@@ -1054,8 +972,7 @@ describe('Service Target Tests for Cases', () => {
             await previewCasePo.clickGoToCaseButton();
             await browser.sleep(31000);
         });
-
-        it('[DRDMV-8371]:Verify Visualization change when Status changes(In Process-> Met)', async () => {
+        it('[DRDMV-8371]: Verify Visualization change when Status changes(In Process-> Met)', async () => {
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
@@ -1070,23 +987,19 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetInfoPage.clickOnCloseButton();
             expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
-
     });
 
     //skhobrag
-    describe('[DRDMV-8372]:Verify Visualization change when Status changes(Warning-> Met)', async () => {
-
+    describe('[DRDMV-8372]: Verify Visualization change when Status changes(Warning-> Met)', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create a SVT', async () => {
+        it('[DRDMV-8372]: Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
@@ -1105,8 +1018,7 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(1000);
             await navigationPage.signOut();
         });
-
-        it('Create a case', async () => {
+        it('[DRDMV-8372]: Create a case', async () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
@@ -1121,8 +1033,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
             await browser.sleep(70000);
         });
-
-        it('[DRDMV-8372]:Verify Visualization change when Status changes(Warning-> Met)', async () => {
+        it('[DRDMV-8372]: Verify Visualization change when Status changes(Warning-> Met)', async () => {
             await browser.sleep(50000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SVT Warning Icon is not attached to case.');
@@ -1139,23 +1050,19 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetInfoPage.clickOnCloseButton();
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
-
     });
 
     //skhobrag
-    describe('[DRDMV-8373]:Verify Visualization change when Case is no longer match SVT configurations(In Process->Detached)', async () => {
-
+    describe('[DRDMV-8373]: Verify Visualization change when Case is no longer match SVT configurations(In Process->Detached)', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create a SVT', async () => {
+        it('[DRDMV-8373]: Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
@@ -1174,8 +1081,7 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.signOut();
             await browser.sleep(1000);
         });
-
-        it('[DRDMV-8373]:Verify SVT dettached when case is updated to not match SVT condition', async () => {
+        it('[DRDMV-8373]: Verify SVT dettached when case is updated to not match SVT condition', async () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
@@ -1200,14 +1106,12 @@ describe('Service Target Tests for Cases', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-8374]:No change is visualization after specified time passed', async () => {
-
+    describe('[DRDMV-8374]: No change is visualization after specified time passed', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create a SVT', async () => {
+        it('[DRDMV-8374]: Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
@@ -1226,8 +1130,7 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(1000);
             await navigationPage.signOut();
         });
-
-        it('Create a case', async () => {
+        it('[DRDMV-8374]: Create a case', async () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
@@ -1242,8 +1145,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
             await browser.sleep(90000);
         });
-
-        it('[DRDMV-8374]:No change is visualization after specified time passed', async () => {
+        it('[DRDMV-8374]: No change is visualization after specified time passed', async () => {
             await browser.sleep(30000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SVT Warning Icon is not attached to case.');
@@ -1259,14 +1161,12 @@ describe('Service Target Tests for Cases', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2044]:Tooltip text & display allignment for measurements on SLA Progress Bar', async () => {
-
+    describe('[DRDMV-2044]: Tooltip text & display allignment for measurements on SLA Progress Bar', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-
-        it('Create a SVT', async () => {
+        it('[DRDMV-2044]: Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             //Create a SVT with 2 mins timeline
@@ -1286,8 +1186,7 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(1000);
             await navigationPage.signOut();
         });
-
-        it('Create a case and verify SVT attached to the case', async () => {
+        it('[DRDMV-2044]: Create a case and verify SVT attached to the case', async () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
@@ -1305,8 +1204,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : InProcess');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
         });
-
-        it('Update case status to and verify SVT status ', async () => {
+        it('[DRDMV-2044]: Update case status to and verify SVT status ', async () => {
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
@@ -1323,8 +1221,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : InProcess');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
         });
-
-        it('update case status to resolved and verify SVT status', async () => {
+        it('[DRDMV-2044]: update case status to resolved and verify SVT status', async () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
@@ -1335,8 +1232,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('met on');
         });
-
-        it('Create another case to verify SVT warning and missed goal status', async () => {
+        it('[DRDMV-2044]: Create another case to verify SVT warning and missed goal status', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('Critical');
@@ -1350,8 +1246,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
             await browser.sleep(90000);
         });
-
-        it('Verify SVT with Warning status', async () => {
+        it('[DRDMV-2044]: Verify SVT with Warning status', async () => {
             await browser.sleep(40000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SVT Warning Icon is not attached to case.');
@@ -1360,8 +1255,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : Warning');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
         });
-
-        it('[DRDMV-2044]:Verify SVT with Missed Goal Status', async () => {
+        it('[DRDMV-2044]: Verify SVT with Missed Goal Status', async () => {
             await browser.sleep(70000);
             await utilityCommon.refresh();
             await expect(slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBeTruthy('SLA Missed Goal bar is not displayed');
@@ -1371,5 +1265,4 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
         });
     });
-
-})
+});

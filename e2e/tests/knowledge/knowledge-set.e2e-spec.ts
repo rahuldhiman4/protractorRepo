@@ -1,13 +1,13 @@
 import { browser } from "protractor";
-import navigationPage from '../../pageobject/common/navigation.po';
+import apiHelper from '../../api/api.helper';
 import loginPage from '../../pageobject/common/login.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import navigationPage from '../../pageobject/common/navigation.po';
 import consoleKnowledgeSetPo from '../../pageobject/settings/knowledge-management/console-knowledge-set.po';
 import createKnowledgeSetPo from '../../pageobject/settings/knowledge-management/create-knowledge-set.po';
-import utilGrid from '../../utils/util.grid';
+import editKnowledgeSet from '../../pageobject/settings/knowledge-management/edit-knowledge-set.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import editKnowledgeSet from '../../pageobject/settings/knowledge-management/edit-knowledge-set.po'
-import apiHelper from '../../api/api.helper';
+import utilGrid from '../../utils/util.grid';
 
 describe('Knowledge Article Set', () => {
 
@@ -71,5 +71,4 @@ describe('Knowledge Article Set', () => {
         await utilCommon.closeBladeOnSettings();
         expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeTruthy('Record is not Present');
     });
-
 });

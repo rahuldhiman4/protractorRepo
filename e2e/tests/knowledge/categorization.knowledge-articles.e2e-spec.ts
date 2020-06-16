@@ -13,15 +13,15 @@ import resources from '../../pageobject/common/resources-tab.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePage from '../../pageobject/knowledge/edit-knowledge.po';
 import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import createDocumentLibraryPage from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryConsolePage from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPage from '../../pageobject/settings/document-management/edit-document-library.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import utilityGrid from "../../utils/utility.grid";
-import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from "../../utils/utility.grid";
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -182,10 +182,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'CancelApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Canceled status not updated.");
         await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
     });//, 180 * 1000);
-
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
 
     afterEach(async () => {
         await utilityCommon.refresh();
@@ -938,4 +934,4 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await loginPage.login(caseBAUser);
         }
     });//, 240 * 1000);
-})
+});

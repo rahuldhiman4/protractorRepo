@@ -1,4 +1,5 @@
 import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
@@ -9,7 +10,6 @@ import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbu
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import apiHelper from '../../api/api.helper';
 
 let caseBAUser = 'qkatawazi';
 
@@ -346,8 +346,4 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     }, 750 * 1000);
-
-
-
-})
-
+});

@@ -5,6 +5,7 @@ import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCase from '../../pageobject/case/create-case.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -25,7 +26,6 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
-import quickCasePo from '../../pageobject/case/quick-case.po';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Activity', () => {
@@ -1021,7 +1021,7 @@ describe('Case Activity', () => {
             await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
             // // Open Task
-            expect(await viewCasePo.getCaseID()).toBe(caseId,'CaseId is missing in qfreng user');
+            expect(await viewCasePo.getCaseID()).toBe(caseId, 'CaseId is missing in qfreng user');
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
             await manageTaskBladePo.clickTaskLink(manualTaskTemplateData.templateSummary);
@@ -1416,9 +1416,9 @@ describe('Case Activity', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignedCompany":"Petramco",
-                "assigneeBusinessUnit":"United Kingdom Support",
-                "assigneeSupportGroup":"GB Support 1",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
                 "assignee": "KMills"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
@@ -1488,5 +1488,5 @@ describe('Case Activity', () => {
             await loginPage.login('qkatawazi');
         }
     });//, 220 * 1000);
+});
 
-})

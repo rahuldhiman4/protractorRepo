@@ -27,7 +27,7 @@ describe('Automated Case Status Transition', () => {
     //asahitya
     describe('[DRDMV-17551]: Case business analyst - automatic case status transtion rule console', async () => {
         let configName1, configName2, randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('Create two records', async () => {
+        it('[DRDMV-17551]: Create two records', async () => {
             //Create first Record
             configName1 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName1' + randomStr;
             AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
@@ -89,7 +89,7 @@ describe('Automated Case Status Transition', () => {
             await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
         });
-        it('Search and presence of existing rule test', async () => {
+        it('[DRDMV-17553]: Search and presence of existing rule test', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();

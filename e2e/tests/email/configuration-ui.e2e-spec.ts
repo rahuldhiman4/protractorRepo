@@ -27,7 +27,7 @@ describe('Configuration Email ', () => {
             await apiHelper.apiLogin('tadmin');
             emailGuid = await apiHelper.createEmailConfiguration();
         });
-        it('Verify Email configuration header', async () => {
+        it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             let emailHeaders: string[] = ["Email ID", "Company", "Default Email", "Status"];
@@ -56,7 +56,7 @@ describe('Configuration Email ', () => {
     //ankagraw
     describe('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: [Email Configuration] Verify Email configuration Grid view', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
-        it('Verify Email configuration Grid view', async () => {
+        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify Email configuration Grid view', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -67,7 +67,7 @@ describe('Configuration Email ', () => {
             await newExclusiveSubjectPo.selectGlobal("True");
             await newExclusiveSubjectPo.clickSaveButton();
         });
-        it('Verify Email configuration Grid view and add new exclusive', async () => {
+        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify Email configuration Grid view and add new exclusive', async () => {
             await editEmailConfigPo.clickNewExclusiveSubjectsButton();
             await newExclusiveSubjectPo.setSubject("Delete" + randomStr);
             await newExclusiveSubjectPo.setSortOrder('20');
@@ -76,7 +76,7 @@ describe('Configuration Email ', () => {
             await newExclusiveSubjectPo.setSubject("update" + randomStr);
             await newExclusiveSubjectPo.clickSaveButton();
         });
-        it('Set the exclusion details ', async () => {
+        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Set the exclusion details ', async () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('update' + randomStr)).toBeTruthy();
             await utilGrid.clickCheckBoxOfValueInGrid('update' + randomStr);
@@ -84,14 +84,14 @@ describe('Configuration Email ', () => {
             await editExclusiveSubjectPo.setSubject('updated123' + randomStr);
             await editExclusiveSubjectPo.clickSaveButton();
         });
-        it('Verify the exclusion details ', async () => {
+        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify the exclusion details ', async () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Delete' + randomStr)).toBeTruthy();
             await utilGrid.clickCheckBoxOfValueInGrid('Delete' + randomStr);
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Delete' + randomStr)).toBeFalsy();
         });
-        it('Delete the Email configuration', async () => {
+        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Delete the Email configuration', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.clickCheckBoxOfValueInGrid(emailID);
@@ -136,7 +136,7 @@ describe('Configuration Email ', () => {
     //ankagraw
     describe('[DRDMV-10438,DRDMV-10437,DRDMV-10436,DRDMV-10552]: [Email Configuration] Verify Email configuration Grid view', async () => {
         let acknowledgementTemplateHeaders: string[] = ["Type", "Operation Type", "Ticket Status", "Template Name"];
-        it('Verify all templates', async () => {
+        it('[DRDMV-10438,DRDMV-10437,DRDMV-10436,DRDMV-10552]: Verify all templates', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             await utilGrid.searchAndOpenHyperlink(emailID);

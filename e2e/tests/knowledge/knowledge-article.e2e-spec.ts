@@ -3,6 +3,7 @@ import apiHelper from '../../api/api.helper';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import resources from '../../pageobject/common/resources-tab.po';
 import { default as createKnowledgePage } from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePage from "../../pageobject/knowledge/edit-knowledge.po";
 import feedbackBladeKnowledgeArticlePo from '../../pageobject/knowledge/feedback-blade-Knowledge-article.po';
@@ -19,7 +20,6 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import resources from '../../pageobject/common/resources-tab.po';
 
 describe('Knowledge Article', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1009,7 +1009,7 @@ describe('Knowledge Article', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "articleDesc" : 'knowledge2746' + randomStr,
+            "articleDesc": 'knowledge2746' + randomStr,
         }
         let kaDetails = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.signOut();
@@ -1030,7 +1030,7 @@ describe('Knowledge Article', () => {
 
     it('[DRDMV-772,DRDMV-4264]:[Edit Knowledge Article] Modify Knowledge metadata on edit knowledge screen', async () => {
         let fileName: string[] = [];
-        fileName = ['bwfJpg.jpg', 'bwfXlsx.xlsx', 'bwfXml.xml','bwfPdf.pdf','bwfWord1.rtf','demo.txt'];
+        fileName = ['bwfJpg.jpg', 'bwfXlsx.xlsx', 'bwfXml.xml', 'bwfPdf.pdf', 'bwfWord1.rtf', 'demo.txt'];
         await apiHelper.apiLogin(knowledgeCoachUser);
         let articleData = {
             "knowledgeSet": "HR",
@@ -1045,9 +1045,9 @@ describe('Knowledge Article', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "articleDesc" : 'knowledge2746' + randomStr,
+            "articleDesc": 'knowledge2746' + randomStr,
         }
-        let kaDetails = await apiHelper.createKnowledgeArticle(articleData);        
+        let kaDetails = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
         await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
@@ -1075,7 +1075,7 @@ describe('Knowledge Article', () => {
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         await editKnowledgePage.removeAttachment();
         for (let i: number = 0; i < fileName.length; i++) {
-        await editKnowledgePage.addAttachment([`../../data/ui/attachment/${fileName[i]}`]);
+            await editKnowledgePage.addAttachment([`../../data/ui/attachment/${fileName[i]}`]);
         }
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         await utilityCommon.closePopUpMessage();
@@ -1164,8 +1164,8 @@ describe('Knowledge Article', () => {
         expect(await utilityGrid.isGridRecordPresent(articleData.assignedCompany)).toBeTruthy();
     });
 
-    describe('[DRDMV-620]:[Advanced Search] Advanced Search UI verification on the Knowledge Edit view', async () => {
-        let knowledgeArticleData,knowledgeArticleData1,articleData1,articleData2,articleData3,articleData4,articleData5,articleData6,randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    describe('[DRDMV-620]: [Advanced Search] Advanced Search UI verification on the Knowledge Edit view', async () => {
+        let knowledgeArticleData, knowledgeArticleData1, articleData1, articleData2, articleData3, articleData4, articleData5, articleData6, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let currentDate = new Date();
         let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         let dateFormateValue: string = months[currentDate.getMonth()];
@@ -1231,7 +1231,7 @@ describe('Knowledge Article', () => {
                 "assigneeBusinessUnit": "United States Support",
                 "assigneeSupportGroup": "US Support 1",
                 "assignee": "kayo"
-            }    
+            }
             articleData6 = {
                 "knowledgeSet": "HR",
                 "title": randomStr + 'KA6',
@@ -1243,7 +1243,7 @@ describe('Knowledge Article', () => {
                 "assigneeBusinessUnit": "United States Support",
                 "assigneeSupportGroup": "US Support 1",
                 "assignee": "kayo"
-            }                   
+            }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createKnowledgeArticle(articleData2);
             await apiHelper.createKnowledgeArticle(articleData3);
@@ -1252,9 +1252,9 @@ describe('Knowledge Article', () => {
             knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData6);
             knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(articleData1);
             let knowledgeArticleGUID = knowledgeArticleData1.id;
-            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');          
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
         });
-        it('Advanced Search UI verification on the Quick Case view', async () => {
+        it('[DRDMV-620]: Advanced Search UI verification on the Quick Case view', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
@@ -1274,7 +1274,7 @@ describe('Knowledge Article', () => {
             let statusFieldValues: string[] = ["Select None", "Closed", "Retired", "Canceled", "In Progress", "Draft", "SME Review", "Published", "Publish Approval", "Retire Approval", "Request Cancelation"];
             expect(await resources.isAdvancedSearchFilterOptionDropDownValueDisplayed(statusFieldValues, 0)).toBeTruthy();
         });
-        it('[DRDMV-620]:[Advanced Search] Advanced Search UI verification on the Knowledge Edit view', async () => {
+        it('[DRDMV-620]: [Advanced Search] Advanced Search UI verification on the Knowledge Edit view', async () => {
             await viewKnowledgeArticlePo.clickOnTab("Resources");
             await resources.clickOnAdvancedSearchOptions("Suggested Articles");
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -1412,4 +1412,4 @@ describe('Knowledge Article', () => {
         await utilityCommon.closePopUpMessage();
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Elizabeth Peters');
     });
-})
+});
