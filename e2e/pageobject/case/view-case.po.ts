@@ -189,6 +189,7 @@ class ViewCasePage {
                 await $(this.selectors.addTaskButton).click();
             } else console.log('Add Task button not found');
         });
+
     }
 
     async isAddtaskButtonDisplayed(): Promise<boolean> {

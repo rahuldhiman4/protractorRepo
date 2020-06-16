@@ -1,3 +1,4 @@
+  
 import { $, browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import caseConsole from '../../pageobject/case/case-console.po';
@@ -750,14 +751,14 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.isChangeStatusFieldPresent();
             await updateStatusBladePo.isCancelUpdateStatusButtonPresent();
             await updateStatusBladePo.isStatusReasonFieldPresent();
-            expect(await updateStatusBladePo.isSaveUpdateStatusButtonPresent()).toBeFalsy("Save Button is enabled");
+            expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy("Save Button is enabled");
             await updateStatusBladePo.clickCancelButton();
         });
         it('[DRDMV-4680]: [Status Blade] Case Status Blade view', async () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.isStatusReasonRequiredTextPresent();
             await updateStatusBladePo.setStatusReason('Auto Resolved');
-            expect(await updateStatusBladePo.isSaveUpdateStatusButtonPresent()).toBeTruthy("Save Button is enabled");
+            expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeTruthy("Save Button is enabled");
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
             await navigationPage.gotoCaseConsole();

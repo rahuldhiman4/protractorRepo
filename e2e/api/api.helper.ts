@@ -198,6 +198,8 @@ class ApiHelper {
 
     async createCaseTemplate(data: ICaseTemplate): Promise<IIDs> {
         let templateData = CASE_TEMPLATE_PAYLOAD;
+        templateData= Object.assign({},templateData); 
+
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[7].value = constants.CaseTemplate[data.templateStatus];
@@ -235,6 +237,22 @@ class ApiHelper {
                 "value": `${priorityValue}`
             }
             templateData.fieldInstances["1000000164"] = priorityObj;
+        }
+
+        if (data.resolutionCode) {
+            let resolutionCodeObj = {
+                "id": "450000162",
+                "value": `${data.resolutionCode}`
+            }
+            templateData.fieldInstances["450000162"] = resolutionCodeObj;
+        }
+
+        if (data.resolutionDescription) {
+            let resolutionDescriptionObj = {
+                "id": "450000164",
+                "value": `${data.resolutionDescription}`
+            }
+            templateData.fieldInstances["450000164"] = resolutionDescriptionObj;
         }
 
         if (data.assignee) {
