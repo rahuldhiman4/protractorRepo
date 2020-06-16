@@ -211,8 +211,6 @@ class ApiHelper {
         templateData.fieldInstances[1000000064].value = data.categoryTier2 ? await coreApi.getCategoryGuid(data.categoryTier2) : templateData.fieldInstances[1000000064].value;
         templateData.fieldInstances[1000000065].value = data.categoryTier3 ? await coreApi.getCategoryGuid(data.categoryTier3) : templateData.fieldInstances[1000000065].value;
         templateData.fieldInstances[450000061].value = data.description ? data.description : templateData.fieldInstances[450000061].value;
-        templateData.fieldInstances[450000162].value = data.resolutionCode ? data.resolutionCode : templateData.fieldInstances[450000162].value;
-        templateData.fieldInstances[450000164].value = data.resolutionDescription ? data.resolutionDescription : templateData.fieldInstances[450000164].value;
 
         if (data.caseStatus) {
             let statusValue = constants.CaseStatus[data.caseStatus];
@@ -239,6 +237,22 @@ class ApiHelper {
                 "value": `${priorityValue}`
             }
             templateData.fieldInstances["1000000164"] = priorityObj;
+        }
+
+        if (data.resolutionCode) {
+            let resolutionCodeObj = {
+                "id": "450000162",
+                "value": `${data.resolutionCode}`
+            }
+            templateData.fieldInstances["450000162"] = resolutionCodeObj;
+        }
+
+        if (data.resolutionDescription) {
+            let resolutionDescriptionObj = {
+                "id": "450000164",
+                "value": `${data.resolutionDescription}`
+            }
+            templateData.fieldInstances["450000164"] = resolutionDescriptionObj;
         }
 
         if (data.assignee) {
