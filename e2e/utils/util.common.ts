@@ -275,6 +275,12 @@ export class Util {
         return value.trim().substring(3, value.length - 2) === 'required';
     }
 
+    async isRequiredTagToFieldElement(element: ElementFinder): Promise<boolean> {
+        let nameElement = element;
+        let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+        return value.trim().substring(3, value.length - 2) === 'required';
+    }
+
     async deleteAlreadyDownloadedFile(fileName: string): Promise<boolean> {
         let filePath: string = 'e2e/data/downloads/' + fileName;
         console.log("Deleting....", filePath);

@@ -1,4 +1,4 @@
-import { by, element, $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { by, element, $$, $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 
@@ -17,12 +17,13 @@ class CreateNewMenuOptionPage {
         statusDropDownGuid: "a548d907-8c6b-46ab-bc83-88a5310e04b7",
         toggleButtonId: '[rx-view-component-id="39a7280b-4078-4f9a-8058-2b0ff972c151"]',
         toggleButtonGuid: '39a7280b-4078-4f9a-8058-2b0ff972c151',
-        toggleButtonCheckIcon: '.d-button-group__item .d-icon-check',
-        toggleButtonCircleIcon: '.d-icon-circle_slash_o',        
         localizeLink: '[rx-view-component-id="d40aa6f2-090d-4641-9779-ae724673575c"] .d-icon-left-pencil',
-        saveButton: '[rx-view-component-id="010dbf48-bda5-495c-9cb7-6376a28f5c43"] .d-button_primary', 
-        cancelButton: '[rx-view-component-id="3fbaa9bf-7a3d-42b5-8afe-bc2c0f982520"] .d-button_secondary',       
-        createNewMenuOptionDialogueBox:'a.modal-dialog .modal-contentsf',
+        toggleButtonCheckIcon: '[rx-view-component-id="39a7280b-4078-4f9a-8058-2b0ff972c151"] .d-button-group__item .d-icon-check',
+        toggleButtonCircleIcon: '.d-icon-circle_slash_o',
+        saveButton: '[rx-view-component-id="010dbf48-bda5-495c-9cb7-6376a28f5c43"] .d-button_primary',
+        cancelButton: '[rx-view-component-id="4d21900d-87ce-40b1-839b-01c72ff77014"] .d-button_secondary',
+        createNewMenuOptionDialogueBox: 'a.modal-dialog .modal-contentsf',
+        menuOptionGuid: 'd40aa6f2-090d-4641-9779-ae724673575c',
     }
 
     async isCreateNewMenuOptionBladeDisplayed(): Promise<boolean> {
@@ -53,10 +54,12 @@ class CreateNewMenuOptionPage {
         await utilCommon.selectDropDown(this.selectors.statusDropDownGuid,value);
     }
 
-    async isToggleButtonPresent(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.toggleButtonId)));
-        let statusstr = $(this.selectors.toggleButtonId);
-        return await (statusstr.$(this.selectors.toggleButtonCheckIcon)).isDisplayed();
+    async isToggleButtonDisplayed(): Promise<boolean> {
+        return await $(this.selectors.toggleButtonCheckIcon).isPresent().then(async (result) => {
+            if (result){
+                return await $(this.selectors.toggleButtonCheckIcon).isDisplayed();
+            } else return false;
+        });
     }
 
     async selectAvailableOnUiToggleButton(booleanVal:boolean): Promise<void> {
@@ -83,6 +86,44 @@ class CreateNewMenuOptionPage {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuOptionLink)));
         await $(this.selectors.menuOptionLink).click();
     }
+
+    async isSaveButtonDisplayed(): Promise<boolean> {
+        return await $(this.selectors.saveButton).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.saveButton).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isCancelButtonDisplayed(): Promise<boolean> {
+        return await $(this.selectors.cancelButton).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.cancelButton).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isMenuNameDropDownValuesMatches(list: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.menuNameDropDownGuid, list);
+    }
+
+    async isStatusDropDownValuesMatches(list: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusDropDownGuid, list);
+    }
+
+    async isMenuNameFieldRequired(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.menuNameDropDownGuid);
+    }
+
+    async isMenuOptionFieldRequired(): Promise<boolean> {
+        let menuOptionElementRequiredTag= await $('[rx-view-component-id="d40aa6f2-090d-4641-9779-ae724673575c"] span.d-textfield__item');
+        return await utilCommon.isRequiredTagToFieldElement(menuOptionElementRequiredTag);
+    }
+
+    async isStatusFieldRequired(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.statusDropDownGuid);
+    }
+
 
 }
 

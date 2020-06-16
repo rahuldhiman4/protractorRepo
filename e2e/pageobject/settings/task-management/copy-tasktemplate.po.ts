@@ -37,7 +37,7 @@ class Copytaskpage {
         await $(this.selectors.templateName).sendKeys(input);
     }
 
-    async isOwnerGroupEmpty(): Promise<boolean> {
+    async isOwnerGroupEmpty(): Promise<boolean> {
         let element = await $(this.selectors.ownerGroupValueOnCopy)
         let value = await element.getAttribute('aria-label');
         if (value == '') {

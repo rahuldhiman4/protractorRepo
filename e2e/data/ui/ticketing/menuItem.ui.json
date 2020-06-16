@@ -24,6 +24,12 @@
         "menuItemStatus": "Deprecated",
         "menuType": "Source",
         "uiVisiable":"0"
+    },
+    "resolutionCodeActiveOnUI": {
+        "menuItemName": "resolutionCode",
+        "menuItemStatus": "Active",
+        "menuType": "Resolution Code"
     }
+
     
 }

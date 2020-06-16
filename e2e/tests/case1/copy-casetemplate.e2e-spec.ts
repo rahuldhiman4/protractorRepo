@@ -316,7 +316,7 @@ describe('Copy Case Template', () => {
             "templateSummary": taskTemplateName,
             "templateStatus": "Active",
             "taskCompany": "Petramco",
-            "buisnessUnit": "Facilities Support",
+            "buisnessUnit": "Facilities Support",
             "supportGroup": "Facilities",
             "assignee": "Fritz",
             "ownerCompany": "Petramco",
