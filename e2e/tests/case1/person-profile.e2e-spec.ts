@@ -60,7 +60,7 @@ describe('Person Profile test', () => {
     });
 
     //asahitya
-    it('[DRDMV-14023],[DRDMV-16812]: Verify My Profile Console', async () => {
+    it('[DRDMV-14023,DRDMV-16812]: Verify My Profile Console', async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.updatePersonAsVIP('Elizabeth', 'Yes');
         await navigationPage.gotoPersonProfile();
