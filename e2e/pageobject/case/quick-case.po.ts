@@ -151,11 +151,6 @@ class QuickCasePage {
         await $(this.selectors.recommendedCaseTemplateGuid).$$('.flex-column bwf-search-result-fields div span').first().click();
     }
 
-    async clickArrowFirstRecommendedKnowledge(): Promise<void> {
-        // await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
-        await $(this.selectors.recommendedKnowledgeGuid).$$('.flex-column bwf-search-result-fields div span').first().click();
-    }
-
     async saveCase(): Promise<void> {
         await $(this.selectors.createCaseButton).click();
         // await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton__preview)));
@@ -231,17 +226,11 @@ class QuickCasePage {
         await $(this.selectors.startOverButton).click();
     }
 
-    async getKnowledgeArticleInfo(): Promise<string> {
-        return await $$('.flex-column bwf-search-result-fields div span').getText();
-    }
 
     async getKnowledgeArticleID(): Promise<string> {
         return await $$('.flex-column bwf-search-result-fields div span').first().getText();
     }
 
-    async isFilterAvailable(filterText: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.advancedSearchFields, filterText)).isPresent();
-    }
 
     async clickOnCaseTemplate(templateName: string): Promise<void> {
         await $(`div[title=${templateName}]`).click();

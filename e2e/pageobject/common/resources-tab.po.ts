@@ -12,7 +12,9 @@ export class Resources {
         smartSearchResult: 'bwf-smart-recorder-results h1',
         advancedSearchButton: 'span.d-icon-search',
         backButton: 'span.d-icon-angle_left',
-        knowledgeTitle: '[rx-view-component-id="aacf8477-f930-4983-820d-1b9fa12441c0"] div.bwf-search-fields__title-text'
+        knowledgeTitle: '[rx-view-component-id="aacf8477-f930-4983-820d-1b9fa12441c0"] div.bwf-search-fields__title-text',
+        advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select label',
+        recommendedKnowledgeGuid: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"]',
     }
 
     async isSearchRecordEmpty(recordNumber: number): Promise<boolean> {
@@ -127,6 +129,22 @@ export class Resources {
                 return await $(`[title="${resourceName}"]`).isDisplayed();
             } else return false;
         });
+    }
+
+    async isFilterAvailable(filterText: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.advancedSearchFields, filterText)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.cssContainingText(this.selectors.advancedSearchFields, filterText)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async clickArrowFirstRecommendedKnowledge(): Promise<void> {
+        await $$('div.search-result-fields').first().click();
+    }
+
+    async getKnowledgeArticleInfo(): Promise<string> {
+        return await $$('.flex-column bwf-search-result-fields div span').getText();
     }
 }
 

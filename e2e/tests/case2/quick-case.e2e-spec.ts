@@ -543,11 +543,11 @@ describe("Quick Case", () => {
     });
 
     describe('[DRDMV-624]:  Advanced Search UI verification on the Quick Case view', async () => {
-        let articleData,randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let articleData,kaDetails,randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let currentDate = new Date();
         let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         let dateFormateValue: string = months[currentDate.getMonth()];
-        let dateFormateNew: string = dateFormateValue.substring(0, 3);
+        let dateFormateNew: string = dateFormateValue.substring(0, 4);
         let dateFormate = dateFormateNew + " " + currentDate.getDate() + ", " + currentDate.getFullYear();
         beforeAll(async () => {
             articleData = {
@@ -563,7 +563,7 @@ describe("Quick Case", () => {
                 "assignee": "kayo"
             }
             await apiHelper.apiLogin('fritz');
-            await apiHelper.createKnowledgeArticle(articleData);
+            kaDetails = await apiHelper.createKnowledgeArticle(articleData);
             await apiHelper.createKnowledgeArticle(articleData);
             await apiHelper.createKnowledgeArticle(articleData);
             await apiHelper.createKnowledgeArticle(articleData);
@@ -578,15 +578,15 @@ describe("Quick Case", () => {
             await utilCommon.waitUntilSpinnerToHide();
             await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
-            expect(await quickCasePo.isFilterAvailable('ArticleStatus')).toBeTruthy();
-            expect(await quickCasePo.isFilterAvailable('Knowledge Set')).toBeTruthy();
-            expect(await quickCasePo.isFilterAvailable('Site')).toBeTruthy();
-            expect(await quickCasePo.isFilterAvailable('Region')).toBeTruthy();
-            expect(await quickCasePo.isFilterAvailable('Operational Category Tier 1')).toBeTruthy();
-        });
-        it('[DRDMV-624]: Advanced Search UI verification on the Quick Case view', async () => {
+            expect(await resources.isFilterAvailable('ArticleStatus')).toBeTruthy();
+            expect(await resources.isFilterAvailable('Knowledge Set')).toBeTruthy();
+            expect(await resources.isFilterAvailable('Site')).toBeTruthy();
+            expect(await resources.isFilterAvailable('Region')).toBeTruthy();
+            expect(await resources.isFilterAvailable('Operational Category Tier 1')).toBeTruthy();
             let statusFieldValues: string[] = ["Select None", "Closed", "Retired", "Canceled", "In Progress", "Draft", "SME Review", "Published", "Publish Approval", "Retire Approval", "Request Cancelation"];
             expect(await resources.isAdvancedSearchFilterOptionDropDownValueDisplayed(statusFieldValues, 0)).toBeTruthy();
+        });
+        it('[DRDMV-624]: Advanced Search UI verification on the Quick Case view', async () => {
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
             await resources.selectAdvancedSearchFilterOption('ArticleStatus', 'In Progress');
             await resources.selectAdvancedSearchFilterOption('Knowledge Set', 'HR');
@@ -594,15 +594,15 @@ describe("Quick Case", () => {
             await resources.selectAdvancedSearchFilterOption('Region', 'Australia');
             await resources.selectAdvancedSearchFilterOption('Site', 'Canberra');
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
-            expect(await quickCasePo.getKnowledgeArticleID()).toContain('KA-', 'KA ID not correct');
-            expect(await quickCasePo.getKnowledgeArticleInfo()).toContain(articleData.title, 'title not correct');
-            expect(await quickCasePo.getKnowledgeArticleInfo()).toContain('Fritz Schulz', 'Author not correct');
-            expect(await quickCasePo.getKnowledgeArticleInfo()).toContain('In Progress', 'status not correct');
-            expect(await quickCasePo.getKnowledgeArticleInfo()).toContain(dateFormate, 'KA ID not correct');
-            await quickCasePo.clickArrowFirstRecommendedKnowledge();
+            expect(await resources.getKnowledgeArticleInfo()).toContain(articleData.title, 'title not correct');
+            expect(await resources.getKnowledgeArticleInfo()).toContain('Fritz Schulz', 'Author not correct');
+            expect(await resources.getKnowledgeArticleInfo()).toContain('In Progress', 'status not correct');
+            expect(await resources.getKnowledgeArticleInfo()).toContain(dateFormate, 'KA ID not correct');
+            await resources.clickArrowFirstRecommendedKnowledge();
             expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(articleData.title);
             expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
             expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Status not displaying');
+            expect(await previewKnowledgePo.getKnowledgeArticleID()).toContain(kaDetails.displayId, 'KA ID not correct');
             await previewKnowledgePo.clickOnBackButton();
         });
         afterAll(async () => {
@@ -761,7 +761,7 @@ describe("Quick Case", () => {
             await resources.enterAdvancedSearchText(CaseTemplateData.templateName);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
-            await quickCase.clickArrowFirstRecommendedKnowledge();
+            await resources.clickArrowFirstRecommendedKnowledge();
         });
         it('[DRDMV-796]: [Quick Case] Resources preview', async () => {
             expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Knowledge status not present');
