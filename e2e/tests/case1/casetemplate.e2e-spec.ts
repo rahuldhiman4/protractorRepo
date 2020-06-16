@@ -32,9 +32,10 @@ describe('Case Template', () => {
         await loginPage.login("qkatawazi");
         await apiHelper.apiLogin('tadmin');
         userData = {
-            "firstName": "Petramco",
-            "lastName": "withoutSG",
-            "userId": "DRDMV-12581",
+            "firstName": "Multiple",
+            "lastName": "Company",
+            "userId": "nosg",
+            "emailId": "nosg@petramco.com"
         }
         await apiHelper.createNewUser(userData);
         await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
@@ -205,7 +206,7 @@ describe('Case Template', () => {
             "supportGroup": "Facilities",
             "assignee": "Fritz",
             "ownerBU": 'Facilities Support',
-            "ownerGroup": "Facilities"
+            "ownerGroup": "Facilities",
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCaseTemplate(templateData);
@@ -279,7 +280,8 @@ describe('Case Template', () => {
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
                 "ownerBU": 'Facilities Support',
-                "ownerGroup": "Facilities"
+                "ownerGroup": "Facilities",
+                "description": 'description' + randomStr
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData);
@@ -381,6 +383,7 @@ describe('Case Template', () => {
                 "ownerBU": 'Facilities Support',
                 "ownerGroup": "Facilities",
                 "caseStatus": "Assigned",
+                "description": 'description' + randomStr,
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(templateData);
@@ -472,6 +475,7 @@ describe('Case Template', () => {
                 "assignee": "Fritz",
                 "ownerBU": "Facilities Support",
                 "ownerGroup": "Facilities",
+                "description": 'description' + randomStr,
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
@@ -484,6 +488,7 @@ describe('Case Template', () => {
                 "businessUnit": "Psilon Support Org1",
                 "supportGroup": "Psilon Support Group1",
                 "assignee": "gderuno",
+                "description": 'description' + randomStr,
             }
             await apiHelper.apiLogin('gderuno');
             await apiHelper.createCaseTemplate(casetemplatePsilon);
@@ -591,9 +596,10 @@ describe('Case Template', () => {
                 "assignee": "Fritz",
                 "ownerBU": "Facilities Support",
                 "ownerGroup": "Facilities",
+                "description": 'description' + randomStr,
             }
             await apiHelper.apiLogin('fritz');
-            await apiHelper.createCaseTemplate(casetemplatePetramco);
+            await apiHelper.createCaseTemplate(casetemplatePetramco);            
         });
         it('Create Case Template with all fields', async () => {
             await navigationPage.gotoSettingsPage();
@@ -712,6 +718,7 @@ describe('Case Template', () => {
                 "assignee": "Fritz",
                 "ownerBU": "Facilities Support",
                 "ownerGroup": "Facilities",
+                "description": 'description' + randomStr,
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
@@ -773,6 +780,7 @@ describe('Case Template', () => {
                 "assignee": "Fritz",
                 "ownerBU": "Facilities Support",
                 "ownerGroup": "Facilities",
+                "description": 'description' + randomStr,
             }
             let casetemplatePetramco2 = {
                 "templateName": updatedCaseTemplateName,
@@ -789,6 +797,7 @@ describe('Case Template', () => {
                 "assignee": "Fritz",
                 "ownerBU": "Facilities Support",
                 "ownerGroup": "Facilities",
+                "description": 'description' + randomStr,
             }
             let taskTemplateDataSet = {
                 "templateName": taskTemplateName,
@@ -866,6 +875,7 @@ describe('Case Template', () => {
                 "categoryTier3": "Card Issuance",
                 "casePriority": "Low",
                 "caseStatus": "Assigned",
+                "description": 'description' + randomStr,
             }
             await apiHelper.apiLogin('franz');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
@@ -909,7 +919,7 @@ describe('Case Template', () => {
         let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);
         it('Checking change case template button for In Progress', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login(userData.emailId, 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
@@ -967,6 +977,7 @@ describe('Case Template', () => {
                 "categoryTier2": "Policies",
                 "categoryTier3": "Card Issuance",
                 "casePriority": "Low",
+                "description": 'description' + randomStr,
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(templateDataDraft);
@@ -1036,6 +1047,7 @@ describe('Case Template', () => {
                 "categoryTier3": "Card Issuance",
                 "casePriority": "Low",
                 "caseStatus": "Assigned",
+                "description": 'description' + randomStr,
             }
             await apiHelper.apiLogin('franz');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
@@ -1050,7 +1062,7 @@ describe('Case Template', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            await previewCasePo.clickGoToCaseButton(); //popup 
             expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateName);
         });
         it('Login to CA with diffrent support group', async () => {
@@ -1085,7 +1097,7 @@ describe('Case Template', () => {
 
     it('[DRDMV-12556]:Case Template submitter from different company than owner group company can edit the template', async () => {
         await navigationPage.signOut();
-        await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
+        await loginPage.login(userData.emailId, 'Password_1234');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);
@@ -1162,7 +1174,8 @@ describe('Case Template', () => {
                 "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerGroup": "Facilities",
+                "description": 'description' + randomStr,
             }
             let casetemplatePetramco2 = {
                 "templateName": caseTemplateName2,
@@ -1177,7 +1190,8 @@ describe('Case Template', () => {
                 "businessUnit": "HR Support",
                 "supportGroup": "Workforce Administration",
                 "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerGroup": "Facilities",
+                "description": 'description' + randomStr,
             }
             let casetemplatePetramco3 = {
                 "templateName": caseTemplateName3,
@@ -1193,7 +1207,8 @@ describe('Case Template', () => {
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
                 "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerGroup": "Facilities",
+                "description": 'description' + randomStr,
             }
             let caseData =
             {
