@@ -273,7 +273,6 @@ class NavigationPage {
         try {
             await this.switchToAngularTab();
             await this.acceptUnsavedDataPopup();
-            await utilityCommon.closeAllBlades(); // takes 4 sec
             if (await this.isHambergerIconPresent()) {
                 await $(this.selectors.hamburgerIcon).click();
                 await element(by.buttonText('Sign Out')).click().then(async () => {
