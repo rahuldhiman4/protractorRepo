@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { filter, find, get, isArray } from 'lodash';
+import { filter, find, forEach, get, isArray, remove, uniqBy } from 'lodash';
 import * as config from './jira.util.config';
 
 const minimist = require("minimist");
@@ -132,6 +132,23 @@ export class CreateJiraCycle {
                     JiraStatus: "NA",
                 });
             }
+        });
+        // Remove duplicate values within array
+        this.passJiraTest = uniqBy(this.passJiraTest, function (record: InputType) { return record.jiraId; });
+        this.failJiraTest = uniqBy(this.failJiraTest, function (record: InputType) { return record.jiraId; });
+        this.skipJiraTest = uniqBy(this.skipJiraTest, function (record: InputType) { return record.jiraId; });
+        // remove duplicate between failed and passed array
+        // this.passJiraTest = compact(this.passJiraTest.map(passedItem => find(this.failJiraTest, { 'jiraId': passedItem.jiraId }) ? undefined : passedItem));
+        forEach(this.failJiraTest, (failEntry: InputType) => {
+            remove(this.passJiraTest, (passEntry: InputType) => {
+                return failEntry.jiraId == passEntry.jiraId;
+            });
+        });
+        // remove duplicate between failed and skipped array
+        forEach(this.failJiraTest, (failEntry: InputType) => {
+            remove(this.skipJiraTest, (skipEntry: InputType) => {
+                return failEntry.jiraId == skipEntry.jiraId;
+            });
         });
     }
 
