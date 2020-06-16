@@ -184,18 +184,18 @@ describe('Login and create case from API', () => {
             "ownerBusinessUnit": "Facilities Support",
             "ownerGroup": "Facilities"
         }
-
         let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
-        await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate1.displayId, manualTaskTemplate.displayId);
+
         console.log("Case Template with one task: ", caseTemplateData1.templateName, manualTaskTemplate.displayId);
-        await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate2.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "sequential");
+        await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate1.displayId, manualTaskTemplate.displayId);
         console.log("Case Template with two sequence task: ", caseTemplateData2.templateName, manualTaskTemplate.displayId, autoTaskTemplate.displayId);
-        await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate3.displayId, externalTaskTemplate.displayId, autoTaskTemplate.displayId, "parallel");
+        await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate2.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "sequential");
         console.log("Case Template with two parallel task: ", caseTemplateData3.templateName, externalTaskTemplate.displayId, autoTaskTemplate.displayId);
-        await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate4.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, autoTaskTemplate.displayId);
+        await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate3.displayId, externalTaskTemplate.displayId, autoTaskTemplate.displayId, "parallel");
         console.log("Case Template with three sequential task: ", caseTemplateData4.templateName, manualTaskTemplate.displayId, externalTaskTemplate.displayId, autoTaskTemplate.displayId);
-        //await apiHelper.associateCaseTemplateWithOneTaskTemplate('CTPL-0000000214', 'TTPL-0000000506');
-        //await apiHelper.associateCaseTemplateWithTwoTaskTemplate('CTPL-0000000215', 'TTPL-0000000517', 'TTPL-0000000518', "sequential");
+        await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate4.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, autoTaskTemplate.displayId);
+        // await apiHelper.associateCaseTemplateWithOneTaskTemplate('CTPL-0000000214', 'TTPL-0000000506');
+        // await apiHelper.associateCaseTemplateWithTwoTaskTemplate('CTPL-0000000215', 'TTPL-0000000517', 'TTPL-0000000518', "sequential");
     });
 
     it('create Email template', async () => {

@@ -1975,15 +1975,60 @@ class ApiHelper {
         };
     }
 
-    async addFunctionalRole(person: string, functionalRoleGuid?: string): Promise<boolean>{
+    async deleteArticleTemplate(articleTemplateName?: string): Promise<boolean> {
+        if (articleTemplateName) {
+            let allRecords = await coreApi.getGuid("com.bmc.dsm.knowledge:Template Configuration");
+            let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+                return obj[301820705] === articleTemplateName;
+            });
+            for (let i = 0; i < entityObj.length; i++) {
+                let guid = entityObj.length >= 1 ? entityObj[i]['379'] || null : null;
+                await coreApi.deleteRecordInstance('com.bmc.dsm.knowledge:Template Configuration', guid);
+            }
+            return true;
+        }
+        else {
+            let allArticleTemplateRecords = await coreApi.getGuid("com.bmc.dsm.knowledge:Template Configuration");
+            let allArticleTemplateArrayMap = allArticleTemplateRecords.data.data.map(async (obj: string) => {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.knowledge:Template Configuration', obj[379]);
+            });
+            return await Promise.all(allArticleTemplateArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
+        }
+    }
+
+    async deleteKnowledgeSet(knowledgeSetName?: string): Promise<boolean> {
+        if (knowledgeSetName) {
+            let allRecords = await coreApi.getGuid("com.bmc.dsm.knowledge:Knowledge Set");
+            let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+                return obj[301820700].includes(knowledgeSetName);
+            });
+            for (let i = 0; i < entityObj.length; i++) {
+                let guid = entityObj.length >= 1 ? entityObj[i]['379'] || null : null;
+                await coreApi.deleteRecordInstance('com.bmc.dsm.knowledge:Knowledge Set', guid);
+            }
+            return true;
+        }
+        else {
+            let allArticleTemplateRecords = await coreApi.getGuid("com.bmc.dsm.knowledge:Knowledge Set");
+            let allArticleTemplateArrayMap = allArticleTemplateRecords.data.data.map(async (obj: string) => {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.knowledge:Knowledge Set', obj[379]);
+            });
+            return await Promise.all(allArticleTemplateArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
+        }
+    }
+
+    async addFunctionalRole(person: string, functionalRoleGuid?: string): Promise<boolean> {
         let userRoles = await coreApi.getPersonFunctionalRoles(person);
         let personGuid = await coreApi.getPersonGuid(person)
         ADD_FUNCTIONAL_ROLE.fieldInstances[430000002].value = userRoles + ';' + functionalRoleGuid;
-        let response = await coreApi.updateRecordInstance('com.bmc.arsys.rx.foundation:Person', personGuid, ADD_FUNCTIONAL_ROLE);        
+        let response = await coreApi.updateRecordInstance('com.bmc.arsys.rx.foundation:Person', personGuid, ADD_FUNCTIONAL_ROLE);
         console.log(`Functional role of ${person} is successfully updated  =============>`, response.status);
         return response.status == 204;
     }
-
 }
 
 export default new ApiHelper();

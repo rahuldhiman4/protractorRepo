@@ -407,9 +407,9 @@ describe('Dynamic Hidden Data', () => {
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
         });
         it('make dymanic field as visible', async () => {
-            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             await dynamicFieldsPage.clickOnDownArrow();
             expect(await dynamicFieldsPage.isEnabledTextPresent("Hidden"));
             await dynamicFieldsPage.clickDisabledHiddenRadioButton();
@@ -533,9 +533,9 @@ describe('Dynamic Hidden Data', () => {
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
         });
         it('Update the dymanic field', async () => {
-            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             await dynamicFieldsPage.clickOnDownArrow();
             await dynamicFieldsPage.clickOnDownArrow();
             expect(await dynamicFieldsPage.isEnabledTextPresent("Hidden"));

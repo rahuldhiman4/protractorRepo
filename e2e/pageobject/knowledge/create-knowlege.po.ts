@@ -31,6 +31,8 @@ class CreateKnowledgePage {
         categoryTier1Value: '[rx-view-component-id="b51fcb01-f3d1-4da2-a42d-ffc5873a21b3"] button',
         categoryTier2Value: '[rx-view-component-id="6f480482-c224-4742-b941-bce655d40fde"] button',
         categoryTier3Value: '[rx-view-component-id="2774b518-00ab-4e02-bb23-95bdb0285840"] button',
+        templatePreview: '.create-ka-template__preview',
+        backBtn: '[rx-view-component-id="75d55491-37d4-40f2-83ef-35019670e355"] button'
     }
 
     async clickChangeTemplateButton(): Promise<void> {
@@ -215,6 +217,26 @@ class CreateKnowledgePage {
     async getCreateKnowledgeHeader(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.createKnowledgeTitle)));
         return await $(this.selectors.createKnowledgeHeader).getText();
+    }
+
+    async isTemplateDescriptionPresent(description: string): Promise<boolean> {
+        return await element(by.cssContainingText('.template-description', description)).isPresent().then( async (result) => {
+            if(result) return await element(by.cssContainingText('.template-description', description)).isDisplayed();
+        });
+    }
+
+    async isSectionTitleVisibleOnPreview(title: string): Promise<boolean> {
+        return await element(by.cssContainingText('.section-title', title)).isPresent().then( async (result) => {
+            if(result) return await element(by.cssContainingText('.section-title', title)).isDisplayed();
+        });
+    }
+
+    async clickBackBtn(): Promise<void> {
+        await $(this.selectors.backBtn).click();
+    }
+
+    async isTemplatePreviewPresent(): Promise<boolean> {
+        return await $(this.selectors.templatePreview).isPresent();
     }
 }
 
