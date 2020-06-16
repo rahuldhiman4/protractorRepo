@@ -2,6 +2,9 @@ export const ONE_TASKFLOW = {
     "name": "com.bmc.dsm.bwfa:OneTask",
     "guid": "rx-2f8669a4-1ca0-419b-91d8-e0bf9720d7hf",
     "description": "",
+    "tags": [
+        "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+    ],
     "flowElements": [
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.EndEventDefinition",
@@ -102,7 +105,7 @@ export const ONE_TASKFLOW = {
             "allowPermissionsOverlay": true,
             "allowOtherPropertiesOverlay": true,
             "auditOption": null,
-            "documentDefinitionName": "com.bmc.dsm.bwfa:TaskFlow",
+            "documentDefinitionName": "com.bmc.dsm.ticketing-lib:Sample JSON Document",
             "anyUserAllowedToSubmit": false
         },
         {
@@ -198,6 +201,9 @@ export const TWO_TASKFLOW_SEQUENTIAL = {
     "name": "com.bmc.dsm.bwfa:TwoSequentialTasks",
     "guid": "rx-2f8669a4-1ca0-419b-91d8-e0bf9720d7hf",
     "description": "",
+    "tags": [
+        "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+    ],
     "flowElements": [
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.EndEventDefinition",
@@ -354,7 +360,7 @@ export const TWO_TASKFLOW_SEQUENTIAL = {
             "allowPermissionsOverlay": true,
             "allowOtherPropertiesOverlay": true,
             "auditOption": null,
-            "documentDefinitionName": "com.bmc.dsm.bwfa:TaskFlow",
+            "documentDefinitionName": "com.bmc.dsm.ticketing-lib:Sample JSON Document",
             "anyUserAllowedToSubmit": false
         },
         {
@@ -450,6 +456,9 @@ export const TWO_TASKFLOW_PARALLEL = {
     "name": "com.bmc.dsm.bwfa:TwoParallelTasks",
     "guid": "rx-2f8669a4-1ca0-419b-91d8-e0bf9720d7hf",
     "description": "",
+    "tags": [
+        "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+    ],
     "flowElements": [
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.EndEventDefinition",
@@ -643,7 +652,7 @@ export const TWO_TASKFLOW_PARALLEL = {
             "allowPermissionsOverlay": true,
             "allowOtherPropertiesOverlay": true,
             "auditOption": null,
-            "documentDefinitionName": "com.bmc.dsm.bwfa:TaskFlow",
+            "documentDefinitionName": "com.bmc.dsm.ticketing-lib:Sample JSON Document",
             "anyUserAllowedToSubmit": false
         },
         {
@@ -739,6 +748,9 @@ export const THREE_TASKFLOW_SEQUENTIAL = {
     "name": "com.bmc.dsm.bwfa:TwoParallelTasks",
     "guid": "rx-2f8669a4-1ca0-419b-91d8-e0bf9720d7hf",
     "description": "",
+    "tags": [
+        "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+    ],
     "flowElements": [
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.EndEventDefinition",
@@ -919,7 +931,7 @@ export const THREE_TASKFLOW_SEQUENTIAL = {
             "allowPermissionsOverlay": true,
             "allowOtherPropertiesOverlay": true,
             "auditOption": null,
-            "documentDefinitionName": "com.bmc.dsm.bwfa:TaskFlow",
+            "documentDefinitionName": "com.bmc.dsm.ticketing-lib:Sample JSON Document",
             "anyUserAllowedToSubmit": false
         },
         {
@@ -1009,4 +1021,11 @@ export const THREE_TASKFLOW_SEQUENTIAL = {
     "localizableStrings": {
 
     }
+};
+
+export const PROCESS_DOCUMENT = {
+    "allowOverlay": false,
+    "name": "com.bmc.dsm.bwfa:DocName",
+    "scope": "PUBLIC",
+    "documentSchema": "{}"
 };
