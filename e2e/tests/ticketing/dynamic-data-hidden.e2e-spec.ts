@@ -406,6 +406,7 @@ describe('Dynamic Hidden Data', () => {
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
         });
         it('[DRDMV-21421,DRDMV-21415,DRDMV-21401]: Make dymanic field as visible', async () => {
