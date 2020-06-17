@@ -2,7 +2,7 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import ConsoleEmailConfig from '../../pageobject/settings/email/console-email-configuration.po';
+import consoleEmailConfig from '../../pageobject/settings/email/console-email-configuration.po';
 import createEmailConfigPo from '../../pageobject/settings/email/create-email-config.po';
 import editEmailConfigPo from '../../pageobject/settings/email/edit-email-config.po';
 import editExclusiveSubjectPo from '../../pageobject/settings/email/edit-exclusive-subject.po';
@@ -10,41 +10,42 @@ import newExclusiveSubjectPo from '../../pageobject/settings/email/new-exclusive
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-describe('Configuration Email ', () => {
-    let emailGuid, emailID = "bmctemptestemail@gmail.com";
+describe('Email Configuration', () => {
+    let emailID = "bmctemptestemail@gmail.com";
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteAllEmailConfiguration();
+        await apiHelper.createEmailConfiguration();
     });
 
     afterAll(async () => {
         await navigationPage.signOut();
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteAllEmailConfiguration();
     });
 
     //ankagraw
     describe('[DRDMV-8528,DRDMV-8527]: [Email Configuration] Verify Email configuration Grid view', async () => {
-        beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            emailGuid = await apiHelper.createEmailConfiguration();
-        });
         it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             let emailHeaders: string[] = ["Email ID", "Company", "Default Email", "Status"];
             let add: string[] = ["ID"];
             let newEmailHeaders: string[] = ["Email ID", "ID", "Company", "Default Email", "Status"];
-            expect(await ConsoleEmailConfig.coloumnHeaderMatches(emailHeaders)).toBeTruthy();
-            await ConsoleEmailConfig.addHeader(add);
-            expect(await ConsoleEmailConfig.coloumnHeaderMatches(newEmailHeaders)).toBeTruthy();
-            await ConsoleEmailConfig.removeHeader(add);
-            expect(await ConsoleEmailConfig.coloumnHeaderMatches(emailHeaders)).toBeTruthy();
+            expect(await consoleEmailConfig.coloumnHeaderMatches(emailHeaders)).toBeTruthy();
+            await consoleEmailConfig.addHeader(add);
+            expect(await consoleEmailConfig.coloumnHeaderMatches(newEmailHeaders)).toBeTruthy();
+            await consoleEmailConfig.removeHeader(add);
+            expect(await consoleEmailConfig.coloumnHeaderMatches(emailHeaders)).toBeTruthy();
 
         });
         it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
-            await ConsoleEmailConfig.searchAndSelectCheckbox(emailID);
-            await ConsoleEmailConfig.deleteConfigurationEmail();
+            await consoleEmailConfig.searchAndSelectCheckbox(emailID);
+            await consoleEmailConfig.deleteConfigurationEmail();
             await utilCommon.clickOnWarningOk();
-            await ConsoleEmailConfig.clickNewEmailConfiguration();
+            await consoleEmailConfig.clickNewEmailConfiguration();
             await createEmailConfigPo.selectEmailID(emailID);
             await createEmailConfigPo.selectCompany("Petramco");
             await createEmailConfigPo.setDescription("test ");
@@ -95,13 +96,11 @@ describe('Configuration Email ', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.clickCheckBoxOfValueInGrid(emailID);
-            await ConsoleEmailConfig.deleteConfigurationEmail();
+            await consoleEmailConfig.deleteConfigurationEmail();
             await utilCommon.clickOnWarningOk();
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
         });
         it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify Global Exclusion should be displayed', async () => {
-            await apiHelper.apiLogin('tadmin');
-            emailGuid = await apiHelper.createEmailConfiguration();
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy();
             await utilGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
@@ -128,9 +127,11 @@ describe('Configuration Email ', () => {
         await utilGrid.searchAndOpenHyperlink(emailID);
         await editEmailConfigPo.clickDefaultMailIdCheckbox("False");
         await editEmailConfigPo.clickSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent("One Email Id for the company needs to be marked as default. If another email configurations for the company exist, please mark one of them as default instead")).toBeTruthy();
-        await editEmailConfigPo.clickDefaultMailIdCheckbox("True");
+        expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): One Email Id for the company needs to be marked as default. If another email configurations for the company exist, please mark one of them as default instead")).toBeTruthy("Popup message not matched");
+        await editEmailConfigPo.clickDefaultMailIdCheckbox("False");
         expect(await editEmailConfigPo.isSaveButtonEnabled()).toBeFalsy();
+        await editEmailConfigPo.clickDefaultMailIdCheckbox("True");
+        await editEmailConfigPo.clickSaveButton();
     });
 
     //ankagraw

@@ -49,7 +49,7 @@ export class Utility {
     async clearDropDown(guid: string): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-        const dropDownSelectNoneItem = await dropDown.element(by.cssContainingText(this.selectors.dropDownNoneOpt,'Select None'));
+        const dropDownSelectNoneItem = await dropDown.element(by.cssContainingText(this.selectors.dropDownNoneOpt, 'Select None'));
         await dropDownBoxElement.click();
         await dropDownSelectNoneItem.click();
         await dropDownBoxElement.click();
@@ -379,7 +379,9 @@ export class Utility {
     }
 
     async clickOnApplicationWarningYesNoButton(buttonName: string): Promise<void> {
-        await element(by.cssContainingText('.modal-footer adapt-button', buttonName)).click();
+        await $('.modal-title').isPresent().then(async (result) => {
+            if (result) await element(by.cssContainingText('.modal-footer adapt-button', buttonName)).click();
+        });
     }
 
     async setCKEditor(description: string, guid?: string): Promise<void> {

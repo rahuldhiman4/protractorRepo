@@ -176,6 +176,33 @@ class ApiHelper {
         };
     }
 
+    async deleteAllEmailConfiguration(): Promise<boolean> {
+        let emailConfigDataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery&pageSize=50&propertySelection=7,1,recordContext._associations.IDGADG1AANVNMAPHAJWGPGDM6B8LR5.nodeA%5B0%5D.1000000010,1000000001,450000156,450000153,379&recorddefinition=com.bmc.dsm.email-lib:Email+Box+Registration&shouldIncludeTotalSize=false&sortBy=450000156&startIndex=0";
+        let allEmailConfig = await axios.get(
+            emailConfigDataPageUri
+        );
+        let deletAllEmailConfig = allEmailConfig.data.data.map(async (obj: string) => {
+            return await coreApi.deleteRecordInstance('com.bmc.dsm.email-lib:Email Box Registration', obj[379]);
+        });
+
+        let incomingMailDataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery&pageSize=50&propertySelection=179,1,18037,18217,7,379&queryExpression=((%2718049%27%3D%220%22))&recorddefinition=AR+System+Email+Mailbox+Configuration&shouldIncludeTotalSize=false&sortBy=7&startIndex=0";
+        let allIncomingMail = await axios.get(
+            incomingMailDataPageUri
+        );
+        let deletAllIncomingMail = allIncomingMail.data.data.map(async (obj: string) => {
+            return await coreApi.deleteRecordInstance('AR System Email Mailbox Configuration', obj[379]);
+        });
+
+        let outgoingMailDataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery&pageSize=50&propertySelection=7,179,1,18217,18037,18147,379&queryExpression=((%2718049%27%3D%221%22))&recorddefinition=AR+System+Email+Mailbox+Configuration&shouldIncludeTotalSize=false&startIndex=0";
+        let allOutgoingMail = await axios.get(
+            outgoingMailDataPageUri
+        );
+        let deletAllOutgoingMail = allOutgoingMail.data.data.map(async (obj: string) => {
+            return await coreApi.deleteRecordInstance('AR System Email Mailbox Configuration', obj[379]);
+        });
+        return deletAllEmailConfig == deletAllIncomingMail == deletAllOutgoingMail;
+    }
+
     async getHTMLBodyOfEmail(emailSubject: string): Promise<string> {
         return await coreApi.getEmailHTMLBody(emailSubject);
     }
