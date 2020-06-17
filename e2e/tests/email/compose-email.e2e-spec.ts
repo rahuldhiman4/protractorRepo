@@ -59,9 +59,7 @@ describe("Compose Email", () => {
 
     afterAll(async () => {
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteIncomingOrOutgoingEmailConfiguration(incomingGUID);
-        await apiHelper.deleteIncomingOrOutgoingEmailConfiguration(outgoingGUID);
-        await apiHelper.deleteEmailConfiguration(emailconfigGUID);
+        await apiHelper.deleteAllEmailConfiguration();
         await navigationPage.signOut();
     });
 
@@ -559,6 +557,8 @@ describe("Compose Email", () => {
         } catch (e) {
             throw (e);
         } finally {
+            await composeMail.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.signOut();
             await loginPage.login('qtao');
         }

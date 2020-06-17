@@ -565,10 +565,10 @@ describe('Create Case Task', () => {
             await manageTask.clickCloseButton();
         });
         it('[DRDMV-7149]: Verify the task status', async () => {
-            //validate Automation Template With Required Field
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
-            // await utilCommon.closePopUpMessage();
+            //validate Automation Template With Required Field
+            await utilCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(automationTaskSummary);
             await viewTask.clickOnChangeStatus();
@@ -582,6 +582,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.getTaskStatusValue()).toBe('Closed');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
