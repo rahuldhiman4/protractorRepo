@@ -24,6 +24,7 @@ class PreviewTaskTemplateBlade {
         backButton: '[rx-view-component-id="cbb794a3-d696-4fff-81df-27e73e1438d8"] button',
         getTaskCategoryTier4: '[rx-view-component-id="9df7b305-6be0-4f50-8c2f-88a61ed85cb4"] p',
         dynamicFieldName: '[rx-view-component-id="92456067-e396-441c-b1c5-b452bc473991"] span',
+        assigneeText: '[rx-view-component-id="67c57532-6ca8-4e44-b6b1-244e872c2b70"] .person-link',
     }
 
     async clickOnBackButton(): Promise<void> {
@@ -119,7 +120,10 @@ class PreviewTaskTemplateBlade {
         }
         return false;
     }
-
+    
+    async getAssigneeText(): Promise<string> {
+        return await $(this.selectors.assigneeText).getText();
+    }
 }
 
 export default new PreviewTaskTemplateBlade();

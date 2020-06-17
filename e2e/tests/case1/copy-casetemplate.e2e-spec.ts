@@ -536,4 +536,125 @@ describe('Copy Case Template', () => {
             await loginPage.login('fritz');
         });
     });
+
+    describe('[DRDMV-13807,DRDMV-13798]: Copy a Case Template for Company not same as Original Template, Where all Tasks belongs Same Company', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let casetemplatePetramco,newCaseTemplate,templateData, externaltemplateData, automatedtemplateData, copyCaseTemplateName: string = "copycaseTemplateName" + randomStr;
+        beforeAll(async () => {
+            await apiHelper.apiLoginWithCredential('13550User1@petramco.com', 'Password_1234');
+            casetemplatePetramco = {
+                "templateName": 'caseTemplateName' + randomStr,
+                "templateSummary": 'caseTemplateName' + randomStr,
+                "templateStatus": "Draft",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "caseStatus": "New",
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePetramco);
+            templateData = {
+                "templateName": 'Manual task19011' + randomStr,
+                "templateSummary": 'Manual task19011' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            let manualTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
+            externaltemplateData = {
+                "templateName": 'External task19011' + randomStr,
+                "templateSummary": 'External task19011' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externaltemplateData);
+            automatedtemplateData = {
+                "templateName": 'Automated task19011' + randomStr,
+                "templateSummary": 'Automated task19011' + randomStr,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": 'Auto Proces' + randomStr,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
+            await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, automatedTaskTemplate.displayId);
+        });
+        it('[DRDMV-13807,DRDMV-13798]: Copy a Case Template for Company not same as Original Template, Where all Tasks belongs Same Company', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.searchAndselectCaseTemplate(casetemplatePetramco.templateName);
+            await consoleCasetemplatePo.clickOnCopyCaseTemplate();
+            await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
+            await copyCaseTemplate.setCompanyName('Psilon');
+            await createCaseTemplate.clickOnChangeAssignmentButton();
+            await changeAssignmentOldPage.selectCompany('Psilon');
+            await changeAssignmentOldPage.selectBusinessUnit('Psilon Support Org1');
+            await changeAssignmentOldPage.selectSupportGroup('Psilon Support Group1');
+            await changeAssignmentOldPage.selectAssignee('Glit Deruno');
+            await changeAssignmentOldPage.clickOnAssignButton();
+            await copyCaseTemplate.clickSaveCaseTemplate();
+            await viewCasetemplatePo.clickOnTask(templateData.templateName);
+            expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(templateData.templateName);
+            expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('Psilon');
+            expect(await previewTaskTemplateCasesPo.getAssigneeText()).toBe('Glit Deruno');
+            await previewTaskTemplateCasesPo.clickOnBackButton();
+            await viewCasetemplatePo.clickOnTask(automatedtemplateData.templateName);
+            expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(automatedtemplateData.templateName);
+            expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('Psilon');
+            await previewTaskTemplateCasesPo.clickOnBackButton();
+            await viewCasetemplatePo.clickOnTask(externaltemplateData.templateName);
+            expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(externaltemplateData.templateName);
+            expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('Psilon');
+            expect(await previewTaskTemplateCasesPo.getAssigneeText()).toBe('Glit Deruno');
+            await previewTaskTemplateCasesPo.clickOnBackButton();
+        });
+        it('[DRDMV-13807,DRDMV-13798]: Copy a Case Template for Company not same as Original Template, Where all Tasks belongs Same Company', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchOnGridConsole(casetemplatePetramco.templateName);
+            expect(await consoleCasetemplatePo.getTemplateCountFromGrid()).toBe(2);
+            let column1: string[] = ["Display ID"];
+            await consoleCasetemplatePo.addColumnOnGrid(column1);
+            await consoleCasetemplatePo.searchAndselectCaseTemplate(newCaseTemplate.displayId);
+            await consoleCasetemplatePo.clickOnCopyCaseTemplate();
+            await copyCaseTemplate.setTemplateName("copycaseTemplateForOtherCompany");
+            await copyCaseTemplate.setCompanyName('Psilon');
+            await copyCaseTemplate.setOwnerGroupDropdownValue('Psilon Support Group1');
+            await copyCaseTemplate.clickSaveCaseTemplate();
+            expect(await utilCommon.isPopupMsgsMatches(['ERROR (222112): The selected Assignee does not have access to Psilon. Please select a different Assignee or contact System Administrator to grant access.'])).toBeTruthy('Message of permission denined for group access remove not displayed');
+            await utilCommon.closePopUpMessage();
+            await copyCaseTemplate.clickCancelCaseTemplate();
+            await utilCommon.clickOnWarningOk();
+            await consoleCasetemplatePo.removeColumnFromGrid(column1);
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+        });
+    });
 });

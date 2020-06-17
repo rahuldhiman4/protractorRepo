@@ -59,6 +59,10 @@ class CaseTemplateConsole {
 //        await utilCommon.waitUntilSpinnerToHide();
         return await $$(this.selectors.recordvalue).count();
     }
+
+    async getTemplateCountFromGrid(): Promise<number> {
+        return await $$(this.selectors.gridLink).count();
+    }
 }
 
 export default new CaseTemplateConsole();

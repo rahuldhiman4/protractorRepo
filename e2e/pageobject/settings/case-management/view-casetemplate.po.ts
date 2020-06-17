@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions, $$, browser } from 'protractor';
+import { $, protractor, ProtractorExpectedConditions, $$, browser, element, by } from 'protractor';
 class ViewCaseTemplate {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -29,6 +29,7 @@ class ViewCaseTemplate {
         categoryTier2: '[rx-view-component-id="4f950be7-d968-41a4-8bb9-018674e53f88"] p',
         categoryTier3: '[rx-view-component-id="a7fbc4bc-23c6-4f92-818a-5554107d04c0"] p',
         oneTask: '[rx-view-component-id="36ca22f7-98f8-423a-bf39-28361ef29eeb"] .rotatable path',
+        multipleTask: 'g.rotatable div.content',
     }
 
     async clickOneTask(): Promise<void> {
@@ -166,6 +167,10 @@ class ViewCaseTemplate {
                 return false;
             }
         });
+    }
+
+    async clickOnTask(taskName: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.multipleTask, taskName)).click();
     }
 }
 
