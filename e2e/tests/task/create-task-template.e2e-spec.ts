@@ -31,9 +31,12 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Create Task Template', () => {
+    let businessData, departmentData, suppGrpData, personData;
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
+        await foundationData12111("Petramco");
     });
 
     afterAll(async () => {
@@ -46,10 +49,10 @@ describe('Create Task Template', () => {
         const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
         const personDataFile = require('../../data/ui/foundation/person.ui.json');
         await apiHelper.apiLogin('tadmin');
-        let businessData = businessDataFile['BusinessUnitData12111'];
-        let departmentData = departmentDataFile['DepartmentData12111'];
-        let suppGrpData = supportGrpDataFile['SuppGrpData12111'];
-        let personData = personDataFile['PersonData12111'];
+        businessData = businessDataFile['BusinessUnitData12111'];
+        departmentData = departmentDataFile['DepartmentData12111'];
+        suppGrpData = supportGrpDataFile['SuppGrpData12111'];
+        personData = personDataFile['PersonData12111'];
         let orgId = await apiCoreUtil.getOrganizationGuid(company);
         businessData.relatedOrgId = orgId;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
@@ -236,16 +239,7 @@ describe('Create Task Template', () => {
     });//, 220 * 1000);
 
     describe('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Verify Company, Business Unit, Department and Support Group selection hierarchy in Change Owner.', async () => {
-        const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
-        const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
-        const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
         let randomStr = 'Manual  task' + Math.floor(Math.random() * 1000000);
-        let businessData = businessDataFile['BusinessUnitData12111'];
-        let departmentData = departmentDataFile['DepartmentData12111'];
-        let suppGrpData = supportGrpDataFile['SuppGrpData12111'];
-        beforeAll(async () => {
-            await foundationData12111("Petramco");
-        });
         it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Create Case tempate template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
