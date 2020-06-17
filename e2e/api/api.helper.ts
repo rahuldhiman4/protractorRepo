@@ -1994,7 +1994,7 @@ class ApiHelper {
         return response.status == 204;
     }
 
-    async createCaseApprovalMapping(data: ICaseApprovalMapping): Promise<boolean> {
+    async createCaseApprovalMapping(data: ICaseApprovalMapping): Promise<IIDs> {
         CASE_APPROVAL_MAPPING.fieldInstances[303715900].value = await coreApi.getStatusGuid('com.bmc.dsm.case-lib', constants.CaseStatus[data.triggerStatus]);
         CASE_APPROVAL_MAPPING.fieldInstances[450000152].value = constants.CaseStatus[data.triggerStatus];
         CASE_APPROVAL_MAPPING.fieldInstances[450000153].value = constants.CaseStatus[data.approvedStatus];
@@ -2005,7 +2005,14 @@ class ApiHelper {
         if (data.company) CASE_APPROVAL_MAPPING.fieldInstances[1000000001].value = await coreApi.getOrganizationGuid(data.company);
         let response = await coreApi.createRecordInstance(CASE_APPROVAL_MAPPING);
         console.log('Case Approval Mapping API Status =============>', response.status);
-        return response.status == 204;
+
+        const approvalMapping = await axios.get(
+            response.headers.location
+        );
+        return {
+            id: approvalMapping.data.id,
+            displayId: approvalMapping.data.displayId
+        };
     }
 
     async createBusinessTimeSharedEntity(name: string, status?: number): Promise<boolean> {
@@ -2081,6 +2088,16 @@ class ApiHelper {
         ADD_FUNCTIONAL_ROLE.fieldInstances[430000002].value = userRoles + ';' + functionalRoleGuid;
         let response = await coreApi.updateRecordInstance('com.bmc.arsys.rx.foundation:Person', personGuid, ADD_FUNCTIONAL_ROLE);
         console.log(`Functional role of ${person} is successfully updated  =============>`, response.status);
+        return response.status == 204;
+    }
+
+    async associateCaseTemplateWithApprovalMapping(templatedId: string, approvalMapping: string): Promise<boolean> {
+        let url = "api/com.bmc.dsm.shared-services-lib/rx/application/association/com.bmc.dsm.case-lib:Case Approval Mapping to Case Template/" + approvalMapping + "/" + templatedId + "?allowDuplicates=true";
+        let response = await axios.post(
+            url,
+            {}
+        )
+        console.log('Association API Status =============>', response.status);
         return response.status == 204;
     }
 }

@@ -260,6 +260,8 @@ class NavigationPage {
         let returnedvalue = list.filter(function (el) {
             return el != null;
         });
+        returnedvalue.sort();
+        listOfSubItems.sort();
         return returnedvalue.length === listOfSubItems.length && returnedvalue.every(
             (value, index) => (value === listOfSubItems[index])
         );

@@ -23,7 +23,8 @@ class PersonProfilePage {
         personType: '[rx-view-component-id="bfa03a3b-cc7c-4d33-95d5-2c63a882aaeb"] .person-type span',
         loginId: '[rx-view-component-id="a97bb771-1f17-49a1-a043-dc778e5e0658"] .read-only-content',
         functionalRoles: '[rx-view-component-id="88f61dee-a8a7-4a06-b0c8-6fcd060cf7d1"] .read-only-content',
-        corporateId: '[rx-view-component-id="5aa010cd-978c-4556-a25f-889e1f140b35"] .read-only-content'
+        corporateId: '[rx-view-component-id="5aa010cd-978c-4556-a25f-889e1f140b35"] .read-only-content',
+        relatedCasesDisplayId: '.case-card .case-summary__meta-data__display-id'
     }
 
     async getCaseViewCount(TitleText: string): Promise<number> {
@@ -159,6 +160,12 @@ class PersonProfilePage {
 
     async getCorporateID(): Promise<string> {
         return await $(this.selectors.corporateId).getText();
+    }
+
+    async isCaseAvailableOnRelatedCases(caseId: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.relatedCasesDisplayId, caseId)).isPresent().then( async (result) => {
+            if(result) return await element(by.cssContainingText(this.selectors.relatedCasesDisplayId, caseId)).isDisplayed();
+        })
     }
 }
 

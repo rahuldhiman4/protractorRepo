@@ -43,6 +43,7 @@ describe('Case Bulk Operation', () => {
         suppGrpData = supportGrpDataFile['SuppGrpData_BulkOperation'];
         personData = personDataFile['PersonData_BulkOperation'];
         await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteApprovalMapping('Bulk Operation Mapping');
         orgId = await apiCoreUtil.getOrganizationGuid(petramcoStr);
         businessData.relatedOrgId = orgId;
         await apiHelper.setDefaultNotificationForUser("qtao", "Alert");
@@ -340,4 +341,82 @@ describe('Case Bulk Operation', () => {
         await changeAssignmentBladePo.setAssignee(petramcoStr, 'United States Support', "US Support 3", 'Qadim Katawazi');
         expect(await utilityCommon.isPopUpMessagePresent('Cases in closed or canceled status cannot be modified. Please update the selected cases.')).toBeTruthy();
     });
+
+    it('[DRDMV-15982]: Verify that Agent is unable to change the Assignee if status is Pending or Canceled', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateData = {
+            "templateName": 'caseTemplateName' + randomStr,
+            "templateSummary": 'caseTemplateSummary' + randomStr,
+            "categoryTier1": 'Applications',
+            "categoryTier2": 'Social',
+            "categoryTier3": 'Chatter',
+            "casePriority": "Low",
+            "templateStatus": "Active",
+            "company": "Petramco",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 3",
+            "assignee": "qfeng",
+            "ownerBU": "United States Support",
+            "ownerGroup": "US Support 3"
+        }
+
+        await apiHelper.apiLogin('qkatawazi');
+        let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData);
+        let caseTemplateDisplayId = caseTemplateResponse.displayId;
+
+        //Create Approval Mapping
+        let approvalMappingData = {
+            "triggerStatus": "InProgress",
+            "errorStatus": "Canceled",
+            "approvedStatus": "Resolved",
+            "noApprovalFoundStatus": "Pending",
+            "rejectStatus": "Canceled",
+            "company": "Petramco",
+            "mappingName": "Bulk Operation Mapping"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        let approvalMappingId = await apiHelper.createCaseApprovalMapping(approvalMappingData);
+        await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateResponse.id, approvalMappingId.id);
+
+        //Create Approval Flow. Category 1 = Applications, Category 2 = Social and Category 3 = Chatter
+        let approvalFlowData = {
+            "flowName": `Bulk Operation ${randomStr}`,
+            "approver": "qkatawazi",
+            "qualification": "'Category Tier 3' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.c2636a9ab1d4aa37cf23b2cf0dbd1f9ea3a5d6046a3ad0ad998c63411e41815d81709de7a5f6153e78fc47ebcc9c3f3f4db51dd0d9e44084eb3a345df03cb66d.304405421}"
+        }
+        await apiHelper.createCaseApprovalFlow(approvalFlowData);
+
+        let caseData = {
+            "Requester": "qkatawazi",
+            "Summary": "All Categories selected",
+            "Origin": "Agent",
+            "Case Template ID": caseTemplateDisplayId
+        }
+
+        await apiHelper.apiLogin(qfengStr);
+        let caseId: string[] = []
+        let caseGuid: string[] = []
+        for (let i: number = 0; i < 2; i++) {
+            let response = await apiHelper.createCase(caseData);
+            caseId[i] = response.displayId;
+            caseGuid[i] = response.id;
+        }
+
+        await apiHelper.updateCaseStatus(caseGuid[0], 'InProgress');
+        await apiHelper.updateCaseStatus(caseGuid[1], 'Canceled', 'Customer Canceled');
+        await utilityGrid.clickRefreshIcon();
+
+        await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
+        await caseConsolePage.clickOnChangeAssignmentButton();
+        await changeAssignmentBladePo.setAssignee(petramcoStr, 'United States Support', "US Support 3", 'Qadim Katawazi');
+        expect(await utilityCommon.isPopUpMessagePresent('Cases that are pending approval can only be manually moved to canceled status.')).toBeTruthy();
+        await utilityCommon.closePopUpMessage();
+
+        await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
+        await utilityGrid.clickCheckBoxOfValueInGrid(caseId[1]);
+        await caseConsolePage.clickOnChangeAssignmentButton();
+        await changeAssignmentBladePo.setAssignee(petramcoStr, 'United States Support', "US Support 3", 'Qadim Katawazi');
+        expect(await utilityCommon.isPopUpMessagePresent('Cases in closed or canceled status cannot be modified. Please update the selected cases.')).toBeTruthy();
+    });
+
 });
