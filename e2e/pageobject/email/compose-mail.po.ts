@@ -1,6 +1,5 @@
 import { resolve } from 'path';
 import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
-import utilityCommon from '../../utils/utility.common';
 
 class ComposeMail {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
