@@ -368,7 +368,7 @@ describe('Dynamic Hidden Data', () => {
     });
 
     //ankagraw
-    fdescribe('[DRDMV-21421,DRDMV-21415,DRDMV-21401]: Create a case with case template having hidden fields, if the field is later updated to show field, then cases created earlier should not show up earlier the hidden fields.', async () => {
+    describe('[DRDMV-21421,DRDMV-21415,DRDMV-21401]: Create a case with case template having hidden fields, if the field is later updated to show field, then cases created earlier should not show up earlier the hidden fields.', async () => {
         let caseId, caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             caseTemplateData = {
