@@ -170,7 +170,12 @@ class ViewCaseTemplate {
     }
 
     async clickOnTask(taskName: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.multipleTask, taskName)).click();
+        await element(by.cssContainingText(this.selectors.multipleTask, taskName)).isPresent().then(async (result) => {
+            if (result) element(by.cssContainingText(this.selectors.multipleTask, taskName)).click();
+            else {
+                console.log('Task is Not Present');
+            }
+        });
     }
 }
 
