@@ -1,15 +1,15 @@
 import { browser } from "protractor";
-import navigationPage from '../../pageobject/common/navigation.po';
+import apiHelper from '../../api/api.helper';
 import loginPage from '../../pageobject/common/login.po';
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
+import navigationPage from '../../pageobject/common/navigation.po';
+import createKnowledgePage from '../../pageobject/knowledge/create-knowlege.po';
 import consoleKnowledgeTemplatePo from '../../pageobject/settings/knowledge-management/console-knowledge-template.po';
 import createKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledge-management/create-knowledge-article-template.po';
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-import apiHelper from '../../api/api.helper';
-import createKnowledgePage from '../../pageobject/knowledge/create-knowlege.po';
-import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Knowledge Article Template', () => {
 
@@ -37,7 +37,7 @@ describe('Knowledge Article Template', () => {
         expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
         await utilCommon.clickOnWarningOk();
         expect(await utilGrid.isGridRecordPresent('template1062' + randomStr)).toBeFalsy('Record should not be created');
-    })
+    });
 
     it('[DRDMV-1088]: [Create Mode] Unable to create the duplicate template', async () => {
         let templateName = 'Template Name DRDMV-1088';
@@ -72,7 +72,7 @@ describe('Knowledge Article Template', () => {
         await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title');
         await createKnowledgeArticleTemplatePo.clickOnSaveButton();
         expect(await utilCommon.isPopUpMessagePresent('Knowledge Template : Template Name DRDMV-1088 has been successfully created')).toBeTruthy();
-    })
+    });
 
     describe('[DRDMV-619,DRDMV-1065,DRDMV-1180]: [Create Mode] Create a template for Knowledge article', () => {
         beforeAll(async () => {
@@ -99,7 +99,7 @@ describe('Knowledge Article Template', () => {
             await apiHelper.createKnowledgeArticleTemplate(knowledgeSetData.knowledgeSetTitle, knowledgeSet.id, knowledgeArticleTemplateData);
         });
 
-        it('Create templates for Knowledge article', async () => {
+        it('[DRDMV-619,DRDMV-1065,DRDMV-1180]: Create templates for Knowledge article', async () => {
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName('DRDMV-1065');
             await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
@@ -189,6 +189,5 @@ describe('Knowledge Article Template', () => {
             expect(await utilityGrid.isGridRecordPresent('Article Title KCS')).toBeTruthy('Article is not present');
             expect(await utilityGrid.isGridRecordPresent('Article Title 619')).toBeTruthy('Article is not present');
         })
-    })
-
-})
+    });
+});

@@ -8,7 +8,7 @@ class PreviewKnowledge {
         knowledgeTitle: '[rx-view-component-id="05394582-02a7-4211-823e-9230fe094aa9"] h3',
         knowledgeSection: '.doc-editor-read-mode p',
         knowledgeArticleID: '.d-icon-lightbulb_o',
-        backButton: '[rx-view-component-id="88ec72f0-2c65-4640-9455-54b6db3517f2"] button',
+        backButton: '[rx-view-component-id="75d55491-37d4-40f2-83ef-35019670e355"] button',
         goToArticleButton: '[rx-view-component-id="5c11d82c-8269-41fc-a93f-374252adc4c2"] button',
         statusOfKA: '[rx-view-component-id="09044fe7-3bcd-48e9-98f3-96c482b37b77"] .status-transition'
     }

@@ -4,13 +4,10 @@ import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilityCommon from '../../utils/utility.common';
-import previewCasePo from '../../pageobject/case/case-preview.po';
 import resources from '../../pageobject/common/resources-tab.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 
 let caseTemplateName = "Case Preview Sample " + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
@@ -28,7 +25,7 @@ describe("Case Preview", () => {
             "casePriority": "Medium",
             "templateStatus": "Active",
             "company": "Petramco",
-            "businessUnit": "HR Support", 
+            "businessUnit": "HR Support",
             "supportGroup": "Workforce Administration",
             "assignee": "aallbrook",
             "ownerBU": "Facilities Support",
@@ -59,7 +56,7 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isRequesterPhoneDisplayed('+15123431923')).toBeTruthy('Requester phone number is missing');
         expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('Requester email id is missing');
         expect(await casePreviewPo.isCaseTemplateDisplayed(caseTemplateName)).toBeTruthy('Case Template is missing');
-        expect(await casePreviewPo.isDescriptionDisplayed('Qadim Katawazi '+ caseTemplateName + ' ' + caseSummary)).toBeTruthy('Description is missing');
+        expect(await casePreviewPo.isDescriptionDisplayed('Qadim Katawazi ' + caseTemplateName + ' ' + caseSummary)).toBeTruthy('Description is missing');
         expect(await casePreviewPo.isCategoryTier1Displayed('Workforce Administration')).toBeTruthy('CategoryTier1 is missing');
         expect(await casePreviewPo.isCategoryTier2Displayed('HR Operations')).toBeTruthy('CategoryTier2 is missing');
         expect(await casePreviewPo.isCategoryTier3Displayed('Adjustments')).toBeTruthy('CategoryTier3 is missing');
@@ -195,7 +192,7 @@ describe("Case Preview", () => {
             "categoryTier2": "Policies",
             "categoryTier3": "Card Issuance",
             "casePriority": "Low",
-            "businessUnit": "United States Support", 
+            "businessUnit": "United States Support",
             "assignee": "qtao",
             "supportGroup": "US Support 1",
             "caseStatus": "Assigned"
@@ -204,9 +201,9 @@ describe("Case Preview", () => {
             "knowledgeSet": "HR",
             "title": `${caseTemplateName}`,
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "assignedCompany":"Petramco",
-            "assigneeBusinessUnit":"United States Support",
-            "assigneeSupportGroup":"US Support 1",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United States Support",
+            "assigneeSupportGroup": "US Support 1",
             "assignee": "kayo",
             "categoryTier1": "Applications",
             "region": "Australia",
@@ -245,8 +242,8 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('failureMsg: Requester name is missing');
         expect(await casePreviewPo.isRequesterPhoneDisplayed('+15123431923')).toBeTruthy('Requester phone number is missing');
         expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('failureMsg: Requester email id is missing');
-        expect(await casePreviewPo.isCaseTemplateDisplayed('Change My Legal Name')).toBeFalsy('failureMsg: Case Template is displayed');       
-        expect(await casePreviewPo.isDescriptionDisplayed('Qadim Katawazi'+ " " +caseTemplateName)).toBeTruthy('failureMsg: Description is missing');
+        expect(await casePreviewPo.isCaseTemplateDisplayed('Change My Legal Name')).toBeFalsy('failureMsg: Case Template is displayed');
+        expect(await casePreviewPo.isDescriptionDisplayed('Qadim Katawazi' + " " + caseTemplateName)).toBeTruthy('failureMsg: Description is missing');
         expect(await casePreviewPo.isCategoryTier1Displayed('Purchasing Card')).toBeTruthy('failureMsg: CategoryTier1 is missing');
         expect(await casePreviewPo.isCategoryTier2Displayed('Policies')).toBeTruthy('failureMsg: CategoryTier2 is missing');
         expect(await casePreviewPo.isCategoryTier3Displayed('Card Issuance')).toBeTruthy('failureMsg: CategoryTier3 is missing');
@@ -256,4 +253,4 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('failureMsg: Create New Case button is missing');
         await casePreviewPo.clickGoToCaseButton();
     });
-}) 
+});

@@ -5,6 +5,7 @@ import { browser } from 'protractor';
 const recordInstanceUri = "api/rx/application/record/recordinstance";
 const dynamicDataUri = "api/com.bmc.dsm.ticketing-lib/dynamicdata/definition";
 const documentUri = "api/com.bmc.dsm.ticketing-lib/definition/document";
+const newDocumentUri = "api/rx/application/document/documentdefinition";
 const processDefUri = "api/com.bmc.dsm.ticketing-lib/definition/process";
 let FormData = require('form-data');
 let fs = require('fs');
@@ -15,7 +16,6 @@ class ApiCoreUtil {
             recordInstanceUri,
             jsonBody
         );
-        console.log('Create RecordInstance API Status =============>', newRecord.status);
         return newRecord;
     }
 
@@ -24,7 +24,6 @@ class ApiCoreUtil {
             recordInstanceUri + "/" + recordName + "/" + recordGUID,
             jsonBody
         );
-        console.log('Update RecordInstance API Status =============>', newRecord.status);
         return newRecord;
     }
 
@@ -32,7 +31,6 @@ class ApiCoreUtil {
         const deleteRecord = await axios.delete(
             recordInstanceUri + "/" + recordName + "/" + recordGUID
         );
-        console.log('Delete RecordInstance API Status =============>', deleteRecord.status);
         return deleteRecord.status == 204;
     }
 
@@ -53,7 +51,6 @@ class ApiCoreUtil {
         let allRecords = await axios.get(
             dataPageUri
         );
-        console.log('Get GUID API Status =============>', allRecords.status);
         return allRecords;
     }
 
@@ -64,7 +61,6 @@ class ApiCoreUtil {
         let allRecords = await axios.get(
             dataPageUri
         );
-        console.log('Get SignatureInstance ID API Status =============>', allRecords.status);
         return allRecords.data.data.length >= 1 ? allRecords.data.data[0]['signatureInstanceID'] || null : null;
     }
 
@@ -75,7 +71,6 @@ class ApiCoreUtil {
         let allRecords = await axios.get(
             dataPageUri
         );
-        console.log('Get Signature ID API Status =============>', allRecords.status);
         return allRecords.data.data.length >= 1 ? allRecords.data.data[0]['signatureID'] || null : null;
     }
 
@@ -177,7 +172,6 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             obj[0] === functionalRole;
         });
-        console.log('Get Functional Role GUID API Status =============>', entityObj);
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
@@ -237,6 +231,14 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getCaseTemplateCompanyGuid(caseTemplateId: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.case-lib:Case Template");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[1] === caseTemplateId;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['1000000001'] || null : null;
+    }
+
     async getTaskTemplateGuid(taskTemplateIdOrName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.task-lib:Task Template");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
@@ -258,7 +260,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[61001] === applicationBundleId && obj[302259063] == statusValue;
         });
-        if (entityObj.length >= 1) {return entityObj[0]['179'];}
+        if (entityObj.length >= 1) { return entityObj[0]['179']; }
         else {
             let entityObj1: any = allRecords.data.data.filter(function (obj1: string[]) {
                 return obj1[302307031] === statusName && obj1[302259063] == statusValue;
@@ -277,7 +279,6 @@ class ApiCoreUtil {
                 "nodeBRecordInstanceIds": [entity2]
             }
         );
-        console.log('Associate Entities API Status =============>', associateEntities.status);
     }
 
     async createProcess(body: any): Promise<string> {
@@ -287,7 +288,6 @@ class ApiCoreUtil {
             "api/rx/application/process/processdefinition",
             body
         );
-        console.log('New Process API Status =============>', newProcess.status);
         return newGuid;
     }
 
@@ -296,7 +296,6 @@ class ApiCoreUtil {
             dynamicDataUri,
             jsonBody
         );
-        console.log('Dyanmic data added API Status =============>', newRecord.status);
         return newRecord;
     }
 
@@ -340,9 +339,8 @@ class ApiCoreUtil {
         const headers = {
             ...bodyFormData.getHeaders(),
         };
-        if(url) uri = url;
+        if (url) uri = url;
         let newRecord = await axios.post(uri, bodyFormData, { headers });
-        console.log('Create RecordInstance API Status =============>', newRecord.status);
         return newRecord;
     }
 
@@ -359,7 +357,14 @@ class ApiCoreUtil {
             documentUri,
             jsonBody
         );
-        console.log('Document for Process API Status =============>', newRecord.status);
+        return newRecord;
+    }
+
+    async createDocumentForProcess(jsonBody): Promise<AxiosResponse> {
+        const newRecord = await axios.post(
+            newDocumentUri,
+            jsonBody
+        );
         return newRecord;
     }
 
@@ -368,7 +373,6 @@ class ApiCoreUtil {
             processDefUri,
             jsonBody
         );
-        console.log('Document for Process API Status =============>', newRecord.status);
         return newRecord;
     }
 }

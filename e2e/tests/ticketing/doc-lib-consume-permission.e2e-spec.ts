@@ -55,7 +55,7 @@ describe('Document Library Consume Permission', () => {
     afterEach(async () => {
         await utilityCommon.refresh();
     });
-    
+
     it('[DRDMV-13458]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
         try {
             let publish: string[] = ['drdmv13458_publish_document1', 'drdmv13458_publish_document2', 'drdmv13458_publish_document5'];
@@ -714,4 +714,4 @@ describe('Document Library Consume Permission', () => {
             await loginPage.login('qkatawazi');
         }
     }, 740 * 1000);
-})
+});

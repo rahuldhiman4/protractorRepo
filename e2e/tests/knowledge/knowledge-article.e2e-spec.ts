@@ -3,6 +3,7 @@ import apiHelper from '../../api/api.helper';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import resources from '../../pageobject/common/resources-tab.po';
 import { default as createKnowledgePage } from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePage from "../../pageobject/knowledge/edit-knowledge.po";
 import feedbackBladeKnowledgeArticlePo from '../../pageobject/knowledge/feedback-blade-Knowledge-article.po';
@@ -1008,7 +1009,7 @@ describe('Knowledge Article', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "articleDesc" : 'knowledge2746' + randomStr,
+            "articleDesc": 'knowledge2746' + randomStr,
         }
         let kaDetails = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.signOut();
@@ -1029,7 +1030,7 @@ describe('Knowledge Article', () => {
 
     it('[DRDMV-772,DRDMV-4264]:[Edit Knowledge Article] Modify Knowledge metadata on edit knowledge screen', async () => {
         let fileName: string[] = [];
-        fileName = ['bwfJpg.jpg', 'bwfXlsx.xlsx', 'bwfXml.xml','bwfPdf.pdf','bwfWord1.rtf','demo.txt'];
+        fileName = ['bwfJpg.jpg', 'bwfXlsx.xlsx', 'bwfXml.xml', 'bwfPdf.pdf', 'bwfWord1.rtf', 'demo.txt'];
         await apiHelper.apiLogin(knowledgeCoachUser);
         let articleData = {
             "knowledgeSet": "HR",
@@ -1044,9 +1045,9 @@ describe('Knowledge Article', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "articleDesc" : 'knowledge2746' + randomStr,
+            "articleDesc": 'knowledge2746' + randomStr,
         }
-        let kaDetails = await apiHelper.createKnowledgeArticle(articleData);        
+        let kaDetails = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
         await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
@@ -1074,7 +1075,7 @@ describe('Knowledge Article', () => {
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         await editKnowledgePage.removeAttachment();
         for (let i: number = 0; i < fileName.length; i++) {
-        await editKnowledgePage.addAttachment([`../../data/ui/attachment/${fileName[i]}`]);
+            await editKnowledgePage.addAttachment([`../../data/ui/attachment/${fileName[i]}`]);
         }
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         await utilityCommon.closePopUpMessage();
@@ -1162,4 +1163,253 @@ describe('Knowledge Article', () => {
         await utilityGrid.searchRecord(articleData.assignedCompany);
         expect(await utilityGrid.isGridRecordPresent(articleData.assignedCompany)).toBeTruthy();
     });
-})
+
+    describe('[DRDMV-620]: [Advanced Search] Advanced Search UI verification on the Knowledge Edit view', async () => {
+        let knowledgeArticleData, knowledgeArticleData1, articleData1, articleData2, articleData3, articleData4, articleData5, articleData6, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let currentDate = new Date();
+        let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let dateFormateValue: string = months[currentDate.getMonth()];
+        let dateFormateNew: string = dateFormateValue.substring(0, 4);
+        let dateFormate = dateFormateNew + " " + currentDate.getDate() + ", " + currentDate.getFullYear();
+        beforeAll(async () => {
+            articleData1 = {
+                "knowledgeSet": "HR",
+                "title": randomStr + 'KA1',
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "categoryTier1": "Workforce Administration",
+                "region": "Australia",
+                "site": "Canberra",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "kayo"
+            }
+            articleData2 = {
+                "knowledgeSet": "HR",
+                "title": randomStr + 'KA2',
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "categoryTier1": "Workforce Administration",
+                "region": "Central America",
+                "site": "Mexico City",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "kayo"
+            }
+            articleData3 = {
+                "knowledgeSet": "Benefits",
+                "title": randomStr + 'KA3',
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "categoryTier1": "Workforce Administration",
+                "region": "Australia",
+                "site": "Canberra",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "kayo"
+            }
+            articleData4 = {
+                "knowledgeSet": "HR",
+                "title": randomStr + 'KA4',
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "categoryTier1": "Workforce Administration",
+                "region": "EMEA",
+                "site": "Barcelona 1",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "kayo"
+            }
+            articleData5 = {
+                "knowledgeSet": "HR",
+                "title": randomStr + 'KA5',
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "categoryTier1": "Employee Relations",
+                "region": "Australia",
+                "site": "Canberra",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "kayo"
+            }
+            articleData6 = {
+                "knowledgeSet": "HR",
+                "title": randomStr + 'KA6',
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "categoryTier1": "Workforce Administration",
+                "region": "Australia",
+                "site": "Canberra",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "kayo"
+            }
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createKnowledgeArticle(articleData2);
+            await apiHelper.createKnowledgeArticle(articleData3);
+            await apiHelper.createKnowledgeArticle(articleData4);
+            await apiHelper.createKnowledgeArticle(articleData5);
+            knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData6);
+            knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(articleData1);
+            let knowledgeArticleGUID = knowledgeArticleData1.id;
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
+        });
+        it('[DRDMV-620]: Advanced Search UI verification on the Quick Case view', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+            await viewKnowledgeArticlePo.clickOnTab("Resources");
+            await resources.clickOnAdvancedSearchOptions("Suggested Articles");
+            await resources.enterAdvancedSearchText("Suggested Articles");
+            await resources.clickOnAdvancedSearchSettingsIconToOpen();
+            expect(await resources.isFilterAvailable('ArticleStatus')).toBeTruthy();
+            expect(await resources.isFilterAvailable('Knowledge Set')).toBeTruthy();
+            expect(await resources.isFilterAvailable('Site')).toBeTruthy();
+            expect(await resources.isFilterAvailable('Region')).toBeTruthy();
+            expect(await resources.isFilterAvailable('Operational Category Tier 1')).toBeTruthy();
+            let statusFieldValues: string[] = ["Select None", "Closed", "Retired", "Canceled", "In Progress", "Draft", "SME Review", "Published", "Publish Approval", "Retire Approval", "Request Cancelation"];
+            expect(await resources.isAdvancedSearchFilterOptionDropDownValueDisplayed(statusFieldValues, 0)).toBeTruthy();
+        });
+        it('[DRDMV-620]: [Advanced Search] Advanced Search UI verification on the Knowledge Edit view', async () => {
+            await viewKnowledgeArticlePo.clickOnTab("Resources");
+            await resources.clickOnAdvancedSearchOptions("Suggested Articles");
+            await resources.clickOnAdvancedSearchSettingsIconToOpen();
+            await resources.enterAdvancedSearchText(articleData1.title);
+            await resources.selectAdvancedSearchFilterOption('ArticleStatus', 'Draft');
+            await resources.clickOnAdvancedSearchFiltersButton('Apply');
+            expect(await resources.getAdvancedSearchResultForParticularSection(articleData1.title)).toEqual(articleData1.title);
+            await resources.clickOnAdvancedSearchFiltersButton('Clear');
+            await resources.enterAdvancedSearchText(articleData3.title);
+            await resources.selectAdvancedSearchFilterOption('Knowledge Set', 'Benefits');
+            await resources.clickOnAdvancedSearchFiltersButton('Apply');
+            expect(await resources.getAdvancedSearchResultForParticularSection(articleData3.title)).toEqual(articleData3.title);
+            await resources.clickOnAdvancedSearchFiltersButton('Clear');
+            await resources.enterAdvancedSearchText(articleData2.title);
+            await resources.selectAdvancedSearchFilterOption('Region', 'Central America');
+            await resources.clickOnAdvancedSearchFiltersButton('Apply');
+            expect(await resources.getAdvancedSearchResultForParticularSection(articleData2.title)).toEqual(articleData2.title);
+            await resources.clickOnAdvancedSearchFiltersButton('Clear');
+            await resources.enterAdvancedSearchText(articleData4.title);
+            await resources.selectAdvancedSearchFilterOption('Site', 'Barcelona 1');
+            await resources.clickOnAdvancedSearchFiltersButton('Apply');
+            expect(await resources.getAdvancedSearchResultForParticularSection(articleData4.title)).toEqual(articleData4.title);
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData1.displayId);
+            await viewKnowledgeArticlePo.clickOnTab("Resources");
+            await resources.clickOnAdvancedSearchOptions("Suggested Articles");
+            await resources.clickOnAdvancedSearchSettingsIconToOpen();
+            await resources.enterAdvancedSearchText(articleData5.title);
+            await resources.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Employee Relations');
+            await resources.clickOnAdvancedSearchFiltersButton('Apply');
+            expect(await resources.getAdvancedSearchResultForParticularSection(articleData5.title)).toEqual(articleData5.title);
+            expect(await resources.getKnowledgeArticleInfo()).toContain(dateFormate, 'Date not correct');
+            await resources.clickArrowFirstRecommendedKnowledge();
+            expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(articleData5.title);
+            expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
+            expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Status not displaying');
+            expect(await previewKnowledgePo.getKnowledgeArticleID()).toContain(knowledgeArticleData1.displayId, 'KA ID not correct');
+            await previewKnowledgePo.clickOnBackButton();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    it('[DRDMV-2608]:Create KA - with only required and with all fields populating', async () => {
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
+        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await utilityCommon.switchToNewTab(1);
+        await navigationPage.gotoCreateKnowledge();
+        await createKnowledgePage.clickOnTemplate('Reference');
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
+        await createKnowledgePage.selectKnowledgeSet('HR');
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+        await utilityCommon.closePopUpMessage();
+        await previewKnowledgePo.clickGoToArticleButton();
+        expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe('Knowledge' + randomStr);
+        expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.setCategoryTier1('Employee Relations');
+        await editKnowledgePage.setCategoryTier2('Compensation');
+        await editKnowledgePage.setCategoryTier3('Bonus');
+        await editKnowledgePage.selectRegionDropDownOption('EMEA');
+        await editKnowledgePage.selectSiteDropDownOption('Barcelona 1');
+        await editKnowledgePage.clickChangeAssignmentButton();
+        await changeAssignmentBladePo.selectCompany('Petramco');
+        await changeAssignmentBladePo.selectBusinessUnit('HR Support');
+        await changeAssignmentBladePo.selectSupportGroup('Compensation and Benefits');
+        await changeAssignmentBladePo.selectAssignee('Peter Kahn');
+        await changeAssignmentBladePo.clickOnAssignButton();
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        await utilityCommon.closePopUpMessage();
+        expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Employee Relations');
+        expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Compensation');
+        expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('Bonus');
+        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('EMEA');
+        expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Barcelona 1');
+        expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
+    });
+
+    it('[DRDMV-1182]:ArticleCreation_User assign knowledge article to a specific support group', async () => {
+        let articleData = {
+            "knowledgeSet": "HR",
+            "title": 'knowledge2746' + randomStr,
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United States Support",
+            "assigneeSupportGroup": "US Support 1",
+            "assignee": "kayo",
+            "categoryTier1": "Applications",
+            "categoryTier2": "Help Desk",
+            "categoryTier3": "Incident",
+            "region": "Australia",
+            "site": "Canberra",
+            "articleDesc": 'knowledge2746' + randomStr,
+        }
+        await apiHelper.apiLogin(knowledgeCoachUser);
+        let kaDetails = await apiHelper.createKnowledgeArticle(articleData);
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
+        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await utilityCommon.switchToNewTab(1);
+        expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(kaDetails.displayId);
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.clickChangeAssignmentButton();
+        await changeAssignmentBladePo.selectCompany('Petramco');
+        await changeAssignmentBladePo.selectBusinessUnit('HR Support');
+        await changeAssignmentBladePo.selectSupportGroup('Compensation and Benefits');
+        await changeAssignmentBladePo.selectAssignee('Peter Kahn');
+        await changeAssignmentBladePo.clickOnAssignButton();
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        await utilityCommon.closePopUpMessage();
+        expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
+        await navigationPage.signOut();
+        await loginPage.login('peter');
+        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await utilityCommon.switchToNewTab(1);
+        expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(kaDetails.displayId);
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.clickChangeAssignmentButton();
+        await changeAssignmentBladePo.selectCompany('Petramco');
+        await changeAssignmentBladePo.selectBusinessUnit('HR Support');
+        await changeAssignmentBladePo.selectSupportGroup('Employee Relations');
+        await changeAssignmentBladePo.selectAssignee('Elizabeth Peters');
+        await changeAssignmentBladePo.clickOnAssignButton();
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        await utilityCommon.closePopUpMessage();
+        expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Elizabeth Peters');
+    });
+});

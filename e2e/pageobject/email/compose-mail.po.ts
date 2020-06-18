@@ -151,8 +151,12 @@ class ComposeMail {
     }
 
     async clickOnDiscardButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.discardButton)), 2000);
-        await $(this.selectors.discardButton).click();
+        await $(this.selectors.discardButton).isPresent().then(async (present) => {
+            if (present) {
+                await browser.wait(this.EC.elementToBeClickable($(this.selectors.discardButton)), 2000);
+                await $(this.selectors.discardButton).click();
+            }
+        });
     }
 
     async isComposeEmailTitlePresent(title: string): Promise<boolean> {

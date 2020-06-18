@@ -326,4 +326,4 @@ describe('Complex Surveys', () => {
         await activityTabPage.clickOnFilterApplyButton();
         expect(await activityTabPage.isOnlySurveyRecordFiltered()).toBeTruthy("Multiple records are present");
     });
-})
+});

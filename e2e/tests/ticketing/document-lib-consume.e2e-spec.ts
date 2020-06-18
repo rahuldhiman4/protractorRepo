@@ -76,7 +76,7 @@ describe('Document Library Consume UI', () => {
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
         });
-        it('created a case and attach document on it', async () => {
+        it('[DRDMV-13539]: Created a case and attach document on it', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
@@ -84,7 +84,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publishDocData.docLibTitle);
             await editCasePo.clickSaveCase();
         });
-        it('Validate above document is present', async () => {
+        it('[DRDMV-13539]: Validate above document is present', async () => {
             await viewCasePo.clickAttachmentsLink();
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is delete sucessfully');
             await attachmentBladePo.searchAndSelectCheckBox('bwfJpg');
@@ -93,7 +93,7 @@ describe('Document Library Consume UI', () => {
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is delete sucessfully');
             await attachmentBladePo.clickCloseButton();
         });
-        it('change the document staus as draft', async () => {
+        it('[DRDMV-13539]: Change the document staus as draft', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocData.docLibTitle);
@@ -102,7 +102,7 @@ describe('Document Library Consume UI', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(publishDocData.docLibTitle);
         });
-        it('[DRDMV-13539]: download the uploaded document', async () => {
+        it('[DRDMV-13539]: Download the uploaded document', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickAttachmentsLink();
@@ -155,8 +155,7 @@ describe('Document Library Consume UI', () => {
             await apiHelper.publishDocumentLibrary(docLib2);
             caseId = newCase.displayId;
         });
-
-        it('Open the case and attach the document', async () => {
+        it('[DRDMV-13533]: Open the case and attach the document', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
@@ -262,7 +261,7 @@ describe('Document Library Consume UI', () => {
             await apiHelper.apiLogin(caseAgentuserData.userId);
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
-        it('create a case and click task link ', async () => {
+        it('[DRDMV-13524]: Create a case and click task link ', async () => {
             await navigationPage.signOut();
             await loginPage.login(caseAgentuserData.userId);
             await navigationPage.gotoCreateCase();
@@ -279,7 +278,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchRecord(publishDocLibData.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13524_publish_document3 doc is displayed');
         });
-        it('Add document from document', async () => {
+        it('[DRDMV-13524]: Add document from document', async () => {
             await attachDocumentBladePo.searchRecord('drdmv13524_publish_document3');
             expect(await attachDocumentBladePo.isDocumentLibaryPresent('drdmv13524_publish_document3')).toBeFalsy('FailuerMsg: drdmv13524_publish_document3 doc is displayed');
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
@@ -294,7 +293,7 @@ describe('Document Library Consume UI', () => {
             await viewTaskPo.clickOnAttachedDocumentFile('bwfJpg.jpg');
             expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
         });
-        it('verify the attachment document', async () => {
+        it('[DRDMV-13524]: Verify the attachment document', async () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.clickOnAttachButton();
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
@@ -307,7 +306,7 @@ describe('Document Library Consume UI', () => {
             await viewTaskPo.clickOnAttachedDocumentFile('bwfPdf.pdf');
             expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
         });
-        it('[DRDMV-13524]: verify the attachment document', async () => {
+        it('[DRDMV-13524]: Verify the attachment document', async () => {
             await viewTaskPo.clickShowMoreShowLessLink();
             expect(await viewTaskPo.isAttachedDocumentPresent('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg:bwfXlsx.xlsx Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
@@ -319,7 +318,7 @@ describe('Document Library Consume UI', () => {
     //kgaikwad
     describe('[DRDMV-13507]: Compose Email - Case agent attaches published document from document library where case agent is author of the document', async () => {
         let publish: string[] = ['drdmv13507_publish_document1', 'drdmv13507_publish_document2', 'drdmv13507_publish_document5'];
-        let publishDocLibData, draftDocLibData,randomStr=[...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let publishDocLibData, draftDocLibData, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             publishDocLibData = {
                 "docLibTitle": "drdmv13524_publish_document3",
@@ -363,7 +362,7 @@ describe('Document Library Consume UI', () => {
             await apiHelper.apiLogin(caseAgentuserData.userId);
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
-        it('create a case and add click on email', async () => {
+        it('[DRDMV-13507]: Create a case and add click on email', async () => {
             await navigationPage.signOut();
             await loginPage.login(caseAgentuserData.userId);
             await navigationPage.gotoCreateCase();
@@ -374,14 +373,14 @@ describe('Document Library Consume UI', () => {
             await viewCasePo.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
         });
-        it('Attach the document', async () => {
+        it('[DRDMV-13507]: Attach the document', async () => {
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
             await attachDocumentBladePo.searchRecord(publishDocLibData.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13507_publish_document1 doc is displayed');
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: publishDocLib3 doc is displayed');
         });
-        it('Search the document', async () => {
+        it('[DRDMV-13507]: Search the document', async () => {
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
@@ -392,7 +391,7 @@ describe('Document Library Consume UI', () => {
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
             expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
         });
-        it('send the document', async () => {
+        it('[DRDMV-13507]: Send the document', async () => {
             await viewCasePo.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
@@ -401,7 +400,7 @@ describe('Document Library Consume UI', () => {
             await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
         });
-        it('[DRDMV-13507]: create a case and add task on it', async () => {
+        it('[DRDMV-13507]: Create a case and add task on it', async () => {
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
@@ -421,8 +420,7 @@ describe('Document Library Consume UI', () => {
     describe('[DRDMV-13449]: Edit Case - Case agent attaches published document from document library who has write access to that document', async () => {
         let publish: string[] = ['drdmv13449_publish_document1', 'drdmv13449_publish_document2', 'drdmv13449_publish_document5'];
         let files1: string[] = [filePath1, filePath2, filePath5];
-        let publishDocLibData2, draftDocLibData,randomStr=[...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
+        let publishDocLibData2, draftDocLibData, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             publishDocLibData2 = {
                 "docLibTitle": "drdmv13449_publish_document3",
@@ -461,7 +459,7 @@ describe('Document Library Consume UI', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
-        it('create a case and add task on it', async () => {
+        it('[DRDMV-13449]: Create a case and add task on it', async () => {
             await navigationPage.signOut();
             await loginPage.login(caseAgentuserData.userId);
             await navigationPage.gotoCreateCase();
@@ -473,7 +471,7 @@ describe('Document Library Consume UI', () => {
             await editCasePo.clickOnAttachLink();
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
         });
-        it('attach document on it', async () => {
+        it('[DRDMV-13449]: Attach document on it', async () => {
             await attachDocumentBladePo.searchRecord(publishDocLibData2.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13449_publish_document3 doc is displayed');
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
@@ -483,7 +481,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.clickOnAttachButton();
             await editCasePo.clickSaveCase();
         });
-        it('Verify the attach document', async () => {
+        it('[DRDMV-13449]: Verify the attach document', async () => {
             expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfJpg.jpg');
@@ -559,7 +557,7 @@ describe('Document Library Consume UI', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
-        it('create a case ', async () => {
+        it('[DRDMV-13480]: Create a case ', async () => {
             await navigationPage.signOut();
             await loginPage.login(caseAgentuserData.userId);
             await navigationPage.gotoCreateCase();
@@ -570,7 +568,7 @@ describe('Document Library Consume UI', () => {
             await activityTabPo.addActivityNote(randomStr);
             await activityTabPo.clickOnAttachLink();
         });
-        it('Add the document', async () => {
+        it('[DRDMV-13480]: Add the document', async () => {
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
             await attachDocumentBladePo.searchRecord(publishDocLibData2.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13480_publish_document3 doc is displayed');
@@ -581,7 +579,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.clickOnAttachButton();
             await activityTabPo.clickOnPostButton();
         });
-        it('Verify the document', async () => {
+        it('[DRDMV-13480]: Verify the document', async () => {
             // await utilityCommon.waitUntilSpinnerToHide();
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
@@ -657,7 +655,7 @@ describe('Document Library Consume UI', () => {
             await apiHelper.apiLogin('fritz');
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
-        it('create a case and add task on it', async () => {
+        it('[DRDMV-13479]: Create a case and add task on it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCreateCase();
@@ -668,7 +666,7 @@ describe('Document Library Consume UI', () => {
             await activityTabPo.addActivityNote(randomStr);
             await activityTabPo.clickOnAttachLink();
         });
-        it('Add the documnet', async () => {
+        it('[DRDMV-13479]: Add the documnet', async () => {
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
             await attachDocumentBladePo.searchRecord(publishDocLibData2.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13479_publish_document3 doc is displayed');
@@ -679,7 +677,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.clickOnAttachButton();
             await activityTabPo.clickOnPostButton();
         });
-        it('verify the document', async () => {
+        it('[DRDMV-13479]: Verify the document', async () => {
             // await utilityCommon.waitUntilSpinnerToHide();
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
@@ -713,7 +711,7 @@ describe('Document Library Consume UI', () => {
     describe('[DRDMV-13463]: Edit Case - Case business analyst attaches published document from document library who has write access to that document', async () => {
         let publish: string[] = ['drdmv13463_publish_document1', 'drdmv13463_publish_document2', 'drdmv13463_publish_document5'];
         let files1: string[] = [filePath1, filePath2, filePath5];
-        let publishDocLibData2, draftDocLibData,  randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');;
+        let publishDocLibData2, draftDocLibData, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');;
         beforeAll(async () => {
             publishDocLibData2 = {
                 docLibTitle: 'drdmv13463_publish_document3',
@@ -753,8 +751,7 @@ describe('Document Library Consume UI', () => {
             await apiHelper.apiLogin('elizabeth');
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
-
-        it('create a case and add task on it', async () => {
+        it('[DRDMV-13463]: Create a case and add task on it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCreateCase();
@@ -766,7 +763,7 @@ describe('Document Library Consume UI', () => {
             await editCasePo.clickOnAttachLink();
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
         });
-        it('Add the attachment', async () => {
+        it('[DRDMV-13463]: Add the attachment', async () => {
             await attachDocumentBladePo.searchRecord(publishDocLibData2.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13463_publish_document3 doc is displayed');
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
@@ -776,7 +773,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.clickOnAttachButton();
             await editCasePo.clickSaveCase();
         });
-        it('verify the document', async () => {
+        it('[DRDMV-13463]: Verify the document', async () => {
             expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfJpg.jpg');
@@ -849,8 +846,7 @@ describe('Document Library Consume UI', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
-
-        it('create a case ', async () => {
+        it('[DRDMV-13506]: Create a case ', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCreateCase();
@@ -862,7 +858,7 @@ describe('Document Library Consume UI', () => {
             await composeMailPo.clickOnAttachmentLink();
 
         });
-        it('add the attachment', async () => {
+        it('[DRDMV-13506]: Add the attachment', async () => {
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
             await attachDocumentBladePo.searchRecord(publishDocLibData1.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData1.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13506_publish_document3 doc is displayed');
@@ -874,7 +870,7 @@ describe('Document Library Consume UI', () => {
             await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
         });
-        it('Verify the document', async () => {
+        it('[DRDMV-13506]: Verify the document', async () => {
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
@@ -948,7 +944,7 @@ describe('Document Library Consume UI', () => {
             await apiHelper.apiLogin('elizabeth');
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
-        it('create a case', async () => {
+        it('[DRDMV-13481]: Create a case', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoCreateCase();
@@ -960,7 +956,7 @@ describe('Document Library Consume UI', () => {
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
         });
-        it('Add the attachment', async () => {
+        it('[DRDMV-13481]: Add the attachment', async () => {
             await attachDocumentBladePo.searchRecord(publishDocLibData2.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: publishDocLib3 doc is displayed');
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
@@ -971,7 +967,7 @@ describe('Document Library Consume UI', () => {
             await activityTabPo.clickOnPostButton();
             // await utilityCommon.waitUntilSpinnerToHide();
         });
-        it('verify the attachment', async () => {
+        it('[DRDMV-13481]: Verify the attachment', async () => {
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
@@ -984,7 +980,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await activityTabPo.clickOnPostButton();
         });
-        it('[DRDMV-13481]: verify the attachment on activity', async () => {
+        it('[DRDMV-13481]: Verify the attachment on activity', async () => {
             // await utilityCommon.waitUntilSpinnerToHide();
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');

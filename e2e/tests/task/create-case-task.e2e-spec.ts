@@ -15,14 +15,13 @@ import editTaskTemplate from "../../pageobject/settings/task-management/edit-tas
 import viewTasktemplatePo from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import consoleTask from "../../pageobject/task/console-task.po";
 import editTask from "../../pageobject/task/edit-task.po";
-import manageTask from "../../pageobject/task/manage-task-blade.po";
+import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 
 let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
 
@@ -76,7 +75,7 @@ describe('Create Case Task', () => {
             await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
         });
-        it('added task on created case', async () => {
+        it('[DRDMV-7165,DRDMV-7147]: added task on created case', async () => {
             //open create case
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -130,7 +129,7 @@ describe('Create Case Task', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
         });
-        it('create manual task template', async () => {
+        it('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Create manual task template', async () => {
             //Automated task Template with Required Data
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
@@ -145,7 +144,7 @@ describe('Create Case Task', () => {
             expect(await viewTasktemplatePo.getTaskCompanyNameValue()).toBe("Petramco");
             //await utilCommon.closePopUpMessage();
         });
-        it('create manual task template', async () => {
+        it('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Create manual task template', async () => {
             //Automation Task template
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
@@ -165,7 +164,7 @@ describe('Create Case Task', () => {
             expect(await viewTasktemplatePo.getTaskCompanyNameValue()).toBe("Petramco");
             await utilityCommon.closePopUpMessage();
         });
-        it('create case and add tasks on it task template', async () => {
+        it('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Create case and add tasks on it task template', async () => {
             //case create
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -183,7 +182,7 @@ describe('Create Case Task', () => {
             expect(await manageTask.isTaskLinkPresent(autmationTaskSummaryWithRequiredData)).toBeTruthy(autmationTaskTemplateWithRequiredData + ' Task is not added to case');
             expect(await manageTask.isTaskLinkPresent(automationTaskSummaryWithallField)).toBeTruthy(automationTaskTemplateWithallField + ' Task is not added to case');
         });
-        it('Validate manual task', async () => {
+        it('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Validate manual task', async () => {
             //validate Automation Template With Required Field
             await manageTask.clickTaskLink(automationTaskSummaryWithallField);
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
@@ -291,7 +290,7 @@ describe('Create Case Task', () => {
             await apiHelper.createManualTaskTemplate(templateData1);
             await apiHelper.createManualTaskTemplate(templateData2);
         });
-        it('Verify the manual Active task template', async () => {
+        it('[DRDMV-7124]: Verify the manual Active task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateActive ${randomStr}`);
@@ -301,7 +300,7 @@ describe('Create Case Task', () => {
             expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeFalsy();
         });
-        it('Verify the manual inActive task template ', async () => {
+        it('[DRDMV-7124]: Verify the manual inActive task template ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateInActive ${randomStr}`);
@@ -311,7 +310,7 @@ describe('Create Case Task', () => {
             expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeFalsy();
         });
-        it('Verify the manual Draft task template', async () => {
+        it('[DRDMV-7124]: Verify the manual Draft task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateDraft ${randomStr}`);
@@ -321,7 +320,7 @@ describe('Create Case Task', () => {
             expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeFalsy();
         });
-        it('Verify the Automation Active task template', async () => {
+        it('[DRDMV-7124]: Verify the Automation Active task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
@@ -331,7 +330,7 @@ describe('Create Case Task', () => {
             expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
         });
-        it('Verify the Automation inActive task template', async () => {
+        it('[DRDMV-7124]: Verify the Automation inActive task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateInActive ${randomStr}`);
@@ -370,7 +369,7 @@ describe('Create Case Task', () => {
             await apiHelper.associateCategoryToCategory(globalCategName, categName2);
             await apiHelper.associateCategoryToCategory(categName2, categName3);
         });
-        it('Create Manual task with global category ', async () => {
+        it('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: Create Manual task with global category ', async () => {
             //manual Task template
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
@@ -390,7 +389,7 @@ describe('Create Case Task', () => {
             expect(await viewTasktemplatePo.getCategoryTier3Value()).toBe(categName3);
             expect(await viewTasktemplatePo.getTaskCompanyNameValue()).toBe('- Global -')
         });
-        it('Create case with above task template ', async () => {
+        it('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: Create case with above task template ', async () => {
             //Create a Case
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -418,7 +417,6 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
-
     });
 
     //ankagraw
@@ -439,7 +437,7 @@ describe('Create Case Task', () => {
             await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
             await apiHelper.associatePersonToSupportGroup(userData.userId, "Psilon Support Group2");
         });
-        it('Login with Psilon user', async () => {
+        it('[DRDMV-12558]: Login with Psilon user', async () => {
             await navigationPage.signOut();
             await loginPage.login("DRDMV-12558" + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -474,7 +472,6 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi")
         });
-
     });
 
     //ankagraw
@@ -553,7 +550,7 @@ describe('Create Case Task', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(templateData);
         });
-        it('Create case and add task on it', async () => {
+        it('[DRDMV-7149]: Create case and add task on it', async () => {
             //case create
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -568,10 +565,10 @@ describe('Create Case Task', () => {
             await manageTask.clickCloseButton();
         });
         it('[DRDMV-7149]: Verify the task status', async () => {
-            //validate Automation Template With Required Field
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
-            // await utilCommon.closePopUpMessage();
+            //validate Automation Template With Required Field
+            await utilCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(automationTaskSummary);
             await viewTask.clickOnChangeStatus();
@@ -585,6 +582,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.getTaskStatusValue()).toBe('Closed');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -663,7 +661,7 @@ describe('Create Case Task', () => {
             await apiHelper.createAutomatedTaskTemplate(templateData2);
             await apiHelper.createManualTaskTemplate(templateData1);
         });
-        it('Create case and add task on it', async () => {
+        it('[DRDMV-7141,DRDMV-7122]: Create case and add task on it', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('set summary');
@@ -703,7 +701,7 @@ describe('Create Case Task', () => {
         let taskManagementList: string[] = ['Task Management', 'Approvals', 'Notes Template', 'Status Configuration', 'Templates'];
         let emailtList: string[] = ['Email', 'Acknowledgment Templates', 'Configuration', 'Templates'];
         let notificationConfigurationList: string[] = ['Notification Configuration', 'Manage Events', 'Manage Templates'];
-        it('Verify Permissions role of CBA', async () => {
+        it('[DRDMV-2475]: Verify Permissions role of CBA', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.isSettingSubMenusMatches("Case Management", caseManagementList)).toBeTruthy("Case Management");
             expect(await navigationPage.isSettingSubMenusMatches("Manage Flowsets", manageFlowsetList)).toBeTruthy("Manage Flowsets");
@@ -759,7 +757,7 @@ describe('Create Case Task', () => {
             await apiHelper.createManualTaskTemplate(templateDataDraft1);
             await apiHelper.createManualTaskTemplate(templateDataActive);
         });
-        it('Verify the task template', async () => {
+        it('[DRDMV-3795]: Verify the task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateDraft1 ${randomStr}`);
@@ -830,7 +828,7 @@ describe('Create Case Task', () => {
             let automationTaskTemplate = await apiHelper.createAutomatedTaskTemplate(templateData);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automationTaskTemplate.displayId);
         });
-        it('create case and add task on it', async () => {
+        it('[DRDMV-7254]: Create case and add task on it', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoCreateCase();
@@ -929,7 +927,7 @@ describe('Create Case Task', () => {
             await apiHelper.createAutomatedTaskTemplate(templateData);
             await apiHelper.createAutomatedTaskTemplate(templateData1);
         });
-        it('create a case and assign task on it', async () => {
+        it('[DRDMV-7154,DRDMV-7153]: Create a case and assign task on it', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('fritz');
             await createCasePage.setSummary('Summary' + randomStr);
@@ -946,7 +944,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
         });
-        it('Verify first task on it', async () => {
+        it('[DRDMV-7154,DRDMV-7153]: Verify first task on it', async () => {
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
@@ -1005,7 +1003,7 @@ describe('Create Case Task', () => {
             await apiHelper.createManualTaskTemplate(templateData2);
             await apiHelper.createManualTaskTemplate(templateData3);
         });
-        it('Create a case add task on it', async () => {
+        it('[DRDMV-7145]: Create a case add task on it', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('fritz');
             await createCasePage.setSummary('Summary' + randomStr);
@@ -1019,7 +1017,7 @@ describe('Create Case Task', () => {
             await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate3 ${randomStr}`);
             await manageTask.clickCloseButton();
         });
-        it('verify primary status of task', async () => {
+        it('[DRDMV-7145]: Verify primary status of task', async () => {
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
@@ -1033,7 +1031,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
         });
-        it('verify status of task after updating of case', async () => {
+        it('[DRDMV-7145]: Verify status of task after updating of case', async () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
@@ -1148,7 +1146,7 @@ describe('Create Case Task', () => {
             closed = closedCase.displayId;
             canceled = CanceledCase.displayId;
         });
-        it('Create new status case and assign task on it', async () => {
+        it('[DRDMV-7143,DRDMV-7144]: Create new status case and assign task on it', async () => {
             //Verify New Case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -1164,7 +1162,7 @@ describe('Create Case Task', () => {
             await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
         });
-        it('Create Assigned status case and assign task on it', async () => {
+        it('[DRDMV-7143,DRDMV-7144]: Create Assigned status case and assign task on it', async () => {
             //Verify Assigned Case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -1181,7 +1179,7 @@ describe('Create Case Task', () => {
             await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
         });
-        it('Create InProgress status case and assign task on it', async () => {
+        it('[DRDMV-7143,DRDMV-7144]: Create InProgress status case and assign task on it', async () => {
             //Verify In_progress Case
             await navigationPage.gotoCaseConsole();
             await utilGrid.clearFilter();
@@ -1194,7 +1192,7 @@ describe('Create Case Task', () => {
             await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
         });
-        it('Create Pending status case and assign task on it', async () => {
+        it('[DRDMV-7143,DRDMV-7144]: Create Pending status case and assign task on it', async () => {
             //Verify Pending Case
             await navigationPage.gotoCaseConsole();
             await utilGrid.clearFilter();
@@ -1207,7 +1205,7 @@ describe('Create Case Task', () => {
             await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
         });
-        it('Create resolved status case and assign task on it', async () => {
+        it('[DRDMV-7143,DRDMV-7144]: Create resolved status case and assign task on it', async () => {
             //Verify Resolved Case
             await navigationPage.gotoCaseConsole();
             await utilGrid.clearFilter();

@@ -482,7 +482,7 @@ describe('Case Activity CKE Styling', () => {
 
             let knowledgeArticle = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let addNoteBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-         
+
             await apiHelper.apiLogin('qkatawazi');
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create Case
@@ -510,12 +510,12 @@ describe('Case Activity CKE Styling', () => {
             let knowledgeArticleGUID = knowledgeArticleData.id;
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('Status Not Set');
-            
+
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
-            expect (await viewCasePo.getCaseID()).toBe(newCase.displayId,'Case Id is missing');
- 
+            expect(await viewCasePo.getCaseID()).toBe(newCase.displayId, 'Case Id is missing');
+
             // Verify knowledge Article task template
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeArticlesConsolePo.searchAndOpenKnowledgeArticle(knowledgeArticleData.displayId);
@@ -670,4 +670,4 @@ describe('Case Activity CKE Styling', () => {
             await loginPage.login('qkatawazi');
         }
     }, 600 * 1000);
-})
+});

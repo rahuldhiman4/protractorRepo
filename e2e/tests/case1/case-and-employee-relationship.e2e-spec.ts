@@ -12,8 +12,11 @@ import personProfilePage from '../../pageobject/common/person-profile.po';
 import relatedCasePage from '../../pageobject/common/related-case-tab.po';
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
-import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
+import composeEmailPage from '../../pageobject/email/compose-mail.po';
+import relationConfigPage from '../../pageobject/settings/relationship/relationships-configs.po';
+import relatedCaseTabPo from '../../pageobject/common/related-case-tab.po';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Case And Employee Relationship', () => {
     beforeAll(async () => {
@@ -23,6 +26,8 @@ describe('Case And Employee Relationship', () => {
     });
 
     afterAll(async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteAllEmailConfiguration();
         await navigationPage.signOut();
     });
 
@@ -298,5 +303,146 @@ describe('Case And Employee Relationship', () => {
         await quickCase.gotoCaseButton();
         await viewCasePo.clickOnTab('Related Cases');
         await relatedCasePage.isCasePresent(caseId2);
+    });
+
+    //asahitya
+    it('[DRDMV-17039]: Check if Person is Related to other Case to which he has no access and Cases are not shown on Person Profile', async () => {
+        let caseData = {
+            "Description": "My Bulk Case Assignee",
+            "Requester": "apavlik",
+            "Summary": "Bulk Case Assignee",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 1",
+            "Assignee": "qfeng",
+        }
+
+        await apiHelper.apiLogin('qfeng');
+        let response1 = await apiHelper.createCase(caseData);
+        caseData["Support Group"] = "US Support 3";
+        let response2 = await apiHelper.createCase(caseData);
+
+        try {
+            await navigationPage.signOut();
+            await loginPage.login('qfeng');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(response1.displayId);
+            await viewCasePo.clickOnTab('Related Persons');
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Qianru Tao', 'Inspector');
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(response2.displayId);
+            await viewCasePo.clickOnTab('Related Persons');
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Qianru Tao', 'Inspector');
+        }
+        catch (ex) { throw ex; }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+        }
+
+        await navigationPage.gotoPersonProfile();
+        await personProfilePage.clickOnTab('Related Cases');
+        expect(await personProfilePage.isCaseAvailableOnRelatedCases(response1.displayId)).toBeTruthy(response1.displayId + ' is not present');
+        expect(await personProfilePage.isCaseAvailableOnRelatedCases(response2.displayId)).toBeFalsy(response2.displayId + ' is present');
+    });
+
+    //asahitya
+    it('[DRDMV-16247]: Send Email to Related Person from Related Persons tab', async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.createEmailConfiguration();
+
+        let caseData1 = {
+            "Description": "My Description",
+            "Requester": "apavlik",
+            "Summary": "Email check",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 1",
+            "Assignee": "qfeng",
+        }
+
+        await apiHelper.apiLogin('qfeng');
+        let response1 = await apiHelper.createCase(caseData1);
+
+        await navigationPage.gotoCaseConsole();
+        await utilityGrid.searchAndOpenHyperlink(response1.displayId);
+        await viewCasePo.clickOnTab('Related Persons');
+        await relatedTabPage.addRelatedPerson();
+        await addRelatedPopupPage.addPerson('Qadim Katawazi', 'Inspector');
+        await relatedTabPage.clickRelatedPersonEmail('Qadim Katawazi');
+        await composeEmailPage.setSubject('Email Subject');
+        let subject = response1.displayId + ':Email Subject';
+        await composeEmailPage.setEmailBody('DRDMV-16247');
+        await composeEmailPage.clickOnSendButton();
+        expect((await apiHelper.getHTMLBodyOfEmail(subject)).includes('<br>DRDMV-16247')).toBeTruthy('Email does not match');
+    });
+
+    //asahitya
+    describe('[DRDMV-17030]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', () => {
+        let caseId: string[] = [];
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qfeng');
+            let caseData = {
+                "Description": "My Bulk Case Assignee",
+                "Requester": "apavlik",
+                "Summary": "Bulk Case Assignee",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qfeng",
+            }
+            for (let i = 0; i < 6; i++) {
+                let response = await apiHelper.createCase(caseData);
+                caseId[i] = response.displayId;
+            }
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+
+        it('[DRDMV-17030]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Relationships--Case to Case', 'Case to Case Relationship Console - Business Workflows');
+            expect(await relationConfigPage.isRelationshipPresent('Parent')).toBeTruthy('Parent relationship is not present');
+            expect(await relationConfigPage.getReverseRelationShipName('Parent')).toBe('Child', 'Reverse Relationship name for Parent does not match');
+            expect(await relationConfigPage.isRelationshipPresent('Duplicates')).toBeTruthy('Duplicates relationship is not present');
+            expect(await relationConfigPage.getReverseRelationShipName('Duplicates')).toBe('Duplicates', 'Reverse Relationship name for Duplicates does not match');
+            expect(await relationConfigPage.isRelationshipPresent('Related to')).toBeTruthy('Related to relationship is not present');
+            expect(await relationConfigPage.getReverseRelationShipName('Related to')).toBe('Related to', 'Reverse Relationship name for Related to does not match');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        });
+
+        it('[DRDMV-17030]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(caseId[0]);
+            await viewCasePo.clickOnTab('Related Cases');
+            await relatedCaseTabPo.addRelatedCases();
+            await addRelatedCasespopup.addRelatedCase(caseId[1], 'Child');
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId[1]);
+            await viewCasePo.clickOnTab('Related Cases');
+            expect(await relatedCaseTabPo.getRelatedCaseRelation(caseId[0])).toBe('Parent');
+
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId[2]);
+            await viewCasePo.clickOnTab('Related Cases');
+            await relatedCaseTabPo.addRelatedCases();
+            await addRelatedCasespopup.addRelatedCase(caseId[3], 'Duplicates');
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId[3]);
+            await viewCasePo.clickOnTab('Related Cases');
+            expect(await relatedCaseTabPo.getRelatedCaseRelation(caseId[2])).toBe('Duplicates');
+
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId[4]);
+            await viewCasePo.clickOnTab('Related Cases');
+            await relatedCaseTabPo.addRelatedCases();
+            await addRelatedCasespopup.addRelatedCase(caseId[5], 'Related to');
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId[5]);
+            await viewCasePo.clickOnTab('Related Cases');
+            expect(await relatedCaseTabPo.getRelatedCaseRelation(caseId[4])).toBe('Related to');
+        });
     });
 })

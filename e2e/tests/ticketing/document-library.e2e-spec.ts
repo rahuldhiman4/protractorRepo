@@ -15,9 +15,9 @@ import documentLibraryConsolePo from '../../pageobject/settings/document-managem
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import utilGrid from '../../utils/util.grid';
 
 describe('Document Library', () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
@@ -418,11 +418,13 @@ describe('Document Library', () => {
         await documentLibraryConsolePo.isGridColumnSorted('Company', 'descending');
 
     });
+
     //kgaikwad 
     it('[DRDMV-13081]: Verify OOB Document template will not appear in knowledge console', async () => {
         await navigationPage.gotoCreateKnowledge();
         expect(await createKnowlegePo.isDocumentTemplatePresent('Document')).toBeFalsy('Document heading is not displayed');
     });
+
     //kgaikwad
     it('[DRDMV-13040,DRDMV-13078]: Verify document can be Edited in draft status', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
@@ -462,13 +464,14 @@ describe('Document Library', () => {
         await expect(newTime[0] + ":" + newTime[1]).toBe(systemTime[0] + ":" + systemTime[1]);
         await documentLibraryConsolePo.removeColumnOnGrid(column);
     }, 330 * 1000);
+
     //kgaikwad
     it('[DRDMV-13088]: Verify read access component UI', async () => {
         let filePath = 'e2e/data/ui/attachment/demo.txt';
         let draftDocLibData = {
             docLibTitle: 'drdmv13088_draft_document',
             company: 'Petramco',
-            businessUnit:'HR Support',
+            businessUnit: 'HR Support',
             ownerGroup: 'Compensation and Benefits',
         }
         await apiHelper.apiLogin('tadmin');
@@ -694,4 +697,5 @@ describe('Document Library', () => {
             await loginPage.login('qkatawazi');
         }
     });//, 150 * 1000);
-})
+});
+

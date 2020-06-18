@@ -19,7 +19,7 @@ import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
 import { FLAG_UNFLAG_KA } from '../data/api/knowledge/flag-unflag.data.api';
 import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/process.data.api';
-import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL, THREE_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
+import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL, THREE_TASKFLOW_SEQUENTIAL, PROCESS_DOCUMENT } from '../data/api/task/taskflow.process.data.api';
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
 import { IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api';
@@ -176,6 +176,33 @@ class ApiHelper {
         };
     }
 
+    async deleteAllEmailConfiguration(): Promise<boolean> {
+        let emailConfigDataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery&pageSize=50&propertySelection=7,1,recordContext._associations.IDGADG1AANVNMAPHAJWGPGDM6B8LR5.nodeA%5B0%5D.1000000010,1000000001,450000156,450000153,379&recorddefinition=com.bmc.dsm.email-lib:Email+Box+Registration&shouldIncludeTotalSize=false&sortBy=450000156&startIndex=0";
+        let allEmailConfig = await axios.get(
+            emailConfigDataPageUri
+        );
+        let deletAllEmailConfig = allEmailConfig.data.data.map(async (obj: string) => {
+            return await coreApi.deleteRecordInstance('com.bmc.dsm.email-lib:Email Box Registration', obj[379]);
+        });
+
+        let incomingMailDataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery&pageSize=50&propertySelection=179,1,18037,18217,7,379&queryExpression=((%2718049%27%3D%220%22))&recorddefinition=AR+System+Email+Mailbox+Configuration&shouldIncludeTotalSize=false&sortBy=7&startIndex=0";
+        let allIncomingMail = await axios.get(
+            incomingMailDataPageUri
+        );
+        let deletAllIncomingMail = allIncomingMail.data.data.map(async (obj: string) => {
+            return await coreApi.deleteRecordInstance('AR System Email Mailbox Configuration', obj[379]);
+        });
+
+        let outgoingMailDataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery&pageSize=50&propertySelection=7,179,1,18217,18037,18147,379&queryExpression=((%2718049%27%3D%221%22))&recorddefinition=AR+System+Email+Mailbox+Configuration&shouldIncludeTotalSize=false&startIndex=0";
+        let allOutgoingMail = await axios.get(
+            outgoingMailDataPageUri
+        );
+        let deletAllOutgoingMail = allOutgoingMail.data.data.map(async (obj: string) => {
+            return await coreApi.deleteRecordInstance('AR System Email Mailbox Configuration', obj[379]);
+        });
+        return deletAllEmailConfig == deletAllIncomingMail == deletAllOutgoingMail;
+    }
+
     async getHTMLBodyOfEmail(emailSubject: string): Promise<string> {
         return await coreApi.getEmailHTMLBody(emailSubject);
     }
@@ -198,7 +225,7 @@ class ApiHelper {
 
     async createCaseTemplate(data: ICaseTemplate): Promise<IIDs> {
         let templateData = CASE_TEMPLATE_PAYLOAD;
-        templateData= Object.assign({},templateData); 
+        templateData = Object.assign({}, templateData);
 
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
@@ -846,18 +873,27 @@ class ApiHelper {
         oneTaskFlowProcess = Object.assign({}, oneTaskFlowProcess);
         let taskTemplateGuid = await coreApi.getTaskTemplateGuid(taskTemplateId);
         let randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        // give new name to process
         oneTaskFlowProcess.name = oneTaskFlowProcess.name + "_" + randomString;
+        // get case company and update in payload
+        oneTaskFlowProcess.tags[0] = await apiCoreUtil.getCaseTemplateCompanyGuid(caseTemplateId);
+        // update task template data in payload
         let taskTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid);
         let taskSummary = taskTemplateJsonData.fieldInstances[8].value;
         let taskName = taskTemplateJsonData.fieldInstances[1000001437].value;
-
         oneTaskFlowProcess.flowElements[2].inputMap[1].expression = `"${taskSummary}"`;
         oneTaskFlowProcess.flowElements[2].inputMap[2].expression = `"${taskTemplateGuid}"`;
         oneTaskFlowProcess.layout = (oneTaskFlowProcess.layout).replace("New Task", taskName);
-
+        // create new doc and update in payload
+        let docData = PROCESS_DOCUMENT;
+        docData.name = docData.name + "_" + randomString;
+        let newDocForProcess: AxiosResponse = await coreApi.createDocumentForProcess(docData);
+        console.log('Create Document for TaskFlow Process =============>', newDocForProcess.status);
+        oneTaskFlowProcess.inputParams[0].documentDefinitionName = docData.name;
+        // create process
         let processGuid = await coreApi.createProcess(oneTaskFlowProcess);
         console.log('New Process Created =============>', oneTaskFlowProcess.name, "=====GUID:", processGuid);
-
+        // link task flow process to case template
         let caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
         let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = oneTaskFlowProcess.name;
@@ -875,25 +911,34 @@ class ApiHelper {
         twoTaskFlowProcess = Object.assign({}, twoTaskFlowProcess);
         let taskTemplateGuid1 = await coreApi.getTaskTemplateGuid(taskTemplateId1);
         let taskTemplateGuid2 = await coreApi.getTaskTemplateGuid(taskTemplateId2);
+        // give new name to process
         let randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         twoTaskFlowProcess.name = await twoTaskFlowProcess.name + "_" + randomString;
-
+        // get case company and update in payload
+        twoTaskFlowProcess.tags[0] = await apiCoreUtil.getCaseTemplateCompanyGuid(caseTemplateId);
+        // update task template data in payload
         let taskTemplateJsonData1 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid1);
         let taskSummary1 = taskTemplateJsonData1.fieldInstances[8].value;
         let taskName1 = taskTemplateJsonData1.fieldInstances[1000001437].value;
         let taskTemplateJsonData2 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid2);
         let taskSummary2 = taskTemplateJsonData2.fieldInstances[8].value;
         let taskName2 = taskTemplateJsonData2.fieldInstances[1000001437].value;
-
         twoTaskFlowProcess.flowElements[2].inputMap[1].expression = `"${taskSummary1}"`;
         twoTaskFlowProcess.flowElements[3].inputMap[1].expression = `"${taskSummary2}"`;
         twoTaskFlowProcess.flowElements[2].inputMap[2].expression = `"${taskTemplateGuid1}"`;
         twoTaskFlowProcess.flowElements[3].inputMap[2].expression = `"${taskTemplateGuid2}"`;
         twoTaskFlowProcess.layout = (twoTaskFlowProcess.layout).replace("New Task 1", taskName1);
         twoTaskFlowProcess.layout = (twoTaskFlowProcess.layout).replace("New Task 2", taskName2);
-
+        // create new doc and update in payload
+        let docData = PROCESS_DOCUMENT;
+        docData.name = docData.name + "_" + randomString;
+        let newDocForProcess: AxiosResponse = await coreApi.createDocumentForProcess(docData);
+        console.log('Create Document for TaskFlow Process =============>', newDocForProcess.status);
+        twoTaskFlowProcess.inputParams[0].documentDefinitionName = docData.name;
+        // create process
         let processGuid = await coreApi.createProcess(twoTaskFlowProcess);
         console.log('New Process Created =============>', twoTaskFlowProcess.name, "=====GUID:", processGuid);
+        // link task flow process to case template
         let caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
         let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = twoTaskFlowProcess.name;
@@ -908,9 +953,12 @@ class ApiHelper {
         let taskTemplateGuid1 = await coreApi.getTaskTemplateGuid(taskTemplateId1);
         let taskTemplateGuid2 = await coreApi.getTaskTemplateGuid(taskTemplateId2);
         let taskTemplateGuid3 = await coreApi.getTaskTemplateGuid(taskTemplateId3);
+        // give new name to process        
         let randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         threeTaskFlowProcess.name = await threeTaskFlowProcess.name + "_" + randomString;
-
+        // get case company and update in payload
+        threeTaskFlowProcess.tags[0] = await apiCoreUtil.getCaseTemplateCompanyGuid(caseTemplateId);
+        // update task template data in payload
         let taskTemplateJsonData1 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid1);
         let taskSummary1 = taskTemplateJsonData1.fieldInstances[8].value;
         let taskName1 = taskTemplateJsonData1.fieldInstances[1000001437].value;
@@ -920,7 +968,6 @@ class ApiHelper {
         let taskTemplateJsonData3 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid3);
         let taskSummary3 = taskTemplateJsonData3.fieldInstances[8].value;
         let taskName3 = taskTemplateJsonData3.fieldInstances[1000001437].value;
-
         threeTaskFlowProcess.flowElements[2].inputMap[1].expression = `"${taskSummary1}"`;
         threeTaskFlowProcess.flowElements[3].inputMap[1].expression = `"${taskSummary2}"`;
         threeTaskFlowProcess.flowElements[4].inputMap[1].expression = `"${taskSummary3}"`;
@@ -930,9 +977,16 @@ class ApiHelper {
         threeTaskFlowProcess.layout = (threeTaskFlowProcess.layout).replace("New Task 1", taskName1);
         threeTaskFlowProcess.layout = (threeTaskFlowProcess.layout).replace("New Task 2", taskName2);
         threeTaskFlowProcess.layout = (threeTaskFlowProcess.layout).replace("New Task 3", taskName3);
-
+        // create new doc and update in payload
+        let docData = PROCESS_DOCUMENT;
+        docData.name = docData.name + "_" + randomString;
+        let newDocForProcess: AxiosResponse = await coreApi.createDocumentForProcess(docData);
+        console.log('Create Document for TaskFlow Process =============>', newDocForProcess.status);
+        threeTaskFlowProcess.inputParams[0].documentDefinitionName = docData.name;
+        // create process
         let processGuid = await coreApi.createProcess(threeTaskFlowProcess);
         console.log('New Process Created =============>', threeTaskFlowProcess.name, "=====GUID:", processGuid);
+        // link task flow process to case template
         let caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
         let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = threeTaskFlowProcess.name;
@@ -1940,7 +1994,7 @@ class ApiHelper {
         return response.status == 204;
     }
 
-    async createCaseApprovalMapping(data: ICaseApprovalMapping): Promise<boolean> {
+    async createCaseApprovalMapping(data: ICaseApprovalMapping): Promise<IIDs> {
         CASE_APPROVAL_MAPPING.fieldInstances[303715900].value = await coreApi.getStatusGuid('com.bmc.dsm.case-lib', constants.CaseStatus[data.triggerStatus]);
         CASE_APPROVAL_MAPPING.fieldInstances[450000152].value = constants.CaseStatus[data.triggerStatus];
         CASE_APPROVAL_MAPPING.fieldInstances[450000153].value = constants.CaseStatus[data.approvedStatus];
@@ -1951,7 +2005,14 @@ class ApiHelper {
         if (data.company) CASE_APPROVAL_MAPPING.fieldInstances[1000000001].value = await coreApi.getOrganizationGuid(data.company);
         let response = await coreApi.createRecordInstance(CASE_APPROVAL_MAPPING);
         console.log('Case Approval Mapping API Status =============>', response.status);
-        return response.status == 204;
+
+        const approvalMapping = await axios.get(
+            response.headers.location
+        );
+        return {
+            id: approvalMapping.data.id,
+            displayId: approvalMapping.data.displayId
+        };
     }
 
     async createBusinessTimeSharedEntity(name: string, status?: number): Promise<boolean> {
@@ -2027,6 +2088,16 @@ class ApiHelper {
         ADD_FUNCTIONAL_ROLE.fieldInstances[430000002].value = userRoles + ';' + functionalRoleGuid;
         let response = await coreApi.updateRecordInstance('com.bmc.arsys.rx.foundation:Person', personGuid, ADD_FUNCTIONAL_ROLE);
         console.log(`Functional role of ${person} is successfully updated  =============>`, response.status);
+        return response.status == 204;
+    }
+
+    async associateCaseTemplateWithApprovalMapping(templatedId: string, approvalMapping: string): Promise<boolean> {
+        let url = "api/com.bmc.dsm.shared-services-lib/rx/application/association/com.bmc.dsm.case-lib:Case Approval Mapping to Case Template/" + approvalMapping + "/" + templatedId + "?allowDuplicates=true";
+        let response = await axios.post(
+            url,
+            {}
+        )
+        console.log('Association API Status =============>', response.status);
         return response.status == 204;
     }
 }

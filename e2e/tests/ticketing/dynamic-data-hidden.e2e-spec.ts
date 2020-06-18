@@ -45,7 +45,7 @@ describe('Dynamic Hidden Data', () => {
         let automatedTaskTemplate1 = 'Automation Task1 ' + randomStr;
         let automatedTaskSummary1 = 'Automation Summary1 ' + randomStr;
         let processName = 'Process Name ' + randomStr;
-        it('validate Automated Task Template ', async () => {
+        it('[DRDMV-13168]: Validate Automated Task Template ', async () => {
             //Automation Task template
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
@@ -107,7 +107,7 @@ describe('Dynamic Hidden Data', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(templateData);
         });
-        it('Add Dynamic on above task template', async () => {
+        it('[DRDMV-13169]: Add Dynamic on above task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -121,7 +121,7 @@ describe('Dynamic Hidden Data', () => {
             await editTaskTemplate.clickOnSaveMetadata();
             await navigationPage.signOut();
         });
-        it('create a case', async () => {
+        it('[DRDMV-13169]: Create a case', async () => {
             await loginPage.login('qtao');
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -191,7 +191,7 @@ describe('Dynamic Hidden Data', () => {
             let taskTemplate = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(taskTemplate.id, 'RequiredHiddenDRDMV21451');
         });
-        it('create a case and add task on it', async () => {
+        it('[DRDMV-21451]: Create a case and add task on it', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('fritz');
             await createCasePage.setSummary('Summary' + randomStr);
@@ -204,7 +204,7 @@ describe('Dynamic Hidden Data', () => {
             await manageTask.clickTaskLink(templateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
         });
-        it('Validate dynamic field and change the status', async () => {
+        it('[DRDMV-21451]: Validate dynamic field and change the status', async () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21451')).toBeFalsy();
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
@@ -215,7 +215,7 @@ describe('Dynamic Hidden Data', () => {
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
-        it('create a case and add task on it', async () => {
+        it('[DRDMV-21451]: Create a case and add task on it', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             await apiHelper.apiLogin('fritz');
@@ -271,7 +271,7 @@ describe('Dynamic Hidden Data', () => {
             let taskTemplate = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(taskTemplate.id, 'ConfidentialsHiddenDRDMV21452');
         });
-        it('create a case and add task on it', async () => {
+        it('[DRDMV-21452]: Create a case and add task on it', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('fritz');
             await createCasePage.setSummary('Summary' + randomStr);
@@ -285,7 +285,7 @@ describe('Dynamic Hidden Data', () => {
             await viewTaskPo.clickOnViewCase();
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21452')).toBeFalsy();
         });
-        it('[DRDMV-21452]: create a case and add case template on it', async () => {
+        it('[DRDMV-21452]: Create a case and add case template on it', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             await apiHelper.apiLogin('fritz');
@@ -323,7 +323,7 @@ describe('Dynamic Hidden Data', () => {
             let newCaseTemplate = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'hiddenField');
         });
-        it('create a case and add task on it', async () => {
+        it('[DRDMV-21422,DRDMV-21414]: Create a case and add task on it', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('fritz');
             await createCasePage.setSummary('Summary' + randomStr);
@@ -336,7 +336,7 @@ describe('Dynamic Hidden Data', () => {
             await manageTask.clickTaskLink(templateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
         });
-        it('Validate dynamic field and change the it teask template status', async () => {
+        it('[DRDMV-21422,DRDMV-21414]: Validate dynamic field and change the it teask template status', async () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415' + randomStr)).toBeFalsy();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
@@ -345,7 +345,7 @@ describe('Dynamic Hidden Data', () => {
             await editTaskTemplate.selectTemplateStatus("Draft");
             await editTaskTemplate.clickOnSaveMetadata();
         });
-        it('Disable the hidden field and change the status', async () => {
+        it('[DRDMV-21422,DRDMV-21414]: Disable the hidden field and change the status', async () => {
             await viewTaskTemplate.clickOnManageDynamicFieldLink();
             await dynamicFieldsPage.clickOnDownArrow();
             expect(await dynamicFieldsPage.isEnabledTextPresent("Hidden"));
@@ -368,9 +368,8 @@ describe('Dynamic Hidden Data', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-21421,DRDMV-21415,DRDMV-21401]: create a case with case template having hidden fields, if the field is later updated to show field, then cases created earlier should not show up earlier the hidden fields.', async () => {
+    describe('[DRDMV-21421,DRDMV-21415,DRDMV-21401]: Create a case with case template having hidden fields, if the field is later updated to show field, then cases created earlier should not show up earlier the hidden fields.', async () => {
         let caseId, caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
         beforeAll(async () => {
             caseTemplateData = {
                 "templateName": randomStr + 'caseTemplateName',
@@ -388,7 +387,7 @@ describe('Dynamic Hidden Data', () => {
             let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'hiddenField');
         });
-        it('create a case and add case template on it', async () => {
+        it('[DRDMV-21421,DRDMV-21415,DRDMV-21401]: Create a case and add case template on it', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('fritz');
             await createCasePage.setSummary('Summary' + randomStr);
@@ -400,16 +399,17 @@ describe('Dynamic Hidden Data', () => {
             caseId = await viewCasePo.getCaseID();
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415' + randomStr)).toBeFalsy("hidden");
         });
-        it('Change the status of case template', async () => {
+        it('[DRDMV-21421,DRDMV-21415,DRDMV-21401]: Change the status of case template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
         });
-        it('make dymanic field as visible', async () => {
+        it('[DRDMV-21421,DRDMV-21415,DRDMV-21401]: Make dymanic field as visible', async () => {
             await dynamicFieldsPage.clickOnDownArrow();
             expect(await dynamicFieldsPage.isEnabledTextPresent("Hidden"));
             await dynamicFieldsPage.clickDisabledHiddenRadioButton();
@@ -429,10 +429,10 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewCasePo.getValueOfDynamicFields('Field1OutsideDRDMV21415')).toBe('test 1');
         });
     });
+
     //ankagraw
     describe('[DRDMV-21404,DRDMV-21416]: Verify hidden dynamic group field should not refect in case via task template', async () => {
         let caseId, templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
         beforeAll(async () => {
             templateData = {
                 "templateName": `manualTaskTemplate1 ${randomStr}`,
@@ -449,7 +449,7 @@ describe('Dynamic Hidden Data', () => {
             let newCaseTemplate = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'DynamicGroupContainsHiddenFieldDRDMV21416');
         });
-        it('create a case and add task on it', async () => {
+        it('[DRDMV-21404,DRDMV-21416]: Create a case and add task on it', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('fritz');
             await createCasePage.setSummary('Summary' + randomStr);
@@ -462,7 +462,7 @@ describe('Dynamic Hidden Data', () => {
             caseId = await viewCasePo.getCaseID();
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroup1')).toBeFalsy();
         });
-        it('change the status of the task', async () => {
+        it('[DRDMV-21404,DRDMV-21416]: Change the status of the task', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -470,7 +470,7 @@ describe('Dynamic Hidden Data', () => {
             await editTaskTemplate.selectTemplateStatus("Draft");
             await editTaskTemplate.clickOnSaveMetadata();
         });
-        it('make dynamic field as visible', async () => {
+        it('[DRDMV-21404,DRDMV-21416]: Make dynamic field as visible', async () => {
             await viewTaskTemplate.clickOnManageDynamicFieldLink();
             await dynamicFieldsPage.clickOnDownArrow();
             await dynamicFieldsPage.clickOnDownArrow();
@@ -496,7 +496,6 @@ describe('Dynamic Hidden Data', () => {
     //ankagraw
     describe('[DRDMV-21417]: Verify hidden dynamic group field should not refect in case via case template', async () => {
         let caseTemplateData, caseId, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
         beforeAll(async () => {
             caseTemplateData = {
                 "templateName": randomStr + 'caseTemplateName',
@@ -514,7 +513,7 @@ describe('Dynamic Hidden Data', () => {
             let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'DynamicGroupContainsHiddenFieldDRDMV21416');
         });
-        it('create a case and add case template on it', async () => {
+        it('[DRDMV-21417]: Create a case and add case template on it', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('fritz');
             await createCasePage.setSummary('Summary' + randomStr);
@@ -526,7 +525,7 @@ describe('Dynamic Hidden Data', () => {
             caseId = await viewCasePo.getCaseID();
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroup1')).toBeFalsy();
         });
-        it('Change the status of case template', async () => {
+        it('[DRDMV-21417]: Change the status of case template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
@@ -535,7 +534,7 @@ describe('Dynamic Hidden Data', () => {
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
         });
-        it('Update the dymanic field', async () => {
+        it('[DRDMV-21417]: Update the dymanic field', async () => {
             await dynamicFieldsPage.clickOnDownArrow();
             await dynamicFieldsPage.clickOnDownArrow();
             expect(await dynamicFieldsPage.isEnabledTextPresent("Hidden"));
@@ -558,9 +557,8 @@ describe('Dynamic Hidden Data', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-21515]:Verify hidden dynamic field with multiple attributes in case via case template', async () => {
+    describe('[DRDMV-21515]: Verify hidden dynamic field with multiple attributes in case via case template', async () => {
         let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
         beforeAll(async () => {
             caseTemplateData = {
                 "templateName": randomStr + 'caseTemplateName',
@@ -578,7 +576,7 @@ describe('Dynamic Hidden Data', () => {
             let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'AllSourceAndTypeDRDMV21515');
         });
-        it('create a case and add case template on it', async () => {
+        it('[DRDMV-21515]: Create a case and add case template on it', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('fritz');
             await createCasePage.setSummary('Summary' + randomStr);
@@ -639,7 +637,7 @@ describe('Dynamic Hidden Data', () => {
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'DuplicateOFhiddenFieldDRDMV21418');
             await apiHelper.createDynamicDataOnTemplate(newtaskTemplate.id, 'hiddenField');
         });
-        it('create a case and add case template on it', async () => {
+        it('[DRDMV-21418]: Create a case and add case template on it', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('fritz');
             await createCasePage.setSummary('Summary' + randomStr);
@@ -650,7 +648,7 @@ describe('Dynamic Hidden Data', () => {
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.getCaseID();
         });
-        it('[DRDMV-21418]: validate dynamic field ', async () => {
+        it('[DRDMV-21418]: Validate dynamic field ', async () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeTruthy();
             await viewCasePo.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
@@ -682,7 +680,7 @@ describe('Dynamic Hidden Data', () => {
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_EACH_15_FIELD');
         });
-        it('create a case and add cae template on it', async () => {
+        it('[DRDMV-13136]: Create a case and add cae template on it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoQuickCase();
@@ -691,7 +689,7 @@ describe('Dynamic Hidden Data', () => {
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
         });
-        it('validate the dymaic field with values', async () => {
+        it('[DRDMV-13136]: Validate the dymaic field with values', async () => {
             //verify fields shoule be empty values on case view
             let arr: string[] = ['text1', 'text2', 'text3', 'text3', 'text4', 'text5', 'text6', 'text7', 'text8', 'text9', 'text10', 'text11', 'text12', 'text13', 'text14', 'attachment1', 'attachment2', 'attachment3', 'attachment4', 'attachment5', 'attachment6', 'attachment7', 'attachment8', 'attachment9', 'attachment10', 'boolean1', 'boolean2', 'boolean3', 'boolean4', 'boolean4', 'boolean5', 'boolean6', 'boolean7', 'boolean8', 'boolean9', 'boolean10', 'date1', 'date2', 'date3', 'date4', 'date5', 'date6', 'date7', 'date8', 'date9', 'date10', 'date11', 'date12', 'date13', 'date14', 'date15', 'datetime1', 'datetime2', 'datetime3', 'datetime4', 'datetime5', 'datetime6', 'datetime7', 'datetime8', 'datetime9', 'datetime10', 'datetime11', 'datetime12', 'datetime13', 'datetime14', 'datetime15', 'time1', 'time2', 'time3', 'time4', 'time5', 'time6', 'time7', 'time8', 'time9', 'time10', 'number1', 'number2', 'number3', 'number4', 'number5', 'number6', 'number7', 'number8', 'number9', 'number10', 'number11', 'number12', 'number13', 'number14', 'number15', 'attachment1', 'attachment2', 'attachment3', 'attachment4', 'attachment5', 'attachment6', 'attachment7', 'attachment8', 'attachment9', 'attachment10', 'attachment11', 'attachment12', 'attachment13', 'attachment14', 'attachment15', 'dynamicList', 'datetime1', 'datetime2', 'datetime3', 'datetime4', 'datetime5', 'datetime6', 'datetime7', 'datetime8', 'datetime9', 'datetime10', 'datetime11', 'datetime12', 'datetime13', 'datetime14', 'datetime15'];
             for (let i = 0; i < arr.length; i++) {
@@ -710,7 +708,7 @@ describe('Dynamic Hidden Data', () => {
             await editCasePo.setDynamicFieldValue('number5', '3334');
             await editCasePo.clickSaveCase();
         });
-        it('[DRDMV-13136]: validate the dymaic field with values', async () => {
+        it('[DRDMV-13136]: Validate the dymaic field with values', async () => {
             //verify field fill data on case profile.
             expect(await viewCasePo.getValueOfDynamicFields('text1')).toBe('newtemp1');
             expect(await viewCasePo.getValueOfDynamicFields('text2')).toBe('newtemp2');

@@ -76,7 +76,7 @@ describe('Create Flowset', () => {
         await editFlowset.clickSaveBtn();
         await consoleFlowset.searchAndSelectFlowset("edit Flowset" + randomStr);
         await expect(editFlowset.getStatusvalue()).toBe("Draft");
-    },290*1000);
+    }, 290 * 1000);
 
     //ankagraw
     it('[DRDMV-6212]: [Flowsets] Search Flowsets on Console', async () => {
@@ -237,7 +237,6 @@ describe('Create Flowset', () => {
         await expect(consoleFlowset.getSortedValuesFromColumn("Flowset Name")).toBeTruthy("Sorted not possible");
     });
 
-
     //ankagraw
     it('[DRDMV-6214]: [Flowsets] Filter menu verification on Define Flowsets Console	', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -282,5 +281,5 @@ describe('Create Flowset', () => {
         await utilGrid.clearFilter();
 
         await consoleFlowset.removeColumn(["ID", 'Display ID']);
-    },620*1000);
+    }, 620 * 1000);
 });

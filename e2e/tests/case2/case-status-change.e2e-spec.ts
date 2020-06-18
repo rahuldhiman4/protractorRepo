@@ -1,4 +1,4 @@
-  
+
 import { $, browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import caseConsole from '../../pageobject/case/case-console.po';
@@ -53,7 +53,7 @@ describe('Case Status Change', () => {
             newCase3 = await apiHelper.createCase(caseData);
             caseId3 = newCase3.displayId;
         });
-        it('Checking change case template button for In Progress', async () => {
+        it('[DRDMV-2530]: Checking change case template button for In Progress', async () => {
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickEditCaseButton();
             expect(await viewCasePage.isEditLinkDisplay()).toBeFalsy('edit link should not display');
@@ -71,7 +71,7 @@ describe('Case Status Change', () => {
             expect(await caseConsole.isCaseStatusPresent(statusNew)).toBeTruthy("Status New not matching");
             expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
         });
-        it('Checking change case template button for Resolved', async () => {
+        it('[DRDMV-2530]: Checking change case template button for Resolved', async () => {
             await caseConsole.searchAndOpenCase(caseId1);
             await updateStatusBladePo.changeCaseStatus(statusAssigned);
             await updateStatusBladePo.clickSaveStatus(statusAssigned);
@@ -83,7 +83,7 @@ describe('Case Status Change', () => {
             expect(await caseConsole.isCaseStatusPresent(statusAssigned)).toBeTruthy("Status Assigned not matching");
             expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
         });
-        it('Checking change case template button for Closed', async () => {
+        it('[DRDMV-2530]: Checking change case template button for Closed', async () => {
             await caseConsole.searchCase(caseId2);
             expect(await caseConsole.isCaseIdPresent(caseId2)).toBeTruthy("CaseID not matching");
             expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
@@ -140,7 +140,7 @@ describe('Case Status Change', () => {
     //kgaikwad
     describe('[DRDMV-1616]: [Case] Fields validation for case In Progress status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('Checking change case template button for In Progress', async () => {
+        it('[DRDMV-1616]: Checking change case template button for In Progress', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary ' + summary);
@@ -153,7 +153,7 @@ describe('Case Status Change', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress);
             await viewCasePage.clickEditCaseButton();
         });
-        it('Checking change case template button for Resolved', async () => {
+        it('[DRDMV-1616]: Checking change case template button for Resolved', async () => {
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
             expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
@@ -170,7 +170,7 @@ describe('Case Status Change', () => {
             await editCasePage.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
         });
-        it('Checking change case template button for Closed', async () => {
+        it('[DRDMV-1616]: Checking change case template button for Closed', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary ' + summary);
@@ -183,7 +183,7 @@ describe('Case Status Change', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
         });
-        it('Checking change case template button for Pending', async () => {
+        it('[DRDMV-1616]: Checking change case template button for Pending', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary ' + summary);
@@ -281,7 +281,7 @@ describe('Case Status Change', () => {
             caseId3 = newCase3.displayId;
             let temp1 = await apiHelper.createManualTaskTemplate(templateData1);
         });
-        it('Updating the case status -Pending', async () => {
+        it('[DRDMV-1199]: Updating the case status -Pending', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickOnStatus();
@@ -297,7 +297,7 @@ describe('Case Status Change', () => {
             await manageTask.clickTaskLink(manualSummary);
             expect(await viewTask.getTaskStatusValue()).toBe('Assigned', 'Assigned status not found');
         });
-        it('Updating the case status -Resolved', async () => {
+        it('[DRDMV-1199]: Updating the case status -Resolved', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId2);
             await updateStatusBladePo.changeCaseStatus('Resolved');
@@ -384,7 +384,7 @@ describe('Case Status Change', () => {
             newCase4 = await apiHelper.createCase(caseData4);
             caseId4 = newCase4.displayId;
         });
-        it('Case status change from -Pending', async () => {
+        it('[DRDMV-1196]: Case status change from -Pending', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
@@ -398,14 +398,14 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
         });
-        it('Case status change from -In Progress', async () => {
+        it('[DRDMV-1196]: Case status change from -In Progress', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId2);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
         });
-        it('Case status change from -Assigned', async () => {
+        it('[DRDMV-1196]: Case status change from -Assigned', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId3);
             await updateStatusBladePo.changeCaseStatus('Assigned');
@@ -494,11 +494,11 @@ describe('Case Status Change', () => {
             newCase2 = await apiHelper.createCase(caseData2);
             caseId2 = newCase2.displayId;
             newCase3 = await apiHelper.createCase(caseData3);
-            caseId3= newCase3.displayId;
+            caseId3 = newCase3.displayId;
             newCase4 = await apiHelper.createCase(caseData4);
-            caseId4= newCase4.displayId;
+            caseId4 = newCase4.displayId;
         });
-        it('Fields validation for case in Canceled status', async () => {
+        it('[DRDMV-1619]: Fields validation for case in Canceled status', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoQuickCase();
@@ -515,7 +515,7 @@ describe('Case Status Change', () => {
             await editCasePage.clickOnCancelCaseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
-        it('Fields validation for case in Canceled status', async () => {
+        it('[DRDMV-1619]: Fields validation for case in Canceled status', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickEditCaseButton();
@@ -530,7 +530,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
         });
-        it('Fields validation for case in Canceled status', async () => {
+        it('[DRDMV-1619]: Fields validation for case in Canceled status', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId2);
             await viewCasePage.clickEditCaseButton();
@@ -545,7 +545,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
         });
-        it('Fields validation for case in Canceled status', async () => {
+        it('[DRDMV-1619]: Fields validation for case in Canceled status', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId3);
             await viewCasePage.clickEditCaseButton();
@@ -657,7 +657,7 @@ describe('Case Status Change', () => {
             newCase5 = await apiHelper.createCase(caseData5);
             caseId5 = newCase5.displayId;
         });
-        it('Case status change from Pending', async () => {
+        it('[DRDMV-1200]: Case status change from Pending', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
@@ -671,7 +671,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickSaveStatus();
             await expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
-        it('Case status change from Pending', async () => {
+        it('[DRDMV-1200]: Case status change from Pending', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId2);
             await viewCasePage.clickEditCaseButton();
@@ -681,7 +681,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickSaveStatus();
             await expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
         });
-        it('Case status change from Pending', async () => {
+        it('[DRDMV-1200]: Case status change from Pending', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId3);
             await updateStatusBladePo.changeCaseStatus('Assigned');
@@ -742,7 +742,7 @@ describe('Case Status Change', () => {
             newCase2 = await apiHelper.createCase(caseData2);
             caseId2 = newCase2.displayId;
         });
-        it('Case Status Blade view', async () => {
+        it('[DRDMV-4680]: Case Status Blade view', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();

@@ -14,8 +14,8 @@ import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-bla
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Knowledge Article', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -794,4 +794,52 @@ describe('Knowledge Article', () => {
             await previewKnowledgePo.clickOnBackButton();
         }
     });//, 150 * 1000);
+
+    describe('[DRDMV-1152]: [Permissions] Settings menu for Knowledge Functional Roles', () => {
+        it('[DRDMV-1152]: [Permissions] Settings menu for Knowledge Functional Roles', async () => {
+            //Validation of Knowledge Coach Settings Permission
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.gotoSettingsPage();
+            let knowledgeManagementList: string[] = ['Approvals', 'Article Template Styles', 'Article Templates', 'Knowledge Sets', 'Notes Template', 'Status Configuration', 'Knowledge Management'];
+            expect(await navigationPage.isSettingSubMenusMatches("Knowledge Management", knowledgeManagementList)).toBeTruthy("Sub menu items not matching");
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.isSettingSubMenusMatches("Knowledge Management", knowledgeManagementList)).toBeTruthy("Sub menu items not matching");
+
+            //Validation of Knowledge Publisher Settings Permission
+            await navigationPage.signOut();
+            await loginPage.login(knowledgePublisherUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+        });
+
+        it('[DRDMV-1152]: [Permissions] Settings menu for Knowledge Functional Roles', async () => {
+            //Validation of Knowledge Contributor Settings Permission
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeContributorUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+
+            //Validation of Knowledge Candidate Settings Permission
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCandidateUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+        });
+    });
+
 })

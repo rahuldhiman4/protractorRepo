@@ -39,7 +39,7 @@ describe('Case Data Store', () => {
     });
 
     //ptidke
-    describe('[DRDMV-13123]:[Dynamic Data] [UI] - Dynamic Fields display on Case Edit view UI', async () => {
+    describe('[DRDMV-13123]: [Dynamic Data] [UI] - Dynamic Fields display on Case Edit view UI', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplateData;
         beforeAll(async () => {
@@ -56,7 +56,7 @@ describe('Case Data Store', () => {
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
         });
-        it('Create Case With Case Template', async () => {
+        it('[DRDMV-13123]: Create Case With Case Template', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qkatawazi');
             await createCasePo.setSummary('new cases');
@@ -75,7 +75,7 @@ describe('Case Data Store', () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('attachment3 dynamic fields not present');
             expect(await viewCasePo.isDynamicFieldDisplayed('dynamicList')).toBeTruthy('dynamicList dynamic fields not present');
         });
-        it('[DRDMV-13123]:[Dynamic Data] [UI] - Dynamic Fields display on Case Edit view UI', async () => {
+        it('[DRDMV-13123]: [Dynamic Data] [UI] - Dynamic Fields display on Case Edit view UI', async () => {
             await viewCasePo.clickEditCaseButton();
             expect(await editCasePo.isDynamicFieldDisplayed('temp')).toBeTruthy('temp dynamic fields not present');
             expect(await editCasePo.isDynamicFieldDisplayed('temp1')).toBeTruthy('temp1 dynamic fields not present');
@@ -113,7 +113,7 @@ describe('Case Data Store', () => {
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_REQUESTER_DYNAMIC_FIELDS');
         });
-        it('Verfiy Dyanmic Field On Requester Blade', async () => {
+        it('[DRDMV-13126]: Verfiy Dyanmic Field On Requester Blade', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qkatawazi');
             await createCasePo.setSummary('new cases');
@@ -139,7 +139,7 @@ describe('Case Data Store', () => {
             await requesterResponseBladePo.clickOkButton();
             await quickCasePo.gotoCaseButton();
         });
-        it('[DRDMV-13126]:[Dynamic Data] - Create Case from Quick Case with Template having dynamic fields and also have field with source as Requester', async () => {
+        it('[DRDMV-13126]: [Dynamic Data] - Create Case from Quick Case with Template having dynamic fields and also have field with source as Requester', async () => {
             //verify fields shoule be empty values on case view
             expect(await viewCasePo.getValueOfDynamicFields('temp')).toBe('-');
             expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('-');
@@ -164,7 +164,7 @@ describe('Case Data Store', () => {
     });
 
     //ptidke
-    it('[DRDMV-13115]:[Dynamic Data] - Update Dynamic fields in Existing Case Template by replacing old fields with new Fields', async () => {
+    it('[DRDMV-13115]: [Dynamic Data] - Update Dynamic fields in Existing Case Template by replacing old fields with new Fields', async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -237,7 +237,7 @@ describe('Case Data Store', () => {
             let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_LONG_FIELDS');
         });
-        it('Create Case Template with Dynamic Fields', async () => {
+        it('[DRDMV-13118]: Create Case Template with Dynamic Fields', async () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
@@ -259,7 +259,7 @@ describe('Case Data Store', () => {
             await casePreviewPo.clickGoToCaseButton();
             await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-13118]:[Dynamic Data] - Case Template and Case UI with dynamic fields and groups having long title', async () => {
+        it('[DRDMV-13118]: [Dynamic Data] - Case Template and Case UI with dynamic fields and groups having long title', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary('Summary');
@@ -295,7 +295,7 @@ describe('Case Data Store', () => {
     });
 
     //ptidke
-    describe('[DRDMV-13140]:[Dynamic Data] - Verify Dynamic Field On Task Template', async () => {
+    describe('[DRDMV-13140]: [Dynamic Data] - Verify Dynamic Field On Task Template', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let arr: string[] = ['temp', 'temp1', 'temp2', 'temp3', 'temp4', 'temp5', 'attachment1', 'attachment2', 'attachment3'];
         let templateData, inactiveTemplateName, draftTemplateName, activeTemplateName;
@@ -342,7 +342,7 @@ describe('Case Data Store', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(templateData);
         });
-        it('Create Task Template With Dynamic Fields', async () => {
+        it('[DRDMV-13140]: Create Task Template With Dynamic Fields', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(activeTemplateName);
@@ -367,7 +367,7 @@ describe('Case Data Store', () => {
             }
             expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link is not present');
         });
-        it('[DRDMV-13140]:[Dynamic Data] [UI] -Dynamic Fields display on Task Template Edit view UI', async () => {
+        it('[DRDMV-13140]: [Dynamic Data] [UI] -Dynamic Fields display on Task Template Edit view UI', async () => {
             //edit
             await viewTaskTemplate.clickOnEditLink();
             expect(await editTaskTemplate.isMangeDynamicFieldLinkDisplayed()).toBeTruthy('link not present');
@@ -396,7 +396,7 @@ describe('Case Data Store', () => {
     });
 
     //ptidke
-    describe('[DRDMV-13122]:[Dynamic Data] - Verify Dynamic Field On Case Template preview', async () => {
+    describe('[DRDMV-13122]: [Dynamic Data] - Verify Dynamic Field On Case Template preview', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let group1 = 'GroupLocalCaseTemplate';
         let group2 = 'PulishCaseTemplateData';
@@ -422,7 +422,7 @@ describe('Case Data Store', () => {
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_WITH_CONFIDENTIAL');
         });
-        it('Create Case Template and verify Dynamic Field on Case Template Preview', async () => {
+        it('[DRDMV-13122]: Create Case Template and verify Dynamic Field on Case Template Preview', async () => {
             //qucik case preview
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qkatawazi');
@@ -435,7 +435,7 @@ describe('Case Data Store', () => {
             }
             await previewCaseTemplateCasesPo.clickOnBackButton();
         });
-        it('[DRDMV-13122]:[Dynamic Data] [UI] - Dynamic fields and groups display on Case Template preview', async () => {
+        it('[DRDMV-13122]: [Dynamic Data] [UI] - Dynamic fields and groups display on Case Template preview', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qkatawazi');
             await createCasePo.setSummary(casetemplateData.templateSummary);
@@ -467,7 +467,7 @@ describe('Case Data Store', () => {
     });
 
     //ptidke
-    describe('[DRDMV-13131]:[Dynamic Data] - Verify Dynamic Field On Case preview', async () => {
+    describe('[DRDMV-13131]: [Dynamic Data] - Verify Dynamic Field On Case preview', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let group1 = 'GroupLocalCaseTemplate';
         let group2 = 'PulishCaseTemplateData';
@@ -493,7 +493,7 @@ describe('Case Data Store', () => {
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_WITH_CONFIDENTIAL');
         });
-        it('Dynamic Fields and Groups display on Case Preview', async () => {
+        it('[DRDMV-13131]: Dynamic Fields and Groups display on Case Preview', async () => {
             //qucik case preview
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qkatawazi');
@@ -520,7 +520,7 @@ describe('Case Data Store', () => {
             }
             await casePreviewPo.clickBackButton();
         });
-        it('[DRDMV-13131]:[Dynamic Data] [UI] - Dynamic Fields and Groups display on Case and Similar Cases preview', async () => {
+        it('[DRDMV-13131]: [Dynamic Data] [UI] - Dynamic Fields and Groups display on Case and Similar Cases preview', async () => {
             // requester case template
             let casetemplateDataRequester = {
                 "templateName": randomStr + 'caseTemplateReqDRDMV-13131',
@@ -708,7 +708,7 @@ describe('Case Data Store', () => {
     });
 
     //ptidke
-    describe('[DRDMV-13154]:[Dynamic Data] - Verify Dynamic Field On Task Edit View', async () => {
+    describe('[DRDMV-13154]: [Dynamic Data] - Verify Dynamic Field On Task Edit View', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData;
         let dynamicFields: string[] = ['temp', 'temp1', 'temp2', 'temp3', 'temp4', 'attachment1', 'attachment2', 'attachment3'];
@@ -736,7 +736,7 @@ describe('Case Data Store', () => {
             let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(externalTaskTemplate.id, 'EXTERNAL_TASK_TEMPLATE__DYNAMIC_FIELDS');
         });
-        it('Create Task Template and Verify Dynamic Fields On Task Edit view UI', async () => {
+        it('[DRDMV-13154]: Create Task Template and Verify Dynamic Fields On Task Edit view UI', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qkatawazi');
             await createCasePo.setSummary('new cases');
@@ -813,7 +813,7 @@ describe('Case Data Store', () => {
     });
 
     //ptidke
-    describe('[DRDMV-13113]:[Dynamic Data] - Verify Dynamic Field On Case Template', async () => {
+    describe('[DRDMV-13113]: [Dynamic Data] - Verify Dynamic Field On Case Template', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let arr: string[] = ['LibTextField', 'LibNumberField', 'LibDateField', 'LibBooleanField', 'LibDateTimeField', 'LibTimeField', 'LibattachmentField'];
         let caseTemplateData;
@@ -834,7 +834,7 @@ describe('Case Data Store', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(caseTemplateData);
         });
-        it('Create Dynamic Fields In Field Library', async () => {
+        it('[DRDMV-13113]: Create Dynamic Fields In Field Library', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
             //field Text type    
@@ -934,7 +934,6 @@ describe('Case Data Store', () => {
             await dynamicFieldsPo.clickCancelButton();
         });
     });
-
     //ptidke
     describe('[DRDMV-13112]: [Dynamic Data] Verify Dynamic Field On Case Template Edit view UI', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -970,7 +969,7 @@ describe('Case Data Store', () => {
             templateData.templateStatus = 'Inactive';
             await apiHelper.createCaseTemplate(templateData);
         });
-        it('Verify Dynamic Fields On Active Case Template  ', async () => {
+        it('[DRDMV-13112]: Verify Dynamic Fields On Active Case Template  ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(templateData.templateName);
@@ -984,7 +983,7 @@ describe('Case Data Store', () => {
             }
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeFalsy();
         });
-        it('Create and Verify Dynamic Fields On Case Template  ', async () => {
+        it('[DRDMV-13112]: Create and Verify Dynamic Fields On Case Template  ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(draftTemplateName);
@@ -1036,4 +1035,4 @@ describe('Case Data Store', () => {
             await utilCommon.clickOnWarningOk();
         });
     });
-})
+});

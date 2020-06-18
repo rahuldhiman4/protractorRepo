@@ -1,11 +1,11 @@
-import { browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
 import approvalMappingConsolePage from "../../pageobject/settings/case-management/approval-mapping-console.po";
 import createApprovalMappingPage from "../../pageobject/settings/case-management/create-approval-mapping.po";
 import editApprovalMappingPage from "../../pageobject/settings/case-management/edit-approval-mapping.po";
 import { BWF_BASE_URL } from '../../utils/constants';
-import navigationPage from "../../pageobject/common/navigation.po";
-import apiHelper from '../../api/api.helper';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 
@@ -57,15 +57,13 @@ describe("Approval Mapping Tests", () => {
         let statusMappingNoApprovalFoundWhenStatusTriggerCanceled: string[] = ["Canceled", "Pending"];
         let statusMappingRejectedWhenStatusTriggerCanceled: string[] = ["New", "Assigned", "In Progress", "Pending", "Resolved", "Canceled", "Approval Rejected"];
         let statusMappingErrorWhenStatusTriggerCanceled: string[] = ["New", "Assigned", "In Progress", "Resolved", "Canceled"];
-
         let flowsetValues: string[] = ["Human Resources", "Facilities Management"]
 
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
         });
-
-        it('Create Approval Mapping UI Validation', async () => {
+        it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]: Create Approval Mapping UI Validation', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
@@ -125,8 +123,7 @@ describe("Approval Mapping Tests", () => {
             await createApprovalMappingPage.isStatusMappingRejectedDropDownOptionsMatches(statusMappingRejectedWhenStatusTriggerCanceled);
             await createApprovalMappingPage.isStatusMappingErrorDropDownOptionsMatches(statusMappingErrorWhenStatusTriggerCanceled);
         });
-
-        it('Create Approval Mapping with Mandatory Fields', async () => {
+        it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]: Create Approval Mapping with Mandatory Fields', async () => {
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
@@ -146,8 +143,7 @@ describe("Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.getStatusMappingErrorOption()).toBe('New');
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
-
-        it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]:[Approval Mapping] - Create a new Approval Mapping with all fields', async () => {
+        it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]: [Approval Mapping] - Create a new Approval Mapping with all fields', async () => {
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
             await createApprovalMappingPage.selectCompany('Petramco');
@@ -171,12 +167,10 @@ describe("Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.getStatusMappingErrorOption()).toBe('New');
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
-
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
         });
-
     });
 
     //skhobrag
@@ -184,7 +178,7 @@ describe("Approval Mapping Tests", () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalMappingName = 'Approval Mapping' + randomStr;
 
-        it('Create Apporval Mapping', async () => {
+        it('[DRDMV-10703]: Create Apporval Mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
@@ -202,8 +196,7 @@ describe("Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName);
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
-
-        it('Verify Duplicate Approval Mapping', async () => {
+        it('[DRDMV-10703]: Verify Duplicate Approval Mapping', async () => {
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
@@ -217,8 +210,7 @@ describe("Approval Mapping Tests", () => {
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222099): The combination of Company, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
-
-        it('[DRDMV-10703]:[Approval Mapping] - Create/Update another mapping record with Same Name / Mappings and same trigger status', async () => {
+        it('[DRDMV-10703]: [Approval Mapping] - Create/Update another mapping record with Same Name / Mappings and same trigger status', async () => {
             expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName("Test " + approvalMappingName);
             await createApprovalMappingPage.selectCompany('Petramco');
@@ -244,12 +236,10 @@ describe("Approval Mapping Tests", () => {
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilCommon.clickOnWarningOk();
         });
-
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
-        });
-
+        })
     });
 
     //skhobrag
@@ -258,7 +248,7 @@ describe("Approval Mapping Tests", () => {
         let approvalMappingName = 'Approval Mapping' + randomStr;
         let flowsetValues: string[] = ["Facilities Management"];
 
-        it('Create Global Approval Mapping with all fields', async () => {
+        it('[DRDMV-11881]: Create Global Approval Mapping with all fields', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
@@ -277,8 +267,7 @@ describe("Approval Mapping Tests", () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             expect(await editApprovalMappingPage.getSelectedCompany()).toBe('- Global -');
         });
-
-        it('[DRDMV-11881]:Verify global approval mapping with different company user', async () => {
+        it('[DRDMV-11881]: Verify global approval mapping with different company user', async () => {
             await navigationPage.signOut();
             await loginPage.login('gderuno');
             await navigationPage.gotoSettingsPage();
@@ -287,14 +276,12 @@ describe("Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.getSelectedCompany()).toBe('- Global -');
             expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName);
         });
-
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
-
     });
 
     //skhobrag
@@ -302,7 +289,7 @@ describe("Approval Mapping Tests", () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalMappingName = 'Approval Mapping' + randomStr;
 
-        it('Create Apporval Mapping', async () => {
+        it('[DRDMV-10702,DRDMV-11882]: Create Apporval Mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
@@ -321,8 +308,7 @@ describe("Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName);
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
-
-        it('Update existing approval mapping', async () => {
+        it('[DRDMV-10702,DRDMV-11882]: Update existing approval mapping', async () => {
             await utilGrid.searchAndOpenHyperlink(approvalMappingName);
             expect(await editApprovalMappingPage.getEditApprovalMappingHeaderText()).toBe('Edit Approval Mapping');
             await editApprovalMappingPage.setApprovalMappingName("Test " + approvalMappingName);
@@ -333,21 +319,16 @@ describe("Approval Mapping Tests", () => {
             await editApprovalMappingPage.selectStatusMappingError('New');
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
         });
-
-        it('[DRDMV-10702,DRDMV-11882]:[Approval Mapping] - Update existing Approval Mapping record', async () => {
+        it('[DRDMV-10702,DRDMV-11882]: [Approval Mapping] - Update existing Approval Mapping record', async () => {
             await utilGrid.searchAndOpenHyperlink("Test " + approvalMappingName);
             await editApprovalMappingPage.selectCompany('- Global -');
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
             await utilGrid.searchAndOpenHyperlink("Test " + approvalMappingName);
             expect(await editApprovalMappingPage.getSelectedCompany()).toBe('- Global -');
         });
-
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
         });
-
     });
-
-
 });

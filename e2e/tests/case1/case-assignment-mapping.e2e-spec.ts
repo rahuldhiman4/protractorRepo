@@ -177,7 +177,7 @@ describe("Create Case Assignment Mapping", () => {
     //radhiman
     describe('[DRDMV-11963]: [Assignment Mapping] Global Assignment Mapping', async () => {
         let assignmentMappingName = "DRDMV-11963 " + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('Global Assignment Mapping', async () => {
+        it('[DRDMV-11963]: Global Assignment Mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
             await AssignmentConfigConsolePage.clearFilter();
@@ -215,7 +215,7 @@ describe("Create Case Assignment Mapping", () => {
     describe('[DRDMV-12034]: [Assignment Mapping] Verify precedence will be given to company specific assignment mapping if we have global approval mapping with Same name', async () => {
         let globalAssignmentMappingName = "DRDMV-12034 " + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let companyAssignmentMappingName = "DRDMV-12034 " + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('Precedence will be given to company specific assignment mapping', async () => {
+        it('[DRDMV-12034]: Precedence will be given to company specific assignment mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
             await AssignmentConfigConsolePage.clearFilter();
@@ -258,7 +258,7 @@ describe("Create Case Assignment Mapping", () => {
     //radhiman
     describe('[DRDMV-12033]: [Assignment Mapping] Verify Global assignment mapping applied to case if assignment qualification matches', async () => {
         let assignmentMappingName = "DRDMV-12033 " + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('Global assignment mapping applied to case if assignment qualification matches', async () => {
+        it('[DRDMV-12033]: Global assignment mapping applied to case if assignment qualification matches', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -338,7 +338,7 @@ describe("Create Case Assignment Mapping", () => {
         let suppGrpData = supportGrpDataFile['SuppGrpData11825'];
         let summary = 'Adhoc task ' + randomStr;
 
-        it('Case Company and Support Group selection hierarchy', async () => {
+        it('[DRDMV-11825,DRDMV-11826,DRDMV-11827,DRDMV-11828,DRDMV-11978]: Case Company and Support Group selection hierarchy', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary("DRDMV-11825 Case Summary");
@@ -358,7 +358,7 @@ describe("Create Case Assignment Mapping", () => {
             expect(await viewCasePo.getDepartmentText()).toBe(departmentData.orgName, "Department is not available");
             expect(await viewCasePo.getAssignedCompanyText()).toBe("Petramco", "Company is not available");
         });
-        it('Task Company and Support Group selection hierarchy', async () => {
+        it('[DRDMV-11825,DRDMV-11826,DRDMV-11827,DRDMV-11828,DRDMV-11978]: Task Company and Support Group selection hierarchy', async () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskPo.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary(summary);
@@ -382,7 +382,7 @@ describe("Create Case Assignment Mapping", () => {
             expect(await viewTask.getDepartmentText()).toBe(departmentData.orgName, "Department is not available");
             expect(await viewTask.getAssignedCompanyText()).toBe("Petramco", "Company is not available");
         });
-        it('Case Template Company and Support Group selection hierarchy', async () => {
+        it('[DRDMV-11825,DRDMV-11826,DRDMV-11827,DRDMV-11828,DRDMV-11978]: Case Template Company and Support Group selection hierarchy', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
@@ -407,7 +407,7 @@ describe("Create Case Assignment Mapping", () => {
             expect(await viewCaseTemplate.getDepartmentValue()).toBe(departmentData.orgName);
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         });
-        it('[DRDMV-11825,DRDMV-11826, DRDMV-11827, DRDMV-11828, DRDMV-11978]: Verify Company and Support Group selection hierarchy.', async () => {
+        it('[DRDMV-11825,DRDMV-11826,DRDMV-11827,DRDMV-11828,DRDMV-11978]: Verify Company and Support Group selection hierarchy.', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
@@ -439,7 +439,7 @@ describe("Create Case Assignment Mapping", () => {
         let businessData = businessDataFile['BusinessUnitData11825'];
         let departmentData = departmentDataFile['DepartmentData11825'];
         let suppGrpData = supportGrpDataFile['SuppGrpData11825'];
-        it('Create case', async () => {
+        it('[DRDMV-12080]: Create case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary("DRDMV-12080 Case Summary");

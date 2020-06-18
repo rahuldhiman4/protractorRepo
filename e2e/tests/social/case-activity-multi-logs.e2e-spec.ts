@@ -449,5 +449,5 @@ describe('Case Activity Multi Logs', () => {
         expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg: Text is missing in activity log')
         });
     });
-    
 });
+

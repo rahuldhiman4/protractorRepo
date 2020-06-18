@@ -4,13 +4,13 @@ import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
+import assignmentBladePO from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import statusConfigPo from '../../pageobject/settings/common/status-config.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
-import assignmentBladePO from '../../pageobject/common/change-assignment-blade.po';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Status Configuration', () => {
@@ -38,14 +38,6 @@ describe('Case Status Configuration', () => {
 
         //Wait to reflect the user created above
         await browser.sleep(12000);
-
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        flowsetData = require('../../data/ui/case/flowset.ui.json');
-        flowsetName = await flowsetData['flowsetPhytoFields'].flowsetName + randomStr;
-        flowsetData['flowsetPhytoFields'].flowsetName = flowsetName;
-        await apiHelper.apiLoginWithCredential('anehra@petramco.com', 'Password_1234');
-        await apiHelper.createNewFlowset(flowsetData['flowsetPhytoFields']);
-
         await loginPage.login('anehra@petramco.com', 'Password_1234');
     });
 
@@ -55,6 +47,13 @@ describe('Case Status Configuration', () => {
 
     //asahitya
     it('[DRDMV-13617]: Verify User not able to delete mandatory status for case', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        flowsetData = require('../../data/ui/case/flowset.ui.json');
+        flowsetName = await flowsetData['flowsetPhytoFields'].flowsetName + randomStr;
+        flowsetData['flowsetPhytoFields'].flowsetName = flowsetName;
+        await apiHelper.apiLoginWithCredential('anehra@petramco.com', 'Password_1234');
+        await apiHelper.createNewFlowset(flowsetData['flowsetPhytoFields']);
+
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
         await statusConfigPo.setCompanyDropdown('Phyto', 'case');
@@ -401,5 +400,4 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.clickEditStatus("Staged");
         await statusConfigPo.renameExistingStatus('Update');
     });
-
-})
+});
