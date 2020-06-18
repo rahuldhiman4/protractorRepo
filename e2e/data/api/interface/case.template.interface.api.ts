@@ -10,6 +10,7 @@ export interface ICaseTemplate {
     categoryTier1?: string;
     categoryTier2?: string;
     categoryTier3?: string;
+    categoryTier4?: string;
     businessUnit?: string;
     supportGroup?: string;
     assignee?: string;
@@ -23,5 +24,6 @@ export interface ICaseTemplate {
     assignmentMethod?: string,
     taskFailureConfiguration?: string,
     allowCaseReopen?: string,
-    resolveCaseonLastTaskCompletion?:string
+    resolveCaseonLastTaskCompletion?:string,
+    label?:string
 }

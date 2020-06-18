@@ -53,6 +53,11 @@ describe('Copy Case Template', () => {
         await apiHelper.associatePersonToSupportGroup(userData1.userId, "Psilon Support Group1");
         await apiHelper.associatePersonToCompany(userData2.userId, "Psilon");
         await apiHelper.associatePersonToSupportGroup(userData2.userId, "Psilon Support Group2");
+
+        //Create a new category
+        await apiHelper.createOperationalCategory("Cash");
+        await apiHelper.associateCategoryToOrganization("Cash", 'Petramco');
+        await apiHelper.associateCategoryToCategory("Bonus", "Cash");
     });
 
     afterAll(async () => {
@@ -403,7 +408,7 @@ describe('Copy Case Template', () => {
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await utilCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
-            expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeTruthy("Copy Case Template is non editable");
+            expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeTruthy("Copy Case Template is non editable");
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -442,7 +447,7 @@ describe('Copy Case Template', () => {
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await utilCommon.closePopUpMessage();
             await viewTaskTemplate.clickOnEditLink();
-            expect(await editTasktemplatePo.isCaseSummaryReadOnly()).toBeTruthy("Copy Case Template is editable");
+            expect(await editTasktemplatePo.isCaseSummaryReadOnly()).toBeTruthy("Copy Case Template is editable");
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -590,7 +595,7 @@ describe('Copy Case Template', () => {
                 "templateSummary": 'Automated task19011' + randomStr,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "processName": 'Auto Proces' + randomStr,
+                "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
@@ -712,7 +717,7 @@ describe('Copy Case Template', () => {
                 "templateSummary": 'Automated DRDMV13814' + randomStr,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "processName": 'Auto Proces' + randomStr,
+                "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "- Global -",
                 "ownerCompany": "Psilon",
                 "ownerBusinessUnit": "Psilon Support Org1",
@@ -821,7 +826,7 @@ describe('Copy Case Template', () => {
                 "templateSummary": 'Automated DRDMV13808' + randomStr,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "processName": 'Auto Proces' + randomStr,
+                "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "- Global -",
                 "ownerCompany": "Psilon",
                 "ownerBusinessUnit": "Psilon Support Org1",
@@ -901,7 +906,7 @@ describe('Copy Case Template', () => {
             "templateSummary": 'Automated DRDMV13847' + randomStr,
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
-            "processName": 'Auto Proces' + randomStr,
+            "processName": 'Auto Proces' + randomStr,
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
             "ownerBusinessUnit": "Facilities Support",
@@ -934,5 +939,76 @@ describe('Copy Case Template', () => {
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         await utilGrid.searchOnGridConsole('DRDMV13847' + randomStr);
         expect(await consoleCasetemplatePo.getTemplateCountFromGrid()).toBe(2);
+    });
+
+    describe('[DRDMV-15256]: Verify For Copy template, Category Tier 4 and Label Data also get copied', () => {
+        let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let label: string = undefined;
+        
+        beforeAll(async () => {
+            let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
+            await apiHelper.apiLogin('tadmin');
+            label = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
+            menuItemDataFile['sampleMenuItem'].menuItemName = label;
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+
+            let caseTemplateData = {
+                "templateName": 'caseTemplateName' + randomStr,
+                "templateSummary": 'caseTemplateSummary' + randomStr,
+                "categoryTier1": 'Employee Relations',
+                "categoryTier2": 'Compensation',
+                "categoryTier3": 'Bonus',
+                "categoryTier4": 'Cash',
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qfeng",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "label": label
+            }
+            await apiHelper.createCaseTemplate(caseTemplateData);
+
+            let taskTemplateData = {
+                "templateName": 'task template name ' + randomStr,
+                "templateSummary": `task template summary ${randomStr}`,
+                "templateStatus": "Active",
+                "category1": 'Employee Relations',
+                "category2": "Compensation",
+                "category3": "Bonus",
+                "category4": "Cash",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "label": label
+            }
+            await apiHelper.createManualTaskTemplate(taskTemplateData)
+        });
+
+        it('[DRDMV-15256]: Verify For Copy template, Category Tier 4 and Label Data also get copied', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.searchAndselectCaseTemplate('caseTemplateName' + randomStr);
+            await consoleCasetemplatePo.clickOnCopyCaseTemplate();
+            await createCaseTemplate.setTemplateName('caseTemplateName1' + randomStr);
+            await createCaseTemplate.clickSaveCaseTemplate();
+            expect(await viewCasetemplatePo.getCategoryTier4()).toBe('Cash');
+            expect(await viewCasetemplatePo.getLabelValue()).toBe(label);
+            await utilCommon.clickOnBackArrow();
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.searchAndSelectTaskTemplate('task template name ' + randomStr);
+            await selectTaskTemplate.clickOnCopyTaskTemplateButton();
+            await taskTemplate.setTemplateName('Copied Task Template' + randomStr);
+            await taskTemplate.clickOnSaveTaskTemplate();
+            expect(await viewTasktemplatePo.getCategoryTier4Value()).toBe('Cash');
+            expect(await viewTasktemplatePo.getLabelValue()).toBe(label);
+            await utilCommon.clickOnBackArrow();
+        });
     });
 });
