@@ -189,6 +189,6 @@ describe('Document Template', () => {
             expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Label')).toBe(lable2, 'Label is missing on Grid');
             expect(await documentTemplateConsolePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label is not get sorted with descending order');
         });
-    });
+    });   
 });
 

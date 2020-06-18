@@ -11,7 +11,6 @@ import utilityCommon from '../../utils/utility.common';
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import viewTaskPo from "../../pageobject/task/view-task.po";
 import editTaskPo from '../../pageobject/task/edit-task.po';
-import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Activity Multi Logs', () => {
 
