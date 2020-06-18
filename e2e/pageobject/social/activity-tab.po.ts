@@ -15,7 +15,7 @@ class ActivityTabPage {
         addNotePostButton: '.activity-feed-note-buttons__right .btn-primary',
         addNoteCancelButton: '.activity-feed-note-buttons__right .btn-secondary',
         addNoteNotesTemplate: '.activity-note .d-icon-note_pencil',
-        activityLog: '.activity__body .activity-title, .activity__body [style="position: relative;"], .activity__body .field, .activity__body .value',
+        activityLog: '.activity__body .activity-title, .activity__body [style="position: relative;"], .activity__body .field, .activity__body .value, .activity__body div',
         filterButton: '.d-icon-filter',
         filterCheckbox: '.checkbox__label span',
         filterAuthor: '.dropdown [placeholder="Enter name, email, login ID or employee ID"]',
@@ -86,17 +86,26 @@ class ActivityTabPage {
     }
 
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isDisplayed().then(async (result) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isPresent().then(async (result) => {
             if (result) return true;
             else return false;
         });
     }
 
-    async isTitleTextDisplayedInActivity(caseActivityLogTitleText: string, activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText(this.selectors.logTitle, caseActivityLogTitleText)).isDisplayed().then(async (result) => {
-            if (result) return true;
-            else return false;
+	async isTitleTextDisplayedInActivity(caseActivityLogTitleText: string, activityNumber: number): Promise<boolean> {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.logTitle).isPresent().then(async (result) => {
+            if (result){
+                let logtitleText=await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.logTitle).getText();
+                     if(logtitleText.includes(caseActivityLogTitleText)){
+                     return true;
+           }
+       }
+       else return false;
         });
+    }
+
+    async scrollUpOrDownActivityLogs(activityNumber: number): Promise<void> {
+        await browser.executeScript("arguments[0].scrollIntoView();", $$(this.selectors.activityLogList).get(activityNumber - 1).getWebElement());
     }
 
     async isBodyDisplayedInActivity(caseActivityLogTitleText: string, activityNumber: number): Promise<boolean> {
@@ -153,6 +162,35 @@ class ActivityTabPage {
                     else return false;
                 });
                 break;
+            }
+
+            case "filePlus": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-file_plus_o').isPresent().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+            }
+
+            case "arrow_exclamation_circle": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-list_arrow_exclamation_circle').isPresent().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+            }
+
+            case "squares_arrows": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-squares_arrows').isPresent().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+                break;
+            }
+
+            case "files_change": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-files_change_o').isPresent().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
             }
 
             default: {

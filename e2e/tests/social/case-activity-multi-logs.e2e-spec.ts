@@ -8,6 +8,10 @@ import activityTabPage from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import viewTaskPo from "../../pageobject/task/view-task.po";
+import editTaskPo from '../../pageobject/task/edit-task.po';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Activity Multi Logs', () => {
 
@@ -131,4 +135,319 @@ describe('Case Activity Multi Logs', () => {
         expect(await utilityCommon.isFileDownloaded('bwfJson5.json')).toBeTruthy('FailureMsg41: bwfJson5.json File is not downloaded.');
         expect(await activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
     });
+
+    //kgaikwad
+    describe('[DRDMV-16755]: All type of social activities are displayed correctly in Task Activity tab', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let manualTemplateSummary;
+        let autoTemplateData;
+        let externalTemplateSummary;
+        let newCase;
+
+        beforeAll(async () => {
+            // Create Automated Task Template
+            autoTemplateData = {
+                "templateName": "DRDMV-21619 auto task template" + randomStr,
+                "templateSummary": "DRDMV-21619 auto task template summary" + randomStr,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": `Case Process ${randomStr}`,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createAutomatedTaskTemplate(autoTemplateData);
+
+            // Create Manual / External Task Template
+            let taskTemplateData = {
+                "templateName": "DRDMV-21619_templateName" + randomStr,
+                "templateSummary": "DRDMV-21617_templateSummary" + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            taskTemplateData.templateName = 'DRDMV-21619_ManualTaskTemplateName' + randomStr;
+            manualTemplateSummary = taskTemplateData.templateSummary = 'DRDMV-21619_ManualTaskTemplateSummary_' + randomStr;
+            await apiHelper.createManualTaskTemplate(taskTemplateData);
+
+              // Create External Task Template
+            taskTemplateData.templateName = 'DRDMV-21619_ExternalTaskTemplateName' + randomStr;
+            externalTemplateSummary = taskTemplateData.templateSummary = 'DRDMV-21619_ExternalTaskTemplateSummary_' + randomStr;
+            await apiHelper.createExternalTaskTemplate(taskTemplateData);
+
+            // Create Case
+            let caseData = {
+                "Requester": "qtao",
+                "Summary": "DRDMV-21619_TC",
+                "Assigned Company": "Petramco",
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 1",
+                "Assignee": "qdu"
+            }
+            newCase = await apiHelper.createCase(caseData);
+        });
+
+        it('Add Automation, Manual, External Task In Case And Change Case Status To In-Progress', async () => {
+            // Adding Task
+            await caseConsolePo.searchAndOpenCase(newCase.displayId);
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateSummary);
+            await manageTaskBladePo.clickCloseButton();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+        });
+
+        it('Goto Automation Task and verify Create Task Activity', async () => {
+            // Goto Automated Task
+            await activityTabPage.clickOnRefreshButton();
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
+            expect(await viewTaskPo.getTaskStatusValue()).toBe('Completed', 'FailureMsg1: Automated task status is not completed');
+            // Create Task Activity 
+            await activityTabPage.scrollUpOrDownActivityLogs(3);
+            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 3)).toBeTruthy('FailureMsg2: log icon is missing');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(3)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
+            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi created the task', 3)).toBeTruthy('FailureMsg4: log title is missing');
+            expect(await activityTabPage.isTextPresentInActivityLog('Summary')).toBeTruthy('FailureMsg5: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog(autoTemplateData.templateSummary)).toBeTruthy('FailureMsg6: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Status')).toBeTruthy('FailureMsg7: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Staged')).toBeTruthy('FailureMsg8: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('In Progress')).toBeTruthy('FailureMsg9: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Completed')).toBeTruthy('FailureMsg10: Text is missing in activity log');
+        });
+
+        it('Automation Task Validate Add Notes Activity', async () => {
+            // Add Activity Notes validate
+            await activityTabPage.addActivityNote('DRDMV-21619 Activity Note');
+            await activityTabPage.clickOnPostButton();
+            expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg11: log icon is missing');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg12: lock icon missing in activity logs');
+            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi added a note', 1)).toBeTruthy('FailureMsg13: log title is missing');
+            expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-21619 Activity Note')).toBeTruthy('FailureMsg14: Text is missing in activity log');
+        });
+
+        it('Automation Task Change Priority And Validate It In Activity ', async () => {
+            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.selectPriorityValue('Low');
+            await editTaskPo.clickOnSaveButton();
+            expect(await activityTabPage.isLogIconDisplayedInActivity('arrow_exclamation_circle', 1)).toBeTruthy('FailureMsg15: log icon is missing');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg16: lock icon missing in activity logs');
+            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the task priority', 1)).toBeTruthy('FailureMsg17: log title is missing');
+            expect(await activityTabPage.isTextPresentInActivityLog('Low')).toBeTruthy('FailureMsg18: Text is missing in activity log');
+        });
+
+        it('Automation Task Change Catergory Tier And Validate It In Activity', async () => {
+            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.selectTaskCategoryTier1('Accounts Receivable');
+            await editTaskPo.selectTaskCategoryTier2('Collection');
+            await editTaskPo.selectTaskCategoryTier3('Past Due');
+            await editTaskPo.clickOnSaveButton();
+            expect(await activityTabPage.isLogIconDisplayedInActivity('squares_arrows', 1)).toBeTruthy('FailureMsg19: log icon is missing');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
+            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the task category', 1)).toBeTruthy('FailureMsg21: log title is missing');
+            expect(await activityTabPage.isTextPresentInActivityLog('Category Tier 1')).toBeTruthy('FailureMsg22: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Accounts Receivable')).toBeTruthy('FailureMsg23: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Category Tier 2')).toBeTruthy('FailureMsg24: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Collection')).toBeTruthy('FailureMsg25: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Category Tier 3')).toBeTruthy('FailureMsg26: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Past Due')).toBeTruthy('FailureMsg27: Text is missing in activity log');
+        });
+
+        it('Automation Task Update Multiple Fields At a Time And Validate It In Activity', async () => {
+            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.setDescription('DRDMV-16756 Task Description');
+            await editTaskPo.selectPriorityValue('Critical');
+            await editTaskPo.clickOnSaveButton();
+            expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg28: log icon is missing');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg29: lock icon missing in activity logs');
+            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', 1)).toBeTruthy('FailureMsg30: log title is missing');
+            expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg31: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-16756 Task Description')).toBeTruthy('FailureMsg32: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Priority')).toBeTruthy('FailureMsg33: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Critical')).toBeTruthy('FailureMsg34: Text is missing in activity log');
+            await viewTaskPo.clickOnViewCase();
+        });
+
+        it('Goto Manual Task and verify Create Task Activity', async () => {
+        // Goto Manual Task
+        await activityTabPage.clickOnRefreshButton();
+        await viewCasePo.clickAddTaskButton();
+        await manageTaskBladePo.clickTaskLink(manualTemplateSummary);
+        // Create Task Activity 
+        expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 2)).toBeTruthy('FailureMsg2: log icon is missing');
+        expect(await activityTabPage.isLockIconDisplayedInActivity(2)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
+        expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi created the task', 2)).toBeTruthy('FailureMsg4: log title is missing');
+        expect(await activityTabPage.isTextPresentInActivityLog('Summary')).toBeTruthy('FailureMsg5: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog(manualTemplateSummary)).toBeTruthy('FailureMsg6: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Status')).toBeTruthy('FailureMsg7: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Staged')).toBeTruthy('FailureMsg8: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Assigned')).toBeTruthy('FailureMsg10: Text is missing in activity log');
+        });
+
+        it('Manual Task Validate Add Notes Activity', async () => {
+        await activityTabPage.addActivityNote('DRDMV-21619 Activity Note');
+        await activityTabPage.clickOnPostButton();
+        expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg11: log icon is missing');
+        expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg12: lock icon missing in activity logs');
+        expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi added a note', 1)).toBeTruthy('FailureMsg13: log title is missing');
+        expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-21619 Activity Note')).toBeTruthy('FailureMsg14: Text is missing in activity log');
+        });
+
+        it('Manual Task Change Priority And Validate It In Activity', async () => {
+                    // Priority change activity
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.selectPriorityValue('Low');
+        await editTaskPo.clickOnSaveButton();
+        expect(await activityTabPage.isLogIconDisplayedInActivity('arrow_exclamation_circle', 1)).toBeTruthy('FailureMsg15: log icon is missing');
+        expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg16: lock icon missing in activity logs');
+        expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the task priority', 1)).toBeTruthy('FailureMsg17: log title is missing');
+        expect(await activityTabPage.isTextPresentInActivityLog('Low')).toBeTruthy('FailureMsg18: Text is missing in activity log');
+
+        });
+
+        it('Manual Task Change Catergory Tier And Validate It In Activity', async () => {
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.selectTaskCategoryTier1('Accounts Receivable');
+        await editTaskPo.selectTaskCategoryTier2('Collection');
+        await editTaskPo.selectTaskCategoryTier3('Past Due');
+        await editTaskPo.clickOnSaveButton();
+        expect(await activityTabPage.isLogIconDisplayedInActivity('squares_arrows', 1)).toBeTruthy('FailureMsg19: log icon is missing');
+        expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
+        expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the task category', 1)).toBeTruthy('FailureMsg21: log title is missing');
+        expect(await activityTabPage.isTextPresentInActivityLog('Category Tier 1')).toBeTruthy('FailureMsg22: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Accounts Receivable')).toBeTruthy('FailureMsg23: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Category Tier 2')).toBeTruthy('FailureMsg24: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Collection')).toBeTruthy('FailureMsg25: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Category Tier 3')).toBeTruthy('FailureMsg26: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Past Due')).toBeTruthy('FailureMsg27: Text is missing in activity log');
+        });
+
+        it('Manual Task Update Multiple Fields At a Time And Validate It In Activity', async () => {
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.setDescription('DRDMV-16756 Task Description');
+        await editTaskPo.selectPriorityValue('Critical');
+        await editTaskPo.clickOnSaveButton();
+        expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg28: log icon is missing');
+        expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg29: lock icon missing in activity logs');
+        expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', 1)).toBeTruthy('FailureMsg30: log title is missing');
+        expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg31: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-16756 Task Description')).toBeTruthy('FailureMsg32: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Priority')).toBeTruthy('FailureMsg33: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Critical')).toBeTruthy('FailureMsg34: Text is missing in activity log');
+        });
+
+        it('Assign Manual Task Validate Its Activity', async () => {
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.clickOnAssignToMe();
+        await editTaskPo.clickOnSaveButton();
+        expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg: show more button is missing');
+        expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg: multiple field log icon is missing');
+        expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg: multiple field lock icon missing');
+        expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', 1)).toBeTruthy('FailureMsg: Assignment change field log header');
+        expect(await activityTabPage.isTextPresentInActivityLog('Assignee')).toBeTruthy('FailureMsg: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi')).toBeTruthy('FailureMsg: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Assigned Business Unit')).toBeTruthy('FailureMsg: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('United States Support')).toBeTruthy('FailureMsg: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Assigned Group')).toBeTruthy('FailureMsg: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('US Support 3')).toBeTruthy('FailureMsg: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg: Text is missing in activity log');
+        await viewTaskPo.clickOnChangeStatus();
+        await viewTaskPo.changeTaskStatus('Completed');
+        await updateStatusBladePo.setStatusReason('Successful');
+        await viewTaskPo.clickOnSaveStatus();
+        await viewTaskPo.clickOnViewCase();
+        });
+
+        it('Goto External Task And Verify Create Task Activity', async () => {
+        await activityTabPage.clickOnRefreshButton();
+        await viewCasePo.clickAddTaskButton();
+        await manageTaskBladePo.clickTaskLink(externalTemplateSummary);
+        // Verify Task Activity 
+        expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 2)).toBeTruthy('FailureMsg2: log icon is missing');
+        expect(await activityTabPage.isLockIconDisplayedInActivity(2)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
+        expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi created the task')).toBeTruthy('FailureMsg4: log title is missing');
+        expect(await activityTabPage.isTextPresentInActivityLog('Summary')).toBeTruthy('FailureMsg5: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog(externalTemplateSummary)).toBeTruthy('FailureMsg6: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Status')).toBeTruthy('FailureMsg7: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Staged')).toBeTruthy('FailureMsg80: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Assigned')).toBeTruthy('FailureMsg10: Text is missing in activity log');
+        });
+
+        it('External Task Validate Add Notes Activity', async () => {
+        await activityTabPage.addActivityNote('DRDMV-21619 Activity Note');
+        await activityTabPage.clickOnPostButton();
+        expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg11: log icon is missing');
+        expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg12: lock icon missing in activity logs');
+        expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi added a note', 1)).toBeTruthy('FailureMsg13: log title is missing');
+        expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-21619 Activity Note')).toBeTruthy('FailureMsg14: Text is missing in activity log');
+        });
+
+        it('External Task Change Priority And Validate It In Activity', async () => {
+        // Priority change activity
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.selectPriorityValue('Low');
+        await editTaskPo.clickOnSaveButton();
+        expect(await activityTabPage.isLogIconDisplayedInActivity('arrow_exclamation_circle', 1)).toBeTruthy('FailureMsg15: log icon is missing');
+        expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg16: lock icon missing in activity logs');
+        expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the task priority', 1)).toBeTruthy('FailureMsg17: log title is missing');
+        expect(await activityTabPage.isTextPresentInActivityLog('Low')).toBeTruthy('FailureMsg18: Text is missing in activity log');
+        });
+
+        it('External Task Change Catergory Tier And Validate It In Activity', async () => {
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.selectTaskCategoryTier1('Accounts Receivable');
+        await editTaskPo.selectTaskCategoryTier2('Collection');
+        await editTaskPo.selectTaskCategoryTier3('Past Due');
+        await editTaskPo.clickOnSaveButton();
+        expect(await activityTabPage.isLogIconDisplayedInActivity('squares_arrows', 1)).toBeTruthy('FailureMsg19: log icon is missing');
+        expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
+        expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the task category', 1)).toBeTruthy('FailureMsg21: log title is missing');
+        expect(await activityTabPage.isTextPresentInActivityLog('Category Tier 1')).toBeTruthy('FailureMsg22: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Accounts Receivable')).toBeTruthy('FailureMsg23: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Category Tier 2')).toBeTruthy('FailureMsg24: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Collection')).toBeTruthy('FailureMsg25: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Category Tier 3')).toBeTruthy('FailureMsg26: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Past Due')).toBeTruthy('FailureMsg27: Text is missing in activity log');
+        });
+
+        it('External Task Update Multiple Fields At a Time And Validate It In Activity', async () => {
+        // Task multiple fields activity
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.setDescription('DRDMV-16756 Task Description');
+        await editTaskPo.selectPriorityValue('Critical');
+        await editTaskPo.clickOnSaveButton();
+        expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg28: log icon is missing');
+        expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg29: lock icon missing in activity logs');
+        expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', 1)).toBeTruthy('FailureMsg30: log title is missing');
+        expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg31: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-16756 Task Description')).toBeTruthy('FailureMsg32: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Priority')).toBeTruthy('FailureMsg33: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Critical')).toBeTruthy('FailureMsg34: Text is missing in activity log');
+        });
+
+        it('[DRDMV-16755]: Assign External Task Validate Its Activity', async () => {
+        // Assign Task 
+        await viewTaskPo.clickOnEditTask();
+        await editTaskPo.clickOnAssignToMe();
+        await editTaskPo.clickOnSaveButton();
+        expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg: show more button is missing');
+        expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg: multiple field log icon is missing');
+        expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg: multiple field lock icon missing');
+        expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', 1)).toBeTruthy('FailureMsg: Assignment change field log header');
+        expect(await activityTabPage.isTextPresentInActivityLog('Assignee')).toBeTruthy('FailureMsg: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi')).toBeTruthy('FailureMsg: Text is missing in activity log')
+        expect(await activityTabPage.isTextPresentInActivityLog('Assigned Business Unit')).toBeTruthy('FailureMsg: Text is missing in activity log')
+        expect(await activityTabPage.isTextPresentInActivityLog('United States Support')).toBeTruthy('FailureMsg: Text is missing in activity log')
+        expect(await activityTabPage.isTextPresentInActivityLog('Assigned Group')).toBeTruthy('FailureMsg: Text is missing in activity log')
+        expect(await activityTabPage.isTextPresentInActivityLog('US Support 3')).toBeTruthy('FailureMsg: Text is missing in activity log')
+        expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg: Text is missing in activity log')
+        });
+    });
+    
 });

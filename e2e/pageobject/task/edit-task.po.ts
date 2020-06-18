@@ -1,6 +1,8 @@
 import { resolve } from "path";
 import { $, protractor, ProtractorExpectedConditions, $$ } from "protractor";
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
+import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 
 class EditTask {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -17,11 +19,12 @@ class EditTask {
         categoryTier2: '49d231d9-ee81-4d7c-90af-d7ca785a32d4',
         categoryTier3: 'c8858fb5-5b21-4e0d-a947-c0130a72b51a',
         categoryTier4: 'ff1636f8-4efe-4447-9c04-f32799904f2b',
-        priority: '0cf493f2-9e6b-4f23-bf3e-ba210c2baef8',
+        priority: 'e638927a-e1e1-46e7-bfe3-8fe9904a5c5a',
         dynamicDate: '[class="input-group"] input[ng-model="date"]',
         dynamicDateTime: 'input[ng-model="datetime"]',
         taskSummary: '[rx-view-component-id="1261e01e-00fb-4e2c-b2ac-72e837f9fcea"] input',
-        dynamicFieldName: '[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] label'
+        dynamicFieldName: '[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] label',
+        ckeditorGuid: '6053a7e8-5194-420b-965a-1c3bfe3ad0a1'
     }
 
     async isAutomatedTaskTypeDisabled(): Promise<boolean> {
@@ -98,24 +101,28 @@ class EditTask {
         await $(this.selectors.attachButton).click();
     }
 
-    async selectPriorityValue(priority: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.priority, priority);
+    async setDescription(descriptionText: string): Promise<void> {
+        await ckeditorOpsPo.setCKEditor(descriptionText,this.selectors.ckeditorGuid);
     }
 
-    async selectTaskCategoryTier1(categoryTier1: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier1, categoryTier1);
+    async selectPriorityValue(priority: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.priority, priority);
+   }
+
+	async selectTaskCategoryTier1(categoryTier1: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.categoryTier1, categoryTier1);
     }
 
     async selectTaskCategoryTier2(categoryTier2: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier2, categoryTier2);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier2, categoryTier2);
     }
 
     async selectTaskCategoryTier3(categoryTier3: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier3, categoryTier3);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier3, categoryTier3);
     }
 
     async selectTaskCategoryTier4(categoryTier4: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier4, categoryTier4);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier4, categoryTier4);
     }
 
     async isDynamicFieldDisplayed(value: string): Promise<boolean> {
