@@ -170,6 +170,7 @@ class ViewCaseTemplate {
     }
 
     async clickOnTask(taskName: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.multipleTask)),3000);
         await element(by.cssContainingText(this.selectors.multipleTask, taskName)).isPresent().then(async (result) => {
             if (result) element(by.cssContainingText(this.selectors.multipleTask, taskName)).click();
             else {
