@@ -20,6 +20,7 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import imagePropertiesPo from '../../pageobject/settings/common/image-properties.po';
 
 describe('Knowledge Article', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1411,5 +1412,98 @@ describe('Knowledge Article', () => {
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         await utilityCommon.closePopUpMessage();
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Elizabeth Peters');
+    });
+
+    describe('[DRDMV-4266,DRDMV-4267]:[Attachment] - Create article with maximum attachment - 30 attachments', async () => {
+        let kaDetails1, kaDetails2, articleData1, articleData2;
+        let fileName: string[] = ['bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf', 'bwfWord3.rtf', 'bwfWord4.rtf', 'bwfWord5.rtf', 'articleStatus.png', 'bwfContact.contact', 'bwfXlsx.xlsx', 'bwfXlsx1.xlsx', 'bwfXsl.xsl', 'bwfXsl1.xsl', 'bwfXml.xml', 'bwfXml1.xml', 'demo.txt', 'demo1.txt'];
+        beforeAll(async () => {
+            await apiHelper.apiLogin(knowledgeCoachUser);
+            articleData1 = {
+                "knowledgeSet": "HR",
+                "title": 'KA1' + randomStr,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "kayo",
+            }
+            articleData2 = {
+                "knowledgeSet": "HR",
+                "title": 'KA2' + randomStr,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "kayo",
+            }
+            kaDetails1 = await apiHelper.createKnowledgeArticle(articleData1);
+            kaDetails2 = await apiHelper.createKnowledgeArticle(articleData2);
+        });
+        it('[DRDMV-4266,DRDMV-4267]:[Attachment] - Create article with maximum attachment - 30 attachments', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(kaDetails1.displayId);
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            for (let i: number = 0; i < fileName.length; i++) {
+                await editKnowledgePage.addAttachment([`../../data/ui/attachment/${fileName[i]}`]);
+            }
+            await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            await utilityCommon.closePopUpMessage();
+            await viewKnowledgeArticlePo.clickShowMoreButton();
+            expect(await viewKnowledgeArticlePo.getAttachmentCountFromKA()).toBe(30);
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            for (let i: number = 0; i < fileName.length; i++) {
+                await editKnowledgePage.removeAttachment();
+            }
+            await editKnowledgePage.setCategoryTier1('Applications');
+            await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewKnowledgeArticlePo.getAttachmentCountFromKA()).toBe(0);
+        });
+        it('[DRDMV-4266,DRDMV-4267]:[Attachment] - Create article with maximum attachment - 30 attachments', async () => {
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            await editKnowledgePage.addAttachment(['../../data/ui/attachment/bwfJpg.jpg']);
+            await editKnowledgePage.setCategoryTier1('Applications');
+            await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfJpg')).toBeTruthy();
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            await editKnowledgePage.setCategoryTier1('Employee Relations');
+            await editKnowledgePage.removeAttachment();
+            await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfJpg')).toBeFalsy();
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    it('[DRDMV-4018]:CK Editor - Should be able to upload image using url', async () => {
+        let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
+        let imageUrlFieldIndex = 0;
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
+        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await utilityCommon.switchToNewTab(1);
+        await navigationPage.gotoCreateKnowledge();
+        await createKnowledgePage.clickOnTemplate('Reference');
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
+        await createKnowledgePage.selectKnowledgeSet('HR');
+        await createKnowledgePage.clickOnImageIcon();
+        await imagePropertiesPo.setInputBoxValue(uploadURL, imageUrlFieldIndex);
+        await imagePropertiesPo.clickOnOkButton();
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+        await previewKnowledgePo.clickGoToArticleButton();
+        expect(await viewKnowledgeArticlePo.isImageDisplayedOnDescription(uploadURL)).toBeTruthy('Image is not displayed');
     });
 });

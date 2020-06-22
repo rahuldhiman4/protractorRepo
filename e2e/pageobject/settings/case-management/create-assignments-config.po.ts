@@ -91,6 +91,10 @@ class AssignmentConfigCreatePage {
                 (value, index) => (value === data[index])
             );
     }
+
+    async isCompanyDropdownValueMatches(values: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed('471bbeb3-3965-46b6-b74d-4f2a10fe3cce', values);
+    }
 }
 
 export default new AssignmentConfigCreatePage();

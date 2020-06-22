@@ -374,11 +374,27 @@ class ViewKnowledgePage {
     }
 
     async isAttachedFileNamePresent(fileName: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isPresent();
+        return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isPresent().then( async (result) => {
+            if(result) return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isDisplayed();
+        });
     }
 
     async clickShowMoreButton(): Promise<void> {
         await $(this.selectors.expandAllAttachment).click();
+    }
+
+    async getAttachmentCountFromKA(): Promise<number> {
+        return await $$(this.selectors.attachmentName).count();
+    }
+
+    async clickOnAttachment(attachmentName: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.attachmentName, attachmentName)).click();
+    }
+
+    async isImageDisplayedOnDescription(value: string): Promise<boolean> {
+        let locator = `.doc-editor__section-content img[src='${value}']`;
+        let imageIsDisplayed: boolean = await $(locator).isDisplayed();
+        return imageIsDisplayed;
     }
 }
 

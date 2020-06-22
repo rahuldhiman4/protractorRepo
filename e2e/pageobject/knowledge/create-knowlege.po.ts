@@ -32,7 +32,8 @@ class CreateKnowledgePage {
         categoryTier2Value: '[rx-view-component-id="6f480482-c224-4742-b941-bce655d40fde"] button',
         categoryTier3Value: '[rx-view-component-id="2774b518-00ab-4e02-bb23-95bdb0285840"] button',
         templatePreview: '.create-ka-template__preview',
-        backBtn: '[rx-view-component-id="75d55491-37d4-40f2-83ef-35019670e355"] button'
+        backBtn: '[rx-view-component-id="75d55491-37d4-40f2-83ef-35019670e355"] button',
+        imageIcon: '[rx-view-component-id="7591fcfd-3d96-4155-a450-33c6e591dc2c"] .cke_toolgroup .cke_button__image',
     }
 
     async clickChangeTemplateButton(): Promise<void> {
@@ -237,6 +238,10 @@ class CreateKnowledgePage {
 
     async isTemplatePreviewPresent(): Promise<boolean> {
         return await $(this.selectors.templatePreview).isPresent();
+    }
+
+    async clickOnImageIcon(): Promise<void> {
+        await $(this.selectors.imageIcon).click();
     }
 }
 
