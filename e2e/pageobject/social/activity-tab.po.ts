@@ -83,6 +83,7 @@ class ActivityTabPage {
         bulletListTextCkEditorTextArea: '.cke_enable_context_menu ul li',
         linkTextCkEditorTextArea: '.cke_enable_context_menu a',
         activityLogBody: '.activity__wrapper .collapse-block div div[style="position: relative;"]',
+        showApproversLink: '.activity__wrapper button.btn-sm',
     }
 
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
@@ -320,6 +321,11 @@ class ActivityTabPage {
     async getFirstPostContent(): Promise<string> {
         //        await utilCommon.waitUntilSpinnerToHide();
         return await $$(this.selectors.logItems).first().getText();
+    }
+
+    async isActivityBlank(): Promise<boolean> {
+        //        await utilCommon.waitUntilSpinnerToHide();
+        return !await $(this.selectors.logItems).isPresent();
     }
 
     async clickOnRefreshButton(): Promise<void> {
@@ -982,6 +988,10 @@ class ActivityTabPage {
                 }
             } else return false;
         });
+    }
+
+    async clickShowApproversLink(showApproversLinkLabel:string):Promise<void>{
+        await $(this.selectors.showApproversLink).click();
     }
 }
 

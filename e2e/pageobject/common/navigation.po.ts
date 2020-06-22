@@ -304,6 +304,18 @@ class NavigationPage {
         await element(by.cssContainingText(this.selectors.TileSearchResult, applicationName)).click();
     }
 
+    async switchToJSApplication(applicationName: string): Promise<void> {
+        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        await $(this.selectors.adaptIconTiles).click();
+        await $(this.selectors.TileSearchInput).clear();
+        await $(this.selectors.TileSearchInput).click();
+        await $(this.selectors.TileSearchInput).sendKeys(applicationName);
+        await element(by.cssContainingText(this.selectors.TileSearchResult, applicationName)).click();
+        await this.switchToAngularJsTab();
+        await browser.sleep(3000);
+    }
+
     async isSettingPanelTextMatches(text: string): Promise<boolean> {
         let settingPaneltextLocator = await element(by.cssContainingText(this.selectors.panelHeadingOfSetting, text));
         return await $(this.selectors.panelHeadingOfSetting).isPresent().then(async (result) => {
