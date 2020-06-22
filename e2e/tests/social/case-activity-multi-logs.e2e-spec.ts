@@ -138,10 +138,7 @@ describe('Case Activity Multi Logs', () => {
     //kgaikwad
     describe('[DRDMV-16755]: All type of social activities are displayed correctly in Task Activity tab', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let manualTemplateSummary;
-        let autoTemplateData;
-        let externalTemplateSummary;
-        let newCase;
+        let manualTemplateSummary, autoTemplateData ,externalTemplateSummary, newCase;
 
         beforeAll(async () => {
             // Create Automated Task Template
@@ -191,7 +188,7 @@ describe('Case Activity Multi Logs', () => {
             newCase = await apiHelper.createCase(caseData);
         });
 
-        it('Add Automation, Manual, External Task In Case And Change Case Status To In-Progress', async () => {
+        it('[DRDMV-16755]: Add Automation, Manual, External Task In Case And Change Case Status To In-Progress', async () => {
             // Adding Task
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickAddTaskButton();
@@ -203,7 +200,7 @@ describe('Case Activity Multi Logs', () => {
             await updateStatusBladePo.clickSaveStatus();
         });
 
-        it('Goto Automation Task and verify Create Task Activity', async () => {
+        it('[DRDMV-16755]: Goto Automation Task and verify Create Task Activity', async () => {
             // Goto Automated Task
             await activityTabPage.clickOnRefreshButton();
             await viewCasePo.clickAddTaskButton();
@@ -222,7 +219,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isLockIconDisplayedInActivity(3)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
         });
 
-        it('Automation Task Validate Add Notes Activity', async () => {
+        it('[DRDMV-16755]: Automation Task Validate Add Notes Activity', async () => {
             await activityTabPage.addActivityNote('DRDMV-21619 Activity Note');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg11: log icon is missing');
@@ -231,7 +228,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-21619 Activity Note')).toBeTruthy('FailureMsg14: Text is missing in activity log');
         });
 
-        it('Automation Task Change Priority And Validate It In Activity ', async () => {
+        it('[DRDMV-16755]: Automation Task Change Priority And Validate It In Activity ', async () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.selectPriorityValue('Low');
             await editTaskPo.clickOnSaveButton();
@@ -241,7 +238,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Low')).toBeTruthy('FailureMsg18: Text is missing in activity log');
         });
 
-        it('Automation Task Change Catergory Tier And Validate It In Activity', async () => {
+        it('[DRDMV-16755]: Automation Task Change Catergory Tier And Validate It In Activity', async () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.selectTaskCategoryTier1('Accounts Receivable');
             await editTaskPo.selectTaskCategoryTier2('Collection');
@@ -258,7 +255,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Past Due')).toBeTruthy('FailureMsg27: Text is missing in activity log');
         });
 
-        it('Automation Task Update Multiple Fields At a Time And Validate It In Activity', async () => {
+        it('[DRDMV-16755]: Automation Task Update Multiple Fields At a Time And Validate It In Activity', async () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.setDescription('DRDMV-16756 Task Description');
             await editTaskPo.selectPriorityValue('Critical');
@@ -273,7 +270,7 @@ describe('Case Activity Multi Logs', () => {
             await viewTaskPo.clickOnViewCase();
         });
 
-        it('Goto Manual Task and verify Create Task Activity', async () => {
+        it('[DRDMV-16755]: Goto Manual Task and verify Create Task Activity', async () => {
         // Goto Manual Task
         await activityTabPage.clickOnRefreshButton();
         await viewCasePo.clickAddTaskButton();
@@ -289,7 +286,7 @@ describe('Case Activity Multi Logs', () => {
         expect(await activityTabPage.isTextPresentInActivityLog('Assigned')).toBeTruthy('FailureMsg10: Text is missing in activity log');
         });
 
-        it('Manual Task Validate Add Notes Activity', async () => {
+        it('[DRDMV-16755]: Manual Task Validate Add Notes Activity', async () => {
         await activityTabPage.addActivityNote('DRDMV-21619 Activity Note');
         await activityTabPage.clickOnPostButton();
         expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg11: log icon is missing');
@@ -298,7 +295,7 @@ describe('Case Activity Multi Logs', () => {
         expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-21619 Activity Note')).toBeTruthy('FailureMsg14: Text is missing in activity log');
         });
 
-        it('Manual Task Change Priority And Validate It In Activity', async () => {
+        it('[DRDMV-16755]: Manual Task Change Priority And Validate It In Activity', async () => {
                     // Priority change activity
         await viewTaskPo.clickOnEditTask();
         await editTaskPo.selectPriorityValue('Low');
@@ -309,7 +306,7 @@ describe('Case Activity Multi Logs', () => {
         expect(await activityTabPage.isTextPresentInActivityLog('Low')).toBeTruthy('FailureMsg18: Text is missing in activity log');
         });
 
-        it('Manual Task Change Catergory Tier And Validate It In Activity', async () => {
+        it('[DRDMV-16755]: Manual Task Change Catergory Tier And Validate It In Activity', async () => {
         await viewTaskPo.clickOnEditTask();
         await editTaskPo.selectTaskCategoryTier1('Accounts Receivable');
         await editTaskPo.selectTaskCategoryTier2('Collection');
@@ -326,7 +323,7 @@ describe('Case Activity Multi Logs', () => {
         expect(await activityTabPage.isTextPresentInActivityLog('Past Due')).toBeTruthy('FailureMsg27: Text is missing in activity log');
         });
 
-        it('Manual Task Update Multiple Fields At a Time And Validate It In Activity', async () => {
+        it('[DRDMV-16755]: Manual Task Update Multiple Fields At a Time And Validate It In Activity', async () => {
         await viewTaskPo.clickOnEditTask();
         await editTaskPo.setDescription('DRDMV-16756 Task Description');
         await editTaskPo.selectPriorityValue('Critical');
@@ -340,7 +337,7 @@ describe('Case Activity Multi Logs', () => {
         expect(await activityTabPage.isTextPresentInActivityLog('Critical')).toBeTruthy('FailureMsg34: Text is missing in activity log');
         });
 
-        it('Assign Manual Task Validate Its Activity', async () => {
+        it('[DRDMV-16755]: Assign Manual Task Validate Its Activity', async () => {
         await viewTaskPo.clickOnEditTask();
         await editTaskPo.clickOnAssignToMe();
         await editTaskPo.clickOnSaveButton();
@@ -362,7 +359,7 @@ describe('Case Activity Multi Logs', () => {
         await viewTaskPo.clickOnViewCase();
         });
 
-        it('Goto External Task And Verify Create Task Activity', async () => {
+        it('[DRDMV-16755]: Goto External Task And Verify Create Task Activity', async () => {
         await activityTabPage.clickOnRefreshButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.clickTaskLink(externalTemplateSummary);
@@ -377,7 +374,7 @@ describe('Case Activity Multi Logs', () => {
         expect(await activityTabPage.isTextPresentInActivityLog('Assigned')).toBeTruthy('FailureMsg10: Text is missing in activity log');
         });
 
-        it('External Task Validate Add Notes Activity', async () => {
+        it('[DRDMV-16755]: External Task Validate Add Notes Activity', async () => {
         await activityTabPage.addActivityNote('DRDMV-21619 Activity Note');
         await activityTabPage.clickOnPostButton();
         expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg11: log icon is missing');
@@ -386,7 +383,7 @@ describe('Case Activity Multi Logs', () => {
         expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-21619 Activity Note')).toBeTruthy('FailureMsg14: Text is missing in activity log');
         });
 
-        it('External Task Change Priority And Validate It In Activity', async () => {
+        it('[DRDMV-16755]: External Task Change Priority And Validate It In Activity', async () => {
         // Priority change activity
         await viewTaskPo.clickOnEditTask();
         await editTaskPo.selectPriorityValue('Low');
@@ -397,7 +394,7 @@ describe('Case Activity Multi Logs', () => {
         expect(await activityTabPage.isTextPresentInActivityLog('Low')).toBeTruthy('FailureMsg18: Text is missing in activity log');
         });
 
-        it('External Task Change Catergory Tier And Validate It In Activity', async () => {
+        it('[DRDMV-16755]: External Task Change Catergory Tier And Validate It In Activity', async () => {
         await viewTaskPo.clickOnEditTask();
         await editTaskPo.selectTaskCategoryTier1('Accounts Receivable');
         await editTaskPo.selectTaskCategoryTier2('Collection');
@@ -414,7 +411,7 @@ describe('Case Activity Multi Logs', () => {
         expect(await activityTabPage.isTextPresentInActivityLog('Past Due')).toBeTruthy('FailureMsg27: Text is missing in activity log');
         });
 
-        it('External Task Update Multiple Fields At a Time And Validate It In Activity', async () => {
+        it('[DRDMV-16755]: External Task Update Multiple Fields At a Time And Validate It In Activity', async () => {
         // Task multiple fields activity
         await viewTaskPo.clickOnEditTask();
         await editTaskPo.setDescription('DRDMV-16756 Task Description');
@@ -439,12 +436,12 @@ describe('Case Activity Multi Logs', () => {
         expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg: multiple field lock icon missing');
         expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', 1)).toBeTruthy('FailureMsg: Assignment change field log header');
         expect(await activityTabPage.isTextPresentInActivityLog('Assignee')).toBeTruthy('FailureMsg: Text is missing in activity log');
-        expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi')).toBeTruthy('FailureMsg: Text is missing in activity log')
-        expect(await activityTabPage.isTextPresentInActivityLog('Assigned Business Unit')).toBeTruthy('FailureMsg: Text is missing in activity log')
-        expect(await activityTabPage.isTextPresentInActivityLog('United States Support')).toBeTruthy('FailureMsg: Text is missing in activity log')
-        expect(await activityTabPage.isTextPresentInActivityLog('Assigned Group')).toBeTruthy('FailureMsg: Text is missing in activity log')
-        expect(await activityTabPage.isTextPresentInActivityLog('US Support 3')).toBeTruthy('FailureMsg: Text is missing in activity log')
-        expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg: Text is missing in activity log')
+        expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi')).toBeTruthy('FailureMsg: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Assigned Business Unit')).toBeTruthy('FailureMsg: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('United States Support')).toBeTruthy('FailureMsg: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Assigned Group')).toBeTruthy('FailureMsg: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('US Support 3')).toBeTruthy('FailureMsg: Text is missing in activity log');
+        expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg: Text is missing in activity log');
         });
     });
 });

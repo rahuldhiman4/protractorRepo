@@ -136,8 +136,7 @@ describe('Document Template', () => {
         let documentName= "DocumentTemplate"+randomStr;
         let documentDescription= "description"+randomStr;
         let documentBody="documentBody"+randomStr;
-        let lable1;
-        let lable2;
+        let lable1, lable2;
 
         beforeAll(async () => {
             await navigationPage.signOut();
@@ -155,7 +154,7 @@ describe('Document Template', () => {
             await apiHelper.createNewMenuItem(menuItemDataFile2['sampleMenuItem']);
         });
 
-        it('Verify Create Document Template UI', async () => {
+        it('[DRDMV-14977]: Verify Create Document Template UI', async () => {
             // Goto document template
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
