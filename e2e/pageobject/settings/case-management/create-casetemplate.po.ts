@@ -89,7 +89,8 @@ class CreateCaseTemplate {
     }
 
     async setStatusReasonValue(StatusReasonValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusReason, StatusReasonValue);
+        let element = await $('.d-textfield__input[name="Status Reason"] .ui-select-toggle');
+        await utilCommon.selectDropDown2(element,StatusReasonValue);
     }
 
     async setIdentityValidationValue(identityValidationValue: string): Promise<void> {

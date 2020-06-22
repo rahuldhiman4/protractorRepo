@@ -30,6 +30,7 @@ class ViewCaseTemplate {
         categoryTier3: '[rx-view-component-id="a7fbc4bc-23c6-4f92-818a-5554107d04c0"] p',
         oneTask: '[rx-view-component-id="36ca22f7-98f8-423a-bf39-28361ef29eeb"] .rotatable path',
         multipleTask: 'g.rotatable div.content',
+        backButton: '[rx-view-component-id="8abb8018-cca7-49a2-b610-023c2bae63cc"] button'
     }
 
     async clickOneTask(): Promise<void> {
@@ -171,6 +172,10 @@ class ViewCaseTemplate {
 
     async clickOnTask(taskName: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.multipleTask, taskName)).click();
+    }
+
+    async gotoCaseTemplateConsole(): Promise<void> {
+        await $(this.selectors.backButton).click();
     }
 }
 
