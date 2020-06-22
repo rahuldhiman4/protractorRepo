@@ -178,6 +178,7 @@ export class GridOperation {
 
     async searchAndSelectAllCheckBoxWOGrid(value: string) {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));	
+        await $(this.selectors.summaryField1).clear();
         await $(this.selectors.summaryField1).sendKeys(value);
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton1)));	
         await $(this.selectors.searchButton1).click();

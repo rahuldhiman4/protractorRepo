@@ -10,6 +10,7 @@ export interface ITaskTemplate {
     category1?: string;
     category2?: string;
     category3?: string;
+    category4?: string;
     priority?: string;
     processBundle?: string;
     processName?: string;
@@ -17,4 +18,5 @@ export interface ITaskTemplate {
     businessUnit?:string;
     supportGroup?:string;
     assignee?:string;
+    label?:string
 }

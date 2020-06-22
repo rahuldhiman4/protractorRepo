@@ -53,6 +53,11 @@ class AssignmentConfigEditPage {
         );
 }
 
+    async setAssignmentMappingName(templateName: string): Promise<void> {
+        await $(this.selectors.editName).clear();
+        await $(this.selectors.editName).sendKeys(templateName);
+    }
+
 }
 
 export default new AssignmentConfigEditPage();

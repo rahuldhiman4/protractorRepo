@@ -291,6 +291,15 @@ class ApiHelper {
             templateData.fieldInstances["450000152"] = caseTemplateDataAssignee;
         }
 
+        if (data.label) {
+            let labelGuid = await coreApi.getLabelGuid(data.label);
+            let caseTemplateDataLabel = {
+                "id": 450000160,
+                "value": `${labelGuid}`
+            }
+            templateData.fieldInstances["450000160"] = caseTemplateDataLabel;
+        }
+
         if (data.supportGroup) {
             let assignedCompanyGuid = await coreApi.getOrganizationGuid(data.company);
             let taskTemplateDataassignedCompany = {
@@ -313,6 +322,15 @@ class ApiHelper {
                 "value": `${assigneeBusinessUnit}`
             }
             templateData.fieldInstances["450000381"] = caseTemplateDataBusinessUnit;
+        }
+
+        if (data.categoryTier4) {
+            let categoryTier4 = await coreApi.getCategoryGuid(data.categoryTier4);
+            let caseTemplateDataCategoryTier4 = {
+                "id": 450000158,
+                "value": `${categoryTier4}`
+            }
+            templateData.fieldInstances["450000158"] = caseTemplateDataCategoryTier4;
         }
 
         if (data.resolveCaseonLastTaskCompletion) {
@@ -482,6 +500,22 @@ class ApiHelper {
                 "value": `${categoryGuid}`
             }
             templateData.fieldInstances["1000000065"] = templateCategory3;
+        }
+        if (data.category4) {
+            let categoryTier4 = await coreApi.getCategoryGuid(data.category4);
+            let caseTemplateDataCategoryTier4 = {
+                "id": 450000157,
+                "value": `${categoryTier4}`
+            }
+            templateData.fieldInstances["450000157"] = caseTemplateDataCategoryTier4;
+        }
+        if (data.label) {
+            let labelGuid = await coreApi.getLabelGuid(data.label);
+            let taskTemplateDataLabel = {
+                "id": 450000160,
+                "value": `${labelGuid}`
+            }
+            templateData.fieldInstances["450000160"] = taskTemplateDataLabel;
         }
         if (data.description) {
             let descriptionData = {
