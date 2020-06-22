@@ -285,11 +285,11 @@ describe("Approval Mapping Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-10702,DRDMV-11882]:[Approval Mapping] - Update existing Approval Mapping record', async () => {
+    describe('[DRDMV-10702,DRDMV-11882,DRDMV-16524]:[Approval Mapping] - Update existing Approval Mapping record', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalMappingName = 'Approval Mapping' + randomStr;
 
-        it('[DRDMV-10702,DRDMV-11882]: Create Apporval Mapping', async () => {
+        it('[DRDMV-10702,DRDMV-11882,DRDMV-16524]: Create Apporval Mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
@@ -308,7 +308,7 @@ describe("Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName);
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
-        it('[DRDMV-10702,DRDMV-11882]: Update existing approval mapping', async () => {
+        it('[DRDMV-10702,DRDMV-11882,DRDMV-16524]: Update existing approval mapping', async () => {
             await utilGrid.searchAndOpenHyperlink(approvalMappingName);
             expect(await editApprovalMappingPage.getEditApprovalMappingHeaderText()).toBe('Edit Approval Mapping');
             await editApprovalMappingPage.setApprovalMappingName("Test " + approvalMappingName);
@@ -319,13 +319,23 @@ describe("Approval Mapping Tests", () => {
             await editApprovalMappingPage.selectStatusMappingError('New');
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
         });
-        it('[DRDMV-10702,DRDMV-11882]: [Approval Mapping] - Update existing Approval Mapping record', async () => {
+        it('[DRDMV-10702,DRDMV-11882,DRDMV-16524]: [Approval Mapping] - Update existing Approval Mapping record', async () => {
             await utilGrid.searchAndOpenHyperlink("Test " + approvalMappingName);
-            await editApprovalMappingPage.selectCompany('- Global -');
+            await editApprovalMappingPage.selectStatusMappingRejected('Approval Rejected');
+            await editApprovalMappingPage.selectStatusMappingError('Canceled');
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
             await utilGrid.searchAndOpenHyperlink("Test " + approvalMappingName);
-            expect(await editApprovalMappingPage.getSelectedCompany()).toBe('- Global -');
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
+
+        it('[DRDMV-10702,DRDMV-11882,DRDMV-16524]: Delete approval mapping',async()=>{
+            await utilGrid.searchAndSelectGridRecord("Test " + approvalMappingName);
+            await approvalMappingConsolePage.clickDeleteApprovalMapping();
+            await utilCommon.clickOnWarningOk();
+            await utilGrid.searchRecord("Test " + approvalMappingName);
+            await expect(utilGrid.isGridRecordPresent("Test " + approvalMappingName)).toBeFalsy('Grid record displayed on grid console after deletion.');
+        });
+
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();

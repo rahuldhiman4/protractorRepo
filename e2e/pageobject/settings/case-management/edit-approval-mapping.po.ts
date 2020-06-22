@@ -28,7 +28,14 @@ class EditApprovalMapping {
         approvalTriggerProcessHelptext: '[rx-view-component-id="4d837936-df13-4d15-8c7f-d2b7f6991249"] span',
         approvalMappingFields: '1e161c6a-3b3d-42c3-8119-83207d9fbbc0',
         saveButton: '[rx-view-component-id="4d180221-3ec2-4cda-a122-afbc1380c156"] button',
-        cancelButton: '[rx-view-component-id="da40842c-69c6-41ec-8871-0db58e48eb44"] button'
+        cancelButton: '[rx-view-component-id="da40842c-69c6-41ec-8871-0db58e48eb44"] button',
+        caseTemplateSelectionHelpText: '[rx-view-component-id="4f699ae0-5f65-461d-b8d3-f2a247781674"] p',
+        caseTemplateLabel: '[rx-view-component-id="64e986dc-0751-41f9-864a-7bf8c54fb0ad"] .bottom-margin',
+        selectCaseTemplateInputField: '[rx-view-component-id="64e986dc-0751-41f9-864a-7bf8c54fb0ad"] input',
+        selectCaseTemplateBtn: 'button.d-icon-arrow_right',
+        deselectCaseTemplateBtn: 'button.d-icon-arrow_left',
+        searchedCaseTemplateText: '.km-group-list-item__info span',
+        selectCaseTemplate: 'div .d-icon-circle_o',
     }
 
     async getEditApprovalMappingHeaderText(): Promise<string> {
@@ -36,7 +43,7 @@ class EditApprovalMapping {
     }
 
     async getApprovalMappingName(): Promise<string> {
-       return await $(this.selectors.approvalMappingName).getAttribute("value");
+        return await $(this.selectors.approvalMappingName).getAttribute("value");
     }
 
     async setApprovalMappingName(approvalMappingNameValue: string): Promise<void> {
@@ -53,7 +60,7 @@ class EditApprovalMapping {
     }
 
     async getSelectedCompany(): Promise<string> {
-       return await $(this.selectors.companyDropDown).getText();
+        return await $(this.selectors.companyDropDown).getText();
     }
 
     async getSelectedFlowset(): Promise<string> {
@@ -140,8 +147,67 @@ class EditApprovalMapping {
         await $(this.selectors.cancelButton).click();
     }
 
+    async getCaseTemplateSelectionHelpText(): Promise<string> {
+        return await $(this.selectors.caseTemplateSelectionHelpText).getText();
+    }
 
+    async getCaseTemplateLabel(): Promise<string> {
+        return await $$(this.selectors.caseTemplateLabel).first().getText();
+    }
 
+    async getSelectedCaseTemplateLabel(): Promise<string> {
+        return await $$(this.selectors.caseTemplateLabel).last().getText();
+    }
+
+    async searchCaseTemplate(): Promise<void> {
+        await $$(this.selectors.selectCaseTemplateInputField).first().clear();
+        await $$(this.selectors.selectCaseTemplateInputField).first().sendKeys();
+    }
+
+    async searchAssociatedCaseTemplate(): Promise<void> {
+        await $$(this.selectors.selectCaseTemplateInputField).last().clear();
+        await $$(this.selectors.selectCaseTemplateInputField).last().sendKeys();
+    }
+
+    async isSelectCaseTemplateforApprovalRightArrawBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.selectCaseTemplateBtn).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.selectCaseTemplateBtn).getAttribute("disabled") == "disabled";
+            } else return false;
+        });
+    }
+
+    async isSelectCaseTemplateforApprovalLeftArrawBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.deselectCaseTemplateBtn).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.deselectCaseTemplateBtn).getAttribute("disabled") == "disabled";
+            } else return false;
+        });
+    }
+
+    async selectCaseTemplateforApprovalRightArrawBtn(): Promise<void> {
+        await $(this.selectors.selectCaseTemplateBtn).click();
+    }
+
+    async selectCaseTemplateforApprovalLeftArrawBtn(): Promise<void> {
+        await $(this.selectors.deselectCaseTemplateBtn).click();
+    }
+
+    async getSearchedCaseTemplate(): Promise<string> {
+        return await $$(this.selectors.searchedCaseTemplateText).first().getText();
+    }
+
+    async getAssociatedCaseTemplate(): Promise<string> {
+        return await $$(this.selectors.searchedCaseTemplateText).last().getText();
+    }
+
+    async selectCaseTemplateRadioBtn():Promise<void>{
+        await $$(this.selectors.selectCaseTemplate).first().click();
+    }
+
+    async deselectAssociatedCaseTemplateRadioBtn():Promise<void>{
+        await $$(this.selectors.selectCaseTemplate).last().click();
+    }
 
 }
 
