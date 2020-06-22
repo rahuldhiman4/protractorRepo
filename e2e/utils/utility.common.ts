@@ -86,7 +86,7 @@ export class Utility {
         await browser.executeScript("arguments[0].scrollIntoView();", $(`${element}`).getWebElement());
     }
 
-    async isPopUpMessagePresent(expectedMsg: string, actualNumberOfPopups?: number): Promise<boolean> {
+    async isPopUpMessagePresent(expectedMsg: string, actualNumberOfPopups?: number): Promise<boolean> {
         let arr: string[] = await this.getAllPopupMsg(actualNumberOfPopups);
         return arr.includes(expectedMsg);
     }
@@ -182,7 +182,7 @@ export class Utility {
     async isRequiredTagToField(guid: string): Promise<boolean> {
         let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent();
         if (!isRequired) {
-            let nameElement = await $(`[rx-view-component-id="${guid}"] label`);
+            let nameElement = await $(`[rx-view-component-id="${guid}"] .form-control-label`);
             let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
             isRequired = value.trim().substring(3, value.length - 2) === 'required';
         }

@@ -45,6 +45,8 @@ import { CASE_APPROVAL_MAPPING } from '../data/api/approval/case.approval.mappin
 import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
 import { BUSINESS_TIME_SHARED_ENTITY } from '../data/api/slm/business.time.shared.entity.api';
 import { BUSINESS_TIME_SEGMENT } from '../data/api/slm/business.time.segment.api';
+import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
+import { POST_ACTIVITY } from '../data/api/social/post.activity.api';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -1564,6 +1566,7 @@ class ApiHelper {
         }
 
         let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case", caseGuid, statusData);
+        console.log(`Changing the case to ${status} API status is =============>`, updateCaseStatus.status);
         return updateCaseStatus.status;
     }
 
@@ -1830,6 +1833,7 @@ class ApiHelper {
         ADHOC_TASK_PAYLOAD.fieldInstances[536870913].value = caseGuid;
         ADHOC_TASK_PAYLOAD.fieldInstances[1000000001].value = await coreApi.getOrganizationGuid(taskData.company);
         ADHOC_TASK_PAYLOAD.fieldInstances[450000152].value = await coreApi.getPersonGuid(taskData.assignee);
+        ADHOC_TASK_PAYLOAD.fieldInstances[450000381].value = await coreApi.getBusinessUnitGuid(taskData.businessUnit);
         ADHOC_TASK_PAYLOAD.fieldInstances[1000000217].value = await coreApi.getSupportGroupGuid(taskData.supportGroup);
         taskData.priority ? ADHOC_TASK_PAYLOAD.fieldInstances[1000000164].value = constants.CasePriority[taskData.priority] : ADHOC_TASK_PAYLOAD.fieldInstances[1000000164].value;
 
@@ -1982,8 +1986,9 @@ class ApiHelper {
         return response.status == 204;
     }
 
-    async changeCaseAssignment(caseGuid: string, supportGroup: string, assignee?: string): Promise<boolean> {
+    async changeCaseAssignment(caseGuid: string, businessUnit: string, supportGroup: string, assignee?: string): Promise<boolean> {
         UPDATE_CASE_ASSIGNMENT.id = caseGuid;
+        UPDATE_CASE_ASSIGNMENT.fieldInstances[450000381].value = await coreApi.getBusinessUnitGuid(businessUnit);
         UPDATE_CASE_ASSIGNMENT.fieldInstances[1000000217].value = await coreApi.getSupportGroupGuid(supportGroup);
         if (assignee) UPDATE_CASE_ASSIGNMENT.fieldInstances[450000152].value = await coreApi.getPersonGuid(assignee);
         let updateAssignmentResponse = await coreApi.updateRecordInstance('com.bmc.dsm.case-lib:Case', caseGuid, UPDATE_CASE_ASSIGNMENT);
@@ -2134,6 +2139,44 @@ class ApiHelper {
         console.log('Association API Status =============>', response.status);
         return response.status == 204;
     }
+
+    async reopenCase(caseGuid: string): Promise<boolean> {
+        CASE_REOPEN.processInputValues["Case ID"] = caseGuid;
+        let response = await axios.post(
+            commandUri,
+            CASE_REOPEN
+        )
+        console.log('Reopen API Status  =============>', response.status);
+        return response.status == 201;
+    }
+
+    async postActivityCommentsWithoutAttachments(comment: string, module: string, moduleGuid: string): Promise<boolean> {
+        POST_ACTIVITY.dataSource = module;
+        POST_ACTIVITY.text = comment;
+        let uri = `/api/com.bmc.dsm.social-lib/rx/application/activity/${module}/${moduleGuid}`;
+        let response = await axios.post(
+            uri,
+            POST_ACTIVITY
+        )
+        console.log('Comments posting API Status  =============>', response.status);
+        return response.status == 200;
+    }
+
+    async sendApprovalQuestions(recordGuid: string, user: string, questions: string, caseId: string): Promise<boolean> {
+        let signatureId = await coreApi.getSignatureId(recordGuid);
+        let formData = {
+            to: user,
+            question: questions,
+            application: 'com.bmc.dsm.case-lib:Case',
+            applicationRequestId: caseId,
+            signatureID: signatureId
+        }
+        
+        let response = await coreApi.multiFormPostWithAttachment(formData,'api/com.bmc.arsys.rx.approval/rx/application/approval/moreinformation/question');
+        console.log('More Info API Status =============>', response.status);
+        return response.status == 204;
+    }
+
 }
 
 export default new ApiHelper();
