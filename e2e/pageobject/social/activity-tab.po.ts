@@ -105,10 +105,6 @@ class ActivityTabPage {
         });
     }
 
-    async scrollUpOrDownActivityLogs(activityNumber: number): Promise<void> {
-        await browser.executeScript("arguments[0].scrollIntoView();", $$(this.selectors.activityLogList).get(activityNumber - 1).getWebElement());
-    }
-
     async isBodyDisplayedInActivity(caseActivityLogTitleText: string, activityNumber: number): Promise<boolean> {
         return await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.body', caseActivityLogTitleText)).isDisplayed().then(async (result) => {
             if (result) return true;

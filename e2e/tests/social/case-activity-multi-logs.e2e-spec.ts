@@ -207,7 +207,6 @@ describe('Case Activity Multi Logs', () => {
             await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
             expect(await viewTaskPo.getTaskStatusValue()).toBe('Completed', 'FailureMsg1: Automated task status is not completed');
             // Create Task Activity 
-            await activityTabPage.scrollUpOrDownActivityLogs(3);
             expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 3)).toBeTruthy('FailureMsg2: log icon is missing');
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi created the task', 3)).toBeTruthy('FailureMsg4: log title is missing');
             expect(await activityTabPage.isTextPresentInActivityLog('Summary')).toBeTruthy('FailureMsg5: Text is missing in activity log');
