@@ -87,8 +87,9 @@ class ActivityTabPage {
 
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
         return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isPresent().then(async (result) => {
-            if (result) return true;
-            else return false;
+            if (result){
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isDisplayed();
+            } else return false;
         });
     }
 

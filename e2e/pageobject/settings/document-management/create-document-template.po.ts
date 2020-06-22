@@ -74,24 +74,35 @@ class CreateDocumentTemplate {
         await $(this.selectors.cancelButton).click();
     }
 
-    async isTemplateNameFieldRequired(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField('98493095-1421-4405-8927-dd684b0d2006');
-    }
-
-    async isCompanyFieldRequired(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField('a80a3c32-ce91-485b-a56b-3bac1f78d40f');
-    }
-
-    async isDescriptionFieldRequired(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField('933dd491-7d55-4735-b30a-f2826afe1461');
-    }
-
-    async isDocumentBodyFieldRequired(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField('4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c');
-    }
-
-    async isLabelFieldRequired(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField('02d4e346-ca1c-4eeb-a80e-322eab42ad02');
+    async isFieldRequired(fieldName: string): Promise<boolean> {
+        let guid: string = undefined;
+        switch (fieldName) {
+            case "Template Name": {
+                guid = '98493095-1421-4405-8927-dd684b0d2006';
+                break;
+            }
+            case "Company": {
+                guid = 'a80a3c32-ce91-485b-a56b-3bac1f78d40f';
+                break;
+            }
+            case "Description": {
+                guid = '933dd491-7d55-4735-b30a-f2826afe1461';
+                break;
+            }
+            case "Document Body": {
+                guid = '4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c';
+                break;
+            }
+            case "Label": {
+                guid = '02d4e346-ca1c-4eeb-a80e-322eab42ad02';
+                break;
+            }
+            default: {
+                console.log(fieldName, ' is not a valid parameter');
+                break;
+            }
+        }
+        return await utilCommon.isRequiredTagToField(guid);
     }
 }
 

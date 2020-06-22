@@ -140,6 +140,8 @@ describe('Document Template', () => {
         let lable2;
 
         beforeAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
             // Create Menu item Lables with API
             await apiHelper.apiLogin('qkatawazi');
             let menuItemDataFile1 = require('../../data/ui/ticketing/menuItem.ui.json');
@@ -155,17 +157,16 @@ describe('Document Template', () => {
 
         it('Verify Create Document Template UI', async () => {
             // Goto document template
-            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
 
             await createDocumentTemplatePo.clickOnAddTemplate();
             expect(await createDocumentTemplatePo.isHeaderDisplayed('Create Document Template')).toBeTruthy('Create document template header is missing');
-            expect(await createDocumentTemplatePo.isTemplateNameFieldRequired()).toBeTruthy('FailureMsg: Required tag is missing for Template Name')
-            expect(await createDocumentTemplatePo.isCompanyFieldRequired()).toBeTruthy('FailureMsg: Required tag is missing for Company')
-            expect(await createDocumentTemplatePo.isDescriptionFieldRequired()).toBeTruthy('FailureMsg: Required tag is missing for Description')
-            expect(await createDocumentTemplatePo.isDocumentBodyFieldRequired()).toBeTruthy('FailureMsg: Required tag is missing for Document Body')
-            expect(await createDocumentTemplatePo.isLabelFieldRequired()).toBeFalsy('FailureMsg: Required tag is displayed for Label')
+            expect(await createDocumentTemplatePo.isFieldRequired('Template Name')).toBeTruthy('FailureMsg: Required tag is missing for Template Name')
+            expect(await createDocumentTemplatePo.isFieldRequired('Company')).toBeTruthy('FailureMsg: Required tag is missing for Company')
+            expect(await createDocumentTemplatePo.isFieldRequired('Description')).toBeTruthy('FailureMsg: Required tag is missing for Description')
+            expect(await createDocumentTemplatePo.isFieldRequired('Document Body')).toBeTruthy('FailureMsg: Required tag is missing for Document Body')
+            expect(await createDocumentTemplatePo.isFieldRequired('Label')).toBeFalsy('FailureMsg: Required tag is displayed for Label')
 
             await createDocumentTemplatePo.setTemplateName(documentName);
             await createDocumentTemplatePo.setCompany('Petramco');
