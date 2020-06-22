@@ -99,6 +99,7 @@ describe('Email Configuration', () => {
             await consoleEmailConfig.deleteConfigurationEmail();
             await utilCommon.clickOnWarningOk();
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
+            await apiHelper.createEmailConfiguration();
         });
         it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify Global Exclusion should be displayed', async () => {
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy();

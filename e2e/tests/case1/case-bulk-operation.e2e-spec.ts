@@ -21,10 +21,11 @@ describe('Case Bulk Operation', () => {
     let businessData, departmentData, suppGrpData, personData, orgId;
 
     beforeAll(async () => {
-        await browser.get(BWF_BASE_URL);
-        await loginPage.login(qfengStr);
-        await utilityGrid.clearFilter();
-        await testData();
+        await browser.get(BWF_BASE_URL);
+        await loginPage.login(qfengStr);
+        await utilityGrid.clearFilter();
+        await utilityGrid.sortGridColumn('Case ID', 'desc');
+        await testData(); 
     });
 
     afterAll(async () => {

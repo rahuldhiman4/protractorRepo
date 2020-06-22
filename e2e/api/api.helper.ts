@@ -1701,7 +1701,6 @@ class ApiHelper {
         if (orgId == null) { orgId = await coreApi.getDepartmentGuid(orgName); }
         if (orgId == null) { orgId = await coreApi.getSupportGroupGuid(orgName); }
         readAccessDocLibPayload['processInputValues']['Value'] = orgId;
-        console.log(readAccessDocLibPayload);
         const readAccessDocLibResponse = await axios.post(commandUri, readAccessDocLibPayload);
         console.log('Read Access Doc Lib API Status =============>', readAccessDocLibResponse.status);
         return readAccessDocLibResponse.status == 201;

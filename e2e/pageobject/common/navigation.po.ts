@@ -155,7 +155,7 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Create')).click();
-            await element(by.cssContainingText('.a-hamburger__content.submenu [id="submenu_4"] button', /^Case $/)).click().then(async () => {
+            await element(by.cssContainingText('.a-hamburger__content.submenu [id="submenu_3"] button', /^Case $/)).click().then(async () => {
                 await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             });
         } else {
@@ -187,7 +187,7 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Create')).click();
-            await element(by.cssContainingText('.a-hamburger__content.submenu [id="submenu_4"] button', /^Knowledge $/)).click().then(async () => {
+            await element(by.cssContainingText('.a-hamburger__content.submenu [id="submenu_3"] button', /^Knowledge $/)).click().then(async () => {
                 await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             });
         } else {
