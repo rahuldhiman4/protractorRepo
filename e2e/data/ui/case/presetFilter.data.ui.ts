@@ -580,19 +580,22 @@ export const AFTERRESOLVED_CRITICAL = {
 export const TASK_DATA_ASSIGNEDTOLOGGEDINUSER = {
     "taskName": "Sample Name",
     "company": "Phylum",
+    "businessUnit": "Phylum Support Org1",
     "supportGroup": "Phylum Support Group1",
-    "assignee": "idphylum1",
+    "assignee": "idphylum1"
 };
 
 export const TASK_DATA_ASSIGNTOLOGGEDINUSERGROUP = {
     "taskName": "Sample Name",
     "company": "Phylum",
+    "businessUnit": "Phylum Support Org1",
     "supportGroup": "Phylum Support Group1"
 };
 
 export const TASK_DATA_ASSIGNTOANOTHERUSER = {
     "taskName": "Sample Name",
     "company": "Phylum",
+    "businessUnit": "Phylum Support Org1",
     "supportGroup": "Phylum Support Group1",
     "assignee": "idphylum3"
 };
@@ -600,6 +603,7 @@ export const TASK_DATA_ASSIGNTOANOTHERUSER = {
 export const TASK_DATA_LOW_PRIORITY = {
     "taskName": "Sample Name",
     "company": "Phylum",
+    "businessUnit": "Phylum Support Org1",
     "supportGroup": "Phylum Support Group1",
     "assignee": "idphylum1",
     "priority": "Low"
@@ -608,6 +612,7 @@ export const TASK_DATA_LOW_PRIORITY = {
 export const TASK_DATA_MEDIUM_PRIORITY = {
     "taskName": "Sample Name",
     "company": "Phylum",
+    "businessUnit": "Phylum Support Org1",
     "supportGroup": "Phylum Support Group1",
     "assignee": "idphylum1",
     "priority": "Medium"
@@ -616,6 +621,7 @@ export const TASK_DATA_MEDIUM_PRIORITY = {
 export const TASK_DATA_HIGH_PRIORITY = {
     "taskName": "Sample Name",
     "company": "Phylum",
+    "businessUnit": "Phylum Support Org1",
     "supportGroup": "Phylum Support Group1",
     "assignee": "idphylum1",
     "priority": "High"
@@ -624,6 +630,7 @@ export const TASK_DATA_HIGH_PRIORITY = {
 export const TASK_DATA_CRITICAL_PRIORITY = {
     "taskName": "Sample Name",
     "company": "Phylum",
+    "businessUnit": "Phylum Support Org1",
     "supportGroup": "Phylum Support Group1",
     "assignee": "idphylum1",
     "priority": "Critical"
