@@ -89,7 +89,7 @@ class ActivityTabPage {
         return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isPresent().then(async (result) => {
             if (result){
                 return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isDisplayed();
-            } else return false;
+            } else return false; 
         });
     }
 
