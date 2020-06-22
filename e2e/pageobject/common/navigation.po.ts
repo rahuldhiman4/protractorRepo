@@ -302,7 +302,6 @@ class NavigationPage {
         await $(this.selectors.TileSearchInput).click();
         await $(this.selectors.TileSearchInput).sendKeys(applicationName);
         await element(by.cssContainingText(this.selectors.TileSearchResult, applicationName)).click();
-        await this.switchToAngularTab();
     }
 
     async isSettingPanelTextMatches(text: string): Promise<boolean> {
