@@ -260,7 +260,7 @@ describe('Case Status Change', () => {
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg10: Case Reopen link displayed');
     });
 
-    fdescribe('[DRDMV-22361]: Verify Case Reopen Functionailty with Assignee/Write Access/Read Access Users', async () => {
+    describe('[DRDMV-22361]: Verify Case Reopen Functionailty with Assignee/Write Access/Read Access Users', async () => {
         let case1, case2;
         it('[DRDMV-22361]: Create case1  With Resolved Status', async () => {
             await navigationPage.signOut();
@@ -324,18 +324,18 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickSaveStatus();
         });
 
-        fit('[DRDMV-22361]: Verify Reopen Button With Read Only Users3', async () => {
+        it('[DRDMV-22361]: Verify Reopen Button With Read Only Users3', async () => {
             await navigationPage.signOut();
             await loginPage.login('qyuan');
-            await caseConsolePo.searchAndOpenCase('CASE-0000000740'); 
+            await caseConsolePo.searchAndOpenCase(case1); 
             expect (await viewCasePage.isCaseReopenLinkDisabled()).toBeTruthy('FailureMsg1: Reopen button is not disabled');
             await viewCasePage.clickOnReopenCaseLink();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg2: Resolved status is missing');
-            // await navigationPage.gotoCaseConsole();
-            // await caseConsolePo.searchAndOpenCase(case2);
-            // expect (await viewCasePage.isCaseReopenLinkDisabled()).toBeTruthy('FailureMsg3: Reopen button is not disabled');
-            // await viewCasePage.clickOnReopenCaseLink();
-            // expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg4: Close status is missing');
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(case2);
+            expect (await viewCasePage.isCaseReopenLinkDisabled()).toBeTruthy('FailureMsg3: Reopen button is not disabled');
+            await viewCasePage.clickOnReopenCaseLink();
+            expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg4: Close status is missing');
         });
 
         it('[DRDMV-22361]: Verify Reopen Button With Write Access Users2', async () => {
