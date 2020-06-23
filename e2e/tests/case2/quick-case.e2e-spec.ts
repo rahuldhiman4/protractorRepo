@@ -509,7 +509,7 @@ describe("Quick Case", () => {
             await resources.enterAdvancedSearchText(CaseTemplateData.templateName);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
-            await quickCase.pinRecommendedKnowledgeArticles(1);
+            await resources.pinRecommendedKnowledgeArticles(1);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
         });
