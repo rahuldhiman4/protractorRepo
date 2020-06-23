@@ -254,11 +254,11 @@ describe('Case Template', () => {
         let column1: string[] = ["Display ID"];
         await consoleCasetemplatePo.addColumnOnGrid(column1);
         await utilGrid.searchRecord(newCaseTemplate.displayId);
-        expect(await consoleCasetemplatePo.isValueDisplayed("Display ID")).toContain(newCaseTemplate.displayId);
+        expect(await consoleCasetemplatePo.getFirstRecordValue("Display ID")).toContain(newCaseTemplate.displayId);
         await consoleCasetemplatePo.clickOnClearSearchIcon();
         expect(await consoleCasetemplatePo.moreRecordsArePresentAfterClear()).toBeGreaterThan(7);
         await utilGrid.searchRecord(templateData.templateName);
-        expect(await consoleCasetemplatePo.isValueDisplayed("Template Name")).toContain(templateData.templateName);
+        expect(await consoleCasetemplatePo.getFirstRecordValue("Template Name")).toContain(templateData.templateName);
         await consoleCasetemplatePo.clickOnClearSearchIcon();
         expect(await consoleCasetemplatePo.moreRecordsArePresentAfterClear()).toBeGreaterThan(7);
         await utilGrid.searchRecord('xyzsdasdlkdasd');

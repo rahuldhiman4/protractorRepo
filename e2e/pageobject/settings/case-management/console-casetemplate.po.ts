@@ -47,7 +47,7 @@ class CaseTemplateConsole {
         await utilGrid.removeGridColumn(this.selectors.gridGUID, columnName)
     }
 
-    async isValueDisplayed(columnName: string): Promise<string> {
+    async getFirstRecordValue(columnName: string): Promise<string> {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGUID, columnName);
     }
 

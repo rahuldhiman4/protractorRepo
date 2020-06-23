@@ -47,6 +47,7 @@ import { BUSINESS_TIME_SHARED_ENTITY } from '../data/api/slm/business.time.share
 import { BUSINESS_TIME_SEGMENT } from '../data/api/slm/business.time.segment.api';
 import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
 import { POST_ACTIVITY } from '../data/api/social/post.activity.api';
+import { CASE_READ_ACCESS } from '../data/api/case/case.read.access.api';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -2174,6 +2175,60 @@ class ApiHelper {
         let response = await coreApi.multiFormPostWithAttachment(formData,'api/com.bmc.arsys.rx.approval/rx/application/approval/moreinformation/question');
         console.log('More Info API Status =============>', response.status);
         return response.status == 204;
+    }
+
+    async createReadAccessMapping(data: any): Promise<boolean> {
+        CASE_READ_ACCESS.fieldInstances[450000381].value = await apiCoreUtil.getBusinessUnitGuid(data.businessUnit);
+        CASE_READ_ACCESS.fieldInstances[1000000217].value = await apiCoreUtil.getSupportGroupGuid(data.supportGroup);
+        CASE_READ_ACCESS.fieldInstances[450000153].value = await apiCoreUtil.getOrganizationGuid(data.assignedCompany);
+        CASE_READ_ACCESS.fieldInstances[1000001437].value = data.configName;
+        CASE_READ_ACCESS.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
+
+        if (data.category1) {
+            let categoryTier1 = await coreApi.getCategoryGuid(data.category1);
+            let category1Data = {
+                "id": 1000000063,
+                "value": `${categoryTier1}`
+            }
+            CASE_READ_ACCESS.fieldInstances["1000000063"] = category1Data;
+        }
+        if (data.category2) {
+            let categoryTier2 = await coreApi.getCategoryGuid(data.category2);
+            let category2Data = {
+                "id": 1000000064,
+                "value": `${categoryTier2}`
+            }
+            CASE_READ_ACCESS.fieldInstances["1000000064"] = category2Data;
+        }
+        if (data.category3) {
+            let categoryTier3 = await coreApi.getCategoryGuid(data.category3);
+            let category3Data = {
+                "id": 1000000065,
+                "value": `${categoryTier3}`
+            }
+            CASE_READ_ACCESS.fieldInstances["1000000065"] = category3Data;
+        }
+        if (data.category4) {
+            let categoryTier4 = await coreApi.getCategoryGuid(data.category4);
+            let category4Data = {
+                "id": 450000158,
+                "value": `${categoryTier4}`
+            }
+            CASE_READ_ACCESS.fieldInstances["450000158"] = category4Data;
+        }
+
+        if (data.label) {
+            let label = await coreApi.getLabelGuid(data.label);
+            let labelData = {
+                "id": 450000159,
+                "value": `${label}`
+            }
+            CASE_READ_ACCESS.fieldInstances["450000159"] = labelData;
+        }
+
+        let readAccessMapping: AxiosResponse = await coreApi.createRecordInstance(CASE_READ_ACCESS);
+        console.log('Read Access Mapping Status =============>', readAccessMapping.status);
+        return readAccessMapping.status == 201;
     }
 
 }
