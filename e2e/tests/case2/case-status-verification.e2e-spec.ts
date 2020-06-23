@@ -31,17 +31,15 @@ describe('Case Status Change', () => {
     let caseTemplate3 = 'createCaseTemplateCaseReopenYesAndStatusClosed' + randomStr;
     let CaseTemplate4 = 'createCaseTemplateAsCaseReopenNoAndStatusClosed' + randomStr;
 
-
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-        await createCaseTemplateCaseReopenYesAndStatusResolved();
-        await createCaseTemplateAsCaseReopenNoAndStatusResolved();
-        await createCaseTemplateCaseReopenYesAndStatusClosed();
-        await createCaseTemplateAsCaseReopenNoAndStatusClosed();
+        // await navigationPage.gotoSettingsPage();
+        // await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        // await createCaseTemplateCaseReopenYesAndStatusResolved();
+        // await createCaseTemplateAsCaseReopenNoAndStatusResolved();
+        // await createCaseTemplateCaseReopenYesAndStatusClosed();
+        // await createCaseTemplateAsCaseReopenNoAndStatusClosed();
     });
 
     afterAll(async () => {
@@ -262,7 +260,7 @@ describe('Case Status Change', () => {
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg10: Case Reopen link displayed');
     });
 
-    describe('[DRDMV-22361]: Verify Case Reopen Functionailty with Assignee/Write Access/Read Access Users', async () => {
+    fdescribe('[DRDMV-22361]: Verify Case Reopen Functionailty with Assignee/Write Access/Read Access Users', async () => {
         let case1, case2;
         it('[DRDMV-22361]: Create case1  With Resolved Status', async () => {
             await navigationPage.signOut();
@@ -326,16 +324,18 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickSaveStatus();
         });
 
-        it('[DRDMV-22361]: Verify Reopen Button With Read Only Users3', async () => {
+        fit('[DRDMV-22361]: Verify Reopen Button With Read Only Users3', async () => {
             await navigationPage.signOut();
             await loginPage.login('qyuan');
-            await caseConsolePo.searchAndOpenCase(case1); 
+            await caseConsolePo.searchAndOpenCase('CASE-0000000740'); 
+            expect (await viewCasePage.isCaseReopenLinkDisabled()).toBeTruthy('FailureMsg1: Reopen button is not disabled');
             await viewCasePage.clickOnReopenCaseLink();
-            expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg1: Resolved status is missing');
-            await navigationPage.gotoCaseConsole();
-            await caseConsolePo.searchAndOpenCase(case2);
-            await viewCasePage.clickOnReopenCaseLink();
-            expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg2: Close status is missing');
+            expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg2: Resolved status is missing');
+            // await navigationPage.gotoCaseConsole();
+            // await caseConsolePo.searchAndOpenCase(case2);
+            // expect (await viewCasePage.isCaseReopenLinkDisabled()).toBeTruthy('FailureMsg3: Reopen button is not disabled');
+            // await viewCasePage.clickOnReopenCaseLink();
+            // expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg4: Close status is missing');
         });
 
         it('[DRDMV-22361]: Verify Reopen Button With Write Access Users2', async () => {

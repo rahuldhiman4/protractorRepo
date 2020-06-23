@@ -115,6 +115,14 @@ class ViewCasePage {
         //        await utilCommon.closePopUpMessage();
     }
 
+    async isCaseReopenLinkDisabled(): Promise<boolean> {
+        return await $(this.selectors.reOpenCase).isPresent().then(async (result) => {
+            if (result){
+                return await $(this.selectors.reOpenCase).getAttribute("disabled") == "true";
+            }else return false;
+        });
+    }
+
     async getErrorMsgOfInprogressStatus(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.inprogressErrorMsg)));
         return await $(this.selectors.inprogressErrorMsg).getText();
