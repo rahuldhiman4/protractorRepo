@@ -130,7 +130,7 @@ describe('Edit Case', () => {
         await editCasePage.clickChangeAssignmentButton();
         await changeAssignmentPage.selectBusinessUnit('Australia Support');
         await changeAssignmentPage.selectSupportGroup('AU Support 1');
-        await changeAssignmentPage.selectAssigneeAsSupportGroup('AU Support 1');
+        await changeAssignmentPage.selectAssignToSupportGroup();
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
         await activityTabPo.clickShowMoreLinkInActivity(1);
@@ -153,7 +153,7 @@ describe('Edit Case', () => {
         await editCasePage.clickChangeAssignmentButton();
         await changeAssignmentPage.selectBusinessUnit('Facilities Support');
         await changeAssignmentPage.selectSupportGroup('Facilities');
-        await changeAssignmentPage.selectAssigneeAsSupportGroup('Facilities');
+        await changeAssignmentPage.selectAssignToSupportGroup();
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
         await utilCommon.closePopUpMessage();

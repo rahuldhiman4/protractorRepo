@@ -395,7 +395,7 @@ describe('Create Adhoc task', () => {
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
+            await changeAssignmentBladePo.selectAssignToSupportGroup();
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
@@ -423,7 +423,7 @@ describe('Create Adhoc task', () => {
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
+            await changeAssignmentBladePo.selectAssignToSupportGroup();
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
@@ -463,7 +463,7 @@ describe('Create Adhoc task', () => {
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
+            await changeAssignmentBladePo.selectAssignToSupportGroup();
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
@@ -491,7 +491,7 @@ describe('Create Adhoc task', () => {
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
+            await changeAssignmentBladePo.selectAssignToSupportGroup();
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();

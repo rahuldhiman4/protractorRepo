@@ -822,7 +822,7 @@ describe("Create Case", () => {
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentPage.selectBusinessUnit('United States Support')
             await changeAssignmentPage.selectSupportGroup('US Support 3');
-            await changeAssignmentPage.selectAssigneeAsSupportGroup('US Support 3');
+            await changeAssignmentPage.selectAssignToSupportGroup();
             await changeAssignmentPage.clickOnAssignButton();
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
