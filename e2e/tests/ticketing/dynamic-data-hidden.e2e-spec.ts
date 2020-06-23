@@ -36,6 +36,7 @@ describe('Dynamic Hidden Data', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

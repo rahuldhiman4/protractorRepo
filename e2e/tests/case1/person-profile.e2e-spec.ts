@@ -20,6 +20,7 @@ describe('Person Profile test', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

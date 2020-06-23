@@ -26,6 +26,7 @@ describe('Case Activity CKE', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

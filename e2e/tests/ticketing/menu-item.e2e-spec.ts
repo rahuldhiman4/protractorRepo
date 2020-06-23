@@ -13,6 +13,7 @@ import editMenuItemsConfigPo from '../../pageobject/settings/application-config/
 import menuItemsConfigConsolePo from '../../pageobject/settings/application-config/menu-items-config-console.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Menu Item', () => {
     beforeAll(async () => {
@@ -21,6 +22,7 @@ describe('Menu Item', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

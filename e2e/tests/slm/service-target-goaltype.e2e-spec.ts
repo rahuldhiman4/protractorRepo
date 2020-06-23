@@ -7,8 +7,9 @@ import editGoalType from '../../pageobject/settings/slm/edit-goal-type.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
-var caseBAUser = 'qkatawazi';
+let caseBAUser = 'qkatawazi';
 
 describe('Service Level Management - Goal Type Tests', () => {
     beforeAll(async () => {
@@ -19,6 +20,7 @@ describe('Service Level Management - Goal Type Tests', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

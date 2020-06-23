@@ -49,6 +49,7 @@ describe('Document Library Consume Permission', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

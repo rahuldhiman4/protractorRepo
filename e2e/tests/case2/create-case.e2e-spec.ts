@@ -50,6 +50,7 @@ describe("Create Case", () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

@@ -60,6 +60,7 @@ describe("Compose Email", () => {
     afterAll(async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteAllEmailConfiguration();
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

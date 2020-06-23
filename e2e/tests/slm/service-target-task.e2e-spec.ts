@@ -17,7 +17,6 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
 let psilonCaseBAUser = 'gderuno';
@@ -32,6 +31,7 @@ describe('Service Target Tests for Tasks', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

@@ -40,13 +40,13 @@ describe('Knowledge Article', () => {
     });
 
     afterAll(async () => {
-        await navigationPage.signOut();
         // await apiHelper.apiLogin("tadmin");
         // let domainTag = await apiHelper.createDomainTag(domainTagDataFile['DomainTagData']);
         // await apiHelper.disableDomainTag(domainTag);
         // let domainTagPsilon = await apiHelper.createDomainTag(domainTagDataFile['DomainTagDataPsilon']);
         // await apiHelper.disableDomainTag(domainTagPsilon);
-
+        await utilityCommon.closeAllBlades();
+        await navigationPage.signOut();
     });
 
     afterEach(async () => {

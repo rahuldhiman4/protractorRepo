@@ -32,6 +32,7 @@ describe('Create Case Task', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

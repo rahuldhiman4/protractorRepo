@@ -11,6 +11,7 @@ import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowle
 import { default as knowledgeArticlesConsolePo, default as knowledgeConsolePo } from '../../pageobject/knowledge/knowledge-articles-console.po';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import imagePropertiesPo from '../../pageobject/settings/common/image-properties.po';
 import consoleKnowledgeTemplatePo from '../../pageobject/settings/knowledge-management/console-knowledge-template.po';
 import createKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledge-management/create-knowledge-article-template.po';
 import editKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledge-management/edit-knowledge-article-template.po';
@@ -20,7 +21,6 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import imagePropertiesPo from '../../pageobject/settings/common/image-properties.po';
 
 describe('Knowledge Article', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -36,6 +36,7 @@ describe('Knowledge Article', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -1488,7 +1489,7 @@ describe('Knowledge Article', () => {
     });
 
     describe('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
-        let kaDetails1, kaDetails2, kaDetails3,articleData;
+        let kaDetails1, kaDetails2, kaDetails3, articleData;
         beforeAll(async () => {
             await apiHelper.apiLogin(knowledgeCoachUser);
             articleData = {
@@ -1500,7 +1501,7 @@ describe('Knowledge Article', () => {
                 "assigneeSupportGroup": "US Support 1",
                 "assignee": "kayo",
             }
-            
+
             kaDetails1 = await apiHelper.createKnowledgeArticle(articleData);
             kaDetails2 = await apiHelper.createKnowledgeArticle(articleData);
             articleData.title = 'KA2' + randomStr;
@@ -1527,7 +1528,7 @@ describe('Knowledge Article', () => {
             await resources.clickOnAdvancedSearchFiltersButton("Apply");
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
             await resources.pinRecommendedKnowledgeArticles(2);
-            expect(await resources.getCountOfPinKnowledgeArticles()).toBe(3); 
+            expect(await resources.getCountOfPinKnowledgeArticles()).toBe(3);
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await viewKnowledgeArticlePo.clickOnTab('Resources');
             expect(await resources.getCountOfPinKnowledgeArticles()).toBe(3);
@@ -1538,7 +1539,7 @@ describe('Knowledge Article', () => {
             await resources.unpinRecommendedKnowledgeArticles(1);
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
             await resources.unpinRecommendedKnowledgeArticles(1);
-            expect(await resources.isFirstPinnedArticleDisplayed()).toBeFalsy();       
+            expect(await resources.isFirstPinnedArticleDisplayed()).toBeFalsy();
         });
         it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
             await navigationPage.gotoKnoweldgeConsoleFromKM();
@@ -1550,10 +1551,10 @@ describe('Knowledge Article', () => {
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton("Apply");
             await resources.pinRecommendedKnowledgeArticles(2);
-            expect(await resources.getCountOfPinKnowledgeArticles()).toBe(2); 
+            expect(await resources.getCountOfPinKnowledgeArticles()).toBe(2);
             await resources.clickPaginationNext();
             await resources.pinRecommendedKnowledgeArticles(2);
-            expect(await resources.getCountOfPinKnowledgeArticles()).toBe(2); 
+            expect(await resources.getCountOfPinKnowledgeArticles()).toBe(2);
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -1582,29 +1583,29 @@ describe('Knowledge Article', () => {
     });
 
     //Failing Due to DRDMV-22428
-    it('[DRDMV-4269]:[Attachment] - Create article with maximum attachment - 30 attachments', async () => { 
-        await navigationPage.signOut(); 
-        await loginPage.login(knowledgeCoachUser); 
-        await navigationPage.switchToAnotherApplication(knowledgeManagementApp); 
-        await utilityCommon.switchToNewTab(1); 
-        await navigationPage.gotoCreateKnowledge(); 
-        await createKnowledgePage.clickOnTemplate('Reference'); 
-        await createKnowledgePage.clickOnUseSelectedTemplateButton(); 
-        await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr); 
-        await createKnowledgePage.selectKnowledgeSet('HR'); 
-        await createKnowledgePage.clickOnSaveKnowledgeButton(); 
-        await previewKnowledgePo.clickGoToArticleButton(); 
-        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData(); 
-        await editKnowledgePage.addAttachment(['../../data/ui/attachment/bwfJpg.jpg']); 
-        await editKnowledgePage.saveKnowledgeMedataDataChanges(); 
-        expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfJpg')).toBeFalsy(); 
-        await viewKnowledgeArticlePo.clickOnAttachments('bwfJpg.jpg'); 
-        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully'); 
-        expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.'); 
-        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData(); 
-        await editKnowledgePage.addAttachment(['../../data/ui/attachment/50MB.zip']); 
-        await editKnowledgePage.saveKnowledgeMedataDataChanges(); 
-        expect(await utilityCommon.isPopUpMessagePresent('Maximum allowed attachment size is: 20000000 bytes')).toBeTruthy('Atachment Not Added'); 
-        await utilityCommon.closePopUpMessage(); 
-    }); 
+    it('[DRDMV-4269]:[Attachment] - Create article with maximum attachment - 30 attachments', async () => {
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
+        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await utilityCommon.switchToNewTab(1);
+        await navigationPage.gotoCreateKnowledge();
+        await createKnowledgePage.clickOnTemplate('Reference');
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
+        await createKnowledgePage.selectKnowledgeSet('HR');
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+        await previewKnowledgePo.clickGoToArticleButton();
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.addAttachment(['../../data/ui/attachment/bwfJpg.jpg']);
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfJpg')).toBeFalsy();
+        await viewKnowledgeArticlePo.clickOnAttachments('bwfJpg.jpg');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
+        expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.');
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.addAttachment(['../../data/ui/attachment/50MB.zip']);
+        await editKnowledgePage.saveKnowledgeMedataDataChanges();
+        expect(await utilityCommon.isPopUpMessagePresent('Maximum allowed attachment size is: 20000000 bytes')).toBeTruthy('Atachment Not Added');
+        await utilityCommon.closePopUpMessage();
+    });
 });

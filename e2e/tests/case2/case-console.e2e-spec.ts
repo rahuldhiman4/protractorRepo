@@ -2,13 +2,14 @@ import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilityGrid from "../../utils/utility.grid";
-import utilGrid from '../../utils/util.grid';
-import caseTemplateConsolePO from '../../pageobject/settings/case-management/console-casetemplate.po';
-import taskTemplateConsolePO from '../../pageobject/settings/task-management/console-tasktemplate.po';
 import assignmentConfigConsolePo from '../../pageobject/settings/case-management/assignments-config-console.po';
+import caseTemplateConsolePO from '../../pageobject/settings/case-management/console-casetemplate.po';
 import readAccessConsolePo from '../../pageobject/settings/case-management/read-access-console.po';
+import taskTemplateConsolePO from '../../pageobject/settings/task-management/console-tasktemplate.po';
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
+import utilityGrid from "../../utils/utility.grid";
 
 describe('Case Console', () => {
 
@@ -18,6 +19,7 @@ describe('Case Console', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -30,27 +32,27 @@ describe('Case Console', () => {
             "Business Unit": "United States Support",
             "Support Group": "US Support 1",
             "Origin": "External"
-          }
+        }
 
-          await apiHelper.apiLogin('qfeng');
-          for(let i=0; i<3; i++) {
-              await apiHelper.createCase(caseData);
-          }
-          caseData.Origin = "Email";
-          for(let i=0; i<3; i++) {
+        await apiHelper.apiLogin('qfeng');
+        for (let i = 0; i < 3; i++) {
+            await apiHelper.createCase(caseData);
+        }
+        caseData.Origin = "Email";
+        for (let i = 0; i < 3; i++) {
             await apiHelper.createCase(caseData);
         }
         caseData.Origin = "Agent";
-        for(let i=0; i<3; i++) {
+        for (let i = 0; i < 3; i++) {
             await apiHelper.createCase(caseData);
         }
 
-          await utilityGrid.clearFilter();
-          await utilityGrid.addFilter('Summary', 'DRDMV-9181-Summary', 'text');
-          await utilityGrid.addGridColumn(['Source']);
-          expect(await utilityGrid.isGridColumnSorted('Source', 'asc')).toBeTruthy('Column is not sorted in ascending order');
-          expect(await utilityGrid.isGridColumnSorted('Source', 'desc')).toBeTruthy('Column is not sorted in descending order');
-          await utilityGrid.removeGridColumn(['Source']);
+        await utilityGrid.clearFilter();
+        await utilityGrid.addFilter('Summary', 'DRDMV-9181-Summary', 'text');
+        await utilityGrid.addGridColumn(['Source']);
+        expect(await utilityGrid.isGridColumnSorted('Source', 'asc')).toBeTruthy('Column is not sorted in ascending order');
+        expect(await utilityGrid.isGridColumnSorted('Source', 'desc')).toBeTruthy('Column is not sorted in descending order');
+        await utilityGrid.removeGridColumn(['Source']);
     });
 
     describe('[DRDMV-15257]: Verify Category Tier 4 and Label column is visible on console', () => {

@@ -53,6 +53,7 @@ describe('Task Console Preset Filter', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

@@ -44,6 +44,7 @@ describe('Case Template', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -1018,11 +1019,11 @@ describe('Case Template', () => {
             await viewCaseTemplate.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-            expect(await viewCaseTemplate.getTemplateStatusValue()).toBe('Draft'); 
+            expect(await viewCaseTemplate.getTemplateStatusValue()).toBe('Draft');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             expect(await quickCasePo.selectCaseTemplate(caseTemplateName)).toBeFalsy('Draft template is present');
-        });     
+        });
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
