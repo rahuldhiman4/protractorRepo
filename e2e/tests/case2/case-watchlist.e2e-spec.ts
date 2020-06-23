@@ -347,8 +347,9 @@ describe('Case Watchlist', () => {
             let response = await apiHelper.createCase(caseData['caseWatchlist']);
             caseId[i] = response.displayId;
         }
-        await utilityCommon.refresh();
-
+        // navigation to reflect Cases on console
+        await navigationPage.gotoTaskConsole();
+        await navigationPage.gotoCaseConsole();
         await utilityGrid.searchAndOpenHyperlink(caseId[1]);
         await viewCasePage.clickAddToWatchlistLink();
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
@@ -440,7 +441,9 @@ describe('Case Watchlist', () => {
         await viewCasePage.clickEditCaseButton();
         await editCase.clickChangeAssignmentButton();
         await changeAssignment.selectBusinessUnit('Australia Support');
-        await changeAssignment.setAssigneeGroup(auSupport1Str);
+        await changeAssignment.selectSupportGroup(auSupport1Str);
+        await changeAssignment.selectAssignToSupportGroup();
+        await changeAssignment.clickOnAssignButton();
         await editCase.clickSaveCase();
         await utilityCommon.closePopUpMessage();
 
@@ -449,7 +452,9 @@ describe('Case Watchlist', () => {
         await viewCasePage.clickEditCaseButton();
         await editCase.clickChangeAssignmentButton();
         await changeAssignment.selectBusinessUnit('HR Support');
-        await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
+        await changeAssignment.selectSupportGroup(compensationAndBenefitsStr);
+        await changeAssignment.selectAssignToSupportGroup();
+        await changeAssignment.clickOnAssignButton();
         await editCase.clickSaveCase();
         await utilityCommon.closePopUpMessage();
 
@@ -479,7 +484,9 @@ describe('Case Watchlist', () => {
         await viewCasePage.clickEditCaseButton();
         await editCase.clickChangeAssignmentButton();
         await changeAssignment.selectBusinessUnit('Australia Support');
-        await changeAssignment.setAssigneeGroup(auSupport1Str);
+        await changeAssignment.selectSupportGroup(auSupport1Str);
+        await changeAssignment.selectAssignToSupportGroup();
+        await changeAssignment.clickOnAssignButton();
         await editCase.clickSaveCase();
 
         //Stop watching and change the Group Assignee to Compensation and Benefits
@@ -494,7 +501,9 @@ describe('Case Watchlist', () => {
         await viewCasePage.clickEditCaseButton();
         await editCase.clickChangeAssignmentButton();
         await changeAssignment.selectBusinessUnit('HR Support');
-        await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
+        await changeAssignment.selectSupportGroup(compensationAndBenefitsStr);
+        await changeAssignment.selectAssignToSupportGroup();
+        await changeAssignment.clickOnAssignButton();
         await editCase.clickSaveCase();
         await utilityCommon.closePopUpMessage();
 
@@ -552,7 +561,9 @@ describe('Case Watchlist', () => {
             await viewCasePage.clickEditCaseButton();
             await editCase.clickChangeAssignmentButton();
             await changeAssignment.selectBusinessUnit('HR Support');
-            await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
+            await changeAssignment.selectSupportGroup(compensationAndBenefitsStr);
+            await changeAssignment.selectAssignToSupportGroup();
+            await changeAssignment.clickOnAssignButton();
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.refresh();
@@ -621,7 +632,9 @@ describe('Case Watchlist', () => {
             await viewCasePage.clickEditCaseButton();
             await editCase.clickChangeAssignmentButton();
             await changeAssignment.selectBusinessUnit('HR Support');
-            await changeAssignment.setAssigneeGroup(compensationAndBenefitsStr);
+            await changeAssignment.selectSupportGroup(compensationAndBenefitsStr);
+            await changeAssignment.selectAssignToSupportGroup();
+            await changeAssignment.clickOnAssignButton();
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             await updateStatusBladePo.changeCaseStatus("Assigned");

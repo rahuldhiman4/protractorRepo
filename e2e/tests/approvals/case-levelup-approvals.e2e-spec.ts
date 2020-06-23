@@ -515,7 +515,6 @@ describe("Case Level Up Approval Tests", () => {
 
     });
 
-
     //skhobrag
     describe('[DRDMV-1369,DRDMV-1368]:[Approval] Details of approvers in sequenced approval', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1070,4 +1069,4 @@ describe("Case Level Up Approval Tests", () => {
 
     });
 
-})    
+});    

@@ -1,16 +1,16 @@
-import { browser, protractor, ProtractorExpectedConditions } from "protractor";
-import loginPage from "../../pageobject/common/login.po";
-import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
-import { BWF_BASE_URL } from '../../utils/constants';
-import navigationPage from "../../pageobject/common/navigation.po";
+import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import approvalConsolePage from "../../pageobject/approval/approvals-console.po";
+import viewCasePo from '../../pageobject/case/view-case.po';
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
+import showApproversBladePo from "../../pageobject/common/show-approvers-list-tab.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
+import activityTabPage from '../../pageobject/social/activity-tab.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityGrid from '../../utils/utility.grid';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import activityTabPage from '../../pageobject/social/activity-tab.po';
-import showApproversBladePo from "../../pageobject/common/show-approvers-list-tab.po";
-import approvalConsolePage from "../../pageobject/approval/approvals-console.po";
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 let userData1 = undefined;
 describe("Case General Approval Tests", () => {
@@ -140,7 +140,7 @@ describe("Case General Approval Tests", () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');    
+            await loginPage.login('qkatawazi');
         });
 
     });
@@ -345,7 +345,7 @@ describe("Case General Approval Tests", () => {
             await apiHelper.deleteApprovalMapping();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-    
+
         });
 
     });
@@ -468,7 +468,7 @@ describe("Case General Approval Tests", () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');    
+            await loginPage.login('qkatawazi');
         });
 
     });
@@ -714,7 +714,7 @@ describe("Case General Approval Tests", () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');    
+            await loginPage.login('qkatawazi');
         });
 
     });
@@ -955,7 +955,7 @@ describe("Case General Approval Tests", () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');    
+            await loginPage.login('qkatawazi');
         });
 
     });
@@ -1121,11 +1121,9 @@ describe("Case General Approval Tests", () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');    
+            await loginPage.login('qkatawazi');
         });
 
     });
-
-
 
 });   

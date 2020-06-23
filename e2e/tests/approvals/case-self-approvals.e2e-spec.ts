@@ -1,15 +1,15 @@
-import { browser, protractor, ProtractorExpectedConditions } from "protractor";
-import loginPage from "../../pageobject/common/login.po";
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
-import { BWF_BASE_URL } from '../../utils/constants';
-import navigationPage from "../../pageobject/common/navigation.po";
+import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import utilityGrid from '../../utils/utility.grid';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import activityTabPage from '../../pageobject/social/activity-tab.po';
-import createCasePo from '../../pageobject/case/create-case.po';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
+import createCasePo from '../../pageobject/case/create-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
+import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
+import activityTabPage from '../../pageobject/social/activity-tab.po';
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilityGrid from '../../utils/utility.grid';
 
 let userData1 = undefined;
 describe("Case Self Approval Tests", () => {
@@ -150,7 +150,7 @@ describe("Case Self Approval Tests", () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');    
+            await loginPage.login('qkatawazi');
         });
 
     });
@@ -282,7 +282,7 @@ describe("Case Self Approval Tests", () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');    
+            await loginPage.login('qkatawazi');
         });
 
     });
