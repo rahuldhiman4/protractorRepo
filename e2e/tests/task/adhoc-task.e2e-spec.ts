@@ -537,4 +537,35 @@ describe('Create Adhoc task', () => {
         await utilityGrid.isGridColumnSorted("Modified Date", "asc");
         await utilityGrid.isGridColumnSorted("Modified Date", "desc");
     });
+
+    it('[DRDMV-22295]: Manual Task status should not be changed to "In Progress" from "Staged" if assignee is empty', async () => {
+        await apiHelper.apiLogin('qfeng');
+        let caseData = {
+            "Description": "Case DRDMV-3828",
+            "Requester": "Elizabeth",
+            "Summary": "Simple test case summary",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3"
+        }
+
+        let taskData = {
+            "taskName": "Task DRDMV-3828",
+            "company": "Petramco",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 1"
+        }
+        await navigationPage.gotoTaskConsole();
+        let caseCreationResponse = await apiHelper.createCase(caseData);
+        let taskCreationResponse = await apiHelper.createAdhocTask(caseCreationResponse.id, taskData);
+        await apiHelper.changeCaseAssignment(caseCreationResponse.id, 'United States Support', 'US Support 1', 'qtao');
+        await apiHelper.updateCaseStatus(caseCreationResponse.id, 'InProgress');
+        await utilityGrid.searchAndOpenHyperlink(taskCreationResponse.displayId);
+        await viewTask.clickOnChangeStatus();
+        await updateStatusBladePo.changeStatus("In Progress");
+        expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('Save button is enabled');
+        expect(await updateStatusBladePo.getValidationMessage()).toBe('Assignee is required for this task status.  Please select an assignee.');
+        await utilityCommon.closeAllBlades();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+    });
 });

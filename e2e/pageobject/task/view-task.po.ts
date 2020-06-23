@@ -99,16 +99,6 @@ class ViewTask {
         await $(this.selectors.taskStatus).click();
     }
 
-    async clickOnSaveStatus(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveStatus)));
-        await $(this.selectors.saveStatus).click();
-    }
-
-    async clickOnCancelStatus(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancleStatus)));
-        await $(this.selectors.cancleStatus).click();
-    }
-
     async changeTaskStatus(statusValue: string): Promise<void> {
         // await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusDropDown)), 2000);
         await utilityCommon.selectDropDown(this.selectors.statusDropDown, statusValue);

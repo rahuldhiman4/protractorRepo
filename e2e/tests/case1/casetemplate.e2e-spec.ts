@@ -1414,7 +1414,7 @@ describe('Case Template', () => {
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
             await updateStatusBladePo.setStatusReason('Successful');
-            await viewTaskPo.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             await viewTaskPo.clickOnViewCase();
             expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
         });
@@ -1438,7 +1438,7 @@ describe('Case Template', () => {
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
             await updateStatusBladePo.setStatusReason('Successful');
-            await viewTaskPo.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             await viewTaskPo.clickOnViewCase();
             expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
         });
