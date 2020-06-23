@@ -354,7 +354,7 @@ describe('Case Activity Multi Logs', () => {
         await viewTaskPo.clickOnChangeStatus();
         await viewTaskPo.changeTaskStatus('Completed');
         await updateStatusBladePo.setStatusReason('Successful');
-        await viewTaskPo.clickOnSaveStatus();
+        await updateStatusBladePo.clickSaveStatus();
         await viewTaskPo.clickOnViewCase();
         });
 

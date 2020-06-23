@@ -594,10 +594,10 @@ describe('Create Task Template', () => {
             await viewTask.clickOnChangeStatus();
             let allStatusatAssignedState: string[] = ["Assigned", "In Progress", "Pending", "Completed", "Canceled", "Closed"];
             await updateStatusBladePo.allStatusOptionsPresent(allStatusatAssignedState);
-            await viewTask.clickOnCancelStatus();
+            await updateStatusBladePo.clickCancelButton();
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("In Progress");
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewTask.getTaskStatusValue()).toBe('In Progress');
             await viewTask.clickOnViewCase();
         });
@@ -608,10 +608,10 @@ describe('Create Task Template', () => {
             await viewTask.clickOnChangeStatus();
             let allStatusatinProgressState: string[] = ["In Progress", "Assigned", "Pending", "Completed", "Failed", "Canceled", "Closed"];
             await updateStatusBladePo.allStatusOptionsPresent(allStatusatinProgressState);
-            await viewTask.clickOnCancelStatus();
+            await updateStatusBladePo.clickCancelButton();
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Pending");
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewTask.getTaskStatusValue()).toBe('Pending');
             await viewTask.clickOnViewCase();
         });
@@ -622,14 +622,14 @@ describe('Create Task Template', () => {
             await viewTask.clickOnChangeStatus();
             let allStatusatinProgressState: string[] = ["Pending", "Assigned", "In Progress", "Completed", "Canceled", "Closed"];
             await updateStatusBladePo.allStatusOptionsPresent(allStatusatinProgressState);
-            await viewTask.clickOnCancelStatus();
+            await updateStatusBladePo.clickCancelButton();
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Assigned");
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Completed");
             await updateStatusBladePo.setStatusReason("Successful");
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewTask.getTaskStatusValue()).toBe('Completed');
             await viewTask.clickOnViewCase();
         });
@@ -639,7 +639,7 @@ describe('Create Task Template', () => {
             expect(await viewTask.getTaskStatusValue()).toBe('Completed');
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Canceled");
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewTask.getTaskStatusValue()).toBe('Canceled');
             await viewTask.clickOnViewCase();
         });
@@ -781,7 +781,7 @@ describe('Create Task Template', () => {
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Completed");
             await updateStatusBladePo.setStatusReason("Successful")
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             await viewTask.clickOnViewCase();
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink('manualTaskSummary1' + randomStr);
@@ -793,7 +793,7 @@ describe('Create Task Template', () => {
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Completed");
             await updateStatusBladePo.setStatusReason("Successful")
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             await viewTask.clickOnViewCase();
             expect(await viewCasePage.getCaseStatusValue()).toBe("Resolved");
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy();
