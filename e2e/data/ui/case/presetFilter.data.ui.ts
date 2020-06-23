@@ -427,6 +427,19 @@ export const SERVICE_TARGET_ASSIGNED = {
     "svtName": "SVT Assigned to Resolved"
 }
 
+export const SERVICE_TARGET_NEW = {
+    "terms": "'1000000001'=\"04be8c4405fe327b812c4ebd1d7de81ab87166e59c9e50c29be65706115d2e4575aa17d92fa2d53c7abc1a85c62d514b62a70125ce13a2bcea17eab7b05e8158\"",
+    "readableTerms": "'Company'=\"Phylum\"",
+    "startWhen": "'450000021'=\"1000\"",
+    "readableStartWhen": "'Status'=\"New\"",
+    "stopWhen": "'450000021'=\"5000\"",
+    "readableStopWhen": "'Status'=\"Resolved\"",
+    "goalTimeMinutes": "4",
+    "dataSource": "Case Management",
+    "company": "Phylum",
+    "svtName": "SVT New to Resolved"
+}
+
 export const SERVICE_TARGET_INPROGRESS = {
     "terms": "'1000000001'=\"04be8c4405fe327b812c4ebd1d7de81ab87166e59c9e50c29be65706115d2e4575aa17d92fa2d53c7abc1a85c62d514b62a70125ce13a2bcea17eab7b05e8158\"",
     "readableTerms": "'Company'=\"Phylum\"",
@@ -517,6 +530,28 @@ export const ASSIGNED_CRITICAL = {
     "Priority": "1000"
 };
 
+export const ASSIGNED_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
+    "Description": "DRDMV-20875-6-Desc",
+    "Requester": "idphylum2",
+    "Summary": "DRDMV-20875-Summary",
+    "Assigned Company": "Phylum",
+    "Business Unit": "Phylum Support Org1",
+    "Support Group": "Phylum Support Group1",
+    "Assignee": "idphylum1",
+    "Status": "2000",
+    "Priority": "1000"
+};
+
+export const NEW_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
+    "Description": "DRDMV-20875-6-Desc",
+    "Requester": "idphylum2",
+    "Summary": "DRDMV-20875-Summary",
+    "Assigned Company": "Phylum",
+    "Business Unit": "Phylum Support Org1",
+    "Support Group": "Phylum Support Group1",
+    "Priority": "1000"
+};
+
 export const INPROGRESS_CRITICAL = {
     "Description": "DRDMV-20875-6-Desc",
     "Requester": "idphylum2",
@@ -525,6 +560,18 @@ export const INPROGRESS_CRITICAL = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum3",
+    "Status": "3000",
+    "Priority": "1000"
+};
+
+export const INPROGRESS_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
+    "Description": "DRDMV-20875-6-Desc",
+    "Requester": "idphylum2",
+    "Summary": "DRDMV-20875-Summary",
+    "Assigned Company": "Phylum",
+    "Business Unit": "Phylum Support Org1",
+    "Support Group": "Phylum Support Group1",
+    "Assignee": "idphylum1",
     "Status": "3000",
     "Priority": "1000"
 };
@@ -541,6 +588,18 @@ export const PENDING_CRITICAL = {
     "Priority": "1000"
 };
 
+export const PENDING_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
+    "Description": "DRDMV-20875-6-Desc",
+    "Requester": "idphylum2",
+    "Summary": "DRDMV-20875-Summary",
+    "Assigned Company": "Phylum",
+    "Business Unit": "Phylum Support Org1",
+    "Support Group": "Phylum Support Group1",
+    "Assignee": "idphylum1",
+    "Status": "4000",
+    "Priority": "1000"
+};
+
 export const RESOLVED_CRITICAL = {
     "Description": "DRDMV-20875-6-Desc",
     "Requester": "idphylum2",
@@ -549,6 +608,18 @@ export const RESOLVED_CRITICAL = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum3",
+    "Status": "5000",
+    "Priority": "1000"
+};
+
+export const RESOLVED_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
+    "Description": "DRDMV-20875-6-Desc",
+    "Requester": "idphylum2",
+    "Summary": "DRDMV-20875-Summary",
+    "Assigned Company": "Phylum",
+    "Business Unit": "Phylum Support Org1",
+    "Support Group": "Phylum Support Group1",
+    "Assignee": "idphylum1",
     "Status": "5000",
     "Priority": "1000"
 };
@@ -565,6 +636,18 @@ export const BEFORERESOLVED_CRITICAL = {
     "Priority": "1000"
 };
 
+export const BEFORERESOLVED_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
+    "Description": "DRDMV-20875-6-Desc",
+    "Requester": "idphylum2",
+    "Summary": "DRDMV-20875-Summary",
+    "Assigned Company": "Phylum",
+    "Business Unit": "Phylum Support Org1",
+    "Support Group": "Phylum Support Group1",
+    "Assignee": "idphylum1",
+    "Status": "3500",
+    "Priority": "1000"
+};
+
 export const AFTERRESOLVED_CRITICAL = {
     "Description": "DRDMV-20875-6-Desc",
     "Requester": "idphylum2",
@@ -573,6 +656,18 @@ export const AFTERRESOLVED_CRITICAL = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum3",
+    "Status": "5500",
+    "Priority": "1000"
+};
+
+export const AFTERRESOLVED_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
+    "Description": "DRDMV-20875-6-Desc",
+    "Requester": "idphylum2",
+    "Summary": "DRDMV-20875-Summary",
+    "Assigned Company": "Phylum",
+    "Business Unit": "Phylum Support Org1",
+    "Support Group": "Phylum Support Group1",
+    "Assignee": "idphylum1",
     "Status": "5500",
     "Priority": "1000"
 };
@@ -636,6 +731,14 @@ export const TASK_DATA_CRITICAL_PRIORITY = {
     "priority": "Critical"
 };
 
+export const TASK_DATA_CRITICAL_PRIORITY_UNASSIGNED = {
+    "taskName": "Sample Name",
+    "company": "Phylum",
+    "businessUnit": "Phylum Support Org1",
+    "supportGroup": "Phylum Support Group1",
+    "priority": "Critical"
+};
+
 export const CREATE_TASK_FROM_TASK_TEMPLATE = {
     "company": "Phylum",
     "requesterId": "idphylum3",
@@ -695,6 +798,19 @@ export const SERVICE_TARGET_ASSIGNED_TASK = {
     "readableTerms": "'Company'=\"Phylum\"",
     "startWhen": "'450000021'=\"2000\"",
     "readableStartWhen": "'Status'=\"Assigned\"",
+    "stopWhen": "'450000021'=\"5000\"",
+    "readableStopWhen": "'Status'=\"Completed\"",
+    "goalTimeMinutes": "4",
+    "dataSource": "Task Management",
+    "company": "Phylum",
+    "svtName": "SVT Assigned to Completed"
+};
+
+export const SERVICE_TARGET_NEW_TASK = {
+    "terms": "'1000000001'=\"04be8c4405fe327b812c4ebd1d7de81ab87166e59c9e50c29be65706115d2e4575aa17d92fa2d53c7abc1a85c62d514b62a70125ce13a2bcea17eab7b05e8158\"",
+    "readableTerms": "'Company'=\"Phylum\"",
+    "startWhen": "'450000021'=\"1000\"",
+    "readableStartWhen": "'Status'=\"New\"",
     "stopWhen": "'450000021'=\"5000\"",
     "readableStopWhen": "'Status'=\"Completed\"",
     "goalTimeMinutes": "4",
