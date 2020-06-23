@@ -20,6 +20,7 @@ describe('Edit Case', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

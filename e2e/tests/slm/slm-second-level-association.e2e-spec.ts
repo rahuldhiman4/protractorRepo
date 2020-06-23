@@ -20,6 +20,7 @@ describe('Service Target - Second Level Association Tests', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

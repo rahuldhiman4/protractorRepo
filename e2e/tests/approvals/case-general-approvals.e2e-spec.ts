@@ -10,6 +10,7 @@ import approvalConfigurationPage from "../../pageobject/settings/approval/approv
 import activityTabPage from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 let userData1 = undefined;
@@ -33,10 +34,10 @@ describe("Case General Approval Tests", () => {
         await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
         await apiHelper.associatePersonToSupportGroup('qkatawazi', "Staffing");
         await apiHelper.associatePersonToSupportGroup('qliu', "Staffing");
-
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -1126,4 +1127,4 @@ describe("Case General Approval Tests", () => {
 
     });
 
-});   
+});

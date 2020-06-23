@@ -26,8 +26,8 @@ import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import utilityCommon from '../../utils/utility.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe("Create Case Assignment Mapping", () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
@@ -61,6 +61,7 @@ describe("Create Case Assignment Mapping", () => {
     }
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -540,6 +541,6 @@ describe("Create Case Assignment Mapping", () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        }); 
+        });
     });
 });

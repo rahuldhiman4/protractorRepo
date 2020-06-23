@@ -1,17 +1,18 @@
-import { browser, protractor, ProtractorExpectedConditions } from "protractor";
-import loginPage from "../../pageobject/common/login.po";
-import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
-import { BWF_BASE_URL } from '../../utils/constants';
-import navigationPage from "../../pageobject/common/navigation.po";
+import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import approvalConsolePage from "../../pageobject/approval/approvals-console.po";
+import viewCasePo from '../../pageobject/case/view-case.po';
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
+import showApproversBladePo from "../../pageobject/common/show-approvers-list-tab.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
+import activityTabPage from '../../pageobject/social/activity-tab.po';
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import activityTabPage from '../../pageobject/social/activity-tab.po';
-import showApproversBladePo from "../../pageobject/common/show-approvers-list-tab.po";
-import approvalConsolePage from "../../pageobject/approval/approvals-console.po";
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 
 describe("Case Level Up Approval Tests", () => {
     const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
@@ -25,6 +26,7 @@ describe("Case Level Up Approval Tests", () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

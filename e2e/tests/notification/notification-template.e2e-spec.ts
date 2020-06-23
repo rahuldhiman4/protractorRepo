@@ -17,6 +17,7 @@ describe("Notification Template", () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

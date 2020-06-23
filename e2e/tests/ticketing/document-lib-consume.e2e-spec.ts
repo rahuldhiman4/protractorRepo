@@ -45,6 +45,7 @@ describe('Document Library Consume UI', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

@@ -61,6 +61,7 @@ describe('Copy Case Template', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -544,7 +545,7 @@ describe('Copy Case Template', () => {
 
     describe('[DRDMV-13807,DRDMV-13798]: Copy a Case Template for Company not same as Original Template, Where all Tasks belongs Same Company', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let casetemplatePetramco,newCaseTemplate,templateData, externaltemplateData, automatedtemplateData, copyCaseTemplateName: string = "copycaseTemplateName" + randomStr;
+        let casetemplatePetramco, newCaseTemplate, templateData, externaltemplateData, automatedtemplateData, copyCaseTemplateName: string = "copycaseTemplateName" + randomStr;
         beforeAll(async () => {
             await apiHelper.apiLoginWithCredential('13550User1@petramco.com', 'Password_1234');
             casetemplatePetramco = {
@@ -948,7 +949,7 @@ describe('Copy Case Template', () => {
     describe('[DRDMV-15256]: Verify For Copy template, Category Tier 4 and Label Data also get copied', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let label: string = undefined;
-        
+
         beforeAll(async () => {
             let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
             await apiHelper.apiLogin('tadmin');

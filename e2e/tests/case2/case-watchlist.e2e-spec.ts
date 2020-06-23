@@ -49,6 +49,7 @@ describe('Case Watchlist', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

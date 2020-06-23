@@ -58,6 +58,7 @@ describe('Case Console Preset Filter', () => {
     afterAll(async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.updatePersonAsVIP('idphylum2', 'No');
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

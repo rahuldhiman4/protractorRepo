@@ -35,6 +35,7 @@ describe('Case Data Store', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

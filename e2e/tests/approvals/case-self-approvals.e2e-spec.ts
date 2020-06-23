@@ -9,6 +9,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
 import activityTabPage from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 let userData1 = undefined;
@@ -36,6 +37,7 @@ describe("Case Self Approval Tests", () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -287,4 +289,4 @@ describe("Case Self Approval Tests", () => {
 
     });
 
-});       
+}); 

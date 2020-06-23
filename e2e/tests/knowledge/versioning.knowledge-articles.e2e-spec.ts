@@ -101,11 +101,13 @@ describe('Knowledge Articles - Versioning Tests', () => {
         let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
         await apiHelper.createKnowledgeArticleTemplate(knowledgeSetData.knowledgeSetTitle, knowledgeSet.id, knowledgeArticleTemplateData);
     });
+
     afterEach(async () => {
         await utilityCommon.refresh();
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

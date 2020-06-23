@@ -38,6 +38,7 @@ describe('Case Activity', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

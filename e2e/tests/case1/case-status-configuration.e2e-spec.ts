@@ -42,6 +42,7 @@ describe('Case Status Configuration', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

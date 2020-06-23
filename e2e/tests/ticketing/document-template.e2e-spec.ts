@@ -10,6 +10,7 @@ import documentTemplateConsolePo from '../../pageobject/settings/document-manage
 import editDocumentTemplatePo from '../../pageobject/settings/document-management/edit-document-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Document Template', () => {
     beforeAll(async () => {
@@ -18,6 +19,7 @@ describe('Document Template', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -133,9 +135,9 @@ describe('Document Template', () => {
     //kgaikwad
     describe('[DRDMV-14977]: Verify UI for Document template create ,edit, view mode', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let documentName= "DocumentTemplate"+randomStr;
-        let documentDescription= "description"+randomStr;
-        let documentBody="documentBody"+randomStr;
+        let documentName = "DocumentTemplate" + randomStr;
+        let documentDescription = "description" + randomStr;
+        let documentBody = "documentBody" + randomStr;
         let lable1, lable2;
 
         beforeAll(async () => {
@@ -144,12 +146,12 @@ describe('Document Template', () => {
             // Create Menu item Lables with API
             await apiHelper.apiLogin('qkatawazi');
             let menuItemDataFile1 = require('../../data/ui/ticketing/menuItem.ui.json');
-            lable1 = await menuItemDataFile1['sampleMenuItem'].menuItemName + "lable1"+randomStr;
+            lable1 = await menuItemDataFile1['sampleMenuItem'].menuItemName + "lable1" + randomStr;
             menuItemDataFile1['sampleMenuItem'].menuItemName = lable1;
             await apiHelper.createNewMenuItem(menuItemDataFile1['sampleMenuItem']);
 
             let menuItemDataFile2 = require('../../data/ui/ticketing/menuItem.ui.json');
-            lable2 = await menuItemDataFile2['sampleMenuItem'].menuItemName + "lable2" +randomStr;
+            lable2 = await menuItemDataFile2['sampleMenuItem'].menuItemName + "lable2" + randomStr;
             menuItemDataFile2['sampleMenuItem'].menuItemName = lable2;
             await apiHelper.createNewMenuItem(menuItemDataFile2['sampleMenuItem']);
         });
@@ -189,6 +191,6 @@ describe('Document Template', () => {
             expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Label')).toBe(lable2, 'Label is missing on Grid');
             expect(await documentTemplateConsolePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label is not get sorted with descending order');
         });
-    });   
+    });
 });
 

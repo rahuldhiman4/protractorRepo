@@ -188,6 +188,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

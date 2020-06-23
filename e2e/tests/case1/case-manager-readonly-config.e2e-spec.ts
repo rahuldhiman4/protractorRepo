@@ -40,6 +40,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

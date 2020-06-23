@@ -10,6 +10,8 @@ import newExclusiveSubjectPo from '../../pageobject/settings/email/new-exclusive
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
+
 describe('Email Configuration', () => {
     let emailID = "bmctemptestemail@gmail.com";
     beforeAll(async () => {
@@ -21,9 +23,10 @@ describe('Email Configuration', () => {
     });
 
     afterAll(async () => {
-        await navigationPage.signOut();
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteAllEmailConfiguration();
+        await utilityCommon.closeAllBlades();
+        await navigationPage.signOut();
     });
 
     //ankagraw

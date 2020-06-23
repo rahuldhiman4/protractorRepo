@@ -28,6 +28,7 @@ describe('Create Adhoc task', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

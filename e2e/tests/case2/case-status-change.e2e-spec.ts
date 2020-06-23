@@ -30,6 +30,7 @@ describe('Case Status Change', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

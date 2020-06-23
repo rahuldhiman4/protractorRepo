@@ -1,15 +1,15 @@
 import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
+import viewCasePage from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import apiHelper from '../../api/api.helper';
-import { BWF_BASE_URL } from '../../utils/constants';
-import notificationTemplateEditPage from '../../pageobject/settings/notification-config/edit-notification-template.po';
-import utilGrid from '../../utils/util.grid';
-import utilCommon from '../../utils/util.common';
-import utilityCommon from '../../utils/utility.common';
 import notificationPo from '../../pageobject/notification/notification.po';
-import viewCasePage from '../../pageobject/case/view-case.po';
+import notificationTemplateEditPage from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import viewTaskPasge from '../../pageobject/task/view-task.po';
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 const caseData = require('../../data/ui/case/case.ui.json');
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
@@ -35,6 +35,7 @@ describe("Actionable Notifications", () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

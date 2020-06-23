@@ -24,7 +24,7 @@ describe('Knowledge Article Template', () => {
     });
 
     afterAll(async () => {
-        await utilCommon.closeBladeOnSettings();
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

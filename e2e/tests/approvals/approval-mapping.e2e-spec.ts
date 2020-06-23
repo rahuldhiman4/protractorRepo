@@ -8,7 +8,7 @@ import editApprovalMappingPage from "../../pageobject/settings/case-management/e
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-
+import utilityCommon from '../../utils/utility.common';
 
 describe("Approval Mapping Tests", () => {
     const approvalMappingNameStr = "Approval Mapping Name";
@@ -30,6 +30,7 @@ describe("Approval Mapping Tests", () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -328,7 +329,7 @@ describe("Approval Mapping Tests", () => {
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
 
-        it('[DRDMV-10702,DRDMV-11882,DRDMV-16524]: Delete approval mapping',async()=>{
+        it('[DRDMV-10702,DRDMV-11882,DRDMV-16524]: Delete approval mapping', async () => {
             await utilGrid.searchAndSelectGridRecord("Test " + approvalMappingName);
             await approvalMappingConsolePage.clickDeleteApprovalMapping();
             await utilCommon.clickOnWarningOk();
