@@ -105,10 +105,10 @@ describe("Create Case Assignment Mapping", () => {
         let defaultCaseAssignmentColumns: string[] = ["Assignment Name", "Case Priority", "Company", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Region", "Site", "Support Company", "Support Group", "Default Mapping"];
         expect(await assignmentConfigConsolePage.areCaseAssignmentGridColumnMatches(defaultCaseAssignmentColumns)).toBeTruthy("Default columns are not matching");
         let caseAssignmentLabelColumn: string[] = ["Label"];
-        await assignmentConfigConsolePage.addRequestedCaseAssignmentGridColumn(caseAssignmentLabelColumn);
+        await assignmentConfigConsolePage.addColumns(caseAssignmentLabelColumn);
         defaultCaseAssignmentColumns.push("Label");
         expect(await assignmentConfigConsolePage.areCaseAssignmentGridColumnMatches(defaultCaseAssignmentColumns)).toBeTruthy("Default And new columns added are not matching");
-        await assignmentConfigConsolePage.removeRequestedCaseAssignmentGridColumn(caseAssignmentLabelColumn);
+        await assignmentConfigConsolePage.removeColumns(caseAssignmentLabelColumn);
         await defaultCaseAssignmentColumns.splice(defaultCaseAssignmentColumns.indexOf("Label"), 1);
         expect(await assignmentConfigConsolePage.areCaseAssignmentGridColumnMatches(defaultCaseAssignmentColumns)).toBeTruthy("Default And remaining new columns are not matching");
     });

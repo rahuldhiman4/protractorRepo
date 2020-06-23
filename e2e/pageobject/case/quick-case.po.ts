@@ -39,12 +39,6 @@ class QuickCasePage {
         dropdownSourceValue: '.dropdown-item span',
     }
 
-    async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
-        for (let i = 0; i < numberOfArticles; i++) {
-            await $(this.selectors.recommendedKnowledgeGuid).$$('adapt-icon[class="search-item__unpin-icon"]').get(i).click();
-        }
-    }
-
     async pinRecommendedCases(numberOfCases: number): Promise<void> {
         for (let i = 0; i < numberOfCases; i++) {
             await $(this.selectors.recommendedCaseGuid).$$('adapt-icon[class="search-item__unpin-icon"]').get(i).click();

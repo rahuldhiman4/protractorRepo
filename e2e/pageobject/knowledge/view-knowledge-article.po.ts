@@ -1,4 +1,5 @@
 import { $, $$, by, element, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import resources from '../../pageobject/common/resources-tab.po';
 
 class ViewKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -102,13 +103,13 @@ class ViewKnowledgePage {
         await $(this.selectors.editLinkOnKA).click();
     }
 
-        async isEditLinkDisplayedOnKA(): Promise<boolean> {
-            return await $(this.selectors.editLinkOnKA).isPresent().then(async (link) => {
-                if (link) {
-                   return  await $(this.selectors.editLinkOnKA).isDisplayed();
-                } else return false;
-            });
-        }
+    async isEditLinkDisplayedOnKA(): Promise<boolean> {
+        return await $(this.selectors.editLinkOnKA).isPresent().then(async (link) => {
+            if (link) {
+                return await $(this.selectors.editLinkOnKA).isDisplayed();
+            }
+        });
+    }
 
 
 
@@ -140,7 +141,7 @@ class ViewKnowledgePage {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.tab)),3000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.tab)), 3000);
         await element(by.cssContainingText(this.selectors.tab, tabName)).click();
     }
 
@@ -374,8 +375,8 @@ class ViewKnowledgePage {
     }
 
     async isAttachedFileNamePresent(fileName: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isPresent().then( async (result) => {
-            if(result) return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isDisplayed();
         });
     }
 
@@ -395,6 +396,10 @@ class ViewKnowledgePage {
         let locator = `.doc-editor__section-content img[src='${value}']`;
         let imageIsDisplayed: boolean = await $(locator).isDisplayed();
         return imageIsDisplayed;
+    }
+
+    async clickOnAttachments(attachmentName: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.attachmentName, attachmentName)).click();
     }
 }
 

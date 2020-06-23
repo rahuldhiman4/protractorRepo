@@ -1487,6 +1487,80 @@ describe('Knowledge Article', () => {
         });
     });
 
+    describe('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
+        let kaDetails1, kaDetails2, kaDetails3,articleData;
+        beforeAll(async () => {
+            await apiHelper.apiLogin(knowledgeCoachUser);
+            articleData = {
+                "knowledgeSet": "HR",
+                "title": 'KA1' + randomStr,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "kayo",
+            }
+            
+            kaDetails1 = await apiHelper.createKnowledgeArticle(articleData);
+            kaDetails2 = await apiHelper.createKnowledgeArticle(articleData);
+            articleData.title = 'KA2' + randomStr;
+            kaDetails3 = await apiHelper.createKnowledgeArticle(articleData);
+        });
+        it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(kaDetails3.displayId);
+            await viewKnowledgeArticlePo.clickOnTab('Resources');
+            await resources.clickOnAdvancedSearchOptions(kaDetails1.displayId);
+            await resources.enterAdvancedSearchText(kaDetails1.displayId);
+            await resources.clickOnAdvancedSearchSettingsIconToOpen();
+            await resources.clickOnAdvancedSearchFiltersButton("Apply");
+            await resources.pinRecommendedKnowledgeArticles(1);
+            expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
+            await resources.clickOnAdvancedSearchSettingsIconToClose();
+            await resources.enterAdvancedSearchText("Suggested Articles");
+            await resources.clickOnAdvancedSearchSettingsIconToOpen();
+            await resources.clickOnAdvancedSearchFiltersButton("Apply");
+            expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
+            await resources.pinRecommendedKnowledgeArticles(2);
+            expect(await resources.getCountOfPinKnowledgeArticles()).toBe(3); 
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
+            await viewKnowledgeArticlePo.clickOnTab('Resources');
+            expect(await resources.getCountOfPinKnowledgeArticles()).toBe(3);
+            await resources.clickOnBackButton();
+            expect(await resources.getCountOfPinKnowledgeArticles()).toBe(3);
+            await resources.unpinRecommendedKnowledgeArticles(1);
+            expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
+            await resources.unpinRecommendedKnowledgeArticles(1);
+            expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
+            await resources.unpinRecommendedKnowledgeArticles(1);
+            expect(await resources.isFirstPinnedArticleDisplayed()).toBeFalsy();       
+        });
+        it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
+            await viewKnowledgeArticlePo.clickOnTab("Resources");
+            await resources.clickOnAdvancedSearchOptions(kaDetails2.displayId);
+            await resources.enterAdvancedSearchText("Suggested Articles");
+            await resources.clickOnAdvancedSearchSettingsIconToOpen();
+            await resources.clickOnAdvancedSearchFiltersButton("Apply");
+            await resources.pinRecommendedKnowledgeArticles(2);
+            expect(await resources.getCountOfPinKnowledgeArticles()).toBe(2); 
+            await resources.clickPaginationNext();
+            await resources.pinRecommendedKnowledgeArticles(2);
+            expect(await resources.getCountOfPinKnowledgeArticles()).toBe(2); 
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
     it('[DRDMV-4018]:CK Editor - Should be able to upload image using url', async () => {
         let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
         let imageUrlFieldIndex = 0;
@@ -1506,4 +1580,31 @@ describe('Knowledge Article', () => {
         await previewKnowledgePo.clickGoToArticleButton();
         expect(await viewKnowledgeArticlePo.isImageDisplayedOnDescription(uploadURL)).toBeTruthy('Image is not displayed');
     });
+
+    //Failing Due to DRDMV-22428
+    it('[DRDMV-4269]:[Attachment] - Create article with maximum attachment - 30 attachments', async () => { 
+        await navigationPage.signOut(); 
+        await loginPage.login(knowledgeCoachUser); 
+        await navigationPage.switchToAnotherApplication(knowledgeManagementApp); 
+        await utilityCommon.switchToNewTab(1); 
+        await navigationPage.gotoCreateKnowledge(); 
+        await createKnowledgePage.clickOnTemplate('Reference'); 
+        await createKnowledgePage.clickOnUseSelectedTemplateButton(); 
+        await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr); 
+        await createKnowledgePage.selectKnowledgeSet('HR'); 
+        await createKnowledgePage.clickOnSaveKnowledgeButton(); 
+        await previewKnowledgePo.clickGoToArticleButton(); 
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData(); 
+        await editKnowledgePage.addAttachment(['../../data/ui/attachment/bwfJpg.jpg']); 
+        await editKnowledgePage.saveKnowledgeMedataDataChanges(); 
+        expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfJpg')).toBeFalsy(); 
+        await viewKnowledgeArticlePo.clickOnAttachments('bwfJpg.jpg'); 
+        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully'); 
+        expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.'); 
+        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData(); 
+        await editKnowledgePage.addAttachment(['../../data/ui/attachment/50MB.zip']); 
+        await editKnowledgePage.saveKnowledgeMedataDataChanges(); 
+        expect(await utilityCommon.isPopUpMessagePresent('Maximum allowed attachment size is: 20000000 bytes')).toBeTruthy('Atachment Not Added'); 
+        await utilityCommon.closePopUpMessage(); 
+    }); 
 });
