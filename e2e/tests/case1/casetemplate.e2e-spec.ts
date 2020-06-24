@@ -299,7 +299,7 @@ describe('Case Template', () => {
             expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('fritz');
-            await quickCasePo.selectCaseTemplate(templateData.templateSummary);
+            await quickCasePo.selectCaseTemplate(templateData.templateName);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy();

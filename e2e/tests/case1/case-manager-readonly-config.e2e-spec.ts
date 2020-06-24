@@ -210,7 +210,7 @@ describe('Case Manager Read-only Config', () => {
         //API call to create the case notes template
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        NOTES_TEMPLATE_MANDATORY_FIELD.templateName = NOTES_TEMPLATE_MANDATORY_FIELD + randomStr;
+        NOTES_TEMPLATE_MANDATORY_FIELD.templateName = NOTES_TEMPLATE_MANDATORY_FIELD.templateName + randomStr;
         await apiHelper.createNotesTemplate("Task", NOTES_TEMPLATE_MANDATORY_FIELD);
 
         await navigationPage.gotoCreateCase();

@@ -29,7 +29,6 @@ describe("Quick Case", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        await testData797();
     });
 
     afterAll(async () => {
@@ -73,6 +72,7 @@ describe("Quick Case", () => {
 
     //kgaikwad
     it('[DRDMV-797]: [Quick Case] Case creation with inactive template (negative)', async () => {
+        await testData797();
         await quickCasePo.clickStartOverButton();
         await quickCasePo.selectRequesterName("Adam Pavlik");
         await quickCasePo.selectCaseTemplate(templateName797);

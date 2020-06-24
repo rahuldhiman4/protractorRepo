@@ -201,9 +201,10 @@ describe('Case Bulk Operation', () => {
                 await utilityGrid.searchAndOpenHyperlink(caseId[i]);
                 await browser.sleep(10000);
                 expect(await activityPo.isTextPresentInActivityLog("Qiao Feng")).toBeTruthy("Text is not present in activiy tab1");
-                expect(await activityPo.isTextPresentInActivityLog("changed the case assignment")).toBeTruthy("Text is not present in activiy tab2");
+                expect(await activityPo.isTextPresentInActivityLog("changed the following case fields")).toBeTruthy("Text is not present in activiy tab2");
                 expect(await activityPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab");
                 expect(await activityPo.isTextPresentInActivityLog("Franz Schwarz")).toBeTruthy("Text is not present in activiy tab4");
+                await activityPo.clickShowMoreLinkInActivity(1);
                 expect(await activityPo.isTextPresentInActivityLog("Assigned Group")).toBeTruthy("Text is not present in activiy tab5");
                 expect(await activityPo.isTextPresentInActivityLog("Facilities")).toBeTruthy("Text is not present in activiy tab6");
                 await navigationPage.gotoCaseConsole();
@@ -342,6 +343,7 @@ describe('Case Bulk Operation', () => {
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignmentBladePo.setAssignee(petramcoStr, 'United States Support', "US Support 3", 'Qadim Katawazi');
         expect(await utilityCommon.isPopUpMessagePresent('Cases in closed or canceled status cannot be modified. Please update the selected cases.')).toBeTruthy();
+        await caseConsolePage.selectAllCases();
     });
 
     it('[DRDMV-15982]: Verify that Agent is unable to change the Assignee if status is Pending or Canceled', async () => {
@@ -414,7 +416,7 @@ describe('Case Bulk Operation', () => {
         expect(await utilityCommon.isPopUpMessagePresent('Cases that are pending approval can only be manually moved to canceled status.')).toBeTruthy();
         await utilityCommon.closePopUpMessage();
 
-        await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
+        await caseConsolePage.selectAllCases();
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[1]);
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignmentBladePo.setAssignee(petramcoStr, 'United States Support', "US Support 3", 'Qadim Katawazi');
