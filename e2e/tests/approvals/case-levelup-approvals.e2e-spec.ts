@@ -1065,10 +1065,6 @@ describe("Case Level Up Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
-
     });
-
 });    
