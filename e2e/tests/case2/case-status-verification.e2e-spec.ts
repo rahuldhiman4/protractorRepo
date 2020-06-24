@@ -1,4 +1,4 @@
-
+import apiHelper from '../../api/api.helper';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { browser } from "protractor";
@@ -17,6 +17,7 @@ import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 
+
 describe('Case Status Change', () => {
     let statusNew: string = "New";
     let statusInProgress: string = "In Progress";
@@ -34,12 +35,47 @@ describe('Case Status Change', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        // await navigationPage.gotoSettingsPage();
-        // await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-        // await createCaseTemplateCaseReopenYesAndStatusResolved();
-        // await createCaseTemplateAsCaseReopenNoAndStatusResolved();
-        // await createCaseTemplateCaseReopenYesAndStatusClosed();
-        // await createCaseTemplateAsCaseReopenNoAndStatusClosed();
+
+        let caseTemplateData = {
+            "templateName": caseTemplate1,
+            "templateSummary": caseTemplate1,
+            "caseStatus": "Resolved",
+            "statusReason": "Auto Resolved",
+            "templateStatus": "Active",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "supportGroup": "Facilities",
+            "assignee": "Fritz",
+            "ownerBU": 'Facilities Support',
+            "ownerGroup": "Facilities",
+            "allowCaseReopen": true
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        // Create Case Template Case Reopen Yes And Status Resolved
+        console.log('caseTemplateName>>>>>>>>>>>>>>>',caseTemplate1);
+        await apiHelper.createCaseTemplate(caseTemplateData);
+
+        // Create Case Template Case Reopen Yes And Status Closed
+        caseTemplateData.templateName = caseTemplate3;
+        caseTemplateData.templateSummary = caseTemplate3;
+        caseTemplateData.caseStatus = "Closed";
+        console.log('caseTemplateName>>>>>>>>>>>>>>>',caseTemplate3);
+        await apiHelper.createCaseTemplate(caseTemplateData);
+
+        // Create Case Template As Case Reopen No And Status Closed
+        caseTemplateData.templateName = CaseTemplate4;
+        caseTemplateData.templateSummary = CaseTemplate4;
+        caseTemplateData.caseStatus = "Closed";
+        caseTemplateData.allowCaseReopen = false;
+        console.log('caseTemplateName>>>>>>>>>>>>>>>',CaseTemplate4);
+        await apiHelper.createCaseTemplate(caseTemplateData);
+
+        // Create Case Template As Case Reopen No And Status Resolved
+        caseTemplateData.templateName = caseTemplate2;
+        caseTemplateData.templateSummary = caseTemplate2;
+        caseTemplateData.allowCaseReopen = false;
+        console.log('caseTemplateName>>>>>>>>>>>>>>>',caseTemplate2);
+        await apiHelper.createCaseTemplate(caseTemplateData);
     });
 
     afterAll(async () => {
@@ -47,16 +83,18 @@ describe('Case Status Change', () => {
     });
 
     async function createCaseTemplateCaseReopenYesAndStatusResolved() {
-        await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-        await createCaseTemplate.setTemplateName(caseTemplate1);
-        await createCaseTemplate.setCompanyName('Petramco');
-        await createCaseTemplate.setCaseSummary(caseTemplate1);
-        await createCaseTemplate.setCaseStatusValue(statusResolved);
-        await createCaseTemplate.setStatusReasonValue("Auto Resolved");
-        await createCaseTemplate.setAllowCaseReopenValue('Yes');
-        await createCaseTemplate.setTemplateStatusDropdownValue('Active');
-        await createCaseTemplate.clickSaveCaseTemplate();
-        await viewCasetemplatePo.gotoCaseTemplateConsole();
+        // await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+        // await createCaseTemplate.setTemplateName(caseTemplate1);
+        // await createCaseTemplate.setCompanyName('Petramco');
+        // await createCaseTemplate.setCaseSummary(caseTemplate1);
+        // await createCaseTemplate.setCaseStatusValue(statusResolved);
+        // await createCaseTemplate.setStatusReasonValue("Auto Resolved");
+        // await createCaseTemplate.setAllowCaseReopenValue('Yes');
+        // await createCaseTemplate.setTemplateStatusDropdownValue('Active');
+        // await createCaseTemplate.clickSaveCaseTemplate();
+        // await viewCasetemplatePo.gotoCaseTemplateConsole();
+        
+
     }
 
     async function createCaseTemplateAsCaseReopenNoAndStatusResolved() {
@@ -164,7 +202,7 @@ describe('Case Status Change', () => {
     });
 
     describe('[DRDMV-22321]: Reopen Case With Closed Status Without And With Case Template Configuration', async () => {
-        it('Create case1 without case template', async () => {
+        it('[DRDMV-22321]: Create case1 without case template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoCreateCase();

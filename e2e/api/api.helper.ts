@@ -257,6 +257,23 @@ class ApiHelper {
             templateData.fieldInstances["450000010"] = caseTemplateStatusGuid;
         }
 
+        if (data.statusReason) {
+            let statusReasonGuid = await coreApi.getStatusChangeReasonGuid(data.statusReason);
+            let statusReasonObj = {
+                "id": "1000000881",
+                "value": `${statusReasonGuid}`
+            }
+            templateData.fieldInstances["1000000881"] = statusReasonObj;
+        }
+        
+        if (data.allowCaseReopen==false) {
+            let allowCaseReopenObj = {
+                "id": "450000159",
+                "value": 0
+            }
+            templateData.fieldInstances["450000159"] = allowCaseReopenObj;
+        } 
+        
         if (data.casePriority) {
             let priorityValue = constants.CasePriority[data.casePriority];
             let priorityObj = {
@@ -264,7 +281,7 @@ class ApiHelper {
                 "value": `${priorityValue}`
             }
             templateData.fieldInstances["1000000164"] = priorityObj;
-        }
+        } 
 
         if (data.resolutionCode) {
             let resolutionCodeObj = {
@@ -272,7 +289,8 @@ class ApiHelper {
                 "value": `${data.resolutionCode}`
             }
             templateData.fieldInstances["450000162"] = resolutionCodeObj;
-        }
+        } 
+        
 
         if (data.resolutionDescription) {
             let resolutionDescriptionObj = {
