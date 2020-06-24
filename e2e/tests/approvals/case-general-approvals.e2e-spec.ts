@@ -32,8 +32,6 @@ describe("Case General Approval Tests", () => {
         await apiHelper.createNewUser(userData1);
         await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
         await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-        await apiHelper.associatePersonToSupportGroup('qkatawazi', "Staffing");
-        await apiHelper.associatePersonToSupportGroup('qliu', "Staffing");
     });
 
     afterAll(async () => {
@@ -1067,9 +1065,9 @@ describe("Case General Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabel('Pending Approval')).toContain('Pending Approval (1)');
             expect(await showApproversBladePo.getApproversTabLabel('Approval Decision')).toContain('Approval Decision (0)');
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
-            expect(await showApproversBladePo.getApproversCount()).toBe(6);
-            expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversCount()).toBe(4);
+            expect(await showApproversBladePo.getApproversName('Elizabeth Peters')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversName('Hannah Haas')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isApproverPersonIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
@@ -1082,7 +1080,7 @@ describe("Case General Approval Tests", () => {
         });
 
         it('[DRDMV-10828]:Approve the case and verify the case details', async () => {
-            await loginPage.login('qliu');
+            await loginPage.login('elizabeth');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
@@ -1103,9 +1101,9 @@ describe("Case General Approval Tests", () => {
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Pending Approval')).toContain('Pending Approval (0)');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
-            expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(6);
-            expect(await showApproversBladePo.getApproversNameFromActivity('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(4);
+            expect(await showApproversBladePo.getApproversNameFromActivity('Elizabeth Peters')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Hannah Haas')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
