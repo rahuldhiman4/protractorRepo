@@ -52,14 +52,12 @@ describe('Case Status Change', () => {
         }
         await apiHelper.apiLogin('qkatawazi');
         // Create Case Template Case Reopen Yes And Status Resolved
-        console.log('caseTemplateName>>>>>>>>>>>>>>>',caseTemplate1);
         await apiHelper.createCaseTemplate(caseTemplateData);
 
         // Create Case Template Case Reopen Yes And Status Closed
         caseTemplateData.templateName = caseTemplate3;
         caseTemplateData.templateSummary = caseTemplate3;
         caseTemplateData.caseStatus = "Closed";
-        console.log('caseTemplateName>>>>>>>>>>>>>>>',caseTemplate3);
         await apiHelper.createCaseTemplate(caseTemplateData);
 
         // Create Case Template As Case Reopen No And Status Closed
@@ -67,74 +65,18 @@ describe('Case Status Change', () => {
         caseTemplateData.templateSummary = CaseTemplate4;
         caseTemplateData.caseStatus = "Closed";
         caseTemplateData.allowCaseReopen = false;
-        console.log('caseTemplateName>>>>>>>>>>>>>>>',CaseTemplate4);
         await apiHelper.createCaseTemplate(caseTemplateData);
 
         // Create Case Template As Case Reopen No And Status Resolved
         caseTemplateData.templateName = caseTemplate2;
         caseTemplateData.templateSummary = caseTemplate2;
         caseTemplateData.allowCaseReopen = false;
-        console.log('caseTemplateName>>>>>>>>>>>>>>>',caseTemplate2);
         await apiHelper.createCaseTemplate(caseTemplateData);
     });
 
     afterAll(async () => {
         await navigationPage.signOut();
     });
-
-    async function createCaseTemplateCaseReopenYesAndStatusResolved() {
-        // await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-        // await createCaseTemplate.setTemplateName(caseTemplate1);
-        // await createCaseTemplate.setCompanyName('Petramco');
-        // await createCaseTemplate.setCaseSummary(caseTemplate1);
-        // await createCaseTemplate.setCaseStatusValue(statusResolved);
-        // await createCaseTemplate.setStatusReasonValue("Auto Resolved");
-        // await createCaseTemplate.setAllowCaseReopenValue('Yes');
-        // await createCaseTemplate.setTemplateStatusDropdownValue('Active');
-        // await createCaseTemplate.clickSaveCaseTemplate();
-        // await viewCasetemplatePo.gotoCaseTemplateConsole();
-        
-
-    }
-
-    async function createCaseTemplateAsCaseReopenNoAndStatusResolved() {
-        await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-        await createCaseTemplate.setTemplateName(caseTemplate2);
-        await createCaseTemplate.setCompanyName('Petramco');
-        await createCaseTemplate.setCaseSummary(caseTemplate2);
-        await createCaseTemplate.setCaseStatusValue(statusResolved);
-        await createCaseTemplate.setStatusReasonValue("Auto Resolved");
-        await createCaseTemplate.setAllowCaseReopenValue('No');
-        await createCaseTemplate.setTemplateStatusDropdownValue('Active');
-        await createCaseTemplate.clickSaveCaseTemplate();
-        await viewCasetemplatePo.gotoCaseTemplateConsole();
-    }
-
-    async function createCaseTemplateCaseReopenYesAndStatusClosed() {
-        await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-        await createCaseTemplate.setTemplateName(caseTemplate3);
-        await createCaseTemplate.setCompanyName('Petramco');
-        await createCaseTemplate.setCaseSummary(caseTemplate3);
-        await createCaseTemplate.setCaseStatusValue(statusClosed);
-        await createCaseTemplate.setStatusReasonValue("Auto Resolved");
-        await createCaseTemplate.setAllowCaseReopenValue('Yes');
-        await createCaseTemplate.setTemplateStatusDropdownValue('Active');
-        await createCaseTemplate.clickSaveCaseTemplate();
-        await viewCasetemplatePo.gotoCaseTemplateConsole();
-    }
-
-    async function createCaseTemplateAsCaseReopenNoAndStatusClosed() {
-        await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-        await createCaseTemplate.setTemplateName(CaseTemplate4);
-        await createCaseTemplate.setCompanyName('Petramco');
-        await createCaseTemplate.setCaseSummary(CaseTemplate4);
-        await createCaseTemplate.setCaseStatusValue(statusClosed);
-        await createCaseTemplate.setStatusReasonValue("Auto Resolved");
-        await createCaseTemplate.setAllowCaseReopenValue('No');
-        await createCaseTemplate.setTemplateStatusDropdownValue('Active');
-        await createCaseTemplate.clickSaveCaseTemplate();
-        await viewCasetemplatePo.gotoCaseTemplateConsole();
-    }
 
     describe('[DRDMV-22306]: Reopen Case With Resolved Status Without And With Case Template Configuration', async () => {
         it('[DRDMV-22306]: Create case1 without case template', async () => {
