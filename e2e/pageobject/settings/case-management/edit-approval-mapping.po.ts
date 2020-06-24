@@ -34,8 +34,10 @@ class EditApprovalMapping {
         selectCaseTemplateInputField: '[rx-view-component-id="64e986dc-0751-41f9-864a-7bf8c54fb0ad"] input',
         selectCaseTemplateBtn: 'button.d-icon-arrow_right',
         deselectCaseTemplateBtn: 'button.d-icon-arrow_left',
-        searchedCaseTemplateText: '.km-group-list-item__info span',
-        selectCaseTemplate: 'div .d-icon-circle_o',
+        searchedCaseTemplateText: '.km-group-list-item__info .title span',
+        selectCaseTemplate: 'div .d-icon-square_o',
+        caseTemplateSelectionArea : '.list-container',
+        searchedCaseTemplatesRecords: '.record-list-item',
     }
 
     async getEditApprovalMappingHeaderText(): Promise<string> {
@@ -159,14 +161,14 @@ class EditApprovalMapping {
         return await $$(this.selectors.caseTemplateLabel).last().getText();
     }
 
-    async searchCaseTemplate(): Promise<void> {
+    async searchCaseTemplate(caseTemplateTitle:string): Promise<void> {
         await $$(this.selectors.selectCaseTemplateInputField).first().clear();
-        await $$(this.selectors.selectCaseTemplateInputField).first().sendKeys();
+        await $$(this.selectors.selectCaseTemplateInputField).first().sendKeys(caseTemplateTitle);
     }
 
-    async searchAssociatedCaseTemplate(): Promise<void> {
+    async searchAssociatedCaseTemplate(caseTemplateTitle:string): Promise<void> {
         await $$(this.selectors.selectCaseTemplateInputField).last().clear();
-        await $$(this.selectors.selectCaseTemplateInputField).last().sendKeys();
+        await $$(this.selectors.selectCaseTemplateInputField).last().sendKeys(caseTemplateTitle);
     }
 
     async isSelectCaseTemplateforApprovalRightArrawBtnEnabled(): Promise<boolean> {
@@ -185,28 +187,54 @@ class EditApprovalMapping {
         });
     }
 
-    async selectCaseTemplateforApprovalRightArrawBtn(): Promise<void> {
+    async clickCaseTemplateforApprovalRightArrawBtn(): Promise<void> {
         await $(this.selectors.selectCaseTemplateBtn).click();
     }
 
-    async selectCaseTemplateforApprovalLeftArrawBtn(): Promise<void> {
+    async clickCaseTemplateforApprovalLeftArrawBtn(): Promise<void> {
         await $(this.selectors.deselectCaseTemplateBtn).click();
     }
 
     async getSearchedCaseTemplate(): Promise<string> {
-        return await $$(this.selectors.searchedCaseTemplateText).first().getText();
+      return await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.searchedCaseTemplateText).getText();
     }
 
     async getAssociatedCaseTemplate(): Promise<string> {
-        return await $$(this.selectors.searchedCaseTemplateText).last().getText();
+       return await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.searchedCaseTemplateText).getText();
     }
 
-    async selectCaseTemplateRadioBtn():Promise<void>{
-        await $$(this.selectors.selectCaseTemplate).first().click();
+    async isSearchedCaseTemplateDisplayed():Promise<boolean>{
+        return await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.searchedCaseTemplateText).isPresent().then(async (result) => {
+            if (result) {
+                return await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.searchedCaseTemplateText).isDisplayed();
+            } else return false;
+        });
     }
 
-    async deselectAssociatedCaseTemplateRadioBtn():Promise<void>{
-        await $$(this.selectors.selectCaseTemplate).last().click();
+    async isSearchedAssociatedCaseTemplateDisplayed():Promise<boolean>{
+        return await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.searchedCaseTemplateText).isPresent().then(async (result) => {
+            if (result) {
+                return await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.searchedCaseTemplateText).isDisplayed();
+            } else return false;
+        });
+    }
+
+
+    async selectCaseTemplateCheckbox():Promise<void>{
+        await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.selectCaseTemplate).click();
+    }
+
+    async selectMultipleCaseTemplateCheckbox():Promise<void>{
+      let  noOfRecords = await $$(this.selectors.caseTemplateSelectionArea).first().$$(this.selectors.searchedCaseTemplatesRecords).count();
+        for(let i=0;i<noOfRecords;i++){
+            await $$(this.selectors.caseTemplateSelectionArea).first().$$(this.selectors.searchedCaseTemplatesRecords).get(i).$(this.selectors.selectCaseTemplate).click();
+        }
+
+    }
+
+
+    async selectAssociatedCaseTemplateCheckbox():Promise<void>{
+        await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.selectCaseTemplate).click();
     }
 
 }

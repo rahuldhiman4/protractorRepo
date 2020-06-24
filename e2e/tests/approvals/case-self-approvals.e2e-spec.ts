@@ -31,9 +31,6 @@ describe("Case Self Approval Tests", () => {
         await apiHelper.createNewUser(userData1);
         await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
         await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-        await apiHelper.associatePersonToSupportGroup('qkatawazi', "Staffing");
-        await apiHelper.associatePersonToSupportGroup('qliu', "Staffing");
-
     });
 
     afterAll(async () => {

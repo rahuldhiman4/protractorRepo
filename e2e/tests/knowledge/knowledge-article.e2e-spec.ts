@@ -21,6 +21,7 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import editKnowledgeAccessPage from '../../pageobject/knowledge/edit-knowledge-access.po';
 
 describe('Knowledge Article', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1607,5 +1608,105 @@ describe('Knowledge Article', () => {
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         expect(await utilityCommon.isPopUpMessagePresent('Maximum allowed attachment size is: 20000000 bytes')).toBeTruthy('Atachment Not Added');
         await utilityCommon.closePopUpMessage();
+    });
+
+    describe('[DRDMV-21679,DRDMV-21681]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
+        let knowledgeSetTitle = undefined,title = "DRDMV-21679 KnowledgeArticle",knowledgeArticleGUID,knowledgeArticleData;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('elizabeth');
+            let knowledgeSetData = {
+                "knowledgeSetTitle": "Knowledge Set Petramco",
+                "knowledgeSetDesc": "Knowledge Description Petramco",
+                "company": "Petramco"
+            }
+            let knowledgeApprovalFlowData = {
+                "flowName": "Preset Filter",
+                "approver": "KMills",
+                "qualification": "'Operational Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c.304405421}"
+            }
+            let knowledgeApprovalMappingData = {
+                "configName": "Approval Config Name",
+                "company": "Petramco",
+                "status1": "CancelApproval",
+                "status2": "PublishApproval",
+                "status3": "RetireApproval"
+            }
+            //Create Knowledge Configuraton
+            const randomStr = [...Array(2)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            knowledgeSetTitle = knowledgeSetData.knowledgeSetTitle + randomStr;
+            knowledgeSetData.knowledgeSetTitle = knowledgeSetTitle;
+            await apiHelper.createKnowledgeSet(knowledgeSetData);
+            let approvalConfigGlobalTitle = knowledgeApprovalFlowData.flowName + randomStr;
+            knowledgeApprovalFlowData.flowName = approvalConfigGlobalTitle;
+            await apiHelper.createKnowledgeApprovalFlow(knowledgeApprovalFlowData);
+            await apiHelper.createKnowledgeApprovalMapping(knowledgeApprovalMappingData);
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": "KnowledgeArticle",
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "categoryTier1": "Applications",
+                "categoryTier2": "Help Desk",
+                "categoryTier3": "Incident",
+                "region": "Australia",
+                "site": "Canberra",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
+                "assignee": "KMills"
+            }
+            // Create article in in progress status
+            articleData.title = title + "_" + "In Progress";
+            knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+            //Create article in Published status
+            articleData.title = title + "_" + "Published";
+            knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+            knowledgeArticleGUID = knowledgeArticleData.id;
+        });        
+        it('[DRDMV-21679,DRDMV-21681]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+            expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Approve")).toBeFalsy();
+            expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Reject")).toBeFalsy();
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
+            await editKnowledgeAccessPage.selectAgent('kayo');
+            await editKnowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+        });
+        it('[DRDMV-21679,DRDMV-21681]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
+            await apiHelper.apiLogin('elizabeth');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, "Draft")).toBeTruthy("Article with Draft status not updated.");
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");         
+            await navigationPage.signOut();
+            await loginPage.login(knowledgePublisherUser);
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+            expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Approve")).toBeTruthy();
+            expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Reject")).toBeTruthy();           
+        });
+        it('[DRDMV-21679,DRDMV-21681]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('kayo');
+            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+            expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Approve")).toBeFalsy();
+            expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Reject")).toBeFalsy();
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteKnowledgeApprovalMapping();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
     });
 });
