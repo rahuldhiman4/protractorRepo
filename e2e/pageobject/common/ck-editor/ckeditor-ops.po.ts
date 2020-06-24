@@ -1,5 +1,6 @@
 import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
+import imagePropertiesPo from '../../../pageobject/settings/common/image-properties.po';
 
 class CKEditor {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -14,6 +15,7 @@ class CKEditor {
         centerAlignIcon: '.cke_button__justifycenter_icon',
         rightAlignIcon: '.cke_button__justifyright_icon',
         colorIcon: '.cke_button__textcolor',
+        styleDropDown:'a.cke_combo_button',
         numberIcon: '.cke_button__numberedlist_icon',
         bulletIcon: '.cke_button__bulletedlist_icon',
         maximizeMinimizeicon: '.cke_button__maximize_icon',
@@ -21,16 +23,93 @@ class CKEditor {
         fontType: '.cke_combo__font',
         fontSize: '.cke_combo__fontsize',
         frame: 'iframe.cke_wysiwyg_frame',
+        boldTextCkEditorTextArea: '.cke_enable_context_menu strong',
+        italicTextCkEditorTextArea: '.cke_enable_context_menu em',
+        underlineTextCkEditorTextArea: '.cke_enable_context_menu u',
+        colorTextCkEditorTextArea: '.cke_enable_context_menu span',
+        alignmentTextCkEditorTextArea: '.cke_enable_context_menu div',
+        rightAlignText:'.cke_enable_context_menu div[style="text-align: right;"]',
+        centerAlignText:'.cke_enable_context_menu div[style="text-align: center;"]',
+        numberListCkEditorTextArea: '.cke_enable_context_menu ol li',
+        bulletListTextCkEditorTextArea: '.cke_enable_context_menu ul li',
+        linkTextCkEditorTextArea: '.cke_enable_context_menu a',
+        tableIcon:'.cke_toolbar .cke_button__table_icon',
+        imageIcon:'.cke_toolbar .cke_button__image_icon',
+        ckEditor: '.cke_inner',
+        ckEditorTextArea: '.cke_editable_themed',
+        deletedTextInCKE:'.cke_editable_themed del',
     }
+
+    async enterNewLineInCKE(guidId?:string):Promise<void>{
+        let cke_editor='.cke_inner';
+        let ckeTextArea='.cke_editable_themed';
+        if (guidId) {
+            cke_editor=`[rx-view-component-id="${guidId}"]`+this.selectors.ckEditor;
+            ckeTextArea=`[rx-view-component-id="${guidId}"]`+this.selectors.ckEditorTextArea;
+        }
+        await $(cke_editor).isPresent().then(async (result) => {
+            if (result) {
+                await browser.wait(this.EC.elementToBeClickable($(ckeTextArea)), 3000).then(async () => {
+                    await $(ckeTextArea).click();
+                    await $(ckeTextArea).sendKeys(Key.HOME+Key.END +Key.ENTER+Key.ENTER);
+                });
+            }
+        });
+    } 
+
+    async clickInTableCell(row: number, column: number, tableSummary?: string): Promise<void> {
+        let locator;
+        if(tableSummary) locator = `table[summary='${tableSummary}'] tr`;
+        let rowLocator = await $$(locator).get(row - 1);
+        await rowLocator.$$('td').get(column - 1).click();
+     }
+
+    async setDataInTable(row: number, column: number, value: string, tableSummary?: string): Promise<void> {
+        let locator;
+        if(tableSummary)  locator = `table[summary='${tableSummary}'] tr`;
+        let rowLocator = await $$(locator).get(row - 1);
+        await rowLocator.$$('td').get(column - 1).sendKeys(value);
+     }
 
     async isCkEditorDisplayed(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.activityNoteCKEditor).click();
         else await $(this.selectors.activityNoteCKEditor).click();
     }
 
+    async imageUploadWithURL(uploadURL:string,imageUrlFieldIndex:number,imageWidthFieldIndex:number,widthSize:string):Promise<void>{
+        await imagePropertiesPo.setInputBoxValue(uploadURL, imageUrlFieldIndex);
+        await imagePropertiesPo.setInputBoxValue(widthSize, imageWidthFieldIndex);
+        await imagePropertiesPo.clickOnOkButton();
+    }
+
+    async isImageDisplayedInCKE(value: string):Promise<boolean>{
+        return await $$(`img[src="${value}"]`).last().isDisplayed();
+    }
+    async uploadImageFromLocal(menuName: string, fileToUpload: string, width: number, getInputValue: number,widthSize:string): Promise<string> {
+        await imagePropertiesPo.clickOnTab(menuName);
+        await imagePropertiesPo.addAttachment(fileToUpload);
+        await imagePropertiesPo.clickOnSendItToServerButton();
+        await imagePropertiesPo.setInputBoxValue(widthSize, width);
+        let source = await imagePropertiesPo.getInputBoxValue(getInputValue);
+        await imagePropertiesPo.clickOnOkButton();
+        return source;
+    }
+    async clickOnTableIcon(guidId?: string): Promise<void> {
+        if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.tableIcon).click();
+        else await $(this.selectors.tableIcon).click();
+        await browser.sleep(1000);
+    }
+
+    async clickOnImageIcon(guidId?: string):Promise<void>{
+        if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.imageIcon).click();
+        else await $(this.selectors.imageIcon).click();
+        await browser.sleep(1000);
+
+    }
     async clickOnLinkIcon(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.linkIcon).click();
         else await $(this.selectors.linkIcon).click();
+        await browser.sleep(1000);
     }
 
 
@@ -78,6 +157,20 @@ class CKEditor {
         await browser.waitForAngularEnabled(true);
     }
 
+    async selectStyles(styleValue:string,guidId?:string):Promise<void>{
+        if (guidId) { await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.styleDropDown).click(); }
+        else { await $(this.selectors.styleDropDown).click(); }
+        await browser.sleep(1000);
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame(await $$('iframe.cke_panel_frame').last().getWebElement());
+        let locator: string = `a[title="${styleValue}"]`;
+        await browser.wait(this.EC.elementToBeClickable($(locator)), 2000).then(async () => {
+            await $(locator).click();
+        });
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+    }
+
     async clickOnFontTypeIcon(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.fontType).click();
         else await $(this.selectors.fontType).click();
@@ -99,7 +192,7 @@ class CKEditor {
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame($('.cke_panel.cke_combopanel iframe.cke_panel_frame').getWebElement());
         let locator = `a[title="${value}"]`;
-        await browser.wait(this.EC.elementToBeClickable($(locator)), 4000).then(async () => {
+        await browser.wait(this.EC.elementToBeClickable($(locator)), 2000).then(async () => {
             await $(locator).click();
         });
         await browser.switchTo().defaultContent();
@@ -115,7 +208,6 @@ class CKEditor {
         let framePresent = await $(this.selectors.frame).isPresent();
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
-            await browser.sleep(4000);
             await browser.switchTo().frame(await element(by.css('iframe.cke_wysiwyg_frame')).getWebElement());
             await $(this.selectors.bodyTextArea).clear();
             await $(this.selectors.bodyTextArea).sendKeys(description);
@@ -131,7 +223,6 @@ class CKEditor {
         let framePresent = await $(this.selectors.frame).isPresent();
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
-            await browser.sleep(4000);
             await browser.switchTo().frame(await element(by.css('iframe.cke_wysiwyg_frame')).getWebElement());
             await $(this.selectors.bodyTextArea).sendKeys(Key.chord(Key.CONTROL, Key.END));
             await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
@@ -160,8 +251,9 @@ class CKEditor {
         }
     }
 
-    async isBoldTextDisplayedInCkEditorTextArea(boldTextElement: ElementFinder, bodyText: string): Promise<boolean> {
+    async isBoldTextDisplayedInCkEditorTextArea(bodyText: string,boldTextElement?: ElementFinder): Promise<boolean> {
         let framePresent = await $(this.selectors.frame).isPresent();
+        if(!boldTextElement) boldTextElement=await $(this.selectors.bodyTextArea);
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
@@ -190,8 +282,9 @@ class CKEditor {
         }
     }
 
-    async isItalicTextDisplayedInCkEditorTextArea(italicTextElement: ElementFinder, bodyText: string): Promise<boolean> {
+    async isItalicTextDisplayedInCkEditorTextArea( bodyText: string,italicTextElement?: ElementFinder): Promise<boolean> {
         let framePresent = await $(this.selectors.frame).isPresent();
+        if(!italicTextElement) italicTextElement=await $(this.selectors.italicTextCkEditorTextArea);
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
@@ -220,8 +313,9 @@ class CKEditor {
         }
     }
 
-    async isUnderlineTextDisplayedInCkEditorTextArea(underlineTextElement: ElementFinder, bodyText: string): Promise<boolean> {
+    async isUnderlineTextDisplayedInCkEditorTextArea( bodyText: string,underlineTextElement?: ElementFinder): Promise<boolean> {
         let framePresent = await $(this.selectors.frame).isPresent();
+        if(!underlineTextElement) underlineTextElement=await $(this.selectors.underlineTextCkEditorTextArea);
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
@@ -250,8 +344,9 @@ class CKEditor {
         }
     }
 
-    async isColorTextDisplayedInCkEditorTextArea(colorTextElement: ElementFinder, bodyText: string): Promise<boolean> {
+    async isColorTextDisplayedInCkEditorTextArea(bodyText: string,colorValue?:string,colorTextElement?: ElementFinder,): Promise<boolean> {
         let framePresent = await $(this.selectors.frame).isPresent();
+        if(!colorTextElement) colorTextElement=await $(`.cke_enable_context_menu span[style="${colorValue}"]`);
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
@@ -267,7 +362,7 @@ class CKEditor {
                 else return false;
             });
         }
-        else {
+        else { 
             return colorTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let colorTextCke = await colorTextElement.getText();
@@ -280,8 +375,9 @@ class CKEditor {
         }
     }
 
-    async isTextLeftAlignInCkEditorTextArea(leftAlignTextElement: ElementFinder, bodyText: string): Promise<boolean> {
+    async isTextLeftAlignInCkEditorTextArea(bodyText: string,leftAlignTextElement?: ElementFinder): Promise<boolean> {
         let framePresent = await $(this.selectors.frame).isPresent();
+        if(!leftAlignTextElement) leftAlignTextElement=await $(this.selectors.alignmentTextCkEditorTextArea);
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
@@ -310,8 +406,9 @@ class CKEditor {
         }
     }
 
-    async isTextRightAlignInCkEditorTextArea(rightAlignTextElement: ElementFinder, bodyText: string): Promise<boolean> {
+    async isTextRightAlignInCkEditorTextArea(bodyText: string,rightAlignTextElement?: ElementFinder,): Promise<boolean> {
         let framePresent = await $(this.selectors.frame).isPresent();
+        if(!rightAlignTextElement) rightAlignTextElement=await $(this.selectors.rightAlignText);
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
@@ -340,8 +437,9 @@ class CKEditor {
         }
     }
 
-    async isTextCenterAlignInCkEditorTextArea(centerAlignTextElement: ElementFinder, bodyText: string): Promise<boolean> {
+    async isTextCenterAlignInCkEditorTextArea(bodyText: string,centerAlignTextElement?: ElementFinder): Promise<boolean> {
         let framePresent = await $(this.selectors.frame).isPresent();
+        if(!centerAlignTextElement) centerAlignTextElement=await $(this.selectors.centerAlignText);
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
@@ -370,8 +468,9 @@ class CKEditor {
         }
     }
 
-    async isNumberListDisplayedInCkEditorTextArea(numberListTextElement: ElementFinder, bodyText: string): Promise<boolean> {
+    async isNumberListDisplayedInCkEditorTextArea( bodyText: string,numberListTextElement?: ElementFinder): Promise<boolean> {
         let framePresent = await $(this.selectors.frame).isPresent();
+        if(!numberListTextElement) numberListTextElement=await $(this.selectors.numberListCkEditorTextArea);
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
@@ -400,8 +499,9 @@ class CKEditor {
         }
     }
 
-    async isBulletListDisplayedInCkEditorTextArea(bulletListTextElement: ElementFinder, bodyText: string): Promise<boolean> {
+    async isBulletListDisplayedInCkEditorTextArea(bodyText: string,bulletListTextElement: ElementFinder): Promise<boolean> {
         let framePresent = await $(this.selectors.frame).isPresent();
+        if(!bulletListTextElement) bulletListTextElement=await $(this.selectors.bulletListTextCkEditorTextArea);
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
@@ -430,15 +530,23 @@ class CKEditor {
         }
     }
 
-    async isLinkDisplayedInCkEditorTextArea(linkTextElement: ElementFinder, bodyText: string): Promise<boolean> {
+    async getColorFontStyleOfText(rowNumber: number, columnNumber: number, value: string): Promise<string> {
+        let row = await $$('.cke_contents table tr').get(rowNumber - 1);
+        let cell = await row.$$('td').get(columnNumber - 1);
+        let locator = `span[style='${value}']`;
+        return await cell.$(locator).getAttribute('innerHTML');
+    }
+
+    async isLinkDisplayedInCkEditorTextArea(bodyText: string,linkTextElement?: ElementFinder): Promise<boolean> {
         let framePresent = await $(this.selectors.frame).isPresent();
+        if(!linkTextElement)  linkTextElement=await $$(this.selectors.linkTextCkEditorTextArea).first();
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
             return linkTextElement.isPresent().then(async (result) => {
                 if (result) {
-                    let bulletListTextCke = await linkTextElement.getText();
-                    if (bulletListTextCke.includes(bodyText)) {
+                    let linkTextCke = await linkTextElement.getText();
+                    if (linkTextCke.includes(bodyText)) {
                         await browser.switchTo().defaultContent();
                         await browser.waitForAngularEnabled(true);
                         return true;
@@ -450,8 +558,8 @@ class CKEditor {
         else {
             return linkTextElement.isPresent().then(async (result) => {
                 if (result) {
-                    let bulletListTextCke = await linkTextElement.getText();
-                    if (bulletListTextCke.includes(bodyText)) {
+                    let linkTextCke = await linkTextElement.getText();
+                    if (linkTextCke.includes(bodyText)) {
                         return true;
                     }
                 }
@@ -462,5 +570,4 @@ class CKEditor {
 
     
 }
-
 export default new CKEditor();

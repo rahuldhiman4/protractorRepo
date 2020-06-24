@@ -1,4 +1,4 @@
-import { $, browser, protractor, ProtractorExpectedConditions, element, by, ElementFinder } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions, element, by, ElementFinder, Key } from "protractor";
 import { ICaseTemplate } from "../../../data/ui/interface/caseTemplate.interface";
 import caseTemplateGrid from "../../../pageobject/settings/case-management/console-casetemplate.po";
 import changeAssignemetOldBlade from '../../common/change-assignment-old-blade.po';
@@ -42,6 +42,8 @@ class CreateCaseTemplate {
         clearButton: '[rx-view-component-id="863df084-ff37-4099-85d9-2bfcc4783adc"] button',
         reopentimelineDays: '[rx-view-component-id="c562f849-8baa-4324-bbfc-77f34c4cdbde"] input',
         searchInput: 'input[type="search"]',
+        ckEditor: '.cke_inner',
+        ckEditorTextArea: '.cke_editable_themed',
     }
 
     async setCompanyName(companyValue: string): Promise<void> {
@@ -169,6 +171,17 @@ class CreateCaseTemplate {
         await $(this.selectors.caseSummary).clear();
         await $(this.selectors.caseSummary).sendKeys(caseSummaryValue);
     }
+
+     
+    async updateDescription(caseDescription:string):Promise<void>{
+        await $(this.selectors.ckEditor).isPresent().then(async (result) => {
+            if (result) {
+                await browser.wait(this.EC.elementToBeClickable($(this.selectors.ckEditorTextArea)), 3000).then(async () => {
+                    await $(this.selectors.ckEditorTextArea).sendKeys(caseDescription);
+                });
+            }
+        });
+    } 
 
     async setCaseDescription(caseDescription: string): Promise<void> {
         await utilCommon.setCKEditor(caseDescription, this.selectors.caseDescriptionGuid);
