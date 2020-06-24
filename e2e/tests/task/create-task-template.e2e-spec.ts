@@ -253,6 +253,7 @@ describe('Create Task Template', () => {
             await createCaseTemplate.setDepartmentDropdownValue(departmentData.orgName);
             await createCaseTemplate.setOwnerGroupDropdownValue(suppGrpData.orgName);
             await createCaseTemplate.clickSaveCaseTemplate();
+            await utilCommon.closePopUpMessage();
             expect(await viewCaseTemplate.getOwnerCompanyValue()).toBe("Petramco");
             expect(await viewCaseTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
             expect(await viewCaseTemplate.getBuisnessUnitValue()).toBe(businessData.orgName);

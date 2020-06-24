@@ -8,8 +8,8 @@ import editApprovalMappingPage from "../../pageobject/settings/case-management/e
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-
 import utilityCommon from '../../utils/utility.common';
+
 
 describe("Approval Mapping Tests", () => {
     const approvalMappingNameStr = "Approval Mapping Name";
@@ -23,7 +23,6 @@ describe("Approval Mapping Tests", () => {
     const approvalTriggerMsg = "Approval process starts when the case has above status.";
     const approvalMappingMsg = "Mapping the result of the approval process to the case status.";
     const approvalStatusMappingLabel = "Status mapping:";
-
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -360,22 +359,9 @@ describe("Approval Mapping Tests", () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
 
-            let globalCaseTemplate = {
-                "templateName": `${globalCaseTemplateStr}`,
-                "templateSummary": 'Case Summary for global case template',
-                "categoryTier1": 'Purchasing Card',
-                "casePriority": "Critical",
-                "templateStatus": "Active",
-                "company": "- Global -",
-                "businessUnit": "United States Support",
-                "supportGroup": "US Support 3",
-                "ownerBU": "United States Support",
-                "ownerGroup": "US Support 3"
-            }
-
-            let petramcoCaseTemplate = {
-                "templateName": `${petramcoCaseTemplateStr}`,
-                "templateSummary": 'Case Summary for petramco case template',
+            let caseTemplate = {
+                "templateName": 'CaseTemplateName',
+                "templateSummary": 'Case Template Summary',
                 "categoryTier1": 'Purchasing Card',
                 "casePriority": "Critical",
                 "templateStatus": "Active",
@@ -385,6 +371,29 @@ describe("Approval Mapping Tests", () => {
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
+            await apiHelper.apiLogin('qkatawazi');
+            // create global case template
+            caseTemplate.templateName = globalCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for global case template';
+            caseTemplate.company = '- Global -';
+            await apiHelper.createCaseTemplate(caseTemplate);
+
+            // create Petramco Active case template
+            caseTemplate.templateName = petramcoCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for petramco case template';
+            await apiHelper.createCaseTemplate(caseTemplate);
+
+            // create Petramco Draft case template
+            caseTemplate.templateName = draftCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for petramco case template draft status';
+            caseTemplate.templateStatus = 'Draft';
+            await apiHelper.createCaseTemplate(caseTemplate);
+
+            // create Petramco Inactive case template
+            caseTemplate.templateName = inactiveCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for petramco case template inactive status';
+            caseTemplate.templateStatus = 'Inactive';
+            await apiHelper.createCaseTemplate(caseTemplate);
 
             let psilonCaseTemplate = {
                 "templateName": `${psilonCaseTemplateStr}`,
@@ -398,40 +407,6 @@ describe("Approval Mapping Tests", () => {
                 "ownerBU": "Psilon Support Org1",
                 "ownerGroup": "Psilon Support Group1"
             }
-
-            let draftCaseTemplate = {
-                "templateName": `${draftCaseTemplateStr}`,
-                "templateSummary": 'Case Summary for petramco case template draft status',
-                "categoryTier1": 'Purchasing Card',
-                "casePriority": "Critical",
-                "templateStatus": "Draft",
-                "company": "Petramco",
-                "businessUnit": "United States Support",
-                "supportGroup": "US Support 3",
-                "ownerBU": "United States Support",
-                "ownerGroup": "US Support 3"
-            }
-
-            let inactiveCaseTemplate = {
-                "templateName": `${inactiveCaseTemplateStr}`,
-                "templateSummary": 'Case Summary for petramco case template inactive status',
-                "categoryTier1": 'Purchasing Card',
-                "casePriority": "Critical",
-                "templateStatus": "Inactive",
-                "company": "Petramco",
-                "businessUnit": "United States Support",
-                "supportGroup": "US Support 3",
-                "ownerBU": "United States Support",
-                "ownerGroup": "US Support 3"
-            }
-
-
-            await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createCaseTemplate(globalCaseTemplate);
-            await apiHelper.createCaseTemplate(petramcoCaseTemplate);
-            await apiHelper.createCaseTemplate(draftCaseTemplate);
-            await apiHelper.createCaseTemplate(inactiveCaseTemplate);
-
             await apiHelper.apiLogin('gderuno');
             await apiHelper.createCaseTemplate(psilonCaseTemplate);
 
@@ -501,11 +476,11 @@ describe("Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeTruthy('Searched case template is not displayed.');
         });
 
-        it('[DRDMV-22195]: verify updated details on approval mapping',async()=>{
+        it('[DRDMV-22195]: verify updated details on approval mapping', async () => {
             await editApprovalMappingPage.searchCaseTemplate('Case Template for ');
             await editApprovalMappingPage.selectMultipleCaseTemplateCheckbox();
             await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
-            await editApprovalMappingPage.clickCancelApprovalMappingBtn();       
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilGrid.searchAndOpenHyperlink(approvalMappingName);
             expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(globalCaseTemplateStr);
             expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(petramcoCaseTemplateStr);
@@ -568,7 +543,7 @@ describe("Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeFalsy('Searched case template is not displayed.');
             await editApprovalMappingPage.searchCaseTemplate(petramcoCaseTemplateStr);
             expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeTruthy('Searched case template is not displayed.');
-            await editApprovalMappingPage.clickCancelApprovalMappingBtn();       
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
 
         afterAll(async () => {
@@ -576,5 +551,4 @@ describe("Approval Mapping Tests", () => {
             await apiHelper.deleteApprovalMapping();
         });
     });
-
 });

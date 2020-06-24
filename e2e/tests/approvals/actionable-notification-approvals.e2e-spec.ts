@@ -306,4 +306,4 @@ describe("Actionable Notification Approval", () => {
         catch (ex) { throw ex; }
         finally { await utilityCommon.switchToDefaultWindowClosingOtherTabs(); }
     });
-})
+});

@@ -2,10 +2,10 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import approvalMappingConsoleKnowledgePo from "../../pageobject/settings/knowledge-management/approval-mapping-console.po";
 import createApprovalMappingKnowledgePo from "../../pageobject/settings/knowledge-management/create-approval-mapping.po";
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 
 describe("Knowledge Approval Mapping Tests", () => {
@@ -45,5 +45,4 @@ describe("Knowledge Approval Mapping Tests", () => {
             await apiHelper.deleteKnowledgeApprovalMapping();
         });
     });
-
-})    
+});

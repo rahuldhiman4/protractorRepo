@@ -15,7 +15,7 @@ import selectTaskTemplate from "../../pageobject/settings/task-management/consol
 import copyTasktemplatePo from '../../pageobject/settings/task-management/copy-tasktemplate.po';
 import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
-import previewTaskTemplateCasesPo from '../../pageobject/settings/task-management/preview-task-template-cases.po';
+import previewTaskTemplateCasesPo from '../../pageobject/settings/task-management/preview-task-template.po';
 import { default as viewTaskTemplate, default as viewTasktemplatePo } from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';

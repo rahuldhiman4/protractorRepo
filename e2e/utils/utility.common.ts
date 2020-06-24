@@ -379,7 +379,7 @@ export class Utility {
     }
 
     async clickOnApplicationWarningYesNoButton(buttonName: string): Promise<void> {
-        await $('.modal-title').isPresent().then(async (result) => {
+        await $('rx-modal').isPresent().then(async (result) => {
             if (result) await element(by.cssContainingText('.modal-footer adapt-button', buttonName)).click();
         });
     }
