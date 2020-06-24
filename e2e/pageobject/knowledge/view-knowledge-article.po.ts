@@ -51,6 +51,7 @@ class ViewKnowledgePage {
         tab: 'button[role="tab"] span.nav-link-wrapper',
         attachmentName: 'bwf-attachment-viewer .bwf-attachment-container__file-name',
         expandAllAttachment: '.bwf-attachment-viewer .d-icon-plus',
+        approvalButtons: '.approval-buttons span',
     }
 
     async clickOnKAUsefulYesButton(): Promise<void> {
@@ -400,6 +401,12 @@ class ViewKnowledgePage {
 
     async clickOnAttachments(attachmentName: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.attachmentName, attachmentName)).click();
+    }
+    
+    async isApprovalButtonsPresent(buttonText: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isDisplayed();
+        });
     }
 }
 
