@@ -59,6 +59,7 @@ describe("Actionable Notifications", () => {
             expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
 
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.refresh(); // required to get alert notification
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Qiao Feng has reopened ${response.displayId}`);
             await utilityCommon.switchToNewTab(1);

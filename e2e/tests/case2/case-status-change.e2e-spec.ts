@@ -35,7 +35,6 @@ describe('Case Status Change', () => {
     });
 
     describe('[DRDMV-2530]: [Case Status] Case status change from New', async () => {
-        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let priority: string = "Medium";
         let summary: string = "Test case for DRDMV-2530";
         let newCase1, newCase2, newCase3;
@@ -93,7 +92,7 @@ describe('Case Status Change', () => {
             await caseConsole.searchAndOpenCase(caseId2);
             expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
             await updateStatusBladePo.changeCaseStatus(statusCanceled);
-            let cancelStatusReasons: string[] = ['Select None', 'Approval Rejected', 'Customer Canceled'];
+            let cancelStatusReasons: string[] = ['None', 'Approval Rejected', 'Customer Canceled'];
             expect(await updateStatusBladePo.allStatusReasonOptionsPresent(cancelStatusReasons)).toBeTruthy('Cancel status reason options mismatch');
             await updateStatusBladePo.clickOnstatusReason();
             await updateStatusBladePo.setStatusReason('Customer Canceled');
@@ -115,7 +114,7 @@ describe('Case Status Change', () => {
             await caseConsole.searchAndOpenCase(caseId3);
             expect(await viewCasePage.getTextOfStatus()).toBe(statusNew), 'status should be new of status';
             await updateStatusBladePo.changeCaseStatus(statusPending);
-            let pendingStatusReasons: string[] = ['Select None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
+            let pendingStatusReasons: string[] = ['None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
             expect(await updateStatusBladePo.allStatusReasonOptionsPresent(pendingStatusReasons)).toBeTruthy('Pending status reason options mismatch');
             await updateStatusBladePo.clickOnstatusReason();
             await updateStatusBladePo.setStatusReason('Approval');
@@ -234,6 +233,8 @@ describe('Case Status Change', () => {
         let caseId1: string, caseId2: string, caseId3: string;
         let statusOptions: string[] = ["In Progress", "Pending", "Resolved", "Canceled"];
         beforeAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
             let caseData1 =
             {
                 "Requester": "qtao",
@@ -776,6 +777,8 @@ describe('Case Status Change', () => {
 
     //kgaikwad
     it('[DRDMV-1618]: [Case] Fields validation for case in Resolved status', async () => {
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.deleteApprovalMapping();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
@@ -840,7 +843,7 @@ describe('Case Status Change', () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await updateStatusBladePo.changeCaseStatus(statusPending);
-        let pendingStatusReasons: string[] = ['Select None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
+        let pendingStatusReasons: string[] = ['None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
         expect(await updateStatusBladePo.allStatusReasonOptionsPresent(pendingStatusReasons)).toBeTruthy('Pending status reason options mismatch');
         await updateStatusBladePo.clickOnstatusReason();
         await updateStatusBladePo.setStatusReason('Approval');
@@ -858,7 +861,7 @@ describe('Case Status Change', () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await updateStatusBladePo.changeCaseStatus(statusResolved);
-        let resolvedStatusReasons: string[] = ['Select None', 'Auto Resolved', 'Customer Follow-Up Required', 'No Further Action Required'];
+        let resolvedStatusReasons: string[] = ['None', 'Auto Resolved', 'Customer Follow-Up Required', 'No Further Action Required'];
         await expect(await updateStatusBladePo.allStatusReasonOptionsPresent(resolvedStatusReasons)).toBeTruthy('Resolved status reason options mismatch');
         await updateStatusBladePo.clickOnstatusReason();
         await updateStatusBladePo.setStatusReason('Auto Resolved');

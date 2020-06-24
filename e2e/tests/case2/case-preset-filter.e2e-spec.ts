@@ -461,7 +461,7 @@ describe('Case Console Preset Filter', () => {
             expect(await utilityGrid.isGridRecordPresent(caseId[5])).toBeFalsy(caseId[5] + ' :Record is available');
 
             //Waiting for SVT to Breached
-            browser.sleep(120000);
+            browser.sleep(150000);
             for (let i: number = 0; i < 3; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
@@ -523,7 +523,7 @@ describe('Case Console Preset Filter', () => {
             expect(await utilityGrid.getAppliedFilterName()).toBe('My Open Breached Cases');
 
             //Waiting for SVT to Breached
-            browser.sleep(130000);
+            browser.sleep(150000);
             for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
             }

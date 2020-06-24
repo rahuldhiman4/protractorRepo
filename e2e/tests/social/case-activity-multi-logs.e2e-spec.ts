@@ -445,4 +445,3 @@ describe('Case Activity Multi Logs', () => {
         });
     });
 });
-
