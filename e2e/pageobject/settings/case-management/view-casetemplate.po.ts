@@ -30,6 +30,11 @@ class ViewCaseTemplate {
         categoryTier3: '[rx-view-component-id="a7fbc4bc-23c6-4f92-818a-5554107d04c0"] p',
         oneTask: '[rx-view-component-id="36ca22f7-98f8-423a-bf39-28361ef29eeb"] .rotatable path',
         taskBoxname: 'g.rotatable div.content',
+        showMoreDescriptionLink:'.rx-description-textarea-read button.more',
+    }
+
+    async clickShowMoreDescriptionLink(){
+        await $(this.selectors.showMoreDescriptionLink).click();
     }
 
     async clickOneTask(): Promise<void> {
@@ -133,6 +138,7 @@ class ViewCaseTemplate {
     async isGroupDisplayed(groupName: string): Promise<boolean> {
         return await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] .group-container__name div[title=${groupName}]`).isDisplayed();
     }
+    
     async getAssigneeText(): Promise<string> {
         return await $(this.selectors.assigneeNameValue).getText();
     }

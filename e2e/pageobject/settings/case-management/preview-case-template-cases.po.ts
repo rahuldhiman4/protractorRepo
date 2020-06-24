@@ -24,106 +24,111 @@ class PreviewCaseTemplateBlade {
         supportCompany: 'a6a721e0-4a98-4d1f-85a8-27c7075a5a2a',
         assignee: '.person-main label',
         backButton: '[rx-view-component-id="83c4c73b-86b4-4894-b4c2-4d0525bed20d"] button',
-        dynamicFieldName:'[rx-view-component-id="3cacaba4-7a3b-411f-85c1-cb76bb7bc789"] span',
+        dynamicFieldName: '[rx-view-component-id="3cacaba4-7a3b-411f-85c1-cb76bb7bc789"] span',
+        showMoreDescriptionLink: '[rx-view-component-id="169adf6c-7674-448b-9732-0eecbebae380"] button',
+    }
+
+    async clickShowMoreDescriptionLink(): Promise<void> {
+        await $(this.selectors.showMoreDescriptionLink).click();
     }
 
     async clickOnBackButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         return await $(this.selectors.backButton).click();
     }
 
     async getCaseTemplateName(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseTemplateName)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseTemplateName)));
         return await $(this.selectors.caseTemplateName).getText();
     }
 
     async getCaseSummary(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummaryValue)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummaryValue)));
         return await $(this.selectors.caseSummaryValue).getText();
     }
 
     async getCasePriority(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.casePriorityValue)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.casePriorityValue)));
         return await $(this.selectors.casePriorityValue).getText();
     }
 
     async getCaseStatus(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseStatusValue)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseStatusValue)));
         return await $(this.selectors.caseStatusValue).getText();
     }
 
     async getCaseCompanyValue(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseCompanyValue)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseCompanyValue)));
         return await $(this.selectors.caseCompanyValue).getText();
     }
 
     async isCaseSummaryHeaderDisplayed(caseSummary: string): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummary)));
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseSummary,caseSummary);
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummary)));
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseSummary, caseSummary);
     }
 
-    async isCaseCompanyTitleDisplayed(caseCompany:string): Promise<boolean> {
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseCompany,caseCompany);
+    async isCaseCompanyTitleDisplayed(caseCompany: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseCompany, caseCompany);
     }
 
-    async isCaseStatusTitleDisplayed(caseStatusname:string): Promise<boolean> {
-      return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseStatus,caseStatusname);
+    async isCaseStatusTitleDisplayed(caseStatusname: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseStatus, caseStatusname);
     }
 
-    async isCasePriorityTitleDisplayed(casePriority:string): Promise<boolean> {
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.casePriority,casePriority);
+    async isCasePriorityTitleDisplayed(casePriority: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.casePriority, casePriority);
     }
 
-    async isCaseCategoryTier1TitleDisplayed(caseCategoryTier1:string): Promise<boolean> {
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier1,caseCategoryTier1);
+    async isCaseCategoryTier1TitleDisplayed(caseCategoryTier1: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier1, caseCategoryTier1);
     }
 
-    async isCaseCategoryTier2TitleDisplayed(caseCategoryTier2:string): Promise<boolean> {
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier2,caseCategoryTier2);
+    async isCaseCategoryTier2TitleDisplayed(caseCategoryTier2: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier2, caseCategoryTier2);
     }
 
-    async isCaseCategoryTier3TitleDisplayed(caseCategoryTier3:string): Promise<boolean> {
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier3,caseCategoryTier3);
+    async isCaseCategoryTier3TitleDisplayed(caseCategoryTier3: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier3, caseCategoryTier3);
     }
 
-    async isCaseCategoryTier4TitleDisplayed(caseCategoryTier4:string): Promise<boolean> {
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier4,caseCategoryTier4);
+    async isCaseCategoryTier4TitleDisplayed(caseCategoryTier4: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.caseCategoryTier4, caseCategoryTier4);
     }
 
-    async isFlowsetTitleDisplayed(flowset:string): Promise<boolean> {
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.flowset,flowset);
+    async isFlowsetTitleDisplayed(flowset: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.flowset, flowset);
     }
 
-    async isLabelTitleDisplayed(label:string): Promise<boolean> {
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.label,label);
+    async isLabelTitleDisplayed(label: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.label, label);
     }
 
-    async isCaseDescriptionTitleDisplayed(caseDescription:string): Promise<boolean> {
+    async isCaseDescriptionTitleDisplayed(caseDescription: string): Promise<boolean> {
         let fieldLabel = '[rx-view-component-id="169adf6c-7674-448b-9732-0eecbebae380"] label span';
         return await element(by.cssContainingText(fieldLabel, caseDescription)).isPresent().then(async (result) => {
             if (result) {
                 return await element(by.cssContainingText(fieldLabel, caseDescription)).getText() == caseDescription ? true : false;
             } else {
-                console.log(caseDescription," not present");
+                console.log(caseDescription, " not present");
                 return false;
             }
         });
     }
 
-    async isSupportGroupTitleDisplayed(supportGroup:string): Promise<boolean> {
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.supportGroup,supportGroup);
+    async isSupportGroupTitleDisplayed(supportGroup: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.supportGroup, supportGroup);
     }
 
-    async isSupportCompanyTitleDisplayed(supportCompany:string): Promise<boolean> {
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.supportCompany,supportCompany);
+    async isSupportCompanyTitleDisplayed(supportCompany: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.supportCompany, supportCompany);
     }
 
     async isAssigneeTitleDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignee)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignee)));
         return await $(this.selectors.assignee).isDisplayed();
     }
 
-    async isGroupDisplayed(groupName:string):Promise<boolean>{
+    async isGroupDisplayed(groupName: string): Promise<boolean> {
         return await $(`[rx-view-component-id="3cacaba4-7a3b-411f-85c1-cb76bb7bc789"] .group-container__name div[title=${groupName}]`).isDisplayed();
     }
 
