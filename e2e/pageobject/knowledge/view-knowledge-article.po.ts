@@ -52,6 +52,8 @@ class ViewKnowledgePage {
         attachmentName: 'bwf-attachment-viewer .bwf-attachment-container__file-name',
         expandAllAttachment: '.bwf-attachment-viewer .d-icon-plus',
         approvalButtons: '.approval-buttons span',
+        approveButton: '.d-icon-left-check_shield',
+        rejectButton: '.d-icon-left-cross_circle',
     }
 
     async clickOnKAUsefulYesButton(): Promise<void> {
@@ -407,6 +409,14 @@ class ViewKnowledgePage {
         return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isPresent().then(async (result) => {
             if (result) return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isDisplayed();
         });
+    }
+
+    async clickOnApproveLink(): Promise<void> {
+        await $(this.selectors.approveButton).click();
+    }
+
+    async clickOnRejectLink(): Promise<void> {
+        await $(this.selectors.rejectButton).click();
     }
 }
 

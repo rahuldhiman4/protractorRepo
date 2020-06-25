@@ -105,10 +105,6 @@ class ViewCasePage {
         return await $(this.selectors.emailLink).isPresent();
     }
 
-    async selectResolutionCodeDropDown(resolutionCode: string): Promise<void> {
-        await updateStatusBlade.selectResolutionCode(resolutionCode);
-    }
-
     async getResolutionCodeValue(): Promise<string> {
         return (await $(this.selectors.resolutionCodeValue).getText()).trim();
     }

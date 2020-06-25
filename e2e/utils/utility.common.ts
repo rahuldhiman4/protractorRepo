@@ -49,7 +49,7 @@ export class Utility {
     async clearDropDown(guid: string): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-        const dropDownSelectNoneItem = await dropDown.element(by.cssContainingText(this.selectors.dropDownNoneOpt, 'Select None'));
+        const dropDownSelectNoneItem = await dropDown.element(by.cssContainingText(this.selectors.dropDownNoneOpt, 'None'));
         await dropDownBoxElement.click();
         await dropDownSelectNoneItem.click();
         await dropDownBoxElement.click();

@@ -86,6 +86,8 @@ describe("Actionable Notification Approval", () => {
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteApprovalMapping();
         await navigationPage.signOut();
     });
 
