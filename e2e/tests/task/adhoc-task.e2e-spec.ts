@@ -214,6 +214,7 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.addAttachment([filePath]);
         await adhoctaskTemplate.clickSaveAdhoctask();
+        await utilityCommon.closePopUpMessage();
         await manageTask.clickCloseButton();
         await viewCasePage.clickOnTaskLink(summary);
         expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeTruthy('Attached file name is missing');
@@ -261,6 +262,7 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.addAttachment([filePath]);
         await adhoctaskTemplate.clickSaveAdhoctask();
+        await utilityCommon.closePopUpMessage();
         await manageTask.clickCloseButton();
         await viewCasePage.clickOnTaskLink(summary);
         expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeTruthy('Attached file name is not available');
@@ -288,6 +290,7 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.clickSaveAdhoctask();
+        await utilityCommon.closePopUpMessage();
         await manageTask.clickCloseButton();
         await viewCasePage.clickOnTaskLink(summary);
         await viewTask.clickOnEditTask();
@@ -366,6 +369,7 @@ describe('Create Adhoc task', () => {
             await adhoctaskTemplate.setSummary("test" + summary);
             await adhoctaskTemplate.clickAssignButton();
             await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
             await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
             await manageTask.clickTaskLink("test" + summary);
             await viewTask.clickOnEditTask();

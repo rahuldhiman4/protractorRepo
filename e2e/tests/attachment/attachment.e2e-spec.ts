@@ -222,6 +222,7 @@ describe("Attachment", () => {
         await adhoctaskTemplate.setSummary('AdhocTaskSummary' + randomStr);
         await adhoctaskTemplate.addAttachment([xlsxFilePath]);
         await adhoctaskTemplate.clickSaveAdhoctask();
+        await utilityCommon.closePopUpMessage();
         await manageTaskPo.clickCloseButton();
         await viewCasePo.clickAttachmentsLink();
         expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfXlsx', 'Attachment file name is missing');
