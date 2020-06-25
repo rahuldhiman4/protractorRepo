@@ -89,7 +89,7 @@ describe('Copy Task Template', () => {
             let newCase = await apiHelper.createCase(caseData);
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(automatedTaskSummary);
+            await manageTask.addTaskFromTaskTemplate(templateData.templateSummary);
             await manageTask.clickCloseButton();
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus('In Progress');
@@ -363,7 +363,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(updatedTaskTemplate);
+            await manageTask.addTaskFromTaskTemplate(templateData.templateSummary);
             await manageTask.clickCloseButton();
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus('In Progress');

@@ -30,14 +30,6 @@ class TaskGridPage {
         return sortedValue;
     }
 
-    async clickOnColumnAndIsColumnSortedAsending(colounm: string): Promise<boolean> {
-        return await utilityGrid.isGridColumnSorted(colounm, 'asc');
-    }
-
-    async clickOnColumnAndIsColumnSortedDescending(colounm: string): Promise<boolean> {
-        return await utilityGrid.isGridColumnSorted(colounm, 'desc');
-    }
-
     async clickonColumnHeader(value: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.columnHeaders)));
         await element(by.cssContainingText(this.selectors.columnHeaders, value)).click();
