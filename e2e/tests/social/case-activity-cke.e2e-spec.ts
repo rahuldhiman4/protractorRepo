@@ -427,6 +427,7 @@ describe('Case Activity CKE', () => {
         await adhoctaskTemplate.setSummary(adhocTaskSummary);
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.clickSaveAdhoctask();
+        await utilityCommon.closePopUpMessage();
         await manageTaskBladePo.clickCloseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.clickTaskLink(adhocTaskSummary);
@@ -896,6 +897,7 @@ describe('Case Activity CKE', () => {
             await adhoctaskTemplate.setSummary(adhocTaskSummary);
             await adhoctaskTemplate.setDescription("Description");
             await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickCloseButton();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(adhocTaskSummary);

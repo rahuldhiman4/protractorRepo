@@ -1060,6 +1060,7 @@ describe("Create Case", () => {
         const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
         await adhoctaskTemplate.addAttachmentInDescription(filesToUpload2);
         await adhoctaskTemplate.clickSaveAdhoctask();
+        await utilityCommon.closePopUpMessage();
         await manageTask.clickCloseButton();
         await utilCommon.closePopUpMessage();
         await viewCasePage.clickAttachmentsLink();
