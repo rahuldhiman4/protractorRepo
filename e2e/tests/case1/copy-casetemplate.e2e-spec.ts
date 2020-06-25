@@ -21,6 +21,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import consoleTasktemplatePo from '../../pageobject/settings/task-management/console-tasktemplate.po';
 
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
@@ -65,7 +66,7 @@ describe('Copy Case Template', () => {
     });
 
     afterEach(async () => {
-        await utilityCommon.refresh();
+        // await utilityCommon.refresh();
     });
 
     //ptidke
@@ -1009,6 +1010,269 @@ describe('Copy Case Template', () => {
             expect(await viewTasktemplatePo.getCategoryTier4Value()).toBe('Cash');
             expect(await viewTasktemplatePo.getLabelValue()).toBe(label);
             await utilCommon.clickOnBackArrow();
+        });
+    });
+
+    //kgaikwad
+    describe('[DRDMV-15256]: Verify For Copy template, Category Tier 4 and Label Data also get copied', async () => {
+        let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateName = 'DRDMV-15256_caseTemplateName'+ randomStr;
+        let categName1: string = 'DRDMV-15256_categName1'+ randomStr;
+        let categName2: string = 'DRDMV-15256_categName2'+ randomStr;
+        let categName3: string = 'DRDMV-15256_categName3'+ randomStr;
+        let categName4: string = 'DRDMV-15256_categName4'+ randomStr;
+        let copyCaseTemplateName: string = "copycasetemplate" + randomStr;
+        let copyManualTaskTemplateName: string = 'copyManualTask' + randomStr;
+        let copyAutomationTaskTemplateName: string = 'copyAutomationTask' + randomStr;
+        let copyExternalTaskTemplateName: string = 'copyExternalTask' + randomStr;
+        let caseTemplateId, taskManualTemplateId, taskAutomationTemplateId, taskExternalTemplateId, label, manualTaskTemplateData, automationTaskTemplateData, externalTaskTemplateData,caseTemplateData;
+
+        beforeAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            // Create catergory tier
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createOperationalCategory(categName1);
+            await apiHelper.createOperationalCategory(categName2);
+            await apiHelper.createOperationalCategory(categName3);
+            await apiHelper.createOperationalCategory(categName4);
+            await apiHelper.associateCategoryToOrganization(categName1, 'Petramco');
+            await apiHelper.associateCategoryToCategory(categName1, categName2);
+            await apiHelper.associateCategoryToCategory(categName2, categName3);
+            await apiHelper.associateCategoryToCategory(categName3, categName4);
+
+            // Create Menu item Label 
+            await apiHelper.apiLogin('qkatawazi');
+            let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
+            label = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
+            menuItemDataFile['sampleMenuItem'].menuItemName = label;
+            await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+
+            // Create Manual Task Template
+            manualTaskTemplateData = {
+                "templateName": `manualTaskTemplateActive ${randomStr}`,
+                "templateSummary": `manualTaskTemplateActive ${randomStr}`,
+                "templateStatus": "Draft",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+
+            // Create Automation Task Template
+            automationTaskTemplateData = {
+                "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateStatus": "Draft",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": `Case Process 1 ${randomStr}`,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+            }
+            await apiHelper.createAutomatedTaskTemplate(automationTaskTemplateData);
+
+            // Create External Task Template
+            externalTaskTemplateData = {
+                "templateName": "external task template name" + randomStr,
+                "templateSummary": "external task template summary" + randomStr,
+                "templateStatus": "Draft",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+            }
+            await apiHelper.createExternalTaskTemplate(externalTaskTemplateData);
+
+            // Create case template
+            caseTemplateData = {
+                "templateName": caseTemplateName,
+                "templateSummary": caseTemplateName,
+                "caseStatus": "New",
+                "templateStatus": "Draft",
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "ownerBU": 'Facilities Support',
+                "ownerGroup": "Facilities",
+                "resolutionCode": "1",
+                "resolutionDescription": "1"
+            }
+            await apiHelper.createCaseTemplate(caseTemplateData);
+        });
+
+        it('[DRDMV-15256]: Edit Case Template and Add Label and Category 4 Tier', async () => {
+            // Create Case template
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplateName);
+            await viewCasetemplatePo.clickOnEditCaseTemplateButton();
+            await editCaseTemplate.changeLabelValue(label);
+            await editCaseTemplate.changeCategoryTier1(categName1);
+            await editCaseTemplate.changeCategoryTier2(categName2);
+            await editCaseTemplate.changeCategoryTier3(categName3);
+            await editCaseTemplate.changeCategoryTier4(categName4);
+            await editCaseTemplate.clickSaveCaseTemplate();
+            caseTemplateId = await viewCasetemplatePo.getCaseTemplateId();
+            await viewCasetemplatePo.gotoCaseTemplateConsole();
+        });
+
+        it('[DRDMV-15256]: Verify Copy Case Template fields Values with Label and Category Tier 4', async () => {
+            await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
+            await consoleCasetemplatePo.clickOnCopyCaseTemplate();
+            await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
+            //verify all values copied from template 1 to template 2   
+            expect(await copyCaseTemplate.isValueOfCasePriorityPresent('Medium')).toBeTruthy();
+            expect(await copyCaseTemplate.getValueofCaseCategoryTier1()).toBe(categName1);
+            expect(await copyCaseTemplate.getValueofCaseCategoryTier2()).toBe(categName2);
+            expect(await copyCaseTemplate.getValueofCaseCategoryTier3()).toBe(categName3);
+            expect(await copyCaseTemplate.getValueofCaseCategoryTier4()).toBe(categName4);
+            expect(await copyCaseTemplate.getValueofLabel()).toBe(label);
+            expect(await copyCaseTemplate.getValueOfAllowReopen()).toBe("Yes");
+            expect(await copyCaseTemplate.getValueOfCaseCompany()).toBe(caseTemplateData.company);
+            expect(await copyCaseTemplate.getValueOfOwnerCompany()).toBe(caseTemplateData.company);
+            expect(await copyCaseTemplate.getValueOfOwnerGroup()).toContain('US Support 3');
+            expect(await copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
+            expect(await copyCaseTemplate.getValueOfcaseStatus()).toBe(caseTemplateData.caseStatus);
+            expect(await copyCaseTemplate.getValueOfSupportCompany()).toBe(caseTemplateData.company);
+            expect(await copyCaseTemplate.getValueOfAssignee()).toBe(caseTemplateAllFields.assignee);
+            expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe(caseTemplateAllFields.supportGroup);
+            await copyCaseTemplate.clickSaveCaseTemplate();
+            let copiedCasetemplateFromNew = await viewCasetemplatePo.getCaseTemplateId();
+            expect(copiedCasetemplateFromNew == caseTemplateId).toBeFalsy();
+            await viewCasetemplatePo.gotoCaseTemplateConsole();
+        });
+
+        it('[DRDMV-15256]: Edit Case Manual Task and Add Label and Category 4 Tier', async () => {
+            // Create Manual Task Template 
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')).toEqual('Task Templates - Business Workflows');
+            await consoleTasktemplatePo.searchAndOpenTaskTemplate(manualTaskTemplateData.templateName);
+            await viewTasktemplatePo.clickOnEditLink();
+            await editTasktemplatePo.selectLabel(label);
+            await editTasktemplatePo.selectTaskCategoryTier1(categName1);
+            await editTasktemplatePo.selectTaskCategoryTier2(categName2);
+            await editTasktemplatePo.selectTaskCategoryTier3(categName3);
+            await editTasktemplatePo.selectTaskCategoryTier4(categName4);
+            await editTasktemplatePo.clickChangeAssignmentButton();
+            await changeAssignmentOldPage.clickOnAssignToMeCheckBox();
+            await changeAssignmentOldPage.clickOnAssignButton();
+            await editTasktemplatePo.clickOnSaveButton();
+            taskManualTemplateId = await viewTasktemplatePo.getTaskTemplateId();
+            await viewTasktemplatePo.gotoTaskTemplateConsolePage();
+        }, 1500 * 1000);
+
+        it('[DRDMV-15256]: Verify Manual Copy Task Template fields Values with Label and Category Tier 4', async () => {
+            await consoleTasktemplatePo.searchAndSelectTaskTemplate(manualTaskTemplateData.templateName);
+            await consoleTasktemplatePo.clickOnCopyTaskTemplateButton();
+            // Veriy copy Task Template
+            await copyTasktemplatePo.setTemplateName(copyManualTaskTemplateName);
+            expect(await copyTasktemplatePo.getTaskCompany()).toBe('Petramco', 'Copy manual Task  template Company name is missing');
+            expect(await copyTasktemplatePo.getTaskPriority()).toBe('Medium', 'Copy manual Task  template Task prority name is missing');
+            // expect(await copyTasktemplatePo.getLabel()).toBe(label, 'Copy manual Task  template task label  is missing');
+            expect(await copyTasktemplatePo.getTaskCategoryTier1()).toBe(categName1, 'Copy manual Task  template CategoryTier1 is missing');
+            expect(await copyTasktemplatePo.getTaskCategoryTier2()).toBe(categName2, 'Copy manual Task  template CategoryTier2 is missing');
+            expect(await copyTasktemplatePo.getTaskCategoryTier3()).toBe(categName3, 'Copy manual Task  template CategoryTier3 is missing');
+            expect(await copyTasktemplatePo.getTaskCategoryTier4()).toBe(categName4, 'Copy manual Task  template CategoryTier4 is missing');
+            expect(await copyTasktemplatePo.getSupportCompany()).toBe(manualTaskTemplateData.taskCompany, 'Support Company name is missing');
+            expect(await copyTasktemplatePo.getAssignee()).toBe('Qadim Katawazi', 'Copy manual Task  template Assignee name is missing');
+            expect(await copyTasktemplatePo.getBussinessUnit()).toBe('United States Support', 'Copy manual Task  template Bussiness Unit is missing');
+            expect(await copyTasktemplatePo.getTemplateStatus()).toBe('Draft', 'Copy manual Task  template Draft status is missing');
+            expect(await copyTasktemplatePo.getOwnerCompany()).toBe('Petramco', 'Copy manual Task  template Owner company is missing');
+            expect(await copyTasktemplatePo.getTemplateMetadataBussinessUnit()).toBe('United States Support', 'Copy manual Task  template TemplateMetadata Bussiness Unit is missing');
+            expect(await copyTasktemplatePo.getOwnerGroup()).toBe('US Support 3', 'Copy manual Task  template Owner Group is missing');
+            await copyTasktemplatePo.clickSaveCopytemplate();
+            expect(await viewTasktemplatePo.gettaskSummaryValue()).toBe(manualTaskTemplateData.templateSummary, 'Copy manual Task  template Task Summary Value is missing');
+            let copytaskManualTemplateId = await viewTasktemplatePo.getTaskTemplateId();
+            expect(taskManualTemplateId == copytaskManualTemplateId).toBeFalsy('Copy manual Task  template template');
+            await viewTasktemplatePo.gotoTaskTemplateConsolePage();
+        });
+
+        it('[DRDMV-15256]: Edit Case Automation Task and Add Label and Category 4 Tier', async () => {
+            await consoleTasktemplatePo.searchAndOpenTaskTemplate(automationTaskTemplateData.templateName);
+            await viewTasktemplatePo.clickOnEditLink();
+            await editTasktemplatePo.selectLabel(label);
+            await editTasktemplatePo.selectTaskCategoryTier1(categName1);
+            await editTasktemplatePo.selectTaskCategoryTier2(categName2);
+            await editTasktemplatePo.selectTaskCategoryTier3(categName3);
+            await editTasktemplatePo.selectTaskCategoryTier4(categName4);
+            await editTasktemplatePo.clickOnSaveButton();
+            taskAutomationTemplateId = await viewTasktemplatePo.getTaskTemplateId();
+            await viewTasktemplatePo.gotoTaskTemplateConsolePage();
+
+        }, 1500 * 1000);
+
+        it('[DRDMV-15256]: Verify Auomation Copy Task Template fields Values with Label and Category Tier 4', async () => {
+            // Veriy copy Task Template
+            let automationProcessName = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            await consoleTasktemplatePo.searchAndSelectTaskTemplate(automationTaskTemplateData.templateName);
+            await consoleTasktemplatePo.clickOnCopyTaskTemplateButton();
+            await copyTasktemplatePo.setTemplateName(copyAutomationTaskTemplateName);
+            await copyTasktemplatePo.setNewProcessName(automationProcessName);
+            expect(await copyTasktemplatePo.getTaskCompany()).toBe('Petramco', 'Copy automation task  template Company name is missing');
+            expect(await copyTasktemplatePo.getTaskPriority()).toBe('Medium', 'Copy automation task  template Task prority name is missing');
+            // expect(await copyTasktemplatePo.getLabel()).toBe(label, 'Copy automation task  template task label  is missing');
+            expect(await copyTasktemplatePo.getTaskCategoryTier1()).toBe(categName1, 'Copy automation task  template CategoryTier1 is missing');
+            expect(await copyTasktemplatePo.getTaskCategoryTier2()).toBe(categName2, 'Copy automation task  template CategoryTier2 is missing');
+            expect(await copyTasktemplatePo.getTaskCategoryTier3()).toBe(categName3, 'Copy automation task  template CategoryTier3 is missing');
+            expect(await copyTasktemplatePo.getTaskCategoryTier4()).toBe(categName4, 'Copy automation task  template CategoryTier4 is missing');
+            expect(await copyTasktemplatePo.getTemplateStatus()).toBe('Draft', 'Copy automation task  template Draft status is missing');
+            expect(await copyTasktemplatePo.getOwnerCompany()).toBe('Petramco', 'Copy automation task  template Owner company is missing');
+            expect(await copyTasktemplatePo.getTemplateMetadataBussinessUnit()).toBe('United States Support', 'Copy automation task  template TemplateMetadata Bussiness Unit is missing');
+            expect(await copyTasktemplatePo.getOwnerGroup()).toBe('US Support 3', 'Copy automation task  template Owner Group is missing');
+            await copyTasktemplatePo.clickSaveCopytemplate();
+            expect(await viewTasktemplatePo.gettaskSummaryValue()).toBe(automationTaskTemplateData.templateSummary, 'Copy automation task  template Task Summary Value is missing');
+            let copyAutomationtaskTemplateId = await viewTasktemplatePo.getTaskTemplateId();
+            expect(taskAutomationTemplateId == copyAutomationtaskTemplateId).toBeFalsy('Copy automation task  template template');
+            await viewTasktemplatePo.gotoTaskTemplateConsolePage();
+        });
+
+        it('[DRDMV-15256]: Edit External Task Template and Add Label and Category 4 Tier', async () => {
+            // Create External Task Template 
+            await consoleTasktemplatePo.searchAndOpenTaskTemplate(externalTaskTemplateData.templateName);
+            await viewTasktemplatePo.clickOnEditLink();
+            await editTasktemplatePo.clickChangeAssignmentButton();
+            await changeAssignmentOldPage.clickOnAssignToMeCheckBox();
+            await changeAssignmentOldPage.clickOnAssignButton();
+            await editTasktemplatePo.selectLabel(label);
+            await editTasktemplatePo.selectTaskCategoryTier1(categName1);
+            await editTasktemplatePo.selectTaskCategoryTier2(categName2);
+            await editTasktemplatePo.selectTaskCategoryTier3(categName3);
+            await editTasktemplatePo.selectTaskCategoryTier4(categName4);
+            await editTasktemplatePo.clickOnSaveButton();
+            taskExternalTemplateId = await viewTasktemplatePo.getTaskTemplateId();
+            await viewTasktemplatePo.gotoTaskTemplateConsolePage();
+        }, 1500 * 1000);
+
+        it('[DRDMV-15256]: Verify External Copy Task Template fields Values with Label and Category Tier 4', async () => {
+            await consoleTasktemplatePo.searchAndSelectTaskTemplate(externalTaskTemplateData.templateName);
+            await consoleTasktemplatePo.clickOnCopyTaskTemplateButton();
+            // Veriy copy Task Template
+            await copyTasktemplatePo.setTemplateName(copyExternalTaskTemplateName);
+            expect(await copyTasktemplatePo.getTaskCompany()).toBe('Petramco', 'Copy external task  template Company name is missing');
+            expect(await copyTasktemplatePo.getTaskPriority()).toBe('Medium', 'Copy external task  template Task prority name is missing');
+            //   expect(await copyTasktemplatePo.getLabel()).toBe(label, 'Copy external task  template task label  is missing');
+            expect(await copyTasktemplatePo.getTaskCategoryTier1()).toBe(categName1, 'Copy external task  template CategoryTier1 is missing');
+            expect(await copyTasktemplatePo.getTaskCategoryTier2()).toBe(categName2, 'Copy external task  template CategoryTier2 is missing');
+            expect(await copyTasktemplatePo.getTaskCategoryTier3()).toBe(categName3, 'Copy external task  template CategoryTier3 is missing');
+            expect(await copyTasktemplatePo.getTaskCategoryTier4()).toBe(categName4, 'Copy external task  template CategoryTier4 is missing');
+            expect(await copyTasktemplatePo.getSupportCompany()).toBe('Petramco', 'Support Company name is missing');
+            expect(await copyTasktemplatePo.getAssignee()).toBe('Qadim Katawazi', 'Copy external task  template Assignee name is missing');
+            expect(await copyTasktemplatePo.getBussinessUnit()).toBe('United States Support', 'Copy external task  template Bussiness Unit is missing');
+            expect(await copyTasktemplatePo.getTemplateStatus()).toBe('Draft', 'Copy external task  template Draft status is missing');
+            expect(await copyTasktemplatePo.getOwnerCompany()).toBe('Petramco', 'Copy external task  template Owner company is missing');
+            expect(await copyTasktemplatePo.getTemplateMetadataBussinessUnit()).toBe('United States Support', 'Copy external task  template TemplateMetadata Bussiness Unit is missing');
+            expect(await copyTasktemplatePo.getOwnerGroup()).toBe('US Support 3', 'Copy external task  template Owner Group is missing');
+            await copyTasktemplatePo.clickSaveCopytemplate();
+            expect(await viewTasktemplatePo.gettaskSummaryValue()).toBe(externalTaskTemplateData.templateSummary, 'Copy external task  template Task Summary Value is missing');
+            let copyExternaltaskTemplateId = await viewTasktemplatePo.getTaskTemplateId();
+            expect(taskExternalTemplateId == copyExternaltaskTemplateId).toBeFalsy('Copy external task  template template');
+            await viewTasktemplatePo.gotoTaskTemplateConsolePage();
         });
     });
 });
