@@ -14,10 +14,10 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import createDynamicFieldLibraryConfigPo from '../../pageobject/settings/application-config/create-dynamic-field-library-config.po';
 import dynamicFieldLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-field-library-config-console.po';
 import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
-import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template-cases.po';
+import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
-import previewTaskTemplateCasesPo from '../../pageobject/settings/task-management/preview-task-template-cases.po';
+import previewTaskTemplateCasesPo from '../../pageobject/settings/task-management/preview-task-template.po';
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from "../../pageobject/task/manage-task-blade.po";
@@ -35,6 +35,7 @@ describe('Case Data Store', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -938,11 +939,12 @@ describe('Case Data Store', () => {
     describe('[DRDMV-13112]: [Dynamic Data] Verify Dynamic Field On Case Template Edit view UI', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, inactiveTemplateName, draftTemplateName, activeTemplateName;
+        let caseTemplateName = randomStr + 'caseTemplateDRDMV-13112';
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             templateData = {
-                "templateName": randomStr + 'caseTemplateDRDMV-13112',
+                "templateName": caseTemplateName,
                 "templateSummary": randomStr + 'caseTemplateDRDMV-13112',
                 "templateStatus": "Active",
                 "assignee": "Fritz",
@@ -956,13 +958,13 @@ describe('Case Data Store', () => {
             await apiHelper.createCaseTemplate(templateData);
             templateData.templateSummary = 'caseTemplate2SummaryDRDMV-13112' + randomStr;
             activeTemplateName = templateData.templateName = 'caseTemplate2DRDMV-13112' + randomStr;
-            activeTemplateName = templateData.templateStatus = 'Active';
+            templateData.templateStatus = 'Active';
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate2 = await apiHelper.createCaseTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate2.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
             templateData.templateSummary = 'caseTemplateDraftSummaryDRDMV-13112' + randomStr;
             draftTemplateName = templateData.templateName = 'caseTemplateDraftDRDMV-13112' + randomStr;
-            draftTemplateName = templateData.templateStatus = 'Draft';
+            templateData.templateStatus = 'Draft';
             await apiHelper.createCaseTemplate(templateData);
             templateData.templateSummary = 'caseTemplateInactiveSummaryDRDMV-13112' + randomStr;
             inactiveTemplateName = templateData.templateName = 'caseTemplateInactiveDRDMV-13112' + randomStr;
@@ -972,7 +974,7 @@ describe('Case Data Store', () => {
         it('[DRDMV-13112]: Verify Dynamic Fields On Active Case Template  ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(templateData.templateName);
+            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeFalsy();
             let arr: string[] = ['temp', 'temp1', 'temp2', 'temp3', 'temp4', 'temp5', 'attachment1', 'attachment2', 'attachment3']
             await navigationPage.gotoSettingsPage();

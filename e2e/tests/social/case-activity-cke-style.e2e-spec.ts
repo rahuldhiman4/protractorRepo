@@ -22,6 +22,7 @@ describe('Case Activity CKE Styling', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

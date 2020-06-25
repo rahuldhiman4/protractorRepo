@@ -49,11 +49,11 @@ class AssignmentsConfigConsolePage {
         return await utilGrid.areColumnHeaderMatches(this.selectors.guid, columnNames);
     }
 
-    async addRequestedCaseAssignmentGridColumn(columnNames: string[]): Promise<void> {
+    async addColumns(columnNames: string[]): Promise<void> {
         await utilGrid.addGridColumn(this.selectors.guid, columnNames);
     }
 
-    async removeRequestedCaseAssignmentGridColumn(columnNames: string[]): Promise<void> {
+    async removeColumns(columnNames: string[]): Promise<void> {
         await utilGrid.removeGridColumn(this.selectors.guid, columnNames);
     }
 

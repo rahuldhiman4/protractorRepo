@@ -42,6 +42,7 @@ describe('Dynamic data', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

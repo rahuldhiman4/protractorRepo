@@ -8,6 +8,7 @@ import editKnowledgeSet from '../../pageobject/settings/knowledge-management/edi
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Knowledge Article Set', () => {
 
@@ -20,7 +21,7 @@ describe('Knowledge Article Set', () => {
     });
 
     afterAll(async () => {
-        await utilCommon.closeBladeOnSettings();
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

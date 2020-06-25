@@ -26,6 +26,7 @@ describe('Case Activity CKE', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -861,7 +862,7 @@ describe('Case Activity CKE', () => {
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
             await updateStatusBladePo.setStatusReason('Successful');
-            await viewTaskPo.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
             expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
             await activityTabPage.clickOnPostButton();

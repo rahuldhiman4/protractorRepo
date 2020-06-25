@@ -22,12 +22,12 @@ import addReadAccess from '../../pageobject/settings/case-management/add-read-ac
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import createCaseTemplate from '../../pageobject/settings/case-management/create-casetemplate.po';
 import editCaseTemplate from '../../pageobject/settings/case-management/edit-casetemplate.po';
-import caseTemplatePreview from '../../pageobject/settings/case-management/preview-case-template-cases.po';
+import caseTemplatePreview from '../../pageobject/settings/case-management/preview-case-template.po';
 import consoleReadAcess from '../../pageobject/settings/case-management/read-access-console.po';
 import viewCaseTemplate from '../../pageobject/settings/case-management/view-casetemplate.po';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import createTaskTemplate from '../../pageobject/settings/task-management/create-tasktemplate.po';
-import taskTemplatePreview from '../../pageobject/settings/task-management/preview-task-template-cases.po';
+import taskTemplatePreview from '../../pageobject/settings/task-management/preview-task-template.po';
 import viewTasktemplatePage from '../../pageobject/settings/task-management/view-tasktemplate.po';
 import { default as activityPo, default as activityTabPo } from '../../pageobject/social/activity-tab.po';
 import taskConsolepage from "../../pageobject/task/console-task.po";
@@ -50,6 +50,7 @@ describe("Create Case", () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -822,7 +823,7 @@ describe("Create Case", () => {
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentPage.selectBusinessUnit('United States Support')
             await changeAssignmentPage.selectSupportGroup('US Support 3');
-            await changeAssignmentPage.selectAssigneeAsSupportGroup('US Support 3');
+            await changeAssignmentPage.selectAssignToSupportGroup();
             await changeAssignmentPage.clickOnAssignButton();
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();

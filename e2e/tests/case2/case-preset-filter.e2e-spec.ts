@@ -58,6 +58,7 @@ describe('Case Console Preset Filter', () => {
     afterAll(async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.updatePersonAsVIP('idphylum2', 'No');
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -460,11 +461,77 @@ describe('Case Console Preset Filter', () => {
             expect(await utilityGrid.isGridRecordPresent(caseId[5])).toBeFalsy(caseId[5] + ' :Record is available');
 
             //Waiting for SVT to Breached
-            browser.sleep(120000);
+            browser.sleep(150000);
             for (let i: number = 0; i < 3; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
             for (let i: number = 3; i < 7; i++) {
+                expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
+            }
+        });
+    });
+
+    describe('[DRDMV-22214]: Validate the My Open Breached Cases filter after applying and removing the filter', () => {
+        let caseId: string[] = [];
+        beforeAll(async () => {
+            await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+            await apiHelper.createSVT(caseData.SERVICE_TARGET_NEW);
+            await apiHelper.createSVT(caseData.SERVICE_TARGET_ASSIGNED);
+            await apiHelper.createSVT(caseData.SERVICE_TARGET_INPROGRESS);
+            await apiHelper.createSVT(caseData.SERVICE_TARGET_PENDING);
+            await apiHelper.createSVT(caseData.SERVICE_TARGET_CANCELED);
+            await apiHelper.createSVT(caseData.SERVICE_TARGET_RESOLVED);
+            await apiHelper.createSVT(caseData.SERVICE_TARGET_CUSTOMSTATUS1);
+            await apiHelper.createSVT(caseData.SERVICE_TARGET_CUSTOMSTATUS2);
+
+            //Displayed cases after applying filter
+            let response1 = await apiHelper.createCase(caseData.INPROGRESS_CRITICAL_ASSIGNEDTOLOGGEDINUSER);
+            caseId.push(response1.displayId);
+
+            let response2 = await apiHelper.createCase(caseData.PENDING_CRITICAL_ASSIGNEDTOLOGGEDINUSER);
+            caseId.push(response2.displayId);
+
+            let response4 = await apiHelper.createCase(caseData.BEFORERESOLVED_CRITICAL_ASSIGNEDTOLOGGEDINUSER);
+            caseId.push(response4.displayId);
+
+            let response6 = await apiHelper.createCase(caseData.ASSIGNED_CRITICAL_ASSIGNEDTOLOGGEDINUSER);
+            caseId.push(response6.displayId);
+
+            //Filtered out cases after applying Filter
+            let response5 = await apiHelper.createCase(caseData.AFTERRESOLVED_CRITICAL_ASSIGNEDTOLOGGEDINUSER);
+            caseId.push(response5.displayId);
+
+            let response3 = await apiHelper.createCase(caseData.RESOLVED_CRITICAL_ASSIGNEDTOLOGGEDINUSER);
+            caseId.push(response3.displayId);
+
+            let response7 = await apiHelper.createCase(caseData.ASSIGNED_CRITICAL_ASSIGNEDTOLOGGEDINUSER);
+            caseId.push(response7.displayId);
+            let caseGuid2 = response7.id;
+            await apiHelper.updateCaseStatus(caseGuid2, 'Canceled', 'Customer Canceled');
+
+            let response8 = await apiHelper.createCase(caseData.ASSIGNED_CRITICAL);
+            caseId.push(response8.displayId);
+
+            let response9 = await apiHelper.createCase(caseData.NEW_CRITICAL_ASSIGNEDTOLOGGEDINUSER);
+            caseId.push(response9.displayId);
+            browser.sleep(120000);
+
+        });
+
+        it('[DRDMV-22214]: Validate the My Open Breached Cases filter after applying and removing the filter', async () => {
+            await utilityGrid.applyPresetFilter('My Open Breached Cases');
+            expect(await utilityGrid.getAppliedFilterName()).toBe('My Open Breached Cases');
+
+            //Waiting for SVT to Breached
+            browser.sleep(150000);
+            for (let i: number = 0; i < 4; i++) {
+                expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
+            }
+            for (let i: number = 4; i < 9; i++) {
+                expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
+            }
+            await utilityGrid.clearFilter();
+            for (let i: number = 0; i < 9; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
             }
         });

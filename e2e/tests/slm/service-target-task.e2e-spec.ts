@@ -17,7 +17,6 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
 let psilonCaseBAUser = 'gderuno';
@@ -32,6 +31,7 @@ describe('Service Target Tests for Tasks', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -123,7 +123,7 @@ describe('Service Target Tests for Tasks', () => {
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Completed');
             await updateStatusBladePo.setStatusReason('Successful');
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             await viewTask.clickOnViewCase();
             await viewCasePage.openTaskCard(1);
             await viewCasePage.clickOnTaskLink(automatedTaskTemp);
@@ -321,7 +321,7 @@ describe('Service Target Tests for Tasks', () => {
             await utilityGrid.searchAndOpenHyperlink(taskId);
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Pending');
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchRecord(taskId);
@@ -330,7 +330,7 @@ describe('Service Target Tests for Tasks', () => {
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Completed');
             await updateStatusBladePo.setStatusReason('Successful');
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarSVTMetIconDisplayed()).toBe(true); //green
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchRecord(taskId);
@@ -376,7 +376,7 @@ describe('Service Target Tests for Tasks', () => {
         it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Verify Task SLM Status "Warning Pending" on Task Console', async () => {
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Pending');
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchRecord(taskId);
@@ -386,7 +386,7 @@ describe('Service Target Tests for Tasks', () => {
         it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Verify Task SLM Status "Missed Goal" on Task Console ', async () => {
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('In Progress');
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             await browser.sleep(70000);
             await utilityCommon.refresh();
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true);
@@ -398,7 +398,7 @@ describe('Service Target Tests for Tasks', () => {
         it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Verify Task SLM Status "Missed Goal" on Task Console ', async () => {
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Pending');
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchRecord(taskId);
@@ -482,15 +482,15 @@ describe('Service Target Tests for Tasks', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Assigned');
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('In Progress');
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('BeforeCompleted');
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarSVTMetIconDisplayed()).toBe(true); //green
         });
         afterAll(async () => {

@@ -7,6 +7,7 @@ import createDynamicFieldLibraryConfigPo from '../../pageobject/settings/applica
 import dynamicFieldLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-field-library-config-console.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Dynamic Library Configuration', () => {
     beforeAll(async () => {
@@ -15,6 +16,7 @@ describe('Dynamic Library Configuration', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -45,5 +47,8 @@ describe('Dynamic Library Configuration', () => {
         await createDynamicFieldLibraryConfigPo.setFieldValueType('NUMBER');
         await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
         expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
+        await utilCommon.closePopUpMessage();
+        await createDynamicFieldLibraryConfigPo.cancelButton();
+        await utilCommon.clickOnWarningOk();
     });
 });

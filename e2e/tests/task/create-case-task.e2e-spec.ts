@@ -32,6 +32,7 @@ describe('Create Case Task', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -574,10 +575,10 @@ describe('Create Case Task', () => {
             await viewTask.clickOnChangeStatus();
             await viewTask.clickOnUpdateStatusDrpdown();
             expect(await viewTask.allTaskOptionsPresent(status)).toBeTruthy("Staus Not Found");
-            await viewTask.clickOnCancelStatus();
+            await updateStatusBladePo.clickCancelButton();
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Closed');
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getTaskStatusValue()).toBe('Closed');
         });
@@ -1041,7 +1042,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             await viewTask.changeTaskStatus('Completed');
             await updateStatusBladePo.setStatusReason('Successful');
-            await viewTask.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewTask.clickOnViewCase();
         });

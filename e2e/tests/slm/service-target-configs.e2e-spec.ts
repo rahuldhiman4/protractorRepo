@@ -7,6 +7,7 @@ import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbu
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 var caseBAUser = 'qkatawazi';
 
@@ -19,6 +20,7 @@ describe('Service Target Tests', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

@@ -11,6 +11,7 @@ import automatedStatusTransitionEditPage from "../../pageobject/settings/case-ma
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Automated Case Status Transition', () => {
     beforeAll(async () => {
@@ -21,6 +22,7 @@ describe('Automated Case Status Transition', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -209,6 +211,7 @@ describe('Automated Case Status Transition', () => {
         await apiHelper.runAutomatedCaseTransitionProcess();
 
         await navigationPage.gotoCaseConsole();
+        await utilityCommon.refresh(); // required to get alert notification
         await notificationPo.clickOnNotificationIcon();
         expect(await notificationPo.isAlertPresent('tadmin Tenant Administrator changed the status of ' + newCase.displayId + ' to Closed')).toBeTruthy('Alert message is not present');
         await utilCommon.closePopUpMessage();

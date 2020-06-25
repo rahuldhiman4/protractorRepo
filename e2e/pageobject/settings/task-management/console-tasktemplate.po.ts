@@ -118,5 +118,9 @@ class TaskTemplateGridPage {
         return await utilGrid.isGridColumnSorted(column, 'descending', this.selectors.taskTemplateGuid);
     }
 
+    async getFirstRecordValue(columnName: string) : Promise<string> {
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.taskTemplateGuid, columnName);
+    }
+
 }
 export default new TaskTemplateGridPage();

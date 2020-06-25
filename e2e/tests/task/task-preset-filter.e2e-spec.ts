@@ -53,6 +53,7 @@ describe('Task Console Preset Filter', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -638,6 +639,105 @@ describe('Task Console Preset Filter', () => {
             }
 
             for (let i: number = 0; i < 4; i++) {
+                expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
+            }
+
+            await utilityGrid.clearFilter();
+
+            for (let i: number = 0; i < 7; i++) {
+                expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
+            }
+        });
+    });
+
+    describe('[DRDMV-22433]: Validate the My Open Breached Tasks filter after applying and removing the filter', () => {
+        let taskId: string[] = [];
+        it('[DRDMV-22433]: Create SVT data and task data', async () => {
+            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+            await apiHelper.createSVT(taskData.SERVICE_TARGET_NEW_TASK);
+            await apiHelper.createSVT(taskData.SERVICE_TARGET_ASSIGNED_TASK);
+            await apiHelper.createSVT(taskData.SERVICE_TARGET_INPROGRESS_TASK);
+            await apiHelper.createSVT(taskData.SERVICE_TARGET_PENDING_TASK);
+            await apiHelper.createSVT(taskData.SERVICE_TARGET_CANCELED_TASK);
+            await apiHelper.createSVT(taskData.SERVICE_TARGET_FAILED_TASK);
+            await apiHelper.createSVT(taskData.SERVICE_TARGET_COMPLETED_TASK);
+            await apiHelper.createSVT(taskData.SERVICE_TARGET_BEFORECOMPLETED_TASK);
+            await apiHelper.createSVT(taskData.SERVICE_TARGET_AFTERCOMPLETED_TASK);
+
+            let response17 = await apiHelper.createCase(taskData.NEW_VIP_DRDMV_20850_1);
+            let response18 = await apiHelper.createAdhocTask(response17.id, taskData.TASK_DATA_CRITICAL_PRIORITY_UNASSIGNED);
+            taskId.push(response18.displayId);
+
+            let response5 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
+            let response6 = await apiHelper.createAdhocTask(response5.id, taskData.TASK_DATA_CRITICAL_PRIORITY);
+            taskId.push(response6.displayId);
+            await apiHelper.updateCaseStatus(response5.id, 'InProgress');
+            await apiHelper.updateTaskStatus(response6.id, 'Completed', 'Successful');
+
+            let response9 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
+            let response10 = await apiHelper.createAdhocTask(response9.id, taskData.TASK_DATA_CRITICAL_PRIORITY);
+            taskId.push(response10.displayId);
+            await apiHelper.updateCaseStatus(response9.id, 'InProgress');
+            await apiHelper.updateTaskStatus(response10.id, 'Canceled');
+
+            let response11 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
+            let response12 = await apiHelper.createAdhocTask(response11.id, taskData.TASK_DATA_CRITICAL_PRIORITY);
+            taskId.push(response12.displayId);
+            await apiHelper.updateCaseStatus(response11.id, 'InProgress');
+            await apiHelper.updateTaskStatus(response12.id, 'Completed', 'Successful');
+            await apiHelper.updateTaskStatus(response12.id, 'AfterCompleted');
+        });
+        it('[DRDMV-22433]: Task creation with different status', async () => {
+            let randomString1: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            taskData.FAILED_TASK_TEMPLATE_CRITICAL_PRIORITY.templateName = taskData.FAILED_TASK_TEMPLATE_CRITICAL_PRIORITY.templateName + randomString1;
+            await apiHelper.createAutomatedTaskTemplate(taskData.FAILED_TASK_TEMPLATE_CRITICAL_PRIORITY).catch(() => {
+                console.log('Issue while creating the template');
+            });
+            let response13 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
+            let create_task_from_task_template = taskData.CREATE_TASK_FROM_TASK_TEMPLATE;
+            create_task_from_task_template.templateName = taskData.FAILED_TASK_TEMPLATE_CRITICAL_PRIORITY.templateName;
+            let response14 = await apiHelper.addTaskToCase(create_task_from_task_template, response13.id);
+            await apiHelper.apiLogin('tadmin');
+            taskId.push(await (await apiHelper.getCreatedTaskIds(response14)).displayId);
+            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+            await apiHelper.updateCaseStatus(response13.id, 'InProgress');
+
+            let response1 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
+            let response2 = await apiHelper.createAdhocTask(response1.id, taskData.TASK_DATA_CRITICAL_PRIORITY);
+            taskId.push(response2.displayId);
+            await apiHelper.updateCaseStatus(response1.id, 'InProgress');
+            await apiHelper.updateTaskStatus(response2.id, 'InProgress');
+
+            let response3 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
+            let response4 = await apiHelper.createAdhocTask(response3.id, taskData.TASK_DATA_CRITICAL_PRIORITY);
+            taskId.push(response4.displayId);
+            await apiHelper.updateCaseStatus(response3.id, 'InProgress');
+            await apiHelper.updateTaskStatus(response4.id, 'Pending');
+
+            let response7 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
+            let response8 = await apiHelper.createAdhocTask(response7.id, taskData.TASK_DATA_CRITICAL_PRIORITY);
+            taskId.push(response8.displayId);
+            await apiHelper.updateCaseStatus(response7.id, 'InProgress');
+            await apiHelper.updateTaskStatus(response8.id, 'InProgress');
+            await apiHelper.updateTaskStatus(response8.id, 'BeforeCompleted');
+
+            let response15 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
+            let response16 = await apiHelper.createAdhocTask(response15.id, taskData.TASK_DATA_CRITICAL_PRIORITY);
+            taskId.push(response16.displayId);
+            await apiHelper.updateCaseStatus(response15.id, 'InProgress');
+        });
+        it('[DRDMV-22433]: Applying the Filter', async () => {
+            await utilityGrid.applyPresetFilter('My Open Breached Tasks');
+            expect(await utilityGrid.getAppliedFilterName()).toBe('My Open Breached Tasks');
+            await browser.sleep(130000);
+        });
+        it('[DRDMV-22433]: Validate the My Open Breached Tasks filter after applying and removing the filter', async () => {
+            browser.sleep(120000);
+            for (let i: number = 5; i < 8; i++) {
+                expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
+            }
+
+            for (let i: number = 0; i < 5; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
             }
 

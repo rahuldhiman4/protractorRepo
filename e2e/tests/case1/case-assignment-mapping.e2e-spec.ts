@@ -26,8 +26,8 @@ import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import utilityCommon from '../../utils/utility.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe("Create Case Assignment Mapping", () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
@@ -61,6 +61,7 @@ describe("Create Case Assignment Mapping", () => {
     }
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -105,10 +106,10 @@ describe("Create Case Assignment Mapping", () => {
         let defaultCaseAssignmentColumns: string[] = ["Assignment Name", "Case Priority", "Company", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Region", "Site", "Support Company", "Support Group", "Default Mapping"];
         expect(await assignmentConfigConsolePage.areCaseAssignmentGridColumnMatches(defaultCaseAssignmentColumns)).toBeTruthy("Default columns are not matching");
         let caseAssignmentLabelColumn: string[] = ["Label"];
-        await assignmentConfigConsolePage.addRequestedCaseAssignmentGridColumn(caseAssignmentLabelColumn);
+        await assignmentConfigConsolePage.addColumns(caseAssignmentLabelColumn);
         defaultCaseAssignmentColumns.push("Label");
         expect(await assignmentConfigConsolePage.areCaseAssignmentGridColumnMatches(defaultCaseAssignmentColumns)).toBeTruthy("Default And new columns added are not matching");
-        await assignmentConfigConsolePage.removeRequestedCaseAssignmentGridColumn(caseAssignmentLabelColumn);
+        await assignmentConfigConsolePage.removeColumns(caseAssignmentLabelColumn);
         await defaultCaseAssignmentColumns.splice(defaultCaseAssignmentColumns.indexOf("Label"), 1);
         expect(await assignmentConfigConsolePage.areCaseAssignmentGridColumnMatches(defaultCaseAssignmentColumns)).toBeTruthy("Default And remaining new columns are not matching");
     });
@@ -540,6 +541,6 @@ describe("Create Case Assignment Mapping", () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        }); 
+        });
     });
 });

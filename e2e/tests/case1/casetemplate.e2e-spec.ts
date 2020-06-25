@@ -44,6 +44,7 @@ describe('Case Template', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -254,11 +255,11 @@ describe('Case Template', () => {
         let column1: string[] = ["Display ID"];
         await consoleCasetemplatePo.addColumnOnGrid(column1);
         await utilGrid.searchRecord(newCaseTemplate.displayId);
-        expect(await consoleCasetemplatePo.isValueDisplayed("Display ID")).toContain(newCaseTemplate.displayId);
+        expect(await consoleCasetemplatePo.getFirstRecordValue("Display ID")).toContain(newCaseTemplate.displayId);
         await consoleCasetemplatePo.clickOnClearSearchIcon();
         expect(await consoleCasetemplatePo.moreRecordsArePresentAfterClear()).toBeGreaterThan(7);
         await utilGrid.searchRecord(templateData.templateName);
-        expect(await consoleCasetemplatePo.isValueDisplayed("Template Name")).toContain(templateData.templateName);
+        expect(await consoleCasetemplatePo.getFirstRecordValue("Template Name")).toContain(templateData.templateName);
         await consoleCasetemplatePo.clickOnClearSearchIcon();
         expect(await consoleCasetemplatePo.moreRecordsArePresentAfterClear()).toBeGreaterThan(7);
         await utilGrid.searchRecord('xyzsdasdlkdasd');
@@ -298,7 +299,7 @@ describe('Case Template', () => {
             expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('fritz');
-            await quickCasePo.selectCaseTemplate(templateData.templateSummary);
+            await quickCasePo.selectCaseTemplate(templateData.templateName);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy();
@@ -680,7 +681,9 @@ describe('Case Template', () => {
             await editCasetemplatePo.clickOnCancelTemplateMetaData();
             let priority: string[] = ["Critical", "High", "Medium", "Low"];
             expect(await editCasetemplatePo.allPriorityOptionsPresent(priority)).toBeTruthy();
+            await editCasetemplatePo.changeCaseSummary('Updated Summary');
             await editCasetemplatePo.clickSaveCaseTemplate();
+            await utilCommon.closePopUpMessage();
         });
         it('[DRDMV-1215]: [Case Template] Case Status, Template status, Priority, Case Company, Owner population', async () => {
             expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(caseTemplateName);
@@ -966,7 +969,7 @@ describe('Case Template', () => {
             let templateDataDraft = {
                 "templateName": caseTemplateName,
                 "templateSummary": caseTemplateName,
-                "templateStatus": "Draft",
+                "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
@@ -977,29 +980,15 @@ describe('Case Template', () => {
                 "categoryTier2": "Policies",
                 "categoryTier3": "Card Issuance",
                 "casePriority": "Low",
+                "caseStatus": "Assigned",
                 "description": 'description' + randomStr,
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(templateDataDraft);
         });
-        it('[DRDMV-1245]: Case Agent checks for Draft template', async () => {
+        it('[DRDMV-1245]: Case Agent checks for Active template & Consume it', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
-            await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName('adam');
-            expect(await quickCasePo.selectCaseTemplate(caseTemplateName)).toBeFalsy('Draft template is present');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
-            await viewCaseTemplate.clickOnEditCaseTemplateButton();
-            expect(await editCasetemplatePo.isCaseCompanyDisabled()).toBeTruthy();
-            expect(await editCasetemplatePo.isCaseSummaryReadOnly()).toBeFalsy();
-            await viewCaseTemplate.clickEditTemplateMetaData();
-            await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
-            await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-            expect(await viewCaseTemplate.getTemplateStatusValue()).toBe('Active');
-        });
-        it('[DRDMV-1245]: Case Agent checks for Active template & Consume it', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(caseTemplateName);
@@ -1012,6 +1001,9 @@ describe('Case Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+            await viewCaseTemplate.clickOnEditCaseTemplateButton();
+            expect(await editCasetemplatePo.isCaseCompanyDisabled()).toBeTruthy();
+            expect(await editCasetemplatePo.isCaseSummaryReadOnly()).toBeTruthy();
             await viewCaseTemplate.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Inactive');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
@@ -1019,6 +1011,18 @@ describe('Case Template', () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             expect(await quickCasePo.selectCaseTemplate(caseTemplateName)).toBeFalsy('Inactive template is present');
+        });
+        it('[DRDMV-1245]: Case Agent checks for Draft template', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+            await viewCaseTemplate.clickEditTemplateMetaData();
+            await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
+            await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            expect(await viewCaseTemplate.getTemplateStatusValue()).toBe('Draft');
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('adam');
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateName)).toBeFalsy('Draft template is present');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -1411,7 +1415,7 @@ describe('Case Template', () => {
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
             await updateStatusBladePo.setStatusReason('Successful');
-            await viewTaskPo.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             await viewTaskPo.clickOnViewCase();
             expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
         });
@@ -1435,7 +1439,7 @@ describe('Case Template', () => {
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
             await updateStatusBladePo.setStatusReason('Successful');
-            await viewTaskPo.clickOnSaveStatus();
+            await updateStatusBladePo.clickSaveStatus();
             await viewTaskPo.clickOnViewCase();
             expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
         });

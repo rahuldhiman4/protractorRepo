@@ -25,6 +25,7 @@ describe('Acknowledgment Template', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

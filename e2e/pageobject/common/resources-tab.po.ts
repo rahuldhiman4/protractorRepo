@@ -15,6 +15,7 @@ export class Resources {
         knowledgeTitle: '[rx-view-component-id="aacf8477-f930-4983-820d-1b9fa12441c0"] div.bwf-search-fields__title-text',
         advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select label',
         recommendedKnowledgeGuid: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"]',
+        paginationNextButton: '.content-outlet .page-next',
     }
 
     async isSearchRecordEmpty(recordNumber: number): Promise<boolean> {
@@ -145,6 +146,38 @@ export class Resources {
 
     async getKnowledgeArticleInfo(): Promise<string> {
         return await $$('.flex-column bwf-search-result-fields div span').getText();
+    }
+
+    async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
+        for (let i = 0; i < numberOfArticles; i++) {
+            await $$('adapt-icon[class="search-item__unpin-icon"]').get(i).click();
+        }
+    }
+
+    async unpinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
+        for (let i = 0; i < numberOfArticles; i++) {
+            await $$('adapt-icon[class="search-item__pin-icon"]').get(i).click();
+        }
+    }
+
+    async isFirstPinnedArticleDisplayed(): Promise<boolean> {
+        return await $('adapt-icon[class="search-item__pin-icon"]').isPresent().then(async (link) => {
+            if (link) {
+                return await $('adapt-icon[class="search-item__pin-icon"]').isDisplayed();
+            }
+        });
+    }
+
+    async getCountOfPinKnowledgeArticles(): Promise<number> {
+        return await $$('adapt-icon[class="search-item__pin-icon"]').count();    
+    }
+
+    async clickOnBackButton(): Promise<void> {
+        await $(this.selectors.backButton).click();
+    }
+
+    async clickPaginationNext(): Promise<void> {
+        await $(this.selectors.paginationNextButton).click();
     }
 }
 

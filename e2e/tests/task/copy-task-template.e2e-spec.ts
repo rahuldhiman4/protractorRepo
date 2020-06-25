@@ -36,6 +36,7 @@ describe('Copy Task Template', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -260,7 +261,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(newAutomationTaskTemplate);
             await copyTemplatePage.selectTaskCompany('Psilon')
             await copyTemplatePage.setNewProcessName(templateData.processName);
-            await copyTemplatePage.clickSaveCopytemplate();// Failing is it defect? confirm if this should save the template
+            await copyTemplatePage.clickSaveCopytemplate();// Failing due to defect DRDMV-21097
             expect(await utilCommon.isPopUpMessagePresent(`ERROR (902): Duplicate process name ${templateData.processBundle}:${templateData.processName}`, 2)).toBeTruthy(); // ERROR (902): Duplicate process name
             await copyTemplatePage.clickCancelCopytemplate();
             await utilCommon.clickOnWarningOk();

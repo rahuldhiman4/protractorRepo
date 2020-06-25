@@ -141,6 +141,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

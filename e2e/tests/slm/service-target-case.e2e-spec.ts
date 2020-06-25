@@ -27,6 +27,7 @@ describe('Service Target Tests for Cases', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

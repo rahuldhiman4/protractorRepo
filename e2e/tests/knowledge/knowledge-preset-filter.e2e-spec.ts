@@ -59,6 +59,7 @@ describe('Knowledge Console Preset Filter', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

@@ -53,8 +53,26 @@ class ViewCasePage {
         dynamicFieldsValue: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .read-only-content',
         slaProgressBar: '.progress-bar',
         tab: '.nav-item button',
+        showApproversBanner: '.rx-runtime-view-canvas-item-margin [rx-view-component-id="f288e1bb-9273-4ddd-98da-175d0c9b7413"]',
+        pendingApprovalsInfo: '[rx-view-component-id="9766d3d3-3f7c-43fe-8237-473d88298daa"] span[aria-label="Status of case approvals"] span',
+        showApproversLink: '.show-approvers-button-container',
+        showMoreDescription: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] button',
+        approvalButtons: '.approval-buttons span',
+        approveButton: '.d-icon-left-check_shield',
+        rejectButton: '.d-icon-left-cross_circle',
     }
 
+    async clickDescriptionShowMore(): Promise<void> {
+        await $(this.selectors.showMoreDescription).click();
+    }
+
+    async isImageDisplayed(value: string): Promise<boolean> {
+        return await $(`.bwf-description-read-state img[src="${value}"]`).isDisplayed();
+    }
+
+    async isColorTextPresent(value: string): Promise<boolean> {
+        return await $(`.bwf-description-read-state span[style="${value}"]`).isPresent();
+    }
     async isGroupNameDisplayed(groupName: string): Promise<boolean> {
         return await $(`[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .group-container__name__title[title=${groupName}]`).isDisplayed();
     }
@@ -437,6 +455,40 @@ class ViewCasePage {
 
     async clickContactPersonName(): Promise<void> {
         await $(this.selectors.contactPersonName).click();
+    }
+
+    async isShowApproversBannerDisplayed(): Promise<boolean> {
+        return await $(this.selectors.showApproversBanner).isPresent().then(async (link) => {
+            if (link) {
+                return await $(this.selectors.showApproversBanner).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async clickShowApproversLink(): Promise<void> {
+        await $(this.selectors.showApproversBanner).$(this.selectors.showApproversLink).click();
+    }
+
+    async getShowPendingApproversInfo(): Promise<string> {
+        return await $(this.selectors.pendingApprovalsInfo).getAttribute('aria-label');
+    }
+
+    async getApprovedApproversInfo(): Promise<string> {
+        return await $$(this.selectors.pendingApprovalsInfo).last().getAttribute('aria-label');
+    }
+
+    async isApprovalButtonsPresent(buttonText: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isDisplayed();
+        });
+    }
+
+    async clickOnApproveLink(): Promise<void> {
+        await $(this.selectors.approveButton).click();
+    }
+
+    async clickOnRejectLink(): Promise<void> {
+        await $(this.selectors.rejectButton).click();
     }
 }
 

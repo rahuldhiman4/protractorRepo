@@ -8,6 +8,7 @@ import editApprovalMappingPage from "../../pageobject/settings/case-management/e
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 
 describe("Approval Mapping Tests", () => {
@@ -23,13 +24,13 @@ describe("Approval Mapping Tests", () => {
     const approvalMappingMsg = "Mapping the result of the approval process to the case status.";
     const approvalStatusMappingLabel = "Status mapping:";
 
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -285,11 +286,11 @@ describe("Approval Mapping Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-10702,DRDMV-11882]:[Approval Mapping] - Update existing Approval Mapping record', async () => {
+    describe('[DRDMV-10702,DRDMV-11882,DRDMV-16524]:[Approval Mapping] - Update existing Approval Mapping record', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalMappingName = 'Approval Mapping' + randomStr;
 
-        it('[DRDMV-10702,DRDMV-11882]: Create Apporval Mapping', async () => {
+        it('[DRDMV-10702,DRDMV-11882,DRDMV-16524]: Create Apporval Mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
@@ -308,7 +309,7 @@ describe("Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName);
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
-        it('[DRDMV-10702,DRDMV-11882]: Update existing approval mapping', async () => {
+        it('[DRDMV-10702,DRDMV-11882,DRDMV-16524]: Update existing approval mapping', async () => {
             await utilGrid.searchAndOpenHyperlink(approvalMappingName);
             expect(await editApprovalMappingPage.getEditApprovalMappingHeaderText()).toBe('Edit Approval Mapping');
             await editApprovalMappingPage.setApprovalMappingName("Test " + approvalMappingName);
@@ -319,13 +320,232 @@ describe("Approval Mapping Tests", () => {
             await editApprovalMappingPage.selectStatusMappingError('New');
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
         });
-        it('[DRDMV-10702,DRDMV-11882]: [Approval Mapping] - Update existing Approval Mapping record', async () => {
+        it('[DRDMV-10702,DRDMV-11882,DRDMV-16524]: [Approval Mapping] - Update existing Approval Mapping record', async () => {
             await utilGrid.searchAndOpenHyperlink("Test " + approvalMappingName);
-            await editApprovalMappingPage.selectCompany('- Global -');
+            await editApprovalMappingPage.selectStatusMappingRejected('Approval Rejected');
+            await editApprovalMappingPage.selectStatusMappingError('Canceled');
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
             await utilGrid.searchAndOpenHyperlink("Test " + approvalMappingName);
-            expect(await editApprovalMappingPage.getSelectedCompany()).toBe('- Global -');
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
+
+        it('[DRDMV-10702,DRDMV-11882,DRDMV-16524]: Delete approval mapping', async () => {
+            await utilGrid.searchAndSelectGridRecord("Test " + approvalMappingName);
+            await approvalMappingConsolePage.clickDeleteApprovalMapping();
+            await utilCommon.clickOnWarningOk();
+            await utilGrid.searchRecord("Test " + approvalMappingName);
+            await expect(utilGrid.isGridRecordPresent("Test " + approvalMappingName)).toBeFalsy('Grid record displayed on grid console after deletion.');
+        });
+
+        afterAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteApprovalMapping();
+        });
+    });
+
+
+    //skhobrag
+    describe('[DRDMV-22195]:Case Global Approval Mapping behavior', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let approvalMappingName = 'Approval Mapping' + randomStr;
+        let globalCaseTemplateStr = 'Case Template for Global company_' + randomStr;
+        let petramcoCaseTemplateStr = 'Case Template for Petramco company_' + randomStr;
+        let psilonCaseTemplateStr = 'Case Template for Psilon company_' + randomStr;
+        let draftCaseTemplateStr = 'Case Template for Petramco company for draft status_' + randomStr;
+        let inactiveCaseTemplateStr = 'Case Template for Petramco company for inactive status_' + randomStr;
+
+        beforeAll(async () => {
+
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteApprovalMapping();
+
+            let caseTemplate = {
+                "templateName": 'CaseTemplateName',
+                "templateSummary": 'Case Template Summary',
+                "categoryTier1": 'Purchasing Card',
+                "casePriority": "Critical",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            // create global case template
+            caseTemplate.templateName = globalCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for global case template';
+            caseTemplate.company = '- Global -';
+            await apiHelper.createCaseTemplate(caseTemplate);
+
+            // create Petramco Active case template
+            caseTemplate.templateName = petramcoCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for petramco case template';
+            await apiHelper.createCaseTemplate(caseTemplate);
+
+            // create Petramco Draft case template
+            caseTemplate.templateName = draftCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for petramco case template draft status';
+            caseTemplate.templateStatus = 'Draft';
+            await apiHelper.createCaseTemplate(caseTemplate);
+
+            // create Petramco Inactive case template
+            caseTemplate.templateName = inactiveCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for petramco case template inactive status';
+            caseTemplate.templateStatus = 'Inactive';
+            await apiHelper.createCaseTemplate(caseTemplate);
+
+            let psilonCaseTemplate = {
+                "templateName": `${psilonCaseTemplateStr}`,
+                "templateSummary": 'Case Summary for psilon case template',
+                "categoryTier1": 'Purchasing Card',
+                "casePriority": "Critical",
+                "templateStatus": "Active",
+                "company": "Psilon",
+                "businessUnit": "Psilon Support Org1",
+                "supportGroup": "Psilon Support Group1",
+                "ownerBU": "Psilon Support Org1",
+                "ownerGroup": "Psilon Support Group1"
+            }
+            await apiHelper.apiLogin('gderuno');
+            await apiHelper.createCaseTemplate(psilonCaseTemplate);
+
+        });
+
+        it('[DRDMV-22195]: Create Apporval Mapping', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+            await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
+            await createApprovalMappingPage.selectCompany('Petramco');
+            await createApprovalMappingPage.selectStatusTrigger('Assigned');
+            await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
+            await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
+            await createApprovalMappingPage.selectStatusMappingError('New');
+            expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
+            await createApprovalMappingPage.clickSaveApprovalMappingBtn();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName);
+        });
+
+        it('[DRDMV-22195]: Verify case template selection for approval mapping with petramco organization', async () => {
+            await editApprovalMappingPage.searchCaseTemplate(globalCaseTemplateStr);
+            expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(globalCaseTemplateStr);
+            await editApprovalMappingPage.searchCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(petramcoCaseTemplateStr);
+            await editApprovalMappingPage.searchCaseTemplate(psilonCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeFalsy('Searched case template for different company is displayed.');
+            await editApprovalMappingPage.searchCaseTemplate(draftCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeFalsy('Searched draft case template for different company is displayed.');
+            await editApprovalMappingPage.searchCaseTemplate(inactiveCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeFalsy('Searched inactive case template for different company is displayed.');
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(globalCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeFalsy('Searched case template is not displayed.');
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeFalsy('Searched case template is not displayed.');
+            expect(await editApprovalMappingPage.isSelectCaseTemplateforApprovalLeftArrawBtnEnabled()).toBeFalsy('Left Arrow button to select case template is enabled');
+            expect(await editApprovalMappingPage.isSelectCaseTemplateforApprovalRightArrawBtnEnabled()).toBeFalsy('Right Arrow button to select case template is enabled');
+            await editApprovalMappingPage.searchCaseTemplate(globalCaseTemplateStr);
+            await editApprovalMappingPage.selectCaseTemplateCheckbox();
+            expect(await editApprovalMappingPage.isSelectCaseTemplateforApprovalLeftArrawBtnEnabled()).toBeFalsy('Left Arrow button to select case template is disabled');
+            expect(await editApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy('Save button is enabled');
+            await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
+            expect(await editApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy('Save button is enabled');
+            await editApprovalMappingPage.searchCaseTemplate(petramcoCaseTemplateStr);
+            await editApprovalMappingPage.selectCaseTemplateCheckbox();
+            await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
+            //search the already selected case template
+            await editApprovalMappingPage.searchCaseTemplate(globalCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeFalsy('Searched case template is not displayed.');
+            await editApprovalMappingPage.searchCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeFalsy('Searched case template is not displayed.');
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(globalCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeTruthy('Searched case template is not displayed.');
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeTruthy('Searched case template is not displayed.');
+
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(petramcoCaseTemplateStr);
+            await editApprovalMappingPage.selectAssociatedCaseTemplateCheckbox();
+            expect(await editApprovalMappingPage.isSelectCaseTemplateforApprovalRightArrawBtnEnabled()).toBeFalsy('Right Arrow button to select case template is disabled');
+            await editApprovalMappingPage.clickCaseTemplateforApprovalLeftArrawBtn();
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeFalsy('Searched case template is not displayed.');
+            await editApprovalMappingPage.searchCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeTruthy('Searched case template is not displayed.');
+        });
+
+        it('[DRDMV-22195]: verify updated details on approval mapping', async () => {
+            await editApprovalMappingPage.searchCaseTemplate('Case Template for ');
+            await editApprovalMappingPage.selectMultipleCaseTemplateCheckbox();
+            await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
+            await utilGrid.searchAndOpenHyperlink(approvalMappingName);
+            expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(globalCaseTemplateStr);
+            expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(petramcoCaseTemplateStr);
+        })
+
+        it('[DRDMV-22195]: Create Apporval Mapping for Global Company', async () => {
+            await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
+            await createApprovalMappingPage.selectCompany('Global');
+            await createApprovalMappingPage.selectStatusTrigger('Assigned');
+            await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
+            await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
+            await createApprovalMappingPage.selectStatusMappingError('New');
+            expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
+            await createApprovalMappingPage.clickSaveApprovalMappingBtn();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName);
+        });
+
+        it('[DRDMV-22195]: Verify case template selection for approval mapping with global organization', async () => {
+            await editApprovalMappingPage.searchCaseTemplate(globalCaseTemplateStr);
+            expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(globalCaseTemplateStr);
+            await editApprovalMappingPage.searchCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(petramcoCaseTemplateStr);
+            await editApprovalMappingPage.searchCaseTemplate(psilonCaseTemplateStr);
+            expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(psilonCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSelectCaseTemplateforApprovalLeftArrawBtnEnabled()).toBeFalsy('Left Arrow button to select case template is enabled');
+            expect(await editApprovalMappingPage.isSelectCaseTemplateforApprovalRightArrawBtnEnabled()).toBeFalsy('Right Arrow button to select case template is enabled');
+            await editApprovalMappingPage.searchCaseTemplate(globalCaseTemplateStr);
+            await editApprovalMappingPage.selectCaseTemplateCheckbox();
+            expect(await editApprovalMappingPage.isSelectCaseTemplateforApprovalLeftArrawBtnEnabled()).toBeFalsy('Left Arrow button to select case template is enabled');
+            expect(await editApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy('Save button is enabled');
+            await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
+            expect(await editApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy('Save button is enabled');
+            await editApprovalMappingPage.searchCaseTemplate(petramcoCaseTemplateStr);
+            await editApprovalMappingPage.selectCaseTemplateCheckbox();
+            await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
+            expect(await editApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy('Save button is enabled');
+            await editApprovalMappingPage.searchCaseTemplate(psilonCaseTemplateStr);
+            await editApprovalMappingPage.selectCaseTemplateCheckbox();
+            await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
+
+            //search the already selected case template
+            await editApprovalMappingPage.searchCaseTemplate(globalCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeFalsy('Searched case template is not displayed.');
+            await editApprovalMappingPage.searchCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeFalsy('Searched case template is not displayed.');
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(globalCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeTruthy('Searched case template is not displayed.');
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeTruthy('Searched case template is not displayed.');
+
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(petramcoCaseTemplateStr);
+            await editApprovalMappingPage.selectAssociatedCaseTemplateCheckbox();
+            expect(await editApprovalMappingPage.isSelectCaseTemplateforApprovalRightArrawBtnEnabled()).toBeFalsy('Right Arrow button to select case template is disabled');
+            await editApprovalMappingPage.clickCaseTemplateforApprovalLeftArrawBtn();
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeFalsy('Searched case template is not displayed.');
+            await editApprovalMappingPage.searchCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeTruthy('Searched case template is not displayed.');
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
+        });
+
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();

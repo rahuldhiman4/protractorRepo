@@ -9,13 +9,12 @@ import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfilePage from '../../pageobject/common/person-profile.po';
-import relatedCasePage from '../../pageobject/common/related-case-tab.po';
+import { default as relatedCasePage, default as relatedCaseTabPo } from '../../pageobject/common/related-case-tab.po';
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
-import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
-import utilityCommon from '../../utils/utility.common';
 import composeEmailPage from '../../pageobject/email/compose-mail.po';
 import relationConfigPage from '../../pageobject/settings/relationship/relationships-configs.po';
-import relatedCaseTabPo from '../../pageobject/common/related-case-tab.po';
+import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Case And Employee Relationship', () => {
@@ -28,6 +27,7 @@ describe('Case And Employee Relationship', () => {
     afterAll(async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteAllEmailConfiguration();
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

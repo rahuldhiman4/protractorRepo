@@ -17,6 +17,7 @@ describe('Create Process in Flowset', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

@@ -10,7 +10,7 @@ import composeMail from '../../pageobject/email/compose-mail.po';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import editCaseTemplate from "../../pageobject/settings/case-management/edit-casetemplate.po";
-import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template-cases.po';
+import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
 import { default as activityPo } from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
@@ -29,10 +29,10 @@ describe("Quick Case", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        await testData797();
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -72,6 +72,7 @@ describe("Quick Case", () => {
 
     //kgaikwad
     it('[DRDMV-797]: [Quick Case] Case creation with inactive template (negative)', async () => {
+        await testData797();
         await quickCasePo.clickStartOverButton();
         await quickCasePo.selectRequesterName("Adam Pavlik");
         await quickCasePo.selectCaseTemplate(templateName797);
@@ -509,7 +510,7 @@ describe("Quick Case", () => {
             await resources.enterAdvancedSearchText(CaseTemplateData.templateName);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
-            await quickCase.pinRecommendedKnowledgeArticles(1);
+            await resources.pinRecommendedKnowledgeArticles(1);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
         });
