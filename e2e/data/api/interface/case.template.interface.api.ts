@@ -23,7 +23,7 @@ export interface ICaseTemplate {
     identityValidation?: string,
     assignmentMethod?: string,
     taskFailureConfiguration?: string,
-    allowCaseReopen?: string,
+    allowCaseReopen?: boolean,
     resolveCaseonLastTaskCompletion?:string,
     label?:string
 }
