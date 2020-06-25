@@ -42,6 +42,7 @@ describe('Case Watchlist', () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(qfengStr);
         await utilityGrid.clearFilter();
+        await utilityGrid.sortGridColumn('Case ID', 'desc');
         await apiHelper.apiLogin("tadmin");
         await apiHelper.setDefaultNotificationForUser(qannisStr, "Alert");
         await apiHelper.setDefaultNotificationForUser(qfengStr, "Alert");
@@ -225,6 +226,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qannisStr);
             await utilityGrid.clearFilter();
+            await utilityGrid.sortGridColumn('Case ID', 'desc');
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
@@ -538,6 +540,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
             await utilityGrid.clearFilter();
+            await utilityGrid.sortGridColumn('Case ID', 'desc');
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);

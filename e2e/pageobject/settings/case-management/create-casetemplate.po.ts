@@ -91,7 +91,10 @@ class CreateCaseTemplate {
     }
 
     async setStatusReasonValue(StatusReasonValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusReason, StatusReasonValue);
+        await $('[rx-view-component-id="ffcb232a-0ef2-4e6f-9fc1-5d75c1576fd1"] label').isPresent().then(async(present)=>{
+            if(present) await utilCommon.selectDropDown('ffcb232a-0ef2-4e6f-9fc1-5d75c1576fd1', StatusReasonValue);
+            else await utilCommon.selectDropDown(this.selectors.statusReason, StatusReasonValue);
+        });
     }
 
     async setIdentityValidationValue(identityValidationValue: string): Promise<void> {
