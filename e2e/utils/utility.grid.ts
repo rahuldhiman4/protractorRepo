@@ -32,9 +32,9 @@ export class GridOperations {
     }
 
     async typeInFilterExperssion(date: string): Promise<void> {
-       await $(this.selectors.filterPresetBtn).click();
-       await $(this.selectors.filterSearchValueBox).clear();
-       await $(this.selectors.filterSearchValueBox).sendKeys(date,Key.ENTER);
+        await $(this.selectors.filterPresetBtn).click();
+        await $(this.selectors.filterSearchValueBox).clear();
+        await $(this.selectors.filterSearchValueBox).sendKeys(date, Key.ENTER);
 
     }
 

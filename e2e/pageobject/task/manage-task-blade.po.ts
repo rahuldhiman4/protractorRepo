@@ -97,10 +97,7 @@ class ManageTaskBlade {
     }
 
     async isTaskLinkPresent(taskSummary: string): Promise<boolean> {
-        await browser.wait(this.EC.or(async () => {
-            let count = await $$(this.selectors.taskSummaryLink).count();
-            return count >= 1;
-        }), 5000);
+        await this.waitUntilNumberOfTaskLinkAppear(1);
         let summaryLinkTxt = await element(by.cssContainingText(this.selectors.taskSummaryLink, taskSummary)).getText();
         return summaryLinkTxt === taskSummary;
     }
@@ -110,6 +107,13 @@ class ManageTaskBlade {
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndSelectGridRecord(templateSummary);
         await this.clickTaskGridSaveButton();
+    }
+
+    async waitUntilNumberOfTaskLinkAppear(taskCount: number): Promise<boolean> {
+        return await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.taskSummaryLink).count();
+            return count >= taskCount;
+        }), 5000);
     }
 }
 

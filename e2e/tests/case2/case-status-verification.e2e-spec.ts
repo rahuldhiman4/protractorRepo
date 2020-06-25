@@ -16,6 +16,7 @@ import updateStatusBladePo from '../../pageobject/common/update.status.blade.po'
 import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import utilityCommon from 'e2e/utils/utility.common';
 
 
 describe('Case Status Change', () => {
@@ -75,6 +76,7 @@ describe('Case Status Change', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 

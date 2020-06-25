@@ -63,7 +63,7 @@ describe('Create Task Template', () => {
         await apiHelper.createSupportGroup(suppGrpData);
         await apiHelper.createNewUser(personData);
         await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
-        await apiHelper.associatePersonToCompany(personData.userId, company)
+        await apiHelper.associatePersonToCompany(personData.userId, company);
     }
 
     //ankagraw
@@ -240,6 +240,7 @@ describe('Create Task Template', () => {
     });//, 220 * 1000);
 
     describe('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Verify Company, Business Unit, Department and Support Group selection hierarchy in Change Owner.', async () => {
+        await foundationData12111("Petramco"); //called again to reflect Support Group on UI
         let randomStr = 'Manual  task' + Math.floor(Math.random() * 1000000);
         it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Create Case tempate template', async () => {
             await navigationPage.gotoSettingsPage();
@@ -307,11 +308,10 @@ describe('Create Task Template', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
-
             //Add Automation Task templates in Case
             await manageTask.addTaskFromTaskTemplate(templateData.templateSummary);
             await manageTask.clickTaskLink(templateData.templateSummary);
-            expect(await viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed")
+            expect(await viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed");
             await viewTask.clickOnViewCase();
         });
         it('[DRDMV-7151]: Assign task on case', async () => {
@@ -330,7 +330,6 @@ describe('Create Task Template', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             expect(await viewTaskTemplate.isEditButtonPresent()).toBeTruthy();
-
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -481,7 +480,7 @@ describe('Create Task Template', () => {
         it('[DRDMV-5326]: Create case with different Assignment and added task on it', async () => {
             await viewCasePage.clickOnTab('Tasks');
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(taskTemplateName);
+            await manageTask.addTaskFromTaskTemplate(taskTemplateSummary);
             await manageTask.clickCloseButton();
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
