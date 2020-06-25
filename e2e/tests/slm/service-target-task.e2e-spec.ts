@@ -299,6 +299,7 @@ describe('Service Target Tests for Tasks', () => {
             await adhoctaskTemplate.selectCategoryTier2('Social');
             await adhoctaskTemplate.selectCategoryTier3('Chatter');
             await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickCloseButton();
             await browser.sleep(32000);
         });
@@ -354,6 +355,7 @@ describe('Service Target Tests for Tasks', () => {
             await adhoctaskTemplate.selectCategoryTier2('Social');
             await adhoctaskTemplate.selectCategoryTier3('Chatter');
             await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickCloseButton();
         });
         it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Change the status of Case to trigger SVT on Task', async () => {
@@ -466,6 +468,7 @@ describe('Service Target Tests for Tasks', () => {
             await adhoctaskTemplate.selectCategoryTier2('Social');
             await adhoctaskTemplate.selectCategoryTier3('Chatter');
             await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickCloseButton();
             await browser.sleep(32000);
         });
