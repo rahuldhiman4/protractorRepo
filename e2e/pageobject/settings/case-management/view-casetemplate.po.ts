@@ -184,10 +184,6 @@ class ViewCaseTemplate {
             }
         });
     }
-
-    async gotoCaseTemplateConsole(): Promise<void> {
-        await $(this.selectors.backButton).click();
-    }
 }
 
 export default new ViewCaseTemplate();
