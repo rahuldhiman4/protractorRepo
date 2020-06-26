@@ -98,9 +98,10 @@ describe('Create Case Task', () => {
             expect(await editTask.getTaskTypeValue()).toBe('Manual');
             expect(await editTask.getTaskTypeValueAttribute('disabled')).toBeTruthy();
             expect(await editTask.processNamePresentInTask()).toBeFalsy();
+            await editTask.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
 
             //validate Automation Template
-            await editTask.clickOnCancelButton();
             await viewTask.clickOnViewCase();
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
@@ -111,7 +112,6 @@ describe('Create Case Task', () => {
             await editTask.clickOnCancelButton();
         });
         afterAll(async () => {
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });

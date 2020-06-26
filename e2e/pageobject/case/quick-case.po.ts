@@ -225,19 +225,20 @@ class QuickCasePage {
         return await $$('.flex-column bwf-search-result-fields div span').first().getText();
     }
 
-
     async clickOnCaseTemplate(templateName: string): Promise<void> {
-        await $(`div[title=${templateName}]`).click();
+        await $(`div[title=${templateName}]`).isPresent().then(async (present) => {
+            if (present) await $(`div[title=${templateName}]`).click();
+        });
     }
 
-    async setSummaryAndClickOnRecommandedCase(caseID: string,caseSummary:string): Promise<boolean> {
+    async setSummaryAndClickOnRecommandedCase(caseID: string, caseSummary: string): Promise<boolean> {
         let success: boolean = false;
         for (let i: number = 0; i <= 3; i++) {
-		 await $(this.selectors.smartSearchTextBox).sendKeys(caseSummary);
+            await $(this.selectors.smartSearchTextBox).sendKeys(caseSummary);
             browser.sleep(1000);
             success = await $(`div[title=${caseID}]`).isPresent().then(async (result) => {
                 if (result) {
-                   await $(`div[title=${caseID}]`).click();
+                    await $(`div[title=${caseID}]`).click();
                     return true;
                 } else false;
             });
@@ -252,14 +253,14 @@ class QuickCasePage {
         return success;
     }
 
-    async setSummaryAndPinRecommandedCase(caseID: string,caseSummary:string): Promise<boolean> {
+    async setSummaryAndPinRecommandedCase(caseID: string, caseSummary: string): Promise<boolean> {
         let success: boolean = false;
         for (let i: number = 0; i <= 3; i++) {
-		 await $(this.selectors.smartSearchTextBox).sendKeys(caseSummary);
+            await $(this.selectors.smartSearchTextBox).sendKeys(caseSummary);
             browser.sleep(1000);
             success = await $(`div[title=${caseID}]`).isPresent().then(async (result) => {
                 if (result) {
-                   await $(this.selectors.pinFirstRecommendedCase).click();
+                    await $(this.selectors.pinFirstRecommendedCase).click();
                     return true;
                 } else false;
             });

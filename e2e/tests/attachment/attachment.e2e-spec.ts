@@ -121,30 +121,37 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
-        await navigationPage.gotoCaseConsole();
-        let caseData = {
-            "Requester": "araisin",
-            "Summary": "Test case for DRDMV-11713",
-            "Assigned Company": "Petramco",
-            "Business Unit": "United States Support",
-            "Support Group": "US Support 1",
-            "Assignee": "qtao"
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        let newCase = await apiHelper.createCase(caseData);
-        await caseConsole.searchAndOpenCase(newCase.displayId);
-        await viewCasePo.clickOnEmailLink();
-        await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
-        await composeMail.addAttachment(['../../data/ui/attachment/demo.txt']);
-        await composeMail.clickOnSendButton();
-        await viewCasePo.clickAttachmentsLink();
-        expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
-        await attachmentBladePo.searchAndSelectCheckBox('demo');
-        expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('demo', 'demo txt file name is missing');
-        await attachmentBladePo.clickDownloadButton();
-        expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
-        await attachmentBladePo.clickCloseButton();
+    describe('[DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
+        let caseData, newCase;
+        beforeAll(async () => {
+            caseData = {
+                "Requester": "araisin",
+                "Summary": "Test case for DRDMV-11713",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 1",
+                "Assignee": "qtao"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            newCase = await apiHelper.createCase(caseData);
+        });
+        it('[DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(newCase.displayId);
+            await viewCasePo.clickOnEmailLink();
+            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.addAttachment(['../../data/ui/attachment/demo.txt']);
+            await composeMail.clickOnSendButton();
+            await viewCasePo.clickAttachmentsLink();
+            expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
+            await attachmentBladePo.searchAndSelectCheckBox('demo');
+            expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('demo', 'demo txt file name is missing');
+            await attachmentBladePo.clickDownloadButton();
+            expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //kgaikwad
@@ -186,73 +193,80 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-11708]: Upload attachment from task activity & verify all attachments grid', async () => {
+    describe('[DRDMV-11708]: Upload attachment from task activity & verify all attachments grid', async () => {
         let xlsxFilePath = '../../data/ui/attachment/bwfXlsx.xlsx';
         let wordFilePath = '../../data/ui/attachment/bwfWord1.rtf';
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
-        let caseData = {
-            "Requester": "araisin",
-            "Summary": "CaseSummary" + randomStr,
-            "Assigned Company": "Petramco",
-            "Business Unit": "United States Support",
-            "Support Group": "US Support 3",
-            "Assignee": "qkatawazi"
-        }
-        await apiHelper.apiLogin('qtao');
-        let newCase = await apiHelper.createCase(caseData);
-        let caseId: string = newCase.displayId;
-
-        // Create Task Template
-        let manualTaskTemplateData = {
-            "templateName": "manualTaskTemplateDraft" + randomStr,
-            "templateSummary": "manualTaskTemplateDraft" + randomStr,
-            "templateStatus": "Active",
-            "taskCompany": "Petramco",
-            "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
-        await navigationPage.gotoCaseConsole();
-        await caseConsole.searchAndOpenCase(caseId);
-        await viewCasePo.clickAddTaskButton();
-        await manageTaskPo.clickAddAdhocTaskButton();
-        await adhoctaskTemplate.setSummary('AdhocTaskSummary' + randomStr);
-        await adhoctaskTemplate.addAttachment([xlsxFilePath]);
-        await adhoctaskTemplate.clickSaveAdhoctask();
-        await utilityCommon.closePopUpMessage();
-        await manageTaskPo.clickCloseButton();
-        await viewCasePo.clickAttachmentsLink();
-        expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfXlsx', 'Attachment file name is missing');
-        expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Task', 'Attach to column value is missing');
-        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('File is delete sucessfully');
-        await attachmentBladePo.searchAndSelectCheckBox('bwfXlsx');
-        await attachmentBladePo.clickDownloadButton();
-        await attachmentBladePo.clickCloseButton();
-
-        // //Add Manual task and Automation Task in Case
-        await viewCasePo.clickAddTaskButton();
-        await manageTaskPo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
-        await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateName);
-        await activityTabPo.addActivityNote('AddNotes' + randomStr);
-        await activityTabPo.addAttachment([wordFilePath]);
-        await activityTabPo.clickOnPostButton();
-        expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
-        await viewTaskPo.clickOnViewCase();
-        await viewCasePo.clickAttachmentsLink();
-        await attachmentBladePo.searchAttachment('bwfWord1');
-        expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfWord1', 'Attachment file name is missing');
-        expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Social', 'Attach to column value is missing');
-        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
-        await attachmentBladePo.searchAndSelectCheckBox('bwfWord1');
-        await attachmentBladePo.clickDownloadButton();
-        expect(await utilityCommon.isFileDownloaded('bwfWord1.rtf')).toBeTruthy('File is not downloaded.');
-        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
-        await attachmentBladePo.clickCloseButton();
-        await navigationPage.gotoPersonProfile();
-        expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
+        let caseData, manualTaskTemplateData, newCase;
+        beforeAll(async () => {
+            caseData = {
+                "Requester": "araisin",
+                "Summary": "CaseSummary" + randomStr,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi"
+            }
+            await apiHelper.apiLogin('qtao');
+            newCase = await apiHelper.createCase(caseData);
+            // Create Task Template
+            manualTaskTemplateData = {
+                "templateName": "manualTaskTemplateDraft" + randomStr,
+                "templateSummary": "manualTaskTemplateDraft" + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+        });
+        it('[DRDMV-11708]: Upload attachment from task activity & verify all attachments grid', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(newCase.displayId);
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskPo.clickAddAdhocTaskButton();
+            await adhoctaskTemplate.setSummary('AdhocTaskSummary' + randomStr);
+            await adhoctaskTemplate.addAttachment([xlsxFilePath]);
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
+            await manageTaskPo.clickCloseButton();
+            await viewCasePo.clickAttachmentsLink();
+            expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfXlsx', 'Attachment file name is missing');
+            expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Task', 'Attach to column value is missing');
+            expect(await utilCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('File is delete sucessfully');
+            await attachmentBladePo.searchAndSelectCheckBox('bwfXlsx');
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.clickCloseButton();
+        });
+        it('[DRDMV-11708]: Upload attachment from task activity & verify all attachments grid', async () => {
+            //Add Manual task and Automation Task in Case
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskPo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
+            await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateName);
+            await activityTabPo.addActivityNote('AddNotes' + randomStr);
+            await activityTabPo.addAttachment([wordFilePath]);
+            await activityTabPo.clickOnPostButton();
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
+            await viewTaskPo.clickOnViewCase();
+            await viewCasePo.clickAttachmentsLink();
+            await attachmentBladePo.searchAttachmentOnGrid('bwfWord1'); //this method is used because first record needs to be bwfWord1
+            await attachmentBladePo.searchAttachment('bwfWord1'); //if searchAttachment() modified to search always then reindexing takes time
+            expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfWord1', 'Attachment file name is missing');
+            expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Social', 'Attach to column value is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
+            await attachmentBladePo.searchAndSelectCheckBox('bwfWord1');
+            await attachmentBladePo.clickDownloadButton();
+            expect(await utilityCommon.isFileDownloaded('bwfWord1.rtf')).toBeTruthy('File is not downloaded.');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
+            await attachmentBladePo.clickCloseButton();
+            await navigationPage.gotoPersonProfile();
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
+        });
+        afterAll(async () => {
+            await utilityCommon.closePopUpMessage();
+        });
     });
 
     //kgaikwad
@@ -377,6 +391,7 @@ describe("Attachment", () => {
             await editCasePo.removeAttachment();
             await editCasePo.removeAttachment();
             await editCasePo.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
             await viewCasePo.clickAttachmentsLink();
             expect(await attachmentBladePo.isAttachmentPresent('bwfJpg')).toBeFalsy('bwfJpg Attachment displayed on grid');
             expect(await attachmentBladePo.isAttachmentPresent('bwfXlsx')).toBeFalsy('bwfXlsx Attachment displayed on grid');
@@ -401,11 +416,10 @@ describe("Attachment", () => {
         expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName[0]}`)).toBeTruthy('File is delete sucessfully');
         expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName[1]}`)).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.clickDownloadButton();
-        await browser.sleep(3000); // hard wait to download all files
+        await browser.sleep(5000); // hard wait to download all files
         for (let j: number = 0; j < fileName.length; j++) {
-            let file: string = fileName[j].substring(0, fileName[j].indexOf("."));
-            expect(await utilCommon.isFileDownloaded(file)).toBeTruthy('File is not downloaded.');
-            expect(await utilCommon.deleteAlreadyDownloadedFile(file)).toBeTruthy('File is delete sucessfully');
+            expect(await utilCommon.isFileDownloaded(fileName[j])).toBeTruthy('File is not downloaded.');
+            expect(await utilCommon.deleteAlreadyDownloadedFile(fileName[j])).toBeTruthy('File is delete sucessfully');
         }
         await attachmentBladePo.clickCloseButton();
     });

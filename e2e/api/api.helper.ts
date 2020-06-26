@@ -4,7 +4,7 @@ import { IDepartment } from '../data/api/interface/department.interface.api';
 import { IKnowledgeArticles } from '../data/api/interface/knowledge.articles.interface.api';
 import { IPerson } from '../data/api/interface/person.interface.api';
 import { ISupportGroup } from '../data/api/interface/support.group.interface.api';
-import { ITaskTemplate } from '../data/api/interface/task.template.interface.api';
+import { ITaskTemplate, IAdhocTask } from '../data/api/interface/task.template.interface.api';
 import { ICaseApprovalMapping } from '../data/api/interface/case.approval.mapping.interface.api';
 import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
@@ -268,15 +268,15 @@ class ApiHelper {
             }
             templateData.fieldInstances["1000000881"] = statusReasonObj;
         }
-        
-        if (data.allowCaseReopen==false) {
+
+        if (data.allowCaseReopen == false) {
             let allowCaseReopenObj = {
                 "id": "450000159",
                 "value": 0
             }
             templateData.fieldInstances["450000159"] = allowCaseReopenObj;
-        } 
-        
+        }
+
         if (data.casePriority) {
             let priorityValue = constants.CasePriority[data.casePriority];
             let priorityObj = {
@@ -284,7 +284,7 @@ class ApiHelper {
                 "value": `${priorityValue}`
             }
             templateData.fieldInstances["1000000164"] = priorityObj;
-        } 
+        }
 
         if (data.resolutionCode) {
             let resolutionCodeObj = {
@@ -292,8 +292,8 @@ class ApiHelper {
                 "value": `${data.resolutionCode}`
             }
             templateData.fieldInstances["450000162"] = resolutionCodeObj;
-        } 
-        
+        }
+
 
         if (data.resolutionDescription) {
             let resolutionDescriptionObj = {
@@ -1585,6 +1585,7 @@ class ApiHelper {
         }
 
         let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case", caseGuid, statusData);
+        await browser.sleep(1000); // hardwait to reflect updated status
         console.log(`Changing the case to ${status} API status is =============>`, updateCaseStatus.status);
         return updateCaseStatus.status;
     }
@@ -1846,7 +1847,7 @@ class ApiHelper {
         };
     }
 
-    async createAdhocTask(caseGuid: string, taskData: any): Promise<IIDs> {
+    async createAdhocTask(caseGuid: string, taskData: IAdhocTask): Promise<IIDs> {
         ADHOC_TASK_PAYLOAD.fieldInstances[8].value = taskData.taskName;
         ADHOC_TASK_PAYLOAD.fieldInstances[536870913].value = caseGuid;
         ADHOC_TASK_PAYLOAD.fieldInstances[1000000001].value = await coreApi.getOrganizationGuid(taskData.company);
@@ -1881,6 +1882,7 @@ class ApiHelper {
         }
 
         let updateTaskStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.task-lib:Task", taskGuid, UPDATE_TASK_STATUS);
+        await browser.sleep(1000); // hardwait to reflect updated status
         return updateTaskStatus.status;
     }
 
@@ -2189,8 +2191,8 @@ class ApiHelper {
             applicationRequestId: caseId,
             signatureID: signatureId
         }
-        
-        let response = await coreApi.multiFormPostWithAttachment(formData,'api/com.bmc.arsys.rx.approval/rx/application/approval/moreinformation/question');
+
+        let response = await coreApi.multiFormPostWithAttachment(formData, 'api/com.bmc.arsys.rx.approval/rx/application/approval/moreinformation/question');
         console.log('More Info API Status =============>', response.status);
         return response.status == 204;
     }
