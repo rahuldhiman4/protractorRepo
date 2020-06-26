@@ -461,7 +461,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await quickCase.setCaseSummary(articleInDraftStatus);
 
             //Search with knowledge article with published status and different versions   
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
@@ -478,7 +478,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewCasePage.clickOnTab(resourcesTabStr);
 
             //Search with knowledge article with published status and different versions
-            await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
@@ -493,7 +493,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await quickCase.setCaseSummary(articleInDraftStatus);
 
             //Search with knowledge article with published status and different versions            
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
@@ -510,7 +510,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewCasePage.clickOnTab(resourcesTabStr);
 
             //Search with knowledge article with published status and different versions
-            await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
@@ -525,7 +525,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await quickCase.setCaseSummary(articleInDraftStatus);
 
             //Search with knowledge article with published status and different versions
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
@@ -542,7 +542,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewCasePage.clickOnTab(resourcesTabStr);
 
             //Search with knowledge article with published status and different versions
-            await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
