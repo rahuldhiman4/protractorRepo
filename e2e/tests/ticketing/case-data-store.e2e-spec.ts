@@ -457,11 +457,9 @@ describe('Case Data Store', () => {
             for (let i = 0; i < dynamicFields.length; i++) {
                 expect(await previewCaseTemplateCasesPo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
             }
-            await previewCaseTemplateCasesPo.clickOnBackButton();
-            await selectCasetemplateBladePo.clickOnCancelButton();
-            await createCasePo.clickCancelButton();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });

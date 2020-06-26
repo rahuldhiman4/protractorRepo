@@ -2,10 +2,10 @@ export interface ITaskTemplate {
     templateName: string;
     templateSummary: string;
     templateStatus: string;
-    taskCompany:string;
+    taskCompany: string;
     ownerCompany: string;
-    ownerBusinessUnit:string;
-    ownerGroup:string;
+    ownerBusinessUnit: string;
+    ownerGroup: string;
     description?: string;
     category1?: string;
     category2?: string;
@@ -15,8 +15,17 @@ export interface ITaskTemplate {
     processBundle?: string;
     processName?: string;
     assignedCompany?: string;
-    businessUnit?:string;
-    supportGroup?:string;
-    assignee?:string;
-    label?:string
+    businessUnit?: string;
+    supportGroup?: string;
+    assignee?: string;
+    label?: string
+};
+
+export interface IAdhocTask {
+    taskName: string;
+    company: string;
+    businessUnit: string;
+    supportGroup: string;
+    assignee?: string;
+    priority?: string;
 }

@@ -43,7 +43,6 @@ describe('Copy Task Template', () => {
     describe('[DRDMV-14214]: Automated Task template Copy using existing Process', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let automatedTaskTemplateName = 'DRDMV14214AutomationTask2' + randomStr;
-        let automatedTaskSummary = randomStr + 'TSummary2';
         let templateData;
         beforeAll(async () => {
             templateData = {
@@ -69,7 +68,7 @@ describe('Copy Task Template', () => {
             expect(await copyTemplatePage.getProcessName()).toBe(templateData.processName);
             await copyTemplatePage.setTemplateName(automatedTaskTemplateName);
             await copyTemplatePage.selectTemplateStatus('Active');
-            await copyTemplatePage.setTaskSummary(automatedTaskSummary)
+            await copyTemplatePage.setTaskSummary(randomStr + 'Summary2')
             await copyTemplatePage.clickSaveCopytemplate();
             await utilCommon.clickOnWarningOk();
             await utilCommon.closePopUpMessage();
@@ -96,7 +95,7 @@ describe('Copy Task Template', () => {
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(automatedTaskSummary);
+            await utilityGrid.searchAndOpenHyperlink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe('Completed');
         });
         afterAll(async () => {
@@ -261,7 +260,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(newAutomationTaskTemplate);
             await copyTemplatePage.selectTaskCompany('Psilon')
             await copyTemplatePage.setNewProcessName(templateData.processName);
-            await copyTemplatePage.clickSaveCopytemplate();// Failing due to defect DRDMV-21097
+            await copyTemplatePage.clickSaveCopytemplate();// Failing due to defect (turned improvement DRDMV-21097)
             expect(await utilCommon.isPopUpMessagePresent(`ERROR (902): Duplicate process name ${templateData.processBundle}:${templateData.processName}`, 2)).toBeTruthy(); // ERROR (902): Duplicate process name
             await copyTemplatePage.clickCancelCopytemplate();
             await utilCommon.clickOnWarningOk();
@@ -370,7 +369,7 @@ describe('Copy Task Template', () => {
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(updatedTaskSummary);
+            await utilityGrid.searchAndOpenHyperlink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe('Completed');
         });
     });
@@ -413,13 +412,16 @@ describe('Copy Task Template', () => {
             expect(await utilCommon.isPopUpMessagePresent(`WARNING (222062): Updates to dynamic fields or process affect the templates using the selected process :${templateData.templateSummary}`)).toBeTruthy("Popup message doesn't match");
             await utilCommon.closePopUpMessage();
         });
+        afterAll(async () => {
+            await navigationPage.gotoCaseConsole();
+        });
     });
 
     it('[DRDMV-13574,DRDMV-13553]: Fields copied while creating copy of External Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let updatedTaskTemplate = 'DRDMV13574UpdatedTask' + randomStr;
         let templateData = {
-            "templateName": 'DRDMV13574External task' + randomStr,
+            "templateName": 'DRDMV13574ExternalTask' + randomStr,
             "templateSummary": 'DRDMV13574Summary' + randomStr,
             "templateStatus": "Active",
             "description": randomStr,

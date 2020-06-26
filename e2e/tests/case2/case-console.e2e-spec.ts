@@ -165,7 +165,7 @@ describe('Case Console', () => {
             await utilGrid.searchOnGridConsole('task template name ' + randomStr);
             expect(await taskTemplateConsolePO.getFirstRecordValue(taskCategoryTier4Str)).toContain(taskTemplateData.category4);
             expect(await taskTemplateConsolePO.getFirstRecordValue(labelStr)).toContain(label);
-            await taskTemplateConsolePO.addColumn([labelStr, taskCategoryTier4Str]);
+            await taskTemplateConsolePO.removeColumn([labelStr, taskCategoryTier4Str]);
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');

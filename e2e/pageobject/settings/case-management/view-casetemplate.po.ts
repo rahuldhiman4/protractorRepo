@@ -29,11 +29,11 @@ class ViewCaseTemplate {
         categoryTier2: '[rx-view-component-id="4f950be7-d968-41a4-8bb9-018674e53f88"] p',
         categoryTier3: '[rx-view-component-id="a7fbc4bc-23c6-4f92-818a-5554107d04c0"] p',
         oneTask: '[rx-view-component-id="36ca22f7-98f8-423a-bf39-28361ef29eeb"] .rotatable path',
-        taskBoxname: 'g.rotatable div.content',
-        showMoreDescriptionLink:'.rx-description-textarea-read button.more',
+        taskBoxname: 'div.content',
+        showMoreDescriptionLink: '.rx-description-textarea-read button.more',
     }
 
-    async clickShowMoreDescriptionLink(){
+    async clickShowMoreDescriptionLink() {
         await $(this.selectors.showMoreDescriptionLink).click();
     }
 
@@ -138,7 +138,7 @@ class ViewCaseTemplate {
     async isGroupDisplayed(groupName: string): Promise<boolean> {
         return await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] .group-container__name div[title=${groupName}]`).isDisplayed();
     }
-    
+
     async getAssigneeText(): Promise<string> {
         return await $(this.selectors.assigneeNameValue).getText();
     }
@@ -176,13 +176,21 @@ class ViewCaseTemplate {
     }
 
     async clickOnTaskBox(taskName: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskBoxname)),3000);
-        await element(by.cssContainingText(this.selectors.taskBoxname, taskName)).isPresent().then(async (result) => {
-            if (result) element(by.cssContainingText(this.selectors.taskBoxname, taskName)).click();
-            else {
-                console.log('Task is Not Present');
+        let taskBoxLocator = '.rotatable';
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(taskBoxLocator).count();
+            return count >= 1;
+        }), 3000);
+        const taskBoxesCount = await $$(taskBoxLocator).count();
+        for (let i: number = 0; i < taskBoxesCount; i++) {
+            let taskBoxText: string = await $$(taskBoxLocator).get(i).$(this.selectors.taskBoxname).isPresent().then(async (present) => {
+                if (present) return await $$(taskBoxLocator).get(i).$(this.selectors.taskBoxname).getText();
+            });
+            if (taskBoxText == taskName) {
+                await $$(taskBoxLocator).get(i).$('path').click();
+                break;
             }
-        });
+        }
     }
 }
 

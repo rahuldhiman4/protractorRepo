@@ -26,6 +26,10 @@ let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
 let userData1 = undefined;
 let userData2 = undefined;
+let categName1 = 'DemoCateg1';
+let categName2 = 'DemoCateg2';
+let categName3 = 'DemoCateg3';
+let categName4 = 'DemoCateg4';
 
 describe('Copy Case Template', () => {
     beforeAll(async () => {
@@ -55,9 +59,14 @@ describe('Copy Case Template', () => {
         await apiHelper.associatePersonToSupportGroup(userData2.userId, "Psilon Support Group2");
 
         //Create a new category
-        await apiHelper.createOperationalCategory("Cash");
-        await apiHelper.associateCategoryToOrganization("Cash", 'Petramco');
-        await apiHelper.associateCategoryToCategory("Bonus", "Cash");
+        await apiHelper.createOperationalCategory(categName1);
+        await apiHelper.createOperationalCategory(categName2);
+        await apiHelper.createOperationalCategory(categName3);
+        await apiHelper.createOperationalCategory(categName4);
+        await apiHelper.associateCategoryToOrganization(categName1, 'Petramco');
+        await apiHelper.associateCategoryToCategory(categName1, categName2);
+        await apiHelper.associateCategoryToCategory(categName2, categName3);
+        await apiHelper.associateCategoryToCategory(categName3, categName4);
     });
 
     afterAll(async () => {
@@ -667,11 +676,11 @@ describe('Copy Case Template', () => {
 
     describe('[DRDMV-13814,DRDMV-13818]: Copy a Case Template for Company not same as Original Template, Where Same Task is present for different Company', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let casetemplatePetramco, templateData, automatedtemplateData, externaltemplateData;
+        let caseTemplatePetramco, manualTemplateData, automatedTemplateData, externalTemplateData;
         let copyCaseTemplateName: string = "copycaseTemplateName" + randomStr;
         beforeAll(async () => {
             await apiHelper.apiLoginWithCredential('13550User1@petramco.com', 'Password_1234');
-            casetemplatePetramco = {
+            caseTemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateName' + randomStr,
                 "templateStatus": "Draft",
@@ -687,8 +696,8 @@ describe('Copy Case Template', () => {
                 "ownerBU": "Facilities Support",
                 "ownerGroup": "Facilities"
             }
-            let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePetramco);
-            templateData = {
+            let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplatePetramco);
+            manualTemplateData = {
                 "templateName": 'Manual DRDMV13814' + randomStr,
                 "templateSummary": 'Manual DRDMV13814' + randomStr,
                 "templateStatus": "Active",
@@ -700,8 +709,8 @@ describe('Copy Case Template', () => {
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
             }
-            let manualTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
-            externaltemplateData = {
+            let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTemplateData);
+            externalTemplateData = {
                 "templateName": 'External DRDMV13814' + randomStr,
                 "templateSummary": 'External DRDMV13814' + randomStr,
                 "templateStatus": "Active",
@@ -713,8 +722,8 @@ describe('Copy Case Template', () => {
                 "supportGroup": "Psilon Support Group1",
                 "assignee": "gderuno",
             }
-            let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externaltemplateData);
-            automatedtemplateData = {
+            let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTemplateData);
+            automatedTemplateData = {
                 "templateName": 'Automated DRDMV13814' + randomStr,
                 "templateSummary": 'Automated DRDMV13814' + randomStr,
                 "templateStatus": "Active",
@@ -728,7 +737,7 @@ describe('Copy Case Template', () => {
                 "supportGroup": "Psilon Support Group1",
                 "assignee": "gderuno",
             }
-            let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
+            let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedTemplateData);
             await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, automatedTaskTemplate.displayId);
         });
         it('[DRDMV-13814,DRDMV-13818]: Copy a Case Template for Company not same as Original Template, Where Same Task is present for different Company', async () => {
@@ -736,7 +745,7 @@ describe('Copy Case Template', () => {
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await consoleCasetemplatePo.searchAndselectCaseTemplate(casetemplatePetramco.templateName);
+            await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplatePetramco.templateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             await copyCaseTemplate.setCompanyName('Psilon');
@@ -749,13 +758,13 @@ describe('Copy Case Template', () => {
             await changeAssignmentOldPage.clickOnAssignButton();
             await copyCaseTemplate.clickSaveCaseTemplate();
             await utilCommon.closePopUpMessage();
-            await viewCasetemplatePo.clickOnTaskBox(templateData.templateName);
-            expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(templateData.templateName);
+            await viewCasetemplatePo.clickOnTaskBox(manualTemplateData.templateName);
+            expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(manualTemplateData.templateName);
             expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('Psilon');
             expect(await previewTaskTemplateCasesPo.getAssigneeText()).toBe('Glit Deruno');
             await previewTaskTemplateCasesPo.clickOnBackButton();
-            await viewCasetemplatePo.clickOnTaskBox(automatedtemplateData.templateName);
-            expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(automatedtemplateData.templateName);
+            await viewCasetemplatePo.clickOnTaskBox(automatedTemplateData.templateName);
+            expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(automatedTemplateData.templateName);
             expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('- Global -');
             await previewTaskTemplateCasesPo.clickOnBackButton();
         });
@@ -764,9 +773,9 @@ describe('Copy Case Template', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await utilGrid.searchOnGridConsole('DRDMV13814' + randomStr);
             expect(await consoleCasetemplatePo.getTemplateCountFromGrid()).toBe(4);
-            await utilGrid.searchOnGridConsole(templateData.templateName);
+            await utilGrid.searchOnGridConsole(manualTemplateData.templateName);
             expect(await consoleCasetemplatePo.getTemplateCountFromGrid()).toBe(2);
-            await utilGrid.searchOnGridConsole(automatedtemplateData.templateName);
+            await utilGrid.searchOnGridConsole(automatedTemplateData.templateName);
             expect(await consoleCasetemplatePo.getTemplateCountFromGrid()).toBe(1);
         });
         afterAll(async () => {
@@ -948,7 +957,7 @@ describe('Copy Case Template', () => {
 
     describe('[DRDMV-15256]: Verify For Copy template, Category Tier 4 and Label Data also get copied', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let label: string = undefined;
+        let caseTemplateData, taskTemplateData, label: string = undefined;
 
         beforeAll(async () => {
             let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
@@ -958,13 +967,13 @@ describe('Copy Case Template', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
 
-            let caseTemplateData = {
+            caseTemplateData = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateSummary' + randomStr,
-                "categoryTier1": 'Employee Relations',
-                "categoryTier2": 'Compensation',
-                "categoryTier3": 'Bonus',
-                "categoryTier4": 'Cash',
+                "categoryTier1": categName1,
+                "categoryTier2": categName2,
+                "categoryTier3": categName3,
+                "categoryTier4": categName4,
                 "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -977,14 +986,14 @@ describe('Copy Case Template', () => {
             }
             await apiHelper.createCaseTemplate(caseTemplateData);
 
-            let taskTemplateData = {
+            taskTemplateData = {
                 "templateName": 'task template name ' + randomStr,
                 "templateSummary": `task template summary ${randomStr}`,
                 "templateStatus": "Active",
-                "category1": 'Employee Relations',
-                "category2": "Compensation",
-                "category3": "Bonus",
-                "category4": "Cash",
+                "category1": categName1,
+                "category2": categName2,
+                "category3": categName3,
+                "category4": categName4,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
@@ -1001,7 +1010,7 @@ describe('Copy Case Template', () => {
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await createCaseTemplate.setTemplateName('caseTemplateName1' + randomStr);
             await createCaseTemplate.clickSaveCaseTemplate();
-            expect(await viewCasetemplatePo.getCategoryTier4()).toBe('Cash');
+            expect(await viewCasetemplatePo.getCategoryTier4()).toBe(caseTemplateData.categoryTier4);
             expect(await viewCasetemplatePo.getLabelValue()).toBe(label);
             await utilCommon.clickOnBackArrow();
 
@@ -1011,7 +1020,7 @@ describe('Copy Case Template', () => {
             await selectTaskTemplate.clickOnCopyTaskTemplateButton();
             await taskTemplate.setTemplateName('Copied Task Template' + randomStr);
             await taskTemplate.clickOnSaveTaskTemplate();
-            expect(await viewTasktemplatePo.getCategoryTier4Value()).toBe('Cash');
+            expect(await viewTasktemplatePo.getCategoryTier4Value()).toBe(taskTemplateData.category4);
             expect(await viewTasktemplatePo.getLabelValue()).toBe(label);
             await utilCommon.clickOnBackArrow();
         });

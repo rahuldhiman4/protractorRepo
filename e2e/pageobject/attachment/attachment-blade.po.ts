@@ -18,10 +18,16 @@ class AttachmentBlade {
         refreshButton: '.d-icon-refresh',
         selectedCheckBoxCount: '.bwf-case-attachment__footer-button .bwf-case-attachment__footer-button__selected-files-label',
         attachmentName: 'table .attachment-view-thumbnail__title-text',
+        attachmentSearchBox: '[rx-view-component-id="adb9ac10-3732-4fd9-8af3-29bec77272b4"] .adapt-table-search_input'
     }
 
     async getSelectedCheckBoxCount(): Promise<string> {
         return await $(this.selectors.selectedCheckBoxCount).getText();
+    }
+
+    async searchAttachmentOnGrid(attachment: string): Promise<void> {
+        await $(this.selectors.attachmentSearchBox).clear();
+        await $(this.selectors.attachmentSearchBox).sendKeys(attachment + protractor.Key.ENTER);
     }
 
     async searchAttachment(attachment: string): Promise<void> {
@@ -29,7 +35,7 @@ class AttachmentBlade {
             let isFilePresent: boolean = await element(by.cssContainingText(this.selectors.attachmentName, attachment)).isPresent();
             if (isFilePresent == false) {
                 await browser.sleep(5000);
-                await utilityGrid.searchRecord(attachment);
+                await this.searchAttachmentOnGrid(attachment);
             } else {
                 break;
             }
@@ -137,7 +143,6 @@ class AttachmentBlade {
     async isCloseButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.close).isDisplayed();
     }
-
 }
 
 export default new AttachmentBlade();

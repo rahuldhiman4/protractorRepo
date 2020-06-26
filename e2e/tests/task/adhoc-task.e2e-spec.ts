@@ -560,7 +560,9 @@ describe('Create Adhoc task', () => {
             "businessUnit": "United States Support",
             "supportGroup": "US Support 1"
         }
+
         await navigationPage.gotoTaskConsole();
+        await utilityGrid.clearFilter();
         let caseCreationResponse = await apiHelper.createCase(caseData);
         let taskCreationResponse = await apiHelper.createAdhocTask(caseCreationResponse.id, taskData);
         await apiHelper.changeCaseAssignment(caseCreationResponse.id, 'United States Support', 'US Support 1', 'qtao');

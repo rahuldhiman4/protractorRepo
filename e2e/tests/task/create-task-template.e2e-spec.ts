@@ -54,6 +54,8 @@ describe('Create Task Template', () => {
         departmentData = departmentDataFile['DepartmentData12111'];
         suppGrpData = supportGrpDataFile['SuppGrpData12111'];
         personData = personDataFile['PersonData12111'];
+        await apiHelper.createNewUser(personData);
+        await browser.sleep(15000); //New user is created above, waiting for its backend access preperation
         let orgId = await apiCoreUtil.getOrganizationGuid(company);
         businessData.relatedOrgId = orgId;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
@@ -61,7 +63,6 @@ describe('Create Task Template', () => {
         let depId = await apiHelper.createDepartment(departmentData);
         suppGrpData.relatedOrgId = depId;
         await apiHelper.createSupportGroup(suppGrpData);
-        await apiHelper.createNewUser(personData);
         await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
         await apiHelper.associatePersonToCompany(personData.userId, company);
     }
@@ -239,47 +240,6 @@ describe('Create Task Template', () => {
         expect(await viewTaskTemplate.getCategoryTier2Value()).toBe("Social");
     });//, 220 * 1000);
 
-    describe('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Verify Company, Business Unit, Department and Support Group selection hierarchy in Change Owner.', async () => {
-        await foundationData12111("Petramco"); //called again to reflect Support Group on UI
-        let randomStr = 'Manual  task' + Math.floor(Math.random() * 1000000);
-        it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Create Case tempate template', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
-            await createCaseTemplate.setTemplateName("caseTemplateName" + randomStr);
-            await createCaseTemplate.setCompanyName("Petramco");
-            await createCaseTemplate.setCaseSummary("caseTemplateSummary1" + randomStr);
-            await createCaseTemplate.setOwnerCompanyValue("Petramco");
-            await createCaseTemplate.setBusinessUnitDropdownValue(businessData.orgName);
-            await createCaseTemplate.setDepartmentDropdownValue(departmentData.orgName);
-            await createCaseTemplate.setOwnerGroupDropdownValue(suppGrpData.orgName);
-            await createCaseTemplate.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
-            expect(await viewCaseTemplate.getOwnerCompanyValue()).toBe("Petramco");
-            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
-            expect(await viewCaseTemplate.getBuisnessUnitValue()).toBe(businessData.orgName);
-            expect(await viewCaseTemplate.getDepartmentValue()).toBe(departmentData.orgName);
-        });
-        it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Create Manual Task template', async () => {
-            //Manual task Template
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnManualTaskTemplateButton();
-            await taskTemplate.setTemplateName('manualTaskTemplate' + randomStr);
-            await taskTemplate.setTaskSummary('manualTaskSummary' + randomStr);
-            await taskTemplate.setTaskDescription('Description in manual task');
-            await taskTemplate.selectCompanyByName('Petramco');
-            await taskTemplate.selectBuisnessUnit(businessData.orgName);
-            await taskTemplate.selectDepartment(departmentData.orgName);
-            await taskTemplate.selectOwnerGroup(suppGrpData.orgName)
-            await taskTemplate.clickOnSaveTaskTemplate();
-            expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe('Petramco');
-            expect(await viewTaskTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
-            expect(await viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
-            expect(await viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
-        });
-    });
-
     describe('[DRDMV-7151]: [Automatic Task] - Automatic Task: Social: System Comments', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData = {
@@ -343,19 +303,7 @@ describe('Create Task Template', () => {
         let taskTemplateName = 'taskTemplateWithYesResolve' + randomStr;
         let taskTemplateSummary = 'taskSummaryYesResolved' + randomStr;
         let createdDate = new Date();
-        let month = new Array();
-        month[0] = "January";
-        month[1] = "February";
-        month[2] = "March";
-        month[3] = "April";
-        month[4] = "May";
-        month[5] = "June";
-        month[6] = "July";
-        month[7] = "August";
-        month[8] = "September";
-        month[9] = "October";
-        month[10] = "November";
-        month[11] = "December";
+        let month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         let dateFormateValue: string = month[createdDate.getMonth()];
         let dateFormateNew: string = dateFormateValue.substring(0, 3);
         let dateFormate: string = dateFormateNew + " " + createdDate.getDate() + ", " + createdDate.getFullYear() + " " + createdDate.toLocaleTimeString();
@@ -396,7 +344,7 @@ describe('Create Task Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await utilGrid.clearFilter();
-            await selectTaskTemplate.addColumn(addColoumn);
+            await selectTaskTemplate.addColumn(addColoumn); // remove this column
             await utilGrid.addFilter("Support Group", 'Compensation and Benefits', 'text');
             expect(await utilGrid.isGridRecordPresent('Compensation and Benefits')).toBeTruthy('Compensation and Benefits not present');
             await utilGrid.clearFilter();
@@ -800,13 +748,13 @@ describe('Create Task Template', () => {
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy();
         });
     });
+
     //ankagraw
     describe('[DRDMV-3830]: [Task Workspace] Filter menu verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase1, tempId, exactDate;
+        let newCase1, tempIdLow, tempIdMedium, tempIdHigh, tempIdCritical, exactDate;
         let createdDate = new Date();
-        let month = new Array();
-        month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        let month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         let dateFormateValue: string = month[createdDate.getMonth()];
         let dateFormateNew: string = dateFormateValue.substring(0, 3);
         let time1 = createdDate.toLocaleTimeString();
@@ -815,12 +763,13 @@ describe('Create Task Template', () => {
         let exactTime1 = newTime1[0] + ":" + newTime1[1] + " " + diffTime1[1];
         let dateFormate: string = dateFormateNew + " " + createdDate.getDate() + ", " + createdDate.getFullYear() + " " + exactTime1;
         beforeAll(async () => {
-            let templateData = {
+            let adhocTaskData = {
                 "taskName": 'manualTaskTemplate' + randomStr,
                 "company": "Petramco",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
                 "assignee": "qkatawazi",
+                "priority": "Low"
             };
             let caseData1 = {
                 "Requester": "Fritz",
@@ -832,7 +781,13 @@ describe('Create Task Template', () => {
             }
             await apiHelper.apiLogin('qkatawazi');
             newCase1 = await apiHelper.createCase(caseData1);
-            tempId = await apiHelper.createAdhocTask(newCase1.id, templateData);
+            tempIdLow = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
+            adhocTaskData.priority = "Medium";
+            tempIdMedium = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
+            adhocTaskData.priority = "High";
+            tempIdHigh = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
+            adhocTaskData.priority = "Critical";
+            tempIdCritical = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
         });
         it('[DRDMV-3830]: Create case with task', async () => {
             await navigationPage.gotoCaseConsole();
@@ -858,8 +813,8 @@ describe('Create Task Template', () => {
             await utilityGrid.addFilter("Summary", 'manualTaskTemplate' + randomStr, "default");
             expect(await utilityGrid.isGridRecordPresent('manualTaskTemplate' + randomStr)).toBeTruthy("Summary not Displayed");
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter("Task ID", tempId.displayId, "default");
-            expect(await utilityGrid.isGridRecordPresent(tempId.displayId)).toBeTruthy("Task ID not Displayed");;
+            await utilityGrid.addFilter("Task ID", tempIdLow.displayId, "default");
+            expect(await utilityGrid.isGridRecordPresent(tempIdLow.displayId)).toBeTruthy("Task ID not Displayed");;
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Case ID", newCase1.displayId, "default");
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy("Case ID not Displayed");
@@ -902,6 +857,46 @@ describe('Create Task Template', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.typeInFilterExperssion("Modified Date:" + exactDate);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+        });
+    });
+
+    describe('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Verify Company, Business Unit, Department and Support Group selection hierarchy in Change Owner.', async () => {
+        let randomStr = 'Manual  task' + Math.floor(Math.random() * 1000000);
+        it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Create Case tempate template', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.setTemplateName("caseTemplateName" + randomStr);
+            await createCaseTemplate.setCompanyName("Petramco");
+            await createCaseTemplate.setCaseSummary("caseTemplateSummary1" + randomStr);
+            await createCaseTemplate.setOwnerCompanyValue("Petramco");
+            await createCaseTemplate.setBusinessUnitDropdownValue(businessData.orgName);
+            await createCaseTemplate.setDepartmentDropdownValue(departmentData.orgName);
+            await createCaseTemplate.setOwnerGroupDropdownValue(suppGrpData.orgName);
+            await createCaseTemplate.clickSaveCaseTemplate();
+            await utilCommon.closePopUpMessage();
+            expect(await viewCaseTemplate.getOwnerCompanyValue()).toBe("Petramco");
+            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
+            expect(await viewCaseTemplate.getBuisnessUnitValue()).toBe(businessData.orgName);
+            expect(await viewCaseTemplate.getDepartmentValue()).toBe(departmentData.orgName);
+        });
+        it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Create Manual Task template', async () => {
+            //Manual task Template
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.clickOnManualTaskTemplateButton();
+            await taskTemplate.setTemplateName('manualTaskTemplate' + randomStr);
+            await taskTemplate.setTaskSummary('manualTaskSummary' + randomStr);
+            await taskTemplate.setTaskDescription('Description in manual task');
+            await taskTemplate.selectCompanyByName('Petramco');
+            await taskTemplate.selectBuisnessUnit(businessData.orgName);
+            await taskTemplate.selectDepartment(departmentData.orgName);
+            await taskTemplate.selectOwnerGroup(suppGrpData.orgName)
+            await taskTemplate.clickOnSaveTaskTemplate();
+            expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe('Petramco');
+            expect(await viewTaskTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
+            expect(await viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
+            expect(await viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
         });
     });
 });
