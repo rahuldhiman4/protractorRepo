@@ -1212,6 +1212,7 @@ describe("Case General Approval Tests", () => {
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.isApprovalButtonsPresent("Approve")).toBeFalsy();
             expect(await viewCasePo.isApprovalButtonsPresent("Reject")).toBeFalsy();
@@ -1233,6 +1234,7 @@ describe("Case General Approval Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -1241,6 +1243,7 @@ describe("Case General Approval Tests", () => {
             expect(await viewCasePo.isApprovalButtonsPresent("Reject")).toBeTruthy();
             await viewCasePo.clickOnApproveLink();
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
@@ -1262,10 +1265,12 @@ describe("Case General Approval Tests", () => {
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             await viewCasePo.clickOnRejectLink();
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Canceled");
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was rejected');
