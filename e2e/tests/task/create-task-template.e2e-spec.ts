@@ -339,12 +339,12 @@ describe('Create Task Template', () => {
         let monthValue: string = month[modifiedDate.getMonth()];
         let modifiedMonthValue = monthValue.substring(0, 3);
         let modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + modifiedDate.toLocaleTimeString();
+        let addColoumn: string[] = ['Display ID'];
         it('[DRDMV-3768]: Apply Filter Options', async () => {
-            let addColoumn: string[] = ['Display ID'];
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await utilGrid.clearFilter();
-            await selectTaskTemplate.addColumn(addColoumn); // remove this column
+            await selectTaskTemplate.addColumn(addColoumn);
             await utilGrid.addFilter("Support Group", 'Compensation and Benefits', 'text');
             expect(await utilGrid.isGridRecordPresent('Compensation and Benefits')).toBeTruthy('Compensation and Benefits not present');
             await utilGrid.clearFilter();
@@ -370,7 +370,10 @@ describe('Create Task Template', () => {
             await utilGrid.clearFilter();
             await utilGrid.addFilter("Display ID", taskTemplateId, 'text');
             expect(await utilGrid.isGridRecordPresent(taskTemplateId)).toBeTruthy(taskTemplateId + '  not present');
+        });
+        afterAll(async () => {
             await utilGrid.clearFilter();
+            await selectTaskTemplate.removeColumn(addColoumn);
         });
     });
 
