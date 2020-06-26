@@ -28,7 +28,7 @@ class QuickCasePage {
         sourceValue: '.sr-select-bar .btn-xs',
         roleValue: '.select_option_container span',
         descriptionText: 'div.sr-placeholder div.large',
-        resources: 'bwf-smart-recorder-results div.sr-result-placeholder div',
+        resources: '.empty-state__label',
         advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select label',
         startOverButton: '.sr-footer .text-muted .btn-secondary',
         recommendedKnowledge: 'bwf-search-result-fields .bwf-search-fields__title-text',
@@ -187,7 +187,7 @@ class QuickCasePage {
     }
 
     async getResourcesText(): Promise<string> {
-        return await $$(this.selectors.resources).get(1).getText();
+        return await $(this.selectors.resources).getText();
     }
 
     async selectRoleValue(value: string): Promise<void> {

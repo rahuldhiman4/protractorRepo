@@ -29,6 +29,34 @@ describe("Quick Case", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
+
+        //Creating new users
+        let userData1 = undefined, userData2 = undefined, userData3 = undefined, userData4 = undefined;
+        userData1 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData1",
+        }
+        userData2 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData2",
+        }
+        userData3 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData3",
+        }
+        userData4 = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData4",
+        }
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.createNewUser(userData3);
+        await apiHelper.createNewUser(userData4);
     });
 
     afterAll(async () => {
@@ -87,33 +115,6 @@ describe("Quick Case", () => {
     });
 
     it('[DRDMV-800]: [Quick Case] Case creation with requester having same name as other company users', async () => {
-        let userData1 = undefined, userData2 = undefined, userData3 = undefined, userData4 = undefined;
-        userData1 = {
-            "firstName": "Person1",
-            "lastName": "Person1",
-            "userId": "userData1",
-        }
-        userData2 = {
-            "firstName": "Person1",
-            "lastName": "Person1",
-            "userId": "userData2",
-        }
-        userData3 = {
-            "firstName": "Person1",
-            "lastName": "Person1",
-            "userId": "userData3",
-        }
-        userData4 = {
-            "firstName": "Person1",
-            "lastName": "Person1",
-            "userId": "userData4",
-        }
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.createNewUser(userData3);
-        await apiHelper.createNewUser(userData4);
-
         await quickCase.clickStartOverButton();
         await quickCase.selectRequesterName('Person1 Person1');
         await quickCase.setCaseSummary('caseSummary');
@@ -198,7 +199,12 @@ describe("Quick Case", () => {
                 "templateName": randomStr + "Psilon",
                 "templateSummary": randomStr + "Psilon",
                 "templateStatus": "Active",
-                "company": 'Psilon'
+                "company": 'Psilon',
+                "businessUnit": "Psilon Support Org1",
+                "supportGroup": "Psilon Support Group1",
+                "assignee": "rrovnitov",
+                "ownerBU": 'Psilon Support Org1',
+                "ownerGroup": "Psilon Support Group1"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData);
@@ -506,7 +512,7 @@ describe("Quick Case", () => {
             await quickCase.setCaseSummary(CaseTemplateData.templateName);
             await utilCommon.waitUntilSpinnerToHide();
             await quickCase.pinRecommendedCases(1);
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(CaseTemplateData.templateName);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
@@ -528,7 +534,7 @@ describe("Quick Case", () => {
             await utilityCommon.scrollUpOrDownTillElement(viewCasePage.selectors.addedTaskFromCaseTemplate);
             expect(await viewCasePage.isCoreTaskPresent(CaseTemplateData.templateName)).toBeTruthy("Task Is not added from Case Template");
             await viewCasePage.clickOnTab('Resources');
-            await resources.clickOnAdvancedSearchOptions(CaseTemplateData.templateName);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(CaseTemplateData.templateName);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
@@ -576,7 +582,7 @@ describe("Quick Case", () => {
             await quickCasePo.selectRequesterName("fritz");
             await quickCasePo.setCaseSummary(articleData.title);
             await utilCommon.waitUntilSpinnerToHide();
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             expect(await resources.isFilterAvailable('ArticleStatus')).toBeTruthy();
             expect(await resources.isFilterAvailable('Knowledge Set')).toBeTruthy();
@@ -687,13 +693,7 @@ describe("Quick Case", () => {
     describe('[DRDMV-796]: [Quick Case] Resources preview', async () => {
         let CaseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
-            let userData1 = {
-                "firstName": "Person1",
-                "lastName": "Person1",
-                "userId": "userData1",
-            }
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.createNewUser(userData1);
             let manualTaskTemplateData = {
                 "templateName": `manualTaskTemplateDraft ${randomStr}`,
                 "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
@@ -757,10 +757,8 @@ describe("Quick Case", () => {
             expect(await previewCaseTemplateCasesPo.getCaseTemplateName()).toBe(CaseTemplateData.templateName);
             expect(await previewCaseTemplateCasesPo.getCasePriority()).toBe("Low");
             await previewCaseTemplateCasesPo.clickOnBackButton();
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
-            await resources.enterAdvancedSearchText(CaseTemplateData.templateName);
-            await resources.clickOnAdvancedSearchSettingsIconToOpen();
-            await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
+            await resources.clickOnAdvancedSearchOptions();
+            await resources.searchTextAndEnter(CaseTemplateData.templateName);
             await resources.clickArrowFirstRecommendedKnowledge();
         });
         it('[DRDMV-796]: [Quick Case] Resources preview', async () => {
@@ -912,6 +910,7 @@ describe("Quick Case", () => {
         expect(await resources.isRecommendedKnowledgePresent(publishedKA_Name)).toBeTruthy(`${publishedKA_Name} Description search Published KA not disaplyed in Recommended Knowledge`);
         // Change KA status to closed so that can be used in last step
         expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "RetireApproval")).toBeTruthy("Article with Closed status not updated.");
+        await browser.sleep(5000); //API takes time to update and reflect the status
         expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "Closed")).toBeTruthy("Article with Closed status not updated.");
         await browser.sleep(3000); // hardwait to reflect KA status as closed
         // search In Progress article, should not find

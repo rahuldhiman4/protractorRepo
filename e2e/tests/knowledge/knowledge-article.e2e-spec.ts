@@ -1268,7 +1268,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             await viewKnowledgeArticlePo.clickOnTab("Resources");
-            await resources.clickOnAdvancedSearchOptions("Suggested Articles");
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText("Suggested Articles");
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             expect(await resources.isFilterAvailable('Status')).toBeTruthy();
@@ -1281,7 +1281,7 @@ describe('Knowledge Article', () => {
         });
         it('[DRDMV-620]: [Advanced Search] Advanced Search UI verification on the Knowledge Edit view', async () => {
             await viewKnowledgeArticlePo.clickOnTab("Resources");
-            await resources.clickOnAdvancedSearchOptions("Suggested Articles");
+            await resources.clickOnAdvancedSearchOptions();
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.enterAdvancedSearchText(articleData1.title);
             await resources.selectAdvancedSearchFilterOption('ArticleStatus', 'Draft');
@@ -1306,7 +1306,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData1.displayId);
             await viewKnowledgeArticlePo.clickOnTab("Resources");
-            await resources.clickOnAdvancedSearchOptions("Suggested Articles");
+            await resources.clickOnAdvancedSearchOptions();
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.enterAdvancedSearchText(articleData5.title);
             await resources.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Employee Relations');
@@ -1519,7 +1519,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(kaDetails3.displayId);
             await viewKnowledgeArticlePo.clickOnTab('Resources');
-            await resources.clickOnAdvancedSearchOptions(kaDetails1.displayId);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(kaDetails1.displayId);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton("Apply");
@@ -1549,7 +1549,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickOnTab("Resources");
-            await resources.clickOnAdvancedSearchOptions(kaDetails2.displayId);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText("Suggested Articles");
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton("Apply");

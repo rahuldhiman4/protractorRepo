@@ -442,7 +442,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(recommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
@@ -500,7 +500,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await viewCasePage.clickOnTab('Resources');
 
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
@@ -555,7 +555,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(recommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
@@ -613,7 +613,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await viewCasePage.clickOnTab('Resources');
 
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
@@ -668,7 +668,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await quickCase.selectRequesterName(caseManagerUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(recommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
@@ -726,7 +726,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await viewCasePage.clickOnTab('Resources');
 
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
@@ -820,7 +820,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnAttachLink();
 
-            await resources.clickOnAdvancedSearchOptions(documentLibraryStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1ForDocumentLibrary, categoryTier1FieldVal);
@@ -840,7 +840,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnAttachLink();
 
-            await resources.clickOnAdvancedSearchOptions(documentLibraryStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1ForDocumentLibrary, categoryTier1FieldVal);
@@ -858,7 +858,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnAttachLink();
-            await resources.clickOnAdvancedSearchOptions(documentLibraryStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1ForDocumentLibrary, categoryTier1FieldVal);

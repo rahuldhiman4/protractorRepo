@@ -22,7 +22,7 @@ export class Resources {
         return await $$('.bwf-search-result p').get(recordNumber - 1).isPresent();
     }
 
-    async clickOnAdvancedSearchOptions(searchArea: string): Promise<void> {
+    async clickOnAdvancedSearchOptions(): Promise<void> {
         let advancedSearchButton = await $('span.d-icon-search');
         //        await browser.wait(this.EC.elementToBeClickable(advancedSearchButton));
         await advancedSearchButton.click();
@@ -141,7 +141,13 @@ export class Resources {
     }
 
     async clickArrowFirstRecommendedKnowledge(): Promise<void> {
-        await $$('div.search-result-fields').first().click();
+        let sections = $$('div.bwf-search-result');
+        for(let i=0; i<(await sections).length; i++){
+            let sectionLocator = sections.get(i).$('h2');
+            if((await sectionLocator.getText()).includes('Recommended Knowledge')) {
+                await sections.get(i).$$('div.search-result-fields').first().click();
+            }
+        }
     }
 
     async getKnowledgeArticleInfo(): Promise<string> {

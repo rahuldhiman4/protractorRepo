@@ -190,7 +190,7 @@ describe('Document Library Consume Permission', () => {
         await editCasePo.clickSaveCase();
         await viewCasePo.clickOnTab('Resources')
         expect(await resourcesTabPo.isSearchRecordEmpty(1)).toBeTruthy('Failuer1: Knowledge Article is not empty');
-        await resourcesTabPo.clickOnAdvancedSearchOptions('Knowledge Articles ');
+        await resourcesTabPo.clickOnAdvancedSearchOptions();
         await resourcesTabPo.searchTextAndEnter(publishDocLibData1.docLibTitle);
         expect(await resourcesTabPo.isSearchRecordEmpty(1)).toBeTruthy('Failuer2: Knowledge Article is not empty');
     }, 400 * 1000);
