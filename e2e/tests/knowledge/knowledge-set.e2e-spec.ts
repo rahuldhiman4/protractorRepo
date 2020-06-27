@@ -17,7 +17,7 @@ describe('Knowledge Article Set', () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteKnowledgeSet('DRDMV-1062');
         await loginPage.login('tadmin');
-        await navigationPage.switchToAnotherApplication("Knowledge Management");
+        await navigationPage.switchToApplication("Knowledge Management");
     });
 
     afterAll(async () => {

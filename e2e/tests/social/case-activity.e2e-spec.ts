@@ -1409,7 +1409,7 @@ describe('Case Activity', () => {
 
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication('Knowledge Management');
+            await navigationPage.switchToApplication('Knowledge Management');
             await utilCommon.switchToNewWidnow(1);
 
             await apiHelper.apiLogin(knowledgePublisherUser);

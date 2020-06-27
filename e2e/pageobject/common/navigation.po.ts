@@ -294,7 +294,7 @@ class NavigationPage {
         }
     }
 
-    async switchToAnotherApplication(applicationName: string): Promise<void> {
+    async switchToApplication(applicationName: string): Promise<void> {
         if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await $(this.selectors.adaptIconTiles).click();
